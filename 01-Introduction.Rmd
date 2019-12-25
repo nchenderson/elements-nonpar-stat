@@ -12,7 +12,7 @@
 **What is Parametric Statistics?**
 
 * Parametric models refer to probability distributions that can 
-be fully described by a fixed number of parameters that do not grow 
+be fully described by a fixed number of parameters that do not change
 with the sample size.
 
 * Typical examples include
@@ -59,29 +59,32 @@ This course is roughly divided into the following 5 categories.
 Suppose we have data from two groups. For example, outcomes from 
 two different treatments.
 
-* **Group 1 outcomes**: $X_{1}, \ldots, X_{n}$ an i.i.d (independent and identically distributed) sample from distribution function $F_{X}$. That is,
+* **Group 1 outcomes**: $X_{1}, \ldots, X_{n}$ an i.i.d (independent and identically distributed) sample from distribution function $F_{X}$. 
+This means that 
 \begin{equation}
-F_{X}(t) = P( X_{i} \leq t) \nonumber
+F_{X}(t) = P( X_{i} \leq t) \quad \textrm{ for any } 1 \leq i \leq n  \nonumber
 \end{equation}
 
 * **Group 2 outcomes**: $Y_{1}, \ldots, Y_{m}$ an i.i.d. sample from distribution function $F_{Y}$.
+\begin{equation}
+F_{Y}(t) = P( Y_{i} \leq t) \quad \textrm{ for any } 1 \leq i \leq n  \nonumber
+\end{equation}
 
----
 
 * To test the impact of a new treatment, we usually want to test whether or not $F_{X}$ differs from $F_{Y}$ in some way.
 This can be stated in hypothesis testing language as
 \begin{eqnarray}
-H_{0}&:& F_{X} = F_{Y} \textrm{( populations are the same)} \nonumber \\
-H_{A}&:& F_{X} \neq F_{Y} \textrm{( populations are different)} \nonumber
+H_{0}&:& F_{X} = F_{Y} \quad \textrm{( populations are the same)} \nonumber \\
+H_{A}&:& F_{X} \neq F_{Y} \quad \textrm{( populations are different)} (\#eq:nonpar-twosample-hypothesis)
 \end{eqnarray}
 
 **Parametric Tests**
 
-* A common parametric test for () is the t-test. The t-test assumes that
+* Perhaps the most common parametric test for \@ref(eq:nonpar-twosample-hypothesis) is the **t-test**. The t-test assumes that
 \begin{equation}
 F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2}) \quad \textrm{ and } \quad F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})
 \end{equation}
-* Under this parametric assumption, the hypothesis test () reduces to 
+* Under this parametric assumption, the hypothesis test \@ref(eq:nonpar-twosample-hypothesis) reduces to 
 \begin{equation}
 H_{0}: \mu_{x} = \mu_{y}  \quad \textrm{ vs. } \quad H_{A}: \mu_{x} \neq \mu_{y}
 \end{equation}
@@ -100,7 +103,7 @@ s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \su
 
 * The t-test is based on the **null distribution** of $T$ - the distribution of $T$ under the null hypothesis.
 
-*Under the assumption of normality, the null distribution of $T$ is a t distribution
+* Under the assumption of normality, the null distribution of $T$ is a t distribution
 with $n + m - 2$ degrees of freedom.
 
 * Put graph here
@@ -108,13 +111,16 @@ with $n + m - 2$ degrees of freedom.
 * Notice that this null distribution depends on the parametric assumption that both $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
 and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. (Mention CLT argument here)
 
-* Moreover, we used the parametric assumption in the formulation of the hypothesis test itself because we 
+* In addition to using the assumption that $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
+and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$, we used this parametric assumption in the formulation of the hypothesis test itself because we 
 assumed that any difference between $F_{X}$ and $F_{Y}$ would be fully described by difference in $\mu_{x}$ and $\mu_{y}$.
 
 ---
 
+**Nonparametric Tests**
+
 * Two-sample nonparametric tests are meant to be "distribution-free". This means
-that the null distribution of the test statistic does not depend on any parametric
+the null distribution of the test statistic does not depend on any parametric
 assumptions about the two populations $F_{X}$ and $F_{Y}$. 
 
 * Also, the hypotheses tests themselves do not rely on any parametric assumptions.

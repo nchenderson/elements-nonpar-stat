@@ -243,7 +243,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>What is Parametric Statistics?</strong></p>
 <ul>
 <li><p>Parametric models refer to probability distributions that can
-be fully described by a fixed number of parameters that do not grow
+be fully described by a fixed number of parameters that do not change
 with the sample size.</p></li>
 <li>Typical examples include
 <ul>
@@ -299,28 +299,29 @@ statistics generally refers to statistical methods where there is not a clear pa
 <p>Suppose we have data from two groups. For example, outcomes from
 two different treatments.</p>
 <ul>
-<li><p><strong>Group 1 outcomes</strong>: <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> an i.i.d (independent and identically distributed) sample from distribution function <span class="math inline">\(F_{X}\)</span>. That is,
+<li><p><strong>Group 1 outcomes</strong>: <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> an i.i.d (independent and identically distributed) sample from distribution function <span class="math inline">\(F_{X}\)</span>.
+This means that
 <span class="math display">\[\begin{equation}
-F_{X}(t) = P( X_{i} \leq t) \nonumber
+F_{X}(t) = P( X_{i} \leq t) \quad \textrm{ for any } 1 \leq i \leq n  \nonumber
 \end{equation}\]</span></p></li>
-<li><p><strong>Group 2 outcomes</strong>: <span class="math inline">\(Y_{1}, \ldots, Y_{m}\)</span> an i.i.d. sample from distribution function <span class="math inline">\(F_{Y}\)</span>.</p></li>
-</ul>
-<hr />
-<ul>
-<li>To test the impact of a new treatment, we usually want to test whether or not <span class="math inline">\(F_{X}\)</span> differs from <span class="math inline">\(F_{Y}\)</span> in some way.
+<li><p><strong>Group 2 outcomes</strong>: <span class="math inline">\(Y_{1}, \ldots, Y_{m}\)</span> an i.i.d. sample from distribution function <span class="math inline">\(F_{Y}\)</span>.
+<span class="math display">\[\begin{equation}
+F_{Y}(t) = P( Y_{i} \leq t) \quad \textrm{ for any } 1 \leq i \leq n  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>To test the impact of a new treatment, we usually want to test whether or not <span class="math inline">\(F_{X}\)</span> differs from <span class="math inline">\(F_{Y}\)</span> in some way.
 This can be stated in hypothesis testing language as
-<span class="math display">\[\begin{eqnarray}
-H_{0}&amp;:&amp; F_{X} = F_{Y} \textrm{( populations are the same)} \nonumber \\
-H_{A}&amp;:&amp; F_{X} \neq F_{Y} \textrm{( populations are different)} \nonumber
-\end{eqnarray}\]</span></li>
+<span class="math display" id="eq:nonpar-twosample-hypothesis">\[\begin{eqnarray}
+H_{0}&amp;:&amp; F_{X} = F_{Y} \quad \textrm{( populations are the same)} \nonumber \\
+H_{A}&amp;:&amp; F_{X} \neq F_{Y} \quad \textrm{( populations are different)} \tag{1.1}
+\end{eqnarray}\]</span></p></li>
 </ul>
 <p><strong>Parametric Tests</strong></p>
 <ul>
-<li>A common parametric test for () is the t-test. The t-test assumes that
+<li>Perhaps the most common parametric test for <a href="intro.html#eq:nonpar-twosample-hypothesis">(1.1)</a> is the <strong>t-test</strong>. The t-test assumes that
 <span class="math display">\[\begin{equation}
 F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2}) \quad \textrm{ and } \quad F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})
 \end{equation}\]</span></li>
-<li><p>Under this parametric assumption, the hypothesis test () reduces to
+<li><p>Under this parametric assumption, the hypothesis test <a href="intro.html#eq:nonpar-twosample-hypothesis">(1.1)</a> reduces to
 <span class="math display">\[\begin{equation}
 H_{0}: \mu_{x} = \mu_{y}  \quad \textrm{ vs. } \quad H_{A}: \mu_{x} \neq \mu_{y}
 \end{equation}\]</span></p></li>
@@ -336,21 +337,21 @@ s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \su
 </ul>
 <hr />
 <ul>
-<li>The t-test is based on the <strong>null distribution</strong> of <span class="math inline">\(T\)</span> - the distribution of <span class="math inline">\(T\)</span> under the null hypothesis.</li>
-</ul>
-<p>*Under the assumption of normality, the null distribution of <span class="math inline">\(T\)</span> is a t distribution
-with <span class="math inline">\(n + m - 2\)</span> degrees of freedom.</p>
-<ul>
+<li><p>The t-test is based on the <strong>null distribution</strong> of <span class="math inline">\(T\)</span> - the distribution of <span class="math inline">\(T\)</span> under the null hypothesis.</p></li>
+<li><p>Under the assumption of normality, the null distribution of <span class="math inline">\(T\)</span> is a t distribution
+with <span class="math inline">\(n + m - 2\)</span> degrees of freedom.</p></li>
 <li><p>Put graph here</p></li>
 <li><p>Notice that this null distribution depends on the parametric assumption that both <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span>
 and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>. (Mention CLT argument here)</p></li>
-<li><p>Moreover, we used the parametric assumption in the formulation of the hypothesis test itself because we
+<li><p>In addition to using the assumption that <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span>
+and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>, we used this parametric assumption in the formulation of the hypothesis test itself because we
 assumed that any difference between <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span> would be fully described by difference in <span class="math inline">\(\mu_{x}\)</span> and <span class="math inline">\(\mu_{y}\)</span>.</p></li>
 </ul>
 <hr />
+<p><strong>Nonparametric Tests</strong></p>
 <ul>
 <li><p>Two-sample nonparametric tests are meant to be “distribution-free”. This means
-that the null distribution of the test statistic does not depend on any parametric
+the null distribution of the test statistic does not depend on any parametric
 assumptions about the two populations <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span>.</p></li>
 <li><p>Also, the hypotheses tests themselves do not rely on any parametric assumptions.</p></li>
 <li><p>For example,</p></li>
@@ -422,7 +423,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["bookdown-start.pdf"],
 "toc": {
 "collapse": "section"
 }
