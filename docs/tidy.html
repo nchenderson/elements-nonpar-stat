@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Introduction | Elements of Nonparametric Statistics</title>
+  <title>Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Everything you need (and nothing more) to start a bookdown book." />
   <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Introduction | Elements of Nonparametric Statistics" />
+  <meta property="og:title" content="Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Introduction | Elements of Nonparametric Statistics" />
+  <meta name="twitter:title" content="Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics" />
   
   <meta name="twitter:description" content="Everything you need (and nothing more) to start a bookdown book." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="getting-started.html"/>
+<link rel="prev" href="rank-tests.html"/>
+<link rel="next" href="permutation.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -209,158 +209,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="intro" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
-<hr />
-<hr />
-<div id="sec:whatisnonpar" class="section level2">
-<h2><span class="header-section-number">1.1</span> What is Nonparametric Statistics?</h2>
-<p><strong>What is Parametric Statistics?</strong></p>
-<ul>
-<li><p>Parametric models refer to probability distributions that can
-be fully described by a fixed number of parameters that do not grow
-with the sample size.</p></li>
-<li>Typical examples include
-<ul>
-<li>Gaussian</li>
-<li>Poisson</li>
-<li>Exponential</li>
-<li>Beta</li>
-</ul></li>
-<li><p>Could also refer to a regression setting where the mean function
-is described by a fixed number of parameters.</p></li>
-</ul>
-<p><strong>What is Nonparametric Statistics?</strong></p>
-<ul>
-<li><p>Difficult to give a concise, all-encompassing definition, but nonparametric
-statistics generally refers to statistical methods where there is not a clear parametric component.</p></li>
-<li><p>The uses of nonparametric methods in several common statistical contexts are described in Sections <a href="intro.html#sec:example-nonpar-tests">1.3</a> - <a href="intro.html#sec:example-nonpar-regress2">1.7</a>.</p></li>
-</ul>
-</div>
-<div id="sec:course-outline" class="section level2">
-<h2><span class="header-section-number">1.2</span> Outline of Course</h2>
-<p>This course is roughly divided into the following 5 categories.</p>
-<ol style="list-style-type: decimal">
-<li><strong>Nonparametric Testing</strong>
-<ul>
-<li>Rank-based Tests</li>
-<li>Permutation Tests</li>
-</ul></li>
-<li><strong>Estimation of Basic Nonparametric Quantities</strong>
-<ul>
-<li>The Empirical Distribution Function</li>
-<li>Density Estimation</li>
-</ul></li>
-<li><strong>Nonparametric Confidence Intervals</strong>
-<ul>
-<li>Bootstrap</li>
-<li>Jacknife</li>
-</ul></li>
-<li><strong>Nonparametric Regression Part I (Smoothing Methods)</strong>
-<ul>
-<li>Kernel Methods</li>
-<li>Splines</li>
-<li>Local Regression</li>
-</ul></li>
-<li><strong>Nonparametric Regression Part II (Machine Learning Methods)</strong>
-<ul>
-<li>Decision Trees/CART</li>
-<li>Ensemble Methods</li>
-</ul></li>
-</ol>
-</div>
-<div id="sec:example-nonpar-tests" class="section level2">
-<h2><span class="header-section-number">1.3</span> Example 1: Nonparametric vs. Parametric Two-Sample Testing</h2>
-<p>Suppose we have data from two groups. For example, outcomes from
-two different treatments.</p>
-<ul>
-<li><p><strong>Group 1 outcomes</strong>: <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> an i.i.d (independent and identically distributed) sample from distribution function <span class="math inline">\(F_{X}\)</span>. That is,
-<span class="math display">\[\begin{equation}
-F_{X}(t) = P( X_{i} \leq t) \nonumber
-\end{equation}\]</span></p></li>
-<li><p><strong>Group 2 outcomes</strong>: <span class="math inline">\(Y_{1}, \ldots, Y_{m}\)</span> an i.i.d. sample from distribution function <span class="math inline">\(F_{Y}\)</span>.</p></li>
-</ul>
-<hr />
-<ul>
-<li>To test the impact of a new treatment, we usually want to test whether or not <span class="math inline">\(F_{X}\)</span> differs from <span class="math inline">\(F_{Y}\)</span> in some way.
-This can be stated in hypothesis testing language as
-<span class="math display">\[\begin{eqnarray}
-H_{0}&amp;:&amp; F_{X} = F_{Y} \textrm{( populations are the same)} \nonumber \\
-H_{A}&amp;:&amp; F_{X} \neq F_{Y} \textrm{( populations are different)} \nonumber
-\end{eqnarray}\]</span></li>
-</ul>
-<p><strong>Parametric Tests</strong></p>
-<ul>
-<li>A common parametric test for () is the t-test. The t-test assumes that
-<span class="math display">\[\begin{equation}
-F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2}) \quad \textrm{ and } \quad F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})
-\end{equation}\]</span></li>
-<li><p>Under this parametric assumption, the hypothesis test () reduces to
-<span class="math display">\[\begin{equation}
-H_{0}: \mu_{x} = \mu_{y}  \quad \textrm{ vs. } \quad H_{A}: \mu_{x} \neq \mu_{y}
-\end{equation}\]</span></p></li>
-<li><p>The standard t-statistic (with a pooled estimate of <span class="math inline">\(\sigma^{2}\)</span>) is the following
-<span class="math display">\[\begin{equation}
-T = \frac{\bar{X} - \bar{Y}}{ s_{p}\sqrt{\frac{1}{n} + \frac{1}{m}}  },
-\end{equation}\]</span>
-where <span class="math inline">\(\bar{X} = \frac{1}{n}\sum_{i=1}^{n} X_{i}\)</span> and <span class="math inline">\(\bar{Y} = \frac{1}{m}\sum_{i=1}^{m} Y_{i}\)</span> are
-the group-specific sample means and <span class="math inline">\(s_{p}^{2}\)</span> is the pooled estimate of <span class="math inline">\(\sigma^{2}\)</span>
-<span class="math display">\[\begin{equation}
-s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \sum_{i=1}^{m} (Y_{i} - \bar{Y})^{2}   \Big\}
-\end{equation}\]</span></p></li>
-</ul>
-<hr />
-<ul>
-<li>The t-test is based on the <strong>null distribution</strong> of <span class="math inline">\(T\)</span> - the distribution of <span class="math inline">\(T\)</span> under the null hypothesis.</li>
-</ul>
-<p>*Under the assumption of normality, the null distribution of <span class="math inline">\(T\)</span> is a t distribution
-with <span class="math inline">\(n + m - 2\)</span> degrees of freedom.</p>
-<ul>
-<li><p>Put graph here</p></li>
-<li><p>Notice that this null distribution depends on the parametric assumption that both <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span>
-and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>. (Mention CLT argument here)</p></li>
-<li><p>Moreover, we used the parametric assumption in the formulation of the hypothesis test itself because we
-assumed that any difference between <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span> would be fully described by difference in <span class="math inline">\(\mu_{x}\)</span> and <span class="math inline">\(\mu_{y}\)</span>.</p></li>
-</ul>
-<hr />
-<ul>
-<li><p>Two-sample nonparametric tests are meant to be “distribution-free”. This means
-that the null distribution of the test statistic does not depend on any parametric
-assumptions about the two populations <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span>.</p></li>
-<li><p>Also, the hypotheses tests themselves do not rely on any parametric assumptions.</p></li>
-<li><p>For example,</p></li>
-</ul>
-</div>
-<div id="sec:example-nonpar-estimation" class="section level2">
-<h2><span class="header-section-number">1.4</span> Example 2: Nonparametric Estimation</h2>
-<ul>
-<li><p>Suppose we have <span class="math inline">\(n\)</span> observations <span class="math inline">\((X_{1}, \ldots, X_{n})\)</span> which are assumed to be i.i.d. (independent and identically distributed).
-The distribution function of <span class="math inline">\(X_{i}\)</span> is <span class="math inline">\(F_{X}\)</span>.</p></li>
-<li><p>Suppose we are interested in estimating <span class="math inline">\(F_{X}\)</span>.</p></li>
-<li><p>In a <strong>parametric</strong> approach to estimating <span class="math inline">\(F_{X}\)</span>, we would assume the distribution of <span class="math inline">\(X_{i}\)</span> belongs to some parametric family of distributions.
-For example, <span class="math inline">\(X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )\)</span>, <span class="math inline">\(X_{i} \sim \textrm{Exponential}(\lambda)\)</span>, or <span class="math inline">\(X_{i} \sim \textrm{Beta}( \alpha, \beta)\)</span>.</p></li>
-<li><p>If we assume that <span class="math inline">\(X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )\)</span>, we only need to estimate 2 parameters to
-fully describe the distribution of <span class="math inline">\(X_{i}\)</span>, and the number of parameters does not depend on the sample size.</p></li>
-</ul>
-</div>
-<div id="sec:example-nonpar-confint" class="section level2">
-<h2><span class="header-section-number">1.5</span> Example 3: Confidence Intervals</h2>
-</div>
-<div id="sec:example-nonpar-regress1" class="section level2">
-<h2><span class="header-section-number">1.6</span> Example 4: Nonparametric Regression with a Single Covariate</h2>
-</div>
-<div id="sec:example-nonpar-regress2" class="section level2">
-<h2><span class="header-section-number">1.7</span> Example 5: Nonparametric Regression</h2>
+<div id="tidy" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> Rank Tests for Multiple Groups</h1>
+<p>In Subsection</p>
 
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="getting-started.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="rank-tests.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="permutation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -1,6 +1,6 @@
 --- 
-title: "A Minimal Bookdown Book"
-author: "Sean Kross"
+title: "Elements of Nonparametric Statistics"
+author: "Nicholas Henderson"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
@@ -8,7 +8,7 @@ bibliography: [book.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: nchenderson/elements-nonpar-stat
-url: 'http\://seankross.com/bookdown-start/'
+url: 'https://nchenderson.github.io/elements-nonpar-stat/'
 description: "Everything you need (and nothing more) to start a bookdown book."
 ---
 
