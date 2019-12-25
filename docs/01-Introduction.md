@@ -1,4 +1,143 @@
-# Introduction
+# Introduction {#intro}
 
-This is the first real chapter.
+---
+
+
+
+
+---
+
+## What is Nonparametric Statistics? {#sec:whatisnonpar}
+
+**What is Parametric Statistics?**
+
+* Parametric models refer to probability distributions that can 
+be fully described by a fixed number of parameters that do not grow 
+with the sample size.
+
+* Typical examples include
+   + Gaussian 
+   + Poisson
+   + Exponential
+   + Beta
+
+* Could also refer to a regression setting where the mean function
+is described by a fixed number of parameters.
+
+**What is Nonparametric Statistics?**
+
+* Difficult to give a concise, all-encompassing definition, but nonparametric
+statistics generally refers to statistical methods where there is not a clear parametric component.
+
+
+* The uses of nonparametric methods in several common statistical contexts are described in Sections \@ref(sec:example-nonpar-tests) - \@ref(sec:example-nonpar-regress2).
+
+## Outline of Course {#sec:course-outline}
+
+This course is roughly divided into the following 5 categories.
+
+1. **Nonparametric Testing**
+    + Rank-based Tests
+    + Permutation Tests
+1. **Estimation of Basic Nonparametric Quantities** 
+    + The Empirical Distribution Function
+    + Density Estimation
+1. **Nonparametric Confidence Intervals**
+    + Bootstrap 
+    + Jacknife
+1. **Nonparametric Regression Part I (Smoothing Methods)**
+    + Kernel Methods
+    + Splines
+    + Local Regression
+1. **Nonparametric Regression Part II (Machine Learning Methods)**
+    + Decision Trees/CART
+    + Ensemble Methods
+   
+
+## Example 1: Nonparametric vs. Parametric Two-Sample Testing {#sec:example-nonpar-tests}
+
+Suppose we have data from two groups. For example, outcomes from 
+two different treatments.
+
+* **Group 1 outcomes**: $X_{1}, \ldots, X_{n}$ an i.i.d (independent and identically distributed) sample from distribution function $F_{X}$. That is,
+\begin{equation}
+F_{X}(t) = P( X_{i} \leq t) \nonumber
+\end{equation}
+
+* **Group 2 outcomes**: $Y_{1}, \ldots, Y_{m}$ an i.i.d. sample from distribution function $F_{Y}$.
+
+---
+
+* To test the impact of a new treatment, we usually want to test whether or not $F_{X}$ differs from $F_{Y}$ in some way.
+This can be stated in hypothesis testing language as
+\begin{eqnarray}
+H_{0}&:& F_{X} = F_{Y} \textrm{( populations are the same)} \nonumber \\
+H_{A}&:& F_{X} \neq F_{Y} \textrm{( populations are different)} \nonumber
+\end{eqnarray}
+
+**Parametric Tests**
+
+* A common parametric test for () is the t-test. The t-test assumes that
+\begin{equation}
+F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2}) \quad \textrm{ and } \quad F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})
+\end{equation}
+* Under this parametric assumption, the hypothesis test () reduces to 
+\begin{equation}
+H_{0}: \mu_{x} = \mu_{y}  \quad \textrm{ vs. } \quad H_{A}: \mu_{x} \neq \mu_{y}
+\end{equation}
+
+* The standard t-statistic (with a pooled estimate of $\sigma^{2}$) is the following
+\begin{equation}
+T = \frac{\bar{X} - \bar{Y}}{ s_{p}\sqrt{\frac{1}{n} + \frac{1}{m}}  },
+\end{equation}
+where $\bar{X} = \frac{1}{n}\sum_{i=1}^{n} X_{i}$ and $\bar{Y} = \frac{1}{m}\sum_{i=1}^{m} Y_{i}$ are
+the group-specific sample means and $s_{p}^{2}$ is the pooled estimate of $\sigma^{2}$
+\begin{equation}
+s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \sum_{i=1}^{m} (Y_{i} - \bar{Y})^{2}   \Big\}
+\end{equation}
+
+---
+
+* The t-test is based on the **null distribution** of $T$ - the distribution of $T$ under the null hypothesis.
+
+*Under the assumption of normality, the null distribution of $T$ is a t distribution
+with $n + m - 2$ degrees of freedom.
+
+* Put graph here
+
+* Notice that this null distribution depends on the parametric assumption that both $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
+and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. (Mention CLT argument here)
+
+* Moreover, we used the parametric assumption in the formulation of the hypothesis test itself because we 
+assumed that any difference between $F_{X}$ and $F_{Y}$ would be fully described by difference in $\mu_{x}$ and $\mu_{y}$.
+
+---
+
+* Two-sample nonparametric tests are meant to be "distribution-free". This means
+that the null distribution of the test statistic does not depend on any parametric
+assumptions about the two populations $F_{X}$ and $F_{Y}$. 
+
+* Also, the hypotheses tests themselves do not rely on any parametric assumptions.
+
+* For example, 
+
+## Example 2: Nonparametric Estimation {#sec:example-nonpar-estimation}
+
+* Suppose we have $n$ observations $(X_{1}, \ldots, X_{n})$ which are assumed to be i.i.d. (independent and identically distributed).
+The distribution function of $X_{i}$ is $F_{X}$.
+
+* Suppose we are interested in estimating $F_{X}$. 
+
+* In a **parametric** approach to estimating $F_{X}$, we would assume the distribution of $X_{i}$ belongs to some parametric family of distributions.
+For example, $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )$, $X_{i} \sim \textrm{Exponential}(\lambda)$, or $X_{i} \sim \textrm{Beta}( \alpha, \beta)$.
+
+* If we assume that $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )$, we only need to estimate 2 parameters to
+fully describe the distribution of $X_{i}$, and the number of parameters does not depend on the sample size. 
+
+
+## Example 3: Confidence Intervals {#sec:example-nonpar-confint}
+
+## Example 4: Nonparametric Regression with a Single Covariate {#sec:example-nonpar-regress1}
+
+## Example 5: Nonparametric Regression {#sec:example-nonpar-regress2}
 
