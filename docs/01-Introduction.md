@@ -106,9 +106,9 @@ s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \su
 * Under the assumption of normality, the null distribution of $T$ is a t distribution
 with $n + m - 2$ degrees of freedom.
 
-* Put graph here
+<img src="01-Introduction_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
-* Notice that this null distribution depends on the parametric assumption that both $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
+* Notice that the null distribution of $T$ depends on the parametric assumption that both $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
 and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. (Mention CLT argument here)
 
 * In addition to using the assumption that $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
@@ -135,7 +135,10 @@ The distribution function of $X_{i}$ is $F_{X}$.
 * Suppose we are interested in estimating $F_{X}$. 
 
 * In a **parametric** approach to estimating $F_{X}$, we would assume the distribution of $X_{i}$ belongs to some parametric family of distributions.
-For example, $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )$, $X_{i} \sim \textrm{Exponential}(\lambda)$, or $X_{i} \sim \textrm{Beta}( \alpha, \beta)$.
+For example,
+   + $X_{i} \sim \textrm{Normal}(\mu, \sigma^{2})$ 
+   + $X_{i} \sim \textrm{Exponential}(\lambda)$
+   + $X_{i} \sim \textrm{Beta}(\alpha, \beta)$
 
 * If we assume that $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )$, we only need to estimate 2 parameters to
 fully describe the distribution of $X_{i}$, and the number of parameters does not depend on the sample size. 

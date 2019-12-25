@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Rank and Sign Statistics | Elements of Nonparametric Statistics</title>
+  <title>Chapter 8 Density Estimation | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Everything you need (and nothing more) to start a bookdown book." />
   <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Rank and Sign Statistics | Elements of Nonparametric Statistics" />
+  <meta property="og:title" content="Chapter 8 Density Estimation | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Rank and Sign Statistics | Elements of Nonparametric Statistics" />
+  <meta name="twitter:title" content="Chapter 8 Density Estimation | Elements of Nonparametric Statistics" />
   
   <meta name="twitter:description" content="Everything you need (and nothing more) to start a bookdown book." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="getting-started.html"/>
-<link rel="next" href="tidy.html"/>
+<link rel="prev" href="regression.html"/>
+<link rel="next" href="sampling.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -234,169 +234,319 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="rank-tests" class="section level1">
-<h1><span class="header-section-number">Chapter 3</span> Rank and Sign Statistics</h1>
-<div id="introduction" class="section level2">
-<h2><span class="header-section-number">3.1</span> Introduction</h2>
-<p>Start with t-test example, difference in means is sufficient for superiority</p>
-<p>Give example of type of tests we are interested in.</p>
-<p>Why ranks and why nonparametric testing?</p>
-<p>(reduce influence of outliers)</p>
-</div>
-<div id="ranks" class="section level2">
-<h2><span class="header-section-number">3.2</span> Ranks</h2>
-<div id="definition" class="section level3">
-<h3><span class="header-section-number">3.2.1</span> Definition</h3>
+<div id="density-estimation" class="section level1">
+<h1><span class="header-section-number">Chapter 8</span> Density Estimation</h1>
+<div id="introduction-1" class="section level2">
+<h2><span class="header-section-number">8.1</span> Introduction</h2>
 <ul>
-<li>Suppose we have <span class="math inline">\(n\)</span> observations <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>. The <strong>rank</strong> of the <span class="math inline">\(i^{th}\)</span> observation <span class="math inline">\(R_{i}\)</span> is defined as
-<span class="math display" id="eq:rankdef">\[\begin{equation}
-R_{i} = R(X_{i}) = \sum_{j=1}^{n} I( X_{j} \leq X_{i}) 
-\tag{3.1}
+<li>In this section, we focus on methods for estimating a <strong>probability density function</strong> (pdf) <span class="math inline">\(f(x)\)</span>.</li>
+<li><p>For a continuous random variable <span class="math inline">\(X\)</span>, areas under the probability density function are probabilities
+<span class="math display">\[\begin{equation}
+P(a &lt; X &lt; b) = \int_{a}^{b} f(x) dx \nonumber
 \end{equation}\]</span>
-where
-<span class="math display">\[\begin{equation}
-I(X_{j} \leq X_{i}) 
-= \begin{cases}
-1 &amp; \text{ if } X_{j} \leq X_{i} \\
-0 &amp; \text{ if } X_{j} &gt; X_{i}
-\end{cases}
-\end{equation}\]</span></li>
-<li>The largest observation has a rank of <span class="math inline">\(n\)</span>.</li>
-<li>The smallest observation has a rank of <span class="math inline">\(1\)</span> (if there are no ties).</li>
-</ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">1</span>, <span class="dv">12</span>, <span class="dv">6</span>)  <span class="co">## 5 observations</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">rank</span>(x)</a></code></pre></div>
-<pre><code>## [1] 2 4 1 5 3</code></pre>
-<ul>
-<li>In the definition of ranks shown in <a href="rank-tests.html#eq:rankdef">(3.1)</a>, tied observations
-receive their maximum possible rank.</li>
-<li>For example, suppose that <span class="math inline">\((X_{1}, X_{2}, X_{3}, X_{4}) = (0, 1, 1, 2)\)</span>.
-In this case, one could argue whether both observations 2 and 3 should be ranked
-<span class="math inline">\(2^{nd}\)</span> or <span class="math inline">\(3^{rd}\)</span> while observations <span class="math inline">\(1\)</span> and <span class="math inline">\(4\)</span> should unambiguously receive
-ranks of <span class="math inline">\(1\)</span> and <span class="math inline">\(4\)</span> respectively.</li>
-<li><p>Under definition @rank(eq:rankdef), both observations <span class="math inline">\(2\)</span> and <span class="math inline">\(3\)</span> receive a rank of <span class="math inline">\(3\)</span>.</p></li>
-<li><p>In <strong>R</strong>, such handling of ties is done using the <strong>ties.method = “max”</strong> argument</p></li>
-</ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)  </a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">rank</span>(x, <span class="dt">ties.method=</span><span class="st">&quot;max&quot;</span>)</a></code></pre></div>
-<pre><code>## [1] 1 3 3 4</code></pre>
-<ul>
-<li>The default in <strong>R</strong> is to replace the ranks of tied observations with their “average” rank</li>
-</ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)  </a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">rank</span>(x)</a></code></pre></div>
-<pre><code>## [1] 1.0 2.5 2.5 4.0</code></pre>
-</div>
-<div id="properties-of-ranks" class="section level3">
-<h3><span class="header-section-number">3.2.2</span> Properties of Ranks</h3>
-<p>Suppose <span class="math inline">\((X_{1}, \ldots, X_{n})\)</span> is random sample from a continuous distribution <span class="math inline">\(F\)</span> (so that the probability
-of ties is zero). Then, the following properties hold for the associated ranks <span class="math inline">\(R_{1}, \ldots, R_{n}\)</span>.</p>
-<ul>
-<li>Each <span class="math inline">\(R_{i}\)</span> follows a discrete uniform distribution
-<span class="math display">\[\begin{equation}
-P(R_{i} = j) = 1/n, \quad \text{for any } j = 1, \ldots,n.
-\end{equation}\]</span></li>
-<li>The expectation of <span class="math inline">\(R_{i}\)</span> is
-<span class="math display">\[\begin{equation}
-E( R_{i} ) = \sum_{j=1}^{n} j P(R_{i} = j) = \frac{1}{n}\sum_{j=1}^{n} j = \frac{(n+1)}{2}
-\end{equation}\]</span></li>
-<li>The variance of <span class="math inline">\(R_{i}\)</span> is
-<span class="math display">\[\begin{equation}
-\text{Var}( R_{i} ) = E( R_{i}^{2} ) - E(R_{i})^{2}
-= \frac{1}{n}\sum_{j=1}^{n} j^{2}  - \Big( \frac{n+1}{2} \Big)^{2}
-= \frac{ n^{2} - 1}{12}
-\end{equation}\]</span></li>
-<li>The random variables <span class="math inline">\(R_{1}, \ldots, R_{n}\)</span> are <strong>not</strong> independent (why?). However,
-the vector <span class="math inline">\(\mathbf{R}_{n} = (R_{1}, \ldots, R_{n})\)</span> is uniformly distributed
-on the set of <span class="math inline">\(n!\)</span> permutations of <span class="math inline">\((1,2,\ldots,n)\)</span>.</li>
+and <span class="math inline">\(f(x)\)</span> is related to the distribution function via <span class="math inline">\(f(x) = F&#39;(x)\)</span>.</p></li>
+<li>With parametric approaches to density estimation, you only need to estimate a couple of parameters as
+these parameters completely determine the form of <span class="math inline">\(f(x)\)</span>.</li>
+<li>For example, with a Gaussian distribution you only need to estimate <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^{2}\)</span> to
+draw the appropriate bell curve.</li>
+<li><p>In a nonparametric approach, you assume that your observations <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>
+are an independent sample from a distribution having pdf <span class="math inline">\(f(x)\)</span>, but otherwise you
+make few assumptions about the particular form of <span class="math inline">\(f(x)\)</span>.</p></li>
 </ul>
 </div>
-</div>
-<div id="two-sample-tests" class="section level2">
-<h2><span class="header-section-number">3.3</span> Two-Sample Tests</h2>
-<p>Wilcoxon statistic and Wilcoxon signed-rank statistic (what is the difference between these two?)</p>
-<div id="the-wilcoxon-rank-sum-test" class="section level3">
-<h3><span class="header-section-number">3.3.1</span> The Wilcoxon Rank Sum Test</h3>
-<div id="purpose" class="section level4">
-<h4><span class="header-section-number">3.3.1.1</span> Purpose</h4>
-<ul>
-<li><p>The Wilcoxon Rank Sum (WRS) test (sometimes referred to as the Wilcoxon-Mann-Whitney test) is a two-sample test.</p></li>
-<li><p>The WRS test is used to test whether or not observations from one group tend to be larger (or smaller) than observations
-from the other group.</p></li>
-<li><p>Suppose we have observations from two groups: <span class="math inline">\(X_{1}, \ldots, X_{n} \sim F_{X}\)</span> and <span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim F_{Y}\)</span>.
-The WRS test will test the hypothesis
+<div id="histograms" class="section level2">
+<h2><span class="header-section-number">8.2</span> Histograms</h2>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<div id="definition-1" class="section level3">
+<h3><span class="header-section-number">8.2.1</span> Definition</h3>
+<p>Histograms are one of the oldest ways to estimate a pdf.</p>
+<p>To construct a histogram, you first need to define a series
+of “bins”: <span class="math inline">\(B_{1}, \ldots, B_{D}\)</span>. Each bin is a left-closed interval which is often
+assumed to have the form <span class="math inline">\(B_{k} = [x_{0} + (k-1)h, x_{0} + kh)\)</span>:
 <span class="math display">\[\begin{eqnarray}
-H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
-H_{A}: &amp; &amp; \textrm{Observations from } F_{X} \textrm{ tend to be larger than observations from } F_{Y} \nonumber 
-\end{eqnarray}\]</span></p></li>
+B_{1} &amp;=&amp; [x_{0}, x_{0} +h) \nonumber \\
+B_{2} &amp;=&amp; [x_{0} + h, x_{0} + 2h) \nonumber \\
+&amp;\vdots&amp; \nonumber \\
+B_{D} &amp;=&amp; [x_{0} + (D-1)h, x_{0} + Dh) \nonumber 
+\end{eqnarray}\]</span></p>
+<ul>
+<li><span class="math inline">\(x_{0}\)</span> - the origin</li>
+<li><span class="math inline">\(h_{n}\)</span> - bin width</li>
+</ul>
+<p>For each bin, you first need to count the number of observations which fall into that bin
+<span class="math display">\[\begin{eqnarray}
+n_{k} &amp;=&amp; \# \text{ of observations falling into the $k^{th}$ bin }  \nonumber \\
+&amp;=&amp; \sum_{i=1}^{n} I( x_{0} + (k-1)h_{n} \leq X_{i} &lt; x_{0} + kh_{n}  )
+\end{eqnarray}\]</span>
+The histogram estimate of the density at a point <span class="math inline">\(x\)</span> in the <span class="math inline">\(k^{th}\)</span> bin is then defined as
+<span class="math display">\[\begin{equation}
+\hat{f}(x) = \frac{n_{k}}{nh_{n}}
+\end{equation}\]</span>
+<strong>Note:</strong> What is often shown in histogram plots are the actual bin counts <span class="math inline">\(n_{k}\)</span> rather than
+the values of <span class="math inline">\(\hat{f}(x)\)</span>.</p>
+<hr />
+<ul>
+<li>To see the motivation for the histogram estimate, notice that if we choose a relatively small value
+<span class="math inline">\(h &gt; 0\)</span>
+<span class="math display">\[\begin{equation}
+P(x &lt; X_{i} &lt; x+h) = \int_{x}^{x + h} f(x) dx \approx hf(x)
+\end{equation}\]</span></li>
+<li>The expected value of <span class="math inline">\(\hat{f}(x)\)</span> is
+<span class="math display">\[\begin{equation}
+E\{ \hat{f}(x) \} = = \approx f(x)
+\end{equation}\]</span></li>
+</ul>
+</div>
+<div id="histograms-in-r" class="section level3">
+<h3><span class="header-section-number">8.2.2</span> Histograms in R</h3>
+<p>In <strong>R</strong>, use the <code>hist</code> function</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">hist</span>(x, breaks, probability, plot, ...)</a></code></pre></div>
+<ul>
+<li>The <strong>breaks</strong> argument
+<ul>
+<li>Default is “Sturges”. This is a method for finding the binwidth.</li>
+<li>Can be a name giving the name of an algorithm for computing binwidth
+(e.g., “Scott” and “FD”).</li>
+<li>Can also be a single number. This gives the number of bins used.</li>
+<li>Could also be a ..</li>
+</ul></li>
+<li>The <strong>probability</strong> argument</li>
+<li>The <strong>plot</strong> argument</li>
+</ul>
+<p><strong>Note:</strong> The default for R, is to use right-closed intervals <span class="math inline">\((a, b]\)</span>.
+This can be changed using the <strong>right</strong> argument of the <strong>hist</strong> function.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co">## Use a real dataset here</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">bodywt.hist &lt;-<span class="st"> </span><span class="kw">hist</span>(nhgh<span class="op">$</span>wt, <span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Body Weight from NHANES&quot;</span>)</a></code></pre></div>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co">## Use a real dataset here</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">bodywt.hist2 &lt;-<span class="st"> </span><span class="kw">hist</span>(nhgh<span class="op">$</span>wt, <span class="dt">main=</span><span class="st">&quot;Hist of BW on Probability Scale&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Body Weight from NHANES&quot;</span>, <span class="dt">probability=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>In addition to generating a histogram plot, the histogram function
+also returns useful stuff.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">names</span>(bodywt.hist)</a></code></pre></div>
+<pre><code>## [1] &quot;breaks&quot;   &quot;counts&quot;   &quot;density&quot;  &quot;mids&quot;     &quot;xname&quot;    &quot;equidist&quot;</code></pre>
+<ul>
+<li><strong>breaks</strong>
+<ul>
+<li></li>
+</ul></li>
+<li><strong>counts</strong></li>
+<li><strong>mids</strong></li>
+<li><strong>density</strong></li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">bodywt.hist<span class="op">$</span>breaks</a></code></pre></div>
+<pre><code>##  [1]  20  40  60  80 100 120 140 160 180 200 220 240</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">bodywt.hist<span class="op">$</span>counts</a></code></pre></div>
+<pre><code>##  [1]   44 1160 2705 1846  721  212   71   24    7    2    3</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">binwidth &lt;-<span class="st"> </span>bodywt.hist<span class="op">$</span>breaks[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>bodywt.hist<span class="op">$</span>breaks[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">bodywt.hist<span class="op">$</span>density</a></code></pre></div>
+<pre><code>##  [1] 3.237675e-04 8.535688e-03 1.990434e-02 1.358352e-02 5.305372e-03
+##  [6] 1.559971e-03 5.224430e-04 1.766004e-04 5.150846e-05 1.471670e-05
+## [11] 2.207506e-05</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">bodywt.hist<span class="op">$</span>counts<span class="op">/</span>(<span class="kw">length</span>(nhgh<span class="op">$</span>wt)<span class="op">*</span>binwidth)</a></code></pre></div>
+<pre><code>##  [1] 3.237675e-04 8.535688e-03 1.990434e-02 1.358352e-02 5.305372e-03
+##  [6] 1.559971e-03 5.224430e-04 1.766004e-04 5.150846e-05 1.471670e-05
+## [11] 2.207506e-05</code></pre>
+</div>
+<div id="performance-of-the-histogram-estimate" class="section level3">
+<h3><span class="header-section-number">8.2.3</span> Performance of the Histogram Estimate</h3>
+<div id="biasvariance-decomposition" class="section level4">
+<h4><span class="header-section-number">8.2.3.1</span> Bias/Variance Decomposition</h4>
+<ul>
+<li>It is common to evaluate the performance of a density estimator
+through its <strong>mean-squared error</strong> (MSE).</li>
+<li>In general, MSE is a function of bias and variance
+<span class="math display">\[\begin{equation}
+MSE = Bias^2 + Variance
+\end{equation}\]</span></li>
+<li>We will first look at the mean-squared error of <span class="math inline">\(\hat{f}( x )\)</span> at a single point <span class="math inline">\(x\)</span>
+<span class="math display">\[\begin{eqnarray}
+\textrm{MSE}\{ \hat{f}(x) \} 
+&amp;=&amp; E\Big( \{ \hat{f}(x) - f(x) \}^{2}  \Big) \nonumber \\
+&amp;=&amp; \underbrace{\Big( E\{ \hat{f}(x) \} - f(x)  \Big)^{2} }_{\textrm{Bias Squared}} + \underbrace{\textrm{Var}\{ \hat{f}(x) \}}_{Variance} \nonumber
+\end{eqnarray}\]</span></li>
+<li>In general, as the bin-width <span class="math inline">\(h_{n}\)</span> increases, the histogram estimate
+has less variation but becomes more biased.</li>
+</ul>
+</div>
+<div id="bias-and-variance-of-the-histogram-estimate" class="section level4">
+<h4><span class="header-section-number">8.2.3.2</span> Bias and Variance of the Histogram Estimate</h4>
+<ul>
+<li>Recall that, for a histogram estimate, we have <span class="math inline">\(D_{n}\)</span> bins where the <span class="math inline">\(k^{th}\)</span> bin
+takes the form
+<span class="math display">\[\begin{equation}
+B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n}) \nonumber
+\end{equation}\]</span></li>
+<li>For a point <span class="math inline">\(x \in B_{k}\)</span>, that “belongs” to the <span class="math inline">\(k^{th}\)</span> bin, the histogram density estimate is
+<span class="math display">\[\begin{equation}
+\hat{f}(x) = \frac{n_{k}}{nh_{n}}, \quad \textrm{ where } n_{k} = \textrm{ number of observations falling into bin } B_{k}
+\end{equation}\]</span></li>
+<li>To better examine what happens as <span class="math inline">\(n\)</span> changes, we will define the function <span class="math inline">\(A_{h_{n}}(x)\)</span> as the function
+which returns the index of the interval to which <span class="math inline">\(x\)</span> belongs.</li>
+<li>For example, if we had three bins <span class="math inline">\(B_{1} = [0, 1/3)\)</span>, <span class="math inline">\(B_{2} = [1/3, 2/3)\)</span>, <span class="math inline">\(B_{3} = [2/3, 1)\)</span> and <span class="math inline">\(x = 1/2\)</span>,
+then <span class="math inline">\(A_{h_{n}}( x ) = 2\)</span>.</li>
+<li>So, we can also write the histogram density estimate as
+<span class="math display">\[\begin{equation}
+\hat{f}(x) = \frac{n_{A_{h_{n}}(x)}}{nh_{n}}
+\end{equation}\]</span></li>
 </ul>
 <hr />
 <ul>
-<li><p>What is meant by ``tend to be larger&quot;?</p></li>
-<li>Two common ways of stating the alternative hypothesis for the WRS include
-<span class="math display">\[\begin{eqnarray}
-H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
-H_{A}: &amp; &amp; F_{X} \textrm{ is stochastically larger than } F_{Y} \nonumber 
-\end{eqnarray}\]</span>
-or
-<span class="math display">\[\begin{eqnarray}
-H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
-H_{A}: &amp; &amp; F_{X}(t) = F_{Y}(t - \Delta), \Delta &gt; 0.
-\end{eqnarray}\]</span></li>
-<li><p>A distribution function <span class="math inline">\(F_{X}\)</span> is said to be stochastically larger than
-<span class="math inline">\(F_{Y}\)</span> if <span class="math inline">\(F_{X}(t) \geq F_{Y}(t)\)</span> for all <span class="math inline">\(t\)</span> with <span class="math inline">\(F_{X}(t) &gt; F_{Y}(t)\)</span>
-for at least one value of <span class="math inline">\(t\)</span>.</p></li>
-<li><p>Note that the “shift alternative” implies stochastic dominance.</p></li>
-<li><p>Why do we need to specify an alternative?</p></li>
-</ul>
-</div>
-<div id="definition-of-test-statistic" class="section level4">
-<h4><span class="header-section-number">3.3.1.2</span> Definition of Test Statistic</h4>
-<ul>
-<li><p>The WRS test statistic is based on computing the sum of ranks (ranks based on the pooled sample)
-in one group.</p></li>
-<li><p>If observations from this group tend to be larger, their average rank should exceed the
-average rank from the other group.</p></li>
-<li></li>
-<li><p>Give exercise, compute p-values for Wilcoxon test where
-we have two populations. both are Normally distributed
-with mean zero but different variances.</p></li>
-</ul>
-</div>
-</div>
-</div>
-<div id="one-sample-tests" class="section level2">
-<h2><span class="header-section-number">3.4</span> One Sample Tests</h2>
-<div id="the-sign-test" class="section level3">
-<h3><span class="header-section-number">3.4.1</span> The Sign Test</h3>
-<ul>
-<li>Suppose we have observations <span class="math inline">\(W_{1}, \ldots, W_{n}\)</span> which arise from the following model
+<li>Note that <span class="math inline">\(n_{A_{h_{n}}(x)}\)</span> is a binomial random variable with <span class="math inline">\(n\)</span> trials
+and success probability <span class="math inline">\(p_{h_{n}}(x)\)</span> (why?)
 <span class="math display">\[\begin{equation}
-W_{i} = \theta + \varepsilon_{i}, \nonumber 
-\end{equation}\]</span>
-where <span class="math inline">\(\varepsilon_{i}\)</span> are iid random variables each with distribution function <span class="math inline">\(F\)</span>
-that is assumed to have a median of zero.</li>
+n_{A_{h_{n}}(x)} \sim \textrm{Binomial}\{ n, p_{h_{n}}(x) \} \nonumber
+\end{equation}\]</span></li>
+<li>The success probability <span class="math inline">\(p_{h_{n}}(x)\)</span> is defined as
+<span class="math display">\[\begin{equation}
+p_{h_{n}}(x) = P\Big\{ X_{i} \textrm{ falls into bin } A_{h_{n}}(x) \Big\} 
+= \int_{x_{0} + (A_{h_{n}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}}(x)h_{n} } f(t) dt.
+\end{equation}\]</span></li>
+</ul>
+<hr />
+<ul>
+<li>Using what is known about the Binomial distribution (i.e., <span class="math inline">\(E( n_{A_{h_{n}}(x)} ) = np_{h_{n}}(x)\)</span> and
+<span class="math inline">\(\textrm{Var}( n_{A_{h_{n}}(x)} ) = np_{h_{n}}(x)\{1 - p_{h_{n}}(x) \}\)</span>), we
+can express the bias and variance of <span class="math inline">\(\hat{f}(x)\)</span> as
+<span class="math display">\[\begin{eqnarray}
+\textrm{Bias}\{ \hat{f}(x) \} &amp;=&amp; E\{ \hat{f}(x) \} - f(x) \nonumber \\
+&amp;=&amp; \frac{1}{nh_{n}}E( n_{A_{h_{n}}(x)} ) - f(x) \nonumber \\
+&amp;=&amp; \frac{ p_{h_{n}}(x) }{ h_{n} } - f(x) \nonumber
+\end{eqnarray}\]</span>
+and
+<span class="math display">\[\begin{eqnarray}
+\textrm{Var}\{ \hat{f}(x) \}
+= \frac{1}{n^{2}h_{n}^{2}}\textrm{Var}( n_{A_{h_{n}}(x)} )
+= \frac{ p_{h_{n}}(x)\{1 - p_{h_{n}}(x) \} }{ nh_{n}^{2} }
+\end{eqnarray}\]</span></li>
+<li>Using the approximation <span class="math inline">\(f(t) \approx f(x) + f&#39;(x)(t - x)\)</span> for <span class="math inline">\(t\)</span> close to <span class="math inline">\(x\)</span>, we have that
+<span class="math display">\[\begin{equation}
+\frac{ p_{h_{n}}(x) }{ h_{n} } = \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}}(x)h_{n} } f(t) dt
+\approx f(x) + f&#39;(x)\{ x - x_{0} - (A_{h_{n}}(x) - 1)h_{n} \}
+\end{equation}\]</span></li>
+<li>So, the bias of the histogram density estimate <span class="math inline">\(\hat{f}(x)\)</span> is
+<span class="math display">\[\begin{equation}
+\textrm{Bias}\{ \hat{f}(x) \} 
+\approx f&#39;(x)\{ x - (x_{0} + (A_{h_{n}}(x) - 1)h_{n}) \}
+\end{equation}\]</span></li>
+<li>[[ Double-check this bias formula and check with Scott ]]</li>
+<li>Choosing a very small bin width will result in a small bias because the left endpoint of the
+bin <span class="math inline">\(x_{0} + (A_{h_{n}}(x) - 1)h_{n}\)</span> will always be very close to <span class="math inline">\(x\)</span>.</li>
+</ul>
+<hr />
+<ul>
+<li>Now, turning to the variance of the histogram estimate
+<span class="math display">\[\begin{equation}
+\textrm{Var}\{ \hat{f}(x) \} = \frac{p_{h_{n}}(x) }{nh_{n}^{2}}\{1 - p_{h_{n}}(x)\}
+\approx \frac{f(x) + f&#39;(x)\{ x - x_{0} - (A_{h_{n}}(x) - 1)h_{n} \}}{nh_{n}}\{1 - p_{h_{n}}(x)\}
+\approx \frac{f(x)}{n h_{n} }
+\end{equation}\]</span></li>
+<li>For a more detailed description of the above approximation see Scott.</li>
+<li>Note that large bin widths will reduce variance.</li>
 </ul>
 </div>
-<div id="the-signed-rank-wilcoxon-test" class="section level3">
-<h3><span class="header-section-number">3.4.2</span> The Signed-Rank Wilcoxon Test</h3>
+<div id="point-wise-mean-squared-error" class="section level4">
+<h4><span class="header-section-number">8.2.3.3</span> Point-wise Mean Squared Error</h4>
+<ul>
+<li>Recalling (), the approximate mean-squared error of the histogram density estimate
+at a particular point <span class="math inline">\(x\)</span> is given by
+<span class="math display">\[\begin{eqnarray}
+\textrm{MSE}\{ \hat{f}(x) \} 
+&amp;=&amp; E\Big( \{ \hat{f}(x) - f(x) \}^{2}  \Big) \nonumber \\
+&amp;=&amp; \Big( \textrm{Bias}\{ \hat{f}(x) \} \Big)^{2} + \textrm{Var}\{ \hat{f}(x) \} \nonumber \\
+&amp;\approx&amp;  [f&#39;(x)]^{2}\{ x - (x_{0} + (A_{h_{n}}(x) - 1)h_{n}) \}^{2} + \frac{f(x)}{n h_{n} }
+\end{eqnarray}\]</span></li>
+<li>For any approach to bin width selection, we should have <span class="math inline">\(h_{n} \longrightarrow 0\)</span> and
+<span class="math inline">\(nh_{n} \longrightarrow \infty\)</span>.</li>
+<li>This MSE approximation depends on a particular choice of <span class="math inline">\(x\)</span>.</li>
+<li>Difficult to use () as a criterion for selecting the bandwidth
+because this could vary depending on your choice of <span class="math inline">\(x\)</span>.</li>
+</ul>
+</div>
+<div id="integrated-mean-squared-error-and-optimal-histogram-bin-width" class="section level4">
+<h4><span class="header-section-number">8.2.3.4</span> Integrated Mean Squared Error and Optimal Histogram Bin Width</h4>
+<ul>
+<li>Using mean integrated squared error (MISE) allows us to find an optimal bin width
+that does not depend on a particular choice of <span class="math inline">\(x\)</span>.</li>
+<li>The MISE is defined as
+<span class="math display">\[\begin{eqnarray}
+MISE\{ \hat{f}(x) \} 
+&amp;=&amp; E\Big\{ \int_{-\infty}^{\infty} \{ \hat{f}(x) - f(x) \}^{2}dx   \Big\} \nonumber \\
+&amp;=&amp; \int_{-\infty}^{\infty} \textrm{MSE}\{ \hat{f}(x) \} dx 
+\end{eqnarray}\]</span>
+Using our previously derived approximation for the MSE, we have
+<span class="math display">\[\begin{eqnarray}
+MISE\{ \hat{f}(x) \} &amp;\approx&amp;
+\int x [f&#39;(x)]^{2} - x_{0}\int [f&#39;(x)]^{2} dx + (A_{h_{n}}(x) - 1)h_{n}) \}^{2} + \frac{1}{n h_{n} } \int f(x) dx \nonumber \\
+&amp;=&amp; 
+\end{eqnarray}\]</span></li>
+</ul>
+<hr />
+<ul>
+<li>To select the optimal bin width, we minimize the MISE as a function of <span class="math inline">\(h_{n}\)</span>.</li>
+<li>Minimizing (), as a function of <span class="math inline">\(h_{n}\)</span> yields the following formula for the optimal bin width
+<span class="math display">\[\begin{equation}
+h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx}  \Big)^{1/3} = C n^{-1/3} \nonumber 
+\end{equation}\]</span></li>
+<li>Notice that <span class="math inline">\(h_{n}^{opt} \longrightarrow 0\)</span> and <span class="math inline">\(nh_{n}^{opt} \longrightarrow \infty\)</span> as <span class="math inline">\(n \longrightarrow \infty\)</span>.</li>
+<li>Notice also that the optimal bin width depends on the unknown quantity <span class="math inline">\(\int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx\)</span>.</li>
+</ul>
 </div>
 </div>
-<div id="comparisons-with-parametric-tests" class="section level2">
-<h2><span class="header-section-number">3.5</span> Comparisons with Parametric Tests</h2>
+<div id="choosing-the-histogram-bin-width" class="section level3">
+<h3><span class="header-section-number">8.2.4</span> Choosing the Histogram Bin Width</h3>
+<ul>
+<li>We will mention three rules for selecting the bin width of a histogram.
+<ul>
+<li>Scott rule: (based on the optimal bin width formula)</li>
+<li>Friedman and Diaconis rule (also based on the optimal bin width formula)</li>
+<li>Sturges rule: (based on …)</li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li>Both Scott and the FD rule are based on the optimal bin width formula ().</li>
+<li>The main problem with this formula is the presence of <span class="math inline">\(\int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx\)</span>.</li>
+<li><strong>Solution:</strong> See what this quantity looks like if we assume that <span class="math inline">\(f(x)\)</span> corresponds
+to a <span class="math inline">\(N(\mu, \sigma^{2})\)</span> density.</li>
+<li><p>With this assumption,
+<span class="math display">\[\begin{equation}
+h_{n}^{opt} = 3.5 \sigma n^{-1/3}
+\end{equation}\]</span></p></li>
+<li><p>Scott rule: use <span class="math inline">\(\hat{\sigma} = 2\)</span></p></li>
+</ul>
 </div>
-<div id="thinking-about-rank-statistics-more-generally" class="section level2">
-<h2><span class="header-section-number">3.6</span> Thinking about Rank statistics more generally</h2>
+</div>
+<div id="kernel-density-estimation" class="section level2">
+<h2><span class="header-section-number">8.3</span> Kernel Density Estimation</h2>
+<div id="histograms-and-a-naive-density-estimate" class="section level3">
+<h3><span class="header-section-number">8.3.1</span> Histograms and a “Naive” Density Estimate</h3>
+</div>
+<div id="kernels-bandwidth-and-smooth-density-estimation" class="section level3">
+<h3><span class="header-section-number">8.3.2</span> Kernels, Bandwidth, and Smooth Density Estimation</h3>
+</div>
+<div id="bias-and-variance-of-kernel-density-estimates" class="section level3">
+<h3><span class="header-section-number">8.3.3</span> Bias and Variance of Kernel Density Estimates</h3>
+</div>
+<div id="bandwidth-selection" class="section level3">
+<h3><span class="header-section-number">8.3.4</span> Bandwidth Selection</h3>
+</div>
+</div>
+<div id="kernel-density-estimation-in-practice" class="section level2">
+<h2><span class="header-section-number">8.4</span> Kernel Density Estimation in Practice</h2>
 
 </div>
 </div>
+
+
+
             </section>
 
           </div>
         </div>
       </div>
-<a href="getting-started.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="tidy.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sampling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -1,4 +1,4 @@
-# Density Estimation {#multiple-regression}
+# Density Estimation {#density-estimation}
 
 ## Introduction
 
