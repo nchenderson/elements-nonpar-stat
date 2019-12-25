@@ -3,9 +3,9 @@ bookdown::gitbook:
   split_by: chapter
   config:
     toc:
-      collapse: subsection
+      collapse: section
       before: |
-        <li><a href="./">A Minimal Bookdown Book</a></li>
+        <li><a href="./">Biostat 685/Stat 560</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 bookdown::pdf_book:
