@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2019-12-25" />
+<meta name="date" content="2019-12-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -364,7 +364,8 @@ assumptions about the two populations <span class="math inline">\(F_{X}\)</span>
 <ul>
 <li><p>Suppose we have <span class="math inline">\(n\)</span> observations <span class="math inline">\((X_{1}, \ldots, X_{n})\)</span> which are assumed to be i.i.d. (independent and identically distributed).
 The distribution function of <span class="math inline">\(X_{i}\)</span> is <span class="math inline">\(F_{X}\)</span>.</p></li>
-<li><p>Suppose we are interested in estimating <span class="math inline">\(F_{X}\)</span>.</p></li>
+<li><p>Suppose we are interested in estimating the entire distribution function <span class="math inline">\(F_{X}\)</span> rather than specific features
+of the distribution of <span class="math inline">\(X_{i}\)</span> such as the mean or standard deviation.</p></li>
 <li>In a <strong>parametric</strong> approach to estimating <span class="math inline">\(F_{X}\)</span>, we would assume the distribution of <span class="math inline">\(X_{i}\)</span> belongs to some parametric family of distributions.
 For example,
 <ul>
@@ -373,7 +374,7 @@ For example,
 <li><span class="math inline">\(X_{i} \sim \textrm{Beta}(\alpha, \beta)\)</span></li>
 </ul></li>
 <li><p>If we assume that <span class="math inline">\(X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )\)</span>, we only need to estimate 2 parameters to
-fully describe the distribution of <span class="math inline">\(X_{i}\)</span>, and the number of parameters does not depend on the sample size.</p></li>
+fully describe the distribution of <span class="math inline">\(X_{i}\)</span>, and the number of parameters will not depend on the sample size.</p></li>
 </ul>
 </div>
 <div id="sec:example-nonpar-confint" class="section level2">
@@ -381,6 +382,30 @@ fully describe the distribution of <span class="math inline">\(X_{i}\)</span>, a
 </div>
 <div id="sec:example-nonpar-regress1" class="section level2">
 <h2><span class="header-section-number">1.6</span> Example 4: Nonparametric Regression with a Single Covariate</h2>
+<ul>
+<li><p>Regression is a common way of modeling the relationship between two different variables.</p></li>
+<li><p>Suppose we have <span class="math inline">\(n\)</span> pairs of observations <span class="math inline">\((y_{1}, x_{1}), \ldots, (y_{n}, x_{n})\)</span> where
+<span class="math inline">\(y_{i}\)</span> and <span class="math inline">\(x_{i}\)</span> are suspected to have some association.</p></li>
+<li><p>Linear regression would assume that these <span class="math inline">\(y_{i}\)</span> and <span class="math inline">\(x_{i}\)</span> are related by the following
+<span class="math display">\[\begin{equation}
+y_{i} = \beta_{0} + \beta_{1}x_{i} + \varepsilon_{i} 
+\end{equation}\]</span>
+with the assumption <span class="math inline">\(\varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2})\)</span> often made.</p></li>
+<li><p>In this model, there are only 3 parameters: <span class="math inline">\((\beta_{0}, \beta_{1}, \sigma^{2})\)</span>,
+and the number of parameters stays fixed for all <span class="math inline">\(n\)</span>.</p></li>
+</ul>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<hr />
+<ul>
+<li><p>The nonparametric counterpart to linear regression is usually formulated as the following model
+<span class="math display">\[\begin{equation}
+y_{i} = f( x_{i} ) + \varepsilon_{i}
+\end{equation}\]</span></p></li>
+<li><p>Typically, one makes very few assumptions about the form of <span class="math inline">\(f\)</span>, and it is not assumed <span class="math inline">\(f\)</span>
+can be described by a finite number of parameters.</p></li>
+<li><p>There are a large number of nonparametric methods for estimating <span class="math inline">\(f\)</span>.</p></li>
+<li><p>One popular method is the use of splines</p></li>
+</ul>
 </div>
 <div id="sec:example-nonpar-regress2" class="section level2">
 <h2><span class="header-section-number">1.7</span> Example 5: Nonparametric Regression</h2>

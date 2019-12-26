@@ -132,7 +132,8 @@ assumptions about the two populations $F_{X}$ and $F_{Y}$.
 * Suppose we have $n$ observations $(X_{1}, \ldots, X_{n})$ which are assumed to be i.i.d. (independent and identically distributed).
 The distribution function of $X_{i}$ is $F_{X}$.
 
-* Suppose we are interested in estimating $F_{X}$. 
+* Suppose we are interested in estimating the entire distribution function $F_{X}$ rather than specific features
+of the distribution of $X_{i}$ such as the mean or standard deviation. 
 
 * In a **parametric** approach to estimating $F_{X}$, we would assume the distribution of $X_{i}$ belongs to some parametric family of distributions.
 For example,
@@ -141,12 +142,44 @@ For example,
    + $X_{i} \sim \textrm{Beta}(\alpha, \beta)$
 
 * If we assume that $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )$, we only need to estimate 2 parameters to
-fully describe the distribution of $X_{i}$, and the number of parameters does not depend on the sample size. 
+fully describe the distribution of $X_{i}$, and the number of parameters will not depend on the sample size. 
 
 
 ## Example 3: Confidence Intervals {#sec:example-nonpar-confint}
 
 ## Example 4: Nonparametric Regression with a Single Covariate {#sec:example-nonpar-regress1}
+
+* Regression is a common way of modeling the relationship between two different variables.
+
+* Suppose we have $n$ pairs of observations $(y_{1}, x_{1}), \ldots, (y_{n}, x_{n})$ where
+$y_{i}$ and $x_{i}$ are suspected to have some association.
+
+* Linear regression would assume that these $y_{i}$ and $x_{i}$ are related by the following
+\begin{equation}
+y_{i} = \beta_{0} + \beta_{1}x_{i} + \varepsilon_{i} 
+\end{equation}
+with the assumption $\varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2})$ often made.
+
+* In this model, there are only 3 parameters: $(\beta_{0}, \beta_{1}, \sigma^{2})$,
+and the number of parameters stays fixed for all $n$.
+
+<img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+
+---
+
+* The nonparametric counterpart to linear regression is usually formulated as the following model
+\begin{equation}
+y_{i} = f( x_{i} ) + \varepsilon_{i}
+\end{equation}
+
+* Typically, one makes very few assumptions about the form of $f$, and it is not assumed $f$
+can be described by a finite number of parameters.
+
+* There are a large number of nonparametric methods for estimating $f$.
+
+* One popular method is the use of splines
+
+
 
 ## Example 5: Nonparametric Regression {#sec:example-nonpar-regress2}
 
