@@ -25,33 +25,38 @@ make few assumptions about the particular form of $f(x)$.
 
 ### Definition
 
-Histograms are one of the oldest ways to estimate a pdf.
+* Histograms are one of the oldest ways to estimate a pdf.
 
 
-To construct a histogram, you first need to define a series
-of "bins": $B_{1}, \ldots, B_{D}$. Each bin is a left-closed interval which is often
-assumed to have the form $B_{k} = [x_{0} + (k-1)h, x_{0} + kh)$:
+* To construct a histogram, you first need to define a series
+of "bins": $B_{1}, \ldots, B_{D_{n}}$. 
+
+* Each bin is a left-closed interval which is often
+assumed to have the form $B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n})$:
 \begin{eqnarray}
-B_{1} &=& [x_{0}, x_{0} +h) \nonumber \\
-B_{2} &=& [x_{0} + h, x_{0} + 2h) \nonumber \\
+B_{1} &=& [x_{0}, x_{0} + h_{n}) \nonumber \\
+B_{2} &=& [x_{0} + h_{n}, x_{0} + 2h_{n}) \nonumber \\
 &\vdots& \nonumber \\
-B_{D} &=& [x_{0} + (D-1)h, x_{0} + Dh) \nonumber 
+B_{D_{n}} &=& [x_{0} + (D-1)h, x_{0} + D_{n}h_{n}) \nonumber 
 \end{eqnarray}
 
 * $x_{0}$ - the origin
 * $h_{n}$ - bin width
+* $D_{n}$ - number of bins
 
 
-For each bin, you first need to count the number of observations which fall into that bin
+* For each bin, you first need to count the number of observations which fall into that bin
 \begin{eqnarray}
 n_{k} &=& \# \text{ of observations falling into the $k^{th}$ bin }  \nonumber \\
 &=& \sum_{i=1}^{n} I( x_{0} + (k-1)h_{n} \leq X_{i} < x_{0} + kh_{n}  )
 \end{eqnarray}
-The histogram estimate of the density at a point $x$ in the $k^{th}$ bin is then defined as
+
+* The histogram estimate of the density at a point $x$ in the $k^{th}$ bin is then defined as
 \begin{equation}
 \hat{f}(x) = \frac{n_{k}}{nh_{n}}
 \end{equation}
-**Note:** What is often shown in histogram plots are the actual bin counts $n_{k}$ rather than 
+
+* **Note:** What is often shown in histogram plots are the actual bin counts $n_{k}$ rather than 
 the values of $\hat{f}(x)$.
 
 
@@ -59,13 +64,13 @@ the values of $\hat{f}(x)$.
 
 
 * To see the motivation for the histogram estimate, notice that if we choose a relatively small value
-$h > 0$ 
+$h_{n} > 0$ 
 \begin{equation}
-P(x < X_{i} < x+h) = \int_{x}^{x + h} f(x) dx \approx hf(x)
+P(x < X_{i} < x + h_{n}) = \int_{x}^{x + h_{n}} f(x) dx \approx h_{n}f(x)
 \end{equation}
 * The expected value of $\hat{f}(x)$ is
 \begin{equation}
-E\{ \hat{f}(x) \} = = \approx f(x)
+E\{ \hat{f}(x) \} = \frac{1}{h_{n}} P( x_{0} + (k-1)h_{n} \leq X_{i} < x_{0} + kh_{n}  ) \approx f(x)
 \end{equation}
 
 
@@ -176,9 +181,9 @@ MSE = Bias^2 + Variance
 \begin{eqnarray}
 \textrm{MSE}\{ \hat{f}(x) \} 
 &=& E\Big( \{ \hat{f}(x) - f(x) \}^{2}  \Big) \nonumber \\
-&=& \underbrace{\Big( E\{ \hat{f}(x) \} - f(x)  \Big)^{2} }_{\textrm{Bias Squared}} + \underbrace{\textrm{Var}\{ \hat{f}(x) \}}_{Variance} \nonumber
+&=& \underbrace{\Big( E\{ \hat{f}(x) \} - f(x)  \Big)^{2} }_{\textrm{Bias Squared}} + \underbrace{\textrm{Var}\{ \hat{f}(x) \}}_{\textrm{Variance}} \nonumber
 \end{eqnarray}
-* In general, as the bin-width $h_{n}$ increases, the histogram estimate
+* In general, as the bin width $h_{n}$ increases, the histogram estimate
 has less variation but becomes more biased.
 
 

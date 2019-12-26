@@ -259,41 +259,43 @@ make few assumptions about the particular form of <span class="math inline">\(f(
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <div id="definition-1" class="section level3">
 <h3><span class="header-section-number">8.2.1</span> Definition</h3>
-<p>Histograms are one of the oldest ways to estimate a pdf.</p>
-<p>To construct a histogram, you first need to define a series
-of “bins”: <span class="math inline">\(B_{1}, \ldots, B_{D}\)</span>. Each bin is a left-closed interval which is often
-assumed to have the form <span class="math inline">\(B_{k} = [x_{0} + (k-1)h, x_{0} + kh)\)</span>:
-<span class="math display">\[\begin{eqnarray}
-B_{1} &amp;=&amp; [x_{0}, x_{0} +h) \nonumber \\
-B_{2} &amp;=&amp; [x_{0} + h, x_{0} + 2h) \nonumber \\
-&amp;\vdots&amp; \nonumber \\
-B_{D} &amp;=&amp; [x_{0} + (D-1)h, x_{0} + Dh) \nonumber 
-\end{eqnarray}\]</span></p>
 <ul>
+<li><p>Histograms are one of the oldest ways to estimate a pdf.</p></li>
+<li><p>To construct a histogram, you first need to define a series
+of “bins”: <span class="math inline">\(B_{1}, \ldots, B_{D_{n}}\)</span>.</p></li>
+<li><p>Each bin is a left-closed interval which is often
+assumed to have the form <span class="math inline">\(B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n})\)</span>:
+<span class="math display">\[\begin{eqnarray}
+B_{1} &amp;=&amp; [x_{0}, x_{0} + h_{n}) \nonumber \\
+B_{2} &amp;=&amp; [x_{0} + h_{n}, x_{0} + 2h_{n}) \nonumber \\
+&amp;\vdots&amp; \nonumber \\
+B_{D_{n}} &amp;=&amp; [x_{0} + (D-1)h, x_{0} + D_{n}h_{n}) \nonumber 
+\end{eqnarray}\]</span></p></li>
 <li><span class="math inline">\(x_{0}\)</span> - the origin</li>
 <li><span class="math inline">\(h_{n}\)</span> - bin width</li>
-</ul>
-<p>For each bin, you first need to count the number of observations which fall into that bin
+<li><p><span class="math inline">\(D_{n}\)</span> - number of bins</p></li>
+<li><p>For each bin, you first need to count the number of observations which fall into that bin
 <span class="math display">\[\begin{eqnarray}
 n_{k} &amp;=&amp; \# \text{ of observations falling into the $k^{th}$ bin }  \nonumber \\
 &amp;=&amp; \sum_{i=1}^{n} I( x_{0} + (k-1)h_{n} \leq X_{i} &lt; x_{0} + kh_{n}  )
-\end{eqnarray}\]</span>
-The histogram estimate of the density at a point <span class="math inline">\(x\)</span> in the <span class="math inline">\(k^{th}\)</span> bin is then defined as
+\end{eqnarray}\]</span></p></li>
+<li><p>The histogram estimate of the density at a point <span class="math inline">\(x\)</span> in the <span class="math inline">\(k^{th}\)</span> bin is then defined as
 <span class="math display">\[\begin{equation}
 \hat{f}(x) = \frac{n_{k}}{nh_{n}}
-\end{equation}\]</span>
-<strong>Note:</strong> What is often shown in histogram plots are the actual bin counts <span class="math inline">\(n_{k}\)</span> rather than
-the values of <span class="math inline">\(\hat{f}(x)\)</span>.</p>
+\end{equation}\]</span></p></li>
+<li><p><strong>Note:</strong> What is often shown in histogram plots are the actual bin counts <span class="math inline">\(n_{k}\)</span> rather than
+the values of <span class="math inline">\(\hat{f}(x)\)</span>.</p></li>
+</ul>
 <hr />
 <ul>
 <li>To see the motivation for the histogram estimate, notice that if we choose a relatively small value
-<span class="math inline">\(h &gt; 0\)</span>
+<span class="math inline">\(h_{n} &gt; 0\)</span>
 <span class="math display">\[\begin{equation}
-P(x &lt; X_{i} &lt; x+h) = \int_{x}^{x + h} f(x) dx \approx hf(x)
+P(x &lt; X_{i} &lt; x + h_{n}) = \int_{x}^{x + h_{n}} f(x) dx \approx h_{n}f(x)
 \end{equation}\]</span></li>
 <li>The expected value of <span class="math inline">\(\hat{f}(x)\)</span> is
 <span class="math display">\[\begin{equation}
-E\{ \hat{f}(x) \} = = \approx f(x)
+E\{ \hat{f}(x) \} = \frac{1}{h_{n}} P( x_{0} + (k-1)h_{n} \leq X_{i} &lt; x_{0} + kh_{n}  ) \approx f(x)
 \end{equation}\]</span></li>
 </ul>
 </div>
@@ -363,9 +365,9 @@ MSE = Bias^2 + Variance
 <span class="math display">\[\begin{eqnarray}
 \textrm{MSE}\{ \hat{f}(x) \} 
 &amp;=&amp; E\Big( \{ \hat{f}(x) - f(x) \}^{2}  \Big) \nonumber \\
-&amp;=&amp; \underbrace{\Big( E\{ \hat{f}(x) \} - f(x)  \Big)^{2} }_{\textrm{Bias Squared}} + \underbrace{\textrm{Var}\{ \hat{f}(x) \}}_{Variance} \nonumber
+&amp;=&amp; \underbrace{\Big( E\{ \hat{f}(x) \} - f(x)  \Big)^{2} }_{\textrm{Bias Squared}} + \underbrace{\textrm{Var}\{ \hat{f}(x) \}}_{\textrm{Variance}} \nonumber
 \end{eqnarray}\]</span></li>
-<li>In general, as the bin-width <span class="math inline">\(h_{n}\)</span> increases, the histogram estimate
+<li>In general, as the bin width <span class="math inline">\(h_{n}\)</span> increases, the histogram estimate
 has less variation but becomes more biased.</li>
 </ul>
 </div>

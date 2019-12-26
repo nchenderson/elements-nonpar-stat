@@ -80,11 +80,10 @@ on the set of $n!$ permutations of $(1,2,\ldots,n)$.
 
 
 ## Two-Sample Tests
-Wilcoxon statistic and Wilcoxon signed-rank statistic (what is the difference between these two?)
 
 ### The Wilcoxon Rank Sum Test
 
-#### Purpose
+#### Goal of the Test
 
 * The Wilcoxon Rank Sum (WRS) test (sometimes referred to as the Wilcoxon-Mann-Whitney test) is a two-sample test.
 
@@ -92,7 +91,8 @@ Wilcoxon statistic and Wilcoxon signed-rank statistic (what is the difference be
 from the other group. 
 
 * Suppose we have observations from two groups: $X_{1}, \ldots, X_{n} \sim F_{X}$ and $Y_{1}, \ldots, Y_{m} \sim F_{Y}$.
-The WRS test will test the hypothesis
+
+* The WRS test will test the hypothesis
 \begin{eqnarray}
 H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: & & \textrm{Observations from } F_{X} \textrm{ tend to be larger than observations from } F_{Y} \nonumber 
@@ -100,7 +100,7 @@ H_{A}: & & \textrm{Observations from } F_{X} \textrm{ tend to be larger than obs
 
 ---
 
-* What is meant by ``tend to be larger"?
+* What is meant by "tend to be larger"?
 
 * Two common ways of stating the alternative hypothesis for the WRS include
 \begin{eqnarray}
@@ -120,16 +120,19 @@ for at least one value of $t$.
 
 * Why do we need to specify an alternative?
 
-#### Definition of Test Statistic
+#### Definition of the WRS Test Statistic
 
 * The WRS test statistic is based on computing the sum of ranks (ranks based on the pooled sample)
 in one group.
 
-* If observations from this group tend to be larger, their average rank should exceed the
-average rank from the other group. 
+* If observations from group 1 tend to be larger than those from group 2, the average rank from group 1 should exceed the
+average rank from group 2. 
 
 * 
 
+---
+
+#### Computing p-values
 
 * Give exercise, compute p-values for Wilcoxon test where
 we have two populations. both are Normally distributed
