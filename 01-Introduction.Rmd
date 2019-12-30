@@ -154,7 +154,7 @@ fully describe the distribution of $X_{i}$, and the number of parameters will no
 
 ## Example 4: Nonparametric Regression with a Single Covariate {#sec:example-nonpar-regress1}
 
-* Regression is a common way of modeling the relationship between two different variables.
+* Regression is a common way of modeling the relationship between two variables.
 
 * Suppose we have $n$ pairs of observations $(y_{1}, x_{1}), \ldots, (y_{n}, x_{n})$ where
 $y_{i}$ and $x_{i}$ are suspected to have some association.
@@ -189,7 +189,7 @@ can be described by a finite number of parameters.
 
 * There are a large number of nonparametric methods for estimating $f$.
 
-* One popular method is the use of splines (or local linear regression?)
+* One popular nonparametric approach is the use of splines (or local linear regression?)
 
 
 
