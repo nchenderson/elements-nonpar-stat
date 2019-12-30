@@ -181,7 +181,7 @@ lines(xx, lm.unif$coef[1] + lm.unif$coef[2]*xx, lty=2, lwd=2)
 
 * The nonparametric counterpart to linear regression is usually formulated as the following model
 \begin{equation}
-y_{i} = f( x_{i} ) + \varepsilon_{i}
+y_{i} = m( x_{i} ) + \varepsilon_{i}
 \end{equation}
 
 * Typically, one makes very few assumptions about the form of $f$, and it is not assumed $f$
