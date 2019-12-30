@@ -1,17 +1,14 @@
 # Introduction {#intro}
 
 ---
-
-
-
-
+  
 ---
-
+  
 ## What is Nonparametric Statistics? {#sec:whatisnonpar}
-
-**What is Parametric Statistics?**
-
-* Parametric models refer to probability distributions that can 
+  
+  **What is Parametric Statistics?**
+  
+  * Parametric models refer to probability distributions that can 
 be fully described by a fixed number of parameters that do not change
 with the sample size.
 
@@ -25,10 +22,9 @@ with the sample size.
 is described by a fixed number of parameters.
 
 **What is Nonparametric Statistics?**
-
-* Difficult to give a concise, all-encompassing definition, but nonparametric
+  
+  * It is difficult to give a concise, all-encompassing definition, but nonparametric
 statistics generally refers to statistical methods where there is not a clear parametric component.
-
 
 * The uses of nonparametric methods in several common statistical contexts are described in Sections \@ref(sec:example-nonpar-tests) - \@ref(sec:example-nonpar-regress2).
 
@@ -37,22 +33,22 @@ statistics generally refers to statistical methods where there is not a clear pa
 This course is roughly divided into the following 5 categories.
 
 1. **Nonparametric Testing**
-    + Rank-based Tests
-    + Permutation Tests
+  + Rank-based Tests
++ Permutation Tests
 1. **Estimation of Basic Nonparametric Quantities** 
-    + The Empirical Distribution Function
-    + Density Estimation
+  + The Empirical Distribution Function
++ Density Estimation
 1. **Nonparametric Confidence Intervals**
-    + Bootstrap 
-    + Jacknife
+  + Bootstrap 
++ Jacknife
 1. **Nonparametric Regression Part I (Smoothing Methods)**
-    + Kernel Methods
-    + Splines
-    + Local Regression
+  + Kernel Methods
++ Splines
++ Local Regression
 1. **Nonparametric Regression Part II (Machine Learning Methods)**
-    + Decision Trees/CART
-    + Ensemble Methods
-   
+  + Decision Trees/CART
++ Ensemble Methods
+
 
 ## Example 1: Nonparametric vs. Parametric Two-Sample Testing {#sec:example-nonpar-tests}
 
@@ -70,25 +66,25 @@ F_{X}(t) = P( X_{i} \leq t) \quad \textrm{ for any } 1 \leq i \leq n  \nonumber
 F_{Y}(t) = P( Y_{i} \leq t) \quad \textrm{ for any } 1 \leq i \leq n  \nonumber
 \end{equation}
 
-
 * To test the impact of a new treatment, we usually want to test whether or not $F_{X}$ differs from $F_{Y}$ in some way.
 This can be stated in hypothesis testing language as
 \begin{eqnarray}
 H_{0}&:& F_{X} = F_{Y} \quad \textrm{( populations are the same)} \nonumber \\
 H_{A}&:& F_{X} \neq F_{Y} \quad \textrm{( populations are different)} (\#eq:nonpar-twosample-hypothesis)
-\end{eqnarray}
-
+                                                                        \end{eqnarray}
+    
 **Parametric Tests**
-
+                                                                          
 * Perhaps the most common parametric test for \@ref(eq:nonpar-twosample-hypothesis) is the **t-test**. The t-test assumes that
 \begin{equation}
 F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2}) \quad \textrm{ and } \quad F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})
 \end{equation}
+                                                                        
 * Under this parametric assumption, the hypothesis test \@ref(eq:nonpar-twosample-hypothesis) reduces to 
 \begin{equation}
 H_{0}: \mu_{x} = \mu_{y}  \quad \textrm{ vs. } \quad H_{A}: \mu_{x} \neq \mu_{y}
 \end{equation}
-
+                                                                        
 * The standard t-statistic (with a pooled estimate of $\sigma^{2}$) is the following
 \begin{equation}
 T = \frac{\bar{X} - \bar{Y}}{ s_{p}\sqrt{\frac{1}{n} + \frac{1}{m}}  },
@@ -103,9 +99,8 @@ s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \su
 
 * The t-test is based on the **null distribution** of $T$ - the distribution of $T$ under the null hypothesis.
 
-* Under the assumption of normality, the null distribution of $T$ is a t distribution
-with $n + m - 2$ degrees of freedom.
-
+* Under the assumption of normality, the null distribution of $T$ is a t distribution with $n + m - 2$ degrees of freedom.
+                                                                        
 ```{r, echo=FALSE}
 xgrid <- seq(-4,4, length.out=500)
 yy <- dt(xgrid, df=18)
@@ -116,16 +111,13 @@ lines(xgrid, yy, lwd=2)
 * Notice that the null distribution of $T$ depends on the parametric assumption that both $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
 and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. (Mention CLT argument here)
 
-* In addition to using the assumption that $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
-and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$, we used this parametric assumption in the formulation of the hypothesis test itself because we 
-assumed that any difference between $F_{X}$ and $F_{Y}$ would be fully described by difference in $\mu_{x}$ and $\mu_{y}$.
+* In addition to using the assumption that $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$ and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$, we used this parametric assumption in the formulation of the hypothesis test itself because we assumed that any difference between $F_{X}$ and $F_{Y}$ would be fully described by difference in $\mu_{x}$ and $\mu_{y}$.
 
 ---
 
-**Nonparametric Tests**
+**Nonparametric Tests** 
 
-* Two-sample nonparametric tests are meant to be "distribution-free". This means
-the null distribution of the test statistic does not depend on any parametric
+* Two-sample nonparametric tests are meant to be "distribution-free". This means the null distribution of the test statistic does not depend on any parametric
 assumptions about the two populations $F_{X}$ and $F_{Y}$. 
 
 * Also, the hypotheses tests themselves do not rely on any parametric assumptions.
@@ -142,56 +134,127 @@ of the distribution of $X_{i}$ such as the mean or standard deviation.
 
 * In a **parametric** approach to estimating $F_{X}$, we would assume the distribution of $X_{i}$ belongs to some parametric family of distributions.
 For example,
-   + $X_{i} \sim \textrm{Normal}(\mu, \sigma^{2})$ 
-   + $X_{i} \sim \textrm{Exponential}(\lambda)$
-   + $X_{i} \sim \textrm{Beta}(\alpha, \beta)$
+    + $X_{i} \sim \textrm{Normal}(\mu, \sigma^{2})$ 
+    + $X_{i} \sim \textrm{Exponential}(\lambda)$
+    + $X_{i} \sim \textrm{Beta}(\alpha, \beta)$
 
 * If we assume that $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )$, we only need to estimate 2 parameters to
 fully describe the distribution of $X_{i}$, and the number of parameters will not depend on the sample size. 
-
-
+                                                                        
+                                                                        
 ## Example 3: Confidence Intervals {#sec:example-nonpar-confint}
 
+* Inference for a wide range of statistical procedures is based on the following argument
+\begin{equation}
+\hat{\theta}_{n} \textrm{ has an approximate Normal}\Big( \theta, \widehat{\textrm{Var}(\hat{\theta}_{n})} \Big) \textrm{ distribution }
+(\#eq:normal-approx)
+\end{equation}
+
+* Above, $\hat{\theta}_{n}$ is an estimate of a parameter $\theta$, and $\widehat{\textrm{Var}(\hat{\theta}_{n})}$ is an estimate of the variance of $\hat{\theta}_{n}$.
+
+* $se_{n} = \sqrt{\widehat{\textrm{Var}(\hat{\theta}_{n})}}$ is usually referred to as the **standard error**.
+
+* $95\%$ confidence intervals are reported using the following formula
+\begin{equation}
+[\hat{\theta}_{n} - 1.96 se_{n}, \hat{\theta}_{n} + 1.96 se_{n}  ]
+\end{equation}
+
+* Common examples of this include
+       + $\hat{\theta}_{n} = \bar{X}_{n}$. In this case, appeals to the Central Limit Theorem would justify approximation \@ref(eq:normal-approx). The variance of $\hat{\theta}_{n}$ would be $\sigma^{2}$, and the standard error would typically be $se_{n} = \hat{\sigma}/\sqrt{n}$. 
+       + $\hat{\theta}_{n} = \textrm{Maximum Likelihood Estimate of } \theta$. In this case, asymptotics would justify the approximate distribution $\hat{\theta}_{n} \sim \textrm{Normal}(\theta, \frac{1}{nI(\theta)} )$, where $I(\theta)$ denotes the Fisher information. The standard error in this context is often $se_{n} = 1/\sqrt{n I(\hat{\theta}_{n})}$.
+                                                                          
+---
+
+* Confidence intervals using \@ref(eq:normal-approx) rely on a parametric approximation to the
+sampling distribution of the statistic $\hat{\theta}_{n}$.
+
+* Moreover, even if one wanted to use something like \@ref(eq:normal-approx), working out 
+standard error formulas can be a great challenge in more complicated situations.
+
+* The **bootstrap** is a simulation-based approach for computing standard errors and
+confidence intervals.
+
+* The bootstrap does not rely on any particular parametric assumptions and
+can be applied in almost any context.
+
+
+
+
 ## Example 4: Nonparametric Regression with a Single Covariate {#sec:example-nonpar-regress1}
-
-* Regression is a common way of modeling the relationship between two variables.
-
+                                                                            
+* Regression is a common way of modeling the relationship between two different variables.
+                                                                          
 * Suppose we have $n$ pairs of observations $(y_{1}, x_{1}), \ldots, (y_{n}, x_{n})$ where
 $y_{i}$ and $x_{i}$ are suspected to have some association.
-
+                                                                          
+                                                                          
 * Linear regression would assume that these $y_{i}$ and $x_{i}$ are related by the following
 \begin{equation}
 y_{i} = \beta_{0} + \beta_{1}x_{i} + \varepsilon_{i} 
 \end{equation}
 with the assumption $\varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2})$ often made.
-
+                                                                          
 * In this model, there are only 3 parameters: $(\beta_{0}, \beta_{1}, \sigma^{2})$,
 and the number of parameters stays fixed for all $n$.
-
+                                                                          
 ```{r, echo=FALSE}
 xx <- runif(200, min=-1/2, max=1)
 yy <- xx^3 + .1*rnorm(200)
 lm.unif <- lm(yy ~ xx)
 plot(xx, yy, xlab="x", ylab="y", type="n", las=1, main="Linear regression model for (xi, yi) with fitted curve")
 points(xx, yy, pch=16, cex=.8)
-lines(xx, lm.unif$coef[1] + lm.unif$coef[2]*xx, lty=2, lwd=2)
+lines(xx, lm.unif$coef[1] + lm.unif$coef[2]*xx, lwd=3)
 ```
-
+                                                                          
 ---
 
-* The nonparametric counterpart to linear regression is usually formulated as the following model
+* The nonparametric counterpart to linear regression is usually formulated in the following way
 \begin{equation}
 y_{i} = m( x_{i} ) + \varepsilon_{i}
 \end{equation}
 
-* Typically, one makes very few assumptions about the form of $f$, and it is not assumed $f$
+* Typically, one makes very few assumptions about the form of the mean function $m$, and it is not assumed $m$
 can be described by a finite number of parameters.
 
-* There are a large number of nonparametric methods for estimating $f$.
+* There are a large number of nonparametric methods for estimating $m$.
 
-* One popular nonparametric approach is the use of splines (or local linear regression?)
+* One popular method is the use of **smoothing splines**.
+
+* With smoothing splines, one considers mean functions of the form
+\begin{equation}
+m(x) = \sum_{j=1}^{n} \beta_{j}g_{j}(x) 
+(\#eq:smoothspline-model)
+\end{equation}
+where $g_{1}, \ldots, g_{n}(x)$ are a collection of spline basis functions.
+
+---
+
+* Because of the large number of parameters in \@ref(eq:smoothspline-model), one should
+estimate the basis function weights $\beta_{j}$ through penalized regression
+\begin{equation}
+\textrm{minimize} \quad \sum_{i=1}^{n} \Big( y_{i} - \sum_{j=1}^{n} \beta_{j}g_{j}( x_{i} ) \Big)^{2} + \lambda \sum_{i=1}^{n}\sum_{j=1}^{n} \Omega_{ij}\beta_{i}\beta_{j}
+(\#eq:smoothspline-estimation)
+\end{equation}
+where $\Omega_{ij} = \int g_{i}''(t)g_{j}''(t) dt$.
+
+* Using coefficient estimates $\hat{\beta}_{1}, \ldots, \hat{\beta}_{n}$ found from solving \@ref(eq:smoothspline-model), the nonparametric estimate of the mean function is defined as
+\begin{equation}
+\hat{m}(x) = \sum_{j=1}^{n} \hat{\beta}_{j}g_{j}(x) 
+\end{equation}
+
+* While the estimation in \@ref(eq:smoothspline-estimation) resembles parametric estimation for linear regression, notice
+that the number of parameters to be estimated will change with the sample size.
+
+* Allowing the number of basis functions to grow with $n$ is important. For a sufficiently large number of basis functions, one should be able to approximate the 
+true mean function $m(x)$ arbitrarily closely.
+
+```{r, echo=FALSE}
+sspl <- smooth.spline(xx, yy)
+plot(xx, yy, xlab="x", ylab="y", type="n", las=1, main="Fitted smoothing spline")
+points(xx, yy, pch=16, cex=.8)
+lines(sspl$x, sspl$y, lwd=3)
+```
 
 
 
 ## Example 5: Nonparametric Regression {#sec:example-nonpar-regress2}
-
