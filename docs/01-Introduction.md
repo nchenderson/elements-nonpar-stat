@@ -26,6 +26,10 @@ is described by a fixed number of parameters.
   * It is difficult to give a concise, all-encompassing definition, but nonparametric
 statistics generally refers to statistical methods where there is not a clear parametric component.
 
+* A more practical definition is that nonparametric statistics refers to flexible statistical procedures where
+very few assumptions are made regarding the distribution of the data or the form 
+of a regression model.
+
 * The uses of nonparametric methods in several common statistical contexts are described in Sections \@ref(sec:example-nonpar-tests) - \@ref(sec:example-nonpar-regress2).
 
 ## Outline of Course {#sec:course-outline}
@@ -166,7 +170,11 @@ sampling distribution of the statistic $\hat{\theta}_{n}$.
 * Moreover, even if one wanted to use something like \@ref(eq:normal-approx), working out 
 standard error formulas can be a great challenge in more complicated situations.
 
-* The **bootstrap** is a simulation-based approach 
+* The **bootstrap** is a simulation-based approach for computing standard errors and
+confidence intervals.
+
+* The bootstrap does not rely on any particular parametric assumptions and
+can be applied in almost any context.
 
 
 
