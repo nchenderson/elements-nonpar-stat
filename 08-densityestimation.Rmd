@@ -22,7 +22,8 @@ make few assumptions about the particular form of $f(x)$.
 ## Histograms
 
 ```{r, echo=FALSE}
-load("~/Documents/STAT685Notes/Data/nhgh.rda")
+#load("~/Documents/STAT685Notes/Data/nhgh.rda")
+nhgh <- data.frame(wt=rnorm(100))
 hist(nhgh$wt, main="", xlab="Body Weight from NHANES")
 ```
 

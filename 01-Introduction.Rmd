@@ -26,7 +26,7 @@ is described by a fixed number of parameters.
 
 **What is Nonparametric Statistics?**
 
-* Difficult to give a concise, all-encompassing definition, but nonparametric
+* It is difficult to give a concise, all-encompassing definition, but nonparametric
 statistics generally refers to statistical methods where there is not a clear parametric component.
 
 
@@ -152,6 +152,37 @@ fully describe the distribution of $X_{i}$, and the number of parameters will no
 
 ## Example 3: Confidence Intervals {#sec:example-nonpar-confint}
 
+
+* Inference for a wide range of statistical procedures is 
+based on the following argument
+\begin{equation}
+\hat{\theta}_{n} \textrm{ has an approximate Normal}\Big( \theta, \widehat{\textrm{Var}(\hat{\theta}_{n})} \Big)
+\textrm{ distribution }
+(\#eq:normal-approx)
+\end{equation}
+
+* Above, $\hat{\theta}_{n}$ is an estimate of a parameter $\theta$, and
+$\widehat{\textrm{Var}(\hat{\theta}_{n})}$ is an estimate of the variance of $\hat{\theta}_{n}$.
+
+* $se_{n} = \sqrt{\widehat{\textrm{Var}(\hat{\theta}_{n})}}$ is usually referred to as the **standard error**.
+
+* $95\%$ Confidence intervals are reported using the following formula
+\begin{equation}
+[\hat{\theta}_{n} - 1.96 se_{n}, \hat{\theta}_{n} + 1.96 se_{n}  ]
+\end{equation}
+
+* Some typical examples of this include
+
+   + $\hat{\theta}_{n} = \bar{X}_{n}$. In this case, appeals to the Central Limit Theorem would
+    justify approximation \@ref(eq:normal-approx). The variance of $\hat{\theta}_{n}$ would be $\sigma^{2}$, and the standard error would typically be $se_{n} = \hat{\sigma}/\sqrt{n}$.
+    
+    + $\hat{\theta}_{n} = \textrm{Maximum Likelihood Estimate of } \theta$. In this case, asymptotics 
+    would justify the approximate distribution $\hat{\theta}_{n} \sim \textrm{Normal}(\theta, \frac{1}{nI(\theta)} )$, where $I(\theta)$ denotes the Fisher information. The standard error
+    in this context is often $se_{n} = 1/\sqrt{n I(\hat{\theta}_{n})}$.
+
+---
+
+
 ## Example 4: Nonparametric Regression with a Single Covariate {#sec:example-nonpar-regress1}
 
 * Regression is a common way of modeling the relationship between two different variables.
@@ -179,17 +210,23 @@ lines(xx, lm.unif$coef[1] + lm.unif$coef[2]*xx, lty=2, lwd=2)
 
 ---
 
-* The nonparametric counterpart to linear regression is usually formulated as the following model
+* The nonparametric counterpart to linear regression is usually formulated in the following way
 \begin{equation}
-y_{i} = f( x_{i} ) + \varepsilon_{i}
+y_{i} = m( x_{i} ) + \varepsilon_{i}
 \end{equation}
 
-* Typically, one makes very few assumptions about the form of $f$, and it is not assumed $f$
+* Typically, one makes very few assumptions about the form of the mean function $m$, and it is not assumed $m$
 can be described by a finite number of parameters.
 
-* There are a large number of nonparametric methods for estimating $f$.
+* There are a large number of nonparametric methods for estimating $m$.
 
-* One popular method is the use of splines (or local linear regression?)
+* One popular method is the use of **smoothing splines**.
+
+* With smoothing splines one considers mean functions of the form
+\begin{equation}
+m(x) = \sum_{j=1}^{n} \beta_{j}g_{j}(x) 
+\end{equation}
+
 
 
 
