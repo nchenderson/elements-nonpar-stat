@@ -108,9 +108,12 @@ s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \su
 <img src="01-Introduction_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
 * Notice that the null distribution of $T$ depends on the parametric assumption that both $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
-and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. (Mention CLT argument here)
+and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. Appealing to the Central Limit Theorem, one could
+argue that is a quite reasonable assumption.
 
-* In addition to using the assumption that $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$ and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$, we used this parametric assumption in the formulation of the hypothesis test itself because we assumed that any difference between $F_{X}$ and $F_{Y}$ would be fully described by difference in $\mu_{x}$ and $\mu_{y}$.
+* In addition to using the assumption that $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$ and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$, we used this parametric assumption (at least implicitly) in the formulation of the hypothesis test itself because we assumed that any difference between $F_{X}$ and $F_{Y}$ would be fully described by difference in $\mu_{x}$ and $\mu_{y}$.
+
+* So, in a sense, you are using the assumption of normality twice in the construction of the two-sample t-test.
 
 ---
 
@@ -119,9 +122,21 @@ and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. (Mention CLT argument here)
 * Two-sample nonparametric tests are meant to be "distribution-free". This means the null distribution of the test statistic does not depend on any parametric
 assumptions about the two populations $F_{X}$ and $F_{Y}$. 
 
-* Also, the hypotheses tests themselves do not rely on any parametric assumptions.
+* Many such tests are based on **ranks**. The distribution of the ranks under the assumption that $F_{X} = F_{Y}$ do 
+not depend on the form of $F_{X}$ (assuming $F_{X}$ is continuous).
 
-* For example, 
+* Also, the statements of hypotheses tests for nonparametric tests should not rely on any parametric assumptions about $F_{X}$ and $F_{Y}$.
+
+* For example, $H_{A}: F_{X} \neq F_{Y}$ or $H_{A}: F_{X} \geq F_{Y}$.
+
+---
+
+* Nonparametric tests usually tradeoff power for greater robustness.
+
+* In general, if the parametric assumptions are correct, a nonparametric test will have less power than its parametric counterpart.
+
+* If the parametric assumptions are not correct, parametric tests might have inappropriate type-I error control
+or lose power.
 
 ## Example 2: Nonparametric Estimation {#sec:example-nonpar-estimation}
 
@@ -137,10 +152,38 @@ For example,
     + $X_{i} \sim \textrm{Exponential}(\lambda)$
     + $X_{i} \sim \textrm{Beta}(\alpha, \beta)$
 
+---
+
 * If we assume that $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )$, we only need to estimate 2 parameters to
 fully describe the distribution of $X_{i}$, and the number of parameters will not depend on the sample size. 
                                                                         
-                                                                        
+* In a nonparametric approach to characterizing the distribution of $X_{i}$, we need to instead 
+estimate the entire distribution function $F_{X}$ or density function $f_{X}$.
+
+* The distribution function $F_{X}$ is usually estimated by the **empirical distribution function**
+\begin{equation}
+\hat{F}_{n}(t) = \frac{1}{n}\sum_{i=1}^{n} I( X_{i} \leq t),
+\end{equation}
+where $I()$ denotes the indicator function. That is, $I( X_{i} \leq t) = 1$ if $X_{i} \leq t$,
+and $I(X_{i} \leq t) = 0$ if $X_{i} > t$.
+
+* The empirical distribution function is a discrete distribution function, 
+and it can be thought of as an estimate having $n$ "parameters.
+
+* The density function of $X_{i}$ is often estimated by a kernel density estimator (KDE). This
+is defined as
+\begin{equation}
+\hat{f}_{n}(t) = \frac{1}{n h_{n}} \sum_{i=1}^{n} K\Big( \frac{t - X_{i}}{ h_{n} } \Big).
+\end{equation}
+
+* $K()$ - the kernel function
+* $h_{n}$ - the bandwidth
+
+* The KDE is a type of smoothing procedure.
+
+<img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" /><img src="01-Introduction_files/figure-html/unnamed-chunk-2-2.png" width="672" />
+
+                                                              
 ## Example 3: Confidence Intervals {#sec:example-nonpar-confint}
 
 * Inference for a wide range of statistical procedures is based on the following argument
@@ -158,9 +201,14 @@ fully describe the distribution of $X_{i}$, and the number of parameters will no
 [\hat{\theta}_{n} - 1.96 se_{n}, \hat{\theta}_{n} + 1.96 se_{n}  ]
 \end{equation}
 
-* Common examples of this include
-       + $\hat{\theta}_{n} = \bar{X}_{n}$. In this case, appeals to the Central Limit Theorem would justify approximation \@ref(eq:normal-approx). The variance of $\hat{\theta}_{n}$ would be $\sigma^{2}$, and the standard error would typically be $se_{n} = \hat{\sigma}/\sqrt{n}$. 
-       + $\hat{\theta}_{n} = \textrm{Maximum Likelihood Estimate of } \theta$. In this case, asymptotics would justify the approximate distribution $\hat{\theta}_{n} \sim \textrm{Normal}(\theta, \frac{1}{nI(\theta)} )$, where $I(\theta)$ denotes the Fisher information. The standard error in this context is often $se_{n} = 1/\sqrt{n I(\hat{\theta}_{n})}$.
+* Common examples of this include:
+    1. $\hat{\theta}_{n} = \bar{X}_{n}$. 
+    
+    In this case, appeals to the Central Limit Theorem would justify approximation \@ref(eq:normal-approx). The variance of $\hat{\theta}_{n}$ would be $\sigma^{2}$, and the standard error would typically be $se_{n} = \hat{\sigma}/\sqrt{n}$. 
+    
+    2. $\hat{\theta}_{n} = \textrm{Maximum Likelihood Estimate of } \theta$. 
+      
+    In this case, asymptotics would justify the approximate distribution $\hat{\theta}_{n} \sim \textrm{Normal}(\theta, \frac{1}{nI(\theta)} )$, where $I(\theta)$ denotes the Fisher information. The standard error in this context is often $se_{n} = \{ n I(\hat{\theta}_{n}) \}^{-1/2}$.
                                                                           
 ---
 
@@ -170,14 +218,34 @@ sampling distribution of the statistic $\hat{\theta}_{n}$.
 * Moreover, even if one wanted to use something like \@ref(eq:normal-approx), working out 
 standard error formulas can be a great challenge in more complicated situations.
 
+---
+
 * The **bootstrap** is a simulation-based approach for computing standard errors and
 confidence intervals.
 
 * The bootstrap does not rely on any particular parametric assumptions and
-can be applied in almost any context.
+can be applied in almost any context 
+(though bootstrap confidence intervals can fail to work as desired in some situations).
 
+* Through resampling from the original dataset, the bootstrap uses many possible alternative datasets to
+assess the variability in $\hat{\theta}_{n}$. 
 
+<!-- html table generated in R 3.6.2 by xtable 1.8-4 package -->
+<!-- Tue Dec 31 03:08:36 2019 -->
+<table border=1>
+<tr> <th>  </th> <th> OriginalDat </th> <th> Dat1 </th> <th> Dat2 </th> <th> Dat3 </th> <th> Dat4 </th>  </tr>
+  <tr> <td align="center"> Obs. 1 </td> <td align="center"> 0.20 </td> <td align="center"> 0.20 </td> <td align="center"> 0.80 </td> <td align="center"> 0.20 </td> <td align="center"> 0.30 </td> </tr>
+  <tr> <td align="center"> Obs. 2 </td> <td align="center"> 0.50 </td> <td align="center"> 0.20 </td> <td align="center"> 0.80 </td> <td align="center"> 0.20 </td> <td align="center"> 0.70 </td> </tr>
+  <tr> <td align="center"> Obs. 3 </td> <td align="center"> 0.30 </td> <td align="center"> 0.30 </td> <td align="center"> 0.50 </td> <td align="center"> 0.80 </td> <td align="center"> 0.20 </td> </tr>
+  <tr> <td align="center"> Obs. 4 </td> <td align="center"> 0.80 </td> <td align="center"> 0.30 </td> <td align="center"> 0.70 </td> <td align="center"> 0.50 </td> <td align="center"> 0.50 </td> </tr>
+  <tr> <td align="center"> Obs. 5 </td> <td align="center"> 0.70 </td> <td align="center"> 0.70 </td> <td align="center"> 0.20 </td> <td align="center"> 0.30 </td> <td align="center"> 0.20 </td> </tr>
+  <tr> <td align="center"> theta.hat </td> <td align="center"> 0.50 </td> <td align="center"> 0.34 </td> <td align="center"> 0.60 </td> <td align="center"> 0.40 </td> <td align="center"> 0.38 </td> </tr>
+   </table>
 
+* In the above example, the bootstrap standard error for $\hat{\theta}_{n}$ would be
+\begin{equation}
+se_{n} = 
+\end{equation}
 
 ## Example 4: Nonparametric Regression with a Single Covariate {#sec:example-nonpar-regress1}
                                                                             
@@ -196,7 +264,7 @@ with the assumption $\varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2})$ often 
 * In this model, there are only 3 parameters: $(\beta_{0}, \beta_{1}, \sigma^{2})$,
 and the number of parameters stays fixed for all $n$.
                                                                           
-<img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="01-Introduction_files/figure-html/unnamed-chunk-3-1.png" width="672" />
                                                                           
 ---
 
@@ -240,7 +308,7 @@ that the number of parameters to be estimated will change with the sample size.
 * Allowing the number of basis functions to grow with $n$ is important. For a sufficiently large number of basis functions, one should be able to approximate the 
 true mean function $m(x)$ arbitrarily closely.
 
-<img src="01-Introduction_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<img src="01-Introduction_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 
 

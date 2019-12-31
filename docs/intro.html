@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2019-12-30" />
+<meta name="date" content="2019-12-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -354,16 +354,27 @@ s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \su
 <p><img src="01-Introduction_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <ul>
 <li><p>Notice that the null distribution of <span class="math inline">\(T\)</span> depends on the parametric assumption that both <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span>
-and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>. (Mention CLT argument here)</p></li>
-<li><p>In addition to using the assumption that <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span> and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>, we used this parametric assumption in the formulation of the hypothesis test itself because we assumed that any difference between <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span> would be fully described by difference in <span class="math inline">\(\mu_{x}\)</span> and <span class="math inline">\(\mu_{y}\)</span>.</p></li>
+and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>. Appealing to the Central Limit Theorem, one could
+argue that is a quite reasonable assumption.</p></li>
+<li><p>In addition to using the assumption that <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span> and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>, we used this parametric assumption (at least implicitly) in the formulation of the hypothesis test itself because we assumed that any difference between <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span> would be fully described by difference in <span class="math inline">\(\mu_{x}\)</span> and <span class="math inline">\(\mu_{y}\)</span>.</p></li>
+<li><p>So, in a sense, you are using the assumption of normality twice in the construction of the two-sample t-test.</p></li>
 </ul>
 <hr />
 <p><strong>Nonparametric Tests</strong></p>
 <ul>
 <li><p>Two-sample nonparametric tests are meant to be “distribution-free”. This means the null distribution of the test statistic does not depend on any parametric
 assumptions about the two populations <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span>.</p></li>
-<li><p>Also, the hypotheses tests themselves do not rely on any parametric assumptions.</p></li>
-<li><p>For example,</p></li>
+<li><p>Many such tests are based on <strong>ranks</strong>. The distribution of the ranks under the assumption that <span class="math inline">\(F_{X} = F_{Y}\)</span> do
+not depend on the form of <span class="math inline">\(F_{X}\)</span> (assuming <span class="math inline">\(F_{X}\)</span> is continuous).</p></li>
+<li><p>Also, the statements of hypotheses tests for nonparametric tests should not rely on any parametric assumptions about <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span>.</p></li>
+<li><p>For example, <span class="math inline">\(H_{A}: F_{X} \neq F_{Y}\)</span> or <span class="math inline">\(H_{A}: F_{X} \geq F_{Y}\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Nonparametric tests usually tradeoff power for greater robustness.</p></li>
+<li><p>In general, if the parametric assumptions are correct, a nonparametric test will have less power than its parametric counterpart.</p></li>
+<li><p>If the parametric assumptions are not correct, parametric tests might have inappropriate type-I error control
+or lose power.</p></li>
 </ul>
 </div>
 <div id="sec:example-nonpar-estimation" class="section level2">
@@ -380,9 +391,31 @@ For example,
 <li><span class="math inline">\(X_{i} \sim \textrm{Exponential}(\lambda)\)</span></li>
 <li><span class="math inline">\(X_{i} \sim \textrm{Beta}(\alpha, \beta)\)</span></li>
 </ul></li>
+</ul>
+<hr />
+<ul>
 <li><p>If we assume that <span class="math inline">\(X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )\)</span>, we only need to estimate 2 parameters to
 fully describe the distribution of <span class="math inline">\(X_{i}\)</span>, and the number of parameters will not depend on the sample size.</p></li>
+<li><p>In a nonparametric approach to characterizing the distribution of <span class="math inline">\(X_{i}\)</span>, we need to instead
+estimate the entire distribution function <span class="math inline">\(F_{X}\)</span> or density function <span class="math inline">\(f_{X}\)</span>.</p></li>
+<li><p>The distribution function <span class="math inline">\(F_{X}\)</span> is usually estimated by the <strong>empirical distribution function</strong>
+<span class="math display">\[\begin{equation}
+\hat{F}_{n}(t) = \frac{1}{n}\sum_{i=1}^{n} I( X_{i} \leq t),
+\end{equation}\]</span>
+where <span class="math inline">\(I()\)</span> denotes the indicator function. That is, <span class="math inline">\(I( X_{i} \leq t) = 1\)</span> if <span class="math inline">\(X_{i} \leq t\)</span>,
+and <span class="math inline">\(I(X_{i} \leq t) = 0\)</span> if <span class="math inline">\(X_{i} &gt; t\)</span>.</p></li>
+<li><p>The empirical distribution function is a discrete distribution function,
+and it can be thought of as an estimate having <span class="math inline">\(n\)</span> &quot;parameters.</p></li>
+<li><p>The density function of <span class="math inline">\(X_{i}\)</span> is often estimated by a kernel density estimator (KDE). This
+is defined as
+<span class="math display">\[\begin{equation}
+\hat{f}_{n}(t) = \frac{1}{n h_{n}} \sum_{i=1}^{n} K\Big( \frac{t - X_{i}}{ h_{n} } \Big).
+\end{equation}\]</span></p></li>
+<li><span class="math inline">\(K()\)</span> - the kernel function</li>
+<li><p><span class="math inline">\(h_{n}\)</span> - the bandwidth</p></li>
+<li><p>The KDE is a type of smoothing procedure.</p></li>
 </ul>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" /><img src="01-Introduction_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
 </div>
 <div id="sec:example-nonpar-confint" class="section level2">
 <h2><span class="header-section-number">1.5</span> Example 3: Confidence Intervals</h2>
@@ -398,9 +431,15 @@ fully describe the distribution of <span class="math inline">\(X_{i}\)</span>, a
 <span class="math display">\[\begin{equation}
 [\hat{\theta}_{n} - 1.96 se_{n}, \hat{\theta}_{n} + 1.96 se_{n}  ]
 \end{equation}\]</span></p></li>
-<li><p>Common examples of this include
-+ <span class="math inline">\(\hat{\theta}_{n} = \bar{X}_{n}\)</span>. In this case, appeals to the Central Limit Theorem would justify approximation <a href="intro.html#eq:normal-approx">(1.2)</a>. The variance of <span class="math inline">\(\hat{\theta}_{n}\)</span> would be <span class="math inline">\(\sigma^{2}\)</span>, and the standard error would typically be <span class="math inline">\(se_{n} = \hat{\sigma}/\sqrt{n}\)</span>.
-+ <span class="math inline">\(\hat{\theta}_{n} = \textrm{Maximum Likelihood Estimate of } \theta\)</span>. In this case, asymptotics would justify the approximate distribution <span class="math inline">\(\hat{\theta}_{n} \sim \textrm{Normal}(\theta, \frac{1}{nI(\theta)} )\)</span>, where <span class="math inline">\(I(\theta)\)</span> denotes the Fisher information. The standard error in this context is often <span class="math inline">\(se_{n} = 1/\sqrt{n I(\hat{\theta}_{n})}\)</span>.</p></li>
+<li>Common examples of this include:
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(\hat{\theta}_{n} = \bar{X}_{n}\)</span>.</li>
+</ol>
+<p>In this case, appeals to the Central Limit Theorem would justify approximation <a href="intro.html#eq:normal-approx">(1.2)</a>. The variance of <span class="math inline">\(\hat{\theta}_{n}\)</span> would be <span class="math inline">\(\sigma^{2}\)</span>, and the standard error would typically be <span class="math inline">\(se_{n} = \hat{\sigma}/\sqrt{n}\)</span>.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><span class="math inline">\(\hat{\theta}_{n} = \textrm{Maximum Likelihood Estimate of } \theta\)</span>.</li>
+</ol>
+<p>In this case, asymptotics would justify the approximate distribution <span class="math inline">\(\hat{\theta}_{n} \sim \textrm{Normal}(\theta, \frac{1}{nI(\theta)} )\)</span>, where <span class="math inline">\(I(\theta)\)</span> denotes the Fisher information. The standard error in this context is often <span class="math inline">\(se_{n} = \{ n I(\hat{\theta}_{n}) \}^{-1/2}\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
@@ -408,10 +447,165 @@ fully describe the distribution of <span class="math inline">\(X_{i}\)</span>, a
 sampling distribution of the statistic <span class="math inline">\(\hat{\theta}_{n}\)</span>.</p></li>
 <li><p>Moreover, even if one wanted to use something like <a href="intro.html#eq:normal-approx">(1.2)</a>, working out
 standard error formulas can be a great challenge in more complicated situations.</p></li>
+</ul>
+<hr />
+<ul>
 <li><p>The <strong>bootstrap</strong> is a simulation-based approach for computing standard errors and
 confidence intervals.</p></li>
 <li><p>The bootstrap does not rely on any particular parametric assumptions and
-can be applied in almost any context.</p></li>
+can be applied in almost any context
+(though bootstrap confidence intervals can fail to work as desired in some situations).</p></li>
+<li><p>Through resampling from the original dataset, the bootstrap uses many possible alternative datasets to
+assess the variability in <span class="math inline">\(\hat{\theta}_{n}\)</span>.</p></li>
+</ul>
+<!-- html table generated in R 3.6.2 by xtable 1.8-4 package -->
+<!-- Tue Dec 31 03:08:36 2019 -->
+<table border="1">
+<tr>
+<th>
+</th>
+<th>
+OriginalDat
+</th>
+<th>
+Dat1
+</th>
+<th>
+Dat2
+</th>
+<th>
+Dat3
+</th>
+<th>
+Dat4
+</th>
+</tr>
+<tr>
+<td align="center">
+Obs. 1
+</td>
+<td align="center">
+0.20
+</td>
+<td align="center">
+0.20
+</td>
+<td align="center">
+0.80
+</td>
+<td align="center">
+0.20
+</td>
+<td align="center">
+0.30
+</td>
+</tr>
+<tr>
+<td align="center">
+Obs. 2
+</td>
+<td align="center">
+0.50
+</td>
+<td align="center">
+0.20
+</td>
+<td align="center">
+0.80
+</td>
+<td align="center">
+0.20
+</td>
+<td align="center">
+0.70
+</td>
+</tr>
+<tr>
+<td align="center">
+Obs. 3
+</td>
+<td align="center">
+0.30
+</td>
+<td align="center">
+0.30
+</td>
+<td align="center">
+0.50
+</td>
+<td align="center">
+0.80
+</td>
+<td align="center">
+0.20
+</td>
+</tr>
+<tr>
+<td align="center">
+Obs. 4
+</td>
+<td align="center">
+0.80
+</td>
+<td align="center">
+0.30
+</td>
+<td align="center">
+0.70
+</td>
+<td align="center">
+0.50
+</td>
+<td align="center">
+0.50
+</td>
+</tr>
+<tr>
+<td align="center">
+Obs. 5
+</td>
+<td align="center">
+0.70
+</td>
+<td align="center">
+0.70
+</td>
+<td align="center">
+0.20
+</td>
+<td align="center">
+0.30
+</td>
+<td align="center">
+0.20
+</td>
+</tr>
+<tr>
+<td align="center">
+theta.hat
+</td>
+<td align="center">
+0.50
+</td>
+<td align="center">
+0.34
+</td>
+<td align="center">
+0.60
+</td>
+<td align="center">
+0.40
+</td>
+<td align="center">
+0.38
+</td>
+</tr>
+</table>
+<ul>
+<li>In the above example, the bootstrap standard error for <span class="math inline">\(\hat{\theta}_{n}\)</span> would be
+<span class="math display">\[\begin{equation}
+se_{n} = 
+\end{equation}\]</span></li>
 </ul>
 </div>
 <div id="sec:example-nonpar-regress1" class="section level2">
@@ -428,7 +622,7 @@ with the assumption <span class="math inline">\(\varepsilon_{i} \sim \textrm{Nor
 <li><p>In this model, there are only 3 parameters: <span class="math inline">\((\beta_{0}, \beta_{1}, \sigma^{2})\)</span>,
 and the number of parameters stays fixed for all <span class="math inline">\(n\)</span>.</p></li>
 </ul>
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <hr />
 <ul>
 <li><p>The nonparametric counterpart to linear regression is usually formulated in the following way
@@ -464,7 +658,7 @@ that the number of parameters to be estimated will change with the sample size.<
 <li><p>Allowing the number of basis functions to grow with <span class="math inline">\(n\)</span> is important. For a sufficiently large number of basis functions, one should be able to approximate the
 true mean function <span class="math inline">\(m(x)\)</span> arbitrarily closely.</p></li>
 </ul>
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 <div id="sec:example-nonpar-regress2" class="section level2">
 <h2><span class="header-section-number">1.7</span> Example 5: Nonparametric Regression</h2>

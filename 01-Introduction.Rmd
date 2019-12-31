@@ -113,9 +113,12 @@ lines(xgrid, yy, lwd=2)
 ```
 
 * Notice that the null distribution of $T$ depends on the parametric assumption that both $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
-and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. (Mention CLT argument here)
+and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. Appealing to the Central Limit Theorem, one could
+argue that is a quite reasonable assumption.
 
-* In addition to using the assumption that $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$ and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$, we used this parametric assumption in the formulation of the hypothesis test itself because we assumed that any difference between $F_{X}$ and $F_{Y}$ would be fully described by difference in $\mu_{x}$ and $\mu_{y}$.
+* In addition to using the assumption that $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$ and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$, we used this parametric assumption (at least implicitly) in the formulation of the hypothesis test itself because we assumed that any difference between $F_{X}$ and $F_{Y}$ would be fully described by difference in $\mu_{x}$ and $\mu_{y}$.
+
+* So, in a sense, you are using the assumption of normality twice in the construction of the two-sample t-test.
 
 ---
 
@@ -124,9 +127,21 @@ and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. (Mention CLT argument here)
 * Two-sample nonparametric tests are meant to be "distribution-free". This means the null distribution of the test statistic does not depend on any parametric
 assumptions about the two populations $F_{X}$ and $F_{Y}$. 
 
-* Also, the hypotheses tests themselves do not rely on any parametric assumptions.
+* Many such tests are based on **ranks**. The distribution of the ranks under the assumption that $F_{X} = F_{Y}$ do 
+not depend on the form of $F_{X}$ (assuming $F_{X}$ is continuous).
 
-* For example, 
+* Also, the statements of hypotheses tests for nonparametric tests should not rely on any parametric assumptions about $F_{X}$ and $F_{Y}$.
+
+* For example, $H_{A}: F_{X} \neq F_{Y}$ or $H_{A}: F_{X} \geq F_{Y}$.
+
+---
+
+* Nonparametric tests usually tradeoff power for greater robustness.
+
+* In general, if the parametric assumptions are correct, a nonparametric test will have less power than its parametric counterpart.
+
+* If the parametric assumptions are not correct, parametric tests might have inappropriate type-I error control
+or lose power.
 
 ## Example 2: Nonparametric Estimation {#sec:example-nonpar-estimation}
 
@@ -142,10 +157,51 @@ For example,
     + $X_{i} \sim \textrm{Exponential}(\lambda)$
     + $X_{i} \sim \textrm{Beta}(\alpha, \beta)$
 
+---
+
 * If we assume that $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )$, we only need to estimate 2 parameters to
 fully describe the distribution of $X_{i}$, and the number of parameters will not depend on the sample size. 
                                                                         
-                                                                        
+* In a nonparametric approach to characterizing the distribution of $X_{i}$, we need to instead 
+estimate the entire distribution function $F_{X}$ or density function $f_{X}$.
+
+* The distribution function $F_{X}$ is usually estimated by the **empirical distribution function**
+\begin{equation}
+\hat{F}_{n}(t) = \frac{1}{n}\sum_{i=1}^{n} I( X_{i} \leq t),
+\end{equation}
+where $I()$ denotes the indicator function. That is, $I( X_{i} \leq t) = 1$ if $X_{i} \leq t$,
+and $I(X_{i} \leq t) = 0$ if $X_{i} > t$.
+
+* The empirical distribution function is a discrete distribution function, 
+and it can be thought of as an estimate having $n$ "parameters.
+
+* The density function of $X_{i}$ is often estimated by a kernel density estimator (KDE). This
+is defined as
+\begin{equation}
+\hat{f}_{n}(t) = \frac{1}{n h_{n}} \sum_{i=1}^{n} K\Big( \frac{t - X_{i}}{ h_{n} } \Big).
+\end{equation}
+
+* $K()$ - the kernel function
+* $h_{n}$ - the bandwidth
+
+* The KDE is a type of smoothing procedure.
+
+```{r, echo=FALSE}
+kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", header=TRUE)
+
+mu.kidney <- mean(log(kidney$age))
+sd.kidney <- sd(log(kidney$age))
+hist(kidney$age, main="Histogram of Age in Kidney Fitness Data", las=1)
+
+ff <- density(kidney$age)
+tt <- seq(0, 100, length.out=500)
+hist(kidney$age, main="Histogram of Age and Other Density Estimates", las=1, xlim=c(0,100), las=1, xlab="age", ylab="Density", prob=TRUE)
+lines(ff$x, ff$y, lwd=2)
+lines(tt, dlnorm(tt, meanlog=mu.kidney, sdlog=sd.kidney), lwd=2, col="red")
+legend("topright", legend=c("KDE", "Log-normal dist."), col=c("black", "red"), lwd=3, bty='n')
+```
+
+                                                              
 ## Example 3: Confidence Intervals {#sec:example-nonpar-confint}
 
 * Inference for a wide range of statistical procedures is based on the following argument
@@ -163,9 +219,14 @@ fully describe the distribution of $X_{i}$, and the number of parameters will no
 [\hat{\theta}_{n} - 1.96 se_{n}, \hat{\theta}_{n} + 1.96 se_{n}  ]
 \end{equation}
 
-* Common examples of this include
-       + $\hat{\theta}_{n} = \bar{X}_{n}$. In this case, appeals to the Central Limit Theorem would justify approximation \@ref(eq:normal-approx). The variance of $\hat{\theta}_{n}$ would be $\sigma^{2}$, and the standard error would typically be $se_{n} = \hat{\sigma}/\sqrt{n}$. 
-       + $\hat{\theta}_{n} = \textrm{Maximum Likelihood Estimate of } \theta$. In this case, asymptotics would justify the approximate distribution $\hat{\theta}_{n} \sim \textrm{Normal}(\theta, \frac{1}{nI(\theta)} )$, where $I(\theta)$ denotes the Fisher information. The standard error in this context is often $se_{n} = 1/\sqrt{n I(\hat{\theta}_{n})}$.
+* Common examples of this include:
+    1. $\hat{\theta}_{n} = \bar{X}_{n}$. 
+    
+    In this case, appeals to the Central Limit Theorem would justify approximation \@ref(eq:normal-approx). The variance of $\hat{\theta}_{n}$ would be $\sigma^{2}$, and the standard error would typically be $se_{n} = \hat{\sigma}/\sqrt{n}$. 
+    
+    2. $\hat{\theta}_{n} = \textrm{Maximum Likelihood Estimate of } \theta$. 
+      
+    In this case, asymptotics would justify the approximate distribution $\hat{\theta}_{n} \sim \textrm{Normal}(\theta, \frac{1}{nI(\theta)} )$, where $I(\theta)$ denotes the Fisher information. The standard error in this context is often $se_{n} = \{ n I(\hat{\theta}_{n}) \}^{-1/2}$.
                                                                           
 ---
 
@@ -175,14 +236,38 @@ sampling distribution of the statistic $\hat{\theta}_{n}$.
 * Moreover, even if one wanted to use something like \@ref(eq:normal-approx), working out 
 standard error formulas can be a great challenge in more complicated situations.
 
+---
+
 * The **bootstrap** is a simulation-based approach for computing standard errors and
 confidence intervals.
 
 * The bootstrap does not rely on any particular parametric assumptions and
-can be applied in almost any context.
+can be applied in almost any context 
+(though bootstrap confidence intervals can fail to work as desired in some situations).
 
+* Through resampling from the original dataset, the bootstrap uses many possible alternative datasets to
+assess the variability in $\hat{\theta}_{n}$. 
 
+```{r kable, echo=FALSE, results="asis"}
+library(knitr)
+library(xtable)
+n <- 100
+xx <- c(.2, .5, .3, .8, .7)
+xx2 <- xx[c(1,1,3,3,5)]
+xx3 <- xx[c(4,4,2,5,1)]
+xx4 <- xx[c(1,1,4,2,3)]
+xx5 <- xx[c(3,5,1,2,1)]
+theta.hat <- c(mean(xx), mean(xx2), mean(xx3), mean(xx4), mean(xx5))
+A <- data.frame(OriginalDat=c(xx, theta.hat[1]), Dat1=c(xx2, theta.hat[2]), Dat2=c(xx3, theta.hat[3]), Dat3=c(xx4, theta.hat[4]), Dat4=c(xx5, theta.hat[5]))
+rownames(A) <- c("Obs. 1", "Obs. 2", "Obs. 3", "Obs. 4", "Obs. 5", "theta.hat")
+tab <- xtable(A, digits=c(2, 2, 2, 2, 2, 2), align=rep("c", 6))
+print(tab, type="html")
+```
 
+* In the above example, the bootstrap standard error for $\hat{\theta}_{n}$ would be
+\begin{equation}
+se_{n} = 
+\end{equation}
 
 ## Example 4: Nonparametric Regression with a Single Covariate {#sec:example-nonpar-regress1}
                                                                             
