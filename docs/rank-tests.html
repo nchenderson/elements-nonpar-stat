@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2019-12-31" />
+<meta name="date" content="2020-01-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -136,7 +136,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#sec:example-nonpar-estimation"><i class="fa fa-check"></i><b>1.4</b> Example 2: Nonparametric Estimation</a></li>
 <li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#sec:example-nonpar-confint"><i class="fa fa-check"></i><b>1.5</b> Example 3: Confidence Intervals</a></li>
 <li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress1"><i class="fa fa-check"></i><b>1.6</b> Example 4: Nonparametric Regression with a Single Covariate</a></li>
-<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress2"><i class="fa fa-check"></i><b>1.7</b> Example 5: Nonparametric Regression</a></li>
+<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress2"><i class="fa fa-check"></i><b>1.7</b> Example 5: Classification and Regression Trees (CART)</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Working with R</a></li>
 <li class="part"><span><b>I Nonparametric Testing</b></span></li>
@@ -147,7 +147,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2.2" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-ranks"><i class="fa fa-check"></i><b>3.2.2</b> Properties of Ranks</a></li>
 </ul></li>
 <li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#two-sample-tests"><i class="fa fa-check"></i><b>3.3</b> Two-Sample Tests</a><ul>
-<li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-test"><i class="fa fa-check"></i><b>3.3.1</b> The Wilcoxon Rank Sum Test</a></li>
+<li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test"><i class="fa fa-check"></i><b>3.3.1</b> The Wilcoxon Rank Sum (WRS) Test</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.4</b> One Sample Tests</a><ul>
 <li class="chapter" data-level="3.4.1" data-path="rank-tests.html"><a href="rank-tests.html#the-sign-test"><i class="fa fa-check"></i><b>3.4.1</b> The Sign Test</a></li>
@@ -314,16 +314,17 @@ on the set of <span class="math inline">\(n!\)</span> permutations of <span clas
 </div>
 <div id="two-sample-tests" class="section level2">
 <h2><span class="header-section-number">3.3</span> Two-Sample Tests</h2>
-<div id="the-wilcoxon-rank-sum-test" class="section level3">
-<h3><span class="header-section-number">3.3.1</span> The Wilcoxon Rank Sum Test</h3>
+<div id="the-wilcoxon-rank-sum-wrs-test" class="section level3">
+<h3><span class="header-section-number">3.3.1</span> The Wilcoxon Rank Sum (WRS) Test</h3>
 <div id="goal-of-the-test" class="section level4">
 <h4><span class="header-section-number">3.3.1.1</span> Goal of the Test</h4>
 <ul>
-<li><p>The Wilcoxon Rank Sum (WRS) test (sometimes referred to as the Wilcoxon-Mann-Whitney test) is a two-sample test.</p></li>
+<li><p>The Wilcoxon Rank Sum (WRS) test (sometimes referred to as the Wilcoxon-Mann-Whitney test) is a popular,
+rank-based two-sample test.</p></li>
 <li><p>The WRS test is used to test whether or not observations from one group tend to be larger (or smaller) than observations
 from the other group.</p></li>
 <li><p>Suppose we have observations from two groups: <span class="math inline">\(X_{1}, \ldots, X_{n} \sim F_{X}\)</span> and <span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim F_{Y}\)</span>.</p></li>
-<li><p>The WRS test will test the hypothesis
+<li><p>Roughly speaking, the WRS tests the following hypothesis
 <span class="math display">\[\begin{eqnarray}
 H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: &amp; &amp; \textrm{Observations from } F_{X} \textrm{ tend to be larger than observations from } F_{Y} \nonumber 
@@ -331,22 +332,28 @@ H_{A}: &amp; &amp; \textrm{Observations from } F_{X} \textrm{ tend to be larger 
 </ul>
 <hr />
 <ul>
-<li><p>What is meant by “tend to be larger”?</p></li>
+<li><p>What is meant by “tend to be larger” in the alternative hypothesis?</p></li>
 <li>Two common ways of stating the alternative hypothesis for the WRS include
+<ol style="list-style-type: decimal">
+<li>The stochastic dominance alternative
 <span class="math display">\[\begin{eqnarray}
 H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: &amp; &amp; F_{X} \textrm{ is stochastically larger than } F_{Y} \nonumber 
-\end{eqnarray}\]</span>
-or
+\end{eqnarray}\]</span></li>
+<li>The “shift” alternative
 <span class="math display">\[\begin{eqnarray}
 H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: &amp; &amp; F_{X}(t) = F_{Y}(t - \Delta), \Delta &gt; 0.
 \end{eqnarray}\]</span></li>
+</ol></li>
 <li><p>A distribution function <span class="math inline">\(F_{X}\)</span> is said to be stochastically larger than
 <span class="math inline">\(F_{Y}\)</span> if <span class="math inline">\(F_{X}(t) \geq F_{Y}(t)\)</span> for all <span class="math inline">\(t\)</span> with <span class="math inline">\(F_{X}(t) &gt; F_{Y}(t)\)</span>
 for at least one value of <span class="math inline">\(t\)</span>.</p></li>
 <li><p>Note that the “shift alternative” implies stochastic dominance.</p></li>
-<li><p>Why do we need to specify an alternative?</p></li>
+</ul>
+<hr />
+<ul>
+<li>Why do we need to specify an alternative?</li>
 </ul>
 </div>
 <div id="definition-of-the-wrs-test-statistic" class="section level4">
@@ -356,9 +363,16 @@ for at least one value of <span class="math inline">\(t\)</span>.</p></li>
 in one group.</p></li>
 <li><p>If observations from group 1 tend to be larger than those from group 2, the average rank from group 1 should exceed the
 average rank from group 2.</p></li>
-<li></li>
+<li><p>A sufficiently large value of the average rank from group 1 will allow to reject <span class="math inline">\(H_{0}\)</span>
+in favor of <span class="math inline">\(H_{A}\)</span>.</p></li>
 </ul>
 <hr />
+<ul>
+<li>Let us define the pooled sample data vector <span class="math inline">\(\mathbf{Z}\)</span> as
+<span class="math display">\[\begin{equation}
+\mathbf{Z} = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})
+\end{equation}\]</span></li>
+</ul>
 </div>
 <div id="computing-p-values" class="section level4">
 <h4><span class="header-section-number">3.3.1.3</span> Computing p-values</h4>

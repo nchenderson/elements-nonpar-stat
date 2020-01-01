@@ -1,5 +1,10 @@
 # Introduction {#intro}
 
+```{r, echo=FALSE}
+library(knitr)
+library(xtable)
+library(rpart)
+```
 ---
   
 ---
@@ -191,7 +196,7 @@ kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.tx
 
 mu.kidney <- mean(log(kidney$age))
 sd.kidney <- sd(log(kidney$age))
-hist(kidney$age, main="Histogram of Age in Kidney Fitness Data", las=1)
+hist(kidney$age, main="Histogram of Age in Kidney Fitness Data", las=1, xlab="age")
 
 ff <- density(kidney$age)
 tt <- seq(0, 100, length.out=500)
@@ -249,8 +254,6 @@ can be applied in almost any context
 assess the variability in $\hat{\theta}_{n}$. 
 
 ```{r kable, echo=FALSE, results="asis"}
-library(knitr)
-library(xtable)
 n <- 100
 xx <- c(.2, .5, .3, .8, .7)
 xx2 <- xx[c(1,1,3,3,5)]
@@ -264,10 +267,46 @@ tab <- xtable(A, digits=c(2, 2, 2, 2, 2, 2), align=rep("c", 6))
 print(tab, type="html")
 ```
 
+---
+
+* In the above example, we have 4 **boostrap replications** for the statistic $\hat{\theta}$: 
+\begin{eqnarray}
+\hat{\theta}^{(1)} &=& 0.34 \\ 
+\hat{\theta}^{(2)} &=& 0.60 \\
+\hat{\theta}^{(3)} &=& 0.40 \\ 
+\hat{\theta}^{(4)} &=& 0.38
+\end{eqnarray}
+
 * In the above example, the bootstrap standard error for $\hat{\theta}_{n}$ would be
-\begin{equation}
-se_{n} = 
-\end{equation}
+the standard deviation of the bootstrap replications
+\begin{eqnarray}
+se_{boot} &=& \Big( \frac{1}{3} \sum_{b=1}^{4} \{ \hat{\theta}^{(b)} - \hat{\theta}^{(-)}  \}^{2} \Big)^{1/2} \nonumber \\
+&=& \Big( (0.34 - 0.43)^{2}/3 + (0.60 - 0.43)^{2}/3 + (0.40 - 0.43)^{2}/3 + (0.38 - 0.43)^{2}/3 \Big)^{1/2} \nonumber \\
+&=& 0.116
+\end{eqnarray}
+where $\hat{\theta}^{(-)} = 0.43$ is the average of the bootstrap replications.
+
+* One would then report the confidence interval $[\hat{\theta} - 1.96 \times 0.116, \hat{\theta} + 1.96 \times 0.116]$.
+In practice, the number of bootstrap replications is typically much larger than $4$.
+
+* It is often better to construct confidence intervals using the percentiles from the bootstrap distribution
+of $\hat{\theta}$ rather than use a confidence interval of the form: $\hat{\theta} \pm 1.96 \times se_{boot}$.
+
+```{r, echo=FALSE, fig.cap="Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dasjed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution."}
+## Bootstrap for kidney age data
+nreps <- 500
+nn <- length(kidney$age)
+boot.kidney.sd <- rep(0, nreps)
+for(k in 1:nreps) {
+  ind <- sample(1:nn, size=nn, replace=TRUE)
+  boot.kidney.sd[k] <- sd(kidney$age[ind])
+}
+qq <- quantile(boot.kidney.sd, probs=c(.025, .975))
+hist(boot.kidney.sd, las=1, xlab="age", main="Bootstrap distribution for the sample standard deviation")
+abline(v=qq[1], lwd=3, lty=2)
+abline(v=qq[2], lwd=3, lty=2)
+```
+
 
 ## Example 4: Nonparametric Regression with a Single Covariate {#sec:example-nonpar-regress1}
                                                                             
@@ -346,4 +385,55 @@ lines(sspl$x, sspl$y, lwd=3)
 
 
 
-## Example 5: Nonparametric Regression {#sec:example-nonpar-regress2}
+## Example 5: Classification and Regression Trees (CART) {#sec:example-nonpar-regress2}
+
+* Suppose we now have observations $(y_{1}, \mathbf{x}_{1}), \ldots, (y_{n}, \mathbf{x}_{n})$ where
+$y_{i}$ is a continuous response and $\mathbf{x}_{i}$ is a p-dimensional vector of covariates.
+
+* Regression trees are a nonparametric approach for predicting $y_{i}$ from $\mathbf{x}_{i}$.
+
+* Here, the regression function is a **decision tree** rather than some fitted curve.
+
+* With a decision tree, a final prediction from a covariate vector $\mathbf{x}_{i}$ is obtained by answering
+a sequence of "yes or no" questions.
+
+* When the responses $y_{i}$ are binary, such trees are referred to as classification trees.
+Hence, the name: classification and regression trees (CART).
+
+```{r, echo=FALSE}
+par(xpd=NA)
+fit <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)
+plot(fit, lwd=2)
+text(fit, use.n = TRUE)
+```
+
+---
+
+* Classification and regression trees are constructed through **recursive partitioning**.
+
+* Recursive partitioning is the process of deciding if and how to split a given
+node into two child nodes.
+
+* Tree splits are usually chosen to minimize the "within-node" sum of squares.
+
+* The size of the final is determined by a process of "pruning" the tree
+with cross-validation determining the best place to stop pruning.
+
+* Regression trees are an example of a more algorithmic approach to 
+constructing predictions (as opposed to probability modeling in more
+traditional statistical methods) with a strong emphasis on predictive
+performance as measured through cross-validation.
+
+---
+
+* While single regression trees have the advantage of being directly interpretable, 
+their prediction performance is often not that great.
+
+* However, using collections of trees can be very effective for prediction and
+has been used in many popular learning methods. Examples include: random forests, 
+boosting, and Bayesian additive regression trees (BART). 
+
+* Methods such as these can perform well on much larger datasets. We will discuss
+additional methods if time allows.
+
+

@@ -1,5 +1,6 @@
 # Introduction {#intro}
 
+
 ---
   
 ---
@@ -105,7 +106,7 @@ s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \su
 
 * Under the assumption of normality, the null distribution of $T$ is a t distribution with $n + m - 2$ degrees of freedom.
                                                                         
-<img src="01-Introduction_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+<img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 * Notice that the null distribution of $T$ depends on the parametric assumption that both $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
 and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. Appealing to the Central Limit Theorem, one could
@@ -181,7 +182,7 @@ is defined as
 
 * The KDE is a type of smoothing procedure.
 
-<img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" /><img src="01-Introduction_files/figure-html/unnamed-chunk-2-2.png" width="672" />
+<img src="01-Introduction_files/figure-html/unnamed-chunk-3-1.png" width="672" /><img src="01-Introduction_files/figure-html/unnamed-chunk-3-2.png" width="672" />
 
                                                               
 ## Example 3: Confidence Intervals {#sec:example-nonpar-confint}
@@ -231,7 +232,7 @@ can be applied in almost any context
 assess the variability in $\hat{\theta}_{n}$. 
 
 <!-- html table generated in R 3.6.2 by xtable 1.8-4 package -->
-<!-- Tue Dec 31 03:08:36 2019 -->
+<!-- Wed Jan  1 01:48:43 2020 -->
 <table border=1>
 <tr> <th>  </th> <th> OriginalDat </th> <th> Dat1 </th> <th> Dat2 </th> <th> Dat3 </th> <th> Dat4 </th>  </tr>
   <tr> <td align="center"> Obs. 1 </td> <td align="center"> 0.20 </td> <td align="center"> 0.20 </td> <td align="center"> 0.80 </td> <td align="center"> 0.20 </td> <td align="center"> 0.30 </td> </tr>
@@ -242,10 +243,36 @@ assess the variability in $\hat{\theta}_{n}$.
   <tr> <td align="center"> theta.hat </td> <td align="center"> 0.50 </td> <td align="center"> 0.34 </td> <td align="center"> 0.60 </td> <td align="center"> 0.40 </td> <td align="center"> 0.38 </td> </tr>
    </table>
 
+---
+
+* In the above example, we have 4 **boostrap replications** for the statistic $\hat{\theta}$: 
+\begin{eqnarray}
+\hat{\theta}^{(1)} &=& 0.34 \\ 
+\hat{\theta}^{(2)} &=& 0.60 \\
+\hat{\theta}^{(3)} &=& 0.40 \\ 
+\hat{\theta}^{(4)} &=& 0.38
+\end{eqnarray}
+
 * In the above example, the bootstrap standard error for $\hat{\theta}_{n}$ would be
-\begin{equation}
-se_{n} = 
-\end{equation}
+the standard deviation of the bootstrap replications
+\begin{eqnarray}
+se_{boot} &=& \Big( \frac{1}{3} \sum_{b=1}^{4} \{ \hat{\theta}^{(b)} - \hat{\theta}^{(-)}  \}^{2} \Big)^{1/2} \nonumber \\
+&=& \Big( (0.34 - 0.43)^{2}/3 + (0.60 - 0.43)^{2}/3 + (0.40 - 0.43)^{2}/3 + (0.38 - 0.43)^{2}/3 \Big)^{1/2} \nonumber \\
+&=& 0.116
+\end{eqnarray}
+where $\hat{\theta}^{(-)} = 0.43$ is the average of the bootstrap replications.
+
+* One would then report the confidence interval $[\hat{\theta} - 1.96 \times 0.116, \hat{\theta} + 1.96 \times 0.116]$.
+In practice, the number of bootstrap replications is typically much larger than $4$.
+
+* It is often better to construct confidence intervals using the percentiles from the bootstrap distribution
+of $\hat{\theta}$ rather than use a confidence interval of the form: $\hat{\theta} \pm 1.96 \times se_{boot}$.
+
+<div class="figure">
+<img src="01-Introduction_files/figure-html/unnamed-chunk-4-1.png" alt="Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dasjed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-4)Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dasjed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution.</p>
+</div>
+
 
 ## Example 4: Nonparametric Regression with a Single Covariate {#sec:example-nonpar-regress1}
                                                                             
@@ -264,7 +291,7 @@ with the assumption $\varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2})$ often 
 * In this model, there are only 3 parameters: $(\beta_{0}, \beta_{1}, \sigma^{2})$,
 and the number of parameters stays fixed for all $n$.
                                                                           
-<img src="01-Introduction_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<img src="01-Introduction_files/figure-html/unnamed-chunk-5-1.png" width="672" />
                                                                           
 ---
 
@@ -308,8 +335,54 @@ that the number of parameters to be estimated will change with the sample size.
 * Allowing the number of basis functions to grow with $n$ is important. For a sufficiently large number of basis functions, one should be able to approximate the 
 true mean function $m(x)$ arbitrarily closely.
 
-<img src="01-Introduction_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<img src="01-Introduction_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 
 
-## Example 5: Nonparametric Regression {#sec:example-nonpar-regress2}
+## Example 5: Classification and Regression Trees (CART) {#sec:example-nonpar-regress2}
+
+* Suppose we now have observations $(y_{1}, \mathbf{x}_{1}), \ldots, (y_{n}, \mathbf{x}_{n})$ where
+$y_{i}$ is a continuous response and $\mathbf{x}_{i}$ is a p-dimensional vector of covariates.
+
+* Regression trees are a nonparametric approach for predicting $y_{i}$ from $\mathbf{x}_{i}$.
+
+* Here, the regression function is a **decision tree** rather than some fitted curve.
+
+* With a decision tree, a final prediction from a covariate vector $\mathbf{x}_{i}$ is obtained by answering
+a sequence of "yes or no" questions.
+
+* When the responses $y_{i}$ are binary, such trees are referred to as classification trees.
+Hence, the name: classification and regression trees (CART).
+
+<img src="01-Introduction_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+
+---
+
+* Classification and regression trees are constructed through **recursive partitioning**.
+
+* Recursive partitioning is the process of deciding if and how to split a given
+node into two child nodes.
+
+* Tree splits are usually chosen to minimize the "within-node" sum of squares.
+
+* The size of the final is determined by a process of "pruning" the tree
+with cross-validation determining the best place to stop pruning.
+
+* Regression trees are an example of a more algorithmic approach to 
+constructing predictions (as opposed to probability modeling in more
+traditional statistical methods) with a strong emphasis on predictive
+performance as measured through cross-validation.
+
+---
+
+* While single regression trees have the advantage of being directly interpretable, 
+their prediction performance is often not that great.
+
+* However, using collections of trees can be very effective for prediction and
+has been used in many popular learning methods. Examples include: random forests, 
+boosting, and Bayesian additive regression trees (BART). 
+
+* Methods such as these can perform well on much larger datasets. We will discuss
+additional methods if time allows.
+
+

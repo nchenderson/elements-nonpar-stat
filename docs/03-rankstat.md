@@ -96,18 +96,19 @@ on the set of $n!$ permutations of $(1,2,\ldots,n)$.
 
 ## Two-Sample Tests
 
-### The Wilcoxon Rank Sum Test
+### The Wilcoxon Rank Sum (WRS) Test
 
 #### Goal of the Test
 
-* The Wilcoxon Rank Sum (WRS) test (sometimes referred to as the Wilcoxon-Mann-Whitney test) is a two-sample test.
+* The Wilcoxon Rank Sum (WRS) test (sometimes referred to as the Wilcoxon-Mann-Whitney test) is a popular,
+rank-based two-sample test.
 
 * The WRS test is used to test whether or not observations from one group tend to be larger (or smaller) than observations
 from the other group. 
 
 * Suppose we have observations from two groups: $X_{1}, \ldots, X_{n} \sim F_{X}$ and $Y_{1}, \ldots, Y_{m} \sim F_{Y}$.
 
-* The WRS test will test the hypothesis
+* Roughly speaking, the WRS tests the following hypothesis
 \begin{eqnarray}
 H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: & & \textrm{Observations from } F_{X} \textrm{ tend to be larger than observations from } F_{Y} \nonumber 
@@ -115,14 +116,15 @@ H_{A}: & & \textrm{Observations from } F_{X} \textrm{ tend to be larger than obs
 
 ---
 
-* What is meant by "tend to be larger"?
+* What is meant by "tend to be larger" in the alternative hypothesis?
 
 * Two common ways of stating the alternative hypothesis for the WRS include
+    1. The stochastic dominance alternative
 \begin{eqnarray}
 H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: & & F_{X} \textrm{ is stochastically larger than } F_{Y} \nonumber 
 \end{eqnarray}
-or
+    2. The "shift" alternative
 \begin{eqnarray}
 H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: & & F_{X}(t) = F_{Y}(t - \Delta), \Delta > 0.
@@ -132,6 +134,8 @@ $F_{Y}$ if $F_{X}(t) \geq F_{Y}(t)$ for all $t$ with $F_{X}(t) > F_{Y}(t)$
 for at least one value of $t$.
 
 * Note that the "shift alternative" implies stochastic dominance.
+
+---
 
 * Why do we need to specify an alternative?
 
@@ -143,9 +147,15 @@ in one group.
 * If observations from group 1 tend to be larger than those from group 2, the average rank from group 1 should exceed the
 average rank from group 2. 
 
-* 
+* A sufficiently large value of the average rank from group 1 will allow to reject $H_{0}$ 
+in favor of $H_{A}$.
 
 ---
+
+* Let us define the pooled sample data vector $\mathbf{Z}$ as 
+\begin{equation}
+\mathbf{Z} = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})
+\end{equation}
 
 #### Computing p-values
 

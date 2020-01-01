@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2019-12-31" />
+<meta name="date" content="2020-01-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -136,7 +136,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#sec:example-nonpar-estimation"><i class="fa fa-check"></i><b>1.4</b> Example 2: Nonparametric Estimation</a></li>
 <li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#sec:example-nonpar-confint"><i class="fa fa-check"></i><b>1.5</b> Example 3: Confidence Intervals</a></li>
 <li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress1"><i class="fa fa-check"></i><b>1.6</b> Example 4: Nonparametric Regression with a Single Covariate</a></li>
-<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress2"><i class="fa fa-check"></i><b>1.7</b> Example 5: Nonparametric Regression</a></li>
+<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress2"><i class="fa fa-check"></i><b>1.7</b> Example 5: Classification and Regression Trees (CART)</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Working with R</a></li>
 <li class="part"><span><b>I Nonparametric Testing</b></span></li>
@@ -147,7 +147,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2.2" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-ranks"><i class="fa fa-check"></i><b>3.2.2</b> Properties of Ranks</a></li>
 </ul></li>
 <li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#two-sample-tests"><i class="fa fa-check"></i><b>3.3</b> Two-Sample Tests</a><ul>
-<li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-test"><i class="fa fa-check"></i><b>3.3.1</b> The Wilcoxon Rank Sum Test</a></li>
+<li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test"><i class="fa fa-check"></i><b>3.3.1</b> The Wilcoxon Rank Sum (WRS) Test</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.4</b> One Sample Tests</a><ul>
 <li class="chapter" data-level="3.4.1" data-path="rank-tests.html"><a href="rank-tests.html#the-sign-test"><i class="fa fa-check"></i><b>3.4.1</b> The Sign Test</a></li>
@@ -351,7 +351,7 @@ s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \su
 <li><p>The t-test is based on the <strong>null distribution</strong> of <span class="math inline">\(T\)</span> - the distribution of <span class="math inline">\(T\)</span> under the null hypothesis.</p></li>
 <li><p>Under the assumption of normality, the null distribution of <span class="math inline">\(T\)</span> is a t distribution with <span class="math inline">\(n + m - 2\)</span> degrees of freedom.</p></li>
 </ul>
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <ul>
 <li><p>Notice that the null distribution of <span class="math inline">\(T\)</span> depends on the parametric assumption that both <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span>
 and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>. Appealing to the Central Limit Theorem, one could
@@ -415,7 +415,7 @@ is defined as
 <li><p><span class="math inline">\(h_{n}\)</span> - the bandwidth</p></li>
 <li><p>The KDE is a type of smoothing procedure.</p></li>
 </ul>
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" /><img src="01-Introduction_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-3-1.png" width="672" /><img src="01-Introduction_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
 </div>
 <div id="sec:example-nonpar-confint" class="section level2">
 <h2><span class="header-section-number">1.5</span> Example 3: Confidence Intervals</h2>
@@ -459,7 +459,7 @@ can be applied in almost any context
 assess the variability in <span class="math inline">\(\hat{\theta}_{n}\)</span>.</p></li>
 </ul>
 <!-- html table generated in R 3.6.2 by xtable 1.8-4 package -->
-<!-- Tue Dec 31 03:08:36 2019 -->
+<!-- Wed Jan  1 01:48:43 2020 -->
 <table border="1">
 <tr>
 <th>
@@ -601,12 +601,34 @@ theta.hat
 </td>
 </tr>
 </table>
+<hr />
 <ul>
-<li>In the above example, the bootstrap standard error for <span class="math inline">\(\hat{\theta}_{n}\)</span> would be
-<span class="math display">\[\begin{equation}
-se_{n} = 
-\end{equation}\]</span></li>
+<li><p>In the above example, we have 4 <strong>boostrap replications</strong> for the statistic <span class="math inline">\(\hat{\theta}\)</span>:
+<span class="math display">\[\begin{eqnarray}
+\hat{\theta}^{(1)} &amp;=&amp; 0.34 \\ 
+\hat{\theta}^{(2)} &amp;=&amp; 0.60 \\
+\hat{\theta}^{(3)} &amp;=&amp; 0.40 \\ 
+\hat{\theta}^{(4)} &amp;=&amp; 0.38
+\end{eqnarray}\]</span></p></li>
+<li><p>In the above example, the bootstrap standard error for <span class="math inline">\(\hat{\theta}_{n}\)</span> would be
+the standard deviation of the bootstrap replications
+<span class="math display">\[\begin{eqnarray}
+se_{boot} &amp;=&amp; \Big( \frac{1}{3} \sum_{b=1}^{4} \{ \hat{\theta}^{(b)} - \hat{\theta}^{(-)}  \}^{2} \Big)^{1/2} \nonumber \\
+&amp;=&amp; \Big( (0.34 - 0.43)^{2}/3 + (0.60 - 0.43)^{2}/3 + (0.40 - 0.43)^{2}/3 + (0.38 - 0.43)^{2}/3 \Big)^{1/2} \nonumber \\
+&amp;=&amp; 0.116
+\end{eqnarray}\]</span>
+where <span class="math inline">\(\hat{\theta}^{(-)} = 0.43\)</span> is the average of the bootstrap replications.</p></li>
+<li><p>One would then report the confidence interval <span class="math inline">\([\hat{\theta} - 1.96 \times 0.116, \hat{\theta} + 1.96 \times 0.116]\)</span>.
+In practice, the number of bootstrap replications is typically much larger than <span class="math inline">\(4\)</span>.</p></li>
+<li><p>It is often better to construct confidence intervals using the percentiles from the bootstrap distribution
+of <span class="math inline">\(\hat{\theta}\)</span> rather than use a confidence interval of the form: <span class="math inline">\(\hat{\theta} \pm 1.96 \times se_{boot}\)</span>.</p></li>
 </ul>
+<div class="figure"><span id="fig:unnamed-chunk-4"></span>
+<img src="01-Introduction_files/figure-html/unnamed-chunk-4-1.png" alt="Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dasjed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution." width="672" />
+<p class="caption">
+Figure 1.1: Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dasjed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution.
+</p>
+</div>
 </div>
 <div id="sec:example-nonpar-regress1" class="section level2">
 <h2><span class="header-section-number">1.6</span> Example 4: Nonparametric Regression with a Single Covariate</h2>
@@ -622,7 +644,7 @@ with the assumption <span class="math inline">\(\varepsilon_{i} \sim \textrm{Nor
 <li><p>In this model, there are only 3 parameters: <span class="math inline">\((\beta_{0}, \beta_{1}, \sigma^{2})\)</span>,
 and the number of parameters stays fixed for all <span class="math inline">\(n\)</span>.</p></li>
 </ul>
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <hr />
 <ul>
 <li><p>The nonparametric counterpart to linear regression is usually formulated in the following way
@@ -658,10 +680,44 @@ that the number of parameters to be estimated will change with the sample size.<
 <li><p>Allowing the number of basis functions to grow with <span class="math inline">\(n\)</span> is important. For a sufficiently large number of basis functions, one should be able to approximate the
 true mean function <span class="math inline">\(m(x)\)</span> arbitrarily closely.</p></li>
 </ul>
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div id="sec:example-nonpar-regress2" class="section level2">
-<h2><span class="header-section-number">1.7</span> Example 5: Nonparametric Regression</h2>
+<h2><span class="header-section-number">1.7</span> Example 5: Classification and Regression Trees (CART)</h2>
+<ul>
+<li><p>Suppose we now have observations <span class="math inline">\((y_{1}, \mathbf{x}_{1}), \ldots, (y_{n}, \mathbf{x}_{n})\)</span> where
+<span class="math inline">\(y_{i}\)</span> is a continuous response and <span class="math inline">\(\mathbf{x}_{i}\)</span> is a p-dimensional vector of covariates.</p></li>
+<li><p>Regression trees are a nonparametric approach for predicting <span class="math inline">\(y_{i}\)</span> from <span class="math inline">\(\mathbf{x}_{i}\)</span>.</p></li>
+<li><p>Here, the regression function is a <strong>decision tree</strong> rather than some fitted curve.</p></li>
+<li><p>With a decision tree, a final prediction from a covariate vector <span class="math inline">\(\mathbf{x}_{i}\)</span> is obtained by answering
+a sequence of “yes or no” questions.</p></li>
+<li><p>When the responses <span class="math inline">\(y_{i}\)</span> are binary, such trees are referred to as classification trees.
+Hence, the name: classification and regression trees (CART).</p></li>
+</ul>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<hr />
+<ul>
+<li><p>Classification and regression trees are constructed through <strong>recursive partitioning</strong>.</p></li>
+<li><p>Recursive partitioning is the process of deciding if and how to split a given
+node into two child nodes.</p></li>
+<li><p>Tree splits are usually chosen to minimize the “within-node” sum of squares.</p></li>
+<li><p>The size of the final is determined by a process of “pruning” the tree
+with cross-validation determining the best place to stop pruning.</p></li>
+<li><p>Regression trees are an example of a more algorithmic approach to
+constructing predictions (as opposed to probability modeling in more
+traditional statistical methods) with a strong emphasis on predictive
+performance as measured through cross-validation.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>While single regression trees have the advantage of being directly interpretable,
+their prediction performance is often not that great.</p></li>
+<li><p>However, using collections of trees can be very effective for prediction and
+has been used in many popular learning methods. Examples include: random forests,
+boosting, and Bayesian additive regression trees (BART).</p></li>
+<li><p>Methods such as these can perform well on much larger datasets. We will discuss
+additional methods if time allows.</p></li>
+</ul>
 
 </div>
 </div>
