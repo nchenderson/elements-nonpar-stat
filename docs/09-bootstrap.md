@@ -1,6 +1,6 @@
 # (PART) Uncertainty Measures {-} 
 
-# The Bootstrap {#sampling}
+# The Jackknife {#sampling}
 
 
 ## Introduction

@@ -1,9 +1,5 @@
-# The Jacknife {#ci}
+# The Bootstrap and Confidence Intervals {#ci}
  
-**Definition: Confidence Interval**
-
-
-
 
 
 

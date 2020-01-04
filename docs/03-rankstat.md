@@ -2,7 +2,7 @@
 
 # Rank and Sign Statistics {#rank-tests}
 
-## Introduction
+<!--   ## Introduction
 
 Start with t-test example, difference in means is sufficient for superiority
 
@@ -11,6 +11,7 @@ Give example of type of tests we are interested in.
 Why ranks and why nonparametric testing?
 
 (reduce influence of outliers)
+-->
 
 ## Ranks
 

@@ -402,9 +402,21 @@ Hence, the name: classification and regression trees (CART).
 
 ```{r, echo=FALSE}
 par(xpd=NA)
-fit <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)
-plot(fit, lwd=2)
-text(fit, use.n = TRUE)
+RCTdata <- read.csv("~/Documents/STAT685Notes/Data/RCTdata.csv")
+fit.oral <- rpart(oralhlth ~ age + female + smk + arm + pkyrs, data = RCTdata, subset=month==12)
+par(xpd=NA)
+plot(fit.oral, lwd=2, main="CART for Regression: Predicting an Oral Health Score", branch=1/2)
+text(fit.oral, use.n = TRUE)
+```
+
+<!-- If true go left down tree. E.g., if someone is in treatment arm A, they get a prediction of 13.95  -->
+
+
+```{r, echo=FALSE}
+par(xpd=NA)
+fit.kyph <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)
+plot(fit.kyph, lwd=2, main="CART for Classification: Predicting Absence or Presence of Condition)", branch=1/2)
+text(fit.kyph, use.n = TRUE)
 ```
 
 ---

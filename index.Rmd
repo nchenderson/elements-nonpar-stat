@@ -9,9 +9,9 @@ biblio-style: apalike
 link-citations: yes
 github-repo: nchenderson/elements-nonpar-stat
 url: 'https://nchenderson.github.io/elements-nonpar-stat/'
-description: "Everything you need (and nothing more) to start a bookdown book."
+description: "Course notes for Biostatistics 685/Statistics 560 (Winter 2020)."
 ---
 
 # Preface {-}
 
-This is the very first part of the book.
+This book will serve as the main source of course notes for Biostatistics 685/Statistics 560, Winter 2020.

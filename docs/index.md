@@ -1,7 +1,7 @@
 --- 
 title: "Elements of Nonparametric Statistics"
 author: "Nicholas Henderson"
-date: "2020-01-01"
+date: "2020-01-04"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib]
@@ -9,9 +9,9 @@ biblio-style: apalike
 link-citations: yes
 github-repo: nchenderson/elements-nonpar-stat
 url: 'https://nchenderson.github.io/elements-nonpar-stat/'
-description: "Everything you need (and nothing more) to start a bookdown book."
+description: "Course notes for Biostatistics 685/Statistics 560 (Winter 2020)."
 ---
 
 # Preface {-}
 
-This is the very first part of the book.
+This book will serve as the main source of course notes for Biostatistics 685/Statistics 560, Winter 2020.
