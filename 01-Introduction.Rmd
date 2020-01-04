@@ -329,7 +329,7 @@ and the number of parameters stays fixed for all $n$.
 xx <- runif(200, min=-1/2, max=1)
 yy <- xx^3 + .1*rnorm(200)
 lm.unif <- lm(yy ~ xx)
-plot(xx, yy, xlab="x", ylab="y", type="n", las=1, main="Linear regression model for (xi, yi) with fitted curve")
+plot(xx, yy, xlab="x", ylab="y", type="n", las=1, main=expression('Linear regression for (x'[i]*', y'[i]*')'))
 points(xx, yy, pch=16, cex=.8)
 lines(xx, lm.unif$coef[1] + lm.unif$coef[2]*xx, lwd=3)
 ```
