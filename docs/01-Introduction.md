@@ -210,7 +210,7 @@ is defined as
 * Common examples of this include:
     1. $\hat{\theta}_{n} = \bar{X}_{n}$. 
     
-    In this case, appeals to the Central Limit Theorem would justify approximation \@ref(eq:normal-approx). The variance of $\hat{\theta}_{n}$ would be $\sigma^{2}$, and the standard error would typically be $se_{n} = \hat{\sigma}/\sqrt{n}$. 
+    In this case, appeals to the Central Limit Theorem would justify approximation \@ref(eq:normal-approx). The variance of $\hat{\theta}_{n}$ would be $\sigma^{2}/n$, and the standard error would typically be $se_{n} = \hat{\sigma}/\sqrt{n}$. 
     
     2. $\hat{\theta}_{n} = \textrm{Maximum Likelihood Estimate of } \theta$. 
       
