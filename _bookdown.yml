@@ -2,8 +2,10 @@ book_filename: "bookdown-start"
 chapter_name: "Chapter "
 repo: https://github.com/nchenderson/elements-nonpar-stat
 output_dir: docs
-rmd_files: ["index.Rmd", "01-Introduction.Rmd", "02-getting-started.Rmd", "03-rankstat.Rmd", "04-multistat.Rmd", "05-permutation.Rmd", "06-ustatistics.Rmd",
+rmd_files: 
+    html: ["index.Rmd", "01-Introduction.Rmd", "02-getting-started.Rmd", "03-rankstat.Rmd", "04-multistat.Rmd", "05-permutation.Rmd", "06-ustatistics.Rmd",
             "07-empiricalcdf.Rmd", "08-densityestimation.Rmd", "09-bootstrap.Rmd", "10-confidence-intervals.Rmd", "11-kernel-regression.Rmd",
             "12-splines.Rmd","13-cart.Rmd","14-ensemble.Rmd"]
+    latex: ["index.Rmd", "01-IntroductionLatex.Rmd"]
 clean: [packages.bib, bookdown.bbl]
 new_session: yes

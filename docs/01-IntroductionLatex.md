@@ -1,10 +1,6 @@
 # Introduction {#intro}
 
-```{r, echo=FALSE}
-library(knitr)
-library(xtable)
-library(rpart)
-```
+
 ---
   
 ---
@@ -110,12 +106,7 @@ s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \su
 
 * Under the assumption of normality, the null distribution of $T$ is a t distribution with $n + m - 2$ degrees of freedom.
                                                                         
-```{r, echo=FALSE}
-xgrid <- seq(-4,4, length.out=500)
-yy <- dt(xgrid, df=18)
-plot(xgrid, yy, type="n", ylab="Density", xlab="t", main="Null Distribution of T when n = m = 10", las=1)
-lines(xgrid, yy, lwd=2)
-```
+![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-2-1.pdf)<!-- --> 
 
 * Notice that the null distribution of $T$ depends on the parametric assumption that both $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
 and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. Appealing to the Central Limit Theorem, one could
@@ -187,24 +178,12 @@ is defined as
 \end{equation}
 
 * $K()$ - the kernel function
+
 * $h_{n}$ - the bandwidth
 
 * The KDE is a type of smoothing procedure.
 
-```{r, echo=FALSE}
-kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", header=TRUE)
-
-mu.kidney <- mean(log(kidney$age))
-sd.kidney <- sd(log(kidney$age))
-hist(kidney$age, main="Histogram of Age in Kidney Fitness Data", las=1, xlab="age")
-
-ff <- density(kidney$age)
-tt <- seq(0, 100, length.out=500)
-hist(kidney$age, main="Histogram of Age and Other Density Estimates", las=1, xlim=c(0,100), las=1, xlab="age", ylab="Density", prob=TRUE)
-lines(ff$x, ff$y, lwd=2)
-lines(tt, dlnorm(tt, meanlog=mu.kidney, sdlog=sd.kidney), lwd=2, col="red")
-legend("topright", legend=c("KDE", "Log-normal dist."), col=c("black", "red"), lwd=3, bty='n')
-```
+![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-3-1.pdf)<!-- --> ![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-3-2.pdf)<!-- --> 
 
                                                               
 ## Example 3: Confidence Intervals {#sec:example-nonpar-confint}
@@ -253,19 +232,21 @@ can be applied in almost any context
 * Through resampling from the original dataset, the bootstrap uses many possible alternative datasets to
 assess the variability in $\hat{\theta}_{n}$. 
 
-```{r kable, echo=FALSE, results="asis"}
-n <- 100
-xx <- c(.2, .5, .3, .8, .7)
-xx2 <- xx[c(1,1,3,3,5)]
-xx3 <- xx[c(4,4,2,5,1)]
-xx4 <- xx[c(1,1,4,2,3)]
-xx5 <- xx[c(3,5,1,2,1)]
-theta.hat <- c(mean(xx), mean(xx2), mean(xx3), mean(xx4), mean(xx5))
-A <- data.frame(OriginalDat=c(xx, theta.hat[1]), Dat1=c(xx2, theta.hat[2]), Dat2=c(xx3, theta.hat[3]), Dat3=c(xx4, theta.hat[4]), Dat4=c(xx5, theta.hat[5]))
-rownames(A) <- c("Obs. 1", "Obs. 2", "Obs. 3", "Obs. 4", "Obs. 5", "theta.hat")
-tab <- xtable(A, digits=c(2, 2, 2, 2, 2, 2), align=rep("c", 6))
-print(tab, type="html", comment=FALSE)
-```
+\begin{table}[ht]
+\centering
+\begin{tabular}{cccccc}
+  \hline
+ & OriginalDat & Dat1 & Dat2 & Dat3 & Dat4 \\ 
+  \hline
+Obs. 1 & 0.20 & 0.20 & 0.80 & 0.20 & 0.30 \\ 
+  Obs. 2 & 0.50 & 0.20 & 0.80 & 0.20 & 0.70 \\ 
+  Obs. 3 & 0.30 & 0.30 & 0.50 & 0.80 & 0.20 \\ 
+  Obs. 4 & 0.80 & 0.30 & 0.70 & 0.50 & 0.50 \\ 
+  Obs. 5 & 0.70 & 0.70 & 0.20 & 0.30 & 0.20 \\ 
+  theta.hat & 0.50 & 0.34 & 0.60 & 0.40 & 0.38 \\ 
+   \hline
+\end{tabular}
+\end{table}
 
 ---
 
@@ -292,20 +273,7 @@ In practice, the number of bootstrap replications is typically much larger than 
 * It is often better to construct confidence intervals using the percentiles from the bootstrap distribution
 of $\hat{\theta}$ rather than use a confidence interval of the form: $\hat{\theta} \pm 1.96 \times se_{boot}$.
 
-```{r, echo=FALSE, fig.cap="Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dasjed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution."}
-## Bootstrap for kidney age data
-nreps <- 500
-nn <- length(kidney$age)
-boot.kidney.sd <- rep(0, nreps)
-for(k in 1:nreps) {
-  ind <- sample(1:nn, size=nn, replace=TRUE)
-  boot.kidney.sd[k] <- sd(kidney$age[ind])
-}
-qq <- quantile(boot.kidney.sd, probs=c(.025, .975))
-hist(boot.kidney.sd, las=1, xlab="age", main="Bootstrap distribution for the sample standard deviation")
-abline(v=qq[1], lwd=3, lty=2)
-abline(v=qq[2], lwd=3, lty=2)
-```
+![(\#fig:unnamed-chunk-4)Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dasjed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution.](01-IntroductionLatex_files/figure-latex/unnamed-chunk-4-1.pdf) 
 
 
 ## Example 4: Nonparametric Regression with a Single Covariate {#sec:example-nonpar-regress1}
@@ -325,14 +293,7 @@ with the assumption $\varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2})$ often 
 * In this model, there are only 3 parameters: $(\beta_{0}, \beta_{1}, \sigma^{2})$,
 and the number of parameters stays fixed for all $n$.
                                                                           
-```{r, echo=FALSE}
-xx <- runif(200, min=-1/2, max=1)
-yy <- xx^3 + .1*rnorm(200)
-lm.unif <- lm(yy ~ xx)
-plot(xx, yy, xlab="x", ylab="y", type="n", las=1, main=expression('Linear regression for (x'[i]*', y'[i]*')'))
-points(xx, yy, pch=16, cex=.8)
-lines(xx, lm.unif$coef[1] + lm.unif$coef[2]*xx, lwd=3)
-```
+![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
                                                                           
 ---
 
@@ -376,12 +337,7 @@ that the number of parameters to be estimated will change with the sample size.
 * Allowing the number of basis functions to grow with $n$ is important. For a sufficiently large number of basis functions, one should be able to approximate the 
 true mean function $m(x)$ arbitrarily closely.
 
-```{r, echo=FALSE}
-sspl <- smooth.spline(xx, yy)
-plot(xx, yy, xlab="x", ylab="y", type="n", las=1, main="Fitted smoothing spline")
-points(xx, yy, pch=16, cex=.8)
-lines(sspl$x, sspl$y, lwd=3)
-```
+![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> 
 
 
 
@@ -400,24 +356,12 @@ a sequence of "yes or no" questions.
 * When the responses $y_{i}$ are binary, such trees are referred to as classification trees.
 Hence, the name: classification and regression trees (CART).
 
-```{r, echo=FALSE}
-par(xpd=NA)
-RCTdata <- read.csv("~/Documents/STAT685Notes/Data/RCTdata.csv")
-fit.oral <- rpart(oralhlth ~ age + female + smk + arm + pkyrs, data = RCTdata, subset=month==12)
-par(xpd=NA)
-plot(fit.oral, lwd=2, main="CART for Regression: Predicting an Oral Health Score", branch=1/2)
-text(fit.oral, use.n = TRUE)
-```
+![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
 
 <!-- If true go left down tree. E.g., if someone is in treatment arm A, they get a prediction of 13.95  -->
 
 
-```{r, echo=FALSE}
-par(xpd=NA)
-fit.kyph <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)
-plot(fit.kyph, lwd=2, main="CART for Classification: Predicting Absence or Presence of Condition)", branch=1/2)
-text(fit.kyph, use.n = TRUE)
-```
+![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
 
 ---
 

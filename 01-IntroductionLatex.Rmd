@@ -187,6 +187,7 @@ is defined as
 \end{equation}
 
 * $K()$ - the kernel function
+
 * $h_{n}$ - the bandwidth
 
 * The KDE is a type of smoothing procedure.
@@ -264,7 +265,7 @@ theta.hat <- c(mean(xx), mean(xx2), mean(xx3), mean(xx4), mean(xx5))
 A <- data.frame(OriginalDat=c(xx, theta.hat[1]), Dat1=c(xx2, theta.hat[2]), Dat2=c(xx3, theta.hat[3]), Dat3=c(xx4, theta.hat[4]), Dat4=c(xx5, theta.hat[5]))
 rownames(A) <- c("Obs. 1", "Obs. 2", "Obs. 3", "Obs. 4", "Obs. 5", "theta.hat")
 tab <- xtable(A, digits=c(2, 2, 2, 2, 2, 2), align=rep("c", 6))
-print(tab, type="html", comment=FALSE)
+print(tab, type="latex", comment=FALSE)
 ```
 
 ---

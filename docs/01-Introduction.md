@@ -231,8 +231,6 @@ can be applied in almost any context
 * Through resampling from the original dataset, the bootstrap uses many possible alternative datasets to
 assess the variability in $\hat{\theta}_{n}$. 
 
-<!-- html table generated in R 3.6.2 by xtable 1.8-4 package -->
-<!-- Sat Jan  4 17:21:35 2020 -->
 <table border=1>
 <tr> <th>  </th> <th> OriginalDat </th> <th> Dat1 </th> <th> Dat2 </th> <th> Dat3 </th> <th> Dat4 </th>  </tr>
   <tr> <td align="center"> Obs. 1 </td> <td align="center"> 0.20 </td> <td align="center"> 0.20 </td> <td align="center"> 0.80 </td> <td align="center"> 0.20 </td> <td align="center"> 0.30 </td> </tr>
