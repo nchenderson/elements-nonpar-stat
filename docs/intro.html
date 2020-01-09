@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-08" />
+<meta name="date" content="2020-01-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -275,21 +275,21 @@ of a regression model.</p></li>
 <li>Rank-based Tests</li>
 <li>Permutation Tests</li>
 </ul>
-<ol style="list-style-type: decimal">
+<ol start="2" style="list-style-type: decimal">
 <li><strong>Estimation of Basic Nonparametric Quantities</strong></li>
 </ol>
 <ul>
 <li>The Empirical Distribution Function</li>
 <li>Density Estimation</li>
 </ul>
-<ol style="list-style-type: decimal">
+<ol start="3" style="list-style-type: decimal">
 <li><strong>Nonparametric Confidence Intervals</strong></li>
 </ol>
 <ul>
 <li>Bootstrap</li>
 <li>Jacknife</li>
 </ul>
-<ol style="list-style-type: decimal">
+<ol start="4" style="list-style-type: decimal">
 <li><strong>Nonparametric Regression Part I (Smoothing Methods)</strong></li>
 </ol>
 <ul>
@@ -297,7 +297,7 @@ of a regression model.</p></li>
 <li>Splines</li>
 <li>Local Regression</li>
 </ul>
-<ol style="list-style-type: decimal">
+<ol start="5" style="list-style-type: decimal">
 <li><strong>Nonparametric Regression Part II (Machine Learning Methods)</strong></li>
 </ol>
 <ul>
@@ -405,7 +405,12 @@ estimate the entire distribution function <span class="math inline">\(F_{X}\)</s
 where <span class="math inline">\(I()\)</span> denotes the indicator function. That is, <span class="math inline">\(I( X_{i} \leq t) = 1\)</span> if <span class="math inline">\(X_{i} \leq t\)</span>,
 and <span class="math inline">\(I(X_{i} \leq t) = 0\)</span> if <span class="math inline">\(X_{i} &gt; t\)</span>.</p></li>
 <li><p>The empirical distribution function is a discrete distribution function,
-and it can be thought of as an estimate having <span class="math inline">\(n\)</span> &quot;parameters.</p></li>
+and it can be thought of as an estimate having <span class="math inline">\(n\)</span> “parameters”.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Kernel density estimation is probably the most common nonparametric method for estimating
+a probability distribution function <span class="math inline">\(f_{X}(t) = F_{X}&#39;(t)\)</span>.</p></li>
 <li><p>The density function of <span class="math inline">\(X_{i}\)</span> is often estimated by a kernel density estimator (KDE). This
 is defined as
 <span class="math display">\[\begin{equation}
@@ -701,7 +706,7 @@ Hence, the name: classification and regression trees (CART).</p></li>
 <li><p>Recursive partitioning is the process of deciding if and how to split a given
 node into two child nodes.</p></li>
 <li><p>Tree splits are usually chosen to minimize the “within-node” sum of squares.</p></li>
-<li><p>The size of the final is determined by a process of “pruning” the tree
+<li><p>The size of the final tree is determined by a process of “pruning” the tree
 with cross-validation determining the best place to stop pruning.</p></li>
 <li><p>Regression trees are an example of a more algorithmic approach to
 constructing predictions (as opposed to probability modeling in more

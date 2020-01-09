@@ -40,17 +40,17 @@ This course is roughly divided into the following 5 categories.
 1. **Nonparametric Testing**
   + Rank-based Tests
 + Permutation Tests
-1. **Estimation of Basic Nonparametric Quantities** 
+2. **Estimation of Basic Nonparametric Quantities** 
   + The Empirical Distribution Function
 + Density Estimation
-1. **Nonparametric Confidence Intervals**
+3. **Nonparametric Confidence Intervals**
   + Bootstrap 
 + Jacknife
-1. **Nonparametric Regression Part I (Smoothing Methods)**
+4. **Nonparametric Regression Part I (Smoothing Methods)**
   + Kernel Methods
 + Splines
 + Local Regression
-1. **Nonparametric Regression Part II (Machine Learning Methods)**
+5. **Nonparametric Regression Part II (Machine Learning Methods)**
   + Decision Trees/CART
 + Ensemble Methods
 
@@ -169,7 +169,12 @@ where $I()$ denotes the indicator function. That is, $I( X_{i} \leq t) = 1$ if $
 and $I(X_{i} \leq t) = 0$ if $X_{i} > t$.
 
 * The empirical distribution function is a discrete distribution function, 
-and it can be thought of as an estimate having $n$ "parameters.
+and it can be thought of as an estimate having $n$ "parameters".
+
+---
+
+* Kernel density estimation is probably the most common nonparametric method for estimating
+a probability distribution function $f_{X}(t) = F_{X}'(t)$.
 
 * The density function of $X_{i}$ is often estimated by a kernel density estimator (KDE). This
 is defined as
@@ -368,7 +373,7 @@ node into two child nodes.
 
 * Tree splits are usually chosen to minimize the "within-node" sum of squares.
 
-* The size of the final is determined by a process of "pruning" the tree
+* The size of the final tree is determined by a process of "pruning" the tree
 with cross-validation determining the best place to stop pruning.
 
 * Regression trees are an example of a more algorithmic approach to 
