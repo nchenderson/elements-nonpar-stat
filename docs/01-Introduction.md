@@ -38,21 +38,21 @@ of a regression model.
 This course is roughly divided into the following 5 categories.
 
 1. **Nonparametric Testing**
-  + Rank-based Tests
-+ Permutation Tests
+   + Rank-based Tests
+   + Permutation Tests
 2. **Estimation of Basic Nonparametric Quantities** 
-  + The Empirical Distribution Function
-+ Density Estimation
+   + The Empirical Distribution Function
+   + Density Estimation
 3. **Nonparametric Confidence Intervals**
-  + Bootstrap 
-+ Jacknife
+   + Bootstrap 
+   + Jacknife
 4. **Nonparametric Regression Part I (Smoothing Methods)**
-  + Kernel Methods
-+ Splines
-+ Local Regression
+   + Kernel Methods
+   + Splines
+   + Local Regression
 5. **Nonparametric Regression Part II (Machine Learning Methods)**
-  + Decision Trees/CART
-+ Ensemble Methods
+   + Decision Trees/CART
+   + Ensemble Methods
 
 
 ## Example 1: Nonparametric vs. Parametric Two-Sample Testing {#sec:example-nonpar-tests}
