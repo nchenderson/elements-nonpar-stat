@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-09" />
+<meta name="date" content="2020-01-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -251,21 +251,28 @@ Why ranks and why nonparametric testing?
 <div id="definition" class="section level3">
 <h3><span class="header-section-number">3.1.1</span> Definition</h3>
 <ul>
-<li>Suppose we have <span class="math inline">\(n\)</span> observations <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>. The <strong>rank</strong> of the <span class="math inline">\(i^{th}\)</span> observation <span class="math inline">\(R_{i}\)</span> is defined as
+<li>Suppose we have <span class="math inline">\(n\)</span> observations <span class="math inline">\(\mathbf{X} = (X_{1}, \ldots, X_{n})\)</span>. The <strong>rank</strong> of the <span class="math inline">\(i^{th}\)</span> observation <span class="math inline">\(R_{i}\)</span> is defined as
 <span class="math display" id="eq:rankdef">\[\begin{equation}
-R_{i} = R(X_{i}) = \sum_{j=1}^{n} I( X_{j} \leq X_{i}) 
+R_{i} = R_{i}(\mathbf{X}) = \sum_{j=1}^{n} I( X_{i} \geq X_{j}) 
 \tag{3.1}
 \end{equation}\]</span>
 where
 <span class="math display">\[\begin{equation}
-I(X_{j} \leq X_{i}) 
+I(X_{i} \geq X_{j}) 
 = \begin{cases}
-1 &amp; \text{ if } X_{j} \leq X_{i} \\
-0 &amp; \text{ if } X_{j} &gt; X_{i}
+1 &amp; \text{ if } X_{i} \geq X_{j} \\
+0 &amp; \text{ if } X_{i} &lt; X_{j}
 \end{cases}
 \end{equation}\]</span></li>
 <li>The largest observation has a rank of <span class="math inline">\(n\)</span>.</li>
 <li>The smallest observation has a rank of <span class="math inline">\(1\)</span> (if there are no ties).</li>
+<li>I’m using the notation <span class="math inline">\(R_{i}(\mathbf{X})\)</span> to emphasize that the rank
+of the <span class="math inline">\(i^{th}\)</span> observations depends on the entire vector of observations
+rather than only the value of <span class="math inline">\(X_{i}\)</span>.</li>
+</ul>
+<hr />
+<ul>
+<li>You can compute ranks in <strong>R</strong> using the <strong>rank</strong> function:</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">1</span>, <span class="dv">12</span>, <span class="dv">6</span>)  <span class="co">## 5 observations</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">rank</span>(x)</a></code></pre></div>
@@ -277,7 +284,7 @@ receive their maximum possible rank.</li>
 In this case, one could argue whether both observations 2 and 3 should be ranked
 <span class="math inline">\(2^{nd}\)</span> or <span class="math inline">\(3^{rd}\)</span> while observations <span class="math inline">\(1\)</span> and <span class="math inline">\(4\)</span> should unambiguously receive
 ranks of <span class="math inline">\(1\)</span> and <span class="math inline">\(4\)</span> respectively.</li>
-<li><p>Under definition @rank(eq:rankdef), both observations <span class="math inline">\(2\)</span> and <span class="math inline">\(3\)</span> receive a rank of <span class="math inline">\(3\)</span>.</p></li>
+<li><p>Under definition <a href="rank-tests.html#eq:rankdef">(3.1)</a>, both observations <span class="math inline">\(2\)</span> and <span class="math inline">\(3\)</span> receive a rank of <span class="math inline">\(3\)</span>.</p></li>
 <li><p>In <strong>R</strong>, such handling of ties is done using the <strong>ties.method = “max”</strong> argument</p></li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)  </a>
@@ -313,6 +320,11 @@ E( R_{i} ) = \sum_{j=1}^{n} j P(R_{i} = j) = \frac{1}{n}\sum_{j=1}^{n} j = \frac
 the vector <span class="math inline">\(\mathbf{R}_{n} = (R_{1}, \ldots, R_{n})\)</span> is uniformly distributed
 on the set of <span class="math inline">\(n!\)</span> permutations of <span class="math inline">\((1,2,\ldots,n)\)</span>.</li>
 </ul>
+<hr />
+<p><strong>Exercise 3.1</strong>: Suppose <span class="math inline">\(X_{1}, X_{2}, X_{3}\)</span> are i.i.d. observations from a continuous
+distribution function <span class="math inline">\(F_{X}\)</span>. Compute the covariance matrix of the vector
+of ranks <span class="math inline">\(\big( R_{1}(\mathbf{X}), R_{2}(\mathbf{X}), R_{3}( \mathbf{X} ) \big)\)</span>.</p>
+<hr />
 </div>
 </div>
 <div id="two-sample-tests" class="section level2">

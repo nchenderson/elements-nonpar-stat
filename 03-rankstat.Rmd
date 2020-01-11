@@ -17,22 +17,28 @@ Why ranks and why nonparametric testing?
 
 ### Definition
 
-* Suppose we have $n$ observations $X_{1}, \ldots, X_{n}$. The **rank** of the $i^{th}$ observation $R_{i}$ is defined as
+* Suppose we have $n$ observations $\mathbf{X} = (X_{1}, \ldots, X_{n})$. The **rank** of the $i^{th}$ observation $R_{i}$ is defined as
 \begin{equation}
-R_{i} = R(X_{i}) = \sum_{j=1}^{n} I( X_{j} \leq X_{i}) 
+R_{i} = R_{i}(\mathbf{X}) = \sum_{j=1}^{n} I( X_{i} \geq X_{j}) 
 (\#eq:rankdef)
 \end{equation}
 where
 \begin{equation}
-I(X_{j} \leq X_{i}) 
+I(X_{i} \geq X_{j}) 
 = \begin{cases}
-1 & \text{ if } X_{j} \leq X_{i} \\
-0 & \text{ if } X_{j} > X_{i}
+1 & \text{ if } X_{i} \geq X_{j} \\
+0 & \text{ if } X_{i} < X_{j}
 \end{cases}
 \end{equation}
 * The largest observation has a rank of $n$.
 * The smallest observation has a rank of $1$ (if there are no ties).
+* I'm using the notation $R_{i}(\mathbf{X})$ to emphasize that the rank
+of the $i^{th}$ observations depends on the entire vector of observations
+rather than only the value of $X_{i}$.
 
+---
+
+* You can compute ranks in **R** using the **rank** function:
 ```{r }
 x <- c(3, 7, 1, 12, 6)  ## 5 observations
 rank(x)
@@ -44,7 +50,7 @@ receive their maximum possible rank.
 In this case, one could argue whether both observations 2 and 3 should be ranked
 $2^{nd}$ or $3^{rd}$ while observations $1$ and $4$ should unambiguously receive
 ranks of $1$ and $4$ respectively.
-* Under definition \@rank(eq:rankdef), both observations $2$ and $3$ receive a rank of $3$.
+* Under definition \@ref(eq:rankdef), both observations $2$ and $3$ receive a rank of $3$.
 
 * In **R**, such handling of ties is done using the **ties.method = "max"** argument
 ```{r }
@@ -79,6 +85,13 @@ E( R_{i} ) = \sum_{j=1}^{n} j P(R_{i} = j) = \frac{1}{n}\sum_{j=1}^{n} j = \frac
 the vector $\mathbf{R}_{n} = (R_{1}, \ldots, R_{n})$ is uniformly distributed
 on the set of $n!$ permutations of $(1,2,\ldots,n)$.
 
+---
+
+**Exercise 3.1**: Suppose $X_{1}, X_{2}, X_{3}$ are i.i.d. observations from a continuous
+distribution function $F_{X}$. Compute the covariance matrix of the vector 
+of ranks $\big( R_{1}(\mathbf{X}), R_{2}(\mathbf{X}), R_{3}( \mathbf{X} ) \big)$.
+
+---
 
 ## Two-Sample Tests
 
