@@ -145,11 +145,10 @@ for $j = 3, 4, 5, 6, 7$.
 
 ---
 
-## Two-Sample Tests
 
-### The Wilcoxon Rank Sum (WRS) Test
+## The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test
 
-#### Goal of the Test
+### Goal of the Test
 
 * The Wilcoxon Rank Sum (WRS) test (sometimes referred to as the Wilcoxon-Mann-Whitney test) is a popular,
 rank-based two-sample test.
@@ -161,8 +160,8 @@ from the other group.
 
 * Roughly speaking, the WRS tests the following hypothesis
 \begin{eqnarray}
-H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
-H_{A}: & & \textrm{Observations from } F_{X} \textrm{ tend to be larger than observations from } F_{Y} 
+H_{0}: && F_{X} = F_{Y} \quad \textrm{ versus }  \\
+H_{A}: && \textrm{Observations from } F_{X} \textrm{ tend to be larger than observations from } F_{Y} \nonumber
 (\#eq:general-wilcoxon-hypothesis)
 \end{eqnarray}
 
@@ -207,11 +206,11 @@ that the "shift alternative" is a reasonable model.
 
 * An alternative is to view the WRS test as performing the following
 hypothesis test:
-\begin{equation}
-H_{0}: P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
-H_{A}: P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) > 1/2
+\begin{eqnarray}
+H_{0}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
+H_{A}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) > 1/2
 (\#eq:mw-formulation)
-\end{equation}
+\end{eqnarray}
 See  @divine2018 for more discussion around this formulation of the
 WRS test.
 
@@ -231,7 +230,7 @@ $P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2$.
 
 
 
-#### Definition of the WRS Test Statistic
+### Definition of the WRS Test Statistic
 
 * The WRS test statistic is based on computing the sum of ranks (ranks based on the pooled sample)
 in one group.
@@ -284,7 +283,7 @@ E_{H_{0}}( W ) = \sum_{i=1}^{n} E_{H_{0}}\{ R_{i}( \mathbf{Z} ) \}
 \textrm{Var}_{H_{0}}( W ) = \frac{mn(m + n + 1)}{12}
 \end{equation}
 
-#### Computing p-values for the WRS Test
+### Computing p-values for the WRS Test
 
 **Exact Distribution**
 
@@ -341,7 +340,7 @@ way
 = P\Bigg( \frac{W - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  } \geq \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }\Bigg)
 \nonumber \\
 &=& P_{H_{0}}\Big( \tilde{W} \geq \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }\Big)
-= 1 - \Phi\Bigg( \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }  \Bigg),
+= 1 - \Phi\Bigg( \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }  \Bigg), \nonumber
 \end{eqnarray}
 where $\Phi(t)$ denotes the cumulative distribution function of a standard Normal random variable.
 
@@ -368,18 +367,17 @@ H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: & & F_{X}(t) = F_{Y}(t - \Delta), \Delta \neq 0.
 \end{eqnarray}
 or
-\begin{equation}
-H_{0}: P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
-H_{A}: P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2
-\end{equation}
+\begin{eqnarray}
+H_{0}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
+H_{A}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2
+\end{eqnarray}
 
 <!-- * Give exercise, compute p-values for Wilcoxon test where
 we have two populations. both are Normally distributed
 with mean zero but different variances. -->
 
 
-#### Computing the WRS test in R
-
+### Computing the WRS test in R
 * To illustrate performing the WRS test in **R**, we can use the **wine** dataset from the **rattle.data** package.
 This dataset is also available from the UCI Machine Learning Repository.
 
@@ -413,7 +411,7 @@ wine2$Type <- factor(wine2$Type)
 ```
 
 * Let's consider the difference in the level of magnesium across the two types of wine.
-<img src="03-rankstat_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-6-2.png" width="672" />
+![](03-rankstat_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-6-2.pdf)<!-- --> 
 
 * Suppose we are interested in testing whether or not magnesium levels in 
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
@@ -510,11 +508,13 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.84
+## [1] 0.75
 ```
 
 
-#### Additional Notes for the WRS test
+### Additional Notes for the WRS test
+
+#### Comparing Ordinal Data
 
 * The WRS test is often suggested when comparing categorical data which are **ordinal**.
 
@@ -541,6 +541,36 @@ of the WRS test is probably more reasonable than the "shift alternative \@ref(eq
 * Note that there will probably be many ties when comparing ordinal data.
 
 ---
+
+* The Hodges-Lehmann Estimator $\hat{\Delta}$ is an estimator of $\Delta$ in the location-shift model
+\begin{equation}
+F_{X}(t) = F_{Y}(t - \Delta) \nonumber
+\end{equation}
+
+* The Hodges-Lehmann is defined as the median difference among all possible (group 1, group 2) pairs. 
+Specifically,
+\begin{equation}
+\hat{\Delta} = \textrm{median}\{ (X_{i} - Y_{j}); i=1,\ldots,n; j=1,\ldots,m \} \nonumber
+\end{equation}
+
+* We won't discuss the Hodges-Lehmann estimator in detail in this course, but in
+many statistical software packages, the
+Hodges-Lehmann is often reported when computing the WRS test.
+
+* In **R**, the Hodges-Lehmann estimator can be obtained by using the **conf.int=TRUE**
+argument in the **wilcox.test** function
+
+```r
+WC <- wilcox.test(x=wine2$Magnesium[wine2$Type==1], y=wine2$Magnesium[wine2$Type==2],
+                  conf.int=TRUE)
+WC$estimate     ## The Hodges-Lehmann estimate
+```
+
+```
+## difference in location 
+##               14.00005
+```
+
 
 ## One Sample Tests
 

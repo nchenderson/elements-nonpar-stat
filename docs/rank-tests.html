@@ -146,8 +146,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1.2" data-path="rank-tests.html"><a href="rank-tests.html#handling-ties"><i class="fa fa-check"></i><b>3.1.2</b> Handling Ties</a></li>
 <li class="chapter" data-level="3.1.3" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-ranks"><i class="fa fa-check"></i><b>3.1.3</b> Properties of Ranks</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="rank-tests.html"><a href="rank-tests.html#two-sample-tests"><i class="fa fa-check"></i><b>3.2</b> Two-Sample Tests</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test"><i class="fa fa-check"></i><b>3.2.1</b> The Wilcoxon Rank Sum (WRS) Test</a></li>
+<li class="chapter" data-level="3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test-a-two-sample-test"><i class="fa fa-check"></i><b>3.2</b> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="rank-tests.html"><a href="rank-tests.html#goal-of-the-test"><i class="fa fa-check"></i><b>3.2.1</b> Goal of the Test</a></li>
+<li class="chapter" data-level="3.2.2" data-path="rank-tests.html"><a href="rank-tests.html#definition-of-the-wrs-test-statistic"><i class="fa fa-check"></i><b>3.2.2</b> Definition of the WRS Test Statistic</a></li>
+<li class="chapter" data-level="3.2.3" data-path="rank-tests.html"><a href="rank-tests.html#computing-p-values-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.3</b> Computing p-values for the WRS Test</a></li>
+<li class="chapter" data-level="3.2.4" data-path="rank-tests.html"><a href="rank-tests.html#computing-the-wrs-test-in-r"><i class="fa fa-check"></i><b>3.2.4</b> Computing the WRS test in R</a></li>
+<li class="chapter" data-level="3.2.5" data-path="rank-tests.html"><a href="rank-tests.html#additional-notes-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.5</b> Additional Notes for the WRS test</a></li>
 </ul></li>
 <li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.3</b> One Sample Tests</a><ul>
 <li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#the-sign-test"><i class="fa fa-check"></i><b>3.3.1</b> The Sign Test</a></li>
@@ -349,12 +353,10 @@ for <span class="math inline">\(j = 3, 4, 5, 6, 7\)</span>.</p>
 <hr />
 </div>
 </div>
-<div id="two-sample-tests" class="section level2">
-<h2><span class="header-section-number">3.2</span> Two-Sample Tests</h2>
-<div id="the-wilcoxon-rank-sum-wrs-test" class="section level3">
-<h3><span class="header-section-number">3.2.1</span> The Wilcoxon Rank Sum (WRS) Test</h3>
-<div id="goal-of-the-test" class="section level4">
-<h4><span class="header-section-number">3.2.1.1</span> Goal of the Test</h4>
+<div id="the-wilcoxon-rank-sum-wrs-test-a-two-sample-test" class="section level2">
+<h2><span class="header-section-number">3.2</span> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test</h2>
+<div id="goal-of-the-test" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Goal of the Test</h3>
 <ul>
 <li><p>The Wilcoxon Rank Sum (WRS) test (sometimes referred to as the Wilcoxon-Mann-Whitney test) is a popular,
 rank-based two-sample test.</p></li>
@@ -363,8 +365,8 @@ from the other group.</p></li>
 <li><p>Suppose we have observations from two groups: <span class="math inline">\(X_{1}, \ldots, X_{n} \sim F_{X}\)</span> and <span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim F_{Y}\)</span>.</p></li>
 <li><p>Roughly speaking, the WRS tests the following hypothesis
 <span class="math display" id="eq:general-wilcoxon-hypothesis">\[\begin{eqnarray}
-H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
-H_{A}: &amp; &amp; \textrm{Observations from } F_{X} \textrm{ tend to be larger than observations from } F_{Y} 
+H_{0}: &amp;&amp; F_{X} = F_{Y} \quad \textrm{ versus }  \\
+H_{A}: &amp;&amp; \textrm{Observations from } F_{X} \textrm{ tend to be larger than observations from } F_{Y} \nonumber
 \tag{3.2}
 \end{eqnarray}\]</span></p></li>
 </ul>
@@ -404,11 +406,11 @@ the WRS test has a very high probability of rejecting <span class="math inline">
 that the “shift alternative” is a reasonable model.</p></li>
 <li><p>An alternative is to view the WRS test as performing the following
 hypothesis test:
-<span class="math display" id="eq:mw-formulation">\[\begin{equation}
-H_{0}: P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
-H_{A}: P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) &gt; 1/2
+<span class="math display" id="eq:mw-formulation">\[\begin{eqnarray}
+H_{0}: &amp;&amp; P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
+H_{A}: &amp;&amp; P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) &gt; 1/2
 \tag{3.5}
-\end{equation}\]</span>
+\end{eqnarray}\]</span>
 See <span class="citation">Divine et al. (<a href="#ref-divine2018">2018</a>)</span> for more discussion around this formulation of the
 WRS test.</p></li>
 <li><p>The hypothesis test <a href="rank-tests.html#eq:mw-formulation">(3.5)</a> makes fewer assumptions
@@ -423,8 +425,8 @@ Specifically, <span class="math inline">\(W = U + n(n+1)/2\)</span>.</p></li>
 <span class="math inline">\(P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2\)</span>.</p></li>
 </ul>
 </div>
-<div id="definition-of-the-wrs-test-statistic" class="section level4">
-<h4><span class="header-section-number">3.2.1.2</span> Definition of the WRS Test Statistic</h4>
+<div id="definition-of-the-wrs-test-statistic" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> Definition of the WRS Test Statistic</h3>
 <ul>
 <li><p>The WRS test statistic is based on computing the sum of ranks (ranks based on the pooled sample)
 in one group.</p></li>
@@ -471,8 +473,8 @@ E_{H_{0}}( W ) = \sum_{i=1}^{n} E_{H_{0}}\{ R_{i}( \mathbf{Z} ) \}
 \end{equation}\]</span></p></li>
 </ul>
 </div>
-<div id="computing-p-values-for-the-wrs-test" class="section level4">
-<h4><span class="header-section-number">3.2.1.3</span> Computing p-values for the WRS Test</h4>
+<div id="computing-p-values-for-the-wrs-test" class="section level3">
+<h3><span class="header-section-number">3.2.3</span> Computing p-values for the WRS Test</h3>
 <p><strong>Exact Distribution</strong></p>
 <ul>
 <li><p>The p-value is found by computing the probability
@@ -519,7 +521,7 @@ way
 = P\Bigg( \frac{W - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  } \geq \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }\Bigg)
 \nonumber \\
 &amp;=&amp; P_{H_{0}}\Big( \tilde{W} \geq \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }\Big)
-= 1 - \Phi\Bigg( \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }  \Bigg),
+= 1 - \Phi\Bigg( \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }  \Bigg), \nonumber
 \end{eqnarray}\]</span>
 where <span class="math inline">\(\Phi(t)\)</span> denotes the cumulative distribution function of a standard Normal random variable.</p></li>
 <li><p>Often, in practice, a continuity correction is applied when using this large-sample approximation.
@@ -543,17 +545,17 @@ H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: &amp; &amp; F_{X}(t) = F_{Y}(t - \Delta), \Delta \neq 0.
 \end{eqnarray}\]</span>
 or
-<span class="math display">\[\begin{equation}
-H_{0}: P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
-H_{A}: P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2
-\end{equation}\]</span></p></li>
+<span class="math display">\[\begin{eqnarray}
+H_{0}: &amp;&amp; P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
+H_{A}: &amp;&amp; P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2
+\end{eqnarray}\]</span></p></li>
 </ul>
 <!-- * Give exercise, compute p-values for Wilcoxon test where
 we have two populations. both are Normally distributed
 with mean zero but different variances. -->
 </div>
-<div id="computing-the-wrs-test-in-r" class="section level4">
-<h4><span class="header-section-number">3.2.1.4</span> Computing the WRS test in R</h4>
+<div id="computing-the-wrs-test-in-r" class="section level3">
+<h3><span class="header-section-number">3.2.4</span> Computing the WRS test in R</h3>
 <ul>
 <li>To illustrate performing the WRS test in <strong>R</strong>, we can use the <strong>wine</strong> dataset from the <strong>rattle.data</strong> package.
 This dataset is also available from the UCI Machine Learning Repository.</li>
@@ -640,10 +642,12 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{i}) +
 <a class="sourceLine" id="cb26-7" data-line-number="7">    xgreater[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">&gt;</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb26-8" data-line-number="8">}</a>
 <a class="sourceLine" id="cb26-9" data-line-number="9"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.84</code></pre>
+<pre><code>## [1] 0.76</code></pre>
 </div>
-<div id="additional-notes-for-the-wrs-test" class="section level4">
-<h4><span class="header-section-number">3.2.1.5</span> Additional Notes for the WRS test</h4>
+<div id="additional-notes-for-the-wrs-test" class="section level3">
+<h3><span class="header-section-number">3.2.5</span> Additional Notes for the WRS test</h3>
+<div id="comparing-ordinal-data" class="section level4">
+<h4><span class="header-section-number">3.2.5.1</span> Comparing Ordinal Data</h4>
 <ul>
 <li><p>The WRS test is often suggested when comparing categorical data which are <strong>ordinal</strong>.</p></li>
 <li>For example, we might have 4 categories:
@@ -666,6 +670,27 @@ of the WRS test is probably more reasonable than the “shift alternative <a hre
 <li><p>Note that there will probably be many ties when comparing ordinal data.</p></li>
 </ul>
 <hr />
+<ul>
+<li><p>The Hodges-Lehmann Estimator <span class="math inline">\(\hat{\Delta}\)</span> is an estimator of <span class="math inline">\(\Delta\)</span> in the location-shift model
+<span class="math display">\[\begin{equation}
+F_{X}(t) = F_{Y}(t - \Delta) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The Hodges-Lehmann is defined as the median difference among all possible (group 1, group 2) pairs.
+Specifically,
+<span class="math display">\[\begin{equation}
+\hat{\Delta} = \textrm{median}\{ (X_{i} - Y_{j}); i=1,\ldots,n; j=1,\ldots,m \} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>We won’t discuss the Hodges-Lehmann estimator in detail in this course, but in
+many statistical software packages, the
+Hodges-Lehmann is often reported when computing the WRS test.</p></li>
+<li><p>In <strong>R</strong>, the Hodges-Lehmann estimator can be obtained by using the <strong>conf.int=TRUE</strong>
+argument in the <strong>wilcox.test</strong> function</p></li>
+</ul>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">WC &lt;-<span class="st"> </span><span class="kw">wilcox.test</span>(<span class="dt">x=</span>wine2<span class="op">$</span>Magnesium[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>], <span class="dt">y=</span>wine2<span class="op">$</span>Magnesium[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">                  <span class="dt">conf.int=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb28-3" data-line-number="3">WC<span class="op">$</span>estimate     <span class="co">## The Hodges-Lehmann estimate</span></a></code></pre></div>
+<pre><code>## difference in location 
+##               14.00005</code></pre>
 </div>
 </div>
 </div>
