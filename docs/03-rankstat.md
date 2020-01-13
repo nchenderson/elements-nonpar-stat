@@ -193,6 +193,9 @@ for at least one value of $t$.
 
 * Discuss Mann-Whitney alternative here ...
 
+* Cite  @divine2018
+
+
 #### Definition of the WRS Test Statistic
 
 * The WRS test statistic is based on computing the sum of ranks (ranks based on the pooled sample)
@@ -457,7 +460,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.81
+## [1] 0.77
 ```
 
 
@@ -486,6 +489,6 @@ that is assumed to have a median of zero.
 ## Notes 
 
 * Additional reading which covers the material discussed in this chapter includes:
-Chapter 4-5 from, 
+Chapter 3-4 from @hollander2013,
 
 

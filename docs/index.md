@@ -4,7 +4,7 @@ author: "Nicholas Henderson"
 date: "2020-01-12"
 site: bookdown::bookdown_site
 documentclass: book
-bibliography: [book.bib]
+bibliography: ["book.bib"]
 biblio-style: apalike
 link-citations: yes
 github-repo: nchenderson/elements-nonpar-stat
