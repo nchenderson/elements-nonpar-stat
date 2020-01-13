@@ -391,6 +391,9 @@ for at least one value of <span class="math inline">\(t\)</span>.</p></li>
 <li><p>Why do we need to specify an alternative?</p></li>
 </ul>
 <hr />
+<ul>
+<li>Discuss Mann-Whitney alternative here …</li>
+</ul>
 </div>
 <div id="definition-of-the-wrs-test-statistic" class="section level4">
 <h4><span class="header-section-number">3.2.1.2</span> Definition of the WRS Test Statistic</h4>
@@ -411,8 +414,9 @@ in favor of <span class="math inline">\(H_{A}\)</span>.</p></li>
 This is a vector with length <span class="math inline">\(n + m\)</span>.</p></li>
 <li><p>The Wilcoxon rank-sum test statistic <span class="math inline">\(W\)</span> for testing hypotheses of the form <a href="rank-tests.html#eq:general-wilcoxon-hypothesis">(3.2)</a>
 is then defined as
-<span class="math display">\[\begin{equation}
+<span class="math display" id="eq:wrs-formula">\[\begin{equation}
 W = \sum_{i=1}^{n} R_{i}( \mathbf{Z} )
+\tag{3.3}
 \end{equation}\]</span></p></li>
 <li><p>In other words, the WRS test statistic is the sum of the ranks for those observations coming
 from group 1 (i.e., the group with the <span class="math inline">\(X_{i}\)</span> as observations).</p></li>
@@ -441,11 +445,162 @@ E_{H_{0}}( W ) = \sum_{i=1}^{n} E_{H_{0}}\{ R_{i}( \mathbf{Z} ) \}
 </div>
 <div id="computing-p-values-for-the-wrs-test" class="section level4">
 <h4><span class="header-section-number">3.2.1.3</span> Computing p-values for the WRS Test</h4>
+<p><strong>Exact Distribution</strong></p>
 <ul>
-<li>Give exercise, compute p-values for Wilcoxon test where
-we have two populations. both are Normally distributed
-with mean zero but different variances.</li>
+<li><p>The p-value is found by computing the probability
+<span class="math display">\[\begin{equation}
+\textrm{p-value} = P_{H_{0}}( W \geq w_{obs})
+\end{equation}\]</span>
+where <span class="math inline">\(w_{obs}\)</span> is the observed WRS test statistic that
+we get from our data.</p></li>
+<li><p>Computing p-values for the WRS test requires us to
+work with the <strong>null distribution</strong> of <span class="math inline">\(W\)</span>. That is,
+the distribution of <span class="math inline">\(W\)</span> under the assumption that
+<span class="math inline">\(F_{X} = F_{Y}\)</span>.</p></li>
+<li><p>The exact null distribution is found by using the fact
+that each possible ordering of the ranks has the same probability.
+That is,
+<span class="math display">\[\begin{equation}
+P\{ R_{1}(\mathbf{Z}) = r_{1}, \ldots, R_{n+m} =  r_{n+m} \} = \frac{1}{(n + m)!},
+\end{equation}\]</span>
+where <span class="math inline">\((r_{1}, \ldots, r_{n+m})\)</span> is any permutation of the set <span class="math inline">\(\{1, 2, \ldots, n + m\}\)</span>.
+Note that the null distribution only depends on <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>.</p></li>
+<li><p>Also, there are <span class="math inline">\({n + m \choose n}\)</span> possible ways to assign distinct ranks to group 1.</p></li>
+<li><p>Consider an example with <span class="math inline">\(n = m = 2\)</span>. In this case, there are <span class="math inline">\({4 \choose 2} = 6\)</span> distinct
+ways to assign 2 ranks to group 1.
+What is the null distribution of the WRS test statistic?</p></li>
 </ul>
+<hr />
+<p><strong>Large-Sample Approximate Distribution</strong></p>
+<ul>
+<li><p>Looking at <a href="rank-tests.html#eq:wrs-formula">(3.3)</a>, we can see that the
+WRS test statistic is a sum of nearly independent random variables
+(at least nearly independent for large <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>).</p></li>
+<li><p>Thus, we can expect that an appropriately centered and scaled
+version of <span class="math inline">\(W\)</span> should be approximately Normally distributed (recall the Central Limit Theorem).</p></li>
+<li><p>The standardized version <span class="math inline">\(\tilde{W}\)</span> of the WRS is defined as
+<span class="math display">\[\begin{equation}
+\tilde{W} = \frac{W - E_{H_{0}}(W)}{ \sqrt{\textrm{Var}_{H_{0}}(W) }  }
+= \frac{W - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }
+\end{equation}\]</span></p></li>
+<li><p>Under <span class="math inline">\(H_{0}\)</span>, <span class="math inline">\(\tilde{W}\)</span> converges in distribution to a Normal<span class="math inline">\((0,1)\)</span> random variable.</p></li>
+<li><p>A p-value using this large-sample approximation would then be computed in the following
+way
+<span class="math display">\[\begin{eqnarray}
+\textrm{p-value} &amp;=&amp; P_{H_{0}}( W \geq w_{obs}) 
+= P\Bigg( \frac{W - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  } \geq \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }\Bigg)
+\nonumber \\
+&amp;=&amp; P_{H_{0}}\Big( \tilde{W} \geq \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }\Big)
+= 1 - \Phi\Bigg( \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }  \Bigg),
+\end{eqnarray}\]</span>
+where <span class="math inline">\(\Phi(t)\)</span> denotes the cumulative distribution function of a standard Normal random variable.</p></li>
+<li><p>Often, in practice, a continuity correction is applied when using this large-sample approximation.
+For example, we would compute the probability <span class="math inline">\(P_{H_{0}}(W \geq w_{obs} - 0.5)\)</span> with the Normal approximation
+rather than <span class="math inline">\(P_{H_{0}}(W \geq w_{obs})\)</span> directly.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Many statistical software packages (including <strong>R</strong>) will not compute p-values using the exact distribution in
+the presence of ties. The <strong>coin</strong> package does a permutation test in the presence of ties.</p></li>
+<li><p>Notes on permutation tests.</p></li>
+<li><p>A “two-sided” Wilcoxon rank sum test could also be performed. In this case,</p></li>
+</ul>
+<!-- * Give exercise, compute p-values for Wilcoxon test where
+we have two populations. both are Normally distributed
+with mean zero but different variances. -->
+</div>
+<div id="computing-the-wrs-test-in-r" class="section level4">
+<h4><span class="header-section-number">3.2.1.4</span> Computing the WRS test in R</h4>
+<ul>
+<li>To illustrate performing the WRS test in <strong>R</strong>, we can use the <strong>wine</strong> dataset from the <strong>rattle.data</strong> package.
+This dataset is also available from the UCI Machine Learning Repository.</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">library</span>(rattle.data)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">head</span>(wine)</a></code></pre></div>
+<pre><code>##   Type Alcohol Malic  Ash Alcalinity Magnesium Phenols Flavanoids
+## 1    1   14.23  1.71 2.43       15.6       127    2.80       3.06
+## 2    1   13.20  1.78 2.14       11.2       100    2.65       2.76
+## 3    1   13.16  2.36 2.67       18.6       101    2.80       3.24
+## 4    1   14.37  1.95 2.50       16.8       113    3.85       3.49
+## 5    1   13.24  2.59 2.87       21.0       118    2.80       2.69
+## 6    1   14.20  1.76 2.45       15.2       112    3.27       3.39
+##   Nonflavanoids Proanthocyanins Color  Hue Dilution Proline
+## 1          0.28            2.29  5.64 1.04     3.92    1065
+## 2          0.26            1.28  4.38 1.05     3.40    1050
+## 3          0.30            2.81  5.68 1.03     3.17    1185
+## 4          0.24            2.18  7.80 0.86     3.45    1480
+## 5          0.39            1.82  4.32 1.04     2.93     735
+## 6          0.34            1.97  6.75 1.05     2.85    1450</code></pre>
+<ul>
+<li>This dataset contains three types of wine. We will only consider the first two.</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">wine2 &lt;-<span class="st"> </span><span class="kw">subset</span>(wine, Type<span class="op">==</span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Type<span class="op">==</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">wine2<span class="op">$</span>Type &lt;-<span class="st"> </span><span class="kw">factor</span>(wine2<span class="op">$</span>Type)</a></code></pre></div>
+<ul>
+<li><p>Let’s consider the difference in the level of magnesium across the two types of wine.
+<img src="03-rankstat_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p></li>
+<li><p>Suppose we are interested in testing whether or not magnesium levels in
+Type 1 wine are generally larger than magnesium levels in Type 2 wine.
+This can be done with the following code</p></li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">wilcox.test</span>(<span class="dt">x=</span>wine2<span class="op">$</span>Magnesium[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>], <span class="dt">y=</span>wine2<span class="op">$</span>Magnesium[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">2</span>], </a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">            <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>)</a></code></pre></div>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  wine2$Magnesium[wine2$Type == 1] and wine2$Magnesium[wine2$Type == 2]
+## W = 3381.5, p-value = 8.71e-10
+## alternative hypothesis: true location shift is greater than 0</code></pre>
+<p>You could also use the following code (just be careful about the ordering of the levels of <strong>Type</strong>)</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">wilcox.test</span>(Magnesium <span class="op">~</span><span class="st"> </span>Type, <span class="dt">data=</span>wine2, <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>)</a></code></pre></div>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  Magnesium by Type
+## W = 3381.5, p-value = 8.71e-10
+## alternative hypothesis: true location shift is greater than 0</code></pre>
+<ul>
+<li>What is the value of the WRS test statistic? We can code this directly
+with the following steps:</li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">W &lt;-<span class="st"> </span><span class="kw">wilcox.test</span>(<span class="dt">x=</span>wine2<span class="op">$</span>Magnesium[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>], <span class="dt">y=</span>wine2<span class="op">$</span>Magnesium[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">n &lt;-<span class="st"> </span><span class="kw">sum</span>(wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">m &lt;-<span class="st"> </span><span class="kw">sum</span>(wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb18-5" data-line-number="5">zz &lt;-<span class="st"> </span><span class="kw">rank</span>(wine2<span class="op">$</span>Magnesium) <span class="co">## vector of pooled ranks</span></a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="kw">sum</span>(zz[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>])  <span class="co">## The WRS test statistic</span></a></code></pre></div>
+<pre><code>## [1] 5151.5</code></pre>
+<ul>
+<li>The statistic returned by the <strong>wilcox.test</strong> function is actually equal to <span class="math inline">\(W - n(n+1)/2\)</span> not <span class="math inline">\(W\)</span></li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">sum</span>(zz[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>]) <span class="op">-</span><span class="st"> </span>n<span class="op">*</span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">/</span><span class="dv">2</span></a></code></pre></div>
+<pre><code>## [1] 3381.5</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">W<span class="op">$</span>statistic</a></code></pre></div>
+<pre><code>##      W 
+## 3381.5</code></pre>
+<ul>
+<li><span class="math inline">\(\{ W - n(n+1)/2 \}/mn\)</span> is equal to the Mann-Whitney statistic. Thus, <strong>W$statistic/(mn)</strong> is
+an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{i})\)</span>.</li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">W<span class="op">$</span>statistic<span class="op">/</span>(m<span class="op">*</span>n)</a></code></pre></div>
+<pre><code>##         W 
+## 0.8072332</code></pre>
+<ul>
+<li>Let’s check how the Mann-Whitney statistic matches a simulation-based estimate of this probability</li>
+</ul>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">ind1 &lt;-<span class="st"> </span><span class="kw">which</span>(wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">ind2 &lt;-<span class="st"> </span><span class="kw">which</span>(wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">xgreater &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>) {</a>
+<a class="sourceLine" id="cb26-5" data-line-number="5">    xi &lt;-<span class="st"> </span><span class="kw">sample</span>(ind1, <span class="dt">size=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb26-6" data-line-number="6">    yi &lt;-<span class="st"> </span><span class="kw">sample</span>(ind2, <span class="dt">size=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb26-7" data-line-number="7">    xgreater[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">&gt;</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb26-8" data-line-number="8">}</a>
+<a class="sourceLine" id="cb26-9" data-line-number="9"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
+<pre><code>## [1] 0.81</code></pre>
+</div>
+<div id="additional-notes-for-the-wrs-test" class="section level4">
+<h4><span class="header-section-number">3.2.1.5</span> Additional Notes for the WRS test</h4>
 </div>
 </div>
 </div>
