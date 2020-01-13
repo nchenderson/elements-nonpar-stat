@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-12" />
+<meta name="date" content="2020-01-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -158,7 +158,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#notes"><i class="fa fa-check"></i><b>3.6</b> Notes</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="tidy.html"><a href="tidy.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a></li>
-<li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests (Next Chapter Should be U-statistics)</a></li>
+<li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a></li>
 <li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
 <li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.1</b> Examples</a></li>
 <li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#mann-whitney-statistic"><i class="fa fa-check"></i><b>6.2</b> Mann-Whitney Statistic</a></li>
@@ -307,7 +307,7 @@ ranks of <span class="math inline">\(1\)</span> and <span class="math inline">\(
 <ul>
 <li><p>When defining ranks using the “average” or “midrank” approach to handling ties, replaces
 tied ranks with the average of the two “adjacent” ranks.</p></li>
-<li><p>For example, if we have a vector of ranks <span class="math inline">\((R_{1}, R_{2}, R_{3}, R_{4})\)</span> where <span class="math inline">\(R_{2} = R_{3} =3\)</span> and <span class="math inline">\(R_{1} = 4\)</span> and <span class="math inline">\(R_{4} = R_{1}\)</span>, then the vector of modified ranks using the “average” approach to handling ties
+<li><p>For example, if we have a vector of ranks <span class="math inline">\((R_{1}, R_{2}, R_{3}, R_{4})\)</span> where <span class="math inline">\(R_{2} = R_{3} =3\)</span> and <span class="math inline">\(R_{1} = 4\)</span> and <span class="math inline">\(R_{4} = 1\)</span>, then the vector of modified ranks using the “average” approach to handling ties
 would be
 <span class="math display">\[\begin{equation}
 (R_{1}&#39;, R_{2}&#39;, R_{3}&#39;, R_{4}&#39;) = \Big( 4, \frac{4 + 1}{2}, \frac{4 + 1}{2}, 1 \Big)
@@ -374,14 +374,16 @@ H_{A}: &amp; &amp; \textrm{Observations from } F_{X} \textrm{ tend to be larger 
 <li>Two common ways of stating the alternative hypothesis for the WRS include
 <ol style="list-style-type: decimal">
 <li>The stochastic dominance alternative
-<span class="math display">\[\begin{eqnarray}
+<span class="math display" id="eq:stochasticlarger-formulation">\[\begin{eqnarray}
 H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
-H_{A}: &amp; &amp; F_{X} \textrm{ is stochastically larger than } F_{Y} \nonumber 
+H_{A}: &amp; &amp; F_{X} \textrm{ is stochastically larger than } F_{Y} 
+\tag{3.3}
 \end{eqnarray}\]</span></li>
 <li>The “shift” alternative
-<span class="math display">\[\begin{eqnarray}
+<span class="math display" id="eq:shift-formulation">\[\begin{eqnarray}
 H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: &amp; &amp; F_{X}(t) = F_{Y}(t - \Delta), \Delta &gt; 0.
+\tag{3.4}
 \end{eqnarray}\]</span></li>
 </ol></li>
 <li><p>A distribution function <span class="math inline">\(F_{X}\)</span> is said to be stochastically larger than
@@ -392,8 +394,33 @@ for at least one value of <span class="math inline">\(t\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
-<li><p>Discuss Mann-Whitney alternative here …</p></li>
-<li><p>Cite <span class="citation">Divine et al. (<a href="#ref-divine2018">2018</a>)</span></p></li>
+<li><p>It is often stated that the WRS test is a test
+of equal medians.</p></li>
+<li><p>This is true under the assumption that the
+relevant alternative is of the form <span class="math inline">\(F_{X}(t) = F_{Y}(t - \Delta)\)</span>.</p></li>
+<li><p>However, one could have a scenario where the two groups have equal medians, but
+the WRS test has a very high probability of rejecting <span class="math inline">\(H_{0}\)</span>.</p></li>
+<li><p>In addition, in many applications, it is difficult to justify
+that the “shift alternative” is a reasonable model.</p></li>
+<li><p>An alternative is to view the WRS test as performing the following
+hypothesis test:
+<span class="math display" id="eq:mw-formulation">\[\begin{equation}
+H_{0}: P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
+H_{A}: P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) &gt; 1/2
+\tag{3.5}
+\end{equation}\]</span>
+See <span class="citation">Divine et al. (<a href="#ref-divine2018">2018</a>)</span> for more discussion around this formulation of the
+WRS test.</p></li>
+<li><p>The hypothesis test <a href="rank-tests.html#eq:mw-formulation">(3.5)</a> makes fewer assumptions
+about how <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span> are related and is, in many cases, more interpretable.</p></li>
+<li><p>For example, in medical applications, it is often more natural to
+answer the question: what is the probability that the outcome
+under treatment 1 is better than the outcome under treatment 2.</p></li>
+<li><p>The justification of hypothesis test <a href="rank-tests.html#eq:mw-formulation">(3.5)</a> comes through
+the close connection between the WRS test statistic and the Mann-Whitney statistic <span class="math inline">\(U_{MW}\)</span>.
+Specifically, <span class="math inline">\(W = U + n(n+1)/2\)</span>.</p></li>
+<li><p>The Mann-Whitney statistic divided by <span class="math inline">\(mn\)</span> is an estimate of the probability:
+<span class="math inline">\(P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2\)</span>.</p></li>
 </ul>
 </div>
 <div id="definition-of-the-wrs-test-statistic" class="section level4">
@@ -417,7 +444,7 @@ This is a vector with length <span class="math inline">\(n + m\)</span>.</p></li
 is then defined as
 <span class="math display" id="eq:wrs-formula">\[\begin{equation}
 W = \sum_{i=1}^{n} R_{i}( \mathbf{Z} )
-\tag{3.3}
+\tag{3.6}
 \end{equation}\]</span></p></li>
 <li><p>In other words, the WRS test statistic is the sum of the ranks for those observations coming
 from group 1 (i.e., the group with the <span class="math inline">\(X_{i}\)</span> as observations).</p></li>
@@ -474,7 +501,7 @@ What is the null distribution of the WRS test statistic?</p></li>
 <hr />
 <p><strong>Large-Sample Approximate Distribution</strong></p>
 <ul>
-<li><p>Looking at <a href="rank-tests.html#eq:wrs-formula">(3.3)</a>, we can see that the
+<li><p>Looking at <a href="rank-tests.html#eq:wrs-formula">(3.6)</a>, we can see that the
 WRS test statistic is a sum of nearly independent random variables
 (at least nearly independent for large <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>).</p></li>
 <li><p>Thus, we can expect that an appropriately centered and scaled
@@ -502,9 +529,24 @@ rather than <span class="math inline">\(P_{H_{0}}(W \geq w_{obs})\)</span> direc
 <hr />
 <ul>
 <li><p>Many statistical software packages (including <strong>R</strong>) will not compute p-values using the exact distribution in
-the presence of ties. The <strong>coin</strong> package does a permutation test in the presence of ties.</p></li>
-<li><p>Notes on permutation tests.</p></li>
-<li><p>A “two-sided” Wilcoxon rank sum test could also be performed. In this case,</p></li>
+the presence of ties.</p></li>
+<li><p>The <strong>coin</strong> package in <strong>R</strong> does allow you to perform a permutation test in the presence of ties.</p></li>
+<li><p>A “two-sided” Wilcoxon rank sum test can also be performed. The two-sided
+hypothesis tests could either be stated as
+<span class="math display">\[\begin{eqnarray}
+H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
+H_{A}: &amp; &amp; F_{X} \textrm{ is stochastically larger or smaller than } F_{Y} 
+\end{eqnarray}\]</span>
+or
+<span class="math display">\[\begin{eqnarray}
+H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
+H_{A}: &amp; &amp; F_{X}(t) = F_{Y}(t - \Delta), \Delta \neq 0.
+\end{eqnarray}\]</span>
+or
+<span class="math display">\[\begin{equation}
+H_{0}: P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
+H_{A}: P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2
+\end{equation}\]</span></p></li>
 </ul>
 <!-- * Give exercise, compute p-values for Wilcoxon test where
 we have two populations. both are Normally distributed
@@ -580,8 +622,8 @@ with the following steps:</li>
 <pre><code>##      W 
 ## 3381.5</code></pre>
 <ul>
-<li><span class="math inline">\(\{ W - n(n+1)/2 \}/mn\)</span> is equal to the Mann-Whitney statistic. Thus, <strong>W$statistic/(mn)</strong> is
-an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{i})\)</span>.</li>
+<li><span class="math inline">\(\{ W - n(n+1)/2 \}\)</span> is equal to the Mann-Whitney statistic. Thus, <strong>W$statistic/(mn)</strong> is
+an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{i}) + P(X_{i} = Y_{i})/2\)</span>.</li>
 </ul>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">W<span class="op">$</span>statistic<span class="op">/</span>(m<span class="op">*</span>n)</a></code></pre></div>
 <pre><code>##         W 
@@ -598,10 +640,32 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{i})\)
 <a class="sourceLine" id="cb26-7" data-line-number="7">    xgreater[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">&gt;</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb26-8" data-line-number="8">}</a>
 <a class="sourceLine" id="cb26-9" data-line-number="9"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.77</code></pre>
+<pre><code>## [1] 0.84</code></pre>
 </div>
 <div id="additional-notes-for-the-wrs-test" class="section level4">
 <h4><span class="header-section-number">3.2.1.5</span> Additional Notes for the WRS test</h4>
+<ul>
+<li><p>The WRS test is often suggested when comparing categorical data which are <strong>ordinal</strong>.</p></li>
+<li>For example, we might have 4 categories:
+<ul>
+<li>Poor</li>
+<li>Fair</li>
+<li>Good</li>
+<li>Excellent</li>
+</ul></li>
+<li><p>In this case, there is a natural ordering of the categories
+but any numerical values assigned to these categories would be arbitrary.</p></li>
+<li><p>In such cases, we might be interested in testing whether or not outcomes tend to be
+better in one group than the other rather than simply comparing whether or not
+the distribution is different between the two groups.</p></li>
+<li><p>A WRS test is useful here since we can still compute ranks without having to
+choose aribtrary numbers for each category.</p></li>
+<li><p>Thinking of the “probability greater than alternative <a href="rank-tests.html#eq:mw-formulation">(3.5)</a>”
+or “stochastically larger than alternative <a href="rank-tests.html#eq:stochasticlarger-formulation">(3.3)</a>” interpretation
+of the WRS test is probably more reasonable than the “shift alternative <a href="rank-tests.html#eq:shift-formulation">(3.4)</a>” interpretation.</p></li>
+<li><p>Note that there will probably be many ties when comparing ordinal data.</p></li>
+</ul>
+<hr />
 </div>
 </div>
 </div>
@@ -610,9 +674,9 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{i})\)
 <div id="the-sign-test" class="section level3">
 <h3><span class="header-section-number">3.3.1</span> The Sign Test</h3>
 <ul>
-<li>Suppose we have observations <span class="math inline">\(W_{1}, \ldots, W_{n}\)</span> which arise from the following model
+<li>Suppose we have observations <span class="math inline">\(D_{1}, \ldots, D_{n}\)</span> which arise from the following model
 <span class="math display">\[\begin{equation}
-W_{i} = \theta + \varepsilon_{i}, \nonumber 
+D_{i} = \theta + \varepsilon_{i}, \nonumber 
 \end{equation}\]</span>
 where <span class="math inline">\(\varepsilon_{i}\)</span> are iid random variables each with distribution function <span class="math inline">\(F\)</span>
 that is assumed to have a median of zero.</li>
@@ -632,7 +696,9 @@ that is assumed to have a median of zero.</li>
 <h2><span class="header-section-number">3.6</span> Notes</h2>
 <ul>
 <li>Additional reading which covers the material discussed in this chapter includes:
-Chapter 3-4 from <span class="citation">Hollander, Wolfe, and Chicken (<a href="#ref-hollander2013">2013</a>)</span>,</li>
+<ul>
+<li>Chapters 3-4 from <span class="citation">Hollander, Wolfe, and Chicken (<a href="#ref-hollander2013">2013</a>)</span>,</li>
+</ul></li>
 </ul>
 
 </div>

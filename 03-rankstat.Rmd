@@ -73,7 +73,7 @@ rank(y)
 * When defining ranks using the "average" or "midrank" approach to handling ties, replaces
 tied ranks with the average of the two "adjacent" ranks. 
 
-* For example, if we have a vector of ranks $(R_{1}, R_{2}, R_{3}, R_{4})$ where $R_{2} = R_{3} =3$ and $R_{1} = 4$ and $R_{4} = R_{1}$, then the vector of modified ranks using the "average" approach to handling ties
+* For example, if we have a vector of ranks $(R_{1}, R_{2}, R_{3}, R_{4})$ where $R_{2} = R_{3} =3$ and $R_{1} = 4$ and $R_{4} = 1$, then the vector of modified ranks using the "average" approach to handling ties
 would be
 \begin{equation}
 (R_{1}', R_{2}', R_{3}', R_{4}') = \Big( 4, \frac{4 + 1}{2}, \frac{4 + 1}{2}, 1 \Big)
@@ -146,12 +146,14 @@ H_{A}: & & \textrm{Observations from } F_{X} \textrm{ tend to be larger than obs
     1. The stochastic dominance alternative
 \begin{eqnarray}
 H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
-H_{A}: & & F_{X} \textrm{ is stochastically larger than } F_{Y} \nonumber 
+H_{A}: & & F_{X} \textrm{ is stochastically larger than } F_{Y} 
+(\#eq:stochasticlarger-formulation)
 \end{eqnarray}
     2. The "shift" alternative
 \begin{eqnarray}
 H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: & & F_{X}(t) = F_{Y}(t - \Delta), \Delta > 0.
+(\#eq:shift-formulation)
 \end{eqnarray}
 * A distribution function $F_{X}$ is said to be stochastically larger than
 $F_{Y}$ if $F_{X}(t) \geq F_{Y}(t)$ for all $t$ with $F_{X}(t) > F_{Y}(t)$
@@ -163,9 +165,42 @@ for at least one value of $t$.
 
 ---
 
-* Discuss Mann-Whitney alternative here ...
+* It is often stated that the WRS test is a test
+of equal medians.
 
-* Cite  @divine2018
+* This is true under the assumption that the 
+relevant alternative is of the form $F_{X}(t) = F_{Y}(t - \Delta)$.
+
+* However, one could have a scenario where the two groups have equal medians, but 
+the WRS test has a very high probability of rejecting $H_{0}$.
+
+* In addition, in many applications, it is difficult to justify
+that the "shift alternative" is a reasonable model.
+
+* An alternative is to view the WRS test as performing the following
+hypothesis test:
+\begin{equation}
+H_{0}: P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
+H_{A}: P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) > 1/2
+(\#eq:mw-formulation)
+\end{equation}
+See  @divine2018 for more discussion around this formulation of the
+WRS test.
+
+* The hypothesis test \@ref(eq:mw-formulation) makes fewer assumptions
+about how $F_{X}$ and $F_{Y}$ are related and is, in many cases, more interpretable.
+
+* For example, in medical applications, it is often more natural to 
+answer the question: what is the probability that the outcome
+under treatment 1 is better than the outcome under treatment 2.
+
+* The justification of hypothesis test \@ref(eq:mw-formulation) comes through
+the close connection between the WRS test statistic and the Mann-Whitney statistic $U_{MW}$.
+Specifically, $W = U + n(n+1)/2$.
+
+* The Mann-Whitney statistic divided by $mn$ is an estimate of the probability:
+$P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2$.
+
 
 
 #### Definition of the WRS Test Statistic
@@ -289,11 +324,26 @@ rather than $P_{H_{0}}(W \geq w_{obs})$ directly.
 ---
 
 * Many statistical software packages (including **R**) will not compute p-values using the exact distribution in 
-the presence of ties. The **coin** package does a permutation test in the presence of ties.
+the presence of ties. 
 
-* Notes on permutation tests.
+* The **coin** package in **R** does allow you to perform a permutation test in the presence of ties.
 
-* A "two-sided" Wilcoxon rank sum test could also be performed. In this case,
+* A "two-sided" Wilcoxon rank sum test can also be performed. The two-sided 
+hypothesis tests could either be stated as 
+\begin{eqnarray}
+H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
+H_{A}: & & F_{X} \textrm{ is stochastically larger or smaller than } F_{Y} 
+\end{eqnarray}
+or
+\begin{eqnarray}
+H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
+H_{A}: & & F_{X}(t) = F_{Y}(t - \Delta), \Delta \neq 0.
+\end{eqnarray}
+or
+\begin{equation}
+H_{0}: P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
+H_{A}: P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2
+\end{equation}
 
 <!-- * Give exercise, compute p-values for Wilcoxon test where
 we have two populations. both are Normally distributed
@@ -354,8 +404,8 @@ sum(zz[wine2$Type==1]) - n*(n + 1)/2
 W$statistic
 ```
 
-* $\{ W - n(n+1)/2 \}/mn$ is equal to the Mann-Whitney statistic. Thus, **W$statistic/(mn)** is
-an estimate of the probability $P(X_{i} > Y_{i})$.
+* $\{ W - n(n+1)/2 \}$ is equal to the Mann-Whitney statistic. Thus, **W$statistic/(mn)** is
+an estimate of the probability $P(X_{i} > Y_{i}) + P(X_{i} = Y_{i})/2$.
 ```{r}
 W$statistic/(m*n)
 ```
@@ -376,14 +426,39 @@ mean(xgreater)  ## estimate of this probability
 
 #### Additional Notes for the WRS test
 
+* The WRS test is often suggested when comparing categorical data which are **ordinal**.
+
+* For example, we might have 4 categories: 
+    + Poor
+    + Fair
+    + Good
+    + Excellent
+    
+* In this case, there is a natural ordering of the categories
+but any numerical values assigned to these categories would be arbitrary.
+
+* In such cases, we might be interested in testing whether or not outcomes tend to be
+better in one group than the other rather than simply comparing whether or not
+the distribution is different between the two groups.
+
+* A WRS test is useful here since we can still compute ranks without having to 
+choose aribtrary numbers for each category. 
+
+* Thinking of the "probability greater than alternative \@ref(eq:mw-formulation)" 
+or "stochastically larger than alternative \@ref(eq:stochasticlarger-formulation)" interpretation 
+of the WRS test is probably more reasonable than the "shift alternative \@ref(eq:shift-formulation)" interpretation. 
+
+* Note that there will probably be many ties when comparing ordinal data.
+
+---
 
 ## One Sample Tests
 
 ### The Sign Test
 
-* Suppose we have observations $W_{1}, \ldots, W_{n}$ which arise from the following model
+* Suppose we have observations $D_{1}, \ldots, D_{n}$ which arise from the following model
 \begin{equation}
-W_{i} = \theta + \varepsilon_{i}, \nonumber 
+D_{i} = \theta + \varepsilon_{i}, \nonumber 
 \end{equation}
 where $\varepsilon_{i}$ are iid random variables each with distribution function $F$
 that is assumed to have a median of zero.
@@ -399,6 +474,6 @@ that is assumed to have a median of zero.
 ## Notes 
 
 * Additional reading which covers the material discussed in this chapter includes:
-Chapter 3-4 from @hollander2013,
+    + Chapters 3-4 from @hollander2013,
 
 

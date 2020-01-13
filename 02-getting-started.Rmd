@@ -1,5 +1,11 @@
 # Working with R {#getting-started}
 
+You can download R by visiting https://www.r-project.org/ and clicking on the **download R** link. Follow the instructions
+to complete installation. THe most recent version is version 3.6.2.
+
+It is not necessary to use this, but I find **RStudio** to be a very useful integrated development environment (IDE) 
+for computing with **R**. **RStudio** may be downloaded and installed by visiting https://rstudio.com/
+
 <!--  
 Before we can start exploring data in R, there are some key concepts to understand first:
 
