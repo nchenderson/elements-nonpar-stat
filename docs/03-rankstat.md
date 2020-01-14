@@ -183,7 +183,7 @@ H_{A}: & & F_{X}(t) = F_{Y}(t - \Delta), \Delta > 0.
 (\#eq:shift-formulation)
 \end{eqnarray}
 * A distribution function $F_{X}$ is said to be stochastically larger than
-$F_{Y}$ if $F_{X}(t) \geq F_{Y}(t)$ for all $t$ with $F_{X}(t) > F_{Y}(t)$
+$F_{Y}$ if $F_{X}(t) \leq F_{Y}(t)$ for all $t$ with $F_{X}(t) < F_{Y}(t)$
 for at least one value of $t$.
 
 * Note that the "shift alternative" implies stochastic dominance.
@@ -207,8 +207,8 @@ that the "shift alternative" is a reasonable model.
 * An alternative is to view the WRS test as performing the following
 hypothesis test:
 \begin{eqnarray}
-H_{0}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
-H_{A}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) > 1/2
+H_{0}: && P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2 \quad \textrm{ versus } \\
+H_{A}: && P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) > 1/2
 (\#eq:mw-formulation)
 \end{eqnarray}
 See  @divine2018 for more discussion around this formulation of the
@@ -222,12 +222,14 @@ answer the question: what is the probability that the outcome
 under treatment 1 is better than the outcome under treatment 2.
 
 * The justification of hypothesis test \@ref(eq:mw-formulation) comes through
-the close connection between the WRS test statistic and the Mann-Whitney statistic $U_{MW}$.
-Specifically, $W = U + n(n+1)/2$.
+the close connection between the WRS test statistic $W$ and the Mann-Whitney statistic $U_{MW}$.
+Specifically, $W = U_{MW} + n(n+1)/2$. (Although, often $U_{MW}$ is defined as 
+$U_{MW} = mn + n(n+1)/2 - W$).
 
 * The Mann-Whitney statistic divided by $mn$ is an estimate of the probability:
-$P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2$.
-
+\begin{equation}
+P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2.
+\end{equation}
 
 
 ### Definition of the WRS Test Statistic
@@ -303,7 +305,7 @@ $F_{X} = F_{Y}$.
 that each possible ordering of the ranks has the same probability.
 That is,
 \begin{equation}
-P\{ R_{1}(\mathbf{Z}) = r_{1}, \ldots, R_{n+m} =  r_{n+m} \} = \frac{1}{(n + m)!},
+P\{ R_{1}(\mathbf{Z}) = r_{1}, \ldots, R_{n+m}(\mathbf{Z}) =  r_{n+m} \} = \frac{1}{(n + m)!},
 \end{equation}
 where $(r_{1}, \ldots, r_{n+m})$ is any permutation of the set $\{1, 2, \ldots, n + m\}$.
 Note that the null distribution only depends on $n$ and $m$.
@@ -508,7 +510,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.75
+## [1] 0.77
 ```
 
 

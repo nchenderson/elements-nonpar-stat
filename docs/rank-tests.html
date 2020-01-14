@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-13" />
+<meta name="date" content="2020-01-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -389,7 +389,7 @@ H_{A}: &amp; &amp; F_{X}(t) = F_{Y}(t - \Delta), \Delta &gt; 0.
 \end{eqnarray}\]</span></li>
 </ol></li>
 <li><p>A distribution function <span class="math inline">\(F_{X}\)</span> is said to be stochastically larger than
-<span class="math inline">\(F_{Y}\)</span> if <span class="math inline">\(F_{X}(t) \geq F_{Y}(t)\)</span> for all <span class="math inline">\(t\)</span> with <span class="math inline">\(F_{X}(t) &gt; F_{Y}(t)\)</span>
+<span class="math inline">\(F_{Y}\)</span> if <span class="math inline">\(F_{X}(t) \leq F_{Y}(t)\)</span> for all <span class="math inline">\(t\)</span> with <span class="math inline">\(F_{X}(t) &lt; F_{Y}(t)\)</span>
 for at least one value of <span class="math inline">\(t\)</span>.</p></li>
 <li><p>Note that the “shift alternative” implies stochastic dominance.</p></li>
 <li><p>Why do we need to specify an alternative?</p></li>
@@ -407,8 +407,8 @@ that the “shift alternative” is a reasonable model.</p></li>
 <li><p>An alternative is to view the WRS test as performing the following
 hypothesis test:
 <span class="math display" id="eq:mw-formulation">\[\begin{eqnarray}
-H_{0}: &amp;&amp; P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
-H_{A}: &amp;&amp; P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) &gt; 1/2
+H_{0}: &amp;&amp; P(X_{i} &gt; Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2 \quad \textrm{ versus } \\
+H_{A}: &amp;&amp; P(X_{i} &gt; Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) &gt; 1/2
 \tag{3.5}
 \end{eqnarray}\]</span>
 See <span class="citation">Divine et al. (<a href="#ref-divine2018">2018</a>)</span> for more discussion around this formulation of the
@@ -419,10 +419,13 @@ about how <span class="math inline">\(F_{X}\)</span> and <span class="math inlin
 answer the question: what is the probability that the outcome
 under treatment 1 is better than the outcome under treatment 2.</p></li>
 <li><p>The justification of hypothesis test <a href="rank-tests.html#eq:mw-formulation">(3.5)</a> comes through
-the close connection between the WRS test statistic and the Mann-Whitney statistic <span class="math inline">\(U_{MW}\)</span>.
-Specifically, <span class="math inline">\(W = U + n(n+1)/2\)</span>.</p></li>
+the close connection between the WRS test statistic <span class="math inline">\(W\)</span> and the Mann-Whitney statistic <span class="math inline">\(U_{MW}\)</span>.
+Specifically, <span class="math inline">\(W = U_{MW} + n(n+1)/2\)</span>. (Although, often <span class="math inline">\(U_{MW}\)</span> is defined as
+<span class="math inline">\(U_{MW} = mn + n(n+1)/2 - W\)</span>).</p></li>
 <li><p>The Mann-Whitney statistic divided by <span class="math inline">\(mn\)</span> is an estimate of the probability:
-<span class="math inline">\(P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2\)</span>.</p></li>
+<span class="math display">\[\begin{equation}
+P(X_{i} &gt; Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2.
+\end{equation}\]</span></p></li>
 </ul>
 </div>
 <div id="definition-of-the-wrs-test-statistic" class="section level3">
@@ -491,7 +494,7 @@ the distribution of <span class="math inline">\(W\)</span> under the assumption 
 that each possible ordering of the ranks has the same probability.
 That is,
 <span class="math display">\[\begin{equation}
-P\{ R_{1}(\mathbf{Z}) = r_{1}, \ldots, R_{n+m} =  r_{n+m} \} = \frac{1}{(n + m)!},
+P\{ R_{1}(\mathbf{Z}) = r_{1}, \ldots, R_{n+m}(\mathbf{Z}) =  r_{n+m} \} = \frac{1}{(n + m)!},
 \end{equation}\]</span>
 where <span class="math inline">\((r_{1}, \ldots, r_{n+m})\)</span> is any permutation of the set <span class="math inline">\(\{1, 2, \ldots, n + m\}\)</span>.
 Note that the null distribution only depends on <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>.</p></li>
@@ -642,7 +645,7 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{i}) +
 <a class="sourceLine" id="cb26-7" data-line-number="7">    xgreater[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">&gt;</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb26-8" data-line-number="8">}</a>
 <a class="sourceLine" id="cb26-9" data-line-number="9"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.76</code></pre>
+<pre><code>## [1] 0.81</code></pre>
 </div>
 <div id="additional-notes-for-the-wrs-test" class="section level3">
 <h3><span class="header-section-number">3.2.5</span> Additional Notes for the WRS test</h3>
