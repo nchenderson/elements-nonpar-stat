@@ -525,7 +525,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.76
+## [1] 0.82
 ```
 
 
@@ -613,7 +613,7 @@ f_{D}(t) = f_{\epsilon}(t - \theta)
 
 * In this context, $\theta$ is usually referred to as a **location parameter**.
 
-* The goal here is to test $H_{0}: \theta = \theta_{0}$. (Often, $\theta_{0} = 0$).
+* The goal here is to test $H_{0}: \theta = \theta_{0}$ vs. $H_{A}: \theta > \theta_{0}$. (Often, $\theta_{0} = 0$).
 
 ---
 
@@ -622,6 +622,7 @@ Common examples include
     + patients compared "pre and post treatment"
     + students before and after the introduction of a new teaching method 
     + comparison of "matched" individuals who are similar (e.g., same age, sex, education, etc.)
+    + comparing consistency of measurements made on the same objects
 
 <table border=1>
 <tr> <th>  </th> <th> Baseline_Measure </th> <th> Post_Treatment_Measure </th>  </tr>
@@ -691,7 +692,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.6913503
+## [1] 0.3821767
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -700,6 +701,65 @@ P_{H_{0}}(S \geq w) = 1 - P_{H_{0}}(S < w) = 1 - P_{H_{0}}(S \leq w - 1)
 \end{equation}
 and the **R** function **pbinom(t, n, prob)** computes $P(X \leq t)$ where $X$ is 
 a binomial random variable with $n$ trials and success probability **prob**.
+
+* You can also perform the one-sided sign test by using the **binom.test** function in **R**.
+
+```r
+btest <- binom.test(sign.stat, n=100, alternative="greater") 
+btest$p.value
+```
+
+```
+## [1] 0.3821767
+```
+
+#### Two-sided Sign Test
+
+* Notice that the number of negative values of $D_{i}$ can be expressed as
+\begin{equation}
+\sum_{i=1}^{n} I(D_{i} < 0) = n - S
+\end{equation}
+if there are no observations that equal zero exactly. Large value of $n - S$
+would be used in favor of another possible one-sided alternative $H_{A}: \theta < 0$.
+
+* If we now want to test the two-sided alternative
+\begin{equation}
+H_{0}: \theta = 0 \quad \textrm{ vs. }  \quad H_{A}: \theta \neq 0 \nonumber
+\end{equation}
+you would need to compute the probability under the null hypothesis of observing
+a "more extreme" observation than the one that was actually observed.
+
+* Extreme is defined by thinking about the fact that we would have rejected $H_{0}$
+if either $S$ or $n - S$ were very large.
+
+* For example, if $n = 12$, then the expected value of the sign statistic would be $6$.
+If $s_{obs} = 10$, then the collection of "more extreme" events then this would be
+$\leq 2$ and $\geq 10$.
+
+* The two-sided p-value is determined by looking at the tail probabilities on both sides
+\begin{equation}
+\textrm{p-value} = 
+\begin{cases}
+P_{H_{0}}(S \geq s_{obs}) + P_{H_{0}}(S \leq n - s_{obs}) & \textrm{ if } s_{obs} \geq n/2 \\
+P_{H_{0}}(S \leq s_{obs}) + P_{H_{0}}(S \geq n - s_{obs}) & \textrm{ if } s_{obs} < n/2
+\end{cases}
+\end{equation}
+
+* It actually works out that
+\begin{equation}
+\textrm{p-value} = 
+\begin{cases}
+2 P_{H_{0}}(S \geq s_{obs})   & \textrm{ if } s_{obs} \geq n/2 \\
+2 P_{H_{0}}(S \leq s_{obs})   & \textrm{ if } s_{obs} < n/2
+\end{cases}
+\end{equation}
+
+* Also, you can note that this p-value would be the same that you would get from performing the test 
+$H_{0}: p = 1/2$ vs. $H_{A}: p \neq 1/2$ when it is assumed that $S_{n} \sim \textrm{Binomial}(n, p)$.
+
+* Another note: It is often suggested that one should drop observations which are exactly zero
+when performing the sign test.
+
 
 ### The Wilcoxon Signed Rank Test
 
@@ -736,6 +796,59 @@ be the value of the Wilcoxon signed rank statistic?
 
 #### Asymptotic Distribution
 
+
+### Using R to Perform the Sign and Wilcoxon Tests 
+
+* Let's first look at the **Meat** data from the **PairedData** **R** package.
+
+* This data set contains 20 observations with measures of fat percentage using different 
+measuring techniques.
+ 
+
+```r
+library(PairedData, quietly=TRUE, warn.conflicts=FALSE) ## loading PairedData package
+data(Meat)  ## loading Meat data
+head(Meat)
+```
+
+```
+##   AOAC Babcock     MeatType
+## 1 22.0    22.3       Wiener
+## 2 22.1    21.8       Wiener
+## 3 22.1    22.4       Wiener
+## 4 22.2    22.5       Wiener
+## 5 24.6    24.9   ChoppedHam
+## 6 25.3    25.6 ChooppedPork
+```
+
+* Define the differences $D_{i}$ as the Babcock measurements minus the AOAC measures
+
+```r
+DD <- Meat[,2] - Meat[,1]
+hist(DD, main="Meat Data", xlab="Difference in Measured Fat Percentage", las=1)
+```
+
+![](03-rankstat_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
+
+```r
+summary(DD)
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  -1.600  -0.225   0.300   0.040   0.350   1.100
+```
+
+* Let's first test the hypothesis $H_{0}: \theta = 0$ vs. $H_{A}: \theta \neq 1/2$ using
+the two.sided sign test
+
+```r
+binom.test(sum(DD > 0), n = length(DD), p=0.5)$p.value
+```
+
+```
+## [1] 0.8238029
+```
 
 ## Power and Comparisons with Parametric Tests
 

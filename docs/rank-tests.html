@@ -156,6 +156,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.3</b> One Sample Tests</a><ul>
 <li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#the-sign-test"><i class="fa fa-check"></i><b>3.3.1</b> The Sign Test</a></li>
 <li class="chapter" data-level="3.3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-signed-rank-test"><i class="fa fa-check"></i><b>3.3.2</b> The Wilcoxon Signed Rank Test</a></li>
+<li class="chapter" data-level="3.3.3" data-path="rank-tests.html"><a href="rank-tests.html#using-r-to-perform-the-sign-and-wilcoxon-tests"><i class="fa fa-check"></i><b>3.3.3</b> Using R to Perform the Sign and Wilcoxon Tests</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#power-and-comparisons-with-parametric-tests"><i class="fa fa-check"></i><b>3.4</b> Power and Comparisons with Parametric Tests</a><ul>
 <li class="chapter" data-level="3.4.1" data-path="rank-tests.html"><a href="rank-tests.html#power-of-tests"><i class="fa fa-check"></i><b>3.4.1</b> Power of Tests</a></li>
@@ -659,7 +660,7 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{j}) +
 <a class="sourceLine" id="cb26-7" data-line-number="7">    xgreater[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">&gt;</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb26-8" data-line-number="8">}</a>
 <a class="sourceLine" id="cb26-9" data-line-number="9"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.83</code></pre>
+<pre><code>## [1] 0.89</code></pre>
 </div>
 <div id="additional-notes-for-the-wrs-test" class="section level3">
 <h3><span class="header-section-number">3.2.5</span> Additional Notes for the WRS test</h3>
@@ -733,7 +734,7 @@ F_{D}(t) = P(D_{i} \leq t) = P(\varepsilon_{i} \leq t - \theta) = F_{\epsilon}(t
 f_{D}(t) = f_{\epsilon}(t - \theta)
 \end{equation}\]</span></p></li>
 <li><p>In this context, <span class="math inline">\(\theta\)</span> is usually referred to as a <strong>location parameter</strong>.</p></li>
-<li><p>The goal here is to test <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span>. (Often, <span class="math inline">\(\theta_{0} = 0\)</span>).</p></li>
+<li><p>The goal here is to test <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; \theta_{0}\)</span>. (Often, <span class="math inline">\(\theta_{0} = 0\)</span>).</p></li>
 </ul>
 <hr />
 <ul>
@@ -743,6 +744,7 @@ Common examples include
 <li>patients compared “pre and post treatment”</li>
 <li>students before and after the introduction of a new teaching method</li>
 <li>comparison of “matched” individuals who are similar (e.g., same age, sex, education, etc.)</li>
+<li>comparing consistency of measurements made on the same objects</li>
 </ul></li>
 </ul>
 <table border="1">
@@ -850,14 +852,60 @@ where <span class="math inline">\(s_{obs}\)</span> is the observed value of the 
 <a class="sourceLine" id="cb30-2" data-line-number="2">xx &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb30-3" data-line-number="3">sign.stat &lt;-<span class="st"> </span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb30-4" data-line-number="4"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pbinom</span>(sign.stat <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">size=</span><span class="dv">100</span>, <span class="dt">prob=</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) <span class="co">## p-value for sign test</span></a></code></pre></div>
-<pre><code>## [1] 0.4602054</code></pre>
+<pre><code>## [1] 0.006016488</code></pre>
 <ul>
-<li>The reason that this is the right expression using <strong>R</strong> is that for any positive integer <span class="math inline">\(w\)</span>
+<li><p>The reason that this is the right expression using <strong>R</strong> is that for any positive integer <span class="math inline">\(w\)</span>
 <span class="math display">\[\begin{equation}
 P_{H_{0}}(S \geq w) = 1 - P_{H_{0}}(S &lt; w) = 1 - P_{H_{0}}(S \leq w - 1)
 \end{equation}\]</span>
 and the <strong>R</strong> function <strong>pbinom(t, n, prob)</strong> computes <span class="math inline">\(P(X \leq t)\)</span> where <span class="math inline">\(X\)</span> is
-a binomial random variable with <span class="math inline">\(n\)</span> trials and success probability <strong>prob</strong>.</li>
+a binomial random variable with <span class="math inline">\(n\)</span> trials and success probability <strong>prob</strong>.</p></li>
+<li><p>You can also perform the one-sided sign test by using the <strong>binom.test</strong> function in <strong>R</strong>.</p></li>
+</ul>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">btest &lt;-<span class="st"> </span><span class="kw">binom.test</span>(sign.stat, <span class="dt">n=</span><span class="dv">100</span>, <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>) </a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">btest<span class="op">$</span>p.value</a></code></pre></div>
+<pre><code>## [1] 0.006016488</code></pre>
+</div>
+<div id="two-sided-sign-test" class="section level4">
+<h4><span class="header-section-number">3.3.1.3</span> Two-sided Sign Test</h4>
+<ul>
+<li><p>Notice that the number of negative values of <span class="math inline">\(D_{i}\)</span> can be expressed as
+<span class="math display">\[\begin{equation}
+\sum_{i=1}^{n} I(D_{i} &lt; 0) = n - S
+\end{equation}\]</span>
+if there are no observations that equal zero exactly. Large value of <span class="math inline">\(n - S\)</span>
+would be used in favor of another possible one-sided alternative <span class="math inline">\(H_{A}: \theta &lt; 0\)</span>.</p></li>
+<li><p>If we now want to test the two-sided alternative
+<span class="math display">\[\begin{equation}
+H_{0}: \theta = 0 \quad \textrm{ vs. }  \quad H_{A}: \theta \neq 0 \nonumber
+\end{equation}\]</span>
+you would need to compute the probability under the null hypothesis of observing
+a “more extreme” observation than the one that was actually observed.</p></li>
+<li><p>Extreme is defined by thinking about the fact that we would have rejected <span class="math inline">\(H_{0}\)</span>
+if either <span class="math inline">\(S\)</span> or <span class="math inline">\(n - S\)</span> were very large.</p></li>
+<li><p>For example, if <span class="math inline">\(n = 12\)</span>, then the expected value of the sign statistic would be <span class="math inline">\(6\)</span>.
+If <span class="math inline">\(s_{obs} = 10\)</span>, then the collection of “more extreme” events then this would be
+<span class="math inline">\(\leq 2\)</span> and <span class="math inline">\(\geq 10\)</span>.</p></li>
+<li><p>The two-sided p-value is determined by looking at the tail probabilities on both sides
+<span class="math display">\[\begin{equation}
+\textrm{p-value} = 
+\begin{cases}
+P_{H_{0}}(S \geq s_{obs}) + P_{H_{0}}(S \leq n - s_{obs}) &amp; \textrm{ if } s_{obs} \geq n/2 \\
+P_{H_{0}}(S \leq s_{obs}) + P_{H_{0}}(S \geq n - s_{obs}) &amp; \textrm{ if } s_{obs} &lt; n/2
+\end{cases}
+\end{equation}\]</span></p></li>
+<li><p>It actually works out that
+<span class="math display">\[\begin{equation}
+\textrm{p-value} = 
+\begin{cases}
+2 P_{H_{0}}(S \geq s_{obs})   &amp; \textrm{ if } s_{obs} \geq n/2 \\
+2 P_{H_{0}}(S \leq s_{obs})   &amp; \textrm{ if } s_{obs} &lt; n/2
+\end{cases}
+\end{equation}\]</span></p></li>
+<li><p>Also, you can note that this p-value would be the same that you would get from performing the test
+<span class="math inline">\(H_{0}: p = 1/2\)</span> vs. <span class="math inline">\(H_{A}: p \neq 1/2\)</span> when it is assumed that <span class="math inline">\(S_{n} \sim \textrm{Binomial}(n, p)\)</span>.</p></li>
+<li><p>Another note: It is often suggested that one should drop observations which are exactly zero
+when performing the sign test.</p></li>
 </ul>
 </div>
 </div>
@@ -892,6 +940,39 @@ be the value of the Wilcoxon signed rank statistic?</p>
 <div id="asymptotic-distribution" class="section level4">
 <h4><span class="header-section-number">3.3.2.2</span> Asymptotic Distribution</h4>
 </div>
+</div>
+<div id="using-r-to-perform-the-sign-and-wilcoxon-tests" class="section level3">
+<h3><span class="header-section-number">3.3.3</span> Using R to Perform the Sign and Wilcoxon Tests</h3>
+<ul>
+<li><p>Let’s first look at the <strong>Meat</strong> data from the <strong>PairedData</strong> <strong>R</strong> package.</p></li>
+<li><p>This data set contains 20 observations with measures of fat percentage using different
+measuring techniques.</p></li>
+</ul>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">library</span>(PairedData, <span class="dt">quietly=</span><span class="ot">TRUE</span>, <span class="dt">warn.conflicts=</span><span class="ot">FALSE</span>) <span class="co">## loading PairedData package</span></a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw">data</span>(Meat)  <span class="co">## loading Meat data</span></a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw">head</span>(Meat)</a></code></pre></div>
+<pre><code>##   AOAC Babcock     MeatType
+## 1 22.0    22.3       Wiener
+## 2 22.1    21.8       Wiener
+## 3 22.1    22.4       Wiener
+## 4 22.2    22.5       Wiener
+## 5 24.6    24.9   ChoppedHam
+## 6 25.3    25.6 ChooppedPork</code></pre>
+<ul>
+<li>Define the differences <span class="math inline">\(D_{i}\)</span> as the Babcock measurements minus the AOAC measures</li>
+</ul>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">DD &lt;-<span class="st"> </span>Meat[,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>Meat[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="kw">hist</span>(DD, <span class="dt">main=</span><span class="st">&quot;Meat Data&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Difference in Measured Fat Percentage&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>)</a></code></pre></div>
+<p><img src="03-rankstat_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">summary</span>(DD)</a></code></pre></div>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  -1.600  -0.225   0.300   0.040   0.350   1.100</code></pre>
+<ul>
+<li>Let’s first test the hypothesis <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta \neq 1/2\)</span> using
+the two.sided sign test</li>
+</ul>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">binom.test</span>(<span class="kw">sum</span>(DD <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n =</span> <span class="kw">length</span>(DD), <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value</a></code></pre></div>
+<pre><code>## [1] 0.8238029</code></pre>
 </div>
 </div>
 <div id="power-and-comparisons-with-parametric-tests" class="section level2">
