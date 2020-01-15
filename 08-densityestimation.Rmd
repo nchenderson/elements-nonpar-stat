@@ -221,7 +221,7 @@ bin $x_{0} + (A_{h_{n}}(x) - 1)h_{n}$ will always be very close to $x$.
 \approx \frac{f(x) + f'(x)\{ x - x_{0} - (A_{h_{n}}(x) - 1)h_{n} \}}{nh_{n}}\{1 - p_{h_{n}}(x)\}
 \approx \frac{f(x)}{n h_{n} }
 \end{equation}
-* For a more detailed description of the above approximation see Scott.
+* For a more detailed description of the above approximation see @scott1979.
 * Note that large bin widths will reduce variance.
 
 

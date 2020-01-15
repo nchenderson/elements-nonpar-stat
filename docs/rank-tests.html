@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-14" />
+<meta name="date" content="2020-01-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -155,9 +155,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.3</b> One Sample Tests</a><ul>
 <li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#the-sign-test"><i class="fa fa-check"></i><b>3.3.1</b> The Sign Test</a></li>
-<li class="chapter" data-level="3.3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-signed-rank-wilcoxon-test"><i class="fa fa-check"></i><b>3.3.2</b> The Signed-Rank Wilcoxon Test</a></li>
+<li class="chapter" data-level="3.3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-signed-rank-test"><i class="fa fa-check"></i><b>3.3.2</b> The Wilcoxon Signed Rank Test</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#comparisons-with-parametric-tests"><i class="fa fa-check"></i><b>3.4</b> Comparisons with Parametric Tests</a></li>
+<li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#power-and-comparisons-with-parametric-tests"><i class="fa fa-check"></i><b>3.4</b> Power and Comparisons with Parametric Tests</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="rank-tests.html"><a href="rank-tests.html#power-of-tests"><i class="fa fa-check"></i><b>3.4.1</b> Power of Tests</a></li>
+</ul></li>
 <li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#thinking-about-rank-statistics-more-generally"><i class="fa fa-check"></i><b>3.5</b> Thinking about Rank statistics more generally</a></li>
 <li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#notes"><i class="fa fa-check"></i><b>3.6</b> Notes</a></li>
 </ul></li>
@@ -501,7 +503,14 @@ Note that the null distribution only depends on <span class="math inline">\(n\)<
 <li><p>Also, there are <span class="math inline">\({n + m \choose n}\)</span> possible ways to assign distinct ranks to group 1.</p></li>
 <li><p>Consider an example with <span class="math inline">\(n = m = 2\)</span>. In this case, there are <span class="math inline">\({4 \choose 2} = 6\)</span> distinct
 ways to assign 2 ranks to group 1.
-What is the null distribution of the WRS test statistic?</p></li>
+What is the null distribution of the WRS test statistic? Try to verify that
+<span class="math display">\[\begin{eqnarray}
+P_{H_{0}}( W = 7) &amp;=&amp; 1/6 \nonumber \\
+P_{H_{0}}( W = 6 ) &amp;=&amp; 1/6 \nonumber \\
+P_{H_{0}}(W = 5) &amp;=&amp; 1/3  \nonumber \\
+P_{H_{0}}( W = 4 ) &amp;=&amp; 1/6  \nonumber \\
+P_{H_{0}}(W = 3) &amp;=&amp; 1/6. \nonumber 
+\end{eqnarray}\]</span></p></li>
 </ul>
 <hr />
 <p><strong>Large-Sample Approximate Distribution</strong></p>
@@ -553,6 +562,11 @@ H_{0}: &amp;&amp; P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad
 H_{A}: &amp;&amp; P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2
 \end{eqnarray}\]</span></p></li>
 </ul>
+<hr />
+<p><strong>Exercise 3.3.</strong> Using the exact distribution, what is the smallest
+possible one-sided p-value associated with the WRS test
+for a fixed value of <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span> (assuming the probability of ties is zero)?</p>
+<hr />
 <!-- * Give exercise, compute p-values for Wilcoxon test where
 we have two populations. both are Normally distributed
 with mean zero but different variances. -->
@@ -628,7 +642,7 @@ with the following steps:</li>
 ## 3381.5</code></pre>
 <ul>
 <li><span class="math inline">\(\{ W - n(n+1)/2 \}\)</span> is equal to the Mann-Whitney statistic. Thus, <strong>W$statistic/(mn)</strong> is
-an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{i}) + P(X_{i} = Y_{i})/2\)</span>.</li>
+an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{j}) + P(X_{i} = Y_{j})/2\)</span>.</li>
 </ul>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">W<span class="op">$</span>statistic<span class="op">/</span>(m<span class="op">*</span>n)</a></code></pre></div>
 <pre><code>##         W 
@@ -645,7 +659,7 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{i}) +
 <a class="sourceLine" id="cb26-7" data-line-number="7">    xgreater[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">&gt;</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb26-8" data-line-number="8">}</a>
 <a class="sourceLine" id="cb26-9" data-line-number="9"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.81</code></pre>
+<pre><code>## [1] 0.83</code></pre>
 </div>
 <div id="additional-notes-for-the-wrs-test" class="section level3">
 <h3><span class="header-section-number">3.2.5</span> Additional Notes for the WRS test</h3>
@@ -701,21 +715,195 @@ argument in the <strong>wilcox.test</strong> function</p></li>
 <h2><span class="header-section-number">3.3</span> One Sample Tests</h2>
 <div id="the-sign-test" class="section level3">
 <h3><span class="header-section-number">3.3.1</span> The Sign Test</h3>
+<div id="motivation-and-definition" class="section level4">
+<h4><span class="header-section-number">3.3.1.1</span> Motivation and Definition</h4>
 <ul>
-<li>Suppose we have observations <span class="math inline">\(D_{1}, \ldots, D_{n}\)</span> which arise from the following model
+<li><p>Suppose we have observations <span class="math inline">\(D_{1}, \ldots, D_{n}\)</span> which arise from the following model
 <span class="math display">\[\begin{equation}
 D_{i} = \theta + \varepsilon_{i}, \nonumber 
 \end{equation}\]</span>
-where <span class="math inline">\(\varepsilon_{i}\)</span> are iid random variables each with distribution function <span class="math inline">\(F\)</span>
-that is assumed to have a median of zero.</li>
+where <span class="math inline">\(\varepsilon_{i}\)</span> are iid random variables each with distribution function <span class="math inline">\(F_{\epsilon}\)</span>
+that is assumed to have a median of zero.</p></li>
+<li><p>The distribution function of <span class="math inline">\(D_{i}\)</span> is then
+<span class="math display">\[\begin{equation}
+F_{D}(t) = P(D_{i} \leq t) = P(\varepsilon_{i} \leq t - \theta) = F_{\epsilon}(t - \theta)
+\end{equation}\]</span></p></li>
+<li><p>Likewise the density function <span class="math inline">\(f_{D}(t)\)</span> of <span class="math inline">\(D_{i}\)</span> is given by
+<span class="math display">\[\begin{equation}
+f_{D}(t) = f_{\epsilon}(t - \theta)
+\end{equation}\]</span></p></li>
+<li><p>In this context, <span class="math inline">\(\theta\)</span> is usually referred to as a <strong>location parameter</strong>.</p></li>
+<li><p>The goal here is to test <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span>. (Often, <span class="math inline">\(\theta_{0} = 0\)</span>).</p></li>
+</ul>
+<hr />
+<ul>
+<li>This sort of test usually comes up in the context of <strong>paired data</strong>.
+Common examples include
+<ul>
+<li>patients compared “pre and post treatment”</li>
+<li>students before and after the introduction of a new teaching method</li>
+<li>comparison of “matched” individuals who are similar (e.g., same age, sex, education, etc.)</li>
+</ul></li>
+</ul>
+<table border="1">
+<tr>
+<th>
+</th>
+<th>
+Baseline_Measure
+</th>
+<th>
+Post_Treatment_Measure
+</th>
+</tr>
+<tr>
+<td align="center">
+Patient 1
+</td>
+<td align="center">
+X1
+</td>
+<td align="center">
+Y1
+</td>
+</tr>
+<tr>
+<td align="center">
+Patient 2
+</td>
+<td align="center">
+X2
+</td>
+<td align="center">
+Y2
+</td>
+</tr>
+<tr>
+<td align="center">
+Patient 3
+</td>
+<td align="center">
+X3
+</td>
+<td align="center">
+Y3
+</td>
+</tr>
+<tr>
+<td align="center">
+Patient 4
+</td>
+<td align="center">
+X4
+</td>
+<td align="center">
+Y4
+</td>
+</tr>
+</table>
+<ul>
+<li><p>In such cases, we have observations <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{i}\)</span> for <span class="math inline">\(i = 1,\ldots n\)</span> where
+it is not necessarily reasonable to think of <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{i}\)</span> as independent.</p></li>
+<li><p>We can define <span class="math inline">\(D_{i} = X_{i} - Y_{i}\)</span> as the difference in the <span class="math inline">\(i^{th}\)</span> pair.</p></li>
+<li><p>With this setup, a natural question is whether or not the differences <span class="math inline">\(D_{i}\)</span> tend to be
+greater than zero or not.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The <strong>sign</strong> statistic <span class="math inline">\(S_{n}\)</span> is defined as
+<span class="math display" id="eq:sign-statistic">\[\begin{equation}
+S = \sum_{i=1}^{n} I( D_{i} &gt; 0)
+\tag{3.7}
+\end{equation}\]</span></p></li>
+<li><p>If the null hypothesis <span class="math inline">\(H_{0}: \theta = 0\)</span> is true, then we should expect that roughly half
+of the observations will be positive.</p></li>
+<li><p>This suggests that we will reject <span class="math inline">\(H_{0}\)</span> if <span class="math inline">\(S \geq c\)</span> where <span class="math inline">\(c\)</span> is a
+number that is greater than <span class="math inline">\(n/2\)</span>.</p></li>
 </ul>
 </div>
-<div id="the-signed-rank-wilcoxon-test" class="section level3">
-<h3><span class="header-section-number">3.3.2</span> The Signed-Rank Wilcoxon Test</h3>
+<div id="null-distribution-and-p-values" class="section level4">
+<h4><span class="header-section-number">3.3.1.2</span> Null Distribution and p-values</h4>
+<ul>
+<li><p>Notice that the sign statistic defined in <a href="rank-tests.html#eq:sign-statistic">(3.7)</a> is the sum of independent
+Bernoulli random variable.</p></li>
+<li><p>That is, we can think of <span class="math inline">\(Z_{i} = I(D_{i} &gt; 0)\)</span> as a random variable with success probability
+<span class="math inline">\(p( \theta )\)</span> where the formula for <span class="math inline">\(p( \theta )\)</span> is
+<span class="math display">\[\begin{equation}
+p(\theta) = P(Z_{i} &gt; 0) = 1 - F_{D}(0) = 1 - F_{\epsilon}( -\theta )
+\end{equation}\]</span></p></li>
+<li><p>This implies that <span class="math inline">\(S_{n}\)</span> is a binomial random variable
+with <span class="math inline">\(n\)</span> trials and success probability <span class="math inline">\(p(\theta)\)</span>.
+That is,
+<span class="math display">\[\begin{equation}
+S \sim \textrm{Binomial}(n, p(\theta) )
+\end{equation}\]</span></p></li>
+<li><p>Because <span class="math inline">\(p(0) = 1/2\)</span>, <span class="math inline">\(S_{n} \sim \textrm{Binomial}(n, 1/2 )\)</span> under <span class="math inline">\(H_{0}\)</span>.</p></li>
+<li><p>Notice that the “null distribution” of the sign statistic is “distribution free”
+in the sense that the distribution does not depend on the distribution of <span class="math inline">\(D_{i}\)</span>.</p></li>
+<li><p>The p-value for the sign test can be computed by
+<span class="math display">\[\begin{equation}
+\textrm{p-value} = P_{H_{0}}(S \geq s_{obs}) = \sum_{j=s_{obs}}^{n} {n \choose j} \frac{1}{2^{n}},
+\end{equation}\]</span>
+where <span class="math inline">\(s_{obs}\)</span> is the observed value of the sign statistic.</p></li>
+</ul>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co">### How to compute the p-value for the sign test using R</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">xx &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3">sign.stat &lt;-<span class="st"> </span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb30-4" data-line-number="4"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pbinom</span>(sign.stat <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">size=</span><span class="dv">100</span>, <span class="dt">prob=</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) <span class="co">## p-value for sign test</span></a></code></pre></div>
+<pre><code>## [1] 0.4602054</code></pre>
+<ul>
+<li>The reason that this is the right expression using <strong>R</strong> is that for any positive integer <span class="math inline">\(w\)</span>
+<span class="math display">\[\begin{equation}
+P_{H_{0}}(S \geq w) = 1 - P_{H_{0}}(S &lt; w) = 1 - P_{H_{0}}(S \leq w - 1)
+\end{equation}\]</span>
+and the <strong>R</strong> function <strong>pbinom(t, n, prob)</strong> computes <span class="math inline">\(P(X \leq t)\)</span> where <span class="math inline">\(X\)</span> is
+a binomial random variable with <span class="math inline">\(n\)</span> trials and success probability <strong>prob</strong>.</li>
+</ul>
 </div>
 </div>
-<div id="comparisons-with-parametric-tests" class="section level2">
-<h2><span class="header-section-number">3.4</span> Comparisons with Parametric Tests</h2>
+<div id="the-wilcoxon-signed-rank-test" class="section level3">
+<h3><span class="header-section-number">3.3.2</span> The Wilcoxon Signed Rank Test</h3>
+<ul>
+<li><p>The Wilcoxon signed rank test can be applied
+under the same scenario that we used the sign test.</p></li>
+<li><p>One criticism of the sign test is that it ignores the magnitude
+of the observations.</p></li>
+<li><p>For example, the sign test statistic <span class="math inline">\(S\)</span> treats observations
+<span class="math inline">\(D_{i} = 0.2\)</span> and <span class="math inline">\(D_{i}=3\)</span> the same.</p></li>
+<li><p>The <strong>Wilcoxon signed rank statistic</strong> <span class="math inline">\(T^{+}\)</span> weights the positive
+indicators <span class="math inline">\(I( D_{i} &gt; 0)\)</span> by the rank of its absolute value.</p></li>
+<li><p>Specifically, the Wilcoxon signed rank statistic is defined as
+<span class="math display">\[\begin{equation}
+T^{+} = \sum_{i=1}^{n} I( D_{i} &gt; 0)R_{i}( |\mathbf{D}| )
+\end{equation}\]</span></p></li>
+<li><p>Here, <span class="math inline">\(R_{i}( \mathbf{D})\)</span> is the rank of the <span class="math inline">\(i^{th}\)</span> element from the vector
+<span class="math inline">\(|\mathbf{D}| = (|D_{1}|, |D_{2}|, \ldots, |D_{n})\)</span>.</p></li>
+</ul>
+<hr />
+<p><strong>Exercise 3.4.</strong> Suppose we had data <span class="math inline">\((-2, 1, -1/2, 3/2, 3)\)</span>. What would
+be the value of the Wilcoxon signed rank statistic?</p>
+<hr />
+<ul>
+<li>Expectation under the null hypothesis..</li>
+</ul>
+<div id="exact-distribution" class="section level4">
+<h4><span class="header-section-number">3.3.2.1</span> Exact Distribution</h4>
+</div>
+<div id="asymptotic-distribution" class="section level4">
+<h4><span class="header-section-number">3.3.2.2</span> Asymptotic Distribution</h4>
+</div>
+</div>
+</div>
+<div id="power-and-comparisons-with-parametric-tests" class="section level2">
+<h2><span class="header-section-number">3.4</span> Power and Comparisons with Parametric Tests</h2>
+<div id="power-of-tests" class="section level3">
+<h3><span class="header-section-number">3.4.1</span> Power of Tests</h3>
+<ul>
+<li>The <strong>power</strong> of a test is the probability
+that a test rejects the null hypothesis when the
+alternative hypothesis is true.</li>
+</ul>
+</div>
 </div>
 <div id="thinking-about-rank-statistics-more-generally" class="section level2">
 <h2><span class="header-section-number">3.5</span> Thinking about Rank statistics more generally</h2>
@@ -725,7 +913,7 @@ that is assumed to have a median of zero.</li>
 <ul>
 <li>Additional reading which covers the material discussed in this chapter includes:
 <ul>
-<li>Chapters 3-4 from <span class="citation">Hollander, Wolfe, and Chicken (<a href="#ref-hollander2013">2013</a>)</span>,</li>
+<li>Chapters 3-4 from <span class="citation">Hollander, Wolfe, and Chicken (<a href="#ref-hollander2013">2013</a>)</span></li>
 </ul></li>
 </ul>
 

@@ -314,7 +314,14 @@ Note that the null distribution only depends on $n$ and $m$.
 
 * Consider an example with $n = m = 2$. In this case, there are ${4 \choose 2} = 6$ distinct
 ways to assign 2 ranks to group 1.
-What is the null distribution of the WRS test statistic? 
+What is the null distribution of the WRS test statistic? Try to verify that
+\begin{eqnarray}
+P_{H_{0}}( W = 7) &=& 1/6 \nonumber \\
+P_{H_{0}}( W = 6 ) &=& 1/6 \nonumber \\
+P_{H_{0}}(W = 5) &=& 1/3  \nonumber \\
+P_{H_{0}}( W = 4 ) &=& 1/6  \nonumber \\
+P_{H_{0}}(W = 3) &=& 1/6. \nonumber 
+\end{eqnarray}
 
 ---
 
@@ -373,6 +380,14 @@ or
 H_{0}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
 H_{A}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2
 \end{eqnarray}
+
+---
+
+**Exercise 3.3.** Using the exact distribution, what is the smallest
+possible one-sided p-value associated with the WRS test 
+for a fixed value of $n$ and $m$ (assuming the probability of ties is zero)? 
+
+---
 
 <!-- * Give exercise, compute p-values for Wilcoxon test where
 we have two populations. both are Normally distributed
@@ -484,7 +499,7 @@ W$statistic
 ```
 
 * $\{ W - n(n+1)/2 \}$ is equal to the Mann-Whitney statistic. Thus, **W$statistic/(mn)** is
-an estimate of the probability $P(X_{i} > Y_{i}) + P(X_{i} = Y_{i})/2$.
+an estimate of the probability $P(X_{i} > Y_{j}) + P(X_{i} = Y_{j})/2$.
 
 ```r
 W$statistic/(m*n)
@@ -510,7 +525,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.77
+## [1] 0.76
 ```
 
 
@@ -578,24 +593,165 @@ WC$estimate     ## The Hodges-Lehmann estimate
 
 ### The Sign Test
 
+#### Motivation and Definition
 * Suppose we have observations $D_{1}, \ldots, D_{n}$ which arise from the following model
 \begin{equation}
 D_{i} = \theta + \varepsilon_{i}, \nonumber 
 \end{equation}
-where $\varepsilon_{i}$ are iid random variables each with distribution function $F$
+where $\varepsilon_{i}$ are iid random variables each with distribution function $F_{\epsilon}$
 that is assumed to have a median of zero.
 
+* The distribution function of $D_{i}$ is then
+\begin{equation}
+F_{D}(t) = P(D_{i} \leq t) = P(\varepsilon_{i} \leq t - \theta) = F_{\epsilon}(t - \theta)
+\end{equation}
+
+* Likewise the density function $f_{D}(t)$ of $D_{i}$ is given by
+\begin{equation}
+f_{D}(t) = f_{\epsilon}(t - \theta)
+\end{equation}
+
+* In this context, $\theta$ is usually referred to as a **location parameter**.
+
+* The goal here is to test $H_{0}: \theta = \theta_{0}$. (Often, $\theta_{0} = 0$).
+
+---
+
+* This sort of test usually comes up in the context of **paired data**.
+Common examples include
+    + patients compared "pre and post treatment"
+    + students before and after the introduction of a new teaching method 
+    + comparison of "matched" individuals who are similar (e.g., same age, sex, education, etc.)
+
+<table border=1>
+<tr> <th>  </th> <th> Baseline_Measure </th> <th> Post_Treatment_Measure </th>  </tr>
+  <tr> <td align="center"> Patient 1 </td> <td align="center"> X1 </td> <td align="center"> Y1 </td> </tr>
+  <tr> <td align="center"> Patient 2 </td> <td align="center"> X2 </td> <td align="center"> Y2 </td> </tr>
+  <tr> <td align="center"> Patient 3 </td> <td align="center"> X3 </td> <td align="center"> Y3 </td> </tr>
+  <tr> <td align="center"> Patient 4 </td> <td align="center"> X4 </td> <td align="center"> Y4 </td> </tr>
+   </table>
+   
+* In such cases, we have observations $X_{i}$ and $Y_{i}$ for $i = 1,\ldots n$ where
+it is not necessarily reasonable to think of $X_{i}$ and $Y_{i}$ as independent.
+
+* We can define $D_{i} = X_{i} - Y_{i}$ as the difference in the $i^{th}$ pair.
+
+* With this setup, a natural question is whether or not the differences $D_{i}$ tend to be 
+greater than zero or not.
+
+---
+
+* The **sign** statistic $S_{n}$ is defined as
+\begin{equation}
+S = \sum_{i=1}^{n} I( D_{i} > 0)
+(\#eq:sign-statistic)
+\end{equation}
+
+* If the null hypothesis $H_{0}: \theta = 0$ is true, then we should expect that roughly half
+of the observations will be positive.
+
+* This suggests that we will reject $H_{0}$ if $S \geq c$ where $c$ is a 
+number that is greater than $n/2$.
+
+#### Null Distribution and p-values
+
+* Notice that the sign statistic defined in \@ref(eq:sign-statistic) is the sum of independent
+Bernoulli random variable. 
+
+* That is, we can think of $Z_{i} = I(D_{i} > 0)$ as a random variable with success probability
+$p( \theta )$ where the formula for $p( \theta )$ is
+\begin{equation}
+p(\theta) = P(Z_{i} > 0) = 1 - F_{D}(0) = 1 - F_{\epsilon}( -\theta )
+\end{equation}
+
+* This implies that $S_{n}$ is a binomial random variable
+with $n$ trials and success probability $p(\theta)$. 
+That is, 
+\begin{equation}
+S \sim \textrm{Binomial}(n, p(\theta) )
+\end{equation}
+
+* Because $p(0) = 1/2$, $S_{n} \sim \textrm{Binomial}(n, 1/2 )$ under $H_{0}$.
+
+* Notice that the "null distribution" of the sign statistic is "distribution free"
+in the sense that the distribution does not depend on the distribution of $D_{i}$.
+
+* The p-value for the sign test can be computed by
+\begin{equation}
+\textrm{p-value} = P_{H_{0}}(S \geq s_{obs}) = \sum_{j=s_{obs}}^{n} {n \choose j} \frac{1}{2^{n}},
+\end{equation}
+where $s_{obs}$ is the observed value of the sign statistic.
 
 
-### The Signed-Rank Wilcoxon Test
+```r
+### How to compute the p-value for the sign test using R
+xx <- rnorm(100)
+sign.stat <- sum(xx > 0)
+1 - pbinom(sign.stat - 1, size=100, prob=1/2) ## p-value for sign test
+```
 
-## Comparisons with Parametric Tests
+```
+## [1] 0.6913503
+```
+
+* The reason that this is the right expression using **R** is that for any positive integer $w$
+\begin{equation}
+P_{H_{0}}(S \geq w) = 1 - P_{H_{0}}(S < w) = 1 - P_{H_{0}}(S \leq w - 1)
+\end{equation}
+and the **R** function **pbinom(t, n, prob)** computes $P(X \leq t)$ where $X$ is 
+a binomial random variable with $n$ trials and success probability **prob**.
+
+### The Wilcoxon Signed Rank Test
+
+* The Wilcoxon signed rank test can be applied
+under the same scenario that we used the sign test.
+
+* One criticism of the sign test is that it ignores the magnitude 
+of the observations.
+
+* For example, the sign test statistic $S$ treats observations 
+$D_{i} = 0.2$ and $D_{i}=3$ the same.
+
+* The **Wilcoxon signed rank statistic** $T^{+}$ weights the positive
+indicators $I( D_{i} > 0)$ by the rank of its absolute value.
+
+* Specifically, the Wilcoxon signed rank statistic is defined as
+\begin{equation}
+T^{+} = \sum_{i=1}^{n} I( D_{i} > 0)R_{i}( |\mathbf{D}| )
+\end{equation}
+
+* Here, $R_{i}( \mathbf{D})$ is the rank of the $i^{th}$ element from the vector
+$|\mathbf{D}| = (|D_{1}|, |D_{2}|, \ldots, |D_{n})$.
+
+---
+
+**Exercise 3.4.** Suppose we had data $(-2, 1, -1/2, 3/2, 3)$. What would 
+be the value of the Wilcoxon signed rank statistic?
+
+---
+
+* Expectation under the null hypothesis..
+
+#### Exact Distribution
+
+#### Asymptotic Distribution
+
+
+## Power and Comparisons with Parametric Tests
+
+### Power of Tests
+
+* The **power** of a test is the probability
+that a test rejects the null hypothesis when the 
+alternative hypothesis is true.
+
+
 
 ## Thinking about Rank statistics more generally
 
 ## Notes 
 
 * Additional reading which covers the material discussed in this chapter includes:
-    + Chapters 3-4 from @hollander2013,
+    + Chapters 3-4 from @hollander2013
 
 
