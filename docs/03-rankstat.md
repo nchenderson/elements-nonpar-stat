@@ -428,7 +428,7 @@ wine2$Type <- factor(wine2$Type)
 ```
 
 * Let's consider the difference in the level of magnesium across the two types of wine.
-![](03-rankstat_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-6-2.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-6-2.png" width="672" />
 
 * Suppose we are interested in testing whether or not magnesium levels in 
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
@@ -594,12 +594,19 @@ WC$estimate     ## The Hodges-Lehmann estimate
 ### The Sign Test
 
 #### Motivation and Definition
-* Suppose we have observations $D_{1}, \ldots, D_{n}$ which arise from the following model
+
+* The **sign test** can be thought of as a test of whether or not
+the median of a distribution is greater than zero (or greater than some other fixed value $\theta_{0}$).
+
+* Frequently, the sign test is explained in the following context: 
+    + Suppose we have observations $D_{1}, \ldots, D_{n}$ which arise from the model
 \begin{equation}
-D_{i} = \theta + \varepsilon_{i}, \nonumber 
+D_{i} = \theta + \varepsilon_{i},
+(\#eq:general-location)
 \end{equation}
 where $\varepsilon_{i}$ are iid random variables each with distribution function $F_{\epsilon}$
-that is assumed to have a median of zero.
+that is assumed to have a median of zero. Moreover, we will assume the density function
+$f_{\varepsilon}(t)$ is symmetric around zero.
 
 * The distribution function of $D_{i}$ is then
 \begin{equation}
@@ -692,7 +699,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.3821767
+## [1] 0.9333947
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -710,7 +717,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.3821767
+## [1] 0.9333947
 ```
 
 #### Two-sided Sign Test
@@ -777,24 +784,70 @@ indicators $I( D_{i} > 0)$ by the rank of its absolute value.
 
 * Specifically, the Wilcoxon signed rank statistic is defined as
 \begin{equation}
-T^{+} = \sum_{i=1}^{n} I( D_{i} > 0)R_{i}( |\mathbf{D}| )
+T = \sum_{i=1}^{n} \textrm{sign}( D_{i}) R_{i}( |\mathbf{D}| )
+\end{equation}
+where the $\textrm{sign}$ function is defined as
+\begin{equation}
+\textrm{sign}(x) = \begin{cases}
+1 & \textrm{if } x > 0 \\
+0 & \textrm{if } x = 0 \\
+-1 & \textrm{if } x < 0
+\end{cases}
 \end{equation}
 
 * Here, $R_{i}( \mathbf{D})$ is the rank of the $i^{th}$ element from the vector
-$|\mathbf{D}| = (|D_{1}|, |D_{2}|, \ldots, |D_{n})$.
+$|\mathbf{D}| = (|D_{1}|, |D_{2}|, \ldots, |D_{n}|)$.
+
+* Intuitively, the Wilcoxon signed rank statistic is measuring whether 
+or not large values of $|D_{i}|$ tend to be associated with positive 
+vs. negative values of $D_{i}$.
 
 ---
+
+Discuss some of these in class
 
 **Exercise 3.4.** Suppose we had data $(-2, 1, -1/2, 3/2, 3)$. What would 
 be the value of the Wilcoxon signed rank statistic?
 
+**Exercise 3.5.** Under the assumptions of model \@ref(eq:general-location), what is 
+the density function of $|D_{i}|$ and $-|D_{i}|$?
+
+**Exercise 3.6.** Under the assumptions of model \@ref(eq:general-location) and
+assuming that $\theta = 0$, show that the expectation of the Wilcoxon signed-rank
+statistic is $0$.
+
 ---
 
-* Expectation under the null hypothesis..
+#### Asymptotic Distribution
+
+* As mentioned in the above exercise, the expectation of $T$ under $H_{0}$ is zero.
+
+* It can be shown that the variance under the null hypothesis is
+\begin{equation}
+\textrm{Var}( T ) = \frac{n(2n + 1)(n + 1)}{6} \nonumber
+\end{equation}
+
+* Similar, to the large-sample approximation we used for the WRS test, we have the following
+asymptotic result for the Wilcoxon signed-rank test
+\begin{equation}
+\frac{T}{\sqrt{\textrm{Var}(T) }} \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } T \longrightarrow \infty
+\end{equation}
+
+* Because the variance of $T$ is dominated by the term $n^{3}/3$ for very large $n$, we could also say
+that
+\begin{equation}
+\frac{T}{\sqrt{n^{3}/3} } \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } T \longrightarrow \infty
+\end{equation}
+In other words, we can say that $T$ has an approximately $\textrm{Normal}(0, n^{3}/3)$ for large $n$.
+
+
+
 
 #### Exact Distribution
 
-#### Asymptotic Distribution
+* The exact distribution of the Wilcoxon signed rank statistic $T$ 
+is somewhat more complicated than the exact distribution of the WRS test statistic.
+Nevertheless, there exists functions in **R** for working with this exact distribution. 
 
 
 ### Using R to Perform the Sign and Wilcoxon Tests 
@@ -821,34 +874,101 @@ head(Meat)
 ## 6 25.3    25.6 ChooppedPork
 ```
 
-* Define the differences $D_{i}$ as the Babcock measurements minus the AOAC measures
+* Define the differences $D_{i}$ as the **Babcock** measurements minus the **AOAC** measures. 
+We will drop the single observation that equals zero.
 
 ```r
 DD <- Meat[,2] - Meat[,1]
+DD <- DD[DD!=0]
 hist(DD, main="Meat Data", xlab="Difference in Measured Fat Percentage", las=1)
 ```
 
-![](03-rankstat_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 ```r
 summary(DD)
 ```
 
 ```
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  -1.600  -0.225   0.300   0.040   0.350   1.100
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## -1.60000 -0.25000  0.30000  0.04211  0.40000  1.10000
 ```
 
+**The Sign Test in R**
+
 * Let's first test the hypothesis $H_{0}: \theta = 0$ vs. $H_{A}: \theta \neq 1/2$ using
-the two.sided sign test
+the two-sided sign test. This can be done using the **binom.test** function
+
 
 ```r
 binom.test(sum(DD > 0), n = length(DD), p=0.5)$p.value
 ```
 
 ```
-## [1] 0.8238029
+## [1] 0.6476059
 ```
+
+**Wilcoxon Signed Rank Test in R**
+
+* You can actually use the function **wilcox.test** to perform the Wilcoxon signed rank test in addition 
+to the Wilcoxon rank sum test. To perform the Wilcoxon signed rank test in **R**, you just
+need to enter data for the **x** argument and leave the **y** argument empty.
+
+
+```r
+wilcox.test(x=DD)
+```
+
+```
+## Warning in wilcox.test.default(x = DD): cannot compute exact p-value with
+## ties
+```
+
+```
+## 
+## 	Wilcoxon signed rank test with continuity correction
+## 
+## data:  DD
+## V = 118.5, p-value = 0.3534
+## alternative hypothesis: true location is not equal to 0
+```
+
+* You will note that the p-value for the Wilcoxon signed rank test is lower than that
+of the sign test. In general, the Wilcoxon signed rank test is somewhat more "sensitive"
+than the sign test meaning that it will have a greater tendency
+to reject $H_{0}$ for small deviations from $H_{0}$.
+
+* We can explore this sensitivity comparison with a small simulation study. We
+will consider a scenario where $D_{i} = 0.4 + \varepsilon_{i}$ with $\varepsilon_{i}$
+having a t distribution with $3$ degrees of freedom.
+
+```r
+set.seed(1327)
+n.reps <- 500  ## number of simulation replications
+samp.size <- 50  ## the sample size
+wilcox.reject <- rep(0, n.reps)
+sign.reject <- rep(0, n.reps)
+for(k in 1:n.reps) {
+    dsim <- .4 + rt(samp.size, df=3)
+    wilcox.reject[k] <- ifelse(wilcox.test(x=dsim)$p.value < 0.05, 1, 0)
+    sign.reject[k] <- ifelse(binom.test(sum(dsim > 0), 
+                                       n=samp.size, p=0.5)$p.value < 0.05, 1, 0)
+}
+mean(wilcox.reject)  ## proportion of times Wilcoxon signed rank rejected H0
+```
+
+```
+## [1] 0.614
+```
+
+```r
+mean(sign.reject)  ## proportion of times Wilcoxon signed rank rejected H0
+```
+
+```
+## [1] 0.488
+```
+
 
 ## Power and Comparisons with Parametric Tests
 
