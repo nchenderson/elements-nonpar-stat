@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-15" />
+<meta name="date" content="2020-01-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -660,7 +660,7 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{j}) +
 <a class="sourceLine" id="cb26-7" data-line-number="7">    xgreater[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">&gt;</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb26-8" data-line-number="8">}</a>
 <a class="sourceLine" id="cb26-9" data-line-number="9"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.82</code></pre>
+<pre><code>## [1] 0.81</code></pre>
 </div>
 <div id="additional-notes-for-the-wrs-test" class="section level3">
 <h3><span class="header-section-number">3.2.5</span> Additional Notes for the WRS test</h3>
@@ -770,10 +770,10 @@ Post_Treatment_Measure
 Patient 1
 </td>
 <td align="center">
-X1
+Y1
 </td>
 <td align="center">
-Y1
+X1
 </td>
 </tr>
 <tr>
@@ -781,10 +781,10 @@ Y1
 Patient 2
 </td>
 <td align="center">
-X2
+Y2
 </td>
 <td align="center">
-Y2
+X2
 </td>
 </tr>
 <tr>
@@ -792,10 +792,10 @@ Y2
 Patient 3
 </td>
 <td align="center">
-X3
+Y3
 </td>
 <td align="center">
-Y3
+X3
 </td>
 </tr>
 <tr>
@@ -803,10 +803,10 @@ Y3
 Patient 4
 </td>
 <td align="center">
-X4
+Y4
 </td>
 <td align="center">
-Y4
+X4
 </td>
 </tr>
 </table>
@@ -821,12 +821,12 @@ greater than zero or not.</p></li>
 <ul>
 <li><p>The <strong>sign</strong> statistic <span class="math inline">\(S_{n}\)</span> is defined as
 <span class="math display" id="eq:sign-statistic">\[\begin{equation}
-S = \sum_{i=1}^{n} I( D_{i} &gt; 0)
+S_{n} = \sum_{i=1}^{n} I( D_{i} &gt; 0)
 \tag{3.8}
 \end{equation}\]</span></p></li>
 <li><p>If the null hypothesis <span class="math inline">\(H_{0}: \theta = 0\)</span> is true, then we should expect that roughly half
 of the observations will be positive.</p></li>
-<li><p>This suggests that we will reject <span class="math inline">\(H_{0}\)</span> if <span class="math inline">\(S \geq c\)</span> where <span class="math inline">\(c\)</span> is a
+<li><p>This suggests that we will reject <span class="math inline">\(H_{0}\)</span> if <span class="math inline">\(S_{n} \geq c\)</span> where <span class="math inline">\(c\)</span> is a
 number that is greater than <span class="math inline">\(n/2\)</span>.</p></li>
 </ul>
 </div>
@@ -844,14 +844,15 @@ p(\theta) = P(Z_{i} &gt; 0) = 1 - F_{D}(0) = 1 - F_{\epsilon}( -\theta )
 with <span class="math inline">\(n\)</span> trials and success probability <span class="math inline">\(p(\theta)\)</span>.
 That is,
 <span class="math display">\[\begin{equation}
-S \sim \textrm{Binomial}(n, p(\theta) )
+S_{n} \sim \textrm{Binomial}(n, p(\theta) )
 \end{equation}\]</span></p></li>
 <li><p>Because <span class="math inline">\(p(0) = 1/2\)</span>, <span class="math inline">\(S_{n} \sim \textrm{Binomial}(n, 1/2 )\)</span> under <span class="math inline">\(H_{0}\)</span>.</p></li>
 <li><p>Notice that the “null distribution” of the sign statistic is “distribution free”
 in the sense that the distribution does not depend on the distribution of <span class="math inline">\(D_{i}\)</span>.</p></li>
 <li><p>The p-value for the sign test can be computed by
 <span class="math display">\[\begin{equation}
-\textrm{p-value} = P_{H_{0}}(S \geq s_{obs}) = \sum_{j=s_{obs}}^{n} {n \choose j} \frac{1}{2^{n}},
+\textrm{p-value} = P_{H_{0}}(S_{n} \geq s_{obs}) = \sum_{j=s_{obs}}^{n} P_{H_{0}}(S_{n} = j)
+= \sum_{j=s_{obs}}^{n} {n \choose j} \frac{1}{2^{n}},
 \end{equation}\]</span>
 where <span class="math inline">\(s_{obs}\)</span> is the observed value of the sign statistic.</p></li>
 </ul>
@@ -859,28 +860,28 @@ where <span class="math inline">\(s_{obs}\)</span> is the observed value of the 
 <a class="sourceLine" id="cb30-2" data-line-number="2">xx &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb30-3" data-line-number="3">sign.stat &lt;-<span class="st"> </span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb30-4" data-line-number="4"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pbinom</span>(sign.stat <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">size=</span><span class="dv">100</span>, <span class="dt">prob=</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) <span class="co">## p-value for sign test</span></a></code></pre></div>
-<pre><code>## [1] 0.9333947</code></pre>
+<pre><code>## [1] 0.8158992</code></pre>
 <ul>
 <li><p>The reason that this is the right expression using <strong>R</strong> is that for any positive integer <span class="math inline">\(w\)</span>
 <span class="math display">\[\begin{equation}
-P_{H_{0}}(S \geq w) = 1 - P_{H_{0}}(S &lt; w) = 1 - P_{H_{0}}(S \leq w - 1)
+P_{H_{0}}(S_{n} \geq w) = 1 - P_{H_{0}}(S_{n} &lt; w) = 1 - P_{H_{0}}(S_{n} \leq w - 1)
 \end{equation}\]</span>
 and the <strong>R</strong> function <strong>pbinom(t, n, prob)</strong> computes <span class="math inline">\(P(X \leq t)\)</span> where <span class="math inline">\(X\)</span> is
 a binomial random variable with <span class="math inline">\(n\)</span> trials and success probability <strong>prob</strong>.</p></li>
 <li><p>You can also perform the one-sided sign test by using the <strong>binom.test</strong> function in <strong>R</strong>.</p></li>
 </ul>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">btest &lt;-<span class="st"> </span><span class="kw">binom.test</span>(sign.stat, <span class="dt">n=</span><span class="dv">100</span>, <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>) </a>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">btest &lt;-<span class="st"> </span><span class="kw">binom.test</span>(sign.stat, <span class="dt">n=</span><span class="dv">100</span>, <span class="dt">p=</span><span class="fl">0.5</span>, <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>) </a>
 <a class="sourceLine" id="cb32-2" data-line-number="2">btest<span class="op">$</span>p.value</a></code></pre></div>
-<pre><code>## [1] 0.9333947</code></pre>
+<pre><code>## [1] 0.8158992</code></pre>
 </div>
 <div id="two-sided-sign-test" class="section level4">
 <h4><span class="header-section-number">3.3.1.3</span> Two-sided Sign Test</h4>
 <ul>
 <li><p>Notice that the number of negative values of <span class="math inline">\(D_{i}\)</span> can be expressed as
 <span class="math display">\[\begin{equation}
-\sum_{i=1}^{n} I(D_{i} &lt; 0) = n - S
+\sum_{i=1}^{n} I(D_{i} &lt; 0) = n - S_{n}
 \end{equation}\]</span>
-if there are no observations that equal zero exactly. Large value of <span class="math inline">\(n - S\)</span>
+if there are no observations that equal zero exactly. Large value of <span class="math inline">\(n - S_{n}\)</span>
 would be used in favor of another possible one-sided alternative <span class="math inline">\(H_{A}: \theta &lt; 0\)</span>.</p></li>
 <li><p>If we now want to test the two-sided alternative
 <span class="math display">\[\begin{equation}
@@ -889,7 +890,7 @@ H_{0}: \theta = 0 \quad \textrm{ vs. }  \quad H_{A}: \theta \neq 0 \nonumber
 you would need to compute the probability under the null hypothesis of observing
 a “more extreme” observation than the one that was actually observed.</p></li>
 <li><p>Extreme is defined by thinking about the fact that we would have rejected <span class="math inline">\(H_{0}\)</span>
-if either <span class="math inline">\(S\)</span> or <span class="math inline">\(n - S\)</span> were very large.</p></li>
+if either <span class="math inline">\(S_{n}\)</span> or <span class="math inline">\(n - S_{n}\)</span> were very large.</p></li>
 <li><p>For example, if <span class="math inline">\(n = 12\)</span>, then the expected value of the sign statistic would be <span class="math inline">\(6\)</span>.
 If <span class="math inline">\(s_{obs} = 10\)</span>, then the collection of “more extreme” events then this would be
 <span class="math inline">\(\leq 2\)</span> and <span class="math inline">\(\geq 10\)</span>.</p></li>
@@ -897,16 +898,16 @@ If <span class="math inline">\(s_{obs} = 10\)</span>, then the collection of “
 <span class="math display">\[\begin{equation}
 \textrm{p-value} = 
 \begin{cases}
-P_{H_{0}}(S \geq s_{obs}) + P_{H_{0}}(S \leq n - s_{obs}) &amp; \textrm{ if } s_{obs} \geq n/2 \\
-P_{H_{0}}(S \leq s_{obs}) + P_{H_{0}}(S \geq n - s_{obs}) &amp; \textrm{ if } s_{obs} &lt; n/2
+P_{H_{0}}(S_{n} \geq s_{obs}) + P_{H_{0}}(S_{n} \leq n - s_{obs}) &amp; \textrm{ if } s_{obs} \geq n/2 \\
+P_{H_{0}}(S_{n} \leq s_{obs}) + P_{H_{0}}(S_{n} \geq n - s_{obs}) &amp; \textrm{ if } s_{obs} &lt; n/2
 \end{cases}
 \end{equation}\]</span></p></li>
 <li><p>It actually works out that
 <span class="math display">\[\begin{equation}
 \textrm{p-value} = 
 \begin{cases}
-2 P_{H_{0}}(S \geq s_{obs})   &amp; \textrm{ if } s_{obs} \geq n/2 \\
-2 P_{H_{0}}(S \leq s_{obs})   &amp; \textrm{ if } s_{obs} &lt; n/2
+2 P_{H_{0}}(S_{n} \geq s_{obs})   &amp; \textrm{ if } s_{obs} \geq n/2 \\
+2 P_{H_{0}}(S_{n} \leq s_{obs})   &amp; \textrm{ if } s_{obs} &lt; n/2
 \end{cases}
 \end{equation}\]</span></p></li>
 <li><p>Also, you can note that this p-value would be the same that you would get from performing the test
@@ -925,11 +926,11 @@ under the same scenario that we used the sign test.</p></li>
 of the observations.</p></li>
 <li><p>For example, the sign test statistic <span class="math inline">\(S\)</span> treats observations
 <span class="math inline">\(D_{i} = 0.2\)</span> and <span class="math inline">\(D_{i}=3\)</span> the same.</p></li>
-<li><p>The <strong>Wilcoxon signed rank statistic</strong> <span class="math inline">\(T^{+}\)</span> weights the positive
-indicators <span class="math inline">\(I( D_{i} &gt; 0)\)</span> by the rank of its absolute value.</p></li>
+<li><p>The <strong>Wilcoxon signed rank statistic</strong> <span class="math inline">\(T_{n}\)</span> weights the
+signs of <span class="math inline">\(D_{i}\)</span> by the rank of its absolute value.</p></li>
 <li><p>Specifically, the Wilcoxon signed rank statistic is defined as
 <span class="math display">\[\begin{equation}
-T = \sum_{i=1}^{n} \textrm{sign}( D_{i}) R_{i}( |\mathbf{D}| )
+T_{n} = \sum_{i=1}^{n} \textrm{sign}( D_{i}) R_{i}( |\mathbf{D}| )
 \end{equation}\]</span>
 where the <span class="math inline">\(\textrm{sign}\)</span> function is defined as
 <span class="math display">\[\begin{equation}
@@ -939,7 +940,7 @@ where the <span class="math inline">\(\textrm{sign}\)</span> function is defined
 -1 &amp; \textrm{if } x &lt; 0
 \end{cases}
 \end{equation}\]</span></p></li>
-<li><p>Here, <span class="math inline">\(R_{i}( \mathbf{D})\)</span> is the rank of the <span class="math inline">\(i^{th}\)</span> element from the vector
+<li><p>Here, <span class="math inline">\(R_{i}( |\mathbf{D}| )\)</span> is the rank of the <span class="math inline">\(i^{th}\)</span> element from the vector
 <span class="math inline">\(|\mathbf{D}| = (|D_{1}|, |D_{2}|, \ldots, |D_{n}|)\)</span>.</p></li>
 <li><p>Intuitively, the Wilcoxon signed rank statistic is measuring whether
 or not large values of <span class="math inline">\(|D_{i}|\)</span> tend to be associated with positive
@@ -958,28 +959,28 @@ statistic is <span class="math inline">\(0\)</span>.</p>
 <div id="asymptotic-distribution" class="section level4">
 <h4><span class="header-section-number">3.3.2.1</span> Asymptotic Distribution</h4>
 <ul>
-<li><p>As mentioned in the above exercise, the expectation of <span class="math inline">\(T\)</span> under <span class="math inline">\(H_{0}\)</span> is zero.</p></li>
+<li><p>As mentioned in the above exercise, the expectation of <span class="math inline">\(T_{n}\)</span> under <span class="math inline">\(H_{0}\)</span> is zero.</p></li>
 <li><p>It can be shown that the variance under the null hypothesis is
 <span class="math display">\[\begin{equation}
-\textrm{Var}( T ) = \frac{n(2n + 1)(n + 1)}{6} \nonumber
+\textrm{Var}_{H_{0}}( T_{n} ) = \frac{n(2n + 1)(n + 1)}{6} \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Similar, to the large-sample approximation we used for the WRS test, we have the following
 asymptotic result for the Wilcoxon signed-rank test
 <span class="math display">\[\begin{equation}
-\frac{T}{\sqrt{\textrm{Var}(T) }} \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } T \longrightarrow \infty
+\frac{T_{n}}{\sqrt{\textrm{Var}_{H_{0}}(T_{n}) }} \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } n \longrightarrow \infty
 \end{equation}\]</span></p></li>
-<li><p>Because the variance of <span class="math inline">\(T\)</span> is dominated by the term <span class="math inline">\(n^{3}/3\)</span> for very large <span class="math inline">\(n\)</span>, we could also say
+<li><p>Because the variance of <span class="math inline">\(T\)</span> is dominated by the term <span class="math inline">\(n^{3}/3\)</span> for very large <span class="math inline">\(n\)</span>, we could also say that under <span class="math inline">\(H_{0}\)</span>
 that
 <span class="math display">\[\begin{equation}
-\frac{T}{\sqrt{n^{3}/3} } \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } T \longrightarrow \infty
+\frac{T_{n}}{\sqrt{n^{3}/3} } \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } n \longrightarrow \infty
 \end{equation}\]</span>
-In other words, we can say that <span class="math inline">\(T\)</span> has an approximately <span class="math inline">\(\textrm{Normal}(0, n^{3}/3)\)</span> for large <span class="math inline">\(n\)</span>.</p></li>
+In other words, we can say that <span class="math inline">\(T_{n}\)</span> has an approximately <span class="math inline">\(\textrm{Normal}(0, n^{3}/3)\)</span> for large <span class="math inline">\(n\)</span>.</p></li>
 </ul>
 </div>
 <div id="exact-distribution" class="section level4">
 <h4><span class="header-section-number">3.3.2.2</span> Exact Distribution</h4>
 <ul>
-<li>The exact distribution of the Wilcoxon signed rank statistic <span class="math inline">\(T\)</span>
+<li>The exact distribution of the Wilcoxon signed rank statistic <span class="math inline">\(T_{n}\)</span>
 is somewhat more complicated than the exact distribution of the WRS test statistic.
 Nevertheless, there exists functions in <strong>R</strong> for working with this exact distribution.</li>
 </ul>
@@ -1015,7 +1016,7 @@ We will drop the single observation that equals zero.</li>
 ## -1.60000 -0.25000  0.30000  0.04211  0.40000  1.10000</code></pre>
 <p><strong>The Sign Test in R</strong></p>
 <ul>
-<li>Let’s first test the hypothesis <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta \neq 1/2\)</span> using
+<li>Let’s first test the hypothesis <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta \neq 0\)</span> using
 the two-sided sign test. This can be done using the <strong>binom.test</strong> function</li>
 </ul>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">binom.test</span>(<span class="kw">sum</span>(DD <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n =</span> <span class="kw">length</span>(DD), <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value</a></code></pre></div>

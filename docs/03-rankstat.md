@@ -525,7 +525,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.78
+## [1] 0.7
 ```
 
 
@@ -633,10 +633,10 @@ Common examples include
 
 <table border=1>
 <tr> <th>  </th> <th> Baseline_Measure </th> <th> Post_Treatment_Measure </th>  </tr>
-  <tr> <td align="center"> Patient 1 </td> <td align="center"> X1 </td> <td align="center"> Y1 </td> </tr>
-  <tr> <td align="center"> Patient 2 </td> <td align="center"> X2 </td> <td align="center"> Y2 </td> </tr>
-  <tr> <td align="center"> Patient 3 </td> <td align="center"> X3 </td> <td align="center"> Y3 </td> </tr>
-  <tr> <td align="center"> Patient 4 </td> <td align="center"> X4 </td> <td align="center"> Y4 </td> </tr>
+  <tr> <td align="center"> Patient 1 </td> <td align="center"> Y1 </td> <td align="center"> X1 </td> </tr>
+  <tr> <td align="center"> Patient 2 </td> <td align="center"> Y2 </td> <td align="center"> X2 </td> </tr>
+  <tr> <td align="center"> Patient 3 </td> <td align="center"> Y3 </td> <td align="center"> X3 </td> </tr>
+  <tr> <td align="center"> Patient 4 </td> <td align="center"> Y4 </td> <td align="center"> X4 </td> </tr>
    </table>
    
 * In such cases, we have observations $X_{i}$ and $Y_{i}$ for $i = 1,\ldots n$ where
@@ -651,14 +651,14 @@ greater than zero or not.
 
 * The **sign** statistic $S_{n}$ is defined as
 \begin{equation}
-S = \sum_{i=1}^{n} I( D_{i} > 0)
+S_{n} = \sum_{i=1}^{n} I( D_{i} > 0)
 (\#eq:sign-statistic)
 \end{equation}
 
 * If the null hypothesis $H_{0}: \theta = 0$ is true, then we should expect that roughly half
 of the observations will be positive.
 
-* This suggests that we will reject $H_{0}$ if $S \geq c$ where $c$ is a 
+* This suggests that we will reject $H_{0}$ if $S_{n} \geq c$ where $c$ is a 
 number that is greater than $n/2$.
 
 #### Null Distribution and p-values
@@ -676,7 +676,7 @@ p(\theta) = P(Z_{i} > 0) = 1 - F_{D}(0) = 1 - F_{\epsilon}( -\theta )
 with $n$ trials and success probability $p(\theta)$. 
 That is, 
 \begin{equation}
-S \sim \textrm{Binomial}(n, p(\theta) )
+S_{n} \sim \textrm{Binomial}(n, p(\theta) )
 \end{equation}
 
 * Because $p(0) = 1/2$, $S_{n} \sim \textrm{Binomial}(n, 1/2 )$ under $H_{0}$.
@@ -686,7 +686,8 @@ in the sense that the distribution does not depend on the distribution of $D_{i}
 
 * The p-value for the sign test can be computed by
 \begin{equation}
-\textrm{p-value} = P_{H_{0}}(S \geq s_{obs}) = \sum_{j=s_{obs}}^{n} {n \choose j} \frac{1}{2^{n}},
+\textrm{p-value} = P_{H_{0}}(S_{n} \geq s_{obs}) = \sum_{j=s_{obs}}^{n} P_{H_{0}}(S_{n} = j)
+= \sum_{j=s_{obs}}^{n} {n \choose j} \frac{1}{2^{n}},
 \end{equation}
 where $s_{obs}$ is the observed value of the sign statistic.
 
@@ -699,12 +700,12 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.6913503
+## [1] 0.04431304
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
 \begin{equation}
-P_{H_{0}}(S \geq w) = 1 - P_{H_{0}}(S < w) = 1 - P_{H_{0}}(S \leq w - 1)
+P_{H_{0}}(S_{n} \geq w) = 1 - P_{H_{0}}(S_{n} < w) = 1 - P_{H_{0}}(S_{n} \leq w - 1)
 \end{equation}
 and the **R** function **pbinom(t, n, prob)** computes $P(X \leq t)$ where $X$ is 
 a binomial random variable with $n$ trials and success probability **prob**.
@@ -712,21 +713,21 @@ a binomial random variable with $n$ trials and success probability **prob**.
 * You can also perform the one-sided sign test by using the **binom.test** function in **R**.
 
 ```r
-btest <- binom.test(sign.stat, n=100, alternative="greater") 
+btest <- binom.test(sign.stat, n=100, p=0.5, alternative="greater") 
 btest$p.value
 ```
 
 ```
-## [1] 0.6913503
+## [1] 0.04431304
 ```
 
 #### Two-sided Sign Test
 
 * Notice that the number of negative values of $D_{i}$ can be expressed as
 \begin{equation}
-\sum_{i=1}^{n} I(D_{i} < 0) = n - S
+\sum_{i=1}^{n} I(D_{i} < 0) = n - S_{n}
 \end{equation}
-if there are no observations that equal zero exactly. Large value of $n - S$
+if there are no observations that equal zero exactly. Large value of $n - S_{n}$
 would be used in favor of another possible one-sided alternative $H_{A}: \theta < 0$.
 
 * If we now want to test the two-sided alternative
@@ -737,7 +738,7 @@ you would need to compute the probability under the null hypothesis of observing
 a "more extreme" observation than the one that was actually observed.
 
 * Extreme is defined by thinking about the fact that we would have rejected $H_{0}$
-if either $S$ or $n - S$ were very large.
+if either $S_{n}$ or $n - S_{n}$ were very large.
 
 * For example, if $n = 12$, then the expected value of the sign statistic would be $6$.
 If $s_{obs} = 10$, then the collection of "more extreme" events then this would be
@@ -747,8 +748,8 @@ $\leq 2$ and $\geq 10$.
 \begin{equation}
 \textrm{p-value} = 
 \begin{cases}
-P_{H_{0}}(S \geq s_{obs}) + P_{H_{0}}(S \leq n - s_{obs}) & \textrm{ if } s_{obs} \geq n/2 \\
-P_{H_{0}}(S \leq s_{obs}) + P_{H_{0}}(S \geq n - s_{obs}) & \textrm{ if } s_{obs} < n/2
+P_{H_{0}}(S_{n} \geq s_{obs}) + P_{H_{0}}(S_{n} \leq n - s_{obs}) & \textrm{ if } s_{obs} \geq n/2 \\
+P_{H_{0}}(S_{n} \leq s_{obs}) + P_{H_{0}}(S_{n} \geq n - s_{obs}) & \textrm{ if } s_{obs} < n/2
 \end{cases}
 \end{equation}
 
@@ -756,8 +757,8 @@ P_{H_{0}}(S \leq s_{obs}) + P_{H_{0}}(S \geq n - s_{obs}) & \textrm{ if } s_{obs
 \begin{equation}
 \textrm{p-value} = 
 \begin{cases}
-2 P_{H_{0}}(S \geq s_{obs})   & \textrm{ if } s_{obs} \geq n/2 \\
-2 P_{H_{0}}(S \leq s_{obs})   & \textrm{ if } s_{obs} < n/2
+2 P_{H_{0}}(S_{n} \geq s_{obs})   & \textrm{ if } s_{obs} \geq n/2 \\
+2 P_{H_{0}}(S_{n} \leq s_{obs})   & \textrm{ if } s_{obs} < n/2
 \end{cases}
 \end{equation}
 
@@ -779,12 +780,12 @@ of the observations.
 * For example, the sign test statistic $S$ treats observations 
 $D_{i} = 0.2$ and $D_{i}=3$ the same.
 
-* The **Wilcoxon signed rank statistic** $T^{+}$ weights the positive
-indicators $I( D_{i} > 0)$ by the rank of its absolute value.
+* The **Wilcoxon signed rank statistic** $T_{n}$ weights the
+signs of $D_{i}$ by the rank of its absolute value.
 
 * Specifically, the Wilcoxon signed rank statistic is defined as
 \begin{equation}
-T = \sum_{i=1}^{n} \textrm{sign}( D_{i}) R_{i}( |\mathbf{D}| )
+T_{n} = \sum_{i=1}^{n} \textrm{sign}( D_{i}) R_{i}( |\mathbf{D}| )
 \end{equation}
 where the $\textrm{sign}$ function is defined as
 \begin{equation}
@@ -795,7 +796,7 @@ where the $\textrm{sign}$ function is defined as
 \end{cases}
 \end{equation}
 
-* Here, $R_{i}( \mathbf{D})$ is the rank of the $i^{th}$ element from the vector
+* Here, $R_{i}( |\mathbf{D}| )$ is the rank of the $i^{th}$ element from the vector
 $|\mathbf{D}| = (|D_{1}|, |D_{2}|, \ldots, |D_{n}|)$.
 
 * Intuitively, the Wilcoxon signed rank statistic is measuring whether 
@@ -820,32 +821,32 @@ statistic is $0$.
 
 #### Asymptotic Distribution
 
-* As mentioned in the above exercise, the expectation of $T$ under $H_{0}$ is zero.
+* As mentioned in the above exercise, the expectation of $T_{n}$ under $H_{0}$ is zero.
 
 * It can be shown that the variance under the null hypothesis is
 \begin{equation}
-\textrm{Var}( T ) = \frac{n(2n + 1)(n + 1)}{6} \nonumber
+\textrm{Var}_{H_{0}}( T_{n} ) = \frac{n(2n + 1)(n + 1)}{6} \nonumber
 \end{equation}
 
 * Similar, to the large-sample approximation we used for the WRS test, we have the following
 asymptotic result for the Wilcoxon signed-rank test
 \begin{equation}
-\frac{T}{\sqrt{\textrm{Var}(T) }} \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } T \longrightarrow \infty
+\frac{T_{n}}{\sqrt{\textrm{Var}_{H_{0}}(T_{n}) }} \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } n \longrightarrow \infty
 \end{equation}
 
-* Because the variance of $T$ is dominated by the term $n^{3}/3$ for very large $n$, we could also say
+* Because the variance of $T$ is dominated by the term $n^{3}/3$ for very large $n$, we could also say that under $H_{0}$
 that
 \begin{equation}
-\frac{T}{\sqrt{n^{3}/3} } \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } T \longrightarrow \infty
+\frac{T_{n}}{\sqrt{n^{3}/3} } \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } n \longrightarrow \infty
 \end{equation}
-In other words, we can say that $T$ has an approximately $\textrm{Normal}(0, n^{3}/3)$ for large $n$.
+In other words, we can say that $T_{n}$ has an approximately $\textrm{Normal}(0, n^{3}/3)$ for large $n$.
 
 
 
 
 #### Exact Distribution
 
-* The exact distribution of the Wilcoxon signed rank statistic $T$ 
+* The exact distribution of the Wilcoxon signed rank statistic $T_{n}$ 
 is somewhat more complicated than the exact distribution of the WRS test statistic.
 Nevertheless, there exists functions in **R** for working with this exact distribution. 
 
@@ -896,7 +897,7 @@ summary(DD)
 
 **The Sign Test in R**
 
-* Let's first test the hypothesis $H_{0}: \theta = 0$ vs. $H_{A}: \theta \neq 1/2$ using
+* Let's first test the hypothesis $H_{0}: \theta = 0$ vs. $H_{A}: \theta \neq 0$ using
 the two-sided sign test. This can be done using the **binom.test** function
 
 
