@@ -519,13 +519,14 @@ xgreater <- rep(0, 100)
 for(k in 1:100) {
     xi <- sample(ind1, size=1)
     yi <- sample(ind2, size=1)
-    xgreater[k] <- ifelse(wine2$Magnesium[xi] > wine2$Magnesium[yi], 1, 0)
+    xgreater[k] <- ifelse(wine2$Magnesium[xi] > wine2$Magnesium[yi], 1, 0) + 
+                   ifelse(wine2$Magnesium[xi] == wine2$Magnesium[yi], 1/2, 0)
 }
 mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.7
+## [1] 0.725
 ```
 
 
@@ -700,7 +701,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.04431304
+## [1] 0.6178233
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -718,7 +719,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.04431304
+## [1] 0.6178233
 ```
 
 #### Two-sided Sign Test

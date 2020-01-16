@@ -433,7 +433,8 @@ xgreater <- rep(0, 100)
 for(k in 1:100) {
     xi <- sample(ind1, size=1)
     yi <- sample(ind2, size=1)
-    xgreater[k] <- ifelse(wine2$Magnesium[xi] > wine2$Magnesium[yi], 1, 0)
+    xgreater[k] <- ifelse(wine2$Magnesium[xi] > wine2$Magnesium[yi], 1, 0) + 
+                   ifelse(wine2$Magnesium[xi] == wine2$Magnesium[yi], 1/2, 0)
 }
 mean(xgreater)  ## estimate of this probability
 ```
