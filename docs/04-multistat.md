@@ -22,10 +22,10 @@ H_{0}: \mu_{1} = \mu_{2} = \ldots = \mu_{K}
 
 * A test of the hypothesis () is based on decomposing the observed variation in
 the responses
-\begin{equation}
-\sum_{k}\sum_{j} (Y_{kj} - \bar{Y})^{2} = \sum_{k} \sum_{j} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}
-+ \sum_{k}\sum_{j}(\bar{Y}_{kj} - \bar{Y}_{k.})^{2}
-\end{equation}
+\begin{eqnarray}
+\sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{..})^{2} &=& \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} + \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2} \nonumber \\
+&=& \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} + \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2} \nonumber \\
+\end{eqnarray}
 
 * Large values 
 

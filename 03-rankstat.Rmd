@@ -835,7 +835,7 @@ where the null hypothesis corresponds to $\theta = \theta_{0}$
 and the alternative hypothesis represents a range
 of alternative values of $\theta$.
 
-* The power function $\gamma(\cdot)$ of a testing procedure is defined as
+* The power function $\gamma_{n}(\cdot)$ of a testing procedure is defined as
 \begin{equation}
 \gamma_{n}(\delta) = P_{\theta=\delta}\{  \textrm{reject } H_{0} \} \qquad \textrm{ for } \delta \in H_{A}. \nonumber
 \end{equation}
@@ -872,7 +872,9 @@ c_{\alpha, n} = \frac{n + \sqrt{n}\Phi^{-1}(1 - \alpha)}{2}
 \gamma_{n}(\delta) &=& P_{\theta=\delta}\{ S_{n} \geq c_{\alpha,n} \} 
 = P_{\theta=\delta}\Bigg\{ \frac{\sqrt{n}(S_{n}/n - p(\delta))}{\sqrt{ p(\delta)(1 - p(\delta)) } } \geq 
 \frac{ \sqrt{n}(c_{\alpha, n}/n - p(\delta)) }{ \sqrt{p(\delta)(1 - p(\delta))}  } \Bigg\}  \nonumber \\
-&=& 1 - \Phi\Bigg( \frac{ \sqrt{n}(c_{\alpha,n}/n - p(\delta)) }{ \sqrt{p(\delta)(1 - p(\delta))}  } \Bigg)
+&=& 1 - \Phi\Bigg( \frac{ \sqrt{n}(c_{\alpha,n}/n - p(\delta)) }{ \sqrt{p(\delta)(1 - p(\delta))}  } \Bigg) \nonumber \\
+&=& 1 - \Phi\Bigg( \frac{ \Phi^{-1}(1 - \alpha) }{ 2\sqrt{p(\delta)(1 - p(\delta))}  } - \frac{ \sqrt{n}(p(\delta) - 1/2) }{ \sqrt{p(\delta)(1 - p(\delta))}  }\Bigg)
+(\#eq:powerfn-signstat)
 \end{eqnarray}
 
 * Notice that the power of the test depends more directly on the term $p(\delta)$. Recall from Section \@ref(sign-test) that
@@ -913,7 +915,87 @@ lines(nd, yy2, lwd=2)
 
 ---
 
-### Power of Nonparametric Tests
+### Power Comparisons and Asymptotic Relative Efficiency
+
+* Notice that for the sign statistic power function shown in \@ref(eq:powerfn-signstat),
+we have that
+\begin{equation}
+\lim_{n \longrightarrow \infty} \gamma_{n}(\delta)
+= \begin{cases}
+\alpha & \textrm{ if } \delta = 0 \\
+1 & \textrm{ if } \delta > 0
+\end{cases}
+(\#eq:powerfn-consistent)
+\end{equation}
+
+* The above type of limit for the power function is will be 
+true for most "reasonable" tests.
+
+* Indeed, a test whose power function satisfies
+\@ref(eq:powerfn-consistent) is typically called a **consistent** tests. 
+
+---
+
+* If nearly all reasonable tests are consistent, then
+how can we compare tests with respect to their power?
+
+* One approach is to use simulations to compare power for several plausible alternatives.
+While this can be useful for a specific application, it limits
+our ability to make more general statements about power comparisons.
+
+* Another approach might be to determine 
+for which values of $(\delta, n)$ one test has
+greater power than another. However, this could
+be tough to interpret (no test will be uniformly more powerful for al distributions) 
+or even difficult to compute.
+
+* One way to think about power is to think about the **relative efficiency** of
+two testing procedures. The efficiency of a test in this context is
+the sample size required to achieve a certain level of power.
+
+---
+
+* To find the asymptotic relative efficiency, we first need to derive the
+asymptotic power function.
+
+* For our hypothesis $H_{0}: \theta = \theta_{0}$ vs. $H_{A}: \theta > \theta_{0}$, this is defined as 
+\begin{equation}
+\tilde{\gamma}(\delta) = \lim_{n \longrightarrow \infty} \gamma_{n}( \theta_{0} + \delta/\sqrt{n}) \nonumber
+\end{equation}
+
+* Considering the sequence of "local alternatives" $\theta_{n} = \theta_{0} + \delta/\sqrt{n}$, 
+we avoid the problem of the power always converging to $1$.
+
+* It can be shown that
+\begin{equation}
+\tilde{\gamma}(\delta) = 1 - \Phi\Bigg( \Phi^{-1}(1 - \alpha) - \delta \frac{\mu'(\theta_{0})}{\sigma(\theta_{0})} \Bigg)
+\end{equation}
+as long as we can find functions $\mu(\cdot)$ and $\sigma(\cdot)$ such that
+\begin{equation}
+\frac{\sqrt{n}(V_{n} - \mu(\theta_{n}))}{ \sigma(\theta_{n})} \longrightarrow \textrm{Normal}(0, 1) 
+\end{equation}
+where $V_{n}$ is the test statistic on which the test is based.
+
+---
+**Interpretation**
+
+* The ratio $e(\theta_{0}) = \mu'(\theta_{0})/\sigma(\theta_{0})$ is the **asymptotic efficacy** of the 
+test.
+
+* When comparing two tests with efficiency $e_{1}(\theta_{0})$ and $e_{2}(\theta_{0})$,
+the asymptotic relative efficiency of test 1 vs. test 2 is defined as
+\begin{equation}
+ARE_{12}(\theta_{0}) = ( \frac{e_{1}(\theta_{0})}{e_{2}(\theta_{0})} )^{2}
+\end{equation}
+
+* Sample size interpretation of this?
+
+---
+
+**Examples**
+
+* Let's return to the example of the sign statistic $S_{n}$ and its use
+in testing the hypothesis $H_{0}: \theta = 0$ vs. $H_{A}: \theta > 0$.
 
 
 ### Power Comparisons for Several Distributions
