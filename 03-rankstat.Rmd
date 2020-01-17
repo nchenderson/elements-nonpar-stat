@@ -496,7 +496,7 @@ WC$estimate     ## The Hodges-Lehmann estimate
 
 ## One Sample Tests
 
-### The Sign Test
+### The Sign Test {#sign-test}
 
 #### Motivation and Definition
 
@@ -574,7 +574,7 @@ Bernoulli random variable.
 * That is, we can think of $Z_{i} = I(D_{i} > 0)$ as a random variable with success probability
 $p( \theta )$ where the formula for $p( \theta )$ is
 \begin{equation}
-p(\theta) = P(Z_{i} > 0) = 1 - F_{D}(0) = 1 - F_{\epsilon}( -\theta )
+p(\theta) = P(Z_{i} = 1) = P(D_{i} > 0) = 1 - F_{D}(0) = 1 - F_{\epsilon}( -\theta )
 \end{equation}
 
 * This implies that $S_{n}$ is a binomial random variable
@@ -582,6 +582,7 @@ with $n$ trials and success probability $p(\theta)$.
 That is, 
 \begin{equation}
 S_{n} \sim \textrm{Binomial}(n, p(\theta) )
+(\#eq:signstat-distribution)
 \end{equation}
 
 * Because $p(0) = 1/2$, $S_{n} \sim \textrm{Binomial}(n, 1/2 )$ under $H_{0}$.
@@ -814,17 +815,116 @@ mean(sign.reject)  ## proportion of times Wilcoxon signed rank rejected H0
 
 ## Power and Comparisons with Parametric Tests
 
-### Power of Tests
+### The Power Function of a Test
 
 * The **power** of a test is the probability
 that a test rejects the null hypothesis when the 
 alternative hypothesis is true.
 
+* The alternative hypothesis $H_{A}$ is usually characterized
+by a large range of values of the parameter of interest.
+For example, $H_{A}: \theta > 0$ or $H_{A}: \theta \neq \theta$.
+
+* For this reason, it is better to think of power
+as a function that varies across the range
+of the alternative hypothesis.
+
+* To be more precise, we will define the power
+function as a function of some parameter $\theta$
+where the null hypothesis corresponds to $\theta = \theta_{0}$
+and the alternative hypothesis represents a range
+of alternative values of $\theta$.
+
+* The power function $\gamma(\cdot)$ of a testing procedure is defined as
+\begin{equation}
+\gamma_{n}(\delta) = P_{\theta=\delta}\{  \textrm{reject } H_{0} \} \qquad \textrm{ for } \delta \in H_{A}. \nonumber
+\end{equation}
+
+* The notation $P_{\theta=\delta}\{  \textrm{reject } H_{0} \}$ means that we are computing this
+probability under the assumption that the parameter of interest $\theta$ equals $\delta$.
+
+
+---
+
+**The Approximate Power Function of the Sign Test**
+
+* Let us consider the sign test for testing $H_{0}: \theta = 0$ vs. $\theta > 0$.
+
+* The sign test is based on the value of the sign statistic $S_{n}$.
+
+* Recalling \@ref(eq:signstat-distribution), we know that $S_{n} \sim \textrm{Binomial}(n, p(\theta))$.
+Hence,
+\begin{equation}
+\sqrt{n}(S_{n}/n - p(\theta)) \longrightarrow \textrm{Normal}\Big( 0, p(\theta)(1 - p(\theta)) \Big) \quad \textrm{as } n \longrightarrow \infty
+(\#eq:approx-signstat)
+\end{equation}
+
+* The sign test will reject $H_{0}$ when $S_{n} \geq c_{\alpha,n}$ where the constant $c_{\alpha,n}$ is chosen
+so that $P_{H_{0}}( S_{n} \geq c_{\alpha,n} ) = \alpha$. Using the large-sample approximation \@ref(eq:approx-signstat), you can
+show that
+\begin{equation}
+c_{\alpha, n} = \frac{n + \sqrt{n}\Phi^{-1}(1 - \alpha)}{2} 
+(\#eq:critical-value-signstat)
+\end{equation}
+
+* Also, when using large-sample approximation \@ref(eq:approx-signstat), the power of this test to detect a value of $\theta = \delta$ is given by
+\begin{eqnarray}
+\gamma_{n}(\delta) &=& P_{\theta=\delta}\{ S_{n} \geq c_{\alpha,n} \} 
+= P_{\theta=\delta}\Bigg\{ \frac{\sqrt{n}(S_{n}/n - p(\delta))}{\sqrt{ p(\delta)(1 - p(\delta)) } } \geq 
+\frac{ \sqrt{n}(c_{\alpha, n}/n - p(\delta)) }{ \sqrt{p(\delta)(1 - p(\delta))}  } \Bigg\}  \nonumber \\
+&=& 1 - \Phi\Bigg( \frac{ \sqrt{n}(c_{\alpha,n}/n - p(\delta)) }{ \sqrt{p(\delta)(1 - p(\delta))}  } \Bigg)
+\end{eqnarray}
+
+* Notice that the power of the test depends more directly on the term $p(\delta)$. Recall from Section \@ref(sign-test) that
+$p(\delta) = 1 - F_{\epsilon}(\delta)$, where $F_{\epsilon}$ is the distribution function
+of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
+
+* So, in any power or sample size calculation, it would be more sensible to think about plausible
+values for $p(\delta)$ rather than $\delta$ itself. Plus, $p(\delta)$ has the direct interpretation
+$p(\delta) = P_{\theta=d}( D_{i} > 0)$.
+
+```{r, echo=FALSE}
+powerfnsignstat <- function(p.delta, nn, alpha=0.05) {
+     c.alpha <- nn/2 + sqrt(nn)*qnorm(1 - alpha)/2
+     numer <- sqrt(nn)*(c.alpha/nn - p.delta)
+     denom <- sqrt(p.delta*(1 - p.delta))
+     ans <- pnorm(numer/denom, lower.tail=FALSE)
+     return(ans)
+}
+
+pd <- seq(1/2, .8, length.out=100)
+yy <- powerfnsignstat(p.delta = pd, nn=100)
+plot(pd, yy, las=1, type="n", main="Approximate Power Function of Sign Test with n=100", ylim=c(0,1),
+     ylab="Power", xlab=expression(paste("p(", delta, ")")), cex.lab=1.3)
+lines(pd, yy, lwd=2)
+abline(.05, 0, lty=2)
+
+nd <- seq(10, 400, length.out=200)
+yy2 <- powerfnsignstat(p.delta = 0.6, nn=nd)
+plot(nd, yy2, las=1, type="n", main=expression(paste("Approximate Power Function of Sign Test with p(", delta, ") = 0.6")), 
+     ylim=c(0,1), ylab="Power", xlab="n", cex.lab=1.3)
+lines(nd, yy2, lwd=2)
+```
+
+
+---
+
+**Exercise ?**: Derive the formula for $c_{\alpha, n}$ shown in \@ref(eq:critical-value-signstat).
+
+---
+
+### Power of Nonparametric Tests
+
+
+### Power Comparisons for Several Distributions
 
 
 ## Thinking about Rank statistics more generally
 
-## Notes 
+
+* We will mention the Van der Waerden (or "normal scores" test)
+
+## Additional Reading 
 
 * Additional reading which covers the material discussed in this chapter includes:
     + Chapters 3-4 from @hollander2013

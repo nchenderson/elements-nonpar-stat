@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Permutation Tests | Elements of Nonparametric Statistics</title>
+  <title>Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Permutation Tests | Elements of Nonparametric Statistics" />
+  <meta property="og:title" content="Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Permutation Tests | Elements of Nonparametric Statistics" />
+  <meta name="twitter:title" content="Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics" />
   
   <meta name="twitter:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="krusk-wallis.html"/>
-<link rel="next" href="ustat.html"/>
+<link rel="prev" href="rank-tests.html"/>
+<link rel="next" href="permutation.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -245,13 +245,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="permutation" class="section level1">
-<h1><span class="header-section-number">Chapter 5</span> Permutation Tests</h1>
-<!--
-- Make sure to refer back to plots in the viz chapter and consider how the
-  material here relates to answering the questions posed in viz chapter
--->
-<p>Permutation tests are …</p>
+<div id="krusk-wallis" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> Rank Tests for Multiple Groups</h1>
+<ul>
+<li><p>We can roughly think of the tests discussed in Chapter 3
+as being related to the parametric tests shown in the table below.</p></li>
+<li><p>The <strong>Kruskal-Wallis</strong> test can be though of as the
+nonparametric analogue of one-way analysis of variance (ANOVA).</p></li>
+<li><p>For <span class="math inline">\(K\)</span> groups, one-way ANOVA considers the analysis of data
+arising from the following model
+<span class="math display">\[\begin{equation}
+Y_{kj} = \mu_{k} + \varepsilon_{kj}, \qquad j=1,\ldots, n_{k}; k=1,\ldots,K  \nonumber
+\end{equation}\]</span>
+where it is often assumed that <span class="math inline">\(\varepsilon_{kj} \sim \textrm{Normal}(0, \sigma^{2})\)</span>.</p></li>
+<li><p>Usually, the one-way ANOVA hypothesis of interest is something like
+<span class="math display">\[\begin{equation}
+H_{0}: \mu_{1} = \mu_{2} = \ldots = \mu_{K}
+\end{equation}\]</span></p></li>
+<li>A test of the hypothesis () is based on decomposing the observed variation in
+the responses
+\begin{equation}
+<em>{k}</em>{j} (Y_{kj} - {Y})^{2} = <em>{k} </em>{j} ({Y}<em>{k.} - {Y}</em>{..})^{2}</li>
+<li><p><em>{k}</em>{j}({Y}<em>{kj} - {Y}</em>{k.})^{2}
+\end{equation}</p></li>
+<li><p>Large values</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Instead of assuming () for the data <span class="math inline">\(Y_{kj}\)</span>, nonparametric way of thinking
+about this problem is to instead only assume that
+<span class="math display">\[\begin{equation}
+Y_{kj} \sim F_{k}
+\end{equation}\]</span>
+That is, <span class="math inline">\(Y_{k1}, Y_{k2}, \ldots, Y_{kn_{k}}\)</span> is an i.i.d. sample from <span class="math inline">\(F_{k}\)</span>.</p></li>
+<li><p>A nonparametric version of the one-way ANOVA hypothesis is that
+<span class="math display">\[\begin{equation}
+F_{1} = F_{2} = \ldots = F_{K}
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li>The Kruskall-Wallis test statistic is defined as
+<span class="math display">\[\begin{equation}
+KW_{n} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)
+\end{equation}\]</span></li>
+</ul>
 
 </div>
             </section>
@@ -259,8 +297,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="krusk-wallis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="ustat.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="rank-tests.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="permutation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
