@@ -7,10 +7,11 @@ as being related to the parametric tests shown in the table below.
 * The **Kruskal-Wallis** test can be though of as the
 nonparametric analogue of one-way analysis of variance (ANOVA).
 
-* For $K$ groups, one-way ANOVA considers the analysis of data
+* For $K \geq 3$ groups, one-way ANOVA considers the analysis of data
 arising from the following model
 \begin{equation}
-Y_{kj} = \mu_{k} + \varepsilon_{kj}, \qquad j=1,\ldots, n_{k}; k=1,\ldots,K  \nonumber
+Y_{kj} = \mu_{k} + \varepsilon_{kj}, \qquad j=1,\ldots, n_{k}; k=1,\ldots,K  
+(\#eq:normal-anova-model)
 \end{equation}
 where it is often assumed that $\varepsilon_{kj} \sim \textrm{Normal}(0, \sigma^{2})$.
 
@@ -18,35 +19,76 @@ where it is often assumed that $\varepsilon_{kj} \sim \textrm{Normal}(0, \sigma^
 * Usually, the one-way ANOVA hypothesis of interest is something like
 \begin{equation}
 H_{0}: \mu_{1} = \mu_{2} = \ldots = \mu_{K}
+(\#eq:homogeneity-hyp)
 \end{equation}
+which is sometimes referred to as the homogeneity hypothesis.
 
-* A test of the hypothesis () is based on decomposing the observed variation in
-the responses
+* A test of the hypothesis \@ref(eq:homogeneity-hyp) is based on decomposing the observed variation in
+the responses $Y_{kj}$:
 \begin{eqnarray}
 \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{..})^{2} &=& \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} + \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2} \nonumber \\
-&=& \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} + \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2} \nonumber \\
+&=& \underbrace{\sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}}_{SSA} + \underbrace{\sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2}}_{SSE} 
+(\#eq:anova-decomp)
 \end{eqnarray}
+where $\bar{Y}_{k.} = \frac{1}{n_{k}}\sum_{j=1}^{n_{k}} Y_{kj}$ and $\bar{Y}_{..} = \frac{1}{K}\sum_{k=1}^{K} \bar{Y}_{k.}$.
 
-* Large values 
+* Large values of $SSA = \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}$ provide evidence against the null hypothesis \@ref(eq:homogeneity-hyp). The alternative hypothesis here is that there is at least one pair of means $\mu_{h}, \mu_{l}$
+such that $\mu_{h} \neq \mu_{l}$.
 
----
+## The Kruskall-Wallis Test
 
-* Instead of assuming () for the data $Y_{kj}$, nonparametric way of thinking
+* Instead of assuming \@ref(eq:normal-anova-model) for the responses $Y_{kj}$, nonparametric way of thinking
 about this problem is to instead only assume that
 \begin{equation}
 Y_{kj} \sim F_{k}
 \end{equation}
-That is, $Y_{k1}, Y_{k2}, \ldots, Y_{kn_{k}}$ is an i.i.d. sample from $F_{k}$. 
+That is, $Y_{k1}, Y_{k2}, \ldots, Y_{kn_{k}}$ is an i.i.d. sample from $F_{k}$ for each $k$. 
 
 
-* A nonparametric version of the one-way ANOVA hypothesis is that
+* A nonparametric version of the one-way ANOVA homogeneity hypothesis is 
 \begin{equation}
-F_{1} = F_{2} = \ldots = F_{K}
+H_{0}: F_{1} = F_{2} = \ldots = F_{K}
+(\#eq:nonpar-homogeneity-hyp)
+\end{equation}
+
+* The "shift alternative" in this case can be stated as
+\begin{equation}
+H_{A}: F_{k}(t) = F(t - \Delta_{k}), \quad \textrm{ for } k = 1, \ldots K \quad \textrm{ and not all $\Delta_{k}$ equal}
 \end{equation}
 
 ---
 
+* The Kruskall-Wallis test statistic is similar to the SSA term (defined in \@ref(eq:anova-decomp))
+in the one-way ANOVA setting.
+
+* Rather than comparing the group-specific means $\bar{Y}_{k.}$ with the overall mean $\bar{Y}_{..}$,
+the Kruskall-Wallis test statistic will be comparing the group-specific rank 
+means $\bar{R}_{k.}$ with their overall expectation under the null hypothesis.
+
 * The Kruskall-Wallis test statistic is defined as
 \begin{equation}
-KW_{n} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)
+KW_{n} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)^{2}, \quad \textrm{ where } N = \sum_{k=1}^{K} n_{k}
+(\#eq:kw-definition)
 \end{equation}
+
+* In \@ref(eq:kw-definition), $\bar{R}_{k.}$ is the average rank of those $k^{th}$ group
+\begin{equation}
+\bar{R}_{k.} = \frac{1}{n_{k}} \sum_{j=1}^{n_{k}} R_{kj}(\mathbf{Z}),
+\end{equation}
+where $\mathbf{Z}$ denotes the pooled-data vector and $R_{kj}(\mathbf{Z})$ denotes
+the rank of $Y_{kj}$ in the "pooled-data ranking".
+
+---
+
+* What is the expectation of $\bar{R}_{k.}$ under the null hypothesis \@ref(eq:nonpar-homogeneity-hyp)?
+
+* Again, if the null hypothesis is true, we can treat all of our responses $Y_{kj}$ as just
+an i.i.d. sample of size $N$ from a common distribution function $F$.
+
+---
+
+* What is the relationship between $KW_{n}$ and the WRS test statistic if we assume that $K=2$?
+
+
+
+

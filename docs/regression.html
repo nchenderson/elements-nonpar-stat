@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-17" />
+<meta name="date" content="2020-01-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -166,7 +166,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#thinking-about-rank-statistics-more-generally"><i class="fa fa-check"></i><b>3.5</b> Thinking about Rank statistics more generally</a></li>
 <li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#additional-reading"><i class="fa fa-check"></i><b>3.6</b> Additional Reading</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a></li>
+<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a><ul>
+<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskall-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskall-Wallis Test</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a></li>
 <li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
 <li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.1</b> Examples</a></li>
@@ -178,10 +180,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
 <li class="chapter" data-level="7.1" data-path="regression.html"><a href="regression.html#empirical-distribution-functions"><i class="fa fa-check"></i><b>7.1</b> Empirical Distribution Functions</a><ul>
 <li class="chapter" data-level="7.1.1" data-path="regression.html"><a href="regression.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1.1</b> Definition and Basic Properties</a></li>
-<li class="chapter" data-level="7.1.2" data-path="regression.html"><a href="regression.html#confidence-intervals-for-fhat"><i class="fa fa-check"></i><b>7.1.2</b> Confidence intervals for Fhat</a></li>
+<li class="chapter" data-level="7.1.2" data-path="regression.html"><a href="regression.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.1.2</b> Confidence intervals for F(t)</a></li>
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="regression.html"><a href="regression.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.2</b> The Empirical Distribution Function in R</a></li>
-<li class="chapter" data-level="7.3" data-path="regression.html"><a href="regression.html#the-empirical-distribution-functino-and-statistical-functionals"><i class="fa fa-check"></i><b>7.3</b> The empirical distribution functino and statistical functionals</a></li>
+<li class="chapter" data-level="7.3" data-path="regression.html"><a href="regression.html#the-empirical-distribution-function-and-statistical-functionals"><i class="fa fa-check"></i><b>7.3</b> The empirical distribution function and statistical functionals</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
 <li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
@@ -252,37 +254,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="definition-and-basic-properties" class="section level3">
 <h3><span class="header-section-number">7.1.1</span> Definition and Basic Properties</h3>
 <ul>
-<li>Every random variable has a cumulative distribution function (cdf).</li>
-<li>The cdf of a random variable <span class="math inline">\(X\)</span> is defined as
+<li><p>Every random variable has a cumulative distribution function (cdf).</p></li>
+<li><p>The cdf of a random variable <span class="math inline">\(X\)</span> is defined as
 <span class="math display">\[\begin{equation}
 F(t) = P( X \leq t)
-\end{equation}\]</span></li>
-<li></li>
-<li>The empirical distribution function or empirical cumulative distribution function (ecdf)
-estimates <span class="math inline">\(F(t)\)</span> by just finding the proportion of observations which are less than or equal
-to <span class="math inline">\(t\)</span>.</li>
-<li>For i.i.d. random variables <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>, the empirical distribution function
+\end{equation}\]</span></p></li>
+<li><p>The empirical distribution function or empirical cumulative distribution function (ecdf)
+estimates <span class="math inline">\(F(t)\)</span> by computing the proportion of observations which are less than or equal
+to <span class="math inline">\(t\)</span>.</p></li>
+<li><p>For i.i.d. random variables <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> with cdf <span class="math inline">\(F\)</span>, the empirical distribution function
 is defined as
 <span class="math display">\[\begin{equation}
 \hat{F}_{n}(t) = \frac{1}{n}\sum_{i=1}^{n} I( X_{i} \leq t) \nonumber
-\end{equation}\]</span></li>
-<li>Note that the empirical distribution function can be computed for any type
+\end{equation}\]</span></p></li>
+<li><p>Note that the empirical distribution function can be computed for any type
 of data without making any assumptions about the distribution from which
-the data arose.</li>
-<li>The only assumption we are making is that <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>
-constitute an i.i.d. sample from some common distribution function <span class="math inline">\(F\)</span>.</li>
+the data arose.</p></li>
+<li><p>The only assumption we are making is that <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>
+constitute an i.i.d. sample from some common distribution function <span class="math inline">\(F\)</span>.</p></li>
 </ul>
 <hr />
 </div>
-<div id="confidence-intervals-for-fhat" class="section level3">
-<h3><span class="header-section-number">7.1.2</span> Confidence intervals for Fhat</h3>
+<div id="confidence-intervals-for-ft" class="section level3">
+<h3><span class="header-section-number">7.1.2</span> Confidence intervals for F(t)</h3>
+<ul>
+<li>For a fixed value of <span class="math inline">\(t\)</span>, the distribution of <span class="math inline">\(\hat{F}_{n}(t)\)</span> is
+<span class="math display">\[\begin{equation}
+\hat{F}_{n}(t) \sim \textrm{Binomial}( n, F(t))
+\end{equation}\]</span>
+(why?)</li>
+</ul>
 </div>
 </div>
 <div id="the-empirical-distribution-function-in-r" class="section level2">
 <h2><span class="header-section-number">7.2</span> The Empirical Distribution Function in R</h2>
 </div>
-<div id="the-empirical-distribution-functino-and-statistical-functionals" class="section level2">
-<h2><span class="header-section-number">7.3</span> The empirical distribution functino and statistical functionals</h2>
+<div id="the-empirical-distribution-function-and-statistical-functionals" class="section level2">
+<h2><span class="header-section-number">7.3</span> The empirical distribution function and statistical functionals</h2>
 
 </div>
 </div>

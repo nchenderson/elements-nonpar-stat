@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-17" />
+<meta name="date" content="2020-01-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -166,7 +166,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#thinking-about-rank-statistics-more-generally"><i class="fa fa-check"></i><b>3.5</b> Thinking about Rank statistics more generally</a></li>
 <li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#additional-reading"><i class="fa fa-check"></i><b>3.6</b> Additional Reading</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a></li>
+<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a><ul>
+<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskall-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskall-Wallis Test</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a></li>
 <li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
 <li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.1</b> Examples</a></li>
@@ -178,10 +180,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
 <li class="chapter" data-level="7.1" data-path="regression.html"><a href="regression.html#empirical-distribution-functions"><i class="fa fa-check"></i><b>7.1</b> Empirical Distribution Functions</a><ul>
 <li class="chapter" data-level="7.1.1" data-path="regression.html"><a href="regression.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1.1</b> Definition and Basic Properties</a></li>
-<li class="chapter" data-level="7.1.2" data-path="regression.html"><a href="regression.html#confidence-intervals-for-fhat"><i class="fa fa-check"></i><b>7.1.2</b> Confidence intervals for Fhat</a></li>
+<li class="chapter" data-level="7.1.2" data-path="regression.html"><a href="regression.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.1.2</b> Confidence intervals for F(t)</a></li>
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="regression.html"><a href="regression.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.2</b> The Empirical Distribution Function in R</a></li>
-<li class="chapter" data-level="7.3" data-path="regression.html"><a href="regression.html#the-empirical-distribution-functino-and-statistical-functionals"><i class="fa fa-check"></i><b>7.3</b> The empirical distribution functino and statistical functionals</a></li>
+<li class="chapter" data-level="7.3" data-path="regression.html"><a href="regression.html#the-empirical-distribution-function-and-statistical-functionals"><i class="fa fa-check"></i><b>7.3</b> The empirical distribution function and statistical functionals</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
 <li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
@@ -252,45 +254,80 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 as being related to the parametric tests shown in the table below.</p></li>
 <li><p>The <strong>Kruskal-Wallis</strong> test can be though of as the
 nonparametric analogue of one-way analysis of variance (ANOVA).</p></li>
-<li><p>For <span class="math inline">\(K\)</span> groups, one-way ANOVA considers the analysis of data
+<li><p>For <span class="math inline">\(K \geq 3\)</span> groups, one-way ANOVA considers the analysis of data
 arising from the following model
-<span class="math display">\[\begin{equation}
-Y_{kj} = \mu_{k} + \varepsilon_{kj}, \qquad j=1,\ldots, n_{k}; k=1,\ldots,K  \nonumber
+<span class="math display" id="eq:normal-anova-model">\[\begin{equation}
+Y_{kj} = \mu_{k} + \varepsilon_{kj}, \qquad j=1,\ldots, n_{k}; k=1,\ldots,K  
+\tag{4.1}
 \end{equation}\]</span>
 where it is often assumed that <span class="math inline">\(\varepsilon_{kj} \sim \textrm{Normal}(0, \sigma^{2})\)</span>.</p></li>
 <li><p>Usually, the one-way ANOVA hypothesis of interest is something like
-<span class="math display">\[\begin{equation}
+<span class="math display" id="eq:homogeneity-hyp">\[\begin{equation}
 H_{0}: \mu_{1} = \mu_{2} = \ldots = \mu_{K}
-\end{equation}\]</span></p></li>
-<li><p>A test of the hypothesis () is based on decomposing the observed variation in
-the responses
-<span class="math display">\[\begin{eqnarray}
+\tag{4.2}
+\end{equation}\]</span>
+which is sometimes referred to as the homogeneity hypothesis.</p></li>
+<li><p>A test of the hypothesis <a href="krusk-wallis.html#eq:homogeneity-hyp">(4.2)</a> is based on decomposing the observed variation in
+the responses <span class="math inline">\(Y_{kj}\)</span>:
+<span class="math display" id="eq:anova-decomp">\[\begin{eqnarray}
 \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{..})^{2} &amp;=&amp; \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} + \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2} \nonumber \\
-&amp;=&amp; \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} + \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2} \nonumber \\
-\end{eqnarray}\]</span></p></li>
-<li><p>Large values</p></li>
+&amp;=&amp; \underbrace{\sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}}_{SSA} + \underbrace{\sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2}}_{SSE} 
+\tag{4.3}
+\end{eqnarray}\]</span>
+where <span class="math inline">\(\bar{Y}_{k.} = \frac{1}{n_{k}}\sum_{j=1}^{n_{k}} Y_{kj}\)</span> and <span class="math inline">\(\bar{Y}_{..} = \frac{1}{K}\sum_{k=1}^{K} \bar{Y}_{k.}\)</span>.</p></li>
+<li><p>Large values of <span class="math inline">\(SSA = \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}\)</span> provide evidence against the null hypothesis <a href="krusk-wallis.html#eq:homogeneity-hyp">(4.2)</a>. The alternative hypothesis here is that there is at least one pair of means <span class="math inline">\(\mu_{h}, \mu_{l}\)</span>
+such that <span class="math inline">\(\mu_{h} \neq \mu_{l}\)</span>.</p></li>
 </ul>
-<hr />
+<div id="the-kruskall-wallis-test" class="section level2">
+<h2><span class="header-section-number">4.1</span> The Kruskall-Wallis Test</h2>
 <ul>
-<li><p>Instead of assuming () for the data <span class="math inline">\(Y_{kj}\)</span>, nonparametric way of thinking
+<li><p>Instead of assuming <a href="krusk-wallis.html#eq:normal-anova-model">(4.1)</a> for the responses <span class="math inline">\(Y_{kj}\)</span>, nonparametric way of thinking
 about this problem is to instead only assume that
 <span class="math display">\[\begin{equation}
 Y_{kj} \sim F_{k}
 \end{equation}\]</span>
-That is, <span class="math inline">\(Y_{k1}, Y_{k2}, \ldots, Y_{kn_{k}}\)</span> is an i.i.d. sample from <span class="math inline">\(F_{k}\)</span>.</p></li>
-<li><p>A nonparametric version of the one-way ANOVA hypothesis is that
+That is, <span class="math inline">\(Y_{k1}, Y_{k2}, \ldots, Y_{kn_{k}}\)</span> is an i.i.d. sample from <span class="math inline">\(F_{k}\)</span> for each <span class="math inline">\(k\)</span>.</p></li>
+<li><p>A nonparametric version of the one-way ANOVA homogeneity hypothesis is
+<span class="math display" id="eq:nonpar-homogeneity-hyp">\[\begin{equation}
+H_{0}: F_{1} = F_{2} = \ldots = F_{K}
+\tag{4.4}
+\end{equation}\]</span></p></li>
+<li><p>The “shift alternative” in this case can be stated as
 <span class="math display">\[\begin{equation}
-F_{1} = F_{2} = \ldots = F_{K}
+H_{A}: F_{k}(t) = F(t - \Delta_{k}), \quad \textrm{ for } k = 1, \ldots K \quad \textrm{ and not all $\Delta_{k}$ equal}
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
 <ul>
-<li>The Kruskall-Wallis test statistic is defined as
+<li><p>The Kruskall-Wallis test statistic is similar to the SSA term (defined in <a href="krusk-wallis.html#eq:anova-decomp">(4.3)</a>)
+in the one-way ANOVA setting.</p></li>
+<li><p>Rather than comparing the group-specific means <span class="math inline">\(\bar{Y}_{k.}\)</span> with the overall mean <span class="math inline">\(\bar{Y}_{..}\)</span>,
+the Kruskall-Wallis test statistic will be comparing the group-specific rank
+means <span class="math inline">\(\bar{R}_{k.}\)</span> with their overall expectation under the null hypothesis.</p></li>
+<li><p>The Kruskall-Wallis test statistic is defined as
+<span class="math display" id="eq:kw-definition">\[\begin{equation}
+KW_{n} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)^{2}, \quad \textrm{ where } N = \sum_{k=1}^{K} n_{k}
+\tag{4.5}
+\end{equation}\]</span></p></li>
+<li><p>In <a href="krusk-wallis.html#eq:kw-definition">(4.5)</a>, <span class="math inline">\(\bar{R}_{k.}\)</span> is the average rank of those <span class="math inline">\(k^{th}\)</span> group
 <span class="math display">\[\begin{equation}
-KW_{n} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)
-\end{equation}\]</span></li>
+\bar{R}_{k.} = \frac{1}{n_{k}} \sum_{j=1}^{n_{k}} R_{kj}(\mathbf{Z}),
+\end{equation}\]</span>
+where <span class="math inline">\(\mathbf{Z}\)</span> denotes the pooled-data vector and <span class="math inline">\(R_{kj}(\mathbf{Z})\)</span> denotes
+the rank of <span class="math inline">\(Y_{kj}\)</span> in the “pooled-data ranking”.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>What is the expectation of <span class="math inline">\(\bar{R}_{k.}\)</span> under the null hypothesis <a href="krusk-wallis.html#eq:nonpar-homogeneity-hyp">(4.4)</a>?</p></li>
+<li><p>Again, if the null hypothesis is true, we can treat all of our responses <span class="math inline">\(Y_{kj}\)</span> as just
+an i.i.d. sample of size <span class="math inline">\(N\)</span> from a common distribution function <span class="math inline">\(F\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li>What is the relationship between <span class="math inline">\(KW_{n}\)</span> and the WRS test statistic if we assume that <span class="math inline">\(K=2\)</span>?</li>
 </ul>
 
+</div>
 </div>
             </section>
 
