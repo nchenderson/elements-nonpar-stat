@@ -83,12 +83,37 @@ the rank of $Y_{kj}$ in the "pooled-data ranking".
 * What is the expectation of $\bar{R}_{k.}$ under the null hypothesis \@ref(eq:nonpar-homogeneity-hyp)?
 
 * Again, if the null hypothesis is true, we can treat all of our responses $Y_{kj}$ as just
-an i.i.d. sample of size $N$ from a common distribution function $F$.
+an i.i.d. sample of size $N$ from a common distribution function $F$. 
+Hence, as we showed in Chapter 3, $E\{ R_{kj}(\mathbf{Z}) \} = (N+1)/2$ under this
+null hypothesis.
+
+* Make some comments about the null distribution of $KW_{n}$ here.
 
 ---
 
 * What is the relationship between $KW_{n}$ and the WRS test statistic if we assume that $K=2$?
 
 
+---
 
+**An Example**
+
+<table border=1>
+<tr> <th> Group </th> <th> Y </th> <th> Rank </th>  </tr>
+  <tr> <td align="center"> Group 1 </td> <td align="center"> 1.00 </td> <td align="center"> 8 </td> </tr>
+  <tr> <td align="center"> Group 1 </td> <td align="center"> -1.20 </td> <td align="center"> 2 </td> </tr>
+  <tr> <td align="center"> Group 1 </td> <td align="center"> -1.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> Group 2 </td> <td align="center"> 0.00 </td> <td align="center"> 5 </td> </tr>
+  <tr> <td align="center"> Group 2 </td> <td align="center"> -0.10 </td> <td align="center"> 4 </td> </tr>
+  <tr> <td align="center"> Group 2 </td> <td align="center"> 1.10 </td> <td align="center"> 9 </td> </tr>
+  <tr> <td align="center"> Group 3 </td> <td align="center"> 0.90 </td> <td align="center"> 7 </td> </tr>
+  <tr> <td align="center"> Group 3 </td> <td align="center"> -0.40 </td> <td align="center"> 3 </td> </tr>
+  <tr> <td align="center"> Group 3 </td> <td align="center"> 0.60 </td> <td align="center"> 6 </td> </tr>
+   </table>
+
+* In this case, $N = 9$, $\bar{R}_{1.} = 11/3$, $\bar{R}_{2.} = 6$, and $\bar{R}_{3.} = 16/3$. The Kruskall-Wallis
+statistic is
+\begin{equation}
+KW_{n} = \frac{1}{6}\Big\{ (11/3 - 5)^{2} + (6 - 5)^{2} + (16/3 - 5)^{2}   \Big\} = 13/27
+\end{equation}
 

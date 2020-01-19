@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-18" />
+<meta name="date" content="2020-01-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -320,11 +320,135 @@ the rank of <span class="math inline">\(Y_{kj}\)</span> in the “pooled-data ra
 <ul>
 <li><p>What is the expectation of <span class="math inline">\(\bar{R}_{k.}\)</span> under the null hypothesis <a href="krusk-wallis.html#eq:nonpar-homogeneity-hyp">(4.4)</a>?</p></li>
 <li><p>Again, if the null hypothesis is true, we can treat all of our responses <span class="math inline">\(Y_{kj}\)</span> as just
-an i.i.d. sample of size <span class="math inline">\(N\)</span> from a common distribution function <span class="math inline">\(F\)</span>.</p></li>
+an i.i.d. sample of size <span class="math inline">\(N\)</span> from a common distribution function <span class="math inline">\(F\)</span>.
+Hence, as we showed in Chapter 3, <span class="math inline">\(E\{ R_{kj}(\mathbf{Z}) \} = (N+1)/2\)</span> under this
+null hypothesis.</p></li>
+<li><p>Make some comments about the null distribution of <span class="math inline">\(KW_{n}\)</span> here.</p></li>
 </ul>
 <hr />
 <ul>
 <li>What is the relationship between <span class="math inline">\(KW_{n}\)</span> and the WRS test statistic if we assume that <span class="math inline">\(K=2\)</span>?</li>
+</ul>
+<hr />
+<p><strong>An Example</strong></p>
+<table border="1">
+<tr>
+<th>
+Group
+</th>
+<th>
+Y
+</th>
+<th>
+Rank
+</th>
+</tr>
+<tr>
+<td align="center">
+Group 1
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+8
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 1
+</td>
+<td align="center">
+-1.20
+</td>
+<td align="center">
+2
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 1
+</td>
+<td align="center">
+-1.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 2
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+5
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 2
+</td>
+<td align="center">
+-0.10
+</td>
+<td align="center">
+4
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 2
+</td>
+<td align="center">
+1.10
+</td>
+<td align="center">
+9
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 3
+</td>
+<td align="center">
+0.90
+</td>
+<td align="center">
+7
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 3
+</td>
+<td align="center">
+-0.40
+</td>
+<td align="center">
+3
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 3
+</td>
+<td align="center">
+0.60
+</td>
+<td align="center">
+6
+</td>
+</tr>
+</table>
+<ul>
+<li>In this case, <span class="math inline">\(N = 9\)</span>, <span class="math inline">\(\bar{R}_{1.} = 11/3\)</span>, <span class="math inline">\(\bar{R}_{2.} = 6\)</span>, and <span class="math inline">\(\bar{R}_{3.} = 16/3\)</span>. The Kruskall-Wallis
+statistic is
+<span class="math display">\[\begin{equation}
+KW_{n} = \frac{1}{6}\Big\{ (11/3 - 5)^{2} + (6 - 5)^{2} + (16/3 - 5)^{2}   \Big\} = 13/27
+\end{equation}\]</span></li>
 </ul>
 
 </div>
