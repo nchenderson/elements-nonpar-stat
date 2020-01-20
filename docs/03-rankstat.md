@@ -428,7 +428,7 @@ wine2$Type <- factor(wine2$Type)
 ```
 
 * Let's consider the difference in the level of magnesium across the two types of wine.
-![](03-rankstat_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-6-2.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-6-2.png" width="672" />
 
 * Suppose we are interested in testing whether or not magnesium levels in 
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
@@ -526,7 +526,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.77
+## [1] 0.78
 ```
 
 
@@ -702,7 +702,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.3821767
+## [1] 0.3086497
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -720,7 +720,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.3821767
+## [1] 0.3086497
 ```
 
 #### Two-sided Sign Test
@@ -886,7 +886,7 @@ DD <- DD[DD!=0]
 hist(DD, main="Meat Data", xlab="Difference in Measured Fat Percentage", las=1)
 ```
 
-![](03-rankstat_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 ```r
 summary(DD)
@@ -1023,9 +1023,12 @@ Hence,
 so that $P_{H_{0}}( S_{n} \geq c_{\alpha,n} ) = \alpha$. Using the large-sample approximation \@ref(eq:approx-signstat), you can
 show that
 \begin{equation}
-c_{\alpha, n} = \frac{n + \sqrt{n}\Phi^{-1}(1 - \alpha)}{2} 
+c_{\alpha, n} = \frac{n + \sqrt{n}z_{1-\alpha}}{2}, 
 (\#eq:critical-value-signstat)
 \end{equation}
+where $z_{1-\alpha}$ denotes the upper $1 - \alpha$ quantile of the standard normal distribution. In other words,
+$\Phi( z_{1-\alpha}) = 1-\alpha$.
+
 
 * Also, when using large-sample approximation \@ref(eq:approx-signstat), the power of this test to detect a value of $\theta = \delta$ is given by
 \begin{eqnarray}
@@ -1033,7 +1036,7 @@ c_{\alpha, n} = \frac{n + \sqrt{n}\Phi^{-1}(1 - \alpha)}{2}
 = P_{\theta=\delta}\Bigg\{ \frac{\sqrt{n}(S_{n}/n - p(\delta))}{\sqrt{ p(\delta)(1 - p(\delta)) } } \geq 
 \frac{ \sqrt{n}(c_{\alpha, n}/n - p(\delta)) }{ \sqrt{p(\delta)(1 - p(\delta))}  } \Bigg\}  \nonumber \\
 &=& 1 - \Phi\Bigg( \frac{ \sqrt{n}(c_{\alpha,n}/n - p(\delta)) }{ \sqrt{p(\delta)(1 - p(\delta))}  } \Bigg) \nonumber \\
-&=& 1 - \Phi\Bigg( \frac{ \Phi^{-1}(1 - \alpha) }{ 2\sqrt{p(\delta)(1 - p(\delta))}  } - \frac{ \sqrt{n}(p(\delta) - 1/2) }{ \sqrt{p(\delta)(1 - p(\delta))}  }\Bigg)
+&=& 1 - \Phi\Bigg( \frac{ z_{1-\alpha} }{ 2\sqrt{p(\delta)(1 - p(\delta))}  } - \frac{ \sqrt{n}(p(\delta) - 1/2) }{ \sqrt{p(\delta)(1 - p(\delta))}  }\Bigg)
 (\#eq:powerfn-signstat)
 \end{eqnarray}
 
@@ -1045,7 +1048,7 @@ of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
 values for $p(\delta)$ rather than $\delta$ itself. Plus, $p(\delta)$ has the direct interpretation
 $p(\delta) = P_{\theta=d}( D_{i} > 0)$.
 
-![](03-rankstat_files/figure-latex/unnamed-chunk-21-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-21-2.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-21-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-21-2.png" width="672" />
 
 
 ---
@@ -1107,16 +1110,17 @@ we avoid the problem of the power always converging to $1$.
 
 * It can be shown that
 \begin{equation}
-\tilde{\gamma}(\delta) = 1 - \Phi\Bigg( \Phi^{-1}(1 - \alpha) - \delta \frac{\mu'(\theta_{0})}{\sigma(\theta_{0})} \Bigg)
+\tilde{\gamma}(\delta) = 1 - \Phi\Bigg( z_{1-\alpha} - \delta \frac{\mu'(\theta_{0})}{\sigma(\theta_{0})} \Bigg)
 \end{equation}
 as long as we can find functions $\mu(\cdot)$ and $\sigma(\cdot)$ such that
 \begin{equation}
 \frac{\sqrt{n}(V_{n} - \mu(\theta_{n}))}{ \sigma(\theta_{n})} \longrightarrow \textrm{Normal}(0, 1) 
+(\#eq:asymptotic-v)
 \end{equation}
-where $V_{n}$ is the test statistic on which the test is based.
+where the test of $H_{0}:\theta = \theta_{0}$ vs. $H_{A}: \theta > \theta_{0}$ 
+is based on the test statistic $V_{n}$ with rejection of $H_{0}$ occurring whenever $V_{n} \geq c_{n}$.
 
 ---
-**Interpretation**
 
 * The ratio $e(\theta_{0}) = \mu'(\theta_{0})/\sigma(\theta_{0})$ is the **asymptotic efficacy** of the 
 test.
@@ -1124,23 +1128,210 @@ test.
 * When comparing two tests with efficiency $e_{1}(\theta_{0})$ and $e_{2}(\theta_{0})$,
 the asymptotic relative efficiency of test 1 vs. test 2 is defined as
 \begin{equation}
-ARE_{12}(\theta_{0}) = ( \frac{e_{1}(\theta_{0})}{e_{2}(\theta_{0})} )^{2}
+ARE_{12}(\theta_{0}) = \Big( \frac{e_{1}(\theta_{0})}{e_{2}(\theta_{0})} \Big)^{2}
 \end{equation}
-
-* Sample size interpretation of this?
 
 ---
 
-**Examples**
+**Interpretation of Asymptotic Efficiency of Tests**
 
-* Let's return to the example of the sign statistic $S_{n}$ and its use
+* Roughly speaking, the asymptotic relative efficiency $ARE_{12}( \theta_{0} )$ approximately equals
+$n_{1}/n_{2}$ where $n_{1}$ is the sample size needed for test 1
+to achieve power $\beta$ and $n_{2}$ is the sample size needed for test 2
+to achieve power $\beta$. This is true for an arbitrary $\beta$. 
+
+* To further justify this interpretation notice that, for lare $n$, we should have
+\begin{equation}
+c_{n} \approx \mu(\theta_{0}) + \frac{ \sigma(\theta_{0})z_{1-\alpha}  }{\sqrt{n}}
+\end{equation}
+(This approximation for $c_{n}$ comes from the asymptotic statement in \@ref(eq:asymptotic-v))
+
+* Now, consider the power for detecting $H_{A}: \theta = \theta_{A}$ (where we will assume 
+that $\theta_{A}$ is "close" to $\theta_{0}$). Using \@ref(eq:asymptotic-v) and thinking of $\theta_{n} = \theta_{A}$ for all $n$, 
+the approximate power in this setting is
+\begin{eqnarray}
+P_{\theta_{A}}\Big( V_{n} \geq c_{n} \Big)
+&=& P_{\theta_{A} }\Bigg( \frac{\sqrt{n}(V_{n} - \mu(\theta_{A} ))}{ \sigma(\theta_{A} )}
+\geq \frac{\sqrt{n}(c_{n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)
+\approx 1 - \Phi\Bigg( \frac{\sqrt{n}(c_{n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)
+\nonumber \\
+&=& 1 - \Phi\Bigg( \frac{\sqrt{n}(\mu(\theta_{0}) - \mu(\theta_{A}))}{ \sigma(\theta_{A})} + \frac{z_{1-\alpha}\sigma(\theta_{0})}{ \sigma(\theta_{A})}\Bigg)
+\end{eqnarray}
+
+* Hence, if we want to achieve a power level of $\beta$ for the alternative $H_{A}: \theta = \theta_{A}$, 
+we need the corresponding sample size $n_{\beta}( \theta_{A} )$ to satisfy 
+\begin{equation}
+\frac{\sqrt{n_{\beta}(\theta_{A})}(\mu(\theta_{0}) - \mu(\theta_{A}))}{ \sigma(\theta_{A})} + \frac{z_{1-\alpha}\sigma(\theta_{0})}{ \sigma(\theta_{A})}
+= z_{1-\beta}
+\end{equation}
+which reduces to 
+\begin{equation}
+n_{\beta}(\theta_{A})
+= \Bigg( \frac{ z_{1-\beta}\sigma(\theta_{A}) - z_{1-\alpha}\sigma(\theta_{0}) }{ \mu(\theta_{0}) - \mu(\theta_{A}) } \Bigg)^{2}
+\approx \Bigg( \frac{ [z_{1-\beta} - z_{1-\alpha}]\sigma(\theta_{0}) }{ (\theta_{A} - \theta_{0})\mu'(\theta_{0})} \Bigg)^{2}
+(\#eq:approx-sample-size)
+\end{equation}
+
+* So, if we were comparing two testing procedures and we computed the approximate sample sizes $n_{\beta}^{1}(\theta_{A})$ and $n_{\beta}^{2}(\theta_{A})$ needed to reach $\beta$ power for the alternative $H_{A}: \theta = \theta_{A}$, the sample
+size ratio (using approximation \@ref(eq:approx-sample-size)) would be
+\begin{equation}
+\frac{ n_{\beta}^{2}(\theta_{A}) }{n_{\beta}^{1}(\theta_{A}) }
+= \Bigg( \frac{ \mu_{1}'(\theta_{0})\sigma_{2}(\theta_{0}) }{ \mu_{2}'(\theta_{0})\sigma_{1}(\theta_{0})} \Bigg)^{2}
+= \textrm{ARE}_{12}(\theta_{0}) 
+\end{equation}
+
+---
+
+### Efficiency Examples
+
+**The Sign Test**
+
+* Let us return to the example of the sign statistic $S_{n}$ and its use
 in testing the hypothesis $H_{0}: \theta = 0$ vs. $H_{A}: \theta > 0$.
 
+* Notice that the sign test rejects $H_{0}:\theta=0$ for $V_{n} > c_{n}$
+where $V_{n} = S_{n}/n$ and $S_{n}$ is the sign statistic.
 
-### Power Comparisons for Several Distributions
+* When $V_{n}$ is defined this way \@ref(eq:asymptotic-v) is satisfied
+when $\mu(\theta) = p(\theta)$ and $\sigma(\theta) = \sqrt{p(\theta)(1 - \theta)}$
+where $p(\theta) = 1 - F_{\epsilon}( -\theta )$.
+
+* Thus, the efficiency of the sign test for testing $H_{0}: \theta = 0$ vs. $H_{A}: \theta > 0$ is
+\begin{equation}
+\frac{\mu'(0)}{\sigma(0)} = \frac{p'(0)}{\sqrt{p(0)(1 - p(0))}} = 2f_{\epsilon}(0)
+\end{equation}
+where $f_{\epsilon}(t) = F_{\epsilon}'(t)$.
+
+---
+
+**The One-Sample t-test**
+
+* Assume that we have data $D_{1}, \ldots, D_{n}$ generated under the same assumption 
+as in our discussion of the sign test and the Wilcoxon signed-rank test. That is,
+\begin{equation}
+D_{i} = \theta + \varepsilon_{i}
+\end{equation}
+
+* The one-sample t-test will reject $H_{0}: \theta = 0$ whenever $V_{n} > c_{n}$, where $V_{n}$ is defined to 
+be
+\begin{equation}
+V_{n} = \frac{\bar{D}}{ \hat{\sigma} }
+\end{equation}
+
+* Note that \@ref(eq:asymptotic-v) will apply if we choose 
+\begin{eqnarray}
+\mu(\theta) &=& E_{\theta}(D_{i}) = \theta \nonumber \\
+\sigma(\theta) &=& \sqrt{\textrm{Var}_{\theta}(D_{i})} = \sqrt{\textrm{Var}(\varepsilon_{i})}
+\end{eqnarray}
+
+* So, the efficiency of the one-sample t-test is given by
+\begin{equation}
+\frac{\mu'(0)}{\sigma(0)} = \frac{1}{ \sqrt{\textrm{Var}(\varepsilon_{i})} }  \nonumber 
+\end{equation}
+
+---
+
+**The Wilcoxon Rank Sum Test**
+
+* Using the close relation between the WRS test statistic and 
+the Mann-Whitney statistic, the WRS test can be represented as
+rejecting $H_{0}$ when $V_{N} \geq c_{N}$ where $V_{N}$ is
+\begin{equation}
+V_{N} = \frac{1}{mn} \sum_{i=1}^{n}\sum_{j=1}^{m} I(X_{i} \geq Y_{j})
+\end{equation}
+
+* The power of the WRS test is usually analyzed in the context of 
+the "shift alternative". Namely, we are assuming that $F_{X}(t) = F$
+and test $H_{0}: \Delta=0$ vs. $H_{A}: \Delta > 0$.
+
+* You can show that \@ref(eq:asymptotic-v) holds (see e.g, Chapter 14 of )
+if you choose $\mu(\Delta)$ and $\sigma^{2}(\theta)$ to be
+\begin{eqnarray}
+\mu(\theta) &=& 1 - \int f(t-\theta)f(t) dt \\
+\sigma^{2}(\theta) &=& \frac{1}{\lambda}\textrm{Var}\{ G(X_{i} - \theta) \} + \frac{1}{1 - \lambda} \textrm{Var}\{ F(Y_{i}) \}
+\end{eqnarray}
+Here, $n/(m + n) \longrightarrow \lambda$.
 
 
-## Thinking about Rank statistics more generally
+### Efficiency Comparisons for Several Distributions
+
+**Sign Test vs. One-Sample t-test**
+
+* Comparisons of the Efficiency of the sign and one-sample t-test only
+require us to find $f(0)$ and $\textrm{Var}(\epsilon_{i})$ for different assumptions 
+about the residual density $f_{\epsilon}$.
+
+* For the Logistic(0,1) distribution, $f(0) = 1/4$ and the standard deviation
+is $\pi/\sqrt{3}$. Hence, the asymptotic relative efficiency of the sign test vs. the one-sample
+t-test would be $(\pi/2\sqrt{3})^{2}$.
+
+
+* The relative efficiencies for the sign vs. t-test for other distributions are shown below
+\begin{eqnarray}
+\textrm{Distribution} & & \quad \textrm{Efficiency} \\
+\textrm{Normal}(0,1) & & \qquad 2/\pi \\
+\textrm{Logistic}(0,1) & &  \qquad \pi^{2}/12 \\
+\textrm{Laplace}(0,1) & & \qquad 2 \\
+\textrm{Uniform}(-1, 1) & & \qquad 1/3 \\
+\textrm{t-dist}_{\nu} & & \qquad [4(\nu/(\nu-2))\Gamma^{2}\{ (\nu + 1)/2\}]/[ \Gamma^{2}(\nu/2)\nu \pi ]
+\end{eqnarray}
+
+---
+
+**WRS Test vs. Two-Sample t-test**
+
+* The relative efficiencies for the WRS test vs. the two-sample t-test
+for several distributions are shown below.
+
+\begin{eqnarray}
+\textrm{Distribution} & & \quad \textrm{Efficiency} \\
+\textrm{Normal}(0,1) & & \qquad 3/\pi \\
+\textrm{Logistic}(0,1) & &  \qquad \pi^{2}/9 \\
+\textrm{Laplace}(0,1) & & \qquad 3/2 \\
+\textrm{Uniform}(-1, 1) & & \qquad 1 \\
+\textrm{t-dist}_{3} & & \qquad 1.24 \\
+\textrm{t-dist}_{5} & & \qquad 1.90 \\
+\end{eqnarray}
+
+### A Powerful "Contest"
+
+
+```r
+theta <- 1/4
+n <- 200
+nreps <- 500
+RejectSign <- RejectWilcoxonSign <- RejectT <- matrix(NA, nrow=nreps, ncol=3)
+for(k in 1:nreps) {
+  xx <- theta + rlogis(n)
+  yy <- theta + rnorm(n)
+  zz <- theta + runif(n, min=-3/2, max=3/2)
+  
+  RejectSign[k,1] <- ifelse(binom.test(x=sum(xx > 0), n=n, p=0.5)$p.value < 0.05, 1, 0)
+  RejectWilcoxonSign[k,1] <- ifelse(wilcox.test(xx)$p.value < 0.05, 1, 0) 
+  RejectT[k,1] <- ifelse(t.test(xx)$p.value < 0.05, 1, 0)
+  
+  RejectSign[k,2] <- ifelse(binom.test(x=sum(yy > 0), n=n, p=0.5)$p.value < 0.05, 1, 0)
+  RejectWilcoxonSign[k,2] <- ifelse(wilcox.test(yy)$p.value < 0.05, 1, 0) 
+  RejectT[k,2] <- ifelse(t.test(yy)$p.value < 0.05, 1,0)  
+  
+  RejectSign[k,3] <- ifelse(binom.test(x=sum(zz > 0), n=n, p=0.5)$p.value < 0.05, 1, 0)
+  RejectWilcoxonSign[k,3] <- ifelse(wilcox.test(zz)$p.value < 0.05, 1, 0) 
+  RejectT[k,3] <- ifelse(t.test(zz)$p.value < 0.05,1,0)  
+}
+
+power.results <- data.frame(Distribution=c("Logistic", "Normal", "Uniform"),
+                 SignTest=colMeans(RejectSign), WilcoxonSign=colMeans(RejectWilcoxonSign),
+                 tTest=colMeans(RejectT))
+```
+
+<table border=1>
+<tr> <th> Distribution </th> <th> SignTest </th> <th> WilcoxonSign </th> <th> tTest </th>  </tr>
+  <tr> <td align="center"> Logistic </td> <td align="center"> 0.41 </td> <td align="center"> 0.52 </td> <td align="center"> 0.50 </td> </tr>
+  <tr> <td align="center"> Normal </td> <td align="center"> 0.79 </td> <td align="center"> 0.94 </td> <td align="center"> 0.95 </td> </tr>
+  <tr> <td align="center"> Uniform </td> <td align="center"> 0.57 </td> <td align="center"> 0.98 </td> <td align="center"> 0.99 </td> </tr>
+   </table>
+
+## Linear Rank Statistics in General
 
 
 * We will mention the Van der Waerden (or "normal scores" test)
