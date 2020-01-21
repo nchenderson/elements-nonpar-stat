@@ -428,7 +428,7 @@ wine2$Type <- factor(wine2$Type)
 ```
 
 * Let's consider the difference in the level of magnesium across the two types of wine.
-<img src="03-rankstat_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-6-2.png" width="672" />
+![](03-rankstat_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-6-2.pdf)<!-- --> 
 
 * Suppose we are interested in testing whether or not magnesium levels in 
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
@@ -526,7 +526,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.79
+## [1] 0.795
 ```
 
 
@@ -702,7 +702,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.903326
+## [1] 0.7579408
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -720,7 +720,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.903326
+## [1] 0.7579408
 ```
 
 #### Two-sided Sign Test
@@ -886,7 +886,7 @@ DD <- DD[DD!=0]
 hist(DD, main="Meat Data", xlab="Difference in Measured Fat Percentage", las=1)
 ```
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+![](03-rankstat_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
 
 ```r
 summary(DD)
@@ -1049,7 +1049,7 @@ of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
 values for $p(\delta)$ rather than $\delta$ itself. Plus, $p(\delta)$ has the direct interpretation
 $p(\delta) = P_{\theta=\delta}( D_{i} > 0)$.
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-21-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-21-2.png" width="672" />
+![](03-rankstat_files/figure-latex/unnamed-chunk-21-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-21-2.pdf)<!-- --> 
 
 
 ---
@@ -1124,7 +1124,7 @@ Statement \@ref(eq:asymptotic-v) asssumed that the distribution of $V_{n}$ is go
 
 ---
 
-* The ratio $e(\theta_{0}) = \mu'(\theta_{0})/\sigma(\theta_{0})$ is the **asymptotic efficiecny** of the 
+* The ratio $e(\theta_{0}) = \mu'(\theta_{0})/\sigma(\theta_{0})$ is the **asymptotic efficiency** of the 
 test.
 
 * When comparing two tests with efficiency $e_{1}(\theta_{0})$ and $e_{2}(\theta_{0})$,
@@ -1138,7 +1138,7 @@ ARE_{12}(\theta_{0}) = \Big( \frac{e_{1}(\theta_{0})}{e_{2}(\theta_{0})} \Big)^{
 **Interpretation of Asymptotic Efficiency of Tests**
 
 * Roughly speaking, the asymptotic relative efficiency $ARE_{12}( \theta_{0} )$ approximately equals
-$n_{1}/n_{2}$ where $n_{1}$ is the sample size needed for test 1
+$n_{2}/n_{1}$ where $n_{1}$ is the sample size needed for test 1
 to achieve power $\beta$ and $n_{2}$ is the sample size needed for test 2
 to achieve power $\beta$. This is true for an arbitrary $\beta$. 
 
@@ -1149,7 +1149,7 @@ c_{\alpha, n} \approx \mu(\theta_{0}) + \frac{ \sigma(\theta_{0})z_{1-\alpha}  }
 (This approximation for $c_{\alpha, n}$ comes from the asymptotic statement in \@ref(eq:asymptotic-v))
 
 * Now, consider the power for detecting $H_{A}: \theta = \theta_{A}$ (where we will assume 
-that $\theta_{A}$ is "close" to $\theta_{0}$). Using \@ref(eq:asymptotic-v) and thinking of $\theta_{n} = \theta_{A}$ for all $n$, 
+that $\theta_{A}$ is "close" to $\theta_{0}$). Using \@ref(eq:asymptotic-v), 
 the approximate power in this setting is
 \begin{eqnarray}
 P_{\theta_{A}}\Big( V_{n} \geq c_{\alpha, n} \Big)

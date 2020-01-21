@@ -671,7 +671,7 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{j}) +
 <a class="sourceLine" id="cb26-8" data-line-number="8"><span class="st">                   </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">==</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb26-9" data-line-number="9">}</a>
 <a class="sourceLine" id="cb26-10" data-line-number="10"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.79</code></pre>
+<pre><code>## [1] 0.75</code></pre>
 </div>
 <div id="additional-notes-for-the-wrs-test" class="section level3">
 <h3><span class="header-section-number">3.2.5</span> Additional Notes for the WRS test</h3>
@@ -872,7 +872,7 @@ where <span class="math inline">\(s_{obs}\)</span> is the observed value of the 
 <a class="sourceLine" id="cb30-2" data-line-number="2">xx &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb30-3" data-line-number="3">sign.stat &lt;-<span class="st"> </span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb30-4" data-line-number="4"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pbinom</span>(sign.stat <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">size=</span><span class="dv">100</span>, <span class="dt">prob=</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) <span class="co">## p-value for sign test</span></a></code></pre></div>
-<pre><code>## [1] 0.903326</code></pre>
+<pre><code>## [1] 0.1356265</code></pre>
 <ul>
 <li><p>The reason that this is the right expression using <strong>R</strong> is that for any positive integer <span class="math inline">\(w\)</span>
 <span class="math display">\[\begin{equation}
@@ -884,7 +884,7 @@ a binomial random variable with <span class="math inline">\(n\)</span> trials an
 </ul>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">btest &lt;-<span class="st"> </span><span class="kw">binom.test</span>(sign.stat, <span class="dt">n=</span><span class="dv">100</span>, <span class="dt">p=</span><span class="fl">0.5</span>, <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>) </a>
 <a class="sourceLine" id="cb32-2" data-line-number="2">btest<span class="op">$</span>p.value</a></code></pre></div>
-<pre><code>## [1] 0.903326</code></pre>
+<pre><code>## [1] 0.1356265</code></pre>
 </div>
 <div id="two-sided-sign-test" class="section level4">
 <h4><span class="header-section-number">3.3.1.3</span> Two-sided Sign Test</h4>
@@ -1201,7 +1201,7 @@ Statement <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a> asssumed that the
 </ul>
 <hr />
 <ul>
-<li><p>The ratio <span class="math inline">\(e(\theta_{0}) = \mu&#39;(\theta_{0})/\sigma(\theta_{0})\)</span> is the <strong>asymptotic efficiecny</strong> of the
+<li><p>The ratio <span class="math inline">\(e(\theta_{0}) = \mu&#39;(\theta_{0})/\sigma(\theta_{0})\)</span> is the <strong>asymptotic efficiency</strong> of the
 test.</p></li>
 <li><p>When comparing two tests with efficiency <span class="math inline">\(e_{1}(\theta_{0})\)</span> and <span class="math inline">\(e_{2}(\theta_{0})\)</span>,
 the asymptotic relative efficiency of test 1 vs. test 2 is defined as
@@ -1213,7 +1213,7 @@ ARE_{12}(\theta_{0}) = \Big( \frac{e_{1}(\theta_{0})}{e_{2}(\theta_{0})} \Big)^{
 <p><strong>Interpretation of Asymptotic Efficiency of Tests</strong></p>
 <ul>
 <li><p>Roughly speaking, the asymptotic relative efficiency <span class="math inline">\(ARE_{12}( \theta_{0} )\)</span> approximately equals
-<span class="math inline">\(n_{1}/n_{2}\)</span> where <span class="math inline">\(n_{1}\)</span> is the sample size needed for test 1
+<span class="math inline">\(n_{2}/n_{1}\)</span> where <span class="math inline">\(n_{1}\)</span> is the sample size needed for test 1
 to achieve power <span class="math inline">\(\beta\)</span> and <span class="math inline">\(n_{2}\)</span> is the sample size needed for test 2
 to achieve power <span class="math inline">\(\beta\)</span>. This is true for an arbitrary <span class="math inline">\(\beta\)</span>.</p></li>
 <li><p>To further justify this interpretation notice that, for large <span class="math inline">\(n\)</span>, we should have
@@ -1222,7 +1222,7 @@ c_{\alpha, n} \approx \mu(\theta_{0}) + \frac{ \sigma(\theta_{0})z_{1-\alpha}  }
 \end{equation}\]</span>
 (This approximation for <span class="math inline">\(c_{\alpha, n}\)</span> comes from the asymptotic statement in <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a>)</p></li>
 <li><p>Now, consider the power for detecting <span class="math inline">\(H_{A}: \theta = \theta_{A}\)</span> (where we will assume
-that <span class="math inline">\(\theta_{A}\)</span> is “close” to <span class="math inline">\(\theta_{0}\)</span>). Using <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a> and thinking of <span class="math inline">\(\theta_{n} = \theta_{A}\)</span> for all <span class="math inline">\(n\)</span>,
+that <span class="math inline">\(\theta_{A}\)</span> is “close” to <span class="math inline">\(\theta_{0}\)</span>). Using <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a>,
 the approximate power in this setting is
 <span class="math display">\[\begin{eqnarray}
 P_{\theta_{A}}\Big( V_{n} \geq c_{\alpha, n} \Big)
