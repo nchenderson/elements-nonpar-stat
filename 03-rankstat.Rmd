@@ -985,7 +985,7 @@ Statement \@ref(eq:asymptotic-v) asssumed that the distribution of $V_{n}$ is go
 
 ---
 
-* The ratio $e(\theta_{0}) = \mu'(\theta_{0})/\sigma(\theta_{0})$ is the **asymptotic efficiecny** of the 
+* The ratio $e(\theta_{0}) = \mu'(\theta_{0})/\sigma(\theta_{0})$ is the **asymptotic efficiency** of the 
 test.
 
 * When comparing two tests with efficiency $e_{1}(\theta_{0})$ and $e_{2}(\theta_{0})$,
@@ -999,7 +999,7 @@ ARE_{12}(\theta_{0}) = \Big( \frac{e_{1}(\theta_{0})}{e_{2}(\theta_{0})} \Big)^{
 **Interpretation of Asymptotic Efficiency of Tests**
 
 * Roughly speaking, the asymptotic relative efficiency $ARE_{12}( \theta_{0} )$ approximately equals
-$n_{1}/n_{2}$ where $n_{1}$ is the sample size needed for test 1
+$n_{2}/n_{1}$ where $n_{1}$ is the sample size needed for test 1
 to achieve power $\beta$ and $n_{2}$ is the sample size needed for test 2
 to achieve power $\beta$. This is true for an arbitrary $\beta$. 
 
@@ -1010,7 +1010,7 @@ c_{\alpha, n} \approx \mu(\theta_{0}) + \frac{ \sigma(\theta_{0})z_{1-\alpha}  }
 (This approximation for $c_{\alpha, n}$ comes from the asymptotic statement in \@ref(eq:asymptotic-v))
 
 * Now, consider the power for detecting $H_{A}: \theta = \theta_{A}$ (where we will assume 
-that $\theta_{A}$ is "close" to $\theta_{0}$). Using \@ref(eq:asymptotic-v) and thinking of $\theta_{n} = \theta_{A}$ for all $n$, 
+that $\theta_{A}$ is "close" to $\theta_{0}$). Using \@ref(eq:asymptotic-v), 
 the approximate power in this setting is
 \begin{eqnarray}
 P_{\theta_{A}}\Big( V_{n} \geq c_{\alpha, n} \Big)
