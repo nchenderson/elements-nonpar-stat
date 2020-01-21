@@ -981,6 +981,7 @@ as long as we can find functions $\mu(\cdot)$ and $\sigma(\cdot)$ such that
 \end{equation}
 where the test of $H_{0}:\theta = \theta_{0}$ vs. $H_{A}: \theta > \theta_{0}$ 
 is based on the test statistic $V_{n}$ with rejection of $H_{0}$ occurring whenever $V_{n} \geq c_{\alpha, n}$.
+Statement \@ref(eq:asymptotic-v) asssumed that the distribution of $V_{n}$ is governed by $\theta_{n}$.
 
 ---
 
@@ -1048,6 +1049,15 @@ because the sample size required for test $1$ would be less than the sample size
 * It is also worth noting that our justification for the interpretation of $\textrm{ARE}_{12}(\theta_{0})$
 was not very rigorous or precise, but it is possible to make a more rigorous statement.
 See, for example, Chapter 13 of @lehmann2006 for a more rigorous treatment of relative efficiency. 
+
+* In @lehmann2006, they have a result that states (under appropriate assumptions) that
+\begin{equation}
+\lim_{\theta \downarrow \theta_{0}} \frac{N_{2}(\theta)}{N_{1}(\theta)} 
+= ARE_{12}(\theta_{0})
+\end{equation}
+where $N_{1}(\theta)$ and $N_{2}(\theta)$ are the sample
+sizes required to have power $\beta$ against alternative $\theta$.
+
 
 ---
 

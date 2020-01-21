@@ -428,7 +428,7 @@ wine2$Type <- factor(wine2$Type)
 ```
 
 * Let's consider the difference in the level of magnesium across the two types of wine.
-![](03-rankstat_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-6-2.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-6-2.png" width="672" />
 
 * Suppose we are interested in testing whether or not magnesium levels in 
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
@@ -526,7 +526,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.735
+## [1] 0.79
 ```
 
 
@@ -702,7 +702,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.8158992
+## [1] 0.903326
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -720,7 +720,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.8158992
+## [1] 0.903326
 ```
 
 #### Two-sided Sign Test
@@ -886,7 +886,7 @@ DD <- DD[DD!=0]
 hist(DD, main="Meat Data", xlab="Difference in Measured Fat Percentage", las=1)
 ```
 
-![](03-rankstat_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 ```r
 summary(DD)
@@ -1049,7 +1049,7 @@ of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
 values for $p(\delta)$ rather than $\delta$ itself. Plus, $p(\delta)$ has the direct interpretation
 $p(\delta) = P_{\theta=\delta}( D_{i} > 0)$.
 
-![](03-rankstat_files/figure-latex/unnamed-chunk-21-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-21-2.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-21-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-21-2.png" width="672" />
 
 
 ---
@@ -1120,6 +1120,7 @@ as long as we can find functions $\mu(\cdot)$ and $\sigma(\cdot)$ such that
 \end{equation}
 where the test of $H_{0}:\theta = \theta_{0}$ vs. $H_{A}: \theta > \theta_{0}$ 
 is based on the test statistic $V_{n}$ with rejection of $H_{0}$ occurring whenever $V_{n} \geq c_{\alpha, n}$.
+Statement \@ref(eq:asymptotic-v) asssumed that the distribution of $V_{n}$ is governed by $\theta_{n}$.
 
 ---
 
@@ -1187,6 +1188,15 @@ because the sample size required for test $1$ would be less than the sample size
 * It is also worth noting that our justification for the interpretation of $\textrm{ARE}_{12}(\theta_{0})$
 was not very rigorous or precise, but it is possible to make a more rigorous statement.
 See, for example, Chapter 13 of @lehmann2006 for a more rigorous treatment of relative efficiency. 
+
+* In @lehmann2006, they have a result that states (under appropriate assumptions) that
+\begin{equation}
+\lim_{\theta \downarrow \theta_{0}} \frac{N_{2}(\theta)}{N_{1}(\theta)} 
+= ARE_{12}(\theta_{0})
+\end{equation}
+where $N_{1}(\theta)$ and $N_{2}(\theta)$ are the sample
+sizes required to have power $\beta$ against alternative $\theta$.
+
 
 ---
 
