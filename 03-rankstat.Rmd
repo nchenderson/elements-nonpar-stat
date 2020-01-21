@@ -1309,32 +1309,51 @@ W = \sum_{i=1}^{n} R_{i}(\mathbf{Z})
 if we choose the coefficients to be the following 
 \begin{equation}
 c_{iN} = \begin{cases}
-   1 & \textrm{ if } i \leq n \\
+   N+1 & \textrm{ if } i \leq n \\
    0 & \textrm{ if } i > n 
  \end{cases}
 \end{equation}
-and choose the scores as
+and choose $\psi(u) = u$ so that the scores are
 \begin{equation}
-a_{N}(u) = \psi\Big( \frac{u}{N + 1}  \Big) = 1
+a_{N}(u) = \psi\Big( \frac{u}{N + 1}  \Big) = \frac{u}{N + 1}
 \end{equation}
 
 ### Properties of Linear Rank Statistics
 
-* Expected value
-
+* The expected value of the linear rank statistic (if the distribution of the $Z_{i}$ is continuous) 
+is
 \begin{equation}
-E(T_{N}) = N\bar{c}\bar{a}
+E(T_{N}) = N\bar{c}_{N}\bar{a}_{N},
+(\#eq:expec-linear-rank)
+\end{equation}
+where $\bar{c}_{N} = \frac{1}{N} \sum_{j=1}^{N} c_{jN}$ and $\bar{a}_{N} = \frac{1}{N}\sum_{j=1}^{N} a_{N}(j)$
+
+* The formula \@ref(eq:expec-linear-rank) for the expectation only uses the fact that $R_{i}(\mathbf{Z})$ has a discrete uniform
+distribution. So,
+\begin{equation}
+E\{ a_{N}( R_{i}(\mathbf{Z} ) \}
+= \sum_{j=1}^{N} a_{N}(j)P\{ R_{i}( \mathbf{Z}) = j \}
+= \sum_{j=1}^{N} \frac{ a_{N}(j) }{N}
+= \bar{a}_{N}
+\end{equation}
+Using this, we can then see that
+\begin{equation}
+E( T_{N} ) = \sum_{j=1}^{N} c_{jN} E\{ a_{N}(R_{i}(\mathbf{Z})) \}
+= \sum_{j=1}^{N} c_{jN}\bar{a}_{N} = N\bar{c}_{N}\bar{a}_{N}
 \end{equation}
 
-* Variance
+---
+
+* The variance of $T_{N}$ is
 \begin{equation}
 \textrm{Var}( T_{N} ) = \frac{N^{2}}{n-1} \sigma_{a}^{2}\sigma_{c}^{2},
 \end{equation}
-where
+where $\sigma_{c}^{2} = \frac{1}{N}\sum_{j=1}^{N} (c_{jN} - \bar{c}_{N})^{2}$
+and $\sigma_{a}^{2} = \frac{1}{N}\sum_{j=1}^{N} (a_{N}(j) - \bar{a}_{N})^{2}$
 
 * Symmetry?
 
-### More Examples
+### Other Examples of Linear Rank Statistics
 
 #### The van der Waerden statistic and the normal scores test
 

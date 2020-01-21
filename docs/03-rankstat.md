@@ -428,7 +428,7 @@ wine2$Type <- factor(wine2$Type)
 ```
 
 * Let's consider the difference in the level of magnesium across the two types of wine.
-![](03-rankstat_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-6-2.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-6-2.png" width="672" />
 
 * Suppose we are interested in testing whether or not magnesium levels in 
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
@@ -526,7 +526,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.795
+## [1] 0.84
 ```
 
 
@@ -702,7 +702,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.7579408
+## [1] 0.6913503
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -720,7 +720,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.7579408
+## [1] 0.6913503
 ```
 
 #### Two-sided Sign Test
@@ -886,7 +886,7 @@ DD <- DD[DD!=0]
 hist(DD, main="Meat Data", xlab="Difference in Measured Fat Percentage", las=1)
 ```
 
-![](03-rankstat_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 ```r
 summary(DD)
@@ -1049,7 +1049,7 @@ of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
 values for $p(\delta)$ rather than $\delta$ itself. Plus, $p(\delta)$ has the direct interpretation
 $p(\delta) = P_{\theta=\delta}( D_{i} > 0)$.
 
-![](03-rankstat_files/figure-latex/unnamed-chunk-21-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-21-2.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-21-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-21-2.png" width="672" />
 
 
 ---
@@ -1449,32 +1449,51 @@ W = \sum_{i=1}^{n} R_{i}(\mathbf{Z})
 if we choose the coefficients to be the following 
 \begin{equation}
 c_{iN} = \begin{cases}
-   1 & \textrm{ if } i \leq n \\
+   N+1 & \textrm{ if } i \leq n \\
    0 & \textrm{ if } i > n 
  \end{cases}
 \end{equation}
-and choose the scores as
+and choose $\psi(u) = u$ so that the scores are
 \begin{equation}
-a_{N}(u) = \psi\Big( \frac{u}{N + 1}  \Big) = 1
+a_{N}(u) = \psi\Big( \frac{u}{N + 1}  \Big) = \frac{u}{N + 1}
 \end{equation}
 
 ### Properties of Linear Rank Statistics
 
-* Expected value
-
+* The expected value of the linear rank statistic (if the distribution of the $Z_{i}$ is continuous) 
+is
 \begin{equation}
-E(T_{N}) = N\bar{c}\bar{a}
+E(T_{N}) = N\bar{c}_{N}\bar{a}_{N},
+(\#eq:expec-linear-rank)
+\end{equation}
+where $\bar{c}_{N} = \frac{1}{N} \sum_{j=1}^{N} c_{jN}$ and $\bar{a}_{N} = \frac{1}{N}\sum_{j=1}^{N} a_{N}(j)$
+
+* The formula \@ref(eq:expec-linear-rank) for the expectation only uses the fact that $R_{i}(\mathbf{Z})$ has a discrete uniform
+distribution. So,
+\begin{equation}
+E\{ a_{N}( R_{i}(\mathbf{Z} ) \}
+= \sum_{j=1}^{N} a_{N}(j)P\{ R_{i}( \mathbf{Z}) = j \}
+= \sum_{j=1}^{N} \frac{ a_{N}(j) }{N}
+= \bar{a}_{N}
+\end{equation}
+Using this, we can then see that
+\begin{equation}
+E( T_{N} ) = \sum_{j=1}^{N} c_{jN} E\{ a_{N}(R_{i}(\mathbf{Z})) \}
+= \sum_{j=1}^{N} c_{jN}\bar{a}_{N} = N\bar{c}_{N}\bar{a}_{N}
 \end{equation}
 
-* Variance
+---
+
+* The variance of $T_{N}$ is
 \begin{equation}
 \textrm{Var}( T_{N} ) = \frac{N^{2}}{n-1} \sigma_{a}^{2}\sigma_{c}^{2},
 \end{equation}
-where
+where $\sigma_{c}^{2} = \frac{1}{N}\sum_{j=1}^{N} (c_{jN} - \bar{c}_{N})^{2}$
+and $\sigma_{a}^{2} = \frac{1}{N}\sum_{j=1}^{N} (a_{N}(j) - \bar{a}_{N})^{2}$
 
 * Symmetry?
 
-### More Examples
+### Other Examples of Linear Rank Statistics
 
 #### The van der Waerden statistic and the normal scores test
 
