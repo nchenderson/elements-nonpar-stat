@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-20" />
+<meta name="date" content="2020-01-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -163,9 +163,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.4.2" data-path="rank-tests.html"><a href="rank-tests.html#power-comparisons-and-asymptotic-relative-efficiency"><i class="fa fa-check"></i><b>3.4.2</b> Power Comparisons and Asymptotic Relative Efficiency</a></li>
 <li class="chapter" data-level="3.4.3" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-examples"><i class="fa fa-check"></i><b>3.4.3</b> Efficiency Examples</a></li>
 <li class="chapter" data-level="3.4.4" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-comparisons-for-several-distributions"><i class="fa fa-check"></i><b>3.4.4</b> Efficiency Comparisons for Several Distributions</a></li>
-<li class="chapter" data-level="3.4.5" data-path="rank-tests.html"><a href="rank-tests.html#a-powerful-contest"><i class="fa fa-check"></i><b>3.4.5</b> A Powerful “Contest”</a></li>
+<li class="chapter" data-level="3.4.5" data-path="rank-tests.html"><a href="rank-tests.html#a-power-contest"><i class="fa fa-check"></i><b>3.4.5</b> A Power “Contest”</a></li>
 </ul></li>
-<li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#linear-rank-statistics-in-general"><i class="fa fa-check"></i><b>3.5</b> Linear Rank Statistics in General</a></li>
+<li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#linear-rank-statistics-in-general"><i class="fa fa-check"></i><b>3.5</b> Linear Rank Statistics in General</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="rank-tests.html"><a href="rank-tests.html#definition-1"><i class="fa fa-check"></i><b>3.5.1</b> Definition</a></li>
+<li class="chapter" data-level="3.5.2" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.2</b> Properties of Linear Rank Statistics</a></li>
+<li class="chapter" data-level="3.5.3" data-path="rank-tests.html"><a href="rank-tests.html#more-examples"><i class="fa fa-check"></i><b>3.5.3</b> More Examples</a></li>
+</ul></li>
 <li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#additional-reading"><i class="fa fa-check"></i><b>3.6</b> Additional Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a><ul>
@@ -190,7 +194,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
 <li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
 <li class="chapter" data-level="8.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms"><i class="fa fa-check"></i><b>8.2</b> Histograms</a><ul>
-<li class="chapter" data-level="8.2.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-1"><i class="fa fa-check"></i><b>8.2.1</b> Definition</a></li>
+<li class="chapter" data-level="8.2.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-2"><i class="fa fa-check"></i><b>8.2.1</b> Definition</a></li>
 <li class="chapter" data-level="8.2.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms-in-r"><i class="fa fa-check"></i><b>8.2.2</b> Histograms in R</a></li>
 <li class="chapter" data-level="8.2.3" data-path="density-estimation.html"><a href="density-estimation.html#performance-of-the-histogram-estimate"><i class="fa fa-check"></i><b>8.2.3</b> Performance of the Histogram Estimate</a></li>
 <li class="chapter" data-level="8.2.4" data-path="density-estimation.html"><a href="density-estimation.html#choosing-the-histogram-bin-width"><i class="fa fa-check"></i><b>8.2.4</b> Choosing the Histogram Bin Width</a></li>
@@ -667,7 +671,7 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{j}) +
 <a class="sourceLine" id="cb26-8" data-line-number="8"><span class="st">                   </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">==</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb26-9" data-line-number="9">}</a>
 <a class="sourceLine" id="cb26-10" data-line-number="10"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.78</code></pre>
+<pre><code>## [1] 0.845</code></pre>
 </div>
 <div id="additional-notes-for-the-wrs-test" class="section level3">
 <h3><span class="header-section-number">3.2.5</span> Additional Notes for the WRS test</h3>
@@ -868,7 +872,7 @@ where <span class="math inline">\(s_{obs}\)</span> is the observed value of the 
 <a class="sourceLine" id="cb30-2" data-line-number="2">xx &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb30-3" data-line-number="3">sign.stat &lt;-<span class="st"> </span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb30-4" data-line-number="4"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pbinom</span>(sign.stat <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">size=</span><span class="dv">100</span>, <span class="dt">prob=</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) <span class="co">## p-value for sign test</span></a></code></pre></div>
-<pre><code>## [1] 0.3086497</code></pre>
+<pre><code>## [1] 0.8158992</code></pre>
 <ul>
 <li><p>The reason that this is the right expression using <strong>R</strong> is that for any positive integer <span class="math inline">\(w\)</span>
 <span class="math display">\[\begin{equation}
@@ -880,7 +884,7 @@ a binomial random variable with <span class="math inline">\(n\)</span> trials an
 </ul>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">btest &lt;-<span class="st"> </span><span class="kw">binom.test</span>(sign.stat, <span class="dt">n=</span><span class="dv">100</span>, <span class="dt">p=</span><span class="fl">0.5</span>, <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>) </a>
 <a class="sourceLine" id="cb32-2" data-line-number="2">btest<span class="op">$</span>p.value</a></code></pre></div>
-<pre><code>## [1] 0.3086497</code></pre>
+<pre><code>## [1] 0.8158992</code></pre>
 </div>
 <div id="two-sided-sign-test" class="section level4">
 <h4><span class="header-section-number">3.3.1.3</span> Two-sided Sign Test</h4>
@@ -1080,7 +1084,7 @@ that a test rejects the null hypothesis when the
 alternative hypothesis is true.</p></li>
 <li><p>The alternative hypothesis <span class="math inline">\(H_{A}\)</span> is usually characterized
 by a large range of values of the parameter of interest.
-For example, <span class="math inline">\(H_{A}: \theta &gt; 0\)</span> or <span class="math inline">\(H_{A}: \theta \neq \theta\)</span>.</p></li>
+For example, <span class="math inline">\(H_{A}: \theta &gt; 0\)</span> or <span class="math inline">\(H_{A}: \theta \neq 0\)</span>.</p></li>
 <li><p>For this reason, it is better to think of power
 as a function that varies across the range
 of the alternative hypothesis.</p></li>
@@ -1104,7 +1108,7 @@ probability under the assumption that the parameter of interest <span class="mat
 <li><p>Recalling <a href="rank-tests.html#eq:signstat-distribution">(3.9)</a>, we know that <span class="math inline">\(S_{n} \sim \textrm{Binomial}(n, p(\theta))\)</span>.
 Hence,
 <span class="math display" id="eq:approx-signstat">\[\begin{equation}
-\sqrt{n}(S_{n}/n - p(\theta)) \longrightarrow \textrm{Normal}\Big( 0, p(\theta)(1 - p(\theta)) \Big) \quad \textrm{as } n \longrightarrow \infty
+\sqrt{n}(\tfrac{S_{n}}{n} - p(\theta)) \longrightarrow \textrm{Normal}\Big( 0, p(\theta)(1 - p(\theta)) \Big) \quad \textrm{as } n \longrightarrow \infty
 \tag{3.10}
 \end{equation}\]</span></p></li>
 <li><p>The sign test will reject <span class="math inline">\(H_{0}\)</span> when <span class="math inline">\(S_{n} \geq c_{\alpha,n}\)</span> where the constant <span class="math inline">\(c_{\alpha,n}\)</span> is chosen
@@ -1125,16 +1129,17 @@ where <span class="math inline">\(z_{1-\alpha}\)</span> denotes the upper <span 
 &amp;=&amp; 1 - \Phi\Bigg( \frac{ z_{1-\alpha} }{ 2\sqrt{p(\delta)(1 - p(\delta))}  } - \frac{ \sqrt{n}(p(\delta) - 1/2) }{ \sqrt{p(\delta)(1 - p(\delta))}  }\Bigg)
 \tag{3.12}
 \end{eqnarray}\]</span></p></li>
-<li><p>Notice that the power of the test depends more directly on the term <span class="math inline">\(p(\delta)\)</span>. Recall from Section <a href="rank-tests.html#sign-test">3.3.1</a> that
+<li><p>Notice that the power of the test depends more directly on the term <span class="math inline">\(p(\delta) = P_{\theta = \delta}(D_{i} &gt; 0)\)</span>.
+Recall from Section <a href="rank-tests.html#sign-test">3.3.1</a> that
 <span class="math inline">\(p(\delta) = 1 - F_{\epsilon}(\delta)\)</span>, where <span class="math inline">\(F_{\epsilon}\)</span> is the distribution function
 of <span class="math inline">\(\varepsilon_{i}\)</span> in the model <span class="math inline">\(D_{i} = \theta + \varepsilon_{i}\)</span>.</p></li>
 <li><p>So, in any power or sample size calculation, it would be more sensible to think about plausible
 values for <span class="math inline">\(p(\delta)\)</span> rather than <span class="math inline">\(\delta\)</span> itself. Plus, <span class="math inline">\(p(\delta)\)</span> has the direct interpretation
-<span class="math inline">\(p(\delta) = P_{\theta=d}( D_{i} &gt; 0)\)</span>.</p></li>
+<span class="math inline">\(p(\delta) = P_{\theta=\delta}( D_{i} &gt; 0)\)</span>.</p></li>
 </ul>
 <p><img src="03-rankstat_files/figure-html/unnamed-chunk-21-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
 <hr />
-<p><strong>Exercise ?</strong>: Derive the formula for <span class="math inline">\(c_{\alpha, n}\)</span> shown in <a href="rank-tests.html#eq:critical-value-signstat">(3.11)</a>.</p>
+<p><strong>Exercise 3.7</strong>: Derive the formula for <span class="math inline">\(c_{\alpha, n}\)</span> shown in <a href="rank-tests.html#eq:critical-value-signstat">(3.11)</a>.</p>
 <hr />
 </div>
 <div id="power-comparisons-and-asymptotic-relative-efficiency" class="section level3">
@@ -1165,7 +1170,7 @@ our ability to make more general statements about power comparisons.</p></li>
 <li><p>Another approach might be to determine
 for which values of <span class="math inline">\((\delta, n)\)</span> one test has
 greater power than another. However, this could
-be tough to interpret (no test will be uniformly more powerful for al distributions)
+be tough to interpret (no test will be uniformly more powerful for all distributions)
 or even difficult to compute.</p></li>
 <li><p>One way to think about power is to think about the <strong>relative efficiency</strong> of
 two testing procedures. The efficiency of a test in this context is
@@ -1191,11 +1196,11 @@ as long as we can find functions <span class="math inline">\(\mu(\cdot)\)</span>
 \tag{3.14}
 \end{equation}\]</span>
 where the test of <span class="math inline">\(H_{0}:\theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; \theta_{0}\)</span>
-is based on the test statistic <span class="math inline">\(V_{n}\)</span> with rejection of <span class="math inline">\(H_{0}\)</span> occurring whenever <span class="math inline">\(V_{n} \geq c_{n}\)</span>.</p></li>
+is based on the test statistic <span class="math inline">\(V_{n}\)</span> with rejection of <span class="math inline">\(H_{0}\)</span> occurring whenever <span class="math inline">\(V_{n} \geq c_{\alpha, n}\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
-<li><p>The ratio <span class="math inline">\(e(\theta_{0}) = \mu&#39;(\theta_{0})/\sigma(\theta_{0})\)</span> is the <strong>asymptotic efficacy</strong> of the
+<li><p>The ratio <span class="math inline">\(e(\theta_{0}) = \mu&#39;(\theta_{0})/\sigma(\theta_{0})\)</span> is the <strong>asymptotic efficiecny</strong> of the
 test.</p></li>
 <li><p>When comparing two tests with efficiency <span class="math inline">\(e_{1}(\theta_{0})\)</span> and <span class="math inline">\(e_{2}(\theta_{0})\)</span>,
 the asymptotic relative efficiency of test 1 vs. test 2 is defined as
@@ -1210,19 +1215,19 @@ ARE_{12}(\theta_{0}) = \Big( \frac{e_{1}(\theta_{0})}{e_{2}(\theta_{0})} \Big)^{
 <span class="math inline">\(n_{1}/n_{2}\)</span> where <span class="math inline">\(n_{1}\)</span> is the sample size needed for test 1
 to achieve power <span class="math inline">\(\beta\)</span> and <span class="math inline">\(n_{2}\)</span> is the sample size needed for test 2
 to achieve power <span class="math inline">\(\beta\)</span>. This is true for an arbitrary <span class="math inline">\(\beta\)</span>.</p></li>
-<li><p>To further justify this interpretation notice that, for lare <span class="math inline">\(n\)</span>, we should have
+<li><p>To further justify this interpretation notice that, for large <span class="math inline">\(n\)</span>, we should have
 <span class="math display">\[\begin{equation}
-c_{n} \approx \mu(\theta_{0}) + \frac{ \sigma(\theta_{0})z_{1-\alpha}  }{\sqrt{n}}
+c_{\alpha, n} \approx \mu(\theta_{0}) + \frac{ \sigma(\theta_{0})z_{1-\alpha}  }{\sqrt{n}}
 \end{equation}\]</span>
-(This approximation for <span class="math inline">\(c_{n}\)</span> comes from the asymptotic statement in <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a>)</p></li>
+(This approximation for <span class="math inline">\(c_{\alpha, n}\)</span> comes from the asymptotic statement in <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a>)</p></li>
 <li><p>Now, consider the power for detecting <span class="math inline">\(H_{A}: \theta = \theta_{A}\)</span> (where we will assume
 that <span class="math inline">\(\theta_{A}\)</span> is “close” to <span class="math inline">\(\theta_{0}\)</span>). Using <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a> and thinking of <span class="math inline">\(\theta_{n} = \theta_{A}\)</span> for all <span class="math inline">\(n\)</span>,
 the approximate power in this setting is
 <span class="math display">\[\begin{eqnarray}
-P_{\theta_{A}}\Big( V_{n} \geq c_{n} \Big)
+P_{\theta_{A}}\Big( V_{n} \geq c_{\alpha, n} \Big)
 &amp;=&amp; P_{\theta_{A} }\Bigg( \frac{\sqrt{n}(V_{n} - \mu(\theta_{A} ))}{ \sigma(\theta_{A} )}
-\geq \frac{\sqrt{n}(c_{n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)
-\approx 1 - \Phi\Bigg( \frac{\sqrt{n}(c_{n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)
+\geq \frac{\sqrt{n}(c_{\alpha,n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)
+\approx 1 - \Phi\Bigg( \frac{\sqrt{n}(c_{\alpha,n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)
 \nonumber \\
 &amp;=&amp; 1 - \Phi\Bigg( \frac{\sqrt{n}(\mu(\theta_{0}) - \mu(\theta_{A}))}{ \sigma(\theta_{A})} + \frac{z_{1-\alpha}\sigma(\theta_{0})}{ \sigma(\theta_{A})}\Bigg)
 \end{eqnarray}\]</span></p></li>
@@ -1246,6 +1251,11 @@ size ratio (using approximation <a href="rank-tests.html#eq:approx-sample-size">
 = \Bigg( \frac{ \mu_{1}&#39;(\theta_{0})\sigma_{2}(\theta_{0}) }{ \mu_{2}&#39;(\theta_{0})\sigma_{1}(\theta_{0})} \Bigg)^{2}
 = \textrm{ARE}_{12}(\theta_{0}) 
 \end{equation}\]</span></p></li>
+<li><p>Notice that <span class="math inline">\(\textrm{ARE}_{12}(\theta_{0}) &gt; 1\)</span> indicates that the test <span class="math inline">\(1\)</span> is better than test <span class="math inline">\(2\)</span>
+because the sample size required for test <span class="math inline">\(1\)</span> would be less than the sample size required for test <span class="math inline">\(2\)</span>.</p></li>
+<li><p>It is also worth noting that our justification for the interpretation of <span class="math inline">\(\textrm{ARE}_{12}(\theta_{0})\)</span>
+was not very rigorous or precise, but it is possible to make a more rigorous statement.
+See, for example, Chapter 13 of <span class="citation">Lehmann and Romano (<a href="#ref-lehmann2006">2006</a>)</span> for a more rigorous treatment of relative efficiency.</p></li>
 </ul>
 <hr />
 </div>
@@ -1255,10 +1265,10 @@ size ratio (using approximation <a href="rank-tests.html#eq:approx-sample-size">
 <ul>
 <li><p>Let us return to the example of the sign statistic <span class="math inline">\(S_{n}\)</span> and its use
 in testing the hypothesis <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; 0\)</span>.</p></li>
-<li><p>Notice that the sign test rejects <span class="math inline">\(H_{0}:\theta=0\)</span> for <span class="math inline">\(V_{n} &gt; c_{n}\)</span>
+<li><p>Notice that the sign test rejects <span class="math inline">\(H_{0}:\theta=0\)</span> for <span class="math inline">\(V_{n} &gt; c_{\alpha,n}\)</span>
 where <span class="math inline">\(V_{n} = S_{n}/n\)</span> and <span class="math inline">\(S_{n}\)</span> is the sign statistic.</p></li>
 <li><p>When <span class="math inline">\(V_{n}\)</span> is defined this way <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a> is satisfied
-when <span class="math inline">\(\mu(\theta) = p(\theta)\)</span> and <span class="math inline">\(\sigma(\theta) = \sqrt{p(\theta)(1 - \theta)}\)</span>
+when <span class="math inline">\(\mu(\theta) = p(\theta)\)</span> and <span class="math inline">\(\sigma(\theta) = \sqrt{p(\theta)(1 - p(\theta) )}\)</span>
 where <span class="math inline">\(p(\theta) = 1 - F_{\epsilon}( -\theta )\)</span>.</p></li>
 <li><p>Thus, the efficiency of the sign test for testing <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; 0\)</span> is
 <span class="math display">\[\begin{equation}
@@ -1272,21 +1282,29 @@ where <span class="math inline">\(f_{\epsilon}(t) = F_{\epsilon}&#39;(t)\)</span
 <li><p>Assume that we have data <span class="math inline">\(D_{1}, \ldots, D_{n}\)</span> generated under the same assumption
 as in our discussion of the sign test and the Wilcoxon signed-rank test. That is,
 <span class="math display">\[\begin{equation}
-D_{i} = \theta + \varepsilon_{i}
-\end{equation}\]</span></p></li>
-<li><p>The one-sample t-test will reject <span class="math inline">\(H_{0}: \theta = 0\)</span> whenever <span class="math inline">\(V_{n} &gt; c_{n}\)</span>, where <span class="math inline">\(V_{n}\)</span> is defined to
-be
+D_{i} = \theta + \varepsilon_{i},
+\end{equation}\]</span>
+where <span class="math inline">\(\varepsilon_{i}\)</span> are assumed to have median <span class="math inline">\(0\)</span> with <span class="math inline">\(\varepsilon_{i}\)</span> having p.d.f. <span class="math inline">\(f_{\varepsilon}\)</span></p></li>
+<li><p>The one-sample t-test will reject <span class="math inline">\(H_{0}: \theta = 0\)</span> whenever
+<span class="math inline">\(V_{n} &gt; c_{\alpha, n}\)</span>, where <span class="math inline">\(V_{n}\)</span> is defined to be
 <span class="math display">\[\begin{equation}
 V_{n} = \frac{\bar{D}}{ \hat{\sigma} }
 \end{equation}\]</span></p></li>
 <li><p>Note that <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a> will apply if we choose
 <span class="math display">\[\begin{eqnarray}
 \mu(\theta) &amp;=&amp; E_{\theta}(D_{i}) = \theta \nonumber \\
-\sigma(\theta) &amp;=&amp; \sqrt{\textrm{Var}_{\theta}(D_{i})} = \sqrt{\textrm{Var}(\varepsilon_{i})}
+\sigma(\theta) &amp;=&amp; \sqrt{\textrm{Var}_{\theta}(D_{i})} = \sqrt{\textrm{Var}(\varepsilon_{i})} = \sigma_{\epsilon}
+\end{eqnarray}\]</span></p></li>
+<li><p>These choices of <span class="math inline">\(\mu(\theta)\)</span> and <span class="math inline">\(\sigma(\theta)\)</span> work because
+<span class="math display">\[\begin{eqnarray}
+\frac{\sqrt{n}(V_{n} - \mu(\theta_{n}))}{\sigma(\theta_{n})}
+&amp;=&amp; \frac{\sqrt{n}(\bar{D} - \theta_{n})}{\sigma_{e}} + \sqrt{n}\theta_{n}\Big( \frac{1}{\hat{\sigma}} - \frac{1}{\sigma_{e}}  \Big) \nonumber \\
+&amp;=&amp; \frac{\sqrt{n}(\bar{D} - \theta_{n})}{\sigma_{e}} + \delta\Big( \frac{1}{\hat{\sigma}} - \frac{1}{\sigma_{e}}  \Big)  \nonumber \\
+&amp;\longrightarrow&amp; \textrm{Normal}(0, 1)
 \end{eqnarray}\]</span></p></li>
 <li><p>So, the efficiency of the one-sample t-test is given by
 <span class="math display">\[\begin{equation}
-\frac{\mu&#39;(0)}{\sigma(0)} = \frac{1}{ \sqrt{\textrm{Var}(\varepsilon_{i})} }  \nonumber 
+\frac{\mu&#39;(0)}{\sigma(0)} = \frac{1}{ \sigma_{e} }  \nonumber 
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
@@ -1294,20 +1312,33 @@ V_{n} = \frac{\bar{D}}{ \hat{\sigma} }
 <ul>
 <li><p>Using the close relation between the WRS test statistic and
 the Mann-Whitney statistic, the WRS test can be represented as
-rejecting <span class="math inline">\(H_{0}\)</span> when <span class="math inline">\(V_{N} \geq c_{N}\)</span> where <span class="math inline">\(V_{N}\)</span> is
+rejecting <span class="math inline">\(H_{0}\)</span> when <span class="math inline">\(V_{N} \geq c_{\alpha, N}\)</span> where <span class="math inline">\(V_{N}\)</span> is
 <span class="math display">\[\begin{equation}
 V_{N} = \frac{1}{mn} \sum_{i=1}^{n}\sum_{j=1}^{m} I(X_{i} \geq Y_{j})
-\end{equation}\]</span></p></li>
+\end{equation}\]</span>
+and <span class="math inline">\(N = n + m\)</span>.</p></li>
 <li><p>The power of the WRS test is usually analyzed in the context of
-the “shift alternative”. Namely, we are assuming that <span class="math inline">\(F_{X}(t) = F\)</span>
-and test <span class="math inline">\(H_{0}: \Delta=0\)</span> vs. <span class="math inline">\(H_{A}: \Delta &gt; 0\)</span>.</p></li>
-<li><p>You can show that <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a> holds (see e.g, Chapter 14 of )
-if you choose <span class="math inline">\(\mu(\Delta)\)</span> and <span class="math inline">\(\sigma^{2}(\theta)\)</span> to be
+the “shift alternative”. Namely, we are assuming that <span class="math inline">\(F_{X}(t) = F_{Y}(t - \theta)\)</span>
+and test <span class="math inline">\(H_{0}: \theta=0\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; 0\)</span>.</p></li>
+<li><p>The natural choice for <span class="math inline">\(\mu(\theta)\)</span> is the expectation of <span class="math inline">\(V_{N}\)</span> when <span class="math inline">\(\theta\)</span> is the true
+shift parameter.</p></li>
+<li><p>So, let <span class="math inline">\(\mu(\theta) = P_{\theta}(X_{i} \geq Y_{j})\)</span>. This can be written in terms of <span class="math inline">\(F_{Y}\)</span> and <span class="math inline">\(f_{Y}\)</span>:
 <span class="math display">\[\begin{eqnarray}
-\mu(\theta) &amp;=&amp; 1 - \int f(t-\theta)f(t) dt \\
-\sigma^{2}(\theta) &amp;=&amp; \frac{1}{\lambda}\textrm{Var}\{ G(X_{i} - \theta) \} + \frac{1}{1 - \lambda} \textrm{Var}\{ F(Y_{i}) \}
+\mu(\theta) &amp;=&amp; \int_{-\infty}^{\infty} P_{\theta}( X_{i} \geq Y_{j} | Y_{j}=t) f_{Y}(t) dt
+= \int_{-\infty}^{\infty} P_{\theta}( X_{i} \geq t) f_{Y}(t) dt  \nonumber \\
+&amp;=&amp; \int_{-\infty}^{\infty} \{1 - F_{X}(t) \} f_{Y}(t) dt
+= 1 - \int_{-\infty}^{\infty} F_{Y}(t - \theta) f_{Y}(t) dt
+\end{eqnarray}\]</span></p></li>
+<li><p>You can show that <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a> holds (see e.g, Chapter 14 of <span class="citation">Van der Vaart (<a href="#ref-van2000">2000</a>)</span>)
+<span class="math inline">\(\sigma^{2}(\theta)\)</span> to be
+<span class="math display">\[\begin{eqnarray}
+\sigma^{2}(\theta) &amp;=&amp; \frac{1}{1 - \lambda}\textrm{Var}\{ F_{Y}(X_{i}) \} + \frac{1}{\lambda} \textrm{Var}\{ F(Y_{i} - \theta) \}
 \end{eqnarray}\]</span>
 Here, <span class="math inline">\(n/(m + n) \longrightarrow \lambda\)</span>.</p></li>
+<li><p>Thus, the efficiency of testing <span class="math inline">\(H_{0}: \theta = 0\)</span> for the WRS test is
+<span class="math display">\[\begin{equation}
+e(0) = \frac{\mu&#39;(0)}{\sigma(0)} = \frac{\int_{-\infty}^{\infty} f^{2}(t) dt}{\sigma(0)}
+\end{equation}\]</span></p></li>
 </ul>
 </div>
 <div id="efficiency-comparisons-for-several-distributions" class="section level3">
@@ -1315,9 +1346,9 @@ Here, <span class="math inline">\(n/(m + n) \longrightarrow \lambda\)</span>.</p
 <p><strong>Sign Test vs. One-Sample t-test</strong></p>
 <ul>
 <li><p>Comparisons of the Efficiency of the sign and one-sample t-test only
-require us to find <span class="math inline">\(f(0)\)</span> and <span class="math inline">\(\textrm{Var}(\epsilon_{i})\)</span> for different assumptions
+require us to find <span class="math inline">\(f_{\epsilon}(0)\)</span> and <span class="math inline">\(\sigma_{e}^{2}\)</span> for different assumptions
 about the residual density <span class="math inline">\(f_{\epsilon}\)</span>.</p></li>
-<li><p>For the Logistic(0,1) distribution, <span class="math inline">\(f(0) = 1/4\)</span> and the standard deviation
+<li><p>For the Logistic(0,1) distribution, <span class="math inline">\(f_{\epsilon}(0) = 1/4\)</span> and the standard deviation
 is <span class="math inline">\(\pi/\sqrt{3}\)</span>. Hence, the asymptotic relative efficiency of the sign test vs. the one-sample
 t-test would be <span class="math inline">\((\pi/2\sqrt{3})^{2}\)</span>.</p></li>
 <li><p>The relative efficiencies for the sign vs. t-test for other distributions are shown below
@@ -1346,8 +1377,29 @@ for several distributions are shown below.</li>
 \textrm{t-dist}_{5} &amp; &amp; \qquad 1.90 \\
 \end{eqnarray}\]</span></p>
 </div>
-<div id="a-powerful-contest" class="section level3">
-<h3><span class="header-section-number">3.4.5</span> A Powerful “Contest”</h3>
+<div id="a-power-contest" class="section level3">
+<h3><span class="header-section-number">3.4.5</span> A Power “Contest”</h3>
+<ul>
+<li><p>To compare power across for specific sample sizes, effect sizes, and
+distributional assumptions, a simulation study can be more
+helpful than statements about asymptotic relative efficiency.</p></li>
+<li><p>Below shows the results of a simulation study in <strong>R</strong> which compares
+power for the one-sample testing problem.</p></li>
+<li><p>This simulation study compares the sign test, Wilcoxon signed rank test,
+and the one-sample t-test.</p></li>
+<li><p>It is assumed that <span class="math inline">\(n = 200\)</span> and that responses <span class="math inline">\(D_{i}\)</span> are generated from
+the following model:
+<span class="math display">\[\begin{equation}
+D_{i} = \frac{1}{4} + \varepsilon_{i}
+\end{equation}\]</span></p></li>
+<li>Three choices for the distribution of <span class="math inline">\(\varepsilon_{i}\)</span> were considered:
+<ul>
+<li><span class="math inline">\(\varepsilon_{i} \sim \textrm{Logistic}(0, 1)\)</span></li>
+<li><span class="math inline">\(\varepsilon_{i} \sim \textrm{Normal}(0, 1)\)</span></li>
+<li><span class="math inline">\(\varepsilon_{i} \sim \textrm{Uniform}(-3/2, 3/2)\)</span></li>
+</ul></li>
+<li><p>The <strong>R</strong> code and simulation results are shown below.</p></li>
+</ul>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">theta &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">4</span></a>
 <a class="sourceLine" id="cb48-2" data-line-number="2">n &lt;-<span class="st"> </span><span class="dv">200</span></a>
 <a class="sourceLine" id="cb48-3" data-line-number="3">nreps &lt;-<span class="st"> </span><span class="dv">500</span></a>
@@ -1374,6 +1426,10 @@ for several distributions are shown below.</li>
 <a class="sourceLine" id="cb48-24" data-line-number="24">                 <span class="dt">SignTest=</span><span class="kw">colMeans</span>(RejectSign), <span class="dt">WilcoxonSign=</span><span class="kw">colMeans</span>(RejectWilcoxonSign),</a>
 <a class="sourceLine" id="cb48-25" data-line-number="25">                 <span class="dt">tTest=</span><span class="kw">colMeans</span>(RejectT))</a></code></pre></div>
 <table border="1">
+<caption align="bottom">
+Estimated power for three one-sample tests and
+three distributions. 500 simulation replications were used.
+</caption>
 <tr>
 <th>
 Distribution
@@ -1435,9 +1491,89 @@ Uniform
 </div>
 <div id="linear-rank-statistics-in-general" class="section level2">
 <h2><span class="header-section-number">3.5</span> Linear Rank Statistics in General</h2>
+<div id="definition-1" class="section level3">
+<h3><span class="header-section-number">3.5.1</span> Definition</h3>
 <ul>
-<li>We will mention the Van der Waerden (or “normal scores” test)</li>
+<li><p>The Wilcoxon rank sum statistic is an example of a statistic from a more general class of rank statistics.</p></li>
+<li><p>This is the class of <strong>linear rank statistics</strong>.</p></li>
+<li><p>Suppose we have observations <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldots, Z_{N})\)</span>.
+A linear rank statistic is a statistic <span class="math inline">\(T_{N}\)</span> that can be expressed as
+<span class="math display" id="eq:general-linear-rank">\[\begin{equation}
+T_{N} = \sum_{k=1}^{N} c_{iN} a_{N}\big( R_{i}( \mathbf{Z} ) \big)
+\tag{3.16}
+\end{equation}\]</span></p></li>
+<li><p>The terms <span class="math inline">\(c_{1N}, \ldots, c_{NN}\)</span> are usually called <strong>coefficients</strong>. These
+are fixed numbers and are not random variables.</p></li>
+<li><p>The terms <span class="math inline">\(a_{N}(R_{i}( \mathbf{Z} ) )\)</span> are commonly referred to as <strong>scores</strong>.</p></li>
+<li><p>Typically, the scores are generated from a given function <span class="math inline">\(\psi\)</span> in
+the following way
+<span class="math display">\[\begin{equation}
+a_{N}(i) = \psi\Big( \frac{i}{N+1} \Big) 
+\end{equation}\]</span></p></li>
 </ul>
+<hr />
+<p><strong>Example: WRS statistic </strong></p>
+<ul>
+<li><p>For the Wilcoxon rank sum test, we separated the data <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldots, Z_{N})\)</span>
+into two groups.</p></li>
+<li><p>The first <span class="math inline">\(n\)</span> observations were from group 1 while the
+last <span class="math inline">\(m\)</span> observations were from group 2.</p></li>
+<li><p>The WRS statistic was then defined as
+<span class="math display">\[\begin{equation}
+W = \sum_{i=1}^{n} R_{i}(\mathbf{Z})
+\end{equation}\]</span></p></li>
+<li><p>In this case, the WRS statistic can be expressed in the form <a href="rank-tests.html#eq:general-linear-rank">(3.16)</a>
+if we choose the coefficients to be the following
+<span class="math display">\[\begin{equation}
+c_{iN} = \begin{cases}
+ 1 &amp; \textrm{ if } i \leq n \\
+ 0 &amp; \textrm{ if } i &gt; n 
+ \end{cases}
+\end{equation}\]</span>
+and choose the scores as
+<span class="math display">\[\begin{equation}
+a_{N}(u) = \psi\Big( \frac{u}{N + 1}  \Big) = 1
+\end{equation}\]</span></p></li>
+</ul>
+</div>
+<div id="properties-of-linear-rank-statistics" class="section level3">
+<h3><span class="header-section-number">3.5.2</span> Properties of Linear Rank Statistics</h3>
+<ul>
+<li>Expected value</li>
+</ul>
+<p><span class="math display">\[\begin{equation}
+E(T_{N}) = N\bar{c}\bar{a}
+\end{equation}\]</span></p>
+<ul>
+<li><p>Variance
+<span class="math display">\[\begin{equation}
+\textrm{Var}( T_{N} ) = \frac{N^{2}}{n-1} \sigma_{a}^{2}\sigma_{c}^{2},
+\end{equation}\]</span>
+where</p></li>
+<li><p>Symmetry?</p></li>
+</ul>
+</div>
+<div id="more-examples" class="section level3">
+<h3><span class="header-section-number">3.5.3</span> More Examples</h3>
+<div id="the-van-der-waerden-statistic-and-the-normal-scores-test" class="section level4">
+<h4><span class="header-section-number">3.5.3.1</span> The van der Waerden statistic and the normal scores test</h4>
+<p><span class="math display">\[\begin{equation}
+T_{N} = \sum_{i=1}^{n} \Phi^{-1}\Big( \mathbf{R}_{i}( \mathbf{Z}) \Big)
+\end{equation}\]</span></p>
+</div>
+<div id="the-median-test" class="section level4">
+<h4><span class="header-section-number">3.5.3.2</span> The median test</h4>
+</div>
+<div id="the-log-rank-test" class="section level4">
+<h4><span class="header-section-number">3.5.3.3</span> The log rank test</h4>
+<ul>
+<li>Here, the score generating function <span class="math inline">\(\psi\)</span> is defined as
+<span class="math display">\[\begin{equation}
+\psi(u) = 1 - \log(1 - u)
+\end{equation}\]</span></li>
+</ul>
+</div>
+</div>
 </div>
 <div id="additional-reading" class="section level2">
 <h2><span class="header-section-number">3.6</span> Additional Reading</h2>
@@ -1457,6 +1593,12 @@ Uniform
 </div>
 <div id="ref-hollander2013">
 <p>Hollander, Myles, Douglas A Wolfe, and Eric Chicken. 2013. <em>Nonparametric Statistical Methods</em>. Vol. 751. John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-lehmann2006">
+<p>Lehmann, Erich L, and Joseph P Romano. 2006. <em>Testing Statistical Hypotheses</em>. Springer Science &amp; Business Media.</p>
+</div>
+<div id="ref-van2000">
+<p>Van der Vaart, Aad W. 2000. <em>Asymptotic Statistics</em>. Vol. 3. Cambridge university press.</p>
 </div>
 </div>
             </section>
