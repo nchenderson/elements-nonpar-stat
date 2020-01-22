@@ -428,7 +428,7 @@ wine2$Type <- factor(wine2$Type)
 ```
 
 * Let's consider the difference in the level of magnesium across the two types of wine.
-<img src="03-rankstat_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-6-2.png" width="672" />
+![](03-rankstat_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-6-2.pdf)<!-- --> 
 
 * Suppose we are interested in testing whether or not magnesium levels in 
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
@@ -526,7 +526,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.84
+## [1] 0.795
 ```
 
 
@@ -702,7 +702,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.6913503
+## [1] 0.3821767
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -720,7 +720,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.6913503
+## [1] 0.3821767
 ```
 
 #### Two-sided Sign Test
@@ -886,7 +886,7 @@ DD <- DD[DD!=0]
 hist(DD, main="Meat Data", xlab="Difference in Measured Fat Percentage", las=1)
 ```
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+![](03-rankstat_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
 
 ```r
 summary(DD)
@@ -1049,7 +1049,7 @@ of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
 values for $p(\delta)$ rather than $\delta$ itself. Plus, $p(\delta)$ has the direct interpretation
 $p(\delta) = P_{\theta=\delta}( D_{i} > 0)$.
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-21-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-21-2.png" width="672" />
+![](03-rankstat_files/figure-latex/unnamed-chunk-21-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-21-2.pdf)<!-- --> 
 
 
 ---
@@ -1449,13 +1449,13 @@ W = \sum_{i=1}^{n} R_{i}(\mathbf{Z})
 if we choose the coefficients to be the following 
 \begin{equation}
 c_{iN} = \begin{cases}
-   N+1 & \textrm{ if } i \leq n \\
+   1 & \textrm{ if } i \leq n \\
    0 & \textrm{ if } i > n 
  \end{cases}
 \end{equation}
-and choose $\psi(u) = u$ so that the scores are
+and we choose the scores to be
 \begin{equation}
-a_{N}(u) = \psi\Big( \frac{u}{N + 1}  \Big) = \frac{u}{N + 1}
+a_{N}(i) = i
 \end{equation}
 
 ### Properties of Linear Rank Statistics
@@ -1497,13 +1497,68 @@ and $\sigma_{a}^{2} = \frac{1}{N}\sum_{j=1}^{N} (a_{N}(j) - \bar{a}_{N})^{2}$
 
 #### The van der Waerden statistic and the normal scores test
 
+* Van der Waerden's rank statistic is computed in two-sample problems
+where the first $n$ observations come from group 1 while the last
+$m$ observations come from group 2.
+
+* Van der Waerden's rank statistic $VW_{N}$ is defined as
 \begin{equation}
-T_{N} = \sum_{i=1}^{n} \Phi^{-1}\Big( \mathbf{R}_{i}( \mathbf{Z}) \Big)
+VW_{N} = \sum_{j=1}^{n} \Phi^{-1}\Bigg( \frac{\mathbf{R}_{i}( \mathbf{Z})}{N+1} \Bigg)
 \end{equation}
 
+* The function $\Phi^{-1}$ denotes the inverse of the cumulative distribution
+function of a standard Normal random variable.
+
+* The statistic $VW_{N}$ is a linear rank statistic with coefficients 
+\begin{equation}
+c_{iN} = \begin{cases}
+   1 & \textrm{ if } i \leq n \\
+   0 & \textrm{ if } i > n 
+ \end{cases}
+\end{equation}
+and scores determined by
+\begin{equation}
+a_{N}(i) = \Phi^{-1}\Big(  \frac{i}{N+1} \Big)
+\end{equation}
+
+* A test based on van der Waerden's statistic is often referred to as
+the **normal scores test**.
+
+* The normal scores test is often suggested as an attractive test when 
+the underlying data has an approximately normal distribution. 
 
 #### The median test
 
+* The median test is also a two-sample rank test.
+
+* While the Wilcoxon rank sum test looks at the average rank within group $1$,
+the median test instead looks at how many of the ranks from group $1$
+are less than the median rank.
+
+* The test statistic $M_{N}$ for the median test is defined as
+\begin{equation}
+M_{N} = \sum_{i=1}^{n} I\Big( R_{i}(\mathbf{Z}) \leq \frac{N+1}{2} \Big)
+\end{equation}
+because $(N+1)/2$ will be the median rank.
+
+* This is a linear rank statistic with coefficients
+\begin{equation}
+c_{iN} = \begin{cases}
+   1 & \textrm{ if } i \leq n \\
+   0 & \textrm{ if } i > n 
+ \end{cases}
+\end{equation}
+and scores
+\begin{equation}
+a_{N}(i) = 
+\begin{cases}
+   1 & \textrm{ if } i \leq (N+1)/2 \\
+   0 & \textrm{ if } i > (N+1)/2 
+ \end{cases}
+\end{equation}
+
+* The median test could be used to test whether or not observations
+from group 1 tend to be smaller than those from group 2.
 
 #### The log rank test
 
