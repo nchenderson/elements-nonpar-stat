@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  23 JAN 2020 00:21
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  23 JAN 2020 09:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1158,13 +1158,13 @@ Overfull \hbox (108.48294pt too wide) in alignment at lines 2094--2101
 
 [47] [48] [49] [50] [51] [52] [53] [54] [55]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 2609.
+(Font)              <12> on input line 2612.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 2609.
+(Font)              <8> on input line 2612.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 2609.
+(Font)              <6> on input line 2612.
 [56]
-Overfull \hbox (14.77397pt too wide) detected at line 2656
+Overfull \hbox (14.77397pt too wide) detected at line 2659
 []\OML/lmm/m/it/10 P[][]R[]\OT1/lmr/m/n/10 (\OT1/lmr/bx/n/10 Z\OT1/lmr/m/n/10 )
 \OML/lmm/m/it/10 ; [] ; R[]\OT1/lmr/m/n/10 (\OT1/lmr/bx/n/10 Z\OT1/lmr/m/n/10 )
 [] \OMS/lmsy/m/n/10 ^^Y \OML/lmm/m/it/10 P[][]R[]\OT1/lmr/m/n/10 (\OT1/lmr/bx/n
@@ -1173,14 +1173,14 @@ Overfull \hbox (14.77397pt too wide) detected at line 2656
  []
 
 [57] (./bookdown-start.bbl [58])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2718.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2721.
 [59
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 2718.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2721.
 (./bookdown-start.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 2718.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2718.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 2721.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2721.
 
 Package rerunfilecheck Info: File `bookdown-start.out' has not changed.
 (rerunfilecheck)             Checksum: 07CC6B47F47786669A5655D462854AEA.

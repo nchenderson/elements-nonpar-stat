@@ -526,7 +526,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.8
+## [1] 0.82
 ```
 
 
@@ -702,7 +702,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.9333947
+## [1] 0.2420592
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -720,7 +720,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.9333947
+## [1] 0.2420592
 ```
 
 #### Two-sided Sign Test
@@ -1120,7 +1120,7 @@ as long as we can find functions $\mu(\cdot)$ and $\sigma(\cdot)$ such that
 \end{equation}
 where the test of $H_{0}:\theta = \theta_{0}$ vs. $H_{A}: \theta > \theta_{0}$ 
 is based on the test statistic $V_{n}$ with rejection of $H_{0}$ occurring whenever $V_{n} \geq c_{\alpha, n}$.
-Statement \@ref(eq:asymptotic-v) asssumed that the distribution of $V_{n}$ is governed by $\theta_{n}$.
+Statement \@ref(eq:asymptotic-v) asssumes that the distribution of $V_{n}$ is governed by $\theta_{n}$ for each $n$.
 
 ---
 
@@ -1288,9 +1288,9 @@ shift parameter.
 
 
 * You can show that \@ref(eq:asymptotic-v) holds (see e.g, Chapter 14 of @van2000)
-$\sigma^{2}(\theta)$ to be
+if you choose $\sigma^{2}(\theta)$ to be
 \begin{eqnarray}
-\sigma^{2}(\theta) &=& \frac{1}{1 - \lambda}\textrm{Var}\{ F_{Y}(X_{i}) \} + \frac{1}{\lambda} \textrm{Var}\{ F(Y_{i} - \theta) \}
+\sigma^{2}(\theta) &=& \frac{1}{1 - \lambda}\textrm{Var}\{ F_{Y}(X_{i}) \} + \frac{1}{\lambda} \textrm{Var}\{ F_{Y}(Y_{i} - \theta) \}
 \end{eqnarray}
 Here, $n/(m + n) \longrightarrow \lambda$.
 
@@ -1549,6 +1549,9 @@ the **normal scores test**.
 
 * The normal scores test is often suggested as an attractive test when 
 the underlying data has an approximately normal distribution. 
+
+* If you plot a histogram of the van der Waerden scores $a_{N}(i)$ it should look
+roughly like a Gaussian distribution (if there are not too many ties).
 
 #### The median test
 
