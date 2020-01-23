@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-21" />
+<meta name="date" content="2020-01-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -169,6 +169,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.5.1" data-path="rank-tests.html"><a href="rank-tests.html#definition-1"><i class="fa fa-check"></i><b>3.5.1</b> Definition</a></li>
 <li class="chapter" data-level="3.5.2" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.2</b> Properties of Linear Rank Statistics</a></li>
 <li class="chapter" data-level="3.5.3" data-path="rank-tests.html"><a href="rank-tests.html#other-examples-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.3</b> Other Examples of Linear Rank Statistics</a></li>
+<li class="chapter" data-level="3.5.4" data-path="rank-tests.html"><a href="rank-tests.html#choosing-the-scores-a_ni"><i class="fa fa-check"></i><b>3.5.4</b> Choosing the scores <span class="math inline">\(a_{N}(i)\)</span></a></li>
 </ul></li>
 <li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#additional-reading"><i class="fa fa-check"></i><b>3.6</b> Additional Reading</a></li>
 </ul></li>
@@ -671,7 +672,7 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{j}) +
 <a class="sourceLine" id="cb26-8" data-line-number="8"><span class="st">                   </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">==</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb26-9" data-line-number="9">}</a>
 <a class="sourceLine" id="cb26-10" data-line-number="10"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.8</code></pre>
+<pre><code>## [1] 0.885</code></pre>
 </div>
 <div id="additional-notes-for-the-wrs-test" class="section level3">
 <h3><span class="header-section-number">3.2.5</span> Additional Notes for the WRS test</h3>
@@ -872,7 +873,7 @@ where <span class="math inline">\(s_{obs}\)</span> is the observed value of the 
 <a class="sourceLine" id="cb30-2" data-line-number="2">xx &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb30-3" data-line-number="3">sign.stat &lt;-<span class="st"> </span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb30-4" data-line-number="4"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pbinom</span>(sign.stat <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">size=</span><span class="dv">100</span>, <span class="dt">prob=</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) <span class="co">## p-value for sign test</span></a></code></pre></div>
-<pre><code>## [1] 0.3086497</code></pre>
+<pre><code>## [1] 0.8643735</code></pre>
 <ul>
 <li><p>The reason that this is the right expression using <strong>R</strong> is that for any positive integer <span class="math inline">\(w\)</span>
 <span class="math display">\[\begin{equation}
@@ -884,7 +885,7 @@ a binomial random variable with <span class="math inline">\(n\)</span> trials an
 </ul>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">btest &lt;-<span class="st"> </span><span class="kw">binom.test</span>(sign.stat, <span class="dt">n=</span><span class="dv">100</span>, <span class="dt">p=</span><span class="fl">0.5</span>, <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>) </a>
 <a class="sourceLine" id="cb32-2" data-line-number="2">btest<span class="op">$</span>p.value</a></code></pre></div>
-<pre><code>## [1] 0.3086497</code></pre>
+<pre><code>## [1] 0.8643735</code></pre>
 </div>
 <div id="two-sided-sign-test" class="section level4">
 <h4><span class="header-section-number">3.3.1.3</span> Two-sided Sign Test</h4>
@@ -1398,7 +1399,7 @@ and the one-sample t-test.</p></li>
 <li><p>It is assumed that <span class="math inline">\(n = 200\)</span> and that responses <span class="math inline">\(D_{i}\)</span> are generated from
 the following model:
 <span class="math display">\[\begin{equation}
-D_{i} = \frac{1}{4} + \varepsilon_{i}
+D_{i} = 0.2 + \varepsilon_{i}
 \end{equation}\]</span></p></li>
 <li>Three choices for the distribution of <span class="math inline">\(\varepsilon_{i}\)</span> were considered:
 <ul>
@@ -1408,31 +1409,37 @@ D_{i} = \frac{1}{4} + \varepsilon_{i}
 </ul></li>
 <li><p>The <strong>R</strong> code and simulation results are shown below.</p></li>
 </ul>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">theta &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">4</span></a>
-<a class="sourceLine" id="cb48-2" data-line-number="2">n &lt;-<span class="st"> </span><span class="dv">200</span></a>
-<a class="sourceLine" id="cb48-3" data-line-number="3">nreps &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb48-4" data-line-number="4">RejectSign &lt;-<span class="st"> </span>RejectWilcoxonSign &lt;-<span class="st"> </span>RejectT &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">nrow=</span>nreps, <span class="dt">ncol=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb48-5" data-line-number="5"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nreps) {</a>
-<a class="sourceLine" id="cb48-6" data-line-number="6">  xx &lt;-<span class="st"> </span>theta <span class="op">+</span><span class="st"> </span><span class="kw">rlogis</span>(n)</a>
-<a class="sourceLine" id="cb48-7" data-line-number="7">  yy &lt;-<span class="st"> </span>theta <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n)</a>
-<a class="sourceLine" id="cb48-8" data-line-number="8">  zz &lt;-<span class="st"> </span>theta <span class="op">+</span><span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min=</span><span class="op">-</span><span class="dv">3</span><span class="op">/</span><span class="dv">2</span>, <span class="dt">max=</span><span class="dv">3</span><span class="op">/</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb48-9" data-line-number="9">  </a>
-<a class="sourceLine" id="cb48-10" data-line-number="10">  RejectSign[k,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">binom.test</span>(<span class="dt">x=</span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n=</span>n, <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb48-11" data-line-number="11">  RejectWilcoxonSign[k,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">wilcox.test</span>(xx)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </a>
-<a class="sourceLine" id="cb48-12" data-line-number="12">  RejectT[k,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">t.test</span>(xx)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb48-13" data-line-number="13">  </a>
-<a class="sourceLine" id="cb48-14" data-line-number="14">  RejectSign[k,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">binom.test</span>(<span class="dt">x=</span><span class="kw">sum</span>(yy <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n=</span>n, <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb48-15" data-line-number="15">  RejectWilcoxonSign[k,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">wilcox.test</span>(yy)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </a>
-<a class="sourceLine" id="cb48-16" data-line-number="16">  RejectT[k,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">t.test</span>(yy)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>,<span class="dv">0</span>)  </a>
-<a class="sourceLine" id="cb48-17" data-line-number="17">  </a>
-<a class="sourceLine" id="cb48-18" data-line-number="18">  RejectSign[k,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">binom.test</span>(<span class="dt">x=</span><span class="kw">sum</span>(zz <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n=</span>n, <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb48-19" data-line-number="19">  RejectWilcoxonSign[k,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">wilcox.test</span>(zz)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </a>
-<a class="sourceLine" id="cb48-20" data-line-number="20">  RejectT[k,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">t.test</span>(zz)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>,<span class="dv">1</span>,<span class="dv">0</span>)  </a>
-<a class="sourceLine" id="cb48-21" data-line-number="21">}</a>
-<a class="sourceLine" id="cb48-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb48-23" data-line-number="23">power.results &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Distribution=</span><span class="kw">c</span>(<span class="st">&quot;Logistic&quot;</span>, <span class="st">&quot;Normal&quot;</span>, <span class="st">&quot;Uniform&quot;</span>),</a>
-<a class="sourceLine" id="cb48-24" data-line-number="24">                 <span class="dt">SignTest=</span><span class="kw">colMeans</span>(RejectSign), <span class="dt">WilcoxonSign=</span><span class="kw">colMeans</span>(RejectWilcoxonSign),</a>
-<a class="sourceLine" id="cb48-25" data-line-number="25">                 <span class="dt">tTest=</span><span class="kw">colMeans</span>(RejectT))</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">148930</span>)</a>
+<a class="sourceLine" id="cb48-2" data-line-number="2">theta &lt;-<span class="st"> </span><span class="fl">0.2</span></a>
+<a class="sourceLine" id="cb48-3" data-line-number="3">n &lt;-<span class="st"> </span><span class="dv">200</span></a>
+<a class="sourceLine" id="cb48-4" data-line-number="4">nreps &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb48-5" data-line-number="5">RejectSign &lt;-<span class="st"> </span>RejectWilcoxonSign &lt;-<span class="st"> </span>RejectT &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">nrow=</span>nreps, <span class="dt">ncol=</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb48-6" data-line-number="6"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nreps) {</a>
+<a class="sourceLine" id="cb48-7" data-line-number="7">  xx &lt;-<span class="st"> </span>theta <span class="op">+</span><span class="st"> </span><span class="kw">rlogis</span>(n)</a>
+<a class="sourceLine" id="cb48-8" data-line-number="8">  yy &lt;-<span class="st"> </span>theta <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n)</a>
+<a class="sourceLine" id="cb48-9" data-line-number="9">  zz &lt;-<span class="st"> </span>theta <span class="op">+</span><span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min=</span><span class="op">-</span><span class="dv">3</span><span class="op">/</span><span class="dv">2</span>, <span class="dt">max=</span><span class="dv">3</span><span class="op">/</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb48-10" data-line-number="10">  ww &lt;-<span class="st"> </span>theta <span class="op">+</span><span class="st"> </span>(<span class="kw">rexp</span>(n, <span class="dt">rate=</span><span class="dv">1</span>) <span class="op">-</span><span class="st"> </span><span class="kw">rexp</span>(n, <span class="dt">rate=</span><span class="dv">1</span>))<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb48-11" data-line-number="11">  </a>
+<a class="sourceLine" id="cb48-12" data-line-number="12">  RejectSign[k,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">binom.test</span>(<span class="dt">x=</span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n=</span>n, <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb48-13" data-line-number="13">  RejectWilcoxonSign[k,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">wilcox.test</span>(xx)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </a>
+<a class="sourceLine" id="cb48-14" data-line-number="14">  RejectT[k,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">t.test</span>(xx)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb48-15" data-line-number="15">  </a>
+<a class="sourceLine" id="cb48-16" data-line-number="16">  RejectSign[k,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">binom.test</span>(<span class="dt">x=</span><span class="kw">sum</span>(yy <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n=</span>n, <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb48-17" data-line-number="17">  RejectWilcoxonSign[k,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">wilcox.test</span>(yy)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </a>
+<a class="sourceLine" id="cb48-18" data-line-number="18">  RejectT[k,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">t.test</span>(yy)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>,<span class="dv">0</span>)  </a>
+<a class="sourceLine" id="cb48-19" data-line-number="19">  </a>
+<a class="sourceLine" id="cb48-20" data-line-number="20">  RejectSign[k,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">binom.test</span>(<span class="dt">x=</span><span class="kw">sum</span>(zz <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n=</span>n, <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb48-21" data-line-number="21">  RejectWilcoxonSign[k,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">wilcox.test</span>(zz)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </a>
+<a class="sourceLine" id="cb48-22" data-line-number="22">  RejectT[k,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">t.test</span>(zz)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>,<span class="dv">1</span>,<span class="dv">0</span>)  </a>
+<a class="sourceLine" id="cb48-23" data-line-number="23">  </a>
+<a class="sourceLine" id="cb48-24" data-line-number="24">  RejectSign[k,<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">binom.test</span>(<span class="dt">x=</span><span class="kw">sum</span>(ww <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n=</span>n, <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb48-25" data-line-number="25">  RejectWilcoxonSign[k,<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">wilcox.test</span>(ww)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </a>
+<a class="sourceLine" id="cb48-26" data-line-number="26">  RejectT[k,<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">t.test</span>(ww)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb48-27" data-line-number="27">}</a>
+<a class="sourceLine" id="cb48-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb48-29" data-line-number="29">power.results &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Distribution=</span><span class="kw">c</span>(<span class="st">&quot;Logistic&quot;</span>, <span class="st">&quot;Normal&quot;</span>, <span class="st">&quot;Uniform&quot;</span>, <span class="st">&quot;Laplace&quot;</span>),</a>
+<a class="sourceLine" id="cb48-30" data-line-number="30">                 <span class="dt">SignTest=</span><span class="kw">colMeans</span>(RejectSign), <span class="dt">WilcoxonSign=</span><span class="kw">colMeans</span>(RejectWilcoxonSign),</a>
+<a class="sourceLine" id="cb48-31" data-line-number="31">                 <span class="dt">tTest=</span><span class="kw">colMeans</span>(RejectT))</a></code></pre></div>
 <table border="1">
 <caption align="bottom">
 Estimated power for three one-sample tests and
@@ -1457,13 +1464,13 @@ tTest
 Logistic
 </td>
 <td align="center">
-0.41
+0.25
 </td>
 <td align="center">
-0.52
+0.37
 </td>
 <td align="center">
-0.50
+0.34
 </td>
 </tr>
 <tr>
@@ -1471,13 +1478,13 @@ Logistic
 Normal
 </td>
 <td align="center">
-0.79
+0.59
 </td>
 <td align="center">
-0.94
+0.77
 </td>
 <td align="center">
-0.95
+0.81
 </td>
 </tr>
 <tr>
@@ -1485,13 +1492,27 @@ Normal
 Uniform
 </td>
 <td align="center">
-0.57
+0.44
 </td>
 <td align="center">
-0.98
+0.87
 </td>
 <td align="center">
-0.99
+0.90
+</td>
+</tr>
+<tr>
+<td align="center">
+Laplace
+</td>
+<td align="center">
+0.93
+</td>
+<td align="center">
+0.92
+</td>
+<td align="center">
+0.81
 </td>
 </tr>
 </table>
@@ -1570,13 +1591,26 @@ E( T_{N} ) = \sum_{j=1}^{N} c_{jN} E\{ a_{N}(R_{i}(\mathbf{Z})) \}
 </ul>
 <hr />
 <ul>
-<li><p>The variance of <span class="math inline">\(T_{N}\)</span> is
+<li>A similar argument can show that the variance of <span class="math inline">\(T_{N}\)</span> is
 <span class="math display">\[\begin{equation}
 \textrm{Var}( T_{N} ) = \frac{N^{2}}{n-1} \sigma_{a}^{2}\sigma_{c}^{2},
 \end{equation}\]</span>
 where <span class="math inline">\(\sigma_{c}^{2} = \frac{1}{N}\sum_{j=1}^{N} (c_{jN} - \bar{c}_{N})^{2}\)</span>
-and <span class="math inline">\(\sigma_{a}^{2} = \frac{1}{N}\sum_{j=1}^{N} (a_{N}(j) - \bar{a}_{N})^{2}\)</span></p></li>
-<li><p>Symmetry?</p></li>
+and <span class="math inline">\(\sigma_{a}^{2} = \frac{1}{N}\sum_{j=1}^{N} (a_{N}(j) - \bar{a}_{N})^{2}\)</span></li>
+</ul>
+<hr />
+<ul>
+<li><p>To perform hypothesis testing when using a general linear rank statistics,
+working with the exact distribution or performing permutation tests can
+often be computationally demanding.</p></li>
+<li><p>Using a large-sample approximation is often easier.</p></li>
+<li><p>As long as a few conditions for the coefficients and scores are satisfied,
+one can state the following
+<span class="math display">\[\begin{equation}
+\frac{T_{N} - E( T_{N})}{\sqrt{\textrm{Var}(T_{N})}} \longrightarrow \textrm{Normal}(0, 1),
+\end{equation}\]</span>
+where, as we showed, both <span class="math inline">\(E(T_{N})\)</span> and <span class="math inline">\(\textrm{Var}(T_{N})\)</span> both have closed-form expressions
+for an arbitrary linear rank statistic.</p></li>
 </ul>
 </div>
 <div id="other-examples-of-linear-rank-statistics" class="section level3">
@@ -1584,7 +1618,7 @@ and <span class="math inline">\(\sigma_{a}^{2} = \frac{1}{N}\sum_{j=1}^{N} (a_{N
 <div id="the-van-der-waerden-statistic-and-the-normal-scores-test" class="section level4">
 <h4><span class="header-section-number">3.5.3.1</span> The van der Waerden statistic and the normal scores test</h4>
 <ul>
-<li><p>Van der Waerden’s rank statistic is computed in two-sample problems
+<li><p>Van der Waerden’s rank statistic is used for two-sample problems
 where the first <span class="math inline">\(n\)</span> observations come from group 1 while the last
 <span class="math inline">\(m\)</span> observations come from group 2.</p></li>
 <li><p>Van der Waerden’s rank statistic <span class="math inline">\(VW_{N}\)</span> is defined as
@@ -1616,7 +1650,7 @@ the underlying data has an approximately normal distribution.</p></li>
 <li><p>The median test is also a two-sample rank test.</p></li>
 <li><p>While the Wilcoxon rank sum test looks at the average rank within group <span class="math inline">\(1\)</span>,
 the median test instead looks at how many of the ranks from group <span class="math inline">\(1\)</span>
-are less than the median rank.</p></li>
+are less than the median rank (which should equal <span class="math inline">\((N+1)/2\)</span>).</p></li>
 <li><p>The test statistic <span class="math inline">\(M_{N}\)</span> for the median test is defined as
 <span class="math display">\[\begin{equation}
 M_{N} = \sum_{i=1}^{n} I\Big( R_{i}(\mathbf{Z}) \leq \frac{N+1}{2} \Big)
@@ -1641,15 +1675,75 @@ a_{N}(i) =
 from group 1 tend to be smaller than those from group 2.</p></li>
 </ul>
 </div>
-<div id="the-log-rank-test" class="section level4">
-<h4><span class="header-section-number">3.5.3.3</span> The log rank test</h4>
-<ul>
-<li>Here, the score generating function <span class="math inline">\(\psi\)</span> is defined as
-<span class="math display">\[\begin{equation}
-\psi(u) = 1 - \log(1 - u)
-\end{equation}\]</span></li>
-</ul>
 </div>
+<div id="choosing-the-scores-a_ni" class="section level3">
+<h3><span class="header-section-number">3.5.4</span> Choosing the scores <span class="math inline">\(a_{N}(i)\)</span></h3>
+<ul>
+<li><p>The rank tests we have discussed so far are nonparametric in the sense
+that their null distribution does not depend on any particular parametric
+assumptions about the distributions from which the observations arise.</p></li>
+<li><p>For power calculations, we often think of some parameter or “effect size”
+modifying the base distribution in some way.</p></li>
+<li><p>For example, we often think of the shift alternative <span class="math inline">\(F_{X}(t) = F_{Y}(t - \theta)\)</span>
+in the two-sample problem.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>In parametric statistics, when testing <span class="math inline">\(H_{0}:\theta = 0\)</span> the most powerful test
+of <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}:\theta = \theta_{A}\)</span> is based on
+rejecting <span class="math inline">\(H_{0}\)</span> whenever the likelihood ratio is large enough:
+<span class="math display" id="eq:parametric-np-lemma">\[\begin{equation}
+\textrm{Reject } H_{0} \textrm{ if: } \quad \frac{p_{\theta_{A}}(\mathbf{z})}{p_{\theta_{0}}(\mathbf{z})} \geq c_{\alpha, n}
+\tag{3.18}
+\end{equation}\]</span>
+This is the Neyman-Pearson Lemma.</p></li>
+<li><p>The same property is true if we are considering tests based on ranks. The most powerful test
+for testing <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}:\theta = \theta_{A}\)</span> is based on
+<span class="math display" id="eq:nonparametric-np-lemma">\[\begin{equation}
+\textrm{Reject } H_{0} \textrm{ if: } \quad 
+\frac{P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)}{ P_{\theta_{0}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big) } \geq c_{\alpha, n}
+\tag{3.19}
+\end{equation}\]</span></p></li>
+<li><p>The main difference between <a href="rank-tests.html#eq:parametric-np-lemma">(3.18)</a> and <a href="rank-tests.html#eq:parametric-np-lemma">(3.18)</a> is
+that the distribution <span class="math inline">\(P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)\)</span>
+is unknown unless we are willing to make certain distributional assumptions.</p></li>
+<li><p>Nevertheless, we can approximate this probability if <span class="math inline">\(\theta_{A}\)</span> is a location parameter “close” to <span class="math inline">\(\theta_{0}\)</span></p></li>
+</ul>
+<p><span class="math display">\[\begin{equation}
+P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)
+\approx P_{\theta_{0}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)
++ \frac{\theta_{A}}{N!}\sum_{i=1}^{N} c_{iN} E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\}
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(Z_{(i)}\)</span> denotes the <span class="math inline">\(i^{th}\)</span> order statistic.
+See, for example, Chapter 13 of <span class="citation">Van der Vaart (<a href="#ref-van2000">2000</a>)</span> for more details on the derivation of this approximation.</p>
+<ul>
+<li><p>So, large values of the linear rank statistic <span class="math inline">\(T_{N} = \sum_{i=1}^{N} c_{iN} a_{N}(i)\)</span> will approximately
+correspond to large values of <span class="math inline">\(P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)\)</span>
+if we choose the scores to be
+<span class="math display">\[\begin{equation}
+a_{N}(i) = E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\}
+\end{equation}\]</span></p></li>
+<li><p>Linear rank statistics with scores generated this way are usually called
+<strong>locally most powerful</strong> rank test.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The best choice of the scores will depend on what we assume about the density <span class="math inline">\(f\)</span>.</p></li>
+<li><p>For example, if we assume that <span class="math inline">\(f(z)\)</span> is <span class="math inline">\(\textrm{Normal}(0,1)\)</span>, then
+<span class="math display">\[\begin{equation}
+\frac{\partial \log f(z)}{\partial z} = -z
+\end{equation}\]</span></p></li>
+<li><p>The approximate expectation of the order statistics from a Normal<span class="math inline">\((0,1)\)</span> distribution are
+<span class="math display">\[\begin{equation}
+E\{ Z_{(i)} \} \approx \Phi^{-1}\Bigg( \frac{i}{N+1} \Bigg)
+\end{equation}\]</span>
+This implies that the van der Waerden’s scores are approximately optimal
+if we assume the distribution of the <span class="math inline">\(Z_{i}\)</span> is Normal.</p></li>
+<li><p>This can also be worked out for other choices of <span class="math inline">\(f(z)\)</span>.</p></li>
+<li><p>If <span class="math inline">\(f(z)\)</span> is a Logistic distribution, the optimal scores correspond to the Wilcoxon rank sum test statistic.</p></li>
+<li><p>If <span class="math inline">\(f(z)\)</span> is Laplace (meaning that <span class="math inline">\(f(z) = \frac{1}{2}e^{-|z|}\)</span>), then the optimal scores
+correspond to the median test.</p></li>
+</ul>
 </div>
 </div>
 <div id="additional-reading" class="section level2">

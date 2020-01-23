@@ -526,7 +526,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.795
+## [1] 0.8
 ```
 
 
@@ -702,7 +702,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.3821767
+## [1] 0.9333947
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -720,7 +720,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.3821767
+## [1] 0.9333947
 ```
 
 #### Two-sided Sign Test
@@ -1355,7 +1355,7 @@ and the one-sample t-test.
 * It is assumed that $n = 200$ and that responses $D_{i}$ are generated from 
 the following model:
 \begin{equation}
-D_{i} = \frac{1}{4} + \varepsilon_{i}
+D_{i} = 0.2 + \varepsilon_{i}
 \end{equation}
 
 * Three choices for the distribution of $\varepsilon_{i}$ were considered:
@@ -1367,14 +1367,16 @@ D_{i} = \frac{1}{4} + \varepsilon_{i}
 
 
 ```r
-theta <- 1/4
+set.seed(148930)
+theta <- 0.2
 n <- 200
 nreps <- 500
-RejectSign <- RejectWilcoxonSign <- RejectT <- matrix(NA, nrow=nreps, ncol=3)
+RejectSign <- RejectWilcoxonSign <- RejectT <- matrix(NA, nrow=nreps, ncol=4)
 for(k in 1:nreps) {
   xx <- theta + rlogis(n)
   yy <- theta + rnorm(n)
   zz <- theta + runif(n, min=-3/2, max=3/2)
+  ww <- theta + (rexp(n, rate=1) - rexp(n, rate=1))/sqrt(2)
   
   RejectSign[k,1] <- ifelse(binom.test(x=sum(xx > 0), n=n, p=0.5)$p.value < 0.05, 1, 0)
   RejectWilcoxonSign[k,1] <- ifelse(wilcox.test(xx)$p.value < 0.05, 1, 0) 
@@ -1387,9 +1389,13 @@ for(k in 1:nreps) {
   RejectSign[k,3] <- ifelse(binom.test(x=sum(zz > 0), n=n, p=0.5)$p.value < 0.05, 1, 0)
   RejectWilcoxonSign[k,3] <- ifelse(wilcox.test(zz)$p.value < 0.05, 1, 0) 
   RejectT[k,3] <- ifelse(t.test(zz)$p.value < 0.05,1,0)  
+  
+  RejectSign[k,4] <- ifelse(binom.test(x=sum(ww > 0), n=n, p=0.5)$p.value < 0.05, 1, 0)
+  RejectWilcoxonSign[k,4] <- ifelse(wilcox.test(ww)$p.value < 0.05, 1, 0) 
+  RejectT[k,4] <- ifelse(t.test(ww)$p.value < 0.05, 1, 0)
 }
 
-power.results <- data.frame(Distribution=c("Logistic", "Normal", "Uniform"),
+power.results <- data.frame(Distribution=c("Logistic", "Normal", "Uniform", "Laplace"),
                  SignTest=colMeans(RejectSign), WilcoxonSign=colMeans(RejectWilcoxonSign),
                  tTest=colMeans(RejectT))
 ```
@@ -1398,9 +1404,10 @@ power.results <- data.frame(Distribution=c("Logistic", "Normal", "Uniform"),
 <caption align="bottom"> Estimated power for three one-sample tests and
               three distributions. 500 simulation replications were used. </caption>
 <tr> <th> Distribution </th> <th> SignTest </th> <th> WilcoxonSign </th> <th> tTest </th>  </tr>
-  <tr> <td align="center"> Logistic </td> <td align="center"> 0.41 </td> <td align="center"> 0.52 </td> <td align="center"> 0.50 </td> </tr>
-  <tr> <td align="center"> Normal </td> <td align="center"> 0.79 </td> <td align="center"> 0.94 </td> <td align="center"> 0.95 </td> </tr>
-  <tr> <td align="center"> Uniform </td> <td align="center"> 0.57 </td> <td align="center"> 0.98 </td> <td align="center"> 0.99 </td> </tr>
+  <tr> <td align="center"> Logistic </td> <td align="center"> 0.25 </td> <td align="center"> 0.37 </td> <td align="center"> 0.34 </td> </tr>
+  <tr> <td align="center"> Normal </td> <td align="center"> 0.59 </td> <td align="center"> 0.77 </td> <td align="center"> 0.81 </td> </tr>
+  <tr> <td align="center"> Uniform </td> <td align="center"> 0.44 </td> <td align="center"> 0.87 </td> <td align="center"> 0.90 </td> </tr>
+  <tr> <td align="center"> Laplace </td> <td align="center"> 0.93 </td> <td align="center"> 0.92 </td> <td align="center"> 0.81 </td> </tr>
    </table>
 
 
@@ -1484,20 +1491,36 @@ E( T_{N} ) = \sum_{j=1}^{N} c_{jN} E\{ a_{N}(R_{i}(\mathbf{Z})) \}
 
 ---
 
-* The variance of $T_{N}$ is
+* A similar argument can show that the variance of $T_{N}$ is
 \begin{equation}
 \textrm{Var}( T_{N} ) = \frac{N^{2}}{n-1} \sigma_{a}^{2}\sigma_{c}^{2},
 \end{equation}
 where $\sigma_{c}^{2} = \frac{1}{N}\sum_{j=1}^{N} (c_{jN} - \bar{c}_{N})^{2}$
 and $\sigma_{a}^{2} = \frac{1}{N}\sum_{j=1}^{N} (a_{N}(j) - \bar{a}_{N})^{2}$
 
-* Symmetry?
+---
+
+* To perform hypothesis testing when using a general linear rank statistics,
+working with the exact distribution or performing permutation tests can 
+often be computationally demanding.
+
+* Using a large-sample approximation is often easier.
+
+* As long as a few conditions for the coefficients and scores are satisfied,
+one can state the following
+\begin{equation}
+\frac{T_{N} - E( T_{N})}{\sqrt{\textrm{Var}(T_{N})}} \longrightarrow \textrm{Normal}(0, 1),
+\end{equation}
+where, as we showed, both $E(T_{N})$ and $\textrm{Var}(T_{N})$ both have closed-form expressions
+for an arbitrary linear rank statistic.
+
+
 
 ### Other Examples of Linear Rank Statistics
 
 #### The van der Waerden statistic and the normal scores test
 
-* Van der Waerden's rank statistic is computed in two-sample problems
+* Van der Waerden's rank statistic is used for two-sample problems
 where the first $n$ observations come from group 1 while the last
 $m$ observations come from group 2.
 
@@ -1533,7 +1556,7 @@ the underlying data has an approximately normal distribution.
 
 * While the Wilcoxon rank sum test looks at the average rank within group $1$,
 the median test instead looks at how many of the ranks from group $1$
-are less than the median rank.
+are less than the median rank (which should equal $(N+1)/2$).
 
 * The test statistic $M_{N}$ for the median test is defined as
 \begin{equation}
@@ -1560,14 +1583,84 @@ a_{N}(i) =
 * The median test could be used to test whether or not observations
 from group 1 tend to be smaller than those from group 2.
 
-#### The log rank test
+### Choosing the scores $a_{N}(i)$
 
+* The rank tests we have discussed so far are nonparametric in the sense
+that their null distribution does not depend on any particular parametric
+assumptions about the distributions from which the observations arise.
 
-* Here, the score generating function $\psi$ is defined as
+* For power calculations, we often think of some parameter or "effect size"
+modifying the base distribution in some way. 
+
+* For example, we often think of the shift alternative $F_{X}(t) = F_{Y}(t - \theta)$
+in the two-sample problem.
+
+---
+
+* In parametric statistics, when testing $H_{0}:\theta = 0$ the most powerful test 
+of $H_{0}: \theta = \theta_{0}$ vs. $H_{A}:\theta = \theta_{A}$ is based on
+rejecting $H_{0}$ whenever the likelihood ratio is large enough:
 \begin{equation}
-\psi(u) = 1 - \log(1 - u)
+\textrm{Reject } H_{0} \textrm{ if: } \quad \frac{p_{\theta_{A}}(\mathbf{z})}{p_{\theta_{0}}(\mathbf{z})} \geq c_{\alpha, n}
+(\#eq:parametric-np-lemma)
+\end{equation}
+This is the Neyman-Pearson Lemma.
+
+* The same property is true if we are considering tests based on ranks. The most powerful test
+for testing $H_{0}: \theta = \theta_{0}$ vs. $H_{A}:\theta = \theta_{A}$ is based on
+\begin{equation}
+\textrm{Reject } H_{0} \textrm{ if: } \quad 
+\frac{P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)}{ P_{\theta_{0}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big) } \geq c_{\alpha, n}
+(\#eq:nonparametric-np-lemma)
 \end{equation}
 
+* The main difference between \@ref(eq:parametric-np-lemma) and \@ref(eq:parametric-np-lemma) is
+that the distribution $P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)$
+is unknown unless we are willing to make certain distributional assumptions.
+
+* Nevertheless, we can approximate this probability if $\theta_{A}$ is a location parameter "close" to $\theta_{0}$
+
+\begin{equation}
+P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)
+\approx P_{\theta_{0}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)
++ \frac{\theta_{A}}{N!}\sum_{i=1}^{N} c_{iN} E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\}
+\end{equation}
+
+where $Z_{(i)}$ denotes the $i^{th}$ order statistic.
+See, for example, Chapter 13 of @van2000 for more details on the derivation of this approximation.
+
+* So, large values of the linear rank statistic $T_{N} = \sum_{i=1}^{N} c_{iN} a_{N}(i)$ will approximately 
+correspond to large values of $P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)$
+if we choose the scores to be
+\begin{equation}
+a_{N}(i) = E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\}
+\end{equation}
+
+* Linear rank statistics with scores generated this way are usually called 
+**locally most powerful** rank test.
+
+---
+
+* The best choice of the scores will depend on what we assume about the density $f$.
+
+* For example, if we assume that $f(z)$ is $\textrm{Normal}(0,1)$, then
+\begin{equation}
+\frac{\partial \log f(z)}{\partial z} = -z
+\end{equation}
+
+* The approximate expectation of the order statistics from a Normal$(0,1)$ distribution are
+\begin{equation}
+E\{ Z_{(i)} \} \approx \Phi^{-1}\Bigg( \frac{i}{N+1} \Bigg)
+\end{equation}
+This implies that the van der Waerden's scores are approximately optimal
+if we assume the distribution of the $Z_{i}$ is Normal.
+
+* This can also be worked out for other choices of $f(z)$.
+
+* If $f(z)$ is a Logistic distribution, the optimal scores correspond to the Wilcoxon rank sum test statistic.
+
+* If $f(z)$ is Laplace (meaning that $f(z) = \frac{1}{2}e^{-|z|}$), then the optimal scores
+correspond to the median test.
 
 
 ## Additional Reading 
