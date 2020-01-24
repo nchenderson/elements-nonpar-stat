@@ -526,7 +526,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.82
+## [1] 0.885
 ```
 
 
@@ -1422,7 +1422,7 @@ power.results <- data.frame(Distribution=c("Logistic", "Normal", "Uniform", "Lap
 * Suppose we have observations $\mathbf{Z} = (Z_{1}, \ldots, Z_{N})$.
 A linear rank statistic is a statistic $T_{N}$ that can be expressed as
 \begin{equation}
-T_{N} = \sum_{k=1}^{N} c_{iN} a_{N}\big( R_{i}( \mathbf{Z} ) \big)
+T_{N} = \sum_{i=1}^{N} c_{iN} a_{N}\big( R_{i}( \mathbf{Z} ) \big)
 (\#eq:general-linear-rank)
 \end{equation}
 
