@@ -429,7 +429,7 @@ wine2$Type <- factor(wine2$Type)
 ```
 
 * Let's consider the difference in the level of magnesium across the two types of wine.
-![](03-rankstat_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-6-2.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-6-2.png" width="672" />
 
 * Suppose we are interested in testing whether or not magnesium levels in 
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
@@ -527,7 +527,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.79
+## [1] 0.82
 ```
 
 
@@ -703,7 +703,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.6178233
+## [1] 0.9895106
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -721,7 +721,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.6178233
+## [1] 0.9895106
 ```
 
 #### Two-sided Sign Test
@@ -887,7 +887,7 @@ DD <- DD[DD!=0]
 hist(DD, main="Meat Data", xlab="Difference in Measured Fat Percentage", las=1)
 ```
 
-![](03-rankstat_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 ```r
 summary(DD)
@@ -1049,7 +1049,7 @@ of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
 values for $p(\delta)$ rather than $\delta$ itself. Plus, $p(\delta)$ has the direct interpretation
 $p(\delta) = P_{\theta=\delta}( D_{i} > 0)$.
 
-![](03-rankstat_files/figure-latex/unnamed-chunk-21-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-21-2.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-21-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-21-2.png" width="672" />
 
 
 ---
