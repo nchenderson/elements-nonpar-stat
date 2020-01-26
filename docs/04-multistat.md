@@ -35,7 +35,9 @@ where $\bar{Y}_{k.} = \frac{1}{n_{k}}\sum_{j=1}^{n_{k}} Y_{kj}$ and $\bar{Y}_{..
 * Large values of $SSA = \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}$ provide evidence against the null hypothesis \@ref(eq:homogeneity-hyp). The alternative hypothesis here is that there is at least one pair of means $\mu_{h}, \mu_{l}$
 such that $\mu_{h} \neq \mu_{l}$.
 
-## The Kruskall-Wallis Test
+## The Kruskal-Wallis Test
+
+### Definition
 
 * Instead of assuming \@ref(eq:normal-anova-model) for the responses $Y_{kj}$, nonparametric way of thinking
 about this problem is to instead only assume that
@@ -58,14 +60,14 @@ H_{A}: F_{k}(t) = F(t - \Delta_{k}), \quad \textrm{ for } k = 1, \ldots K \quad 
 
 ---
 
-* The Kruskall-Wallis test statistic is similar to the SSA term (defined in \@ref(eq:anova-decomp))
+* The Kruskal-Wallis test statistic is similar to the SSA term (defined in \@ref(eq:anova-decomp))
 in the one-way ANOVA setting.
 
 * Rather than comparing the group-specific means $\bar{Y}_{k.}$ with the overall mean $\bar{Y}_{..}$,
-the Kruskall-Wallis test statistic will be comparing the group-specific rank 
+the Kruskal-Wallis test statistic will be comparing the group-specific rank 
 means $\bar{R}_{k.}$ with their overall expectation under the null hypothesis.
 
-* The Kruskall-Wallis test statistic is defined as
+* The Kruskal-Wallis test statistic is defined as
 \begin{equation}
 KW_{n} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)^{2}, \quad \textrm{ where } N = \sum_{k=1}^{K} n_{k}
 (\#eq:kw-definition)
@@ -91,8 +93,17 @@ null hypothesis.
 
 ---
 
-* What is the relationship between $KW_{n}$ and the WRS test statistic if we assume that $K=2$?
+* When $K=2$, the following relationship between the Kruskal-Wallis statistic
+$KW_{n}$ and the Wilcoxon rank sum test statistic $W$ from Chapter 3 holds.
+\begin{equation}
+KW_{n} = \frac{12}{mn(N+1)}\Big( W - \frac{n(N+1)}{2}  \Big)^{2}.
+(\#eq:kw-wrs-equivalence)
+\end{equation}
 
+
+---
+
+* **Exercise 4.1** If $K=2$, show that equation \@ref(eq:kw-wrs-equivalence) holds.
 
 ---
 
@@ -116,4 +127,191 @@ statistic is
 \begin{equation}
 KW_{n} = \frac{1}{6}\Big\{ (11/3 - 5)^{2} + (6 - 5)^{2} + (16/3 - 5)^{2}   \Big\} = 13/27
 \end{equation}
+
+### Asymptotic Distribution and Relation to One-Way ANOVA
+
+
+## Performing the Kruskal-Wallis Test in R
+
+* We will look at performing Kruskal-Wallis tests in **R** by using the
+"InsectSprays" dataset.
+
+```r
+head(InsectSprays)
+```
+
+```
+##   count spray
+## 1    10     A
+## 2     7     A
+## 3    20     A
+## 4    14     A
+## 5    14     A
+## 6    12     A
+```
+
+* This dataset has 72 observations.
+
+* The variable **count** is the number of 
+insects measured in some agricultural unit.
+
+* The variable **spray** was the type of spray used on 
+that unit.
+
+* You could certainly argue that a standard ANOVA is not
+appropriate in this situation because the responses are counts,
+and for count data, the variance is usually a function of the mean.
+
+* A generalized linear model with a log link function might be more appropriate.
+
+* Applying a square-root transformation to count data is also a commonly suggested 
+approach. (The square-root transformation is the ``variance-stabilizing transformation"
+for Poisson-distributed data).
+
+
+```r
+boxplot(sqrt(count) ~ spray, data=InsectSprays,las=1, ylab="square root of insect counts")
+```
+
+<img src="04-multistat_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+
+---
+
+* Let us perform a test of homogeneity using both the one-way ANOVA approach and a Kruskal-Wallis
+test
+
+
+```r
+anova(lm(sqrt(count) ~ spray, data=InsectSprays))
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: sqrt(count)
+##           Df Sum Sq Mean Sq F value    Pr(>F)    
+## spray      5 88.438 17.6876  44.799 < 2.2e-16 ***
+## Residuals 66 26.058  0.3948                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+
+```r
+kruskal.test(sqrt(count) ~ spray, data=InsectSprays)
+```
+
+```
+## 
+## 	Kruskal-Wallis rank sum test
+## 
+## data:  sqrt(count) by spray
+## Kruskal-Wallis chi-squared = 54.691, df = 5, p-value = 1.511e-10
+```
+
+
+---
+
+* Notice that it applying the square root transformation or not does not affect the
+value of the Kruskal-Wallis statistic or the Kruskal-Wallis p-value.
+
+
+```r
+kruskal.test(count ~ spray, data=InsectSprays)
+```
+
+```
+## 
+## 	Kruskal-Wallis rank sum test
+## 
+## data:  count by spray
+## Kruskal-Wallis chi-squared = 54.691, df = 5, p-value = 1.511e-10
+```
+
+* This invariance to data transformation is not true for the standard one-way ANOVA.
+
+```r
+anova(lm(count ~ spray, data=InsectSprays))
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: count
+##           Df Sum Sq Mean Sq F value    Pr(>F)    
+## spray      5 2668.8  533.77  34.702 < 2.2e-16 ***
+## Residuals 66 1015.2   15.38                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+
+## Extra Section
+
+
+in **R** by using the "cane" dataset 
+from the **boot** package.
+
+
+```r
+library(boot)
+data(cane)
+head(cane)
+```
+
+```
+##     n  r  x var block
+## 1  87 76 19   1     A
+## 2 119  8 14   2     A
+## 3  94 74  9   3     A
+## 4  95 11 12   4     A
+## 5 134  0 12   5     A
+## 6  92  0  3   6     A
+```
+
+* These data come from a study trying to determine the susceptibility of different types
+of sugar cane to a particular type of disease.
+
+* The variable **n** contains the total number of shoots in each plot.
+
+* The variable **r** containes the total number of diseased shoots.
+
+* We can create a new variable **prop** that measures the proportion 
+of shoots that are diseased.
+
+
+```r
+cane$prop <- cane$r/cane$n
+```
+
+* You could certainly argue that 
+
+
+```r
+cane$prop.trans <- asin(sqrt(cane$prop))
+boxplot(prop.trans ~ block, data=cane, las=1, ylab="number of shoots")
+```
+
+<img src="04-multistat_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+
+
+```r
+kruskal.test(prop ~ block, data=cane)
+```
+
+```
+## 
+## 	Kruskal-Wallis rank sum test
+## 
+## data:  prop by block
+## Kruskal-Wallis chi-squared = 1.1355, df = 3, p-value = 0.7685
+```
+
+## Additional Reading 
+
+* Additional reading which covers the material discussed in this chapter includes:
+    + Chapters 6 from @hollander2013
+
 

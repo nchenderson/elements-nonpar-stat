@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-24" />
+<meta name="date" content="2020-01-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -174,11 +174,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#additional-reading"><i class="fa fa-check"></i><b>3.6</b> Additional Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a><ul>
-<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskall-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskall-Wallis Test</a></li>
+<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskal-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskal-Wallis Test</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#definition-2"><i class="fa fa-check"></i><b>4.1.1</b> Definition</a></li>
+<li class="chapter" data-level="4.1.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#asymptotic-distribution-and-relation-to-one-way-anova"><i class="fa fa-check"></i><b>4.1.2</b> Asymptotic Distribution and Relation to One-Way ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#performing-the-kruskal-wallis-test-in-r"><i class="fa fa-check"></i><b>4.2</b> Performing the Kruskal-Wallis Test in R</a></li>
+<li class="chapter" data-level="4.3" data-path="krusk-wallis.html"><a href="krusk-wallis.html#extra-section"><i class="fa fa-check"></i><b>4.3</b> Extra Section</a></li>
+<li class="chapter" data-level="4.4" data-path="krusk-wallis.html"><a href="krusk-wallis.html#additional-reading-1"><i class="fa fa-check"></i><b>4.4</b> Additional Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a></li>
 <li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
-<li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-2"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
+<li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-3"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
 <li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a></li>
 <li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#mann-whitney-statistic"><i class="fa fa-check"></i><b>6.3</b> Mann-Whitney Statistic</a></li>
 <li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#kendalls-tau"><i class="fa fa-check"></i><b>6.4</b> Kendall’s tau</a></li>
@@ -196,7 +202,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
 <li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
 <li class="chapter" data-level="8.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms"><i class="fa fa-check"></i><b>8.2</b> Histograms</a><ul>
-<li class="chapter" data-level="8.2.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-3"><i class="fa fa-check"></i><b>8.2.1</b> Definition</a></li>
+<li class="chapter" data-level="8.2.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-4"><i class="fa fa-check"></i><b>8.2.1</b> Definition</a></li>
 <li class="chapter" data-level="8.2.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms-in-r"><i class="fa fa-check"></i><b>8.2.2</b> Histograms in R</a></li>
 <li class="chapter" data-level="8.2.3" data-path="density-estimation.html"><a href="density-estimation.html#performance-of-the-histogram-estimate"><i class="fa fa-check"></i><b>8.2.3</b> Performance of the Histogram Estimate</a></li>
 <li class="chapter" data-level="8.2.4" data-path="density-estimation.html"><a href="density-estimation.html#choosing-the-histogram-bin-width"><i class="fa fa-check"></i><b>8.2.4</b> Choosing the Histogram Bin Width</a></li>
@@ -278,7 +284,7 @@ make few assumptions about the particular form of <span class="math inline">\(f(
 <div id="histograms" class="section level2">
 <h2><span class="header-section-number">8.2</span> Histograms</h2>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<div id="definition-3" class="section level3">
+<div id="definition-4" class="section level3">
 <h3><span class="header-section-number">8.2.1</span> Definition</h3>
 <ul>
 <li><p>Histograms are one of the oldest ways to estimate a pdf.</p></li>
@@ -323,7 +329,7 @@ E\{ \hat{f}(x) \} = \frac{1}{h_{n}} P( x_{0} + (k-1)h_{n} \leq X_{i} &lt; x_{0} 
 <div id="histograms-in-r" class="section level3">
 <h3><span class="header-section-number">8.2.2</span> Histograms in R</h3>
 <p>In <strong>R</strong>, use the <code>hist</code> function</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">hist</span>(x, breaks, probability, plot, ...)</a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw">hist</span>(x, breaks, probability, plot, ...)</a></code></pre></div>
 <ul>
 <li>The <strong>breaks</strong> argument
 <ul>
@@ -338,15 +344,15 @@ E\{ \hat{f}(x) \} = \frac{1}{h_{n}} P( x_{0} + (k-1)h_{n} \leq X_{i} &lt; x_{0} 
 </ul>
 <p><strong>Note:</strong> The default for R, is to use right-closed intervals <span class="math inline">\((a, b]\)</span>.
 This can be changed using the <strong>right</strong> argument of the <strong>hist</strong> function.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="co">## Use a real dataset here</span></a>
-<a class="sourceLine" id="cb50-2" data-line-number="2">bodywt.hist &lt;-<span class="st"> </span><span class="kw">hist</span>(nhgh<span class="op">$</span>wt, <span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Body Weight from NHANES&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="co">## Use a real dataset here</span></a>
+<a class="sourceLine" id="cb67-2" data-line-number="2">bodywt.hist &lt;-<span class="st"> </span><span class="kw">hist</span>(nhgh<span class="op">$</span>wt, <span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Body Weight from NHANES&quot;</span>)</a></code></pre></div>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="co">## Use a real dataset here</span></a>
-<a class="sourceLine" id="cb51-2" data-line-number="2">bodywt.hist2 &lt;-<span class="st"> </span><span class="kw">hist</span>(nhgh<span class="op">$</span>wt, <span class="dt">main=</span><span class="st">&quot;Hist of BW on Probability Scale&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Body Weight from NHANES&quot;</span>, <span class="dt">probability=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="co">## Use a real dataset here</span></a>
+<a class="sourceLine" id="cb68-2" data-line-number="2">bodywt.hist2 &lt;-<span class="st"> </span><span class="kw">hist</span>(nhgh<span class="op">$</span>wt, <span class="dt">main=</span><span class="st">&quot;Hist of BW on Probability Scale&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Body Weight from NHANES&quot;</span>, <span class="dt">probability=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>In addition to generating a histogram plot, the histogram function
 also returns useful stuff.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">names</span>(bodywt.hist)</a></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="kw">names</span>(bodywt.hist)</a></code></pre></div>
 <pre><code>## [1] &quot;breaks&quot;   &quot;counts&quot;   &quot;density&quot;  &quot;mids&quot;     &quot;xname&quot;    &quot;equidist&quot;</code></pre>
 <ul>
 <li><strong>breaks</strong>
@@ -357,16 +363,16 @@ also returns useful stuff.</p>
 <li><strong>mids</strong></li>
 <li><strong>density</strong></li>
 </ul>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">bodywt.hist<span class="op">$</span>breaks</a></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1">bodywt.hist<span class="op">$</span>breaks</a></code></pre></div>
 <pre><code>##  [1]  20  40  60  80 100 120 140 160 180 200 220 240</code></pre>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">bodywt.hist<span class="op">$</span>counts</a></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">bodywt.hist<span class="op">$</span>counts</a></code></pre></div>
 <pre><code>##  [1]   44 1160 2705 1846  721  212   71   24    7    2    3</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">binwidth &lt;-<span class="st"> </span>bodywt.hist<span class="op">$</span>breaks[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>bodywt.hist<span class="op">$</span>breaks[<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb58-2" data-line-number="2">bodywt.hist<span class="op">$</span>density</a></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">binwidth &lt;-<span class="st"> </span>bodywt.hist<span class="op">$</span>breaks[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>bodywt.hist<span class="op">$</span>breaks[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb75-2" data-line-number="2">bodywt.hist<span class="op">$</span>density</a></code></pre></div>
 <pre><code>##  [1] 3.237675e-04 8.535688e-03 1.990434e-02 1.358352e-02 5.305372e-03
 ##  [6] 1.559971e-03 5.224430e-04 1.766004e-04 5.150846e-05 1.471670e-05
 ## [11] 2.207506e-05</code></pre>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">bodywt.hist<span class="op">$</span>counts<span class="op">/</span>(<span class="kw">length</span>(nhgh<span class="op">$</span>wt)<span class="op">*</span>binwidth)</a></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">bodywt.hist<span class="op">$</span>counts<span class="op">/</span>(<span class="kw">length</span>(nhgh<span class="op">$</span>wt)<span class="op">*</span>binwidth)</a></code></pre></div>
 <pre><code>##  [1] 3.237675e-04 8.535688e-03 1.990434e-02 1.358352e-02 5.305372e-03
 ##  [6] 1.559971e-03 5.224430e-04 1.766004e-04 5.150846e-05 1.471670e-05
 ## [11] 2.207506e-05</code></pre>
