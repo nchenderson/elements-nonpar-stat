@@ -26,7 +26,7 @@ which is sometimes referred to as the homogeneity hypothesis.
 * A test of the hypothesis \@ref(eq:homogeneity-hyp) is based on decomposing the observed variation in
 the responses $Y_{kj}$:
 \begin{eqnarray}
-\sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{..})^{2} &=& \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} + \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2} \nonumber \\
+\underbrace{ \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{..})^{2}}_{SST} &=& \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} + \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2} \nonumber \\
 &=& \underbrace{\sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}}_{SSA} + \underbrace{\sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2}}_{SSE} 
 (\#eq:anova-decomp)
 \end{eqnarray}
@@ -86,10 +86,14 @@ the rank of $Y_{kj}$ in the "pooled-data ranking".
 
 * Again, if the null hypothesis is true, we can treat all of our responses $Y_{kj}$ as just
 an i.i.d. sample of size $N$ from a common distribution function $F$. 
-Hence, as we showed in Chapter 3, $E\{ R_{kj}(\mathbf{Z}) \} = (N+1)/2$ under this
-null hypothesis.
 
-* Make some comments about the null distribution of $KW_{n}$ here.
+* Hence, as we showed in \@ref(eq:rank-expectation) from Chapter 3, $E\{ R_{kj}(\mathbf{Z}) \} = (N+1)/2$ under the
+assumption that the data are an i.i.d. sample from a common distribution function.
+
+* So, the intuition behind the definition of $KW_{n}$ is that the differences
+$\bar{R}_{k.} - \frac{N + 1}{2}$ should be small whenever the homogeneity
+hypothesis \@ref(eq:nonpar-homogeneity-hyp) is true.
+
 
 ---
 
@@ -100,6 +104,11 @@ KW_{n} = \frac{12}{mn(N+1)}\Big( W - \frac{n(N+1)}{2}  \Big)^{2}.
 (\#eq:kw-wrs-equivalence)
 \end{equation}
 
+* Hence, the p-value from a Kruskal-Wallis test and a (two-sided)
+WRS test should be the same when $K = 2$.
+
+* However, you cannot directly perform a one-sided test using 
+the Kruskal-Wallis test.
 
 ---
 
@@ -128,7 +137,49 @@ statistic is
 KW_{n} = \frac{1}{6}\Big\{ (11/3 - 5)^{2} + (6 - 5)^{2} + (16/3 - 5)^{2}   \Big\} = 13/27
 \end{equation}
 
-### Asymptotic Distribution and Relation to One-Way ANOVA
+### Asymptotic Distribution and Connection to One-Way ANOVA
+
+* The Kruskal-Wallis statistic $KW_{n}$ has 
+an asymptotic chi-square distribution with $K-1$ degrees of freedom under the null hypothesis \@ref(eq:nonpar-homogeneity-hyp).
+
+* This follows from the fact that $(\bar{R}_{k.} - (N+1)/2)$ is approximately normally distributed
+for large $n_{k}$.
+
+* **R** uses the large-sample approximation when computing
+the p-value for the Kruskal-Wallis test.
+
+
+
+--- 
+
+* The Kruskal-Wallis test can also be thought of as the test you would obtain
+if you applied the one-way ANOVA setup to the ranks of $Y_{kj}$. 
+
+
+* The one-way ANOVA test is based on the value of SSA where, as in \@ref(eq:anova-decomp),
+SSA is defined as
+\begin{equation}
+SSA = \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}
+\end{equation}
+
+* You then reject $H_{0}$, when $SSA/SSE = SSA/(SST - SSA)$ is sufficiently large.
+
+* Notice that if we computed SSA using the ranks $R_{kj}( \mathbf{Z} )$
+rather than the observations $Y_{kj}$, we would get:
+\begin{eqnarray}
+SSA_{r} &=& \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \bar{R}_{..})^{2}  \nonumber \\
+&=& \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \frac{N+1}{2})^{2}  \nonumber \\
+&=& \frac{N(N-1)}{12} KW_{n}  
+(\#eq:ssa-kw)
+\end{eqnarray}
+
+* If you were applying ANOVA to the ranks of $Y_{kj}$, $SST_{r}$ would be 
+a fixed constant. 
+
+* So, any test of the homogeneity hypothesis would 
+be based on just the value of  $SSA_{r}$ which as we showed in \@ref(eq:ssa-kw) 
+is just a constant times the Kruskal-Wallis statistic.
+
 
 
 ## Performing the Kruskal-Wallis Test in R
@@ -199,15 +250,12 @@ anova(lm(sqrt(count) ~ spray, data=InsectSprays))
 
 
 ```r
-kruskal.test(sqrt(count) ~ spray, data=InsectSprays)
+a  <- kruskal.test(sqrt(count) ~ spray, data=InsectSprays)
+a$p.value
 ```
 
 ```
-## 
-## 	Kruskal-Wallis rank sum test
-## 
-## data:  sqrt(count) by spray
-## Kruskal-Wallis chi-squared = 54.691, df = 5, p-value = 1.511e-10
+## [1] 1.510844e-10
 ```
 
 
@@ -248,7 +296,7 @@ anova(lm(count ~ spray, data=InsectSprays))
 
 
 
-## Extra Section
+## The Sugar Cane Data
 
 
 in **R** by using the "cane" dataset 

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 Rank and Sign Statistics | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 Rank and Sign Statistics | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -176,10 +179,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a><ul>
 <li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskal-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskal-Wallis Test</a><ul>
 <li class="chapter" data-level="4.1.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#definition-2"><i class="fa fa-check"></i><b>4.1.1</b> Definition</a></li>
-<li class="chapter" data-level="4.1.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#asymptotic-distribution-and-relation-to-one-way-anova"><i class="fa fa-check"></i><b>4.1.2</b> Asymptotic Distribution and Relation to One-Way ANOVA</a></li>
+<li class="chapter" data-level="4.1.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#asymptotic-distribution-and-connection-to-one-way-anova"><i class="fa fa-check"></i><b>4.1.2</b> Asymptotic Distribution and Connection to One-Way ANOVA</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#performing-the-kruskal-wallis-test-in-r"><i class="fa fa-check"></i><b>4.2</b> Performing the Kruskal-Wallis Test in R</a></li>
-<li class="chapter" data-level="4.3" data-path="krusk-wallis.html"><a href="krusk-wallis.html#extra-section"><i class="fa fa-check"></i><b>4.3</b> Extra Section</a></li>
+<li class="chapter" data-level="4.3" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-sugar-cane-data"><i class="fa fa-check"></i><b>4.3</b> The Sugar Cane Data</a></li>
 <li class="chapter" data-level="4.4" data-path="krusk-wallis.html"><a href="krusk-wallis.html#additional-reading-1"><i class="fa fa-check"></i><b>4.4</b> Additional Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a></li>
@@ -351,8 +354,9 @@ of ties is zero). Then, the following properties hold for the associated ranks <
 P(R_{i} = j) = 1/n, \quad \text{for any } j = 1, \ldots,n.
 \end{equation}\]</span></li>
 <li>The expectation of <span class="math inline">\(R_{i}\)</span> is
-<span class="math display">\[\begin{equation}
+<span class="math display" id="eq:rank-expectation">\[\begin{equation}
 E( R_{i} ) = \sum_{j=1}^{n} j P(R_{i} = j) = \frac{1}{n}\sum_{j=1}^{n} j = \frac{(n+1)}{2}
+\tag{3.2}
 \end{equation}\]</span></li>
 <li>The variance of <span class="math inline">\(R_{i}\)</span> is
 <span class="math display">\[\begin{equation}
@@ -388,7 +392,7 @@ from the other group.</p></li>
 <span class="math display" id="eq:general-wilcoxon-hypothesis">\[\begin{eqnarray}
 H_{0}: &amp;&amp; F_{X} = F_{Y} \quad \textrm{ versus }  \\
 H_{A}: &amp;&amp; \textrm{Observations from } F_{X} \textrm{ tend to be larger than observations from } F_{Y} \nonumber
-\tag{3.2}
+\tag{3.3}
 \end{eqnarray}\]</span></p></li>
 </ul>
 <hr />
@@ -400,13 +404,13 @@ H_{A}: &amp;&amp; \textrm{Observations from } F_{X} \textrm{ tend to be larger t
 <span class="math display" id="eq:stochasticlarger-formulation">\[\begin{eqnarray}
 H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: &amp; &amp; F_{X} \textrm{ is stochastically larger than } F_{Y} 
-\tag{3.3}
+\tag{3.4}
 \end{eqnarray}\]</span></li>
 <li>The “shift” alternative
 <span class="math display" id="eq:shift-formulation">\[\begin{eqnarray}
 H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: &amp; &amp; F_{X}(t) = F_{Y}(t - \Delta), \Delta &gt; 0.
-\tag{3.4}
+\tag{3.5}
 \end{eqnarray}\]</span></li>
 </ol></li>
 <li><p>A distribution function <span class="math inline">\(F_{X}\)</span> is said to be stochastically larger than
@@ -430,16 +434,16 @@ hypothesis test:
 <span class="math display" id="eq:mw-formulation">\[\begin{eqnarray}
 H_{0}: &amp;&amp; P(X_{i} &gt; Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2 \quad \textrm{ versus } \\
 H_{A}: &amp;&amp; P(X_{i} &gt; Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) &gt; 1/2
-\tag{3.5}
+\tag{3.6}
 \end{eqnarray}\]</span>
 See <span class="citation">Divine et al. (<a href="#ref-divine2018">2018</a>)</span> for more discussion around this formulation of the
 WRS test.</p></li>
-<li><p>The hypothesis test <a href="rank-tests.html#eq:mw-formulation">(3.5)</a> makes fewer assumptions
+<li><p>The hypothesis test <a href="rank-tests.html#eq:mw-formulation">(3.6)</a> makes fewer assumptions
 about how <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span> are related and is, in many cases, more interpretable.</p></li>
 <li><p>For example, in medical applications, it is often more natural to
 answer the question: what is the probability that the outcome
 under treatment 1 is better than the outcome under treatment 2.</p></li>
-<li><p>The justification of hypothesis test <a href="rank-tests.html#eq:mw-formulation">(3.5)</a> comes through
+<li><p>The justification of hypothesis test <a href="rank-tests.html#eq:mw-formulation">(3.6)</a> comes through
 the close connection between the WRS test statistic <span class="math inline">\(W\)</span> and the Mann-Whitney statistic <span class="math inline">\(U_{MW}\)</span>.
 Specifically, <span class="math inline">\(W = U_{MW} + n(n+1)/2\)</span>. (Although, often <span class="math inline">\(U_{MW}\)</span> is defined as
 <span class="math inline">\(U_{MW} = mn + n(n+1)/2 - W\)</span>).</p></li>
@@ -466,11 +470,11 @@ in favor of <span class="math inline">\(H_{A}\)</span>.</p></li>
 \mathbf{Z} = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})
 \end{equation}\]</span>
 This is a vector with length <span class="math inline">\(n + m\)</span>.</p></li>
-<li><p>The Wilcoxon rank-sum test statistic <span class="math inline">\(W\)</span> for testing hypotheses of the form <a href="rank-tests.html#eq:general-wilcoxon-hypothesis">(3.2)</a>
+<li><p>The Wilcoxon rank-sum test statistic <span class="math inline">\(W\)</span> for testing hypotheses of the form <a href="rank-tests.html#eq:general-wilcoxon-hypothesis">(3.3)</a>
 is then defined as
 <span class="math display" id="eq:wrs-formula">\[\begin{equation}
 W = \sum_{i=1}^{n} R_{i}( \mathbf{Z} )
-\tag{3.6}
+\tag{3.7}
 \end{equation}\]</span></p></li>
 <li><p>In other words, the WRS test statistic is the sum of the ranks for those observations coming
 from group 1 (i.e., the group with the <span class="math inline">\(X_{i}\)</span> as observations).</p></li>
@@ -534,7 +538,7 @@ P_{H_{0}}(W = 3) &amp;=&amp; 1/6. \nonumber
 <hr />
 <p><strong>Large-Sample Approximate Distribution</strong></p>
 <ul>
-<li><p>Looking at <a href="rank-tests.html#eq:wrs-formula">(3.6)</a>, we can see that the
+<li><p>Looking at <a href="rank-tests.html#eq:wrs-formula">(3.7)</a>, we can see that the
 WRS test statistic is a sum of nearly independent random variables
 (at least nearly independent for large <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>).</p></li>
 <li><p>Thus, we can expect that an appropriately centered and scaled
@@ -598,20 +602,20 @@ This dataset is also available from the UCI Machine Learning Repository.</li>
 </ul>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">library</span>(rattle.data)</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">head</span>(wine)</a></code></pre></div>
-<pre><code>##   Type Alcohol Malic  Ash Alcalinity Magnesium Phenols Flavanoids
-## 1    1   14.23  1.71 2.43       15.6       127    2.80       3.06
-## 2    1   13.20  1.78 2.14       11.2       100    2.65       2.76
-## 3    1   13.16  2.36 2.67       18.6       101    2.80       3.24
-## 4    1   14.37  1.95 2.50       16.8       113    3.85       3.49
-## 5    1   13.24  2.59 2.87       21.0       118    2.80       2.69
-## 6    1   14.20  1.76 2.45       15.2       112    3.27       3.39
-##   Nonflavanoids Proanthocyanins Color  Hue Dilution Proline
-## 1          0.28            2.29  5.64 1.04     3.92    1065
-## 2          0.26            1.28  4.38 1.05     3.40    1050
-## 3          0.30            2.81  5.68 1.03     3.17    1185
-## 4          0.24            2.18  7.80 0.86     3.45    1480
-## 5          0.39            1.82  4.32 1.04     2.93     735
-## 6          0.34            1.97  6.75 1.05     2.85    1450</code></pre>
+<pre><code>##   Type Alcohol Malic  Ash Alcalinity Magnesium Phenols Flavanoids Nonflavanoids
+## 1    1   14.23  1.71 2.43       15.6       127    2.80       3.06          0.28
+## 2    1   13.20  1.78 2.14       11.2       100    2.65       2.76          0.26
+## 3    1   13.16  2.36 2.67       18.6       101    2.80       3.24          0.30
+## 4    1   14.37  1.95 2.50       16.8       113    3.85       3.49          0.24
+## 5    1   13.24  2.59 2.87       21.0       118    2.80       2.69          0.39
+## 6    1   14.20  1.76 2.45       15.2       112    3.27       3.39          0.34
+##   Proanthocyanins Color  Hue Dilution Proline
+## 1            2.29  5.64 1.04     3.92    1065
+## 2            1.28  4.38 1.05     3.40    1050
+## 3            2.81  5.68 1.03     3.17    1185
+## 4            2.18  7.80 0.86     3.45    1480
+## 5            1.82  4.32 1.04     2.93     735
+## 6            1.97  6.75 1.05     2.85    1450</code></pre>
 <ul>
 <li>This dataset contains three types of wine. We will only consider the first two.</li>
 </ul>
@@ -679,7 +683,7 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{j}) +
 <a class="sourceLine" id="cb26-8" data-line-number="8"><span class="st">                   </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">==</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb26-9" data-line-number="9">}</a>
 <a class="sourceLine" id="cb26-10" data-line-number="10"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.845</code></pre>
+<pre><code>## [1] 0.785</code></pre>
 </div>
 <div id="additional-notes-for-the-wrs-test" class="section level3">
 <h3><span class="header-section-number">3.2.5</span> Additional Notes for the WRS test</h3>
@@ -701,9 +705,9 @@ better in one group than the other rather than simply comparing whether or not
 the distribution is different between the two groups.</p></li>
 <li><p>A WRS test is useful here since we can still compute ranks without having to
 choose aribtrary numbers for each category.</p></li>
-<li><p>Thinking of the “probability greater than alternative <a href="rank-tests.html#eq:mw-formulation">(3.5)</a>”
-or “stochastically larger than alternative <a href="rank-tests.html#eq:stochasticlarger-formulation">(3.3)</a>” interpretation
-of the WRS test is probably more reasonable than the “shift alternative <a href="rank-tests.html#eq:shift-formulation">(3.4)</a>” interpretation.</p></li>
+<li><p>Thinking of the “probability greater than alternative <a href="rank-tests.html#eq:mw-formulation">(3.6)</a>”
+or “stochastically larger than alternative <a href="rank-tests.html#eq:stochasticlarger-formulation">(3.4)</a>” interpretation
+of the WRS test is probably more reasonable than the “shift alternative <a href="rank-tests.html#eq:shift-formulation">(3.5)</a>” interpretation.</p></li>
 <li><p>Note that there will probably be many ties when comparing ordinal data.</p></li>
 </ul>
 <hr />
@@ -745,7 +749,7 @@ the median of a distribution is greater than zero (or greater than some other fi
 <li>Suppose we have observations <span class="math inline">\(D_{1}, \ldots, D_{n}\)</span> which arise from the model
 <span class="math display" id="eq:general-location">\[\begin{equation}
 D_{i} = \theta + \varepsilon_{i},
-\tag{3.7}
+\tag{3.8}
 \end{equation}\]</span>
 where <span class="math inline">\(\varepsilon_{i}\)</span> are iid random variables each with distribution function <span class="math inline">\(F_{\epsilon}\)</span>
 that is assumed to have a median of zero. Moreover, we will assume the density function
@@ -841,7 +845,7 @@ greater than zero or not.</p></li>
 <li><p>The <strong>sign</strong> statistic <span class="math inline">\(S_{n}\)</span> is defined as
 <span class="math display" id="eq:sign-statistic">\[\begin{equation}
 S_{n} = \sum_{i=1}^{n} I( D_{i} &gt; 0)
-\tag{3.8}
+\tag{3.9}
 \end{equation}\]</span></p></li>
 <li><p>If the null hypothesis <span class="math inline">\(H_{0}: \theta = 0\)</span> is true, then we should expect that roughly half
 of the observations will be positive.</p></li>
@@ -852,7 +856,7 @@ number that is greater than <span class="math inline">\(n/2\)</span>.</p></li>
 <div id="null-distribution-and-p-values" class="section level4">
 <h4><span class="header-section-number">3.3.1.2</span> Null Distribution and p-values</h4>
 <ul>
-<li><p>Notice that the sign statistic defined in <a href="rank-tests.html#eq:sign-statistic">(3.8)</a> is the sum of independent
+<li><p>Notice that the sign statistic defined in <a href="rank-tests.html#eq:sign-statistic">(3.9)</a> is the sum of independent
 Bernoulli random variable.</p></li>
 <li><p>That is, we can think of <span class="math inline">\(Z_{i} = I(D_{i} &gt; 0)\)</span> as a random variable with success probability
 <span class="math inline">\(p( \theta )\)</span> where the formula for <span class="math inline">\(p( \theta )\)</span> is
@@ -864,7 +868,7 @@ with <span class="math inline">\(n\)</span> trials and success probability <span
 That is,
 <span class="math display" id="eq:signstat-distribution">\[\begin{equation}
 S_{n} \sim \textrm{Binomial}(n, p(\theta) )
-\tag{3.9}
+\tag{3.10}
 \end{equation}\]</span></p></li>
 <li><p>Because <span class="math inline">\(p(0) = 1/2\)</span>, <span class="math inline">\(S_{n} \sim \textrm{Binomial}(n, 1/2 )\)</span> under <span class="math inline">\(H_{0}\)</span>.</p></li>
 <li><p>Notice that the “null distribution” of the sign statistic is “distribution free”
@@ -880,7 +884,7 @@ where <span class="math inline">\(s_{obs}\)</span> is the observed value of the 
 <a class="sourceLine" id="cb30-2" data-line-number="2">xx &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb30-3" data-line-number="3">sign.stat &lt;-<span class="st"> </span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb30-4" data-line-number="4"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pbinom</span>(sign.stat <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">size=</span><span class="dv">100</span>, <span class="dt">prob=</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) <span class="co">## p-value for sign test</span></a></code></pre></div>
-<pre><code>## [1] 0.9895106</code></pre>
+<pre><code>## [1] 0.3821767</code></pre>
 <ul>
 <li><p>The reason that this is the right expression using <strong>R</strong> is that for any positive integer <span class="math inline">\(w\)</span>
 <span class="math display">\[\begin{equation}
@@ -892,7 +896,7 @@ a binomial random variable with <span class="math inline">\(n\)</span> trials an
 </ul>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">btest &lt;-<span class="st"> </span><span class="kw">binom.test</span>(sign.stat, <span class="dt">n=</span><span class="dv">100</span>, <span class="dt">p=</span><span class="fl">0.5</span>, <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>) </a>
 <a class="sourceLine" id="cb32-2" data-line-number="2">btest<span class="op">$</span>p.value</a></code></pre></div>
-<pre><code>## [1] 0.9895106</code></pre>
+<pre><code>## [1] 0.3821767</code></pre>
 </div>
 <div id="two-sided-sign-test" class="section level4">
 <h4><span class="header-section-number">3.3.1.3</span> Two-sided Sign Test</h4>
@@ -970,9 +974,9 @@ vs. negative values of <span class="math inline">\(D_{i}\)</span>.</p></li>
 <p>Discuss some of these in class</p>
 <p><strong>Exercise 3.4.</strong> Suppose we had data <span class="math inline">\((-2, 1, -1/2, 3/2, 3)\)</span>. What would
 be the value of the Wilcoxon signed rank statistic?</p>
-<p><strong>Exercise 3.5.</strong> Under the assumptions of model <a href="rank-tests.html#eq:general-location">(3.7)</a>, what is
+<p><strong>Exercise 3.5.</strong> Under the assumptions of model <a href="rank-tests.html#eq:general-location">(3.8)</a>, what is
 the density function of <span class="math inline">\(|D_{i}|\)</span> and <span class="math inline">\(-|D_{i}|\)</span>?</p>
-<p><strong>Exercise 3.6.</strong> Under the assumptions of model <a href="rank-tests.html#eq:general-location">(3.7)</a> and
+<p><strong>Exercise 3.6.</strong> Under the assumptions of model <a href="rank-tests.html#eq:general-location">(3.8)</a> and
 assuming that <span class="math inline">\(\theta = 0\)</span>, show that the expectation of the Wilcoxon signed-rank
 statistic is <span class="math inline">\(0\)</span>.</p>
 <hr />
@@ -1048,8 +1052,7 @@ to the Wilcoxon rank sum test. To perform the Wilcoxon signed rank test in <stro
 need to enter data for the <strong>x</strong> argument and leave the <strong>y</strong> argument empty.</li>
 </ul>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">wilcox.test</span>(<span class="dt">x=</span>DD)</a></code></pre></div>
-<pre><code>## Warning in wilcox.test.default(x = DD): cannot compute exact p-value with
-## ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(x = DD): cannot compute exact p-value with ties</code></pre>
 <pre><code>## 
 ##  Wilcoxon signed rank test with continuity correction
 ## 
@@ -1113,29 +1116,29 @@ probability under the assumption that the parameter of interest <span class="mat
 <ul>
 <li><p>Let us consider the sign test for testing <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(\theta &gt; 0\)</span>.</p></li>
 <li><p>The sign test is based on the value of the sign statistic <span class="math inline">\(S_{n}\)</span>.</p></li>
-<li><p>Recalling <a href="rank-tests.html#eq:signstat-distribution">(3.9)</a>, we know that <span class="math inline">\(S_{n} \sim \textrm{Binomial}(n, p(\theta))\)</span>.
+<li><p>Recalling <a href="rank-tests.html#eq:signstat-distribution">(3.10)</a>, we know that <span class="math inline">\(S_{n} \sim \textrm{Binomial}(n, p(\theta))\)</span>.
 Hence,
 <span class="math display" id="eq:approx-signstat">\[\begin{equation}
 \sqrt{n}(\tfrac{S_{n}}{n} - p(\theta)) \longrightarrow \textrm{Normal}\Big( 0, p(\theta)(1 - p(\theta)) \Big) \quad \textrm{as } n \longrightarrow \infty
-\tag{3.10}
+\tag{3.11}
 \end{equation}\]</span></p></li>
 <li><p>The sign test will reject <span class="math inline">\(H_{0}\)</span> when <span class="math inline">\(S_{n} \geq c_{\alpha,n}\)</span> where the constant <span class="math inline">\(c_{\alpha,n}\)</span> is chosen
-so that <span class="math inline">\(P_{H_{0}}( S_{n} \geq c_{\alpha,n} ) = \alpha\)</span>. Using the large-sample approximation <a href="rank-tests.html#eq:approx-signstat">(3.10)</a>, you can
+so that <span class="math inline">\(P_{H_{0}}( S_{n} \geq c_{\alpha,n} ) = \alpha\)</span>. Using the large-sample approximation <a href="rank-tests.html#eq:approx-signstat">(3.11)</a>, you can
 show that
 <span class="math display" id="eq:critical-value-signstat">\[\begin{equation}
 c_{\alpha, n} = \frac{n + \sqrt{n}z_{1-\alpha}}{2}, 
-\tag{3.11}
+\tag{3.12}
 \end{equation}\]</span>
 where <span class="math inline">\(z_{1-\alpha}\)</span> denotes the upper <span class="math inline">\(1 - \alpha\)</span> quantile of the standard normal distribution. In other words,
 <span class="math inline">\(\Phi( z_{1-\alpha}) = 1-\alpha\)</span>.</p></li>
-<li><p>Also, when using large-sample approximation <a href="rank-tests.html#eq:approx-signstat">(3.10)</a>, the power of this test to detect a value of <span class="math inline">\(\theta = \delta\)</span> is given by
+<li><p>Also, when using large-sample approximation <a href="rank-tests.html#eq:approx-signstat">(3.11)</a>, the power of this test to detect a value of <span class="math inline">\(\theta = \delta\)</span> is given by
 <span class="math display" id="eq:powerfn-signstat">\[\begin{eqnarray}
 \gamma_{n}(\delta) &amp;=&amp; P_{\theta=\delta}\{ S_{n} \geq c_{\alpha,n} \} 
 = P_{\theta=\delta}\Bigg\{ \frac{\sqrt{n}(S_{n}/n - p(\delta))}{\sqrt{ p(\delta)(1 - p(\delta)) } } \geq 
 \frac{ \sqrt{n}(c_{\alpha, n}/n - p(\delta)) }{ \sqrt{p(\delta)(1 - p(\delta))}  } \Bigg\}  \nonumber \\
 &amp;=&amp; 1 - \Phi\Bigg( \frac{ \sqrt{n}(c_{\alpha,n}/n - p(\delta)) }{ \sqrt{p(\delta)(1 - p(\delta))}  } \Bigg) \nonumber \\
 &amp;=&amp; 1 - \Phi\Bigg( \frac{ z_{1-\alpha} }{ 2\sqrt{p(\delta)(1 - p(\delta))}  } - \frac{ \sqrt{n}(p(\delta) - 1/2) }{ \sqrt{p(\delta)(1 - p(\delta))}  }\Bigg)
-\tag{3.12}
+\tag{3.13}
 \end{eqnarray}\]</span></p></li>
 <li><p>Notice that the power of the test depends more directly on the term <span class="math inline">\(p(\delta) = P_{\theta = \delta}(D_{i} &gt; 0)\)</span>.
 Recall from Section <a href="rank-tests.html#sign-test">3.3.1</a> that
@@ -1147,13 +1150,13 @@ values for <span class="math inline">\(p(\delta)\)</span> rather than <span clas
 </ul>
 <p><img src="03-rankstat_files/figure-html/unnamed-chunk-21-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
 <hr />
-<p><strong>Exercise 3.7</strong>: Derive the formula for <span class="math inline">\(c_{\alpha, n}\)</span> shown in <a href="rank-tests.html#eq:critical-value-signstat">(3.11)</a>.</p>
+<p><strong>Exercise 3.7</strong>: Derive the formula for <span class="math inline">\(c_{\alpha, n}\)</span> shown in <a href="rank-tests.html#eq:critical-value-signstat">(3.12)</a>.</p>
 <hr />
 </div>
 <div id="power-comparisons-and-asymptotic-relative-efficiency" class="section level3">
 <h3><span class="header-section-number">3.4.2</span> Power Comparisons and Asymptotic Relative Efficiency</h3>
 <ul>
-<li><p>Notice that for the sign statistic power function shown in <a href="rank-tests.html#eq:powerfn-signstat">(3.12)</a>,
+<li><p>Notice that for the sign statistic power function shown in <a href="rank-tests.html#eq:powerfn-signstat">(3.13)</a>,
 we have that
 <span class="math display" id="eq:powerfn-consistent">\[\begin{equation}
 \lim_{n \longrightarrow \infty} \gamma_{n}(\delta)
@@ -1161,12 +1164,12 @@ we have that
 \alpha &amp; \textrm{ if } \delta = 0 \\
 1 &amp; \textrm{ if } \delta &gt; 0
 \end{cases}
-\tag{3.13}
+\tag{3.14}
 \end{equation}\]</span></p></li>
 <li><p>The above type of limit for the power function is will be
 true for most “reasonable” tests.</p></li>
 <li><p>Indeed, a test whose power function satisfies
-<a href="rank-tests.html#eq:powerfn-consistent">(3.13)</a> is typically called a <strong>consistent</strong> tests.</p></li>
+<a href="rank-tests.html#eq:powerfn-consistent">(3.14)</a> is typically called a <strong>consistent</strong> tests.</p></li>
 </ul>
 <hr />
 <ul>
@@ -1201,11 +1204,11 @@ we avoid the problem of the power always converging to <span class="math inline"
 as long as we can find functions <span class="math inline">\(\mu(\cdot)\)</span> and <span class="math inline">\(\sigma(\cdot)\)</span> such that
 <span class="math display" id="eq:asymptotic-v">\[\begin{equation}
 \frac{\sqrt{n}(V_{n} - \mu(\theta_{n}))}{ \sigma(\theta_{n})} \longrightarrow \textrm{Normal}(0, 1) 
-\tag{3.14}
+\tag{3.15}
 \end{equation}\]</span>
 where the test of <span class="math inline">\(H_{0}:\theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; \theta_{0}\)</span>
 is based on the test statistic <span class="math inline">\(V_{n}\)</span> with rejection of <span class="math inline">\(H_{0}\)</span> occurring whenever <span class="math inline">\(V_{n} \geq c_{\alpha, n}\)</span>.
-Statement <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a> asssumes that the distribution of <span class="math inline">\(V_{n}\)</span> is governed by <span class="math inline">\(\theta_{n}\)</span> for each <span class="math inline">\(n\)</span>.</p></li>
+Statement <a href="rank-tests.html#eq:asymptotic-v">(3.15)</a> asssumes that the distribution of <span class="math inline">\(V_{n}\)</span> is governed by <span class="math inline">\(\theta_{n}\)</span> for each <span class="math inline">\(n\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
@@ -1228,9 +1231,9 @@ to achieve power <span class="math inline">\(\beta\)</span>. This is true for an
 <span class="math display">\[\begin{equation}
 c_{\alpha, n} \approx \mu(\theta_{0}) + \frac{ \sigma(\theta_{0})z_{1-\alpha}  }{\sqrt{n}}
 \end{equation}\]</span>
-(This approximation for <span class="math inline">\(c_{\alpha, n}\)</span> comes from the asymptotic statement in <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a>)</p></li>
+(This approximation for <span class="math inline">\(c_{\alpha, n}\)</span> comes from the asymptotic statement in <a href="rank-tests.html#eq:asymptotic-v">(3.15)</a>)</p></li>
 <li><p>Now, consider the power for detecting <span class="math inline">\(H_{A}: \theta = \theta_{A}\)</span> (where we will assume
-that <span class="math inline">\(\theta_{A}\)</span> is “close” to <span class="math inline">\(\theta_{0}\)</span>). Using <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a>,
+that <span class="math inline">\(\theta_{A}\)</span> is “close” to <span class="math inline">\(\theta_{0}\)</span>). Using <a href="rank-tests.html#eq:asymptotic-v">(3.15)</a>,
 the approximate power in this setting is
 <span class="math display">\[\begin{eqnarray}
 P_{\theta_{A}}\Big( V_{n} \geq c_{\alpha, n} \Big)
@@ -1251,10 +1254,10 @@ which reduces to
 n_{\beta}(\theta_{A})
 = \Bigg( \frac{ z_{1-\beta}\sigma(\theta_{A}) - z_{1-\alpha}\sigma(\theta_{0}) }{ \mu(\theta_{0}) - \mu(\theta_{A}) } \Bigg)^{2}
 \approx \Bigg( \frac{ [z_{1-\beta} - z_{1-\alpha}]\sigma(\theta_{0}) }{ (\theta_{A} - \theta_{0})\mu&#39;(\theta_{0})} \Bigg)^{2}
-\tag{3.15}
+\tag{3.16}
 \end{equation}\]</span></p></li>
 <li><p>So, if we were comparing two testing procedures and we computed the approximate sample sizes <span class="math inline">\(n_{\beta}^{1}(\theta_{A})\)</span> and <span class="math inline">\(n_{\beta}^{2}(\theta_{A})\)</span> needed to reach <span class="math inline">\(\beta\)</span> power for the alternative <span class="math inline">\(H_{A}: \theta = \theta_{A}\)</span>, the sample
-size ratio (using approximation <a href="rank-tests.html#eq:approx-sample-size">(3.15)</a>) would be
+size ratio (using approximation <a href="rank-tests.html#eq:approx-sample-size">(3.16)</a>) would be
 <span class="math display">\[\begin{equation}
 \frac{ n_{\beta}^{2}(\theta_{A}) }{n_{\beta}^{1}(\theta_{A}) }
 = \Bigg( \frac{ \mu_{1}&#39;(\theta_{0})\sigma_{2}(\theta_{0}) }{ \mu_{2}&#39;(\theta_{0})\sigma_{1}(\theta_{0})} \Bigg)^{2}
@@ -1283,7 +1286,7 @@ sizes required to have power <span class="math inline">\(\beta\)</span> against 
 in testing the hypothesis <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; 0\)</span>.</p></li>
 <li><p>Notice that the sign test rejects <span class="math inline">\(H_{0}:\theta=0\)</span> for <span class="math inline">\(V_{n} &gt; c_{\alpha,n}\)</span>
 where <span class="math inline">\(V_{n} = S_{n}/n\)</span> and <span class="math inline">\(S_{n}\)</span> is the sign statistic.</p></li>
-<li><p>When <span class="math inline">\(V_{n}\)</span> is defined this way <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a> is satisfied
+<li><p>When <span class="math inline">\(V_{n}\)</span> is defined this way <a href="rank-tests.html#eq:asymptotic-v">(3.15)</a> is satisfied
 when <span class="math inline">\(\mu(\theta) = p(\theta)\)</span> and <span class="math inline">\(\sigma(\theta) = \sqrt{p(\theta)(1 - p(\theta) )}\)</span>
 where <span class="math inline">\(p(\theta) = 1 - F_{\epsilon}( -\theta )\)</span>.</p></li>
 <li><p>Thus, the efficiency of the sign test for testing <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; 0\)</span> is
@@ -1306,7 +1309,7 @@ where <span class="math inline">\(\varepsilon_{i}\)</span> are assumed to have m
 <span class="math display">\[\begin{equation}
 V_{n} = \frac{\bar{D}}{ \hat{\sigma} }
 \end{equation}\]</span></p></li>
-<li><p>Note that <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a> will apply if we choose
+<li><p>Note that <a href="rank-tests.html#eq:asymptotic-v">(3.15)</a> will apply if we choose
 <span class="math display">\[\begin{eqnarray}
 \mu(\theta) &amp;=&amp; E_{\theta}(D_{i}) = \theta \nonumber \\
 \sigma(\theta) &amp;=&amp; \sqrt{\textrm{Var}_{\theta}(D_{i})} = \sqrt{\textrm{Var}(\varepsilon_{i})} = \sigma_{\epsilon}
@@ -1345,7 +1348,7 @@ shift parameter.</p></li>
 &amp;=&amp; \int_{-\infty}^{\infty} \{1 - F_{X}(t) \} f_{Y}(t) dt
 = 1 - \int_{-\infty}^{\infty} F_{Y}(t - \theta) f_{Y}(t) dt
 \end{eqnarray}\]</span></p></li>
-<li><p>You can show that <a href="rank-tests.html#eq:asymptotic-v">(3.14)</a> holds (see e.g, Chapter 14 of <span class="citation">Van der Vaart (<a href="#ref-van2000">2000</a>)</span>)
+<li><p>You can show that <a href="rank-tests.html#eq:asymptotic-v">(3.15)</a> holds (see e.g, Chapter 14 of <span class="citation">Van der Vaart (<a href="#ref-van2000">2000</a>)</span>)
 if you choose <span class="math inline">\(\sigma^{2}(\theta)\)</span> to be
 <span class="math display">\[\begin{eqnarray}
 \sigma^{2}(\theta) &amp;=&amp; \frac{1}{1 - \lambda}\textrm{Var}\{ F_{Y}(X_{i}) \} + \frac{1}{\lambda} \textrm{Var}\{ F_{Y}(Y_{i} - \theta) \}
@@ -1536,7 +1539,7 @@ Laplace
 A linear rank statistic is a statistic <span class="math inline">\(T_{N}\)</span> that can be expressed as
 <span class="math display" id="eq:general-linear-rank">\[\begin{equation}
 T_{N} = \sum_{i=1}^{N} c_{iN} a_{N}\big( R_{i}( \mathbf{Z} ) \big)
-\tag{3.16}
+\tag{3.17}
 \end{equation}\]</span></p></li>
 <li><p>The terms <span class="math inline">\(c_{1N}, \ldots, c_{NN}\)</span> are usually called <strong>coefficients</strong>. These
 are fixed numbers and are not random variables.</p></li>
@@ -1558,7 +1561,7 @@ last <span class="math inline">\(m\)</span> observations were from group 2.</p><
 <span class="math display">\[\begin{equation}
 W = \sum_{i=1}^{n} R_{i}(\mathbf{Z})
 \end{equation}\]</span></p></li>
-<li><p>In this case, the WRS statistic can be expressed in the form <a href="rank-tests.html#eq:general-linear-rank">(3.16)</a>
+<li><p>In this case, the WRS statistic can be expressed in the form <a href="rank-tests.html#eq:general-linear-rank">(3.17)</a>
 if we choose the coefficients to be the following
 <span class="math display">\[\begin{equation}
 c_{iN} = \begin{cases}
@@ -1579,10 +1582,10 @@ a_{N}(i) = i
 is
 <span class="math display" id="eq:expec-linear-rank">\[\begin{equation}
 E(T_{N}) = N\bar{c}_{N}\bar{a}_{N},
-\tag{3.17}
+\tag{3.18}
 \end{equation}\]</span>
 where <span class="math inline">\(\bar{c}_{N} = \frac{1}{N} \sum_{j=1}^{N} c_{jN}\)</span> and <span class="math inline">\(\bar{a}_{N} = \frac{1}{N}\sum_{j=1}^{N} a_{N}(j)\)</span></p></li>
-<li><p>The formula <a href="rank-tests.html#eq:expec-linear-rank">(3.17)</a> for the expectation only uses the fact that <span class="math inline">\(R_{i}(\mathbf{Z})\)</span> has a discrete uniform
+<li><p>The formula <a href="rank-tests.html#eq:expec-linear-rank">(3.18)</a> for the expectation only uses the fact that <span class="math inline">\(R_{i}(\mathbf{Z})\)</span> has a discrete uniform
 distribution. So,
 <span class="math display">\[\begin{equation}
 E\{ a_{N}( R_{i}(\mathbf{Z} ) \}
@@ -1703,7 +1706,7 @@ of <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span> vs. <span cla
 rejecting <span class="math inline">\(H_{0}\)</span> whenever the likelihood ratio is large enough:
 <span class="math display" id="eq:parametric-np-lemma">\[\begin{equation}
 \textrm{Reject } H_{0} \textrm{ if: } \quad \frac{p_{\theta_{A}}(\mathbf{z})}{p_{\theta_{0}}(\mathbf{z})} \geq c_{\alpha, n}
-\tag{3.18}
+\tag{3.19}
 \end{equation}\]</span>
 This is the Neyman-Pearson Lemma.</p></li>
 <li><p>The same property is true if we are considering tests based on ranks. The most powerful test
@@ -1711,9 +1714,9 @@ for testing <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span> vs. 
 <span class="math display" id="eq:nonparametric-np-lemma">\[\begin{equation}
 \textrm{Reject } H_{0} \textrm{ if: } \quad 
 \frac{P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)}{ P_{\theta_{0}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big) } \geq c_{\alpha, n}
-\tag{3.19}
+\tag{3.20}
 \end{equation}\]</span></p></li>
-<li><p>The main difference between <a href="rank-tests.html#eq:parametric-np-lemma">(3.18)</a> and <a href="rank-tests.html#eq:parametric-np-lemma">(3.18)</a> is
+<li><p>The main difference between <a href="rank-tests.html#eq:parametric-np-lemma">(3.19)</a> and <a href="rank-tests.html#eq:parametric-np-lemma">(3.19)</a> is
 that the distribution <span class="math inline">\(P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)\)</span>
 is unknown unless we are willing to make certain distributional assumptions.</p></li>
 <li><p>Nevertheless, we can approximate this probability if <span class="math inline">\(\theta_{A}\)</span> is a location parameter “close” to <span class="math inline">\(\theta_{0}\)</span></p></li>
@@ -1792,11 +1795,13 @@ correspond to the median test.</p></li>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -1804,12 +1809,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -1821,6 +1825,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },
