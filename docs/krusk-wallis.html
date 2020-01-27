@@ -182,8 +182,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.1.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#asymptotic-distribution-and-connection-to-one-way-anova"><i class="fa fa-check"></i><b>4.1.2</b> Asymptotic Distribution and Connection to One-Way ANOVA</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#performing-the-kruskal-wallis-test-in-r"><i class="fa fa-check"></i><b>4.2</b> Performing the Kruskal-Wallis Test in R</a></li>
-<li class="chapter" data-level="4.3" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-sugar-cane-data"><i class="fa fa-check"></i><b>4.3</b> The Sugar Cane Data</a></li>
-<li class="chapter" data-level="4.4" data-path="krusk-wallis.html"><a href="krusk-wallis.html#additional-reading-1"><i class="fa fa-check"></i><b>4.4</b> Additional Reading</a></li>
+<li class="chapter" data-level="4.3" data-path="krusk-wallis.html"><a href="krusk-wallis.html#comparison-of-specific-groups"><i class="fa fa-check"></i><b>4.3</b> Comparison of Specific Groups</a></li>
+<li class="chapter" data-level="4.4" data-path="krusk-wallis.html"><a href="krusk-wallis.html#an-additional-example"><i class="fa fa-check"></i><b>4.4</b> An Additional Example</a></li>
+<li class="chapter" data-level="4.5" data-path="krusk-wallis.html"><a href="krusk-wallis.html#additional-reading-1"><i class="fa fa-check"></i><b>4.5</b> Additional Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a><ul>
 <li class="chapter" data-level="5.1" data-path="permutation.html"><a href="permutation.html#notation"><i class="fa fa-check"></i><b>5.1</b> Notation</a></li>
@@ -595,10 +596,26 @@ value of the Kruskal-Wallis statistic or the Kruskal-Wallis p-value.</li>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
-<div id="the-sugar-cane-data" class="section level2">
-<h2><span class="header-section-number">4.3</span> The Sugar Cane Data</h2>
-<p>in <strong>R</strong> by using the “cane” dataset
-from the <strong>boot</strong> package.</p>
+<div id="comparison-of-specific-groups" class="section level2">
+<h2><span class="header-section-number">4.3</span> Comparison of Specific Groups</h2>
+<ul>
+<li><p>A Kruskal-Wallis test performs a test of the overall homogeneity hypothesis
+<span class="math display">\[\begin{equation}
+H_{0}: F_{1} = F_{2} = \ldots = F_{K}
+\end{equation}\]</span></p></li>
+<li><p>However, a rejection of the homogeneity hypothesis does not indicate which
+group differences are primarily the source of this rejection nor
+does it provide any measure of the “magnitude” of the differences between
+each of the groups.</p></li>
+<li><p>In tradtional one-way ANOVA one will typically report pairwise differences
+in the means with associated confidence intervals.</p></li>
+</ul>
+</div>
+<div id="an-additional-example" class="section level2">
+<h2><span class="header-section-number">4.4</span> An Additional Example</h2>
+<ul>
+<li>We will use the “cane” dataset from the <strong>boot</strong> package.</li>
+</ul>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">library</span>(boot)</a>
 <a class="sourceLine" id="cb60-2" data-line-number="2"><span class="kw">data</span>(cane)</a>
 <a class="sourceLine" id="cb60-3" data-line-number="3"><span class="kw">head</span>(cane)</a></code></pre></div>
@@ -632,7 +649,7 @@ of shoots that are diseased.</p></li>
 ## Kruskal-Wallis chi-squared = 1.1355, df = 3, p-value = 0.7685</code></pre>
 </div>
 <div id="additional-reading-1" class="section level2">
-<h2><span class="header-section-number">4.4</span> Additional Reading</h2>
+<h2><span class="header-section-number">4.5</span> Additional Reading</h2>
 <ul>
 <li>Additional reading which covers the material discussed in this chapter includes:
 <ul>

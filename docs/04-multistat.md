@@ -294,13 +294,27 @@ anova(lm(count ~ spray, data=InsectSprays))
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
+## Comparison of Specific Groups
+
+* A Kruskal-Wallis test performs a test of the overall homogeneity hypothesis
+\begin{equation}
+H_{0}: F_{1} = F_{2} = \ldots = F_{K}
+\end{equation}
+
+* However, a rejection of the homogeneity hypothesis does not indicate which
+group differences are primarily the source of this rejection nor
+does it provide any measure of the "magnitude" of the differences between
+each of the groups.
+
+* In tradtional one-way ANOVA one will typically report pairwise differences
+in the means with associated confidence intervals.
 
 
-## The Sugar Cane Data
+
+## An Additional Example
 
 
-in **R** by using the "cane" dataset 
-from the **boot** package.
+* We will use the "cane" dataset from the **boot** package.
 
 
 ```r
