@@ -37,3 +37,12 @@ this permutation expressed as an ordered list would be
 * If $S$ has $N$ distinct elements, there are $N!$ possible permutations of $S$. 
 
 ## Permutation Tests for the Two-Sample Problem
+
+* A permutation test is motivated by the following reasoning.
+    + If there is no real difference between the two groups, 
+      there is noting "special" about the difference in means
+      between the two groups.
+    + The difference 
+      
+      
+
