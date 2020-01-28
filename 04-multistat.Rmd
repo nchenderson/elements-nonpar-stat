@@ -2,7 +2,12 @@
 
 * We can roughly think of the tests discussed in Chapter 3
 as being related to the parametric tests shown in the table below.
-
+\begin{eqnarray}
+\textbf{Parametric Test} & & \qquad  \textbf{ Nonparametric Tests } \nonumber \\
+      & & \nonumber \\
+\textrm{One-Sample t-test} & & \qquad  \textrm{Wilcoxon Signed Rank/Sign Test} \nonumber \\
+\textrm{Two-Sample t-test} & & \qquad \textrm{Wilcoxon Rank Sum/Normal Scores/Median Test} \nonumber
+\end{eqnarray}
 
 * The **Kruskal-Wallis** test can be though of as the
 nonparametric analogue of one-way analysis of variance (ANOVA).
@@ -252,10 +257,91 @@ group differences are primarily the source of this rejection nor
 does it provide any measure of the "magnitude" of the differences between
 each of the groups.
 
-* In tradtional one-way ANOVA one will typically report pairwise differences
-in the means with associated confidence intervals.
+* Dunn's test is the suggested way to compute pairwise tests of stochatic dominance.
 
+* Performing a series of pairwise Wilcoxon rank sum test can
+lead to violations of transitivity. For example,
+group A is "better" than B which is better than C, but 
+group C is better than A.
 
+* In **R**, Dunn's test can be performed using the **dunn.test** package.
+
+---
+
+* In traditional one-way ANOVA one often reports pairwise differences
+in the means and their associated confidence intervals.
+
+* In the context of a Kruskal-Wallis test, one could
+report pairwise differences in the Hodges-Lehmann estimate
+though other comparisons may also be of interest.
+
+* One nice approach is to use the proportional odds model
+interpretation of the Kruskal-Wallis test and 
+then report the difference in the estimated proportional odds coefficients.
+See Section 7.6 of http://hbiostat.org/doc/bbr.pdf for more details
+on the proportional odds model.
+
+```{r, echo=FALSE, warning=FALSE}
+A <- matrix(0, nrow=15, ncol=2)
+B <- rep(0, 15)
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="A"], InsectSprays$count[InsectSprays$spray=="B"], conf.int=TRUE)
+A[1,] <- tmp$conf.int
+B[1] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="A"], InsectSprays$count[InsectSprays$spray=="C"], conf.int=TRUE)
+A[2,] <- tmp$conf.int
+B[2] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="A"], InsectSprays$count[InsectSprays$spray=="D"], conf.int=TRUE)
+A[3,] <- tmp$conf.int
+B[3] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="A"], InsectSprays$count[InsectSprays$spray=="E"], conf.int=TRUE)
+A[4,] <- tmp$conf.int
+B[4] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="A"], InsectSprays$count[InsectSprays$spray=="F"], conf.int=TRUE)
+A[5,] <- tmp$conf.int
+B[5] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="B"], InsectSprays$count[InsectSprays$spray=="C"], conf.int=TRUE)
+A[6,] <- tmp$conf.int
+B[6] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="B"], InsectSprays$count[InsectSprays$spray=="D"], conf.int=TRUE)
+A[7,] <- tmp$conf.int
+B[7] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="B"], InsectSprays$count[InsectSprays$spray=="E"], conf.int=TRUE)
+A[8,] <- tmp$conf.int
+B[8] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="B"], InsectSprays$count[InsectSprays$spray=="F"], conf.int=TRUE)
+A[9,] <- tmp$conf.int
+B[9] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="C"], InsectSprays$count[InsectSprays$spray=="D"], conf.int=TRUE)
+A[10,] <- tmp$conf.int
+B[10] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="C"], InsectSprays$count[InsectSprays$spray=="E"], conf.int=TRUE)
+A[11,] <- tmp$conf.int
+B[11] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="C"], InsectSprays$count[InsectSprays$spray=="F"], conf.int=TRUE)
+A[12,] <- tmp$conf.int
+B[12] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="D"], InsectSprays$count[InsectSprays$spray=="E"], conf.int=TRUE)
+A[13,] <- tmp$conf.int
+B[13] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="D"], InsectSprays$count[InsectSprays$spray=="F"], conf.int=TRUE)
+A[14,] <- tmp$conf.int
+B[14] <- tmp$estimate
+tmp <- wilcox.test(InsectSprays$count[InsectSprays$spray=="E"], InsectSprays$count[InsectSprays$spray=="F"], conf.int=TRUE)
+A[15,] <- tmp$conf.int
+B[15] <- tmp$estimate                      
+
+par(xpd=NA)
+plot(0,0,type="n", ylim=c(0, 15), xlim=c(-20,20), las=1, yaxt='n', ylab="", 
+     xlab="Difference in Count", main="Pairwise Differences in
+     Hodges-Lehmann Estimates for InsectSpray Data")
+nn <- c("AB", "AC","AD","AE","AF","BC","BD","BE","BF","CD","CE","CF","DE","DF","EF")
+for(k in 1:15) {
+    lines(c(-20,20), c(k,k), lty=2, col="lightgrey")
+    lines(A[k,], c(k,k), lwd=3)
+    text(-23, k, nn[k])
+    points(B[k], k, pch=16, cex=1.2)
+}
+```
 
 ## An Additional Example
 
@@ -282,7 +368,8 @@ of shoots that are diseased.
 cane$prop <- cane$r/cane$n
 ```
 
-* You could certainly argue that 
+* You could certainly argue that a logistic regression model is a better approach here,
+but we will analyze the transformed proportions using the arcsine square root transformation.
 
 ```{r }
 cane$prop.trans <- asin(sqrt(cane$prop))
