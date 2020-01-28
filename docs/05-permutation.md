@@ -42,6 +42,9 @@ this permutation expressed as an ordered list would be
 
 * If $S$ has $N$ distinct elements, there are $N!$ possible permutations of $S$. 
 
+* We will let $\mathcal{S}_{N}$ denote the set of all permutations of the 
+set $\{1, \ldots, N\}$.
+
 ## Permutation Tests for the Two-Sample Problem
 
 * A permutation test is motivated by the following reasoning.
@@ -118,7 +121,7 @@ hist(mean.diff, las=1, col="grey", main="Permutation Distribution of Mean Differ
 abline(v=observed.diff, lwd=3)
 ```
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+![](05-permutation_files/figure-latex/unnamed-chunk-1-1.pdf)<!-- --> 
     
 * The one-sided p-value for the permutation test is
 \begin{eqnarray}
@@ -150,7 +153,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.75
+## [1] 0.76
 ```
     
 ## The Permutation Test as a Conditional Test    

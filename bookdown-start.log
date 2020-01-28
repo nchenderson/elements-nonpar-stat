@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  27 JAN 2020 20:26
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  27 JAN 2020 21:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1174,6 +1174,11 @@ Overfull \hbox (14.77397pt too wide) detected at line 2660
 
 [57] [58]
 Chapter 4.
+
+Overfull \hbox (18.78001pt too wide) in alignment at lines 2726--2731
+ [][][] []
+ []
+
 [59
 
 ] [60] [61] [62] [63]
@@ -1181,24 +1186,31 @@ File: 04-multistat_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type
 pdf)
 <use 04-multistat_files/figure-latex/unnamed-chunk-2-1.pdf>
 [64]
-Overfull \hbox (6.75pt too wide) in paragraph at lines 3087--3087
+Overfull \hbox (6.75pt too wide) in paragraph at lines 3093--3093
 []\TU/lmtt/m/n/10 ## Kruskal-Wallis chi-squared = 54.691, df = 5, p-value = 1.5
 11e-10[] 
  []
 
+
+Underfull \vbox (badness 4792) has occurred while \output is active []
+
 [65]
-File: 04-multistat_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file (type 
+File: 04-multistat_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (type 
 pdf)
-<use 04-multistat_files/figure-latex/unnamed-chunk-9-1.pdf>
+<use 04-multistat_files/figure-latex/unnamed-chunk-7-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[66] [67] [68
+[66] [67]
+File: 04-multistat_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type
+ pdf)
+<use 04-multistat_files/figure-latex/unnamed-chunk-10-1.pdf>
+[68]
+Chapter 5.
+[69
 
 ]
-Chapter 5.
-[69]
-Underfull \hbox (badness 3323) in paragraph at lines 3273--3273
+Underfull \hbox (badness 3323) in paragraph at lines 3308--3308
 []\TU/lmr/bx/n/14.4 Permutation Tests for the Two-Sample
  []
 
@@ -1209,22 +1221,22 @@ e pdf)
 [74] (./bookdown-start.bbl [75] [76
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3569.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3604.
 [77]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 3569.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 3604.
 (./bookdown-start.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3569.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3569.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3604.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3604.
 
 Package rerunfilecheck Info: File `bookdown-start.out' has not changed.
 (rerunfilecheck)             Checksum: A2BA67B298906CBA01EAD4CB65509386.
  ) 
 Here is how much of TeX's memory you used:
- 22648 strings out of 492970
- 425999 string characters out of 6133938
+ 22659 strings out of 492970
+ 426397 string characters out of 6133938
  557524 words of memory out of 5000000
- 26392 multiletter control sequences out of 15000+600000
- 572716 words of font info for 78 fonts, out of 8000000 for 9000
+ 26399 multiletter control sequences out of 15000+600000
+ 572732 words of font info for 80 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  45i,14n,54p,10455b,454s stack positions out of 5000i,500n,10000p,200000b,80000s
 

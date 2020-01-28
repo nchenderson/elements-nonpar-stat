@@ -2,7 +2,12 @@
 
 * We can roughly think of the tests discussed in Chapter 3
 as being related to the parametric tests shown in the table below.
-
+\begin{eqnarray}
+\textbf{Parametric Test} & & \qquad  \textbf{ Nonparametric Tests } \nonumber \\
+      & & \nonumber \\
+\textrm{One-Sample t-test} & & \qquad  \textrm{Wilcoxon Signed Rank/Sign Test} \nonumber \\
+\textrm{Two-Sample t-test} & & \qquad \textrm{Wilcoxon Rank Sum/Normal Scores/Median Test} \nonumber
+\end{eqnarray}
 
 * The **Kruskal-Wallis** test can be though of as the
 nonparametric analogue of one-way analysis of variance (ANOVA).
@@ -252,10 +257,70 @@ group differences are primarily the source of this rejection nor
 does it provide any measure of the "magnitude" of the differences between
 each of the groups.
 
-* In tradtional one-way ANOVA one will typically report pairwise differences
-in the means with associated confidence intervals.
+* Dunn's test is the suggested way to compute pairwise tests of stochatic dominance.
 
+* Performing a series of pairwise Wilcoxon rank sum test can
+lead to violations of transitivity. For example,
+group A is "better" than B which is better than C, but 
+group C is better than A.
 
+* In **R**, Dunn's test can be performed using the **dunn.test** package.
+
+---
+
+* In traditional one-way ANOVA one often reports pairwise differences
+in the means and their associated confidence intervals.
+
+* In the context of a Kruskal-Wallis test, one could
+report pairwise differences in the Hodges-Lehmann estimate
+though other comparisons may also be of interest.
+
+* One nice approach is to use the proportional odds model
+interpretation of the Kruskal-Wallis test and 
+then report the difference in the estimated proportional odds coefficients.
+See Section 7.6 of http://hbiostat.org/doc/bbr.pdf for more details
+on the proportional odds model.
+
+```{r, echo=FALSE, warning=FALSE}
+A <- matrix(0, nrow=15, ncol=2)
+A[1,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="A"], InsectSprays$count[InsectSprays$spray=="B"], conf.int=TRUE,
+                     warning=FALSE)$conf.int
+A[2,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="A"], InsectSprays$count[InsectSprays$spray=="C"], conf.int=TRUE,
+                     warning=FALSE)$conf.int
+A[3,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="A"], InsectSprays$count[InsectSprays$spray=="D"], conf.int=TRUE,
+                     warning=FALSE)$conf.int
+A[4,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="A"], InsectSprays$count[InsectSprays$spray=="E"], conf.int=TRUE, 
+                     warning=FALSE)$conf.int
+A[5,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="A"], InsectSprays$count[InsectSprays$spray=="F"], conf.int=TRUE,
+                     warning=FALSE)$conf.int
+A[6,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="B"], InsectSprays$count[InsectSprays$spray=="C"], conf.int=TRUE,
+                     warning=FALSE)$conf.int
+A[7,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="B"], InsectSprays$count[InsectSprays$spray=="D"], conf.int=TRUE,
+                     warning=FALSE)$conf.int
+A[8,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="B"], InsectSprays$count[InsectSprays$spray=="E"], conf.int=TRUE,
+                     warning=FALSE)$conf.int
+A[9,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="B"], InsectSprays$count[InsectSprays$spray=="F"], conf.int=TRUE,
+                     warning=FALSE)$conf.int
+A[10,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="C"], InsectSprays$count[InsectSprays$spray=="D"], conf.int=TRUE,
+                      warning=FALSE)$conf.int
+A[11,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="C"], InsectSprays$count[InsectSprays$spray=="E"], conf.int=TRUE,
+                      warning=FALSE)$conf.int
+A[12,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="C"], InsectSprays$count[InsectSprays$spray=="F"], conf.int=TRUE,
+                      warning=FALSE)$conf.int
+A[13,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="D"], InsectSprays$count[InsectSprays$spray=="E"], conf.int=TRUE,
+                      warning=FALSE)$conf.int
+A[14,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="D"], InsectSprays$count[InsectSprays$spray=="F"], conf.int=TRUE,
+                      warning=FALSE)$conf.int
+A[15,] <- wilcox.test(InsectSprays$count[InsectSprays$spray=="E"], InsectSprays$count[InsectSprays$spray=="F"], conf.int=TRUE,
+                      warning=FALSE)$conf.int
+
+plot(0,0,type="n", ylim=c(0, 15), xlim=c(-20,20), las=1, yaxt='n', 
+     xlab="Difference in Count", main="Pairwise Differences in
+     Hodges-Lehmann Estimates for InsectSpray Data")
+for(k in 1:15) {
+    lines(A[k,], c(k,k), lwd=2)
+}
+```
 
 ## An Additional Example
 

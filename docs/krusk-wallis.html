@@ -270,7 +270,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 4</span> Rank Tests for Multiple Groups</h1>
 <ul>
 <li><p>We can roughly think of the tests discussed in Chapter 3
-as being related to the parametric tests shown in the table below.</p></li>
+as being related to the parametric tests shown in the table below.
+<span class="math display">\[\begin{eqnarray}
+\textbf{Parametric Test} &amp; &amp; \qquad  \textbf{ Nonparametric Tests } \nonumber \\
+    &amp; &amp; \nonumber \\
+\textrm{One-Sample t-test} &amp; &amp; \qquad  \textrm{Wilcoxon Signed Rank/Sign Test} \nonumber \\
+\textrm{Two-Sample t-test} &amp; &amp; \qquad \textrm{Wilcoxon Rank Sum/Normal Scores/Median Test} \nonumber
+\end{eqnarray}\]</span></p></li>
 <li><p>The <strong>Kruskal-Wallis</strong> test can be though of as the
 nonparametric analogue of one-way analysis of variance (ANOVA).</p></li>
 <li><p>For <span class="math inline">\(K \geq 3\)</span> groups, one-way ANOVA considers the analysis of data
@@ -605,9 +611,27 @@ H_{0}: F_{1} = F_{2} = \ldots = F_{K}
 group differences are primarily the source of this rejection nor
 does it provide any measure of the “magnitude” of the differences between
 each of the groups.</p></li>
-<li><p>In tradtional one-way ANOVA one will typically report pairwise differences
-in the means with associated confidence intervals.</p></li>
+<li><p>Dunn’s test is the suggested way to compute pairwise tests of stochatic dominance.</p></li>
+<li><p>Performing a series of pairwise Wilcoxon rank sum test can
+lead to violations of transitivity. For example,
+group A is “better” than B which is better than C, but
+group C is better than A.</p></li>
+<li><p>In <strong>R</strong>, Dunn’s test can be performed using the <strong>dunn.test</strong> package.</p></li>
 </ul>
+<hr />
+<ul>
+<li><p>In traditional one-way ANOVA one often reports pairwise differences
+in the means and their associated confidence intervals.</p></li>
+<li><p>In the context of a Kruskal-Wallis test, one could
+report pairwise differences in the Hodges-Lehmann estimate
+though other comparisons may also be of interest.</p></li>
+<li><p>One nice approach is to use the proportional odds model
+interpretation of the Kruskal-Wallis test and
+then report the difference in the estimated proportional odds coefficients.
+See Section 7.6 of <a href="http://hbiostat.org/doc/bbr.pdf" class="uri">http://hbiostat.org/doc/bbr.pdf</a> for more details
+on the proportional odds model.</p></li>
+</ul>
+<p><img src="04-multistat_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="an-additional-example" class="section level2">
 <h2><span class="header-section-number">4.4</span> An Additional Example</h2>
@@ -638,7 +662,7 @@ of shoots that are diseased.</p></li>
 </ul>
 <div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">cane<span class="op">$</span>prop.trans &lt;-<span class="st"> </span><span class="kw">asin</span>(<span class="kw">sqrt</span>(cane<span class="op">$</span>prop))</a>
 <a class="sourceLine" id="cb63-2" data-line-number="2"><span class="kw">boxplot</span>(prop.trans <span class="op">~</span><span class="st"> </span>block, <span class="dt">data=</span>cane, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">ylab=</span><span class="st">&quot;number of shoots&quot;</span>)</a></code></pre></div>
-<p><img src="04-multistat_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="04-multistat_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">kruskal.test</span>(prop <span class="op">~</span><span class="st"> </span>block, <span class="dt">data=</span>cane)</a></code></pre></div>
 <pre><code>## 
 ##  Kruskal-Wallis rank sum test

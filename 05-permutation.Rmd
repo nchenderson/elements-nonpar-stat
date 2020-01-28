@@ -42,6 +42,9 @@ this permutation expressed as an ordered list would be
 
 * If $S$ has $N$ distinct elements, there are $N!$ possible permutations of $S$. 
 
+* We will let $\mathcal{S}_{N}$ denote the set of all permutations of the 
+set $\{1, \ldots, N\}$.
+
 ## Permutation Tests for the Two-Sample Problem
 
 * A permutation test is motivated by the following reasoning.
