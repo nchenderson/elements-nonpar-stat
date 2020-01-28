@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  28 JAN 2020 09:34
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  28 JAN 2020 09:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1087,12 +1087,12 @@ Overfull \hbox (12.0pt too wide) in paragraph at lines 1187--1187
    3.39[] 
  []
 
-File: 03-rankstat_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (type p
-df)
-<use 03-rankstat_files/figure-latex/unnamed-chunk-6-1.pdf>
-File: 03-rankstat_files/figure-latex/unnamed-chunk-6-2.pdf Graphic file (type p
-df)
-<use 03-rankstat_files/figure-latex/unnamed-chunk-6-2.pdf>
+File: 03-rankstatLatex_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (t
+ype pdf)
+<use 03-rankstatLatex_files/figure-latex/unnamed-chunk-6-1.pdf>
+File: 03-rankstatLatex_files/figure-latex/unnamed-chunk-6-2.pdf Graphic file (t
+ype pdf)
+<use 03-rankstatLatex_files/figure-latex/unnamed-chunk-6-2.pdf>
 
 Overfull \hbox (37.13559pt too wide) in paragraph at lines 1204--1207
 \TU/lmr/m/n/10 of wine. []
@@ -1120,51 +1120,53 @@ mr/m/n/10 35
  []
 
 [35] [36] [37] [38] [39]
-Underfull \hbox (badness 3108) in paragraph at lines 1687--1690
+Underfull \hbox (badness 3108) in paragraph at lines 1673--1676
 []\TU/lmr/m/n/10 Here, $\OML/lmm/m/it/10 R[]\OT1/lmr/m/n/10 (\OMS/lmsy/m/n/10 j
 \OT1/lmr/bx/n/10 D\OMS/lmsy/m/n/10 j\OT1/lmr/m/n/10 )$ \TU/lmr/m/n/10 is the ra
 nk of the $\OML/lmm/m/it/10 i[]$ \TU/lmr/m/n/10 element from the vector
  []
 
-[40] [41]
-File: 03-rankstat_files/figure-latex/unnamed-chunk-17-1.pdf Graphic file (type 
-pdf)
-<use 03-rankstat_files/figure-latex/unnamed-chunk-17-1.pdf>
+[40]
+File: 03-rankstatLatex_files/figure-latex/unnamed-chunk-17-1.pdf Graphic file (
+type pdf)
+<use 03-rankstatLatex_files/figure-latex/unnamed-chunk-17-1.pdf>
 
-Overfull \hbox (54.0pt too wide) in paragraph at lines 1843--1843
+Underfull \vbox (badness 1436) has occurred while \output is active []
+
+[41]
+Overfull \hbox (54.0pt too wide) in paragraph at lines 1829--1829
 []\TU/lmtt/m/n/10 ## Warning in wilcox.test.default(x = DD): cannot compute exa
 ct p-value with[] 
  []
 
 [42] [43]
-Overfull \hbox (27.63513pt too wide) in alignment at lines 1960--1967
+Overfull \hbox (27.63513pt too wide) in alignment at lines 1946--1953
  [][][] []
  []
 
+File: 03-rankstatLatex_files/figure-latex/unnamed-chunk-21-1.pdf Graphic file (
+type pdf)
+<use 03-rankstatLatex_files/figure-latex/unnamed-chunk-21-1.pdf>
+File: 03-rankstatLatex_files/figure-latex/unnamed-chunk-21-2.pdf Graphic file (
+type pdf)
+<use 03-rankstatLatex_files/figure-latex/unnamed-chunk-21-2.pdf>
 [44]
-File: 03-rankstat_files/figure-latex/unnamed-chunk-21-1.pdf Graphic file (type 
-pdf)
-<use 03-rankstat_files/figure-latex/unnamed-chunk-21-1.pdf>
-File: 03-rankstat_files/figure-latex/unnamed-chunk-21-2.pdf Graphic file (type 
-pdf)
-<use 03-rankstat_files/figure-latex/unnamed-chunk-21-2.pdf>
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [45] [46]
-Overfull \hbox (108.48294pt too wide) in alignment at lines 2095--2102
+Overfull \hbox (108.48294pt too wide) in alignment at lines 2081--2088
  [][][] []
  []
 
 [47] [48] [49] [50] [51] [52] [53] [54] [55]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 2613.
+(Font)              <12> on input line 2599.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 2613.
+(Font)              <8> on input line 2599.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 2613.
+(Font)              <6> on input line 2599.
 [56]
-Overfull \hbox (14.77397pt too wide) detected at line 2660
+Overfull \hbox (14.77397pt too wide) detected at line 2646
 []\OML/lmm/m/it/10 P[][]R[]\OT1/lmr/m/n/10 (\OT1/lmr/bx/n/10 Z\OT1/lmr/m/n/10 )
 \OML/lmm/m/it/10 ; [] ; R[]\OT1/lmr/m/n/10 (\OT1/lmr/bx/n/10 Z\OT1/lmr/m/n/10 )
 [] \OMS/lmsy/m/n/10 ^^Y \OML/lmm/m/it/10 P[][]R[]\OT1/lmr/m/n/10 (\OT1/lmr/bx/n
@@ -1175,69 +1177,74 @@ Overfull \hbox (14.77397pt too wide) detected at line 2660
 [57] [58]
 Chapter 4.
 
-Overfull \hbox (18.78001pt too wide) in alignment at lines 2726--2731
+Overfull \hbox (18.78001pt too wide) in alignment at lines 2712--2717
  [][][] []
  []
 
 [59
 
-] [60] [61] [62] [63]
-File: 04-multistat_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type 
-pdf)
-<use 04-multistat_files/figure-latex/unnamed-chunk-2-1.pdf>
-[64]
-Overfull \hbox (6.75pt too wide) in paragraph at lines 3093--3093
+] [60] [61] [62]
+File: 04-multistatLatex_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (
+type pdf)
+<use 04-multistatLatex_files/figure-latex/unnamed-chunk-2-1.pdf>
+
+Underfull \vbox (badness 5288) has occurred while \output is active []
+
+[63] [64]
+Overfull \hbox (6.75pt too wide) in paragraph at lines 3038--3038
 []\TU/lmtt/m/n/10 ## Kruskal-Wallis chi-squared = 54.691, df = 5, p-value = 1.5
 11e-10[] 
  []
 
-
-Underfull \vbox (badness 4792) has occurred while \output is active []
-
 [65]
-File: 04-multistat_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (type 
-pdf)
-<use 04-multistat_files/figure-latex/unnamed-chunk-7-1.pdf>
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[66] [67]
-File: 04-multistat_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type
- pdf)
-<use 04-multistat_files/figure-latex/unnamed-chunk-10-1.pdf>
-[68]
-Chapter 5.
-[69
+File: 04-multistatLatex_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (
+type pdf)
+<use 04-multistatLatex_files/figure-latex/unnamed-chunk-7-1.pdf>
+[66]
+File: 04-multistatLatex_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file 
+(type pdf)
+<use 04-multistatLatex_files/figure-latex/unnamed-chunk-10-1.pdf>
+[67] [68
 
 ]
-Underfull \hbox (badness 3323) in paragraph at lines 3309--3309
+Chapter 5.
+[69]
+Underfull \hbox (badness 3323) in paragraph at lines 3254--3254
 []\TU/lmr/bx/n/14.4 Permutation Tests for the Two-Sample
  []
 
-[70] [71] [72] [73]
-File: 05-permutation_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (typ
-e pdf)
-<use 05-permutation_files/figure-latex/unnamed-chunk-1-1.pdf>
-[74] (./bookdown-start.bbl [75] [76
+
+Overfull \hbox (5.30002pt too wide) in paragraph at lines 3298--3316
+ [][] 
+ []
+
+[70]
+File: 05-permutationLatex_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file
+ (type pdf)
+<use 05-permutationLatex_files/figure-latex/unnamed-chunk-1-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[71] [72] (./bookdown-start.bbl [73] [74
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3606.
-[77]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 3606.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3405.
+[75]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 3405.
 (./bookdown-start.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3606.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3606.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3405.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3405.
 
 Package rerunfilecheck Info: File `bookdown-start.out' has not changed.
 (rerunfilecheck)             Checksum: A2BA67B298906CBA01EAD4CB65509386.
  ) 
 Here is how much of TeX's memory you used:
  22659 strings out of 492970
- 426397 string characters out of 6133938
- 557524 words of memory out of 5000000
+ 426547 string characters out of 6133938
+ 560524 words of memory out of 5000000
  26399 multiletter control sequences out of 15000+600000
  572732 words of font info for 80 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  45i,14n,54p,10455b,454s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on bookdown-start.pdf (77 pages).
+Output written on bookdown-start.pdf (75 pages).

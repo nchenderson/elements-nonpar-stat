@@ -75,22 +75,28 @@ denote the corresponding permuted dataset
 
 
 
-<table border=1>
-<caption align="bottom"> Example of Permuting a Vector of Responses.
-              This example assumes n=m=5. </caption>
-<tr> <th>  </th> <th> OriginalData </th> <th> Perm1 </th> <th> Perm2 </th> <th> Perm3 </th> <th> Perm4 </th> <th> Perm5 </th>  </tr>
-  <tr> <td align="center"> z1 </td> <td align="center"> 0.60 </td> <td align="center"> -0.60 </td> <td align="center"> 0.60 </td> <td align="center"> -0.90 </td> <td align="center"> 0.70 </td> <td align="center"> 0.60 </td> </tr>
-  <tr> <td align="center"> z2 </td> <td align="center"> -0.80 </td> <td align="center"> -1.40 </td> <td align="center"> -0.60 </td> <td align="center"> 0.70 </td> <td align="center"> -0.40 </td> <td align="center"> -0.60 </td> </tr>
-  <tr> <td align="center"> z3 </td> <td align="center"> -0.60 </td> <td align="center"> 0.70 </td> <td align="center"> 0.20 </td> <td align="center"> 0.60 </td> <td align="center"> -1.40 </td> <td align="center"> -0.80 </td> </tr>
-  <tr> <td align="center"> z4 </td> <td align="center"> -0.90 </td> <td align="center"> 0.20 </td> <td align="center"> -0.40 </td> <td align="center"> 0.20 </td> <td align="center"> 0.20 </td> <td align="center"> 0.30 </td> </tr>
-  <tr> <td align="center"> z5 </td> <td align="center"> 0.30 </td> <td align="center"> -0.40 </td> <td align="center"> -1.30 </td> <td align="center"> -0.40 </td> <td align="center"> -0.90 </td> <td align="center"> -0.40 </td> </tr>
-  <tr> <td align="center"> z6 </td> <td align="center"> -1.30 </td> <td align="center"> -1.30 </td> <td align="center"> -1.40 </td> <td align="center"> -0.60 </td> <td align="center"> -0.80 </td> <td align="center"> 0.70 </td> </tr>
-  <tr> <td align="center"> z7 </td> <td align="center"> 0.20 </td> <td align="center"> 0.30 </td> <td align="center"> 0.70 </td> <td align="center"> -1.40 </td> <td align="center"> 0.30 </td> <td align="center"> -0.90 </td> </tr>
-  <tr> <td align="center"> z8 </td> <td align="center"> 0.70 </td> <td align="center"> 0.60 </td> <td align="center"> 0.30 </td> <td align="center"> -1.30 </td> <td align="center"> 0.60 </td> <td align="center"> 0.20 </td> </tr>
-  <tr> <td align="center"> z9 </td> <td align="center"> -1.40 </td> <td align="center"> -0.90 </td> <td align="center"> -0.80 </td> <td align="center"> 0.30 </td> <td align="center"> -0.60 </td> <td align="center"> -1.40 </td> </tr>
-  <tr> <td align="center"> z10 </td> <td align="center"> -0.40 </td> <td align="center"> -0.80 </td> <td align="center"> -0.90 </td> <td align="center"> -0.80 </td> <td align="center"> -1.30 </td> <td align="center"> -1.30 </td> </tr>
-  <tr> <td align="center"> mean difference </td> <td align="center"> 0.16 </td> <td align="center"> 0.12 </td> <td align="center"> 0.12 </td> <td align="center"> 0.80 </td> <td align="center"> 0.00 </td> <td align="center"> 0.36 </td> </tr>
-   </table>
+\begin{table}[ht]
+\centering
+\begin{tabular}{ccccccc}
+  \hline
+ & OriginalData & Perm1 & Perm2 & Perm3 & Perm4 & Perm5 \\ 
+  \hline
+z1 & 0.60 & -0.60 & 0.60 & -0.90 & 0.70 & 0.60 \\ 
+  z2 & -0.80 & -1.40 & -0.60 & 0.70 & -0.40 & -0.60 \\ 
+  z3 & -0.60 & 0.70 & 0.20 & 0.60 & -1.40 & -0.80 \\ 
+  z4 & -0.90 & 0.20 & -0.40 & 0.20 & 0.20 & 0.30 \\ 
+  z5 & 0.30 & -0.40 & -1.30 & -0.40 & -0.90 & -0.40 \\ 
+  z6 & -1.30 & -1.30 & -1.40 & -0.60 & -0.80 & 0.70 \\ 
+  z7 & 0.20 & 0.30 & 0.70 & -1.40 & 0.30 & -0.90 \\ 
+  z8 & 0.70 & 0.60 & 0.30 & -1.30 & 0.60 & 0.20 \\ 
+  z9 & -1.40 & -0.90 & -0.80 & 0.30 & -0.60 & -1.40 \\ 
+  z10 & -0.40 & -0.80 & -0.90 & -0.80 & -1.30 & -1.30 \\ 
+  mean difference & 0.16 & 0.12 & 0.12 & 0.80 & 0.00 & 0.36 \\ 
+   \hline
+\end{tabular}
+\caption{Example of Permuting a Vector of Responses.
+              This example assumes n=m=5.} 
+\end{table}
 
 * The columns in the above table are just permutations of the original data $\mathbf{Z}$.
 
@@ -122,7 +128,7 @@ hist(mean.diff, las=1, col="grey", main="Permutation Distribution of Mean Differ
 abline(v=observed.diff, lwd=3)
 ```
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+![](05-permutationLatex_files/figure-latex/unnamed-chunk-1-1.pdf)<!-- --> 
     
 * The one-sided p-value for the permutation test is
 \begin{eqnarray}
@@ -154,7 +160,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.75
+## [1] 0.77
 ```
     
 ## The Permutation Test as a Conditional Test    

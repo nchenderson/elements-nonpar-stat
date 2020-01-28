@@ -123,18 +123,24 @@ the Kruskal-Wallis test.
 
 **An Example**
 
-<table border=1>
-<tr> <th> Group </th> <th> Y </th> <th> Rank </th>  </tr>
-  <tr> <td align="center"> Group 1 </td> <td align="center"> 1.00 </td> <td align="center"> 8 </td> </tr>
-  <tr> <td align="center"> Group 1 </td> <td align="center"> -1.20 </td> <td align="center"> 2 </td> </tr>
-  <tr> <td align="center"> Group 1 </td> <td align="center"> -1.50 </td> <td align="center"> 1 </td> </tr>
-  <tr> <td align="center"> Group 2 </td> <td align="center"> 0.00 </td> <td align="center"> 5 </td> </tr>
-  <tr> <td align="center"> Group 2 </td> <td align="center"> -0.10 </td> <td align="center"> 4 </td> </tr>
-  <tr> <td align="center"> Group 2 </td> <td align="center"> 1.10 </td> <td align="center"> 9 </td> </tr>
-  <tr> <td align="center"> Group 3 </td> <td align="center"> 0.90 </td> <td align="center"> 7 </td> </tr>
-  <tr> <td align="center"> Group 3 </td> <td align="center"> -0.40 </td> <td align="center"> 3 </td> </tr>
-  <tr> <td align="center"> Group 3 </td> <td align="center"> 0.60 </td> <td align="center"> 6 </td> </tr>
-   </table>
+\begin{table}[ht]
+\centering
+\begin{tabular}{ccc}
+  \hline
+Group & Y & Rank \\ 
+  \hline
+Group 1 & 1.00 & 8 \\ 
+  Group 1 & -1.20 & 2 \\ 
+  Group 1 & -1.50 & 1 \\ 
+  Group 2 & 0.00 & 5 \\ 
+  Group 2 & -0.10 & 4 \\ 
+  Group 2 & 1.10 & 9 \\ 
+  Group 3 & 0.90 & 7 \\ 
+  Group 3 & -0.40 & 3 \\ 
+  Group 3 & 0.60 & 6 \\ 
+   \hline
+\end{tabular}
+\end{table}
 
 * In this case, $N = 9$, $\bar{R}_{1.} = 11/3$, $\bar{R}_{2.} = 6$, and $\bar{R}_{3.} = 16/3$. The Kruskall-Wallis
 statistic is
@@ -229,7 +235,7 @@ for Poisson-distributed data).
 boxplot(sqrt(count) ~ spray, data=InsectSprays,las=1, ylab="square root of insect counts")
 ```
 
-<img src="04-multistat_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+![](04-multistatLatex_files/figure-latex/unnamed-chunk-2-1.pdf)<!-- --> 
 
 ---
 
@@ -335,7 +341,7 @@ then report the difference in the estimated proportional odds coefficients.
 See Section 7.6 of http://hbiostat.org/doc/bbr.pdf for more details
 on the proportional odds model.
 
-<img src="04-multistat_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+![](04-multistatLatex_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
 
 ## An Additional Example
 
@@ -383,7 +389,7 @@ cane$prop.trans <- asin(sqrt(cane$prop))
 boxplot(prop.trans ~ block, data=cane, las=1, ylab="number of shoots")
 ```
 
-<img src="04-multistat_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+![](04-multistatLatex_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
 
 
 ```r

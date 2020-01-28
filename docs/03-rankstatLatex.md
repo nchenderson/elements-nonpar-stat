@@ -429,7 +429,7 @@ wine2$Type <- factor(wine2$Type)
 ```
 
 * Let's consider the difference in the level of magnesium across the two types of wine.
-<img src="03-rankstat_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-6-2.png" width="672" />
+![](03-rankstatLatex_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> ![](03-rankstatLatex_files/figure-latex/unnamed-chunk-6-2.pdf)<!-- --> 
 
 * Suppose we are interested in testing whether or not magnesium levels in 
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
@@ -527,7 +527,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.82
+## [1] 0.815
 ```
 
 
@@ -633,13 +633,19 @@ Common examples include
     + comparison of "matched" individuals who are similar (e.g., same age, sex, education, etc.)
     + comparing consistency of measurements made on the same objects
 
-<table border=1>
-<tr> <th>  </th> <th> Baseline_Measure </th> <th> Post_Treatment_Measure </th>  </tr>
-  <tr> <td align="center"> Patient 1 </td> <td align="center"> Y1 </td> <td align="center"> X1 </td> </tr>
-  <tr> <td align="center"> Patient 2 </td> <td align="center"> Y2 </td> <td align="center"> X2 </td> </tr>
-  <tr> <td align="center"> Patient 3 </td> <td align="center"> Y3 </td> <td align="center"> X3 </td> </tr>
-  <tr> <td align="center"> Patient 4 </td> <td align="center"> Y4 </td> <td align="center"> X4 </td> </tr>
-   </table>
+\begin{table}[ht]
+\centering
+\begin{tabular}{ccc}
+  \hline
+ & Baseline\_Measure & Post\_Treatment\_Measure \\ 
+  \hline
+Patient 1 & Y1 & X1 \\ 
+  Patient 2 & Y2 & X2 \\ 
+  Patient 3 & Y3 & X3 \\ 
+  Patient 4 & Y4 & X4 \\ 
+   \hline
+\end{tabular}
+\end{table}
    
 * In such cases, we have observations $X_{i}$ and $Y_{i}$ for $i = 1,\ldots n$ where
 it is not necessarily reasonable to think of $X_{i}$ and $Y_{i}$ as independent.
@@ -703,7 +709,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.6178233
+## [1] 0.1356265
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -721,7 +727,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.6178233
+## [1] 0.1356265
 ```
 
 #### Two-sided Sign Test
@@ -887,7 +893,7 @@ DD <- DD[DD!=0]
 hist(DD, main="Meat Data", xlab="Difference in Measured Fat Percentage", las=1)
 ```
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+![](03-rankstatLatex_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
 
 ```r
 summary(DD)
@@ -1050,7 +1056,7 @@ of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
 values for $p(\delta)$ rather than $\delta$ itself. Plus, $p(\delta)$ has the direct interpretation
 $p(\delta) = P_{\theta=\delta}( D_{i} > 0)$.
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-21-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-21-2.png" width="672" />
+![](03-rankstatLatex_files/figure-latex/unnamed-chunk-21-1.pdf)<!-- --> ![](03-rankstatLatex_files/figure-latex/unnamed-chunk-21-2.pdf)<!-- --> 
 
 
 ---
