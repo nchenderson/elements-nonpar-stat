@@ -405,20 +405,20 @@ head(wine)
 ```
 
 ```
-##   Type Alcohol Malic  Ash Alcalinity Magnesium Phenols Flavanoids
-## 1    1   14.23  1.71 2.43       15.6       127    2.80       3.06
-## 2    1   13.20  1.78 2.14       11.2       100    2.65       2.76
-## 3    1   13.16  2.36 2.67       18.6       101    2.80       3.24
-## 4    1   14.37  1.95 2.50       16.8       113    3.85       3.49
-## 5    1   13.24  2.59 2.87       21.0       118    2.80       2.69
-## 6    1   14.20  1.76 2.45       15.2       112    3.27       3.39
-##   Nonflavanoids Proanthocyanins Color  Hue Dilution Proline
-## 1          0.28            2.29  5.64 1.04     3.92    1065
-## 2          0.26            1.28  4.38 1.05     3.40    1050
-## 3          0.30            2.81  5.68 1.03     3.17    1185
-## 4          0.24            2.18  7.80 0.86     3.45    1480
-## 5          0.39            1.82  4.32 1.04     2.93     735
-## 6          0.34            1.97  6.75 1.05     2.85    1450
+##   Type Alcohol Malic  Ash Alcalinity Magnesium Phenols Flavanoids Nonflavanoids
+## 1    1   14.23  1.71 2.43       15.6       127    2.80       3.06          0.28
+## 2    1   13.20  1.78 2.14       11.2       100    2.65       2.76          0.26
+## 3    1   13.16  2.36 2.67       18.6       101    2.80       3.24          0.30
+## 4    1   14.37  1.95 2.50       16.8       113    3.85       3.49          0.24
+## 5    1   13.24  2.59 2.87       21.0       118    2.80       2.69          0.39
+## 6    1   14.20  1.76 2.45       15.2       112    3.27       3.39          0.34
+##   Proanthocyanins Color  Hue Dilution Proline
+## 1            2.29  5.64 1.04     3.92    1065
+## 2            1.28  4.38 1.05     3.40    1050
+## 3            2.81  5.68 1.03     3.17    1185
+## 4            2.18  7.80 0.86     3.45    1480
+## 5            1.82  4.32 1.04     2.93     735
+## 6            1.97  6.75 1.05     2.85    1450
 ```
 
 * This dataset contains three types of wine. We will only consider the first two. 
@@ -429,7 +429,7 @@ wine2$Type <- factor(wine2$Type)
 ```
 
 * Let's consider the difference in the level of magnesium across the two types of wine.
-![](03-rankstat_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-6-2.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-6-2.png" width="672" />
 
 * Suppose we are interested in testing whether or not magnesium levels in 
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
@@ -527,7 +527,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.9
+## [1] 0.74
 ```
 
 
@@ -703,7 +703,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.8158992
+## [1] 0.8643735
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -721,7 +721,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.8158992
+## [1] 0.8643735
 ```
 
 #### Two-sided Sign Test
@@ -887,7 +887,7 @@ DD <- DD[DD!=0]
 hist(DD, main="Meat Data", xlab="Difference in Measured Fat Percentage", las=1)
 ```
 
-![](03-rankstat_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 ```r
 summary(DD)
@@ -924,8 +924,7 @@ wilcox.test(x=DD)
 ```
 
 ```
-## Warning in wilcox.test.default(x = DD): cannot compute exact p-value with
-## ties
+## Warning in wilcox.test.default(x = DD): cannot compute exact p-value with ties
 ```
 
 ```
@@ -1050,7 +1049,7 @@ of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
 values for $p(\delta)$ rather than $\delta$ itself. Plus, $p(\delta)$ has the direct interpretation
 $p(\delta) = P_{\theta=\delta}( D_{i} > 0)$.
 
-![](03-rankstat_files/figure-latex/unnamed-chunk-21-1.pdf)<!-- --> ![](03-rankstat_files/figure-latex/unnamed-chunk-21-2.pdf)<!-- --> 
+<img src="03-rankstat_files/figure-html/unnamed-chunk-21-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-21-2.png" width="672" />
 
 
 ---

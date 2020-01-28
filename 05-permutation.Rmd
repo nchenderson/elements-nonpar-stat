@@ -1,11 +1,5 @@
 # Permutation Tests {#permutation}
 
-* Permutation tests are a useful tool to avoid having to depend on
-specific parametric assumptions.
-
-* Permutation tests are also useful in more complex modern applications where it can be 
-difficult to work out the theoretical null distribution of a certain test statistic.
-
 ## Notation
 
 * A **permutation** $\pi$ of a set $S$ is a function $\pi: S \longrightarrow S$ is a
@@ -42,119 +36,13 @@ this permutation expressed as an ordered list would be
 
 * If $S$ has $N$ distinct elements, there are $N!$ possible permutations of $S$. 
 
-* We will let $\mathcal{S}_{N}$ denote the set of all permutations of the 
-set $\{1, \ldots, N\}$.
-
 ## Permutation Tests for the Two-Sample Problem
 
 * A permutation test is motivated by the following reasoning.
     + If there is no real difference between the two groups, 
       there is noting "special" about the difference in means
       between the two groups.
-    + The observed difference in the mean between the two groups
-      should not be notably different than mean differences from
-      randomly formed groups.
-    + Forming "random" groups can be done by using many permutations
-      of the original data.
-
----      
-
-* Suppose we have observations from two groups $X_{1}, \ldots, X_{n} \sim F_{X}$
-and $Y_{1}, \ldots, Y_{m} \sim F_{Y}$.
-
-* Let $\mathbf{Z} = (Z_{1}, \ldots, Z_{N})$ denote pooled data
-\begin{equation}
-(Z_{1}, \ldots, Z_{N}) = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})
-\end{equation}
-
-* For a permutation $\pi$ of $\{1, \ldots, N\}$, we will let $\mathbf{Z}_{\pi}$
-denote the corresponding permuted dataset
-\begin{equation}
-\mathbf{Z}_{\pi} = (Z_{\pi(1)}, Z_{\pi(2)}, \ldots, Z_{\pi(N)})
-\end{equation}
-
-
-
-```{r kable, echo=FALSE, results="asis"}
-library(xtable)
-z <- c(0.6, -0.8, -0.6, -0.9, 0.3, -1.3, 0.2, 0.7, -1.4, -0.4)
-xx <- z
-xx2 <- xx[c(3,9,8,7,10,6,5,1,4,2)]
-xx3 <- xx[c(1,3,7,10,6,9,8,5,2,4)]
-xx4 <- xx[c(4,8,1,7,10,3,9,6,5,2)]
-xx5 <- xx[c(8,10,9,7,4,2,5,1,3,6)]
-xx6 <- xx[c(1,3,2,5,10,8,4,7,9,6)]
-theta.hat <- c(mean(xx[1:5]) - mean(xx[6:10]), mean(xx2[1:5]) - mean(xx2[6:10]),
-               mean(xx3[1:5]) - mean(xx3[6:10]), mean(xx4[1:5]) - mean(xx4[6:10]),
-               mean(xx5[1:5]) - mean(xx5[6:10]), mean(xx6[1:5]) - mean(xx6[6:10]))
-A <- data.frame(OriginalData=c(xx, theta.hat[1]), Perm1=c(xx2, theta.hat[2]), Perm2=c(xx3, theta.hat[3]), Perm3=c(xx4, theta.hat[4]), 
-                Perm4=c(xx5, theta.hat[5]), Perm5=c(xx6, theta.hat[6]))
-rownames(A) <- c("z1", "z2", "z3", "z4", "z5", "z6", "z7", "z8", "z9", "z10", "mean difference")
-tab <- xtable(A, digits=c(2, 2, 2, 2, 2, 2,2), align=rep("c", 7), caption="Example of Permuting a Vector of Responses")
-print(tab, type="html", comment=FALSE)
-```
-
-* The columns in the above table are just permutations of the original data $\mathbf{Z}$.
-
-* Suppose we want to base a test on the difference in the means between the two groups
-\begin{equation}
-T_{N}(\mathbf{Z}) = \bar{X} - \bar{Y} = \frac{1}{n}\sum_{i=1}^{n} X_{i} - \frac{1}{m}\sum_{j=1}^{m} Y_{j}
-\end{equation}
-
-* We will let $t_{obs}$ denote the observed value of the mean difference. That is, 
-$t_{obs} = T_{N}(\mathbf{Z}_{obs})$, where $\mathbf{Z}_{obs}$ is the vector of the observed data.
-
-* Under the null hypothesis that $F_{X} = F_{Y}$, the observed mean difference 
- should not be "abnormal" when compared with the mean differences from 
-many other permutations of the data.
-
-```{r}
-z <- c(0.6, -0.8, -0.6, -0.9, 0.3, -1.3, 0.2, 0.7, -1.4, -0.4)
-observed.diff <- mean(z[1:5]) - mean(z[6:10])
-nreps <- 1000
-mean.diff <- rep(NA, nreps)
-for(k in 1:nreps) {
-    ss <- sample(1:10, size=10)  ## draw a random permutation
-    z.perm <- z[ss]   ## form the permuted dataset
-    mean.diff[k] <- mean(z.perm[1:5]) - mean(z.perm[6:10]) ## compute mean difference
-                                                           ## for permuted dataset
-}
-hist(mean.diff, las=1, col="grey", main="Permutation Distribution of Mean Difference")
-abline(v=observed.diff, lwd=3)
-```
-    
-* The one-sided p-value for the permutation test is
-\begin{eqnarray}
-\textrm{p-value} &=& \frac{\textrm{number of permutations such that } T_{N} \geq t_{obs}}{ N! } \nonumber \\
-&=& \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(\mathbf{Z}_{\pi}) \geq t_{obs} \Big) \nonumber
-\end{eqnarray}
-
-* The two-sided p-value for the two-sample problem would be
-\begin{equation}
-\textrm{p-value} 
-= \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( \Big| T_{N}(\mathbf{Z}_{\pi}) \Big|  \geq |t_{obs}| \Big) \nonumber
-\end{equation}
-
-* As we did when producing the above histogram, the permutation-test p-value is
-often computed by using a large number of random permutations rather
-than computing the test statistic for every possible permutation.
-
-* The Monte Carlo permutation p-value is defined as
-\begin{equation}
-\textrm{p-value}_{mc} = \frac{1}{S+1}\Bigg[ 1 +  \sum_{s = 1}^{S} I\Big( T_{N}(\mathbf{Z}_{\pi_{k}}) \geq t_{obs} \Big) \Bigg]
-\end{equation}
-where $\pi_{1}, \ldots, \pi_{S}$ are randomly drawn permutations
-
-* The two-sided (Monte Carlo) p-value for the example shown in the above Table is
-```{r}
-pval.mc <- (1 + sum(abs(mean.diff) >= abs(observed.diff)))/(nreps + 1)
-round(pval.mc, 2)
-```
-    
-## The Permutation Test as a Conditional Test    
+    + The difference 
       
-* A permutation test is an example of a **conditional test**.
-
-
       
 

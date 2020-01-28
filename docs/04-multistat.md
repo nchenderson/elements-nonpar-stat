@@ -2,12 +2,7 @@
 
 * We can roughly think of the tests discussed in Chapter 3
 as being related to the parametric tests shown in the table below.
-\begin{eqnarray}
-\textbf{Parametric Test} & & \qquad  \textbf{ Nonparametric Tests } \nonumber \\
-      & & \nonumber \\
-\textrm{One-Sample t-test} & & \qquad  \textrm{Wilcoxon Signed Rank/Sign Test} \nonumber \\
-\textrm{Two-Sample t-test} & & \qquad \textrm{Wilcoxon Rank Sum/Normal Scores/Median Test} \nonumber
-\end{eqnarray}
+
 
 * The **Kruskal-Wallis** test can be though of as the
 nonparametric analogue of one-way analysis of variance (ANOVA).
@@ -229,7 +224,7 @@ for Poisson-distributed data).
 boxplot(sqrt(count) ~ spray, data=InsectSprays,las=1, ylab="square root of insect counts")
 ```
 
-![](04-multistat_files/figure-latex/unnamed-chunk-2-1.pdf)<!-- --> 
+<img src="04-multistat_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 ---
 
@@ -311,31 +306,10 @@ group differences are primarily the source of this rejection nor
 does it provide any measure of the "magnitude" of the differences between
 each of the groups.
 
-* Dunn's test is the suggested way to compute pairwise tests of stochatic dominance.
+* In tradtional one-way ANOVA one will typically report pairwise differences
+in the means with associated confidence intervals.
 
-* Performing a series of pairwise Wilcoxon rank sum test can
-lead to violations of transitivity. For example,
-group A is "better" than B which is better than C, but 
-group C is better than A.
 
-* In **R**, Dunn's test can be performed using the **dunn.test** package.
-
----
-
-* In traditional one-way ANOVA one often reports pairwise differences
-in the means and their associated confidence intervals.
-
-* In the context of a Kruskal-Wallis test, one could
-report pairwise differences in the Hodges-Lehmann estimate
-though other comparisons may also be of interest.
-
-* One nice approach is to use the proportional odds model
-interpretation of the Kruskal-Wallis test and 
-then report the difference in the estimated proportional odds coefficients.
-See Section 7.6 of http://hbiostat.org/doc/bbr.pdf for more details
-on the proportional odds model.
-
-![](04-multistat_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
 
 ## An Additional Example
 
@@ -382,7 +356,7 @@ cane$prop.trans <- asin(sqrt(cane$prop))
 boxplot(prop.trans ~ block, data=cane, las=1, ylab="number of shoots")
 ```
 
-![](04-multistat_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
+<img src="04-multistat_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 
 ```r

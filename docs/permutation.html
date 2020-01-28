@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Permutation Tests | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Permutation Tests | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -186,7 +189,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a><ul>
 <li class="chapter" data-level="5.1" data-path="permutation.html"><a href="permutation.html#notation"><i class="fa fa-check"></i><b>5.1</b> Notation</a></li>
 <li class="chapter" data-level="5.2" data-path="permutation.html"><a href="permutation.html#permutation-tests-for-the-two-sample-problem"><i class="fa fa-check"></i><b>5.2</b> Permutation Tests for the Two-Sample Problem</a></li>
-<li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3</b> The Permutation Test as a Conditional Test</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
 <li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-3"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
@@ -268,12 +270,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="permutation" class="section level1">
 <h1><span class="header-section-number">Chapter 5</span> Permutation Tests</h1>
-<ul>
-<li><p>Permutation tests are a useful tool to avoid having to depend on
-specific parametric assumptions.</p></li>
-<li><p>Permutation tests are also useful in more complex modern applications where it can be
-difficult to work out the theoretical null distribution of a certain test statistic.</p></li>
-</ul>
 <div id="notation" class="section level2">
 <h2><span class="header-section-number">5.1</span> Notation</h2>
 <ul>
@@ -303,8 +299,6 @@ this permutation expressed as an ordered list would be
 \pi_{6} &amp;=&amp; (2, 3, 1) \nonumber  
 \end{eqnarray}\]</span></p></li>
 <li><p>If <span class="math inline">\(S\)</span> has <span class="math inline">\(N\)</span> distinct elements, there are <span class="math inline">\(N!\)</span> possible permutations of <span class="math inline">\(S\)</span>.</p></li>
-<li><p>We will let <span class="math inline">\(\mathcal{S}_{N}\)</span> denote the set of all permutations of the
-set <span class="math inline">\(\{1, \ldots, N\}\)</span>.</p></li>
 </ul>
 </div>
 <div id="permutation-tests-for-the-two-sample-problem" class="section level2">
@@ -315,361 +309,8 @@ set <span class="math inline">\(\{1, \ldots, N\}\)</span>.</p></li>
 <li>If there is no real difference between the two groups,
 there is noting “special” about the difference in means
 between the two groups.</li>
-<li>The observed difference in the mean between the two groups
-should not be notably different than mean differences from
-randomly formed groups.</li>
-<li>Forming “random” groups can be done by using many permutations
-of the original data.</li>
+<li>The difference</li>
 </ul></li>
-</ul>
-<hr />
-<ul>
-<li><p>Suppose we have observations from two groups <span class="math inline">\(X_{1}, \ldots, X_{n} \sim F_{X}\)</span>
-and <span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim F_{Y}\)</span>.</p></li>
-<li><p>Let <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldots, Z_{N})\)</span> denote pooled data
-<span class="math display">\[\begin{equation}
-(Z_{1}, \ldots, Z_{N}) = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})
-\end{equation}\]</span></p></li>
-<li><p>For a permutation <span class="math inline">\(\pi\)</span> of <span class="math inline">\(\{1, \ldots, N\}\)</span>, we will let <span class="math inline">\(\mathbf{Z}_{\pi}\)</span>
-denote the corresponding permuted dataset
-<span class="math display">\[\begin{equation}
-\mathbf{Z}_{\pi} = (Z_{\pi(1)}, Z_{\pi(2)}, \ldots, Z_{\pi(N)})
-\end{equation}\]</span></p></li>
-</ul>
-<table border="1">
-<caption align="bottom">
-Example of Permuting a Vector of Responses
-</caption>
-<tr>
-<th>
-</th>
-<th>
-OriginalData
-</th>
-<th>
-Perm1
-</th>
-<th>
-Perm2
-</th>
-<th>
-Perm3
-</th>
-<th>
-Perm4
-</th>
-<th>
-Perm5
-</th>
-</tr>
-<tr>
-<td align="center">
-z1
-</td>
-<td align="center">
-0.60
-</td>
-<td align="center">
--0.60
-</td>
-<td align="center">
-0.60
-</td>
-<td align="center">
--0.90
-</td>
-<td align="center">
-0.70
-</td>
-<td align="center">
-0.60
-</td>
-</tr>
-<tr>
-<td align="center">
-z2
-</td>
-<td align="center">
--0.80
-</td>
-<td align="center">
--1.40
-</td>
-<td align="center">
--0.60
-</td>
-<td align="center">
-0.70
-</td>
-<td align="center">
--0.40
-</td>
-<td align="center">
--0.60
-</td>
-</tr>
-<tr>
-<td align="center">
-z3
-</td>
-<td align="center">
--0.60
-</td>
-<td align="center">
-0.70
-</td>
-<td align="center">
-0.20
-</td>
-<td align="center">
-0.60
-</td>
-<td align="center">
--1.40
-</td>
-<td align="center">
--0.80
-</td>
-</tr>
-<tr>
-<td align="center">
-z4
-</td>
-<td align="center">
--0.90
-</td>
-<td align="center">
-0.20
-</td>
-<td align="center">
--0.40
-</td>
-<td align="center">
-0.20
-</td>
-<td align="center">
-0.20
-</td>
-<td align="center">
-0.30
-</td>
-</tr>
-<tr>
-<td align="center">
-z5
-</td>
-<td align="center">
-0.30
-</td>
-<td align="center">
--0.40
-</td>
-<td align="center">
--1.30
-</td>
-<td align="center">
--0.40
-</td>
-<td align="center">
--0.90
-</td>
-<td align="center">
--0.40
-</td>
-</tr>
-<tr>
-<td align="center">
-z6
-</td>
-<td align="center">
--1.30
-</td>
-<td align="center">
--1.30
-</td>
-<td align="center">
--1.40
-</td>
-<td align="center">
--0.60
-</td>
-<td align="center">
--0.80
-</td>
-<td align="center">
-0.70
-</td>
-</tr>
-<tr>
-<td align="center">
-z7
-</td>
-<td align="center">
-0.20
-</td>
-<td align="center">
-0.30
-</td>
-<td align="center">
-0.70
-</td>
-<td align="center">
--1.40
-</td>
-<td align="center">
-0.30
-</td>
-<td align="center">
--0.90
-</td>
-</tr>
-<tr>
-<td align="center">
-z8
-</td>
-<td align="center">
-0.70
-</td>
-<td align="center">
-0.60
-</td>
-<td align="center">
-0.30
-</td>
-<td align="center">
--1.30
-</td>
-<td align="center">
-0.60
-</td>
-<td align="center">
-0.20
-</td>
-</tr>
-<tr>
-<td align="center">
-z9
-</td>
-<td align="center">
--1.40
-</td>
-<td align="center">
--0.90
-</td>
-<td align="center">
--0.80
-</td>
-<td align="center">
-0.30
-</td>
-<td align="center">
--0.60
-</td>
-<td align="center">
--1.40
-</td>
-</tr>
-<tr>
-<td align="center">
-z10
-</td>
-<td align="center">
--0.40
-</td>
-<td align="center">
--0.80
-</td>
-<td align="center">
--0.90
-</td>
-<td align="center">
--0.80
-</td>
-<td align="center">
--1.30
-</td>
-<td align="center">
--1.30
-</td>
-</tr>
-<tr>
-<td align="center">
-mean difference
-</td>
-<td align="center">
-0.16
-</td>
-<td align="center">
-0.12
-</td>
-<td align="center">
-0.12
-</td>
-<td align="center">
-0.80
-</td>
-<td align="center">
-0.00
-</td>
-<td align="center">
-0.36
-</td>
-</tr>
-</table>
-<ul>
-<li><p>The columns in the above table are just permutations of the original data <span class="math inline">\(\mathbf{Z}\)</span>.</p></li>
-<li><p>Suppose we want to base a test on the difference in the means between the two groups
-<span class="math display">\[\begin{equation}
-T_{N}(\mathbf{Z}) = \bar{X} - \bar{Y} = \frac{1}{n}\sum_{i=1}^{n} X_{i} - \frac{1}{m}\sum_{j=1}^{m} Y_{j}
-\end{equation}\]</span></p></li>
-<li><p>We will let <span class="math inline">\(t_{obs}\)</span> denote the observed value of the mean difference. That is,
-<span class="math inline">\(t_{obs} = T_{N}(\mathbf{Z}_{obs})\)</span>, where <span class="math inline">\(\mathbf{Z}_{obs}\)</span> is the vector of the observed data.</p></li>
-<li><p>Under the null hypothesis that <span class="math inline">\(F_{X} = F_{Y}\)</span>, the observed mean difference
-should not be “abnormal” when compared with the mean differences from
-many other permutations of the data.</p></li>
-</ul>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">z &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.6</span>, <span class="fl">-0.8</span>, <span class="fl">-0.6</span>, <span class="fl">-0.9</span>, <span class="fl">0.3</span>, <span class="fl">-1.3</span>, <span class="fl">0.2</span>, <span class="fl">0.7</span>, <span class="fl">-1.4</span>, <span class="fl">-0.4</span>)</a>
-<a class="sourceLine" id="cb66-2" data-line-number="2">observed.diff &lt;-<span class="st"> </span><span class="kw">mean</span>(z[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]) <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(z[<span class="dv">6</span><span class="op">:</span><span class="dv">10</span>])</a>
-<a class="sourceLine" id="cb66-3" data-line-number="3">nreps &lt;-<span class="st"> </span><span class="dv">1000</span></a>
-<a class="sourceLine" id="cb66-4" data-line-number="4">mean.diff &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, nreps)</a>
-<a class="sourceLine" id="cb66-5" data-line-number="5"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nreps) {</a>
-<a class="sourceLine" id="cb66-6" data-line-number="6">    ss &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">size=</span><span class="dv">10</span>)  <span class="co">## draw a random permutation</span></a>
-<a class="sourceLine" id="cb66-7" data-line-number="7">    z.perm &lt;-<span class="st"> </span>z[ss]   <span class="co">## form the permuted dataset</span></a>
-<a class="sourceLine" id="cb66-8" data-line-number="8">    mean.diff[k] &lt;-<span class="st"> </span><span class="kw">mean</span>(z.perm[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]) <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(z.perm[<span class="dv">6</span><span class="op">:</span><span class="dv">10</span>]) <span class="co">## compute mean difference</span></a>
-<a class="sourceLine" id="cb66-9" data-line-number="9">                                                           <span class="co">## for permuted dataset</span></a>
-<a class="sourceLine" id="cb66-10" data-line-number="10">}</a>
-<a class="sourceLine" id="cb66-11" data-line-number="11"><span class="kw">hist</span>(mean.diff, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Permutation Distribution of Mean Difference&quot;</span>)</a>
-<a class="sourceLine" id="cb66-12" data-line-number="12"><span class="kw">abline</span>(<span class="dt">v=</span>observed.diff, <span class="dt">lwd=</span><span class="dv">3</span>)</a></code></pre></div>
-<p><img src="05-permutation_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<ul>
-<li><p>The one-sided p-value for the permutation test is
-<span class="math display">\[\begin{eqnarray}
-\textrm{p-value} &amp;=&amp; \frac{\textrm{number of permutations such that } T_{N} \geq t_{obs}}{ N! } \nonumber \\
-&amp;=&amp; \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(\mathbf{Z}_{\pi}) \geq t_{obs} \Big) \nonumber
-\end{eqnarray}\]</span></p></li>
-<li><p>The two-sided p-value for the two-sample problem would be
-<span class="math display">\[\begin{equation}
-\textrm{p-value} 
-= \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( \Big| T_{N}(\mathbf{Z}_{\pi}) \Big|  \geq |t_{obs}| \Big) \nonumber
-\end{equation}\]</span></p></li>
-<li><p>As we did when producing the above histogram, the permutation-test p-value is
-often computed by using a large number of random permutations rather
-than computing the test statistic for every possible permutation.</p></li>
-<li><p>The Monte Carlo permutation p-value is defined as
-<span class="math display">\[\begin{equation}
-\textrm{p-value}_{mc} = \frac{1}{S+1}\Bigg[ 1 +  \sum_{s = 1}^{S} I\Big( T_{N}(\mathbf{Z}_{\pi_{k}}) \geq t_{obs} \Big) \Bigg]
-\end{equation}\]</span>
-where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly drawn permutations</p></li>
-<li><p>The two-sided (Monte Carlo) p-value for the example shown in the above Table is</p></li>
-</ul>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(mean.diff) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(observed.diff)))<span class="op">/</span>(nreps <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.77</code></pre>
-</div>
-<div id="the-permutation-test-as-a-conditional-test" class="section level2">
-<h2><span class="header-section-number">5.3</span> The Permutation Test as a Conditional Test</h2>
-<ul>
-<li>A permutation test is an example of a <strong>conditional test</strong>.</li>
 </ul>
 
 </div>
@@ -685,11 +326,13 @@ where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -697,12 +340,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -714,6 +356,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },
