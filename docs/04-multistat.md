@@ -229,7 +229,7 @@ for Poisson-distributed data).
 boxplot(sqrt(count) ~ spray, data=InsectSprays,las=1, ylab="square root of insect counts")
 ```
 
-<img src="04-multistat_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+![](04-multistat_files/figure-latex/unnamed-chunk-2-1.pdf)<!-- --> 
 
 ---
 
@@ -335,7 +335,7 @@ then report the difference in the estimated proportional odds coefficients.
 See Section 7.6 of http://hbiostat.org/doc/bbr.pdf for more details
 on the proportional odds model.
 
-<img src="04-multistat_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+![](04-multistat_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
 
 ## An Additional Example
 
@@ -383,7 +383,7 @@ cane$prop.trans <- asin(sqrt(cane$prop))
 boxplot(prop.trans ~ block, data=cane, las=1, ylab="number of shoots")
 ```
 
-<img src="04-multistat_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+![](04-multistat_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
 
 
 ```r

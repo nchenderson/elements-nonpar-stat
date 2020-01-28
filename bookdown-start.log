@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  27 JAN 2020 21:29
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  28 JAN 2020 09:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1210,7 +1210,7 @@ Chapter 5.
 [69
 
 ]
-Underfull \hbox (badness 3323) in paragraph at lines 3308--3308
+Underfull \hbox (badness 3323) in paragraph at lines 3309--3309
 []\TU/lmr/bx/n/14.4 Permutation Tests for the Two-Sample
  []
 
@@ -1221,12 +1221,12 @@ e pdf)
 [74] (./bookdown-start.bbl [75] [76
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3604.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3606.
 [77]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 3604.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 3606.
 (./bookdown-start.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3604.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3604.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3606.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3606.
 
 Package rerunfilecheck Info: File `bookdown-start.out' has not changed.
 (rerunfilecheck)             Checksum: A2BA67B298906CBA01EAD4CB65509386.
