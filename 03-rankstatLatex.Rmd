@@ -1267,7 +1267,7 @@ library(xtable)
 tab <- xtable(power.results, digits=c(2, 2, 2, 2, 2), align=rep("c", 5),
               caption="Estimated power for three one-sample tests and
               three distributions. 500 simulation replications were used.")
-print(tab, type="html", comment=FALSE, include.rownames=FALSE)
+print(tab, type="latex", comment=FALSE, include.rownames=FALSE)
 ```
 
 

@@ -527,7 +527,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.815
+## [1] 0.845
 ```
 
 
@@ -709,7 +709,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.1356265
+## [1] 0.2420592
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -727,7 +727,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.1356265
+## [1] 0.2420592
 ```
 
 #### Two-sided Sign Test
@@ -1407,15 +1407,21 @@ power.results <- data.frame(Distribution=c("Logistic", "Normal", "Uniform", "Lap
                  tTest=colMeans(RejectT))
 ```
 
-<table border=1>
-<caption align="bottom"> Estimated power for three one-sample tests and
-              three distributions. 500 simulation replications were used. </caption>
-<tr> <th> Distribution </th> <th> SignTest </th> <th> WilcoxonSign </th> <th> tTest </th>  </tr>
-  <tr> <td align="center"> Logistic </td> <td align="center"> 0.25 </td> <td align="center"> 0.37 </td> <td align="center"> 0.34 </td> </tr>
-  <tr> <td align="center"> Normal </td> <td align="center"> 0.59 </td> <td align="center"> 0.77 </td> <td align="center"> 0.81 </td> </tr>
-  <tr> <td align="center"> Uniform </td> <td align="center"> 0.44 </td> <td align="center"> 0.87 </td> <td align="center"> 0.90 </td> </tr>
-  <tr> <td align="center"> Laplace </td> <td align="center"> 0.93 </td> <td align="center"> 0.92 </td> <td align="center"> 0.81 </td> </tr>
-   </table>
+\begin{table}[ht]
+\centering
+\begin{tabular}{cccc}
+  \hline
+Distribution & SignTest & WilcoxonSign & tTest \\ 
+  \hline
+Logistic & 0.25 & 0.37 & 0.34 \\ 
+  Normal & 0.59 & 0.77 & 0.81 \\ 
+  Uniform & 0.44 & 0.87 & 0.90 \\ 
+  Laplace & 0.93 & 0.92 & 0.81 \\ 
+   \hline
+\end{tabular}
+\caption{Estimated power for three one-sample tests and
+              three distributions. 500 simulation replications were used.} 
+\end{table}
 
 
 ## Linear Rank Statistics in General
