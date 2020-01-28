@@ -24,8 +24,8 @@ For this reason, a permutation is often expressed as the following ordered list
 as a particular ordering of the elements of $S$.
 
 
-* For example, if $S = \{1,2,3\}$, and $\pi_{1}$ is a permuation of $S$
-defined as $\pi_{1}(1) = 3$, $\pi_{1}(2) = 1$, $\pi_{1}(3) = (2)$, then
+* For example, if $S = \{1,2,3\}$, and $\pi_{1}$ is a permutation of $S$
+defined as $\pi_{1}(1) = 3$, $\pi_{1}(2) = 1$, $\pi_{1}(3) = 2$, then
 this permutation expressed as an ordered list would be
 \begin{equation}
 \pi_{1} = (3, 1, 2)
@@ -49,7 +49,7 @@ set $\{1, \ldots, N\}$.
 
 * A permutation test is motivated by the following reasoning.
     + If there is no real difference between the two groups, 
-      there is noting "special" about the difference in means
+      there is nothing "special" about the difference in means
       between the two groups.
     + The observed difference in the mean between the two groups
       should not be notably different than mean differences from
@@ -76,7 +76,8 @@ denote the corresponding permuted dataset
 
 
 <table border=1>
-<caption align="bottom"> Example of Permuting a Vector of Responses </caption>
+<caption align="bottom"> Example of Permuting a Vector of Responses.
+              This example assumes n=m=5. </caption>
 <tr> <th>  </th> <th> OriginalData </th> <th> Perm1 </th> <th> Perm2 </th> <th> Perm3 </th> <th> Perm4 </th> <th> Perm5 </th>  </tr>
   <tr> <td align="center"> z1 </td> <td align="center"> 0.60 </td> <td align="center"> -0.60 </td> <td align="center"> 0.60 </td> <td align="center"> -0.90 </td> <td align="center"> 0.70 </td> <td align="center"> 0.60 </td> </tr>
   <tr> <td align="center"> z2 </td> <td align="center"> -0.80 </td> <td align="center"> -1.40 </td> <td align="center"> -0.60 </td> <td align="center"> 0.70 </td> <td align="center"> -0.40 </td> <td align="center"> -0.60 </td> </tr>
@@ -95,7 +96,7 @@ denote the corresponding permuted dataset
 
 * Suppose we want to base a test on the difference in the means between the two groups
 \begin{equation}
-T_{N}(\mathbf{Z}) = \bar{X} - \bar{Y} = \frac{1}{n}\sum_{i=1}^{n} X_{i} - \frac{1}{m}\sum_{j=1}^{m} Y_{j}
+T_{N}(\mathbf{Z}) = \bar{X} - \bar{Y} = \frac{1}{n}\sum_{i=1}^{n} Z_{i} - \frac{1}{m}\sum_{i=n+1}^{N} Z_{i}
 \end{equation}
 
 * We will let $t_{obs}$ denote the observed value of the mean difference. That is, 
@@ -107,8 +108,8 @@ many other permutations of the data.
 
 
 ```r
-z <- c(0.6, -0.8, -0.6, -0.9, 0.3, -1.3, 0.2, 0.7, -1.4, -0.4)
-observed.diff <- mean(z[1:5]) - mean(z[6:10])
+z <- c(0.6, -0.8, -0.6, -0.9, 0.3, -1.3, 0.2, 0.7, -1.4, -0.4) ## data
+observed.diff <- mean(z[1:5]) - mean(z[6:10])  ## observed mean difference
 nreps <- 1000
 mean.diff <- rep(NA, nreps)
 for(k in 1:nreps) {
@@ -153,7 +154,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.76
+## [1] 0.74
 ```
     
 ## The Permutation Test as a Conditional Test    

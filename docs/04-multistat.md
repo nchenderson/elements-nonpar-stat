@@ -74,7 +74,7 @@ means $\bar{R}_{k.}$ with their overall expectation under the null hypothesis.
 
 * The Kruskal-Wallis test statistic is defined as
 \begin{equation}
-KW_{n} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)^{2}, \quad \textrm{ where } N = \sum_{k=1}^{K} n_{k}
+KW_{N} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)^{2}, \quad \textrm{ where } N = \sum_{k=1}^{K} n_{k}
 (\#eq:kw-definition)
 \end{equation}
 
@@ -95,7 +95,7 @@ an i.i.d. sample of size $N$ from a common distribution function $F$.
 * Hence, as we showed in \@ref(eq:rank-expectation) from Chapter 3, $E\{ R_{kj}(\mathbf{Z}) \} = (N+1)/2$ under the
 assumption that the data are an i.i.d. sample from a common distribution function.
 
-* So, the intuition behind the definition of $KW_{n}$ is that the differences
+* So, the intuition behind the definition of $KW_{N}$ is that the differences
 $\bar{R}_{k.} - \frac{N + 1}{2}$ should be small whenever the homogeneity
 hypothesis \@ref(eq:nonpar-homogeneity-hyp) is true.
 
@@ -103,9 +103,9 @@ hypothesis \@ref(eq:nonpar-homogeneity-hyp) is true.
 ---
 
 * When $K=2$, the following relationship between the Kruskal-Wallis statistic
-$KW_{n}$ and the Wilcoxon rank sum test statistic $W$ from Chapter 3 holds.
+$KW_{N}$ and the Wilcoxon rank sum test statistic $W$ from Chapter 3 holds.
 \begin{equation}
-KW_{n} = \frac{12}{mn(N+1)}\Big( W - \frac{n(N+1)}{2}  \Big)^{2}.
+KW_{N} = \frac{12}{mn(N+1)}\Big( W - \frac{n(N+1)}{2}  \Big)^{2}.
 (\#eq:kw-wrs-equivalence)
 \end{equation}
 
@@ -139,12 +139,12 @@ the Kruskal-Wallis test.
 * In this case, $N = 9$, $\bar{R}_{1.} = 11/3$, $\bar{R}_{2.} = 6$, and $\bar{R}_{3.} = 16/3$. The Kruskall-Wallis
 statistic is
 \begin{equation}
-KW_{n} = \frac{1}{6}\Big\{ (11/3 - 5)^{2} + (6 - 5)^{2} + (16/3 - 5)^{2}   \Big\} = 13/27
+KW_{N} = \frac{1}{6}\Big\{ (11/3 - 5)^{2} + (6 - 5)^{2} + (16/3 - 5)^{2}   \Big\} = 13/27
 \end{equation}
 
 ### Asymptotic Distribution and Connection to One-Way ANOVA
 
-* The Kruskal-Wallis statistic $KW_{n}$ has 
+* The Kruskal-Wallis statistic $KW_{N}$ has 
 an asymptotic chi-square distribution with $K-1$ degrees of freedom under the null hypothesis \@ref(eq:nonpar-homogeneity-hyp).
 
 * This follows from the fact that $(\bar{R}_{k.} - (N+1)/2)$ is approximately normally distributed
@@ -174,7 +174,7 @@ rather than the observations $Y_{kj}$, we would get:
 \begin{eqnarray}
 SSA_{r} &=& \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \bar{R}_{..})^{2}  \nonumber \\
 &=& \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \frac{N+1}{2})^{2}  \nonumber \\
-&=& \frac{N(N-1)}{12} KW_{n}  
+&=& \frac{N(N-1)}{12} KW_{N}  
 (\#eq:ssa-kw)
 \end{eqnarray}
 
@@ -221,7 +221,7 @@ and for count data, the variance is usually a function of the mean.
 * A generalized linear model with a log link function might be more appropriate.
 
 * Applying a square-root transformation to count data is also a commonly suggested 
-approach. (The square-root transformation is the ``variance-stabilizing transformation"
+approach. (The square-root transformation is the "variance-stabilizing transformation"
 for Poisson-distributed data).
 
 

@@ -24,8 +24,8 @@ For this reason, a permutation is often expressed as the following ordered list
 as a particular ordering of the elements of $S$.
 
 
-* For example, if $S = \{1,2,3\}$, and $\pi_{1}$ is a permuation of $S$
-defined as $\pi_{1}(1) = 3$, $\pi_{1}(2) = 1$, $\pi_{1}(3) = (2)$, then
+* For example, if $S = \{1,2,3\}$, and $\pi_{1}$ is a permutation of $S$
+defined as $\pi_{1}(1) = 3$, $\pi_{1}(2) = 1$, $\pi_{1}(3) = 2$, then
 this permutation expressed as an ordered list would be
 \begin{equation}
 \pi_{1} = (3, 1, 2)
@@ -49,7 +49,7 @@ set $\{1, \ldots, N\}$.
 
 * A permutation test is motivated by the following reasoning.
     + If there is no real difference between the two groups, 
-      there is noting "special" about the difference in means
+      there is nothing "special" about the difference in means
       between the two groups.
     + The observed difference in the mean between the two groups
       should not be notably different than mean differences from
@@ -90,7 +90,8 @@ theta.hat <- c(mean(xx[1:5]) - mean(xx[6:10]), mean(xx2[1:5]) - mean(xx2[6:10]),
 A <- data.frame(OriginalData=c(xx, theta.hat[1]), Perm1=c(xx2, theta.hat[2]), Perm2=c(xx3, theta.hat[3]), Perm3=c(xx4, theta.hat[4]), 
                 Perm4=c(xx5, theta.hat[5]), Perm5=c(xx6, theta.hat[6]))
 rownames(A) <- c("z1", "z2", "z3", "z4", "z5", "z6", "z7", "z8", "z9", "z10", "mean difference")
-tab <- xtable(A, digits=c(2, 2, 2, 2, 2, 2,2), align=rep("c", 7), caption="Example of Permuting a Vector of Responses")
+tab <- xtable(A, digits=c(2, 2, 2, 2, 2, 2,2), align=rep("c", 7), caption="Example of Permuting a Vector of Responses.
+              This example assumes n=m=5.")
 print(tab, type="html", comment=FALSE)
 ```
 
@@ -98,7 +99,7 @@ print(tab, type="html", comment=FALSE)
 
 * Suppose we want to base a test on the difference in the means between the two groups
 \begin{equation}
-T_{N}(\mathbf{Z}) = \bar{X} - \bar{Y} = \frac{1}{n}\sum_{i=1}^{n} X_{i} - \frac{1}{m}\sum_{j=1}^{m} Y_{j}
+T_{N}(\mathbf{Z}) = \bar{X} - \bar{Y} = \frac{1}{n}\sum_{i=1}^{n} Z_{i} - \frac{1}{m}\sum_{i=n+1}^{N} Z_{i}
 \end{equation}
 
 * We will let $t_{obs}$ denote the observed value of the mean difference. That is, 
@@ -109,8 +110,8 @@ $t_{obs} = T_{N}(\mathbf{Z}_{obs})$, where $\mathbf{Z}_{obs}$ is the vector of t
 many other permutations of the data.
 
 ```{r}
-z <- c(0.6, -0.8, -0.6, -0.9, 0.3, -1.3, 0.2, 0.7, -1.4, -0.4)
-observed.diff <- mean(z[1:5]) - mean(z[6:10])
+z <- c(0.6, -0.8, -0.6, -0.9, 0.3, -1.3, 0.2, 0.7, -1.4, -0.4) ## data
+observed.diff <- mean(z[1:5]) - mean(z[6:10])  ## observed mean difference
 nreps <- 1000
 mean.diff <- rep(NA, nreps)
 for(k in 1:nreps) {

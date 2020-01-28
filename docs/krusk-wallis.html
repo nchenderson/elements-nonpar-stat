@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-27" />
+<meta name="date" content="2020-01-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -336,7 +336,7 @@ the Kruskal-Wallis test statistic will be comparing the group-specific rank
 means <span class="math inline">\(\bar{R}_{k.}\)</span> with their overall expectation under the null hypothesis.</p></li>
 <li><p>The Kruskal-Wallis test statistic is defined as
 <span class="math display" id="eq:kw-definition">\[\begin{equation}
-KW_{n} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)^{2}, \quad \textrm{ where } N = \sum_{k=1}^{K} n_{k}
+KW_{N} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)^{2}, \quad \textrm{ where } N = \sum_{k=1}^{K} n_{k}
 \tag{4.5}
 \end{equation}\]</span></p></li>
 <li><p>In <a href="krusk-wallis.html#eq:kw-definition">(4.5)</a>, <span class="math inline">\(\bar{R}_{k.}\)</span> is the average rank of those <span class="math inline">\(k^{th}\)</span> group
@@ -353,16 +353,16 @@ the rank of <span class="math inline">\(Y_{kj}\)</span> in the “pooled-data ra
 an i.i.d. sample of size <span class="math inline">\(N\)</span> from a common distribution function <span class="math inline">\(F\)</span>.</p></li>
 <li><p>Hence, as we showed in <a href="rank-tests.html#eq:rank-expectation">(3.2)</a> from Chapter 3, <span class="math inline">\(E\{ R_{kj}(\mathbf{Z}) \} = (N+1)/2\)</span> under the
 assumption that the data are an i.i.d. sample from a common distribution function.</p></li>
-<li><p>So, the intuition behind the definition of <span class="math inline">\(KW_{n}\)</span> is that the differences
+<li><p>So, the intuition behind the definition of <span class="math inline">\(KW_{N}\)</span> is that the differences
 <span class="math inline">\(\bar{R}_{k.} - \frac{N + 1}{2}\)</span> should be small whenever the homogeneity
 hypothesis <a href="krusk-wallis.html#eq:nonpar-homogeneity-hyp">(4.4)</a> is true.</p></li>
 </ul>
 <hr />
 <ul>
 <li><p>When <span class="math inline">\(K=2\)</span>, the following relationship between the Kruskal-Wallis statistic
-<span class="math inline">\(KW_{n}\)</span> and the Wilcoxon rank sum test statistic <span class="math inline">\(W\)</span> from Chapter 3 holds.
+<span class="math inline">\(KW_{N}\)</span> and the Wilcoxon rank sum test statistic <span class="math inline">\(W\)</span> from Chapter 3 holds.
 <span class="math display" id="eq:kw-wrs-equivalence">\[\begin{equation}
-KW_{n} = \frac{12}{mn(N+1)}\Big( W - \frac{n(N+1)}{2}  \Big)^{2}.
+KW_{N} = \frac{12}{mn(N+1)}\Big( W - \frac{n(N+1)}{2}  \Big)^{2}.
 \tag{4.6}
 \end{equation}\]</span></p></li>
 <li><p>Hence, the p-value from a Kruskal-Wallis test and a (two-sided)
@@ -492,14 +492,14 @@ Group 3
 <li>In this case, <span class="math inline">\(N = 9\)</span>, <span class="math inline">\(\bar{R}_{1.} = 11/3\)</span>, <span class="math inline">\(\bar{R}_{2.} = 6\)</span>, and <span class="math inline">\(\bar{R}_{3.} = 16/3\)</span>. The Kruskall-Wallis
 statistic is
 <span class="math display">\[\begin{equation}
-KW_{n} = \frac{1}{6}\Big\{ (11/3 - 5)^{2} + (6 - 5)^{2} + (16/3 - 5)^{2}   \Big\} = 13/27
+KW_{N} = \frac{1}{6}\Big\{ (11/3 - 5)^{2} + (6 - 5)^{2} + (16/3 - 5)^{2}   \Big\} = 13/27
 \end{equation}\]</span></li>
 </ul>
 </div>
 <div id="asymptotic-distribution-and-connection-to-one-way-anova" class="section level3">
 <h3><span class="header-section-number">4.1.2</span> Asymptotic Distribution and Connection to One-Way ANOVA</h3>
 <ul>
-<li><p>The Kruskal-Wallis statistic <span class="math inline">\(KW_{n}\)</span> has
+<li><p>The Kruskal-Wallis statistic <span class="math inline">\(KW_{N}\)</span> has
 an asymptotic chi-square distribution with <span class="math inline">\(K-1\)</span> degrees of freedom under the null hypothesis <a href="krusk-wallis.html#eq:nonpar-homogeneity-hyp">(4.4)</a>.</p></li>
 <li><p>This follows from the fact that <span class="math inline">\((\bar{R}_{k.} - (N+1)/2)\)</span> is approximately normally distributed
 for large <span class="math inline">\(n_{k}\)</span>.</p></li>
@@ -521,7 +521,7 @@ rather than the observations <span class="math inline">\(Y_{kj}\)</span>, we wou
 <span class="math display" id="eq:ssa-kw">\[\begin{eqnarray}
 SSA_{r} &amp;=&amp; \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \bar{R}_{..})^{2}  \nonumber \\
 &amp;=&amp; \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \frac{N+1}{2})^{2}  \nonumber \\
-&amp;=&amp; \frac{N(N-1)}{12} KW_{n}  
+&amp;=&amp; \frac{N(N-1)}{12} KW_{N}  
 \tag{4.7}
 \end{eqnarray}\]</span></p></li>
 <li><p>If you were applying ANOVA to the ranks of <span class="math inline">\(Y_{kj}\)</span>, <span class="math inline">\(SST_{r}\)</span> would be
@@ -557,7 +557,7 @@ appropriate in this situation because the responses are counts,
 and for count data, the variance is usually a function of the mean.</p></li>
 <li><p>A generalized linear model with a log link function might be more appropriate.</p></li>
 <li><p>Applying a square-root transformation to count data is also a commonly suggested
-approach. (The square-root transformation is the ``variance-stabilizing transformation&quot;
+approach. (The square-root transformation is the “variance-stabilizing transformation”
 for Poisson-distributed data).</p></li>
 </ul>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">boxplot</span>(<span class="kw">sqrt</span>(count) <span class="op">~</span><span class="st"> </span>spray, <span class="dt">data=</span>InsectSprays,<span class="dt">las=</span><span class="dv">1</span>, <span class="dt">ylab=</span><span class="st">&quot;square root of insect counts&quot;</span>)</a></code></pre></div>
