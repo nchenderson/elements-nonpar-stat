@@ -145,7 +145,7 @@ Group 1 & 1.00 & 8 \\
 * In this case, $N = 9$, $\bar{R}_{1.} = 11/3$, $\bar{R}_{2.} = 6$, and $\bar{R}_{3.} = 16/3$. The Kruskall-Wallis
 statistic is
 \begin{equation}
-KW_{N} = \frac{1}{6}\Big\{ (11/3 - 5)^{2} + (6 - 5)^{2} + (16/3 - 5)^{2}   \Big\} = 13/27
+KW_{N} = \frac{1}{2}\Big\{ 3(11/3 - 5)^{2} + 3(6 - 5)^{2} + 3(16/3 - 5)^{2}   \Big\} = 13/9
 \end{equation}
 
 ### Asymptotic Distribution and Connection to One-Way ANOVA

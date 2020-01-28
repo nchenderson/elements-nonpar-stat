@@ -154,7 +154,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.75
+## [1] 0.8
 ```
     
 ## The Permutation Test as a Conditional Test    
