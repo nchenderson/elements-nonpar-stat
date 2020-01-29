@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-28" />
+<meta name="date" content="2020-01-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -185,8 +185,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a><ul>
 <li class="chapter" data-level="5.1" data-path="permutation.html"><a href="permutation.html#notation"><i class="fa fa-check"></i><b>5.1</b> Notation</a></li>
-<li class="chapter" data-level="5.2" data-path="permutation.html"><a href="permutation.html#permutation-tests-for-the-two-sample-problem"><i class="fa fa-check"></i><b>5.2</b> Permutation Tests for the Two-Sample Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="permutation.html"><a href="permutation.html#permutation-tests-for-the-two-sample-problem"><i class="fa fa-check"></i><b>5.2</b> Permutation Tests for the Two-Sample Problem</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="permutation.html"><a href="permutation.html#example-1"><i class="fa fa-check"></i><b>5.2.1</b> Example 1</a></li>
+<li class="chapter" data-level="5.2.2" data-path="permutation.html"><a href="permutation.html#permutation-test-p-values"><i class="fa fa-check"></i><b>5.2.2</b> Permutation Test p-values</a></li>
+<li class="chapter" data-level="5.2.3" data-path="permutation.html"><a href="permutation.html#example-2-ratios-of-means"><i class="fa fa-check"></i><b>5.2.3</b> Example 2: Ratios of Means</a></li>
+<li class="chapter" data-level="5.2.4" data-path="permutation.html"><a href="permutation.html#example-3-differences-in-percentiles."><i class="fa fa-check"></i><b>5.2.4</b> Example 3: Differences in Percentiles.</a></li>
+</ul></li>
 <li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3</b> The Permutation Test as a Conditional Test</a></li>
+<li class="chapter" data-level="5.4" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-correlation"><i class="fa fa-check"></i><b>5.4</b> A Permutation Test for Correlation</a></li>
+<li class="chapter" data-level="5.5" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-variable-importance-in-regression-and-machine-learning"><i class="fa fa-check"></i><b>5.5</b> A Permutation Test for Variable Importance in Regression and Machine Learning</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
 <li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-3"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
@@ -322,7 +329,8 @@ randomly formed groups.</li>
 of the original data.</li>
 </ul></li>
 </ul>
-<hr />
+<div id="example-1" class="section level3">
+<h3><span class="header-section-number">5.2.1</span> Example 1</h3>
 <ul>
 <li><p>Suppose we have observations from two groups <span class="math inline">\(X_{1}, \ldots, X_{n} \sim F_{X}\)</span>
 and <span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim F_{Y}\)</span>.</p></li>
@@ -642,6 +650,9 @@ many other permutations of the data.</p></li>
 <a class="sourceLine" id="cb66-11" data-line-number="11"><span class="kw">hist</span>(mean.diff, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Permutation Distribution of Mean Difference&quot;</span>)</a>
 <a class="sourceLine" id="cb66-12" data-line-number="12"><span class="kw">abline</span>(<span class="dt">v=</span>observed.diff, <span class="dt">lwd=</span><span class="dv">3</span>)</a></code></pre></div>
 <p><img src="05-permutation_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>
+<div id="permutation-test-p-values" class="section level3">
+<h3><span class="header-section-number">5.2.2</span> Permutation Test p-values</h3>
 <ul>
 <li><p>The one-sided p-value for the permutation test is
 <span class="math display">\[\begin{eqnarray}
@@ -665,13 +676,130 @@ where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly
 </ul>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(mean.diff) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(observed.diff)))<span class="op">/</span>(nreps <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.77</code></pre>
+<pre><code>## [1] 0.79</code></pre>
+</div>
+<div id="example-2-ratios-of-means" class="section level3">
+<h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means</h3>
+<ul>
+<li><p>With permutation tests, you are not limited to difference in means. You can choose
+the statistic <span class="math inline">\(T_{N}(\mathbf{Z})\)</span> to measure other contrasts of interest.</p></li>
+<li><p>For example, with nonnegative data you might interested in the ratio of means between the two groups
+<span class="math display">\[\begin{equation}
+T_{N}( \mathbf{Z} ) = \max\Big\{ \bar{X}/\bar{Y} , \bar{Y}/\bar{X}  \Big\}
+\end{equation}\]</span></p></li>
+<li><p>Let us see how this works for a simulated example where we assume that
+<span class="math inline">\(X_{1}, \ldots, X_{n} \sim \textrm{Exponential}(1)\)</span> and <span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim \textrm{Exponential}(1/2)\)</span></p></li>
+</ul>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">5127</span>)</a>
+<a class="sourceLine" id="cb69-2" data-line-number="2">xx &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">20</span>, <span class="dt">rate=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb69-3" data-line-number="3">yy &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">20</span>, <span class="dt">rate=</span><span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb69-4" data-line-number="4">zz &lt;-<span class="st"> </span><span class="kw">c</span>(xx, yy) <span class="co">## this is the original data</span></a>
+<a class="sourceLine" id="cb69-5" data-line-number="5">t.obs &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">mean</span>(zz[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>])<span class="op">/</span><span class="kw">mean</span>(zz[<span class="dv">21</span><span class="op">:</span><span class="dv">40</span>]), <span class="kw">mean</span>(zz[<span class="dv">21</span><span class="op">:</span><span class="dv">40</span>])<span class="op">/</span><span class="kw">mean</span>(zz[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>]))</a>
+<a class="sourceLine" id="cb69-6" data-line-number="6">nperms &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb69-7" data-line-number="7">mean.ratio &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, nperms)</a>
+<a class="sourceLine" id="cb69-8" data-line-number="8"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nperms) {</a>
+<a class="sourceLine" id="cb69-9" data-line-number="9">     ss &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">40</span>, <span class="dt">size=</span><span class="dv">40</span>)</a>
+<a class="sourceLine" id="cb69-10" data-line-number="10">     zz.perm &lt;-<span class="st"> </span>zz[ss]</a>
+<a class="sourceLine" id="cb69-11" data-line-number="11">     mean.ratio[k] &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">mean</span>(zz.perm[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>])<span class="op">/</span><span class="kw">mean</span>(zz.perm[<span class="dv">21</span><span class="op">:</span><span class="dv">40</span>]), <span class="kw">mean</span>(zz.perm[<span class="dv">21</span><span class="op">:</span><span class="dv">40</span>])<span class="op">/</span><span class="kw">mean</span>(zz.perm[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>]))</a>
+<a class="sourceLine" id="cb69-12" data-line-number="12">}</a>
+<a class="sourceLine" id="cb69-13" data-line-number="13"><span class="kw">hist</span>(mean.ratio, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Permutation Distribution of Maximum Mean Ratio&quot;</span>,</a>
+<a class="sourceLine" id="cb69-14" data-line-number="14">     <span class="dt">xlab=</span><span class="st">&quot;maximum mean ratio&quot;</span>)</a>
+<a class="sourceLine" id="cb69-15" data-line-number="15"><span class="kw">abline</span>(<span class="dt">v=</span>t.obs, <span class="dt">lwd=</span><span class="dv">3</span>)</a></code></pre></div>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<ul>
+<li>The two-side (Monte Carlo) permutation test p-value is:</li>
+</ul>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(mean.ratio <span class="op">&gt;=</span><span class="st"> </span>t.obs))<span class="op">/</span>(nperms <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb70-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## [1] 0.04</code></pre>
+</div>
+<div id="example-3-differences-in-percentiles." class="section level3">
+<h3><span class="header-section-number">5.2.4</span> Example 3: Differences in Percentiles.</h3>
+<ul>
+<li><p>Permutation tests are especially useful in problems where working out the null distribution
+is difficult, or when certain approximations of the null distributions are hard to justify.</p></li>
+<li><p>An example of this occurrs if you want to compare medians, or more generally,
+compare quantiles.</p></li>
+<li><p>The difference-in-percentiles statistic would be defined as
+<span class="math display">\[\begin{equation}
+T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{n+m})
+\end{equation}\]</span>
+where <span class="math inline">\(Q_{p}(X_{1}, \ldots, X_{H})\)</span> denotes the <span class="math inline">\(p^{th}\)</span> quantile from the data <span class="math inline">\(X_{1}, \ldots, X_{H}\)</span>.</p></li>
+<li><p>The difference in quantiles could be computed with the following <strong>R</strong> code:</p></li>
+</ul>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">z &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb72-2" data-line-number="2"><span class="kw">quantile</span>(z[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], <span class="dt">probs=</span>.<span class="dv">3</span>) <span class="op">-</span><span class="st"> </span><span class="kw">quantile</span>(z[<span class="dv">6</span><span class="op">:</span><span class="dv">10</span>], <span class="dt">probs=</span>.<span class="dv">3</span>)</a></code></pre></div>
+<pre><code>##       30% 
+## 0.2671133</code></pre>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
 </div>
 <div id="the-permutation-test-as-a-conditional-test" class="section level2">
 <h2><span class="header-section-number">5.3</span> The Permutation Test as a Conditional Test</h2>
 <ul>
 <li>A permutation test is an example of a <strong>conditional test</strong>.</li>
 </ul>
+</div>
+<div id="a-permutation-test-for-correlation" class="section level2">
+<h2><span class="header-section-number">5.4</span> A Permutation Test for Correlation</h2>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<ul>
+<li><p>Suppose we have <span class="math inline">\(N\)</span> pairs of observations <span class="math inline">\((U_{1}, V_{1}), \ldots, (U_{N}, V_{N})\)</span></p></li>
+<li><p>The correlation between these pairs is defined as
+<span class="math display">\[\begin{equation}
+\rho_{UV} = \frac{\textrm{Cov}(U_{i}, V_{i})}{\sigma_{U}\sigma_{V}}
+\end{equation}\]</span></p></li>
+<li><p>The test statistic of interest here is the sample correlation
+<span class="math display">\[\begin{equation}
+T_{N}(\mathbf{U}, \mathbf{V}) = \frac{\sum_{i=1}^{N}(U_{i} - \bar{U})(V_{i} - \bar{V})}{\sqrt{ \sum_{i=1}^{N}(U_{i} - \bar{U})^{2}\sum_{i=1}^{N}(V_{i} - \bar{V})^{2}} }
+\end{equation}\]</span></p></li>
+<li><p>To find the the permutation distribution, we only need to look
+at <span class="math inline">\(T_{N}(\mathbf{U}_{\pi}, \mathbf{V})\)</span> for different permutations <span class="math inline">\(\pi\)</span>.</p></li>
+<li><p>In other words, we are computing correlation among pairs
+of the form <span class="math inline">\((U_{\pi(1)}, V_{1}), \ldots, (U_{\pi(N)}, V_{N})\)</span>.</p></li>
+<li><p>We only need to look at <span class="math inline">\(U_{\pi}\)</span> because this achieves the objective
+of randomly “switching observation pairs”.</p></li>
+</ul>
+<hr />
+<ul>
+<li>The two-sided p-value for the permutation test of <span class="math inline">\(H_{0}: \rho_{UV} = 0\)</span> is
+<span class="math display">\[\begin{equation}
+\textrm{p-value} 
+= \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( \Big| T_{N}(\mathbf{U}_{\pi}, \mathbf{V}) \Big|  \geq |t_{obs}| \Big) \nonumber
+\end{equation}\]</span></li>
+</ul>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">library</span>(rattle.data)</a>
+<a class="sourceLine" id="cb74-2" data-line-number="2"><span class="co">## Computing the permutation distribution for correlation </span></a>
+<a class="sourceLine" id="cb74-3" data-line-number="3"><span class="co">## between flavanoids and phenols</span></a>
+<a class="sourceLine" id="cb74-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb74-5" data-line-number="5">n.obs &lt;-<span class="st"> </span><span class="kw">nrow</span>(wine) <span class="co">## number of observations</span></a>
+<a class="sourceLine" id="cb74-6" data-line-number="6">t.obs.pf &lt;-<span class="st"> </span><span class="kw">cor</span>(wine<span class="op">$</span>Phenols, wine<span class="op">$</span>Flavanoids) <span class="co">## observed correlation</span></a>
+<a class="sourceLine" id="cb74-7" data-line-number="7">nperms &lt;-<span class="st"> </span><span class="dv">2000</span></a>
+<a class="sourceLine" id="cb74-8" data-line-number="8">cor.perm.pf &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, nperms)</a>
+<a class="sourceLine" id="cb74-9" data-line-number="9"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nperms) {</a>
+<a class="sourceLine" id="cb74-10" data-line-number="10">     ss &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>n.obs, <span class="dt">size=</span>n.obs)</a>
+<a class="sourceLine" id="cb74-11" data-line-number="11">     uu.perm &lt;-<span class="st"> </span>wine<span class="op">$</span>Phenols[ss]</a>
+<a class="sourceLine" id="cb74-12" data-line-number="12">     cor.perm.pf[k] &lt;-<span class="st"> </span><span class="kw">cor</span>(uu.perm, wine<span class="op">$</span>Flavanoids)</a>
+<a class="sourceLine" id="cb74-13" data-line-number="13">}</a>
+<a class="sourceLine" id="cb74-14" data-line-number="14"><span class="kw">hist</span>(cor.perm.pf, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Permutation </span></a>
+<a class="sourceLine" id="cb74-15" data-line-number="15"><span class="st">     Distribution of Correlation between Phenols and Flavanoids&quot;</span>, </a>
+<a class="sourceLine" id="cb74-16" data-line-number="16">     <span class="dt">xlab=</span><span class="st">&quot;correlation&quot;</span>)</a>
+<a class="sourceLine" id="cb74-17" data-line-number="17"><span class="kw">abline</span>(<span class="dt">v=</span>t.obs.pf, <span class="dt">lwd=</span><span class="dv">3</span>)</a></code></pre></div>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<ul>
+<li>Now let us compute the p-values for both the
+Phenols/Flavanoids and Phenols/Color association tests.</li>
+</ul>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(cor.perm.pf) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(t.obs.pf)))<span class="op">/</span>(nperms <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb75-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">4</span>)</a></code></pre></div>
+<pre><code>## [1] 5e-04</code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(cor.perm.pc) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(t.obs.pc)))<span class="op">/</span>(nperms <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb77-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">4</span>)</a></code></pre></div>
+<pre><code>## [1] 0.4648</code></pre>
+</div>
+<div id="a-permutation-test-for-variable-importance-in-regression-and-machine-learning" class="section level2">
+<h2><span class="header-section-number">5.5</span> A Permutation Test for Variable Importance in Regression and Machine Learning</h2>
 
 </div>
 </div>

@@ -57,7 +57,7 @@ set $\{1, \ldots, N\}$.
     + Forming "random" groups can be done by using many permutations
       of the original data.
 
----      
+### Example 1   
 
 * Suppose we have observations from two groups $X_{1}, \ldots, X_{n} \sim F_{X}$
 and $Y_{1}, \ldots, Y_{m} \sim F_{Y}$.
@@ -123,7 +123,8 @@ for(k in 1:nreps) {
 hist(mean.diff, las=1, col="grey", main="Permutation Distribution of Mean Difference")
 abline(v=observed.diff, lwd=3)
 ```
-    
+
+### Permutation Test p-values
 * The one-sided p-value for the permutation test is
 \begin{eqnarray}
 \textrm{p-value} &=& \frac{\textrm{number of permutations such that } T_{N} \geq t_{obs}}{ N! } \nonumber \\
@@ -152,10 +153,183 @@ pval.mc <- (1 + sum(abs(mean.diff) >= abs(observed.diff)))/(nreps + 1)
 round(pval.mc, 2)
 ```
     
+### Example 2: Ratios of Means
+
+* With permutation tests, you are not limited to difference in means. You can choose 
+the statistic $T_{N}(\mathbf{Z})$ to measure other contrasts of interest.
+
+* For example, with nonnegative data you might interested in the ratio of means between the two groups
+\begin{equation}
+T_{N}( \mathbf{Z} ) = \max\Big\{ \bar{X}/\bar{Y} , \bar{Y}/\bar{X}  \Big\}
+\end{equation}
+
+* Let us see how this works for a simulated example where we assume that
+$X_{1}, \ldots, X_{n} \sim \textrm{Exponential}(1)$ and $Y_{1}, \ldots, Y_{m} \sim \textrm{Exponential}(1/2)$
+```{r}
+set.seed(5127)
+xx <- rexp(20, rate=1)
+yy <- rexp(20, rate=0.5)
+zz <- c(xx, yy) ## this is the original data
+t.obs <- max(mean(zz[1:20])/mean(zz[21:40]), mean(zz[21:40])/mean(zz[1:20]))
+nperms <- 500
+mean.ratio <- rep(0, nperms)
+for(k in 1:nperms) {
+     ss <- sample(1:40, size=40)
+     zz.perm <- zz[ss]
+     mean.ratio[k] <- max(mean(zz.perm[1:20])/mean(zz.perm[21:40]), mean(zz.perm[21:40])/mean(zz.perm[1:20]))
+}
+hist(mean.ratio, las=1, col="grey", main="Permutation Distribution of Maximum Mean Ratio",
+     xlab="maximum mean ratio")
+abline(v=t.obs, lwd=3)
+```
+
+* The two-side (Monte Carlo) permutation test p-value is:
+
+```{r}
+pval.mc <- (1 + sum(mean.ratio >= t.obs))/(nperms + 1)
+round(pval.mc, 2)
+```
+    
+    
+### Example 3: Differences in Percentiles.
+
+* Permutation tests are especially useful in problems where working out the null distribution
+is difficult, or when certain approximations of the null distributions are hard to justify.
+
+* An example of this occurrs if you want to compare medians, or more generally,
+compare quantiles.
+
+* The difference-in-percentiles statistic would be defined as
+\begin{equation}
+T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{n+m})
+\end{equation}
+where $Q_{p}(X_{1}, \ldots, X_{H})$ denotes the $p^{th}$ quantile from the data $X_{1}, \ldots, X_{H}$.
+
+* The difference in quantiles could be computed with the following **R** code:
+```{r}
+z <- rnorm(10)
+quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
+```
+
+```{r, echo=FALSE}
+library(rattle.data)
+zz <- wine$Color[wine$Type==1 | wine$Type==2]
+t.obs <- quantile(zz[1:59], probs=.5) - quantile(zz[60:130], probs=.5)
+nperms <- 500
+quant.diff <- rep(0, nperms)
+for(k in 1:nperms) {
+     ss <- sample(1:130, size=130)
+     zz.perm <- zz[ss]
+     quant.diff[k] <- quantile(zz.perm[1:59], probs=.5) - quantile(zz.perm[60:130], probs=.5)
+}
+hist(quant.diff, las=1, col="grey", main="Permutation Distribution of Quantile Difference",
+     xlab="quantile difference", xlim=c(-2, 3))
+abline(v=t.obs, lwd=3)
+```
+
+
+
 ## The Permutation Test as a Conditional Test    
       
 * A permutation test is an example of a **conditional test**.
 
 
-      
+## A Permutation Test for Correlation
+
+```{r, echo=FALSE}
+
+par(mfrow=c(1,2))
+plot(wine$Phenols, wine$Flavanoids, las=1, xlab="Phenols",
+     ylab="Flavanoids", main="Wine Data")
+plot(wine$Phenols, wine$Color, las=1, xlab="Phenols", ylab="Color", main="Wine Data")
+```
+
+
+* Suppose we have $N$ pairs of observations $(U_{1}, V_{1}), \ldots, (U_{N}, V_{N})$
+
+* The correlation between these pairs is defined as
+\begin{equation}
+\rho_{UV} = \frac{\textrm{Cov}(U_{i}, V_{i})}{\sigma_{U}\sigma_{V}}
+\end{equation}
+
+* The test statistic of interest here is the sample correlation
+\begin{equation}
+T_{N}(\mathbf{U}, \mathbf{V}) = \frac{\sum_{i=1}^{N}(U_{i} - \bar{U})(V_{i} - \bar{V})}{\sqrt{ \sum_{i=1}^{N}(U_{i} - \bar{U})^{2}\sum_{i=1}^{N}(V_{i} - \bar{V})^{2}} }
+\end{equation}
+
+
+* To find the the permutation distribution, we only need to look
+at $T_{N}(\mathbf{U}_{\pi}, \mathbf{V})$ for different permutations $\pi$.
+
+* In other words, we are computing correlation among pairs
+of the form $(U_{\pi(1)}, V_{1}), \ldots, (U_{\pi(N)}, V_{N})$.
+
+* We only need to look at $U_{\pi}$ because this achieves the objective
+of randomly "switching observation pairs".
+
+---
+
+* The two-sided p-value for the permutation test of $H_{0}: \rho_{UV} = 0$ is
+\begin{equation}
+\textrm{p-value} 
+= \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( \Big| T_{N}(\mathbf{U}_{\pi}, \mathbf{V}) \Big|  \geq |t_{obs}| \Big) \nonumber
+\end{equation}
+
+
+```{r}
+library(rattle.data)
+## Computing the permutation distribution for correlation 
+## between flavanoids and phenols
+
+n.obs <- nrow(wine) ## number of observations
+t.obs.pf <- cor(wine$Phenols, wine$Flavanoids) ## observed correlation
+nperms <- 2000
+cor.perm.pf <- rep(0, nperms)
+for(k in 1:nperms) {
+     ss <- sample(1:n.obs, size=n.obs)
+     uu.perm <- wine$Phenols[ss]
+     cor.perm.pf[k] <- cor(uu.perm, wine$Flavanoids)
+}
+hist(cor.perm.pf, xlim=c(-1, 1), las=1, col="grey", main="Permutation 
+     Distribution of Correlation between Phenols and Flavanoids", 
+     xlab="correlation")
+abline(v=t.obs.pf, lwd=3)
+```
+
+
+```{r, echo=FALSE}
+
+n.obs <- nrow(wine) ## number of observations
+t.obs.pc <- cor(wine$Phenols, wine$Color) ## observed correlation
+nperms <- 2000
+cor.perm.pc <- rep(0, nperms)
+for(k in 1:nperms) {
+     ss <- sample(1:n.obs, size=n.obs)
+     uu.perm <- wine$Phenols[ss]
+     cor.perm.pc[k] <- cor(uu.perm, wine$Color)
+}
+hist(cor.perm.pc, xlim=c(-1, 1), las=1, col="grey", main="Permutation 
+     Distribution of Correlation between Phenols and Color", 
+     xlab="correlation")
+abline(v=t.obs.pc, lwd=3)
+```
+
+* Now let us compute the p-values for both the 
+Phenols/Flavanoids and Phenols/Color association tests.
+
+```{r}
+pval.mc <- (1 + sum(abs(cor.perm.pf) >= abs(t.obs.pf)))/(nperms + 1)
+round(pval.mc, 4)
+```
+
+```{r}
+pval.mc <- (1 + sum(abs(cor.perm.pc) >= abs(t.obs.pc)))/(nperms + 1)
+round(pval.mc, 4)
+```
+
+
+
+
+## A Permutation Test for Variable Importance in Regression and Machine Learning
+
 
