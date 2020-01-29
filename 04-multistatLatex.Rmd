@@ -176,8 +176,11 @@ SSA_{r} &=& \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \bar{R}_{..})^{2}  \nonumber \\
 (\#eq:ssa-kw)
 \end{eqnarray}
 
-* If you were applying ANOVA to the ranks of $Y_{kj}$, $SST_{r}$ would be 
-a fixed constant. 
+* If you were applying ANOVA to the ranks of $Y_{kj}$, $SST_{r}$ would be
+the following fixed constant:
+\begin{equation}
+\textrm{SST}_{r} = \frac{N(N + 1)(N-1)}{12} \nonumber
+\end{equation}
 
 * So, any test of the homogeneity hypothesis would 
 be based on just the value of  $SSA_{r}$ which as we showed in \@ref(eq:ssa-kw) 

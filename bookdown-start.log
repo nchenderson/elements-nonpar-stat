@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  28 JAN 2020 13:04
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  28 JAN 2020 19:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1187,11 +1187,8 @@ Overfull \hbox (18.78001pt too wide) in alignment at lines 2685--2690
 File: 04-multistatLatex_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (
 type pdf)
 <use 04-multistatLatex_files/figure-latex/unnamed-chunk-2-1.pdf>
-
-Underfull \vbox (badness 5288) has occurred while \output is active []
-
 [63] [64]
-Overfull \hbox (6.75pt too wide) in paragraph at lines 3011--3011
+Overfull \hbox (6.75pt too wide) in paragraph at lines 3014--3014
 []\TU/lmtt/m/n/10 ## Kruskal-Wallis chi-squared = 54.691, df = 5, p-value = 1.5
 11e-10[] 
  []
@@ -1209,12 +1206,12 @@ File: 04-multistatLatex_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file
 ]
 Chapter 5.
 [69]
-Underfull \hbox (badness 3323) in paragraph at lines 3227--3227
+Underfull \hbox (badness 3323) in paragraph at lines 3230--3230
 []\TU/lmr/bx/n/14.4 Permutation Tests for the Two-Sample
  []
 
 
-Overfull \hbox (5.30002pt too wide) in paragraph at lines 3271--3289
+Overfull \hbox (5.30002pt too wide) in paragraph at lines 3274--3292
  [][] 
  []
 
@@ -1228,12 +1225,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [71] [72] (./bookdown-start.bbl [73] [74
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3378.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3381.
 [75]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 3378.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 3381.
 (./bookdown-start.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3378.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3378.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3381.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3381.
 
 Package rerunfilecheck Info: File `bookdown-start.out' has not changed.
 (rerunfilecheck)             Checksum: A2BA67B298906CBA01EAD4CB65509386.
