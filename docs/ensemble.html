@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 14 Ensemble Methods for Prediction | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 14 Ensemble Methods for Prediction | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-29" />
+<meta name="date" content="2020-01-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -189,7 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2.1" data-path="permutation.html"><a href="permutation.html#example-1"><i class="fa fa-check"></i><b>5.2.1</b> Example 1</a></li>
 <li class="chapter" data-level="5.2.2" data-path="permutation.html"><a href="permutation.html#permutation-test-p-values"><i class="fa fa-check"></i><b>5.2.2</b> Permutation Test p-values</a></li>
 <li class="chapter" data-level="5.2.3" data-path="permutation.html"><a href="permutation.html#example-2-ratios-of-means"><i class="fa fa-check"></i><b>5.2.3</b> Example 2: Ratios of Means</a></li>
-<li class="chapter" data-level="5.2.4" data-path="permutation.html"><a href="permutation.html#example-3-differences-in-percentiles."><i class="fa fa-check"></i><b>5.2.4</b> Example 3: Differences in Percentiles.</a></li>
+<li class="chapter" data-level="5.2.4" data-path="permutation.html"><a href="permutation.html#example-3-differences-in-quantiles"><i class="fa fa-check"></i><b>5.2.4</b> Example 3: Differences in Quantiles</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3</b> The Permutation Test as a Conditional Test</a></li>
 <li class="chapter" data-level="5.4" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-correlation"><i class="fa fa-check"></i><b>5.4</b> A Permutation Test for Correlation</a></li>
@@ -306,11 +309,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -318,12 +323,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -335,6 +339,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },
