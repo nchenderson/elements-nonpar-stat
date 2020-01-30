@@ -155,7 +155,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.77
+## [1] 0.75
 ```
     
 ### Example 2: Ratios of Means
@@ -347,10 +347,45 @@ what is the probability
 P\Big\{ T_{4}(Z_{1}, Z_{2}, Z_{3}, Z_{4}) \geq 2.5 | Z_{(1)}=z_{1}, Z_{(2)}=z_{2}, Z_{(3)}=z_{3}, Z_{(4)} = z_{4} \Big \}
 \end{equation}
 
+* From the below table, we see that the number of times $T_{4} \geq 2.5$ occurs is $8$.
+Hence,
+\begin{eqnarray}
+& & P\Big\{ T_{4}(Z_{1}, Z_{2}, Z_{3}, Z_{4}) \geq 2.5 | Z_{(1)}=z_{1}, Z_{(2)}=z_{2}, Z_{(3)}=z_{3}, Z_{(4)} = z_{4} \Big \} \nonumber \\
+&=& 8/24 = 1/3. \nonumber
+\end{eqnarray}
+
+
+<table border=1>
+<tr> <th> a1 </th> <th> a2 </th> <th> a3 </th> <th> a4 </th> <th> P(Z1 = a1, Z2=a2, Z3=a3, Z4=a4|order stat) </th> <th> T(a1, a2, a3, a4) </th> <th> T(a1, a2, a3, a4) &gt;= 2.5 </th>  </tr>
+  <tr> <td align="center"> -3 </td> <td align="center"> -1 </td> <td align="center"> 2 </td> <td align="center"> 5 </td> <td align="center"> 1/24 </td> <td align="center"> -5.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -3 </td> <td align="center"> -1 </td> <td align="center"> 5 </td> <td align="center"> 2 </td> <td align="center"> 1/24 </td> <td align="center"> -5.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -3 </td> <td align="center"> 2 </td> <td align="center"> -1 </td> <td align="center"> 5 </td> <td align="center"> 1/24 </td> <td align="center"> -2.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -3 </td> <td align="center"> 2 </td> <td align="center"> 5 </td> <td align="center"> -1 </td> <td align="center"> 1/24 </td> <td align="center"> -2.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -3 </td> <td align="center"> 5 </td> <td align="center"> -1 </td> <td align="center"> 2 </td> <td align="center"> 1/24 </td> <td align="center"> 0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -3 </td> <td align="center"> 5 </td> <td align="center"> 2 </td> <td align="center"> -1 </td> <td align="center"> 1/24 </td> <td align="center"> 0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -1 </td> <td align="center"> -3 </td> <td align="center"> 2 </td> <td align="center"> 5 </td> <td align="center"> 1/24 </td> <td align="center"> -5.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -1 </td> <td align="center"> -3 </td> <td align="center"> 5 </td> <td align="center"> 2 </td> <td align="center"> 1/24 </td> <td align="center"> -5.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -1 </td> <td align="center"> 2 </td> <td align="center"> -3 </td> <td align="center"> 5 </td> <td align="center"> 1/24 </td> <td align="center"> -0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -1 </td> <td align="center"> 2 </td> <td align="center"> 5 </td> <td align="center"> -3 </td> <td align="center"> 1/24 </td> <td align="center"> -0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -1 </td> <td align="center"> 5 </td> <td align="center"> -3 </td> <td align="center"> 2 </td> <td align="center"> 1/24 </td> <td align="center"> 2.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> -1 </td> <td align="center"> 5 </td> <td align="center"> 2 </td> <td align="center"> -3 </td> <td align="center"> 1/24 </td> <td align="center"> 2.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> 2 </td> <td align="center"> -3 </td> <td align="center"> -1 </td> <td align="center"> 5 </td> <td align="center"> 1/24 </td> <td align="center"> -2.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> 2 </td> <td align="center"> -3 </td> <td align="center"> 5 </td> <td align="center"> -1 </td> <td align="center"> 1/24 </td> <td align="center"> -2.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> 2 </td> <td align="center"> -1 </td> <td align="center"> -3 </td> <td align="center"> 5 </td> <td align="center"> 1/24 </td> <td align="center"> -0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> 2 </td> <td align="center"> -1 </td> <td align="center"> 5 </td> <td align="center"> -3 </td> <td align="center"> 1/24 </td> <td align="center"> -0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> 2 </td> <td align="center"> 5 </td> <td align="center"> -3 </td> <td align="center"> -1 </td> <td align="center"> 1/24 </td> <td align="center"> 5.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> 2 </td> <td align="center"> 5 </td> <td align="center"> -1 </td> <td align="center"> -3 </td> <td align="center"> 1/24 </td> <td align="center"> 5.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> 5 </td> <td align="center"> -3 </td> <td align="center"> -1 </td> <td align="center"> 2 </td> <td align="center"> 1/24 </td> <td align="center"> 0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> 5 </td> <td align="center"> -3 </td> <td align="center"> 2 </td> <td align="center"> -1 </td> <td align="center"> 1/24 </td> <td align="center"> 0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> 5 </td> <td align="center"> -1 </td> <td align="center"> -3 </td> <td align="center"> 2 </td> <td align="center"> 1/24 </td> <td align="center"> 2.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> 5 </td> <td align="center"> -1 </td> <td align="center"> 2 </td> <td align="center"> -3 </td> <td align="center"> 1/24 </td> <td align="center"> 2.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> 5 </td> <td align="center"> 2 </td> <td align="center"> -3 </td> <td align="center"> -1 </td> <td align="center"> 1/24 </td> <td align="center"> 5.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> 5 </td> <td align="center"> 2 </td> <td align="center"> -1 </td> <td align="center"> -3 </td> <td align="center"> 1/24 </td> <td align="center"> 5.50 </td> <td align="center"> 1 </td> </tr>
+   </table>
 
 ## A Permutation Test for Correlation
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+<img src="05-permutation_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 
 * Suppose we have $N$ pairs of observations $(U_{1}, V_{1}), \ldots, (U_{N}, V_{N})$
@@ -405,10 +440,10 @@ hist(cor.perm.pf, xlim=c(-1, 1), las=1, col="grey", main="Permutation
 abline(v=t.obs.pf, lwd=3)
 ```
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-8-1.png" width="672" />
-
-
 <img src="05-permutation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+
+
+<img src="05-permutation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 * Now let us compute the p-values for both the 
 Phenols/Flavanoids and Phenols/Color association tests.
@@ -457,7 +492,7 @@ will be when we break any association between $\mathbf{y}$ and
 a covariate.
 
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+<img src="05-permutation_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
 
 

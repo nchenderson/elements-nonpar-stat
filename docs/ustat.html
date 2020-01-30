@@ -197,10 +197,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
 <li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-3"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
-<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a></li>
-<li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#mann-whitney-statistic"><i class="fa fa-check"></i><b>6.3</b> Mann-Whitney Statistic</a></li>
-<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#kendalls-tau"><i class="fa fa-check"></i><b>6.4</b> Kendall’s tau</a></li>
-<li class="chapter" data-level="6.5" data-path="ustat.html"><a href="ustat.html#distance-covariance"><i class="fa fa-check"></i><b>6.5</b> Distance Covariance</a></li>
+<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="ustat.html"><a href="ustat.html#example-1-the-sample-mean"><i class="fa fa-check"></i><b>6.2.1</b> Example 1: The Sample Mean</a></li>
+<li class="chapter" data-level="6.2.2" data-path="ustat.html"><a href="ustat.html#example-2-the-sample-variance"><i class="fa fa-check"></i><b>6.2.2</b> Example 2: The Sample Variance</a></li>
+<li class="chapter" data-level="6.2.3" data-path="ustat.html"><a href="ustat.html#example-3-ginis-mean-difference"><i class="fa fa-check"></i><b>6.2.3</b> Example 3: Gini’s Mean Difference</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#u-statistics-for-one-and-two-sample-problems"><i class="fa fa-check"></i><b>6.3</b> U-statistics for One and Two-Sample Problems</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="ustat.html"><a href="ustat.html#the-mann-whitney-statistic"><i class="fa fa-check"></i><b>6.3.1</b> The Mann-Whitney Statistic</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.4</b> Measures of Association</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="ustat.html"><a href="ustat.html#spearmans-rank-correlation"><i class="fa fa-check"></i><b>6.4.1</b> Spearman’s Rank Correlation</a></li>
+<li class="chapter" data-level="6.4.2" data-path="ustat.html"><a href="ustat.html#kendalls-tau"><i class="fa fa-check"></i><b>6.4.2</b> Kendall’s tau</a></li>
+<li class="chapter" data-level="6.4.3" data-path="ustat.html"><a href="ustat.html#distance-covariance"><i class="fa fa-check"></i><b>6.4.3</b> Distance Covariance</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>II Nonparametric Estimation</b></span></li>
 <li class="chapter" data-level="7" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
@@ -278,29 +287,88 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="definition-3" class="section level2">
 <h2><span class="header-section-number">6.1</span> Definition</h2>
 <ul>
-<li><p>Suppose we have data <span class="math inline">\(Z_{1}, \ldots, Z_{n}\)</span></p></li>
-<li><p>U-statistics are used to estimate quantities of the form
-<span class="math display">\[\begin{equation}
-E\Big\{ h(Z_{1}, \ldots, Z_{r})  \Big\}
+<li><p>Suppose we have observations <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>.</p></li>
+<li><p>U-statistics are a family of statistics used to estimate quantities
+that can be written as
+<span class="math display" id="eq:ustat-parameter">\[\begin{equation}
+\theta = E\Big\{ h(X_{1}, \ldots, X_{r})  \Big\}
+\tag{6.1}
 \end{equation}\]</span></p></li>
+<li><p>The U-statistic <span class="math inline">\(U\)</span> which estimates <a href="ustat.html#eq:ustat-parameter">(6.1)</a> is given by the following formula:
+<span class="math display" id="eq:ustat-definition">\[\begin{equation}
+U = \frac{1}{{n \choose r}} \sum_{p \in \mathcal{P}_{n,r}} h(X_{p_{1}}, \ldots, X_{p_{r}})
+\tag{6.2}
+\end{equation}\]</span></p></li>
+<li><p>The function <span class="math inline">\(h\)</span> is usually called the <strong>kernel</strong> of the U-statistic.</p></li>
+<li><p>The integer <span class="math inline">\(r\)</span> is called the <strong>order</strong> of the U-statistic. Typically,
+<span class="math inline">\(r = 2\)</span>, or <span class="math inline">\(r = 3\)</span> at most.</p></li>
 </ul>
 </div>
 <div id="examples" class="section level2">
 <h2><span class="header-section-number">6.2</span> Examples</h2>
 <ul>
-<li><p>A wide range of well-known statistics can also be represented as U-statistics.</p></li>
-<li><p>Sample Mean, Variance, Signed-Rank Statistic, Gini Mean Difference</p></li>
+<li>A wide range of well-known statistics can be represented as U-statistics.</li>
+</ul>
+<div id="example-1-the-sample-mean" class="section level3">
+<h3><span class="header-section-number">6.2.1</span> Example 1: The Sample Mean</h3>
+<ul>
+<li><p>The sample mean is actually an example of a U-statistic with <span class="math inline">\(r = 1\)</span>.</p></li>
+<li><p>Choosing <span class="math inline">\(h(x) = x\)</span> means that the corresponding U-statistic is
+<span class="math display">\[\begin{equation}
+U = \frac{1}{n} \sum_{i=1}^{n} X_{i}
+\end{equation}\]</span></p></li>
 </ul>
 </div>
-<div id="mann-whitney-statistic" class="section level2">
-<h2><span class="header-section-number">6.3</span> Mann-Whitney Statistic</h2>
+<div id="example-2-the-sample-variance" class="section level3">
+<h3><span class="header-section-number">6.2.2</span> Example 2: The Sample Variance</h3>
+<ul>
+<li><p>The sample variance is actually another example of a U-statistic.
+In this case, <span class="math inline">\(r = 2\)</span>.</p></li>
+<li><p>To show why this is the case, choose the kernel <span class="math inline">\(h(x_{1}, x_{2})\)</span> to be
+<span class="math display">\[\begin{equation}
+h(x_{1}, x_{2}) = \frac{1}{2}(x_{1} - x_{2})^{2}
+\end{equation}\]</span></p></li>
+<li><p>The expectation of this kernel is <span class="math inline">\(\sigma^{2} = E\{ h(X_{1}, X_{2}) \}\)</span> because
+<span class="math display">\[\begin{eqnarray}
+E\{ h(X_{1}, X_{2}) \} &amp;=&amp; \frac{1}{2}\Big[ E(X_{1}^{2}) - 2E(X_{1})E(X_{2})  + E(X_{2}^{2}) \Big] \nonumber \\
+&amp;=&amp; \frac{1}{2}\Big[ \sigma^{2} + \mu^{2} - 2\mu^{2}  + \sigma^{2} + \mu^{2} \Big] \nonumber \\
+&amp;=&amp; \sigma^{2}
+\end{eqnarray}\]</span></p></li>
+<li><p>Also, this choice of kernel generates the sample variance because
+<span class="math display">\[\begin{equation}
+U = \frac{1}{{n \choose 2}} \sum_{p \in \mathcal{P}_{n,2}} h(X_{p_{1}}, X_{p_{2}})
+= \frac{1}{2}\sum_{i=1}^{n} \sum_{j=i+1}^{n} (X_{i} - X_{j})^{2}
+\end{equation}\]</span></p></li>
+</ul>
 </div>
-<div id="kendalls-tau" class="section level2">
-<h2><span class="header-section-number">6.4</span> Kendall’s tau</h2>
+<div id="example-3-ginis-mean-difference" class="section level3">
+<h3><span class="header-section-number">6.2.3</span> Example 3: Gini’s Mean Difference</h3>
+<ul>
+<li>The parameter of interest is
+<span class="math display">\[\begin{equation}
+\theta = E\Big\{ \Big| X_{1} - X_{2} \Big|  \Big\}
+\end{equation}\]</span></li>
+</ul>
 </div>
-<div id="distance-covariance" class="section level2">
-<h2><span class="header-section-number">6.5</span> Distance Covariance</h2>
+</div>
+<div id="u-statistics-for-one-and-two-sample-problems" class="section level2">
+<h2><span class="header-section-number">6.3</span> U-statistics for One and Two-Sample Problems</h2>
+<div id="the-mann-whitney-statistic" class="section level3">
+<h3><span class="header-section-number">6.3.1</span> The Mann-Whitney Statistic</h3>
+</div>
+</div>
+<div id="measures-of-association" class="section level2">
+<h2><span class="header-section-number">6.4</span> Measures of Association</h2>
+<div id="spearmans-rank-correlation" class="section level3">
+<h3><span class="header-section-number">6.4.1</span> Spearman’s Rank Correlation</h3>
+</div>
+<div id="kendalls-tau" class="section level3">
+<h3><span class="header-section-number">6.4.2</span> Kendall’s tau</h3>
+</div>
+<div id="distance-covariance" class="section level3">
+<h3><span class="header-section-number">6.4.3</span> Distance Covariance</h3>
 
+</div>
 </div>
 </div>
 

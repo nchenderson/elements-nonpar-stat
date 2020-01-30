@@ -197,10 +197,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
 <li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-3"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
-<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a></li>
-<li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#mann-whitney-statistic"><i class="fa fa-check"></i><b>6.3</b> Mann-Whitney Statistic</a></li>
-<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#kendalls-tau"><i class="fa fa-check"></i><b>6.4</b> Kendall’s tau</a></li>
-<li class="chapter" data-level="6.5" data-path="ustat.html"><a href="ustat.html#distance-covariance"><i class="fa fa-check"></i><b>6.5</b> Distance Covariance</a></li>
+<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="ustat.html"><a href="ustat.html#example-1-the-sample-mean"><i class="fa fa-check"></i><b>6.2.1</b> Example 1: The Sample Mean</a></li>
+<li class="chapter" data-level="6.2.2" data-path="ustat.html"><a href="ustat.html#example-2-the-sample-variance"><i class="fa fa-check"></i><b>6.2.2</b> Example 2: The Sample Variance</a></li>
+<li class="chapter" data-level="6.2.3" data-path="ustat.html"><a href="ustat.html#example-3-ginis-mean-difference"><i class="fa fa-check"></i><b>6.2.3</b> Example 3: Gini’s Mean Difference</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#u-statistics-for-one-and-two-sample-problems"><i class="fa fa-check"></i><b>6.3</b> U-statistics for One and Two-Sample Problems</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="ustat.html"><a href="ustat.html#the-mann-whitney-statistic"><i class="fa fa-check"></i><b>6.3.1</b> The Mann-Whitney Statistic</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.4</b> Measures of Association</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="ustat.html"><a href="ustat.html#spearmans-rank-correlation"><i class="fa fa-check"></i><b>6.4.1</b> Spearman’s Rank Correlation</a></li>
+<li class="chapter" data-level="6.4.2" data-path="ustat.html"><a href="ustat.html#kendalls-tau"><i class="fa fa-check"></i><b>6.4.2</b> Kendall’s tau</a></li>
+<li class="chapter" data-level="6.4.3" data-path="ustat.html"><a href="ustat.html#distance-covariance"><i class="fa fa-check"></i><b>6.4.3</b> Distance Covariance</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>II Nonparametric Estimation</b></span></li>
 <li class="chapter" data-level="7" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
@@ -676,7 +685,7 @@ where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly
 </ul>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(mean.diff) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(observed.diff)))<span class="op">/</span>(nreps <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.77</code></pre>
+<pre><code>## [1] 0.75</code></pre>
 </div>
 <div id="example-2-ratios-of-means" class="section level3">
 <h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means</h3>
@@ -832,11 +841,594 @@ what is the probability
 <span class="math display">\[\begin{equation}
 P\Big\{ T_{4}(Z_{1}, Z_{2}, Z_{3}, Z_{4}) \geq 2.5 | Z_{(1)}=z_{1}, Z_{(2)}=z_{2}, Z_{(3)}=z_{3}, Z_{(4)} = z_{4} \Big \}
 \end{equation}\]</span></p></li>
+<li><p>From the below table, we see that the number of times <span class="math inline">\(T_{4} \geq 2.5\)</span> occurs is <span class="math inline">\(8\)</span>.
+Hence,
+<span class="math display">\[\begin{eqnarray}
+&amp; &amp; P\Big\{ T_{4}(Z_{1}, Z_{2}, Z_{3}, Z_{4}) \geq 2.5 | Z_{(1)}=z_{1}, Z_{(2)}=z_{2}, Z_{(3)}=z_{3}, Z_{(4)} = z_{4} \Big \} \nonumber \\
+&amp;=&amp; 8/24 = 1/3. \nonumber
+\end{eqnarray}\]</span></p></li>
 </ul>
+<table border="1">
+<tr>
+<th>
+a1
+</th>
+<th>
+a2
+</th>
+<th>
+a3
+</th>
+<th>
+a4
+</th>
+<th>
+P(Z1 = a1, Z2=a2, Z3=a3, Z4=a4|order stat)
+</th>
+<th>
+T(a1, a2, a3, a4)
+</th>
+<th>
+T(a1, a2, a3, a4) &gt;= 2.5
+</th>
+</tr>
+<tr>
+<td align="center">
+-3
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-5.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-3
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-5.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-3
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-2.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-3
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-2.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-3
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-3
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-1
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-5.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-1
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-5.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-1
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-1
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-1
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+2.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+-1
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+2.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-2.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-2.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+5.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+5.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+2.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+2.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+5.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+5.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+</table>
 </div>
 <div id="a-permutation-test-for-correlation" class="section level2">
 <h2><span class="header-section-number">5.4</span> A Permutation Test for Correlation</h2>
-<p><img src="05-permutation_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <ul>
 <li><p>Suppose we have <span class="math inline">\(N\)</span> pairs of observations <span class="math inline">\((U_{1}, V_{1}), \ldots, (U_{N}, V_{N})\)</span></p></li>
 <li><p>The correlation between these pairs is defined as
@@ -879,8 +1471,8 @@ of randomly “switching observation pairs”.</p></li>
 <a class="sourceLine" id="cb74-15" data-line-number="15"><span class="st">     Distribution of Correlation between Phenols and Flavanoids&quot;</span>, </a>
 <a class="sourceLine" id="cb74-16" data-line-number="16">     <span class="dt">xlab=</span><span class="st">&quot;correlation&quot;</span>)</a>
 <a class="sourceLine" id="cb74-17" data-line-number="17"><span class="kw">abline</span>(<span class="dt">v=</span>t.obs.pf, <span class="dt">lwd=</span><span class="dv">3</span>)</a></code></pre></div>
-<p><img src="05-permutation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p><img src="05-permutation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <ul>
 <li>Now let us compute the p-values for both the
 Phenols/Flavanoids and Phenols/Color association tests.</li>
@@ -909,7 +1501,7 @@ between <span class="math inline">\(\mathbf{y}\)</span> and any “important cov
 will be when we break any association between <span class="math inline">\(\mathbf{y}\)</span> and
 a covariate.</p></li>
 </ul>
-<p><img src="05-permutation_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 
 </div>
 </div>

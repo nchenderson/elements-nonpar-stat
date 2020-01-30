@@ -342,6 +342,32 @@ what is the probability
 P\Big\{ T_{4}(Z_{1}, Z_{2}, Z_{3}, Z_{4}) \geq 2.5 | Z_{(1)}=z_{1}, Z_{(2)}=z_{2}, Z_{(3)}=z_{3}, Z_{(4)} = z_{4} \Big \}
 \end{equation}
 
+* From the below table, we see that the number of times $T_{4} \geq 2.5$ occurs is $8$.
+Hence,
+\begin{eqnarray}
+& & P\Big\{ T_{4}(Z_{1}, Z_{2}, Z_{3}, Z_{4}) \geq 2.5 | Z_{(1)}=z_{1}, Z_{(2)}=z_{2}, Z_{(3)}=z_{3}, Z_{(4)} = z_{4} \Big \} \nonumber \\
+&=& 8/24 = 1/3. \nonumber
+\end{eqnarray}
+
+
+```{r, echo=FALSE, results="asis"}
+library(gtools)
+zz <- c(-3,-1,2,5)
+A <- matrix(0, nrow=24, ncol=7)
+A <- data.frame(A)
+PP <- permutations(4,4)
+for(k in 1:24) {
+   A[k,1:4] <- zz[PP[k,]] 
+}
+A[,5] <- rep("1/24", 24)
+A[,6] <- rowMeans(A[,1:2]) - rowMeans(A[,3:4])
+A[,7] <- as.numeric(A[,6] >= 2.5)
+
+colnames(A) <- c("a1", "a2", "a3", "a4", "P(Z1 = a1, Z2=a2, Z3=a3, Z4=a4|order stat)", 
+                 "T(a1, a2, a3, a4)", "T(a1, a2, a3, a4) >= 2.5")
+tab <- xtable(A, digits=c(2, 0, 0, 0, 0, 2,2,0), align=rep("c", 8))
+print(tab, type="html", comment=FALSE, include.rownames=FALSE)
+```
 
 ## A Permutation Test for Correlation
 
