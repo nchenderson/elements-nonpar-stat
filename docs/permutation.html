@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Permutation Tests | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Permutation Tests | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-29" />
+<meta name="date" content="2020-01-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -189,7 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2.1" data-path="permutation.html"><a href="permutation.html#example-1"><i class="fa fa-check"></i><b>5.2.1</b> Example 1</a></li>
 <li class="chapter" data-level="5.2.2" data-path="permutation.html"><a href="permutation.html#permutation-test-p-values"><i class="fa fa-check"></i><b>5.2.2</b> Permutation Test p-values</a></li>
 <li class="chapter" data-level="5.2.3" data-path="permutation.html"><a href="permutation.html#example-2-ratios-of-means"><i class="fa fa-check"></i><b>5.2.3</b> Example 2: Ratios of Means</a></li>
-<li class="chapter" data-level="5.2.4" data-path="permutation.html"><a href="permutation.html#example-3-differences-in-percentiles."><i class="fa fa-check"></i><b>5.2.4</b> Example 3: Differences in Percentiles.</a></li>
+<li class="chapter" data-level="5.2.4" data-path="permutation.html"><a href="permutation.html#example-3-differences-in-quantiles"><i class="fa fa-check"></i><b>5.2.4</b> Example 3: Differences in Quantiles</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3</b> The Permutation Test as a Conditional Test</a></li>
 <li class="chapter" data-level="5.4" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-correlation"><i class="fa fa-check"></i><b>5.4</b> A Permutation Test for Correlation</a></li>
@@ -676,7 +679,7 @@ where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly
 </ul>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(mean.diff) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(observed.diff)))<span class="op">/</span>(nreps <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.79</code></pre>
+<pre><code>## [1] 0.75</code></pre>
 </div>
 <div id="example-2-ratios-of-means" class="section level3">
 <h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means</h3>
@@ -713,8 +716,8 @@ T_{N}( \mathbf{Z} ) = \max\Big\{ \bar{X}/\bar{Y} , \bar{Y}/\bar{X}  \Big\}
 <a class="sourceLine" id="cb70-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
 <pre><code>## [1] 0.04</code></pre>
 </div>
-<div id="example-3-differences-in-percentiles." class="section level3">
-<h3><span class="header-section-number">5.2.4</span> Example 3: Differences in Percentiles.</h3>
+<div id="example-3-differences-in-quantiles" class="section level3">
+<h3><span class="header-section-number">5.2.4</span> Example 3: Differences in Quantiles</h3>
 <ul>
 <li><p>Permutation tests are especially useful in problems where working out the null distribution
 is difficult, or when certain approximations of the null distributions are hard to justify.</p></li>
@@ -725,6 +728,10 @@ compare quantiles.</p></li>
 T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{n+m})
 \end{equation}\]</span>
 where <span class="math inline">\(Q_{p}(X_{1}, \ldots, X_{H})\)</span> denotes the <span class="math inline">\(p^{th}\)</span> quantile from the data <span class="math inline">\(X_{1}, \ldots, X_{H}\)</span>.</p></li>
+<li><p>For random variables with a continuous cdf, the quantile function satisfies
+<span class="math display">\[\begin{equation}
+F_{X}\Big( Q_{p}(x) \Big) = x
+\end{equation}\]</span></p></li>
 <li><p>The difference in quantiles could be computed with the following <strong>R</strong> code:</p></li>
 </ul>
 <div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">z &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>)</a>
@@ -737,7 +744,95 @@ where <span class="math inline">\(Q_{p}(X_{1}, \ldots, X_{H})\)</span> denotes t
 <div id="the-permutation-test-as-a-conditional-test" class="section level2">
 <h2><span class="header-section-number">5.3</span> The Permutation Test as a Conditional Test</h2>
 <ul>
-<li>A permutation test is an example of a <strong>conditional test</strong>.</li>
+<li><p>A permutation test is an example of a <strong>conditional test</strong>.</p></li>
+<li><p>Typically, the p-value is defined as
+<span class="math display">\[\begin{equation}
+\textrm{p-value} = P(T \geq t_{obs}|H_{0})
+\end{equation}\]</span>
+for some test statistic <span class="math inline">\(T\)</span>.</p></li>
+<li><p>In other words, the p-value is the probability
+that a random variable following the null distribution
+exceeds <span class="math inline">\(t_{obs}\)</span>.</p></li>
+<li><p>In many problems however, the null hypothesis <span class="math inline">\(H_{0}\)</span> is
+not determined by a single parameter but contains
+many parameters.</p></li>
+<li><p>For example, the null hypothesis in a t-test is
+really <span class="math inline">\(H_{0}: \mu_{x} = \mu_{y}\)</span> and <span class="math inline">\(\sigma &gt; 0\)</span>.
+That is, the null hypothesis is true for many different values of <span class="math inline">\(\sigma\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>When <span class="math inline">\(H_{0}\)</span> contains many parameter values, one approach for computing
+a p-value is to choose the test statistic <span class="math inline">\(T\)</span> so that its
+distribution is the same for every point in <span class="math inline">\(H_{0}\)</span>.</p></li>
+<li><p>A more general approach is to instead compute a **conditional p-value</p></li>
+<li><p>The conditional p-value is defined as
+<span class="math display">\[\begin{equation}
+\textrm{p-value} = P(T \geq t_{obs}| S=s, H_{0})
+\end{equation}\]</span>
+where <span class="math inline">\(S\)</span> is a sufficient statistic for the unknown terms in <span class="math inline">\(H_{0}\)</span>.</p></li>
+<li><p>A classic example of this is Fisher’s exact test.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>A permutation test computes a conditional p-value where the sufficient
+statistic is the vector of order statistics
+<span class="math inline">\((Z_{(1)}, Z_{(2)}, \ldots,Z_{(N)})\)</span>.</p></li>
+<li><p>Recall that the order statistics are defined as
+<span class="math display">\[\begin{eqnarray}
+Z_{(1)} &amp;=&amp; \textrm{ smallest observation } \\
+Z_{(2)} &amp;=&amp; \textrm{ second smallest observation} \\
+      &amp; \vdots &amp; \\
+Z_{(N)} &amp;=&amp; \textrm{ largest observation}
+\end{eqnarray}\]</span></p></li>
+<li><p>What is the conditional distribution of the observed data
+conditional on the observed order statistics?</p></li>
+<li><p>It is:
+<span class="math display">\[\begin{eqnarray}
+f_{Z_{1}, \ldots, Z_{N}|Z_{(1)}, \ldots, Z_{(N)}}( z_{\pi(1)}, \ldots, z_{\pi(N)} | z_{1}, \ldots, z_{N})
+&amp;=&amp; \frac{f_{Z_{1}, \ldots, Z_{N}}( z_{\pi(1)}, \ldots, z_{\pi(N)}   ) }{ f(z_{1}, \ldots, z_{N}) } \nonumber \\
+&amp;=&amp; \frac{f(z_{\pi(1)}) \cdots f(z_{\pi(N)})}{ N!f_{Z_{i}}(z_{1}) \cdots f_{Z_{i}}(z_{N}) } \nonumber \\
+&amp;=&amp; \frac{1}{N!}
+\end{eqnarray}\]</span></p></li>
+<li><p>In other words, if we know the value of: <span class="math inline">\(Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{n}\)</span>,
+then any event of the form <span class="math inline">\(\{ Z_{1} = z_{\pi(1)}, \ldots, Z_{N} = z_{\pi(N)} \}\)</span> has an
+equal probability of occurring for any permutation chosen.</p></li>
+<li><p>This equal probability of <span class="math inline">\(1/N!\)</span> is only true under <span class="math inline">\(H_{0}\)</span> where we can regard the data
+as coming from a common distribution.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>If we are conditioning on <span class="math inline">\(Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{n}\)</span>, then the probability
+that <span class="math inline">\(T_{N}(z_{1}, \ldots, z_{N}) \geq t\)</span> is just the number of permutations of
+<span class="math inline">\((z_{(1)}, \ldots, z_{(N)})\)</span> such that the test statistic is greater than <span class="math inline">\(t\)</span> divided
+by <span class="math inline">\(N!\)</span>.</p></li>
+<li><p>In other words
+<span class="math display">\[\begin{eqnarray}
+&amp; &amp; P\Big\{ T_{N}(Z_{1}, \ldots, Z_{N}) \geq t| Z_{(1)} = z_{1}, \ldots, Z_{(N)} = z_{N} \Big\}
+ \\
+&amp;=&amp; \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(z_{\pi(1)}, \ldots, z_{N}) \geq t  \Big)
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Let us consider a concrete example.</p></li>
+<li><p>Suppose we have a two-sample problem with four observations. The
+first two</p></li>
+<li><p>The order statistics that we will condition on are:
+<span class="math display">\[\begin{eqnarray}
+Z_{(1)} = z_{1} = -3 \\
+Z_{(2)} = z_{2} = -1 \\
+Z_{(3)} = z_{3} = 2 \\
+Z_{(4)} = z_{4} = 5
+\end{eqnarray}\]</span></p></li>
+<li><p>If <span class="math inline">\(T_{4}\)</span> is the mean difference
+<span class="math display">\[\begin{equation}
+T_{4}(Z_{1}, Z_{2},Z_{3},Z_{4}) = Z_{1} + Z_{2} - Z_{3} - Z_{4}
+\end{equation}\]</span>
+what is the probability
+<span class="math display">\[\begin{equation}
+P\Big\{ T_{4}(Z_{1}, Z_{2}, Z_{3}, Z_{4}) \geq 2.5 | Z_{(1)}=z_{1}, Z_{(2)}=z_{2}, Z_{(3)}=z_{3}, Z_{(4)} = z_{4} \Big \}
+\end{equation}\]</span></p></li>
 </ul>
 </div>
 <div id="a-permutation-test-for-correlation" class="section level2">
@@ -800,6 +895,22 @@ Phenols/Flavanoids and Phenols/Color association tests.</li>
 </div>
 <div id="a-permutation-test-for-variable-importance-in-regression-and-machine-learning" class="section level2">
 <h2><span class="header-section-number">5.5</span> A Permutation Test for Variable Importance in Regression and Machine Learning</h2>
+<ul>
+<li><p>The idea of permutation testing can also be applied in the context of regression.</p></li>
+<li><p>In regression, we have a series of responses <span class="math inline">\(y_{1}, \ldots, y_{N}\)</span>, and
+we have a series of associated covariates vectors <span class="math inline">\(\mathbf{x}_{i}\)</span>.</p></li>
+<li><p>For regression, we are going to perform permutations on the
+vector of responses <span class="math inline">\(\mathbf{y} = (y_{1}, \ldots, y_{N})\)</span>
+and compute some measure for each permutation.</p></li>
+<li><p>For example, we might compute some measure of variable importance
+for each permutation.</p></li>
+<li><p>The idea here is that when permuting <span class="math inline">\(\mathbf{y}\)</span>, the association
+between <span class="math inline">\(\mathbf{y}\)</span> and any “important covariates” should be lost.</p></li>
+<li><p>We want to see what the typical values of our variable importance measures
+will be when we break any association between <span class="math inline">\(\mathbf{y}\)</span> and
+a covariate.</p></li>
+</ul>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 
 </div>
 </div>
@@ -814,11 +925,13 @@ Phenols/Flavanoids and Phenols/Color association tests.</li>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -826,12 +939,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -843,6 +955,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },

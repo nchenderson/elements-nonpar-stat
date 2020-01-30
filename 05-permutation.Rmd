@@ -191,7 +191,7 @@ round(pval.mc, 2)
 ```
     
     
-### Example 3: Differences in Percentiles.
+### Example 3: Differences in Quantiles
 
 * Permutation tests are especially useful in problems where working out the null distribution
 is difficult, or when certain approximations of the null distributions are hard to justify.
@@ -204,6 +204,11 @@ compare quantiles.
 T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{n+m})
 \end{equation}
 where $Q_{p}(X_{1}, \ldots, X_{H})$ denotes the $p^{th}$ quantile from the data $X_{1}, \ldots, X_{H}$.
+
+* For random variables with a continuous cdf, the quantile function satisfies
+\begin{equation}
+F_{X}\Big( Q_{p}(x) \Big) = x
+\end{equation}
 
 * The difference in quantiles could be computed with the following **R** code:
 ```{r}
@@ -232,6 +237,110 @@ abline(v=t.obs, lwd=3)
 ## The Permutation Test as a Conditional Test    
       
 * A permutation test is an example of a **conditional test**.
+
+* Typically, the p-value is defined as
+\begin{equation}
+\textrm{p-value} = P(T \geq t_{obs}|H_{0})
+\end{equation}
+for some test statistic $T$.
+
+* In other words, the p-value is the probability 
+that a random variable following the null distribution
+exceeds $t_{obs}$.
+
+* In many problems however, the null hypothesis $H_{0}$ is
+not determined by a single parameter but contains
+many parameters.
+
+* For example, the null hypothesis in a t-test is
+really $H_{0}: \mu_{x} = \mu_{y}$ and $\sigma > 0$.
+That is, the null hypothesis is true for many different values of $\sigma$.
+
+---
+
+* When $H_{0}$ contains many parameter values, one approach for computing 
+a p-value is to choose the test statistic $T$ so that its
+distribution is the same for every point in $H_{0}$.
+
+* A more general approach is to instead compute a **conditional p-value
+
+* The conditional p-value is defined as 
+\begin{equation}
+\textrm{p-value} = P(T \geq t_{obs}| S=s, H_{0})
+\end{equation}
+where $S$ is a sufficient statistic for the unknown terms in $H_{0}$.
+
+* A classic example of this is Fisher's exact test.
+
+---
+
+* A permutation test computes a conditional p-value where the sufficient
+statistic is the vector of order statistics
+$(Z_{(1)}, Z_{(2)}, \ldots,Z_{(N)})$.
+
+* Recall that the order statistics are defined as
+\begin{eqnarray}
+Z_{(1)} &=& \textrm{ smallest observation } \\
+Z_{(2)} &=& \textrm{ second smallest observation} \\
+        & \vdots & \\
+Z_{(N)} &=& \textrm{ largest observation}
+\end{eqnarray}
+
+* What is the conditional distribution of the observed data
+conditional on the observed order statistics?
+
+* It is:
+\begin{eqnarray}
+f_{Z_{1}, \ldots, Z_{N}|Z_{(1)}, \ldots, Z_{(N)}}( z_{\pi(1)}, \ldots, z_{\pi(N)} | z_{1}, \ldots, z_{N})
+&=& \frac{f_{Z_{1}, \ldots, Z_{N}}( z_{\pi(1)}, \ldots, z_{\pi(N)}   ) }{ f(z_{1}, \ldots, z_{N}) } \nonumber \\
+&=& \frac{f(z_{\pi(1)}) \cdots f(z_{\pi(N)})}{ N!f_{Z_{i}}(z_{1}) \cdots f_{Z_{i}}(z_{N}) } \nonumber \\
+&=& \frac{1}{N!}
+\end{eqnarray}
+
+* In other words, if we know the value of: $Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{n}$,
+then any event of the form $\{ Z_{1} = z_{\pi(1)}, \ldots, Z_{N} = z_{\pi(N)} \}$ has an
+equal probability of occurring for any permutation chosen.
+
+* This equal probability of $1/N!$ is only true under $H_{0}$ where we can regard the data
+as coming from a common distribution.
+
+---
+
+* If we are conditioning on $Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{n}$, then the probability
+that $T_{N}(z_{1}, \ldots, z_{N}) \geq t$ is just the number of permutations of
+$(z_{(1)}, \ldots, z_{(N)})$ such that the test statistic is greater than $t$ divided
+by $N!$.
+
+* In other words
+\begin{eqnarray}
+& & P\Big\{ T_{N}(Z_{1}, \ldots, Z_{N}) \geq t| Z_{(1)} = z_{1}, \ldots, Z_{(N)} = z_{N} \Big\}
+ \\
+&=& \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(z_{\pi(1)}, \ldots, z_{N}) \geq t  \Big)
+\end{eqnarray}
+
+---
+
+* Let us consider a concrete example.
+
+* Suppose we have a two-sample problem with four observations. The 
+first two 
+
+* The order statistics that we will condition on are: 
+\begin{eqnarray}
+Z_{(1)} = z_{1} = -3 \\
+Z_{(2)} = z_{2} = -1 \\
+Z_{(3)} = z_{3} = 2 \\
+Z_{(4)} = z_{4} = 5
+\end{eqnarray}
+
+* If $T_{4}$ is the mean difference 
+\begin{equation}
+T_{4}(Z_{1}, Z_{2},Z_{3},Z_{4}) = Z_{1} + Z_{2} - Z_{3} - Z_{4}
+\end{equation}
+what is the probability
+\begin{equation}
+P\Big\{ T_{4}(Z_{1}, Z_{2}, Z_{3}, Z_{4}) \geq 2.5 | Z_{(1)}=z_{1}, Z_{(2)}=z_{2}, Z_{(3)}=z_{3}, Z_{(4)} = z_{4} \Big \}
+\end{equation}
 
 
 ## A Permutation Test for Correlation
@@ -329,7 +438,43 @@ round(pval.mc, 4)
 
 
 
-
 ## A Permutation Test for Variable Importance in Regression and Machine Learning
+
+* The idea of permutation testing can also be applied in the context of regression.
+
+* In regression, we have a series of responses $y_{1}, \ldots, y_{N}$, and 
+we have a series of associated covariates vectors $\mathbf{x}_{i}$.
+
+* For regression, we are going to perform permutations on the 
+vector of responses $\mathbf{y} = (y_{1}, \ldots, y_{N})$
+and compute some measure for each permutation.
+
+* For example, we might compute some measure of variable importance
+for each permutation.
+
+* The idea here is that when permuting $\mathbf{y}$, the association
+between $\mathbf{y}$ and any "important covariates" should be lost.
+
+* We want to see what the typical values of our variable importance measures
+will be when we break any association between $\mathbf{y}$ and 
+a covariate.
+
+
+```{r, echo=FALSE}
+n <- 100
+xx <- runif(n)
+yy <- xx + rnorm(n, sd=.2)
+yy1 <- yy[sample(1:n, size=n)]
+yy2 <- yy[sample(1:n, size=n)]
+yy3 <- yy[sample(1:n, size=n)]
+
+par(mfrow=c(2,2))
+plot(xx, yy, main="Original Data", las=1, xlab="x", ylab="y")
+plot(xx, yy1, main="First Permutation of y", las=1, xlab="x", ylab="y")
+plot(xx, yy2, main="Second Permutation of y", las=1, xlab="x", ylab="y")
+plot(xx, yy3, main="Third Permutation of y", las=1, xlab="x", ylab="y")
+```
+
+
 
 
