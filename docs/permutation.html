@@ -670,23 +670,23 @@ many other permutations of the data.</p></li>
 <li><p>As we did when producing the above histogram, the permutation-test p-value is
 often computed by using a large number of random permutations rather
 than computing the test statistic for every possible permutation.</p></li>
-<li><p>The Monte Carlo permutation-test p-value is defined as
+<li><p>The Monte Carlo permutation p-value is defined as
 <span class="math display">\[\begin{equation}
-\textrm{p-value}_{mc} = \frac{1}{S+1}\Bigg[ 1 +  \sum_{s = 1}^{S} I\Big( T_{N}(\mathbf{Z}_{\pi_{s}}) \geq t_{obs} \Big) \Bigg]
+\textrm{p-value}_{mc} = \frac{1}{S+1}\Bigg[ 1 +  \sum_{s = 1}^{S} I\Big( T_{N}(\mathbf{Z}_{\pi_{k}}) \geq t_{obs} \Big) \Bigg]
 \end{equation}\]</span>
 where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly drawn permutations</p></li>
 <li><p>The two-sided (Monte Carlo) p-value for the example shown in the above Table is</p></li>
 </ul>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(mean.diff) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(observed.diff)))<span class="op">/</span>(nreps <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.77</code></pre>
+<pre><code>## [1] 0.75</code></pre>
 </div>
 <div id="example-2-ratios-of-means" class="section level3">
 <h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means</h3>
 <ul>
 <li><p>With permutation tests, you are not limited to difference in means. You can choose
 the statistic <span class="math inline">\(T_{N}(\mathbf{Z})\)</span> to measure other contrasts of interest.</p></li>
-<li><p>For example, with nonnegative data you might be interested in the ratio of means between the two groups
+<li><p>For example, with nonnegative data you might interested in the ratio of means between the two groups
 <span class="math display">\[\begin{equation}
 T_{N}( \mathbf{Z} ) = \max\Big\{ \bar{X}/\bar{Y} , \bar{Y}/\bar{X}  \Big\}
 \end{equation}\]</span></p></li>
@@ -703,12 +703,11 @@ T_{N}( \mathbf{Z} ) = \max\Big\{ \bar{X}/\bar{Y} , \bar{Y}/\bar{X}  \Big\}
 <a class="sourceLine" id="cb69-8" data-line-number="8"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nperms) {</a>
 <a class="sourceLine" id="cb69-9" data-line-number="9">     ss &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">40</span>, <span class="dt">size=</span><span class="dv">40</span>)</a>
 <a class="sourceLine" id="cb69-10" data-line-number="10">     zz.perm &lt;-<span class="st"> </span>zz[ss]</a>
-<a class="sourceLine" id="cb69-11" data-line-number="11">     mean.ratio[k] &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">mean</span>(zz.perm[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>])<span class="op">/</span><span class="kw">mean</span>(zz.perm[<span class="dv">21</span><span class="op">:</span><span class="dv">40</span>]), </a>
-<a class="sourceLine" id="cb69-12" data-line-number="12">                          <span class="kw">mean</span>(zz.perm[<span class="dv">21</span><span class="op">:</span><span class="dv">40</span>])<span class="op">/</span><span class="kw">mean</span>(zz.perm[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>]))</a>
-<a class="sourceLine" id="cb69-13" data-line-number="13">}</a>
-<a class="sourceLine" id="cb69-14" data-line-number="14"><span class="kw">hist</span>(mean.ratio, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Permutation Distribution of Maximum Mean Ratio&quot;</span>,</a>
-<a class="sourceLine" id="cb69-15" data-line-number="15">     <span class="dt">xlab=</span><span class="st">&quot;maximum mean ratio&quot;</span>)</a>
-<a class="sourceLine" id="cb69-16" data-line-number="16"><span class="kw">abline</span>(<span class="dt">v=</span>t.obs, <span class="dt">lwd=</span><span class="dv">3</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb69-11" data-line-number="11">     mean.ratio[k] &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">mean</span>(zz.perm[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>])<span class="op">/</span><span class="kw">mean</span>(zz.perm[<span class="dv">21</span><span class="op">:</span><span class="dv">40</span>]), <span class="kw">mean</span>(zz.perm[<span class="dv">21</span><span class="op">:</span><span class="dv">40</span>])<span class="op">/</span><span class="kw">mean</span>(zz.perm[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>]))</a>
+<a class="sourceLine" id="cb69-12" data-line-number="12">}</a>
+<a class="sourceLine" id="cb69-13" data-line-number="13"><span class="kw">hist</span>(mean.ratio, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Permutation Distribution of Maximum Mean Ratio&quot;</span>,</a>
+<a class="sourceLine" id="cb69-14" data-line-number="14">     <span class="dt">xlab=</span><span class="st">&quot;maximum mean ratio&quot;</span>)</a>
+<a class="sourceLine" id="cb69-15" data-line-number="15"><span class="kw">abline</span>(<span class="dt">v=</span>t.obs, <span class="dt">lwd=</span><span class="dv">3</span>)</a></code></pre></div>
 <p><img src="05-permutation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <ul>
 <li>The two-side (Monte Carlo) permutation test p-value is:</li>
@@ -724,9 +723,9 @@ T_{N}( \mathbf{Z} ) = \max\Big\{ \bar{X}/\bar{Y} , \bar{Y}/\bar{X}  \Big\}
 is difficult, or when certain approximations of the null distributions are hard to justify.</p></li>
 <li><p>An example of this occurrs if you want to compare medians, or more generally,
 compare quantiles.</p></li>
-<li><p>The difference-in-quantiles statistic would be defined as
+<li><p>The difference-in-percentiles statistic would be defined as
 <span class="math display">\[\begin{equation}
-T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{N})
+T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{n+m})
 \end{equation}\]</span>
 where <span class="math inline">\(Q_{p}(X_{1}, \ldots, X_{H})\)</span> denotes the <span class="math inline">\(p^{th}\)</span> quantile from the data <span class="math inline">\(X_{1}, \ldots, X_{H}\)</span>.</p></li>
 <li><p>For random variables with a continuous cdf, the quantile function satisfies
@@ -766,7 +765,7 @@ That is, the null hypothesis is true for many different values of <span class="m
 <li><p>When <span class="math inline">\(H_{0}\)</span> contains many parameter values, one approach for computing
 a p-value is to choose the test statistic <span class="math inline">\(T\)</span> so that its
 distribution is the same for every point in <span class="math inline">\(H_{0}\)</span>.</p></li>
-<li><p>A more general approach is to instead compute a <strong>conditional p-value</strong></p></li>
+<li><p>A more general approach is to instead compute a **conditional p-value</p></li>
 <li><p>The conditional p-value is defined as
 <span class="math display">\[\begin{equation}
 \textrm{p-value} = P(T \geq t_{obs}| S=s, H_{0})
@@ -791,11 +790,11 @@ conditional on the observed order statistics?</p></li>
 <li><p>It is:
 <span class="math display">\[\begin{eqnarray}
 f_{Z_{1}, \ldots, Z_{N}|Z_{(1)}, \ldots, Z_{(N)}}( z_{\pi(1)}, \ldots, z_{\pi(N)} | z_{1}, \ldots, z_{N})
-&amp;=&amp; \frac{f_{Z_{1}, \ldots, Z_{N}}( z_{\pi(1)}, \ldots, z_{\pi(N)}   ) }{ f_{Z_{(1)},\ldots,Z_{(N)}}(z_{1}, \ldots, z_{N}) } \nonumber \\
-&amp;=&amp; \frac{f_{Z_{i}}(z_{\pi(1)}) \cdots f_{Z_{i}}(z_{\pi(N)})}{ N!f_{Z_{i}}(z_{1}) \cdots f_{Z_{i}}(z_{N}) } \nonumber \\
+&amp;=&amp; \frac{f_{Z_{1}, \ldots, Z_{N}}( z_{\pi(1)}, \ldots, z_{\pi(N)}   ) }{ f(z_{1}, \ldots, z_{N}) } \nonumber \\
+&amp;=&amp; \frac{f(z_{\pi(1)}) \cdots f(z_{\pi(N)})}{ N!f_{Z_{i}}(z_{1}) \cdots f_{Z_{i}}(z_{N}) } \nonumber \\
 &amp;=&amp; \frac{1}{N!}
 \end{eqnarray}\]</span></p></li>
-<li><p>In other words, if we know the value of: <span class="math inline">\(Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{N}\)</span>,
+<li><p>In other words, if we know the value of: <span class="math inline">\(Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{n}\)</span>,
 then any event of the form <span class="math inline">\(\{ Z_{1} = z_{\pi(1)}, \ldots, Z_{N} = z_{\pi(N)} \}\)</span> has an
 equal probability of occurring for any permutation chosen.</p></li>
 <li><p>This equal probability of <span class="math inline">\(1/N!\)</span> is only true under <span class="math inline">\(H_{0}\)</span> where we can regard the data
@@ -803,33 +802,32 @@ as coming from a common distribution.</p></li>
 </ul>
 <hr />
 <ul>
-<li><p>If we are conditioning on <span class="math inline">\(Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{N}\)</span>, then the probability
-that <span class="math inline">\(T_{N}(Z_{1}, \ldots, Z_{N}) \geq t\)</span> is just the number of permutations of
-<span class="math inline">\((z_{1}, \ldots, z_{N})\)</span> such that the test statistic is greater than <span class="math inline">\(t\)</span> divided
+<li><p>If we are conditioning on <span class="math inline">\(Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{n}\)</span>, then the probability
+that <span class="math inline">\(T_{N}(z_{1}, \ldots, z_{N}) \geq t\)</span> is just the number of permutations of
+<span class="math inline">\((z_{(1)}, \ldots, z_{(N)})\)</span> such that the test statistic is greater than <span class="math inline">\(t\)</span> divided
 by <span class="math inline">\(N!\)</span>.</p></li>
 <li><p>In other words
 <span class="math display">\[\begin{eqnarray}
 &amp; &amp; P\Big\{ T_{N}(Z_{1}, \ldots, Z_{N}) \geq t| Z_{(1)} = z_{1}, \ldots, Z_{(N)} = z_{N} \Big\}
  \\
-&amp;=&amp; \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(z_{\pi(1)}, \ldots, z_{\pi(N)}) \geq t  \Big)
+&amp;=&amp; \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(z_{\pi(1)}, \ldots, z_{N}) \geq t  \Big)
 \end{eqnarray}\]</span></p></li>
 </ul>
 <hr />
 <ul>
 <li><p>Let us consider a concrete example.</p></li>
 <li><p>Suppose we have a two-sample problem with four observations. The
-first two observations come from the first group while the last
-two observations come from the second group.</p></li>
+first two</p></li>
 <li><p>The order statistics that we will condition on are:
 <span class="math display">\[\begin{eqnarray}
-Z_{(1)} &amp;=&amp; z_{1} = -3 \\
-Z_{(2)} &amp;=&amp; z_{2} = -1 \\
-Z_{(3)} &amp;=&amp; z_{3} = 2 \\
-Z_{(4)} &amp;=&amp; z_{4} = 5
+Z_{(1)} = z_{1} = -3 \\
+Z_{(2)} = z_{2} = -1 \\
+Z_{(3)} = z_{3} = 2 \\
+Z_{(4)} = z_{4} = 5
 \end{eqnarray}\]</span></p></li>
 <li><p>If <span class="math inline">\(T_{4}\)</span> is the mean difference
 <span class="math display">\[\begin{equation}
-T_{4}(Z_{1}, Z_{2},Z_{3},Z_{4}) = \frac{Z_{1} + Z_{2} - Z_{3} - Z_{4}}{2}
+T_{4}(Z_{1}, Z_{2},Z_{3},Z_{4}) = Z_{1} + Z_{2} - Z_{3} - Z_{4}
 \end{equation}\]</span>
 what is the probability
 <span class="math display">\[\begin{equation}
@@ -854,12 +852,12 @@ T_{N}(\mathbf{U}, \mathbf{V}) = \frac{\sum_{i=1}^{N}(U_{i} - \bar{U})(V_{i} - \b
 at <span class="math inline">\(T_{N}(\mathbf{U}_{\pi}, \mathbf{V})\)</span> for different permutations <span class="math inline">\(\pi\)</span>.</p></li>
 <li><p>In other words, we are computing correlation among pairs
 of the form <span class="math inline">\((U_{\pi(1)}, V_{1}), \ldots, (U_{\pi(N)}, V_{N})\)</span>.</p></li>
-<li><p>We only need to look at <span class="math inline">\(\mathbf{U}_{\pi}\)</span> because this achieves the objective
+<li><p>We only need to look at <span class="math inline">\(U_{\pi}\)</span> because this achieves the objective
 of randomly “switching observation pairs”.</p></li>
 </ul>
 <hr />
 <ul>
-<li>The two-sided p-value for the permutation test of <span class="math inline">\(H_{0}: \rho_{UV} = 0\)</span> vs. <span class="math inline">\(H_{A}: \rho_{UV} \neq 0\)</span> is
+<li>The two-sided p-value for the permutation test of <span class="math inline">\(H_{0}: \rho_{UV} = 0\)</span> is
 <span class="math display">\[\begin{equation}
 \textrm{p-value} 
 = \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( \Big| T_{N}(\mathbf{U}_{\pi}, \mathbf{V}) \Big|  \geq |t_{obs}| \Big) \nonumber

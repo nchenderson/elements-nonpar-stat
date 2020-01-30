@@ -141,9 +141,9 @@ abline(v=observed.diff, lwd=3)
 often computed by using a large number of random permutations rather
 than computing the test statistic for every possible permutation.
 
-* The Monte Carlo permutation-test p-value is defined as
+* The Monte Carlo permutation p-value is defined as
 \begin{equation}
-\textrm{p-value}_{mc} = \frac{1}{S+1}\Bigg[ 1 +  \sum_{s = 1}^{S} I\Big( T_{N}(\mathbf{Z}_{\pi_{s}}) \geq t_{obs} \Big) \Bigg]
+\textrm{p-value}_{mc} = \frac{1}{S+1}\Bigg[ 1 +  \sum_{s = 1}^{S} I\Big( T_{N}(\mathbf{Z}_{\pi_{k}}) \geq t_{obs} \Big) \Bigg]
 \end{equation}
 where $\pi_{1}, \ldots, \pi_{S}$ are randomly drawn permutations
 
@@ -155,7 +155,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.77
+## [1] 0.75
 ```
     
 ### Example 2: Ratios of Means
@@ -163,7 +163,7 @@ round(pval.mc, 2)
 * With permutation tests, you are not limited to difference in means. You can choose 
 the statistic $T_{N}(\mathbf{Z})$ to measure other contrasts of interest.
 
-* For example, with nonnegative data you might be interested in the ratio of means between the two groups
+* For example, with nonnegative data you might interested in the ratio of means between the two groups
 \begin{equation}
 T_{N}( \mathbf{Z} ) = \max\Big\{ \bar{X}/\bar{Y} , \bar{Y}/\bar{X}  \Big\}
 \end{equation}
@@ -182,8 +182,7 @@ mean.ratio <- rep(0, nperms)
 for(k in 1:nperms) {
      ss <- sample(1:40, size=40)
      zz.perm <- zz[ss]
-     mean.ratio[k] <- max(mean(zz.perm[1:20])/mean(zz.perm[21:40]), 
-                          mean(zz.perm[21:40])/mean(zz.perm[1:20]))
+     mean.ratio[k] <- max(mean(zz.perm[1:20])/mean(zz.perm[21:40]), mean(zz.perm[21:40])/mean(zz.perm[1:20]))
 }
 hist(mean.ratio, las=1, col="grey", main="Permutation Distribution of Maximum Mean Ratio",
      xlab="maximum mean ratio")
@@ -213,9 +212,9 @@ is difficult, or when certain approximations of the null distributions are hard 
 * An example of this occurrs if you want to compare medians, or more generally,
 compare quantiles.
 
-* The difference-in-quantiles statistic would be defined as
+* The difference-in-percentiles statistic would be defined as
 \begin{equation}
-T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{N})
+T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{n+m})
 \end{equation}
 where $Q_{p}(X_{1}, \ldots, X_{H})$ denotes the $p^{th}$ quantile from the data $X_{1}, \ldots, X_{H}$.
 
@@ -268,7 +267,7 @@ That is, the null hypothesis is true for many different values of $\sigma$.
 a p-value is to choose the test statistic $T$ so that its
 distribution is the same for every point in $H_{0}$.
 
-* A more general approach is to instead compute a **conditional p-value**
+* A more general approach is to instead compute a **conditional p-value
 
 * The conditional p-value is defined as 
 \begin{equation}
@@ -298,12 +297,12 @@ conditional on the observed order statistics?
 * It is:
 \begin{eqnarray}
 f_{Z_{1}, \ldots, Z_{N}|Z_{(1)}, \ldots, Z_{(N)}}( z_{\pi(1)}, \ldots, z_{\pi(N)} | z_{1}, \ldots, z_{N})
-&=& \frac{f_{Z_{1}, \ldots, Z_{N}}( z_{\pi(1)}, \ldots, z_{\pi(N)}   ) }{ f_{Z_{(1)},\ldots,Z_{(N)}}(z_{1}, \ldots, z_{N}) } \nonumber \\
-&=& \frac{f_{Z_{i}}(z_{\pi(1)}) \cdots f_{Z_{i}}(z_{\pi(N)})}{ N!f_{Z_{i}}(z_{1}) \cdots f_{Z_{i}}(z_{N}) } \nonumber \\
+&=& \frac{f_{Z_{1}, \ldots, Z_{N}}( z_{\pi(1)}, \ldots, z_{\pi(N)}   ) }{ f(z_{1}, \ldots, z_{N}) } \nonumber \\
+&=& \frac{f(z_{\pi(1)}) \cdots f(z_{\pi(N)})}{ N!f_{Z_{i}}(z_{1}) \cdots f_{Z_{i}}(z_{N}) } \nonumber \\
 &=& \frac{1}{N!}
 \end{eqnarray}
 
-* In other words, if we know the value of: $Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{N}$,
+* In other words, if we know the value of: $Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{n}$,
 then any event of the form $\{ Z_{1} = z_{\pi(1)}, \ldots, Z_{N} = z_{\pi(N)} \}$ has an
 equal probability of occurring for any permutation chosen.
 
@@ -312,16 +311,16 @@ as coming from a common distribution.
 
 ---
 
-* If we are conditioning on $Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{N}$, then the probability
-that $T_{N}(Z_{1}, \ldots, Z_{N}) \geq t$ is just the number of permutations of
-$(z_{1}, \ldots, z_{N})$ such that the test statistic is greater than $t$ divided
+* If we are conditioning on $Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{n}$, then the probability
+that $T_{N}(z_{1}, \ldots, z_{N}) \geq t$ is just the number of permutations of
+$(z_{(1)}, \ldots, z_{(N)})$ such that the test statistic is greater than $t$ divided
 by $N!$.
 
 * In other words
 \begin{eqnarray}
 & & P\Big\{ T_{N}(Z_{1}, \ldots, Z_{N}) \geq t| Z_{(1)} = z_{1}, \ldots, Z_{(N)} = z_{N} \Big\}
  \\
-&=& \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(z_{\pi(1)}, \ldots, z_{\pi(N)}) \geq t  \Big)
+&=& \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(z_{\pi(1)}, \ldots, z_{N}) \geq t  \Big)
 \end{eqnarray}
 
 ---
@@ -329,20 +328,19 @@ by $N!$.
 * Let us consider a concrete example.
 
 * Suppose we have a two-sample problem with four observations. The 
-first two observations come from the first group while the last
-two observations come from the second group.
+first two 
 
 * The order statistics that we will condition on are: 
 \begin{eqnarray}
-Z_{(1)} &=& z_{1} = -3 \\
-Z_{(2)} &=& z_{2} = -1 \\
-Z_{(3)} &=& z_{3} = 2 \\
-Z_{(4)} &=& z_{4} = 5
+Z_{(1)} = z_{1} = -3 \\
+Z_{(2)} = z_{2} = -1 \\
+Z_{(3)} = z_{3} = 2 \\
+Z_{(4)} = z_{4} = 5
 \end{eqnarray}
 
 * If $T_{4}$ is the mean difference 
 \begin{equation}
-T_{4}(Z_{1}, Z_{2},Z_{3},Z_{4}) = \frac{Z_{1} + Z_{2} - Z_{3} - Z_{4}}{2}
+T_{4}(Z_{1}, Z_{2},Z_{3},Z_{4}) = Z_{1} + Z_{2} - Z_{3} - Z_{4}
 \end{equation}
 what is the probability
 \begin{equation}
@@ -374,12 +372,12 @@ at $T_{N}(\mathbf{U}_{\pi}, \mathbf{V})$ for different permutations $\pi$.
 * In other words, we are computing correlation among pairs
 of the form $(U_{\pi(1)}, V_{1}), \ldots, (U_{\pi(N)}, V_{N})$.
 
-* We only need to look at $\mathbf{U}_{\pi}$ because this achieves the objective
+* We only need to look at $U_{\pi}$ because this achieves the objective
 of randomly "switching observation pairs".
 
 ---
 
-* The two-sided p-value for the permutation test of $H_{0}: \rho_{UV} = 0$ vs. $H_{A}: \rho_{UV} \neq 0$ is
+* The two-sided p-value for the permutation test of $H_{0}: \rho_{UV} = 0$ is
 \begin{equation}
 \textrm{p-value} 
 = \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( \Big| T_{N}(\mathbf{U}_{\pi}, \mathbf{V}) \Big|  \geq |t_{obs}| \Big) \nonumber
