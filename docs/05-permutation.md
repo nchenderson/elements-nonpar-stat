@@ -155,7 +155,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.76
+## [1] 0.77
 ```
     
 ### Example 2: Ratios of Means
@@ -219,11 +219,6 @@ T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{N}
 \end{equation}
 where $Q_{p}(X_{1}, \ldots, X_{H})$ denotes the $p^{th}$ quantile from the data $X_{1}, \ldots, X_{H}$.
 
-* For random variables with a continuous cdf, the quantile function satisfies
-\begin{equation}
-F_{X}\Big( Q_{p}(x) \Big) = x
-\end{equation}
-
 * The difference in quantiles could be computed with the following **R** code:
 
 ```r
@@ -235,6 +230,8 @@ quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
 ##       30% 
 ## 0.2671133
 ```
+
+* Note that setting **probs=.5** in the **quantile** function will return the median.
 
 <img src="05-permutation_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 

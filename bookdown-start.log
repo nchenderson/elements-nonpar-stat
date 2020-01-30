@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  28 JAN 2020 19:26
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  30 JAN 2020 12:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -920,11 +920,11 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 3.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/local/texlive/2018/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-))
+) [3])
 \tf@toc=\write5
 \openout5 = `bookdown-start.toc'.
 
-[3] [4] [5
+[4] [5
 
 ] [6
 
@@ -1211,7 +1211,7 @@ Underfull \hbox (badness 3323) in paragraph at lines 3230--3230
  []
 
 
-Overfull \hbox (5.30002pt too wide) in paragraph at lines 3274--3292
+Overfull \hbox (5.30002pt too wide) in paragraph at lines 3275--3293
  [][] 
  []
 
@@ -1222,26 +1222,69 @@ File: 05-permutationLatex_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[71] [72] (./bookdown-start.bbl [73] [74
+[71] [72]
+File: 05-permutationLatex_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file
+ (type pdf)
+<use 05-permutationLatex_files/figure-latex/unnamed-chunk-3-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[73] [74]
+File: 05-permutationLatex_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file
+ (type pdf)
+<use 05-permutationLatex_files/figure-latex/unnamed-chunk-6-1.pdf>
+[75]
+Overfull \hbox (27.29967pt too wide) in alignment at lines 3535--3540
+ [][][] []
+ []
+
+[76]
+File: 05-permutationLatex_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file
+ (type pdf)
+<use 05-permutationLatex_files/figure-latex/unnamed-chunk-7-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[77] [78]
+File: 05-permutationLatex_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file
+ (type pdf)
+<use 05-permutationLatex_files/figure-latex/unnamed-chunk-8-1.pdf>
+File: 05-permutationLatex_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file
+ (type pdf)
+<use 05-permutationLatex_files/figure-latex/unnamed-chunk-9-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[79] [80]
+File: 05-permutationLatex_files/figure-latex/unnamed-chunk-12-1.pdf Graphic fil
+e (type pdf)
+<use 05-permutationLatex_files/figure-latex/unnamed-chunk-12-1.pdf>
+(./bookdown-start.bbl
+Overfull \hbox (166.73904pt too wide) has occurred while \output is active
+\TU/lmr/m/sl/10 5.5.  A PERMUTATION TEST FOR VARIABLE IMPORTANCE IN REGRESSION 
+AND MACHINE LEARNING \TU/lmr/m/n/10 81
+ []
+
+[81] [82
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3381.
-[75]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 3381.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3722.
+[83]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 3722.
 (./bookdown-start.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3381.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3381.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3722.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3722.
 
 Package rerunfilecheck Info: File `bookdown-start.out' has not changed.
-(rerunfilecheck)             Checksum: A2BA67B298906CBA01EAD4CB65509386.
+(rerunfilecheck)             Checksum: 580D89FFC4228E8AF6A66376C1AB3EDD.
  ) 
 Here is how much of TeX's memory you used:
- 22659 strings out of 492970
- 426547 string characters out of 6133938
- 560524 words of memory out of 5000000
- 26399 multiletter control sequences out of 15000+600000
+ 22688 strings out of 492970
+ 428136 string characters out of 6133938
+ 561232 words of memory out of 5000000
+ 26426 multiletter control sequences out of 15000+600000
  572732 words of font info for 80 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  45i,14n,54p,10455b,454s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on bookdown-start.pdf (75 pages).
+Output written on bookdown-start.pdf (83 pages).
