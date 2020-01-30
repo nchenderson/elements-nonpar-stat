@@ -155,7 +155,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.79
+## [1] 0.78
 ```
     
 ### Example 2: Ratios of Means
@@ -218,6 +218,11 @@ T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{n+
 \end{equation}
 where $Q_{p}(X_{1}, \ldots, X_{H})$ denotes the $p^{th}$ quantile from the data $X_{1}, \ldots, X_{H}$.
 
+* For random variables with a continuous cdf, the quantile function satisfies
+\begin{equation}
+F_{X}\Big( Q_{p}(x) \Big) = x
+\end{equation}
+
 * The difference in quantiles could be computed with the following **R** code:
 
 ```r
@@ -237,6 +242,33 @@ quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
 ## The Permutation Test as a Conditional Test    
       
 * A permutation test is an example of a **conditional test**.
+
+* Typically, the p-value is defined as
+\begin{equation}
+\textrm{p-value} = P(T \geq t_{obs}|H_{0})
+\end{equation}
+for some test statistic $T$.
+
+* In other words, the p-value is the probability 
+that a random variable following the null distribution
+exceeds $t_{obs}$.
+
+* In many problems however, the null hypothesis $H_{0}$ is
+not determined by a single parameter but contains
+many parameters.
+
+* For example, the null hypothesis in a t-test is
+really $H_{0}: \mu_{x} = \mu_{y}$ and $\sigma > 0$.
+That is, the null hypothesis is true for many different values of $\sigma$.
+
+
+---
+
+* The conditional p-value
+\begin{equation}
+\textrm{p-value} = P(T \geq t_{obs}| S=s, H_{0})
+\end{equation}
+
 
 
 ## A Permutation Test for Correlation
