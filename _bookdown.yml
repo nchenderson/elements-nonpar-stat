@@ -1,4 +1,4 @@
-book_filename: "bookdown-start"
+book_filename: "ElementsNonparStat"
 chapter_name: "Chapter "
 repo: https://github.com/nchenderson/elements-nonpar-stat
 output_dir: docs
