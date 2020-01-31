@@ -98,7 +98,7 @@ we label $X_{1}, \ldots, X_{n}$ and $Y_{1}, \ldots, Y_{m}$
 
 * A U-statistic with order $(r,s)$ for a two-sample problem is
 \begin{equation}
-U = \frac{1}{{n \choose r}{m \choose s}} \sum \sum h(X_{p_{1}}, \ldots, X_{p_{r}}, Y_{q_{1}}, \ldots, Y_{q_{s}})
+U = \frac{1}{{n \choose r}}\frac{1}{{m \choose s}} \sum \sum h(X_{p_{1}}, \ldots, X_{p_{r}}, Y_{q_{1}}, \ldots, Y_{q_{s}})
 \end{equation}
 
 
