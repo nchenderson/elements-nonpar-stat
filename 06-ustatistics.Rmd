@@ -56,22 +56,65 @@ E\{ h(X_{1}, X_{2}) \} &=& \frac{1}{2}\Big[ E(X_{1}^{2}) - 2E(X_{1})E(X_{2})  + 
 &=& \sigma^{2}
 \end{eqnarray}
 
-* Also, this choice of kernel generates the sample variance because
-\begin{equation}
-U = \frac{1}{{n \choose 2}} \sum_{p \in \mathcal{P}_{n,2}} h(X_{p_{1}}, X_{p_{2}})
-= \frac{1}{2}\sum_{i=1}^{n} \sum_{j=i+1}^{n} (X_{i} - X_{j})^{2}
-\end{equation}
+* Also, by using formula \@ref(eq:ustat-definition), this choice of kernel generates the sample variance at its U-statistic:
+\begin{eqnarray}
+U &=& \frac{1}{{n \choose 2}} \sum_{p \in \mathcal{P}_{n,2}} h(X_{p_{1}}, X_{p_{2}})
+= \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=i+1}^{n} \frac{1}{2} (X_{i} - X_{j})^{2}  \nonumber \\
+&=& \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} (X_{i} - X_{j})^{2} \nonumber \\
+&=& \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} \{ (X_{i} - \bar{X})^{2} - 2(X_{i} - \bar{X})(X_{j} - \bar{X}) + (X_{j} - \bar{X})^{2} \} \nonumber \\
+&=& \frac{2}{n(n-1)}\sum_{i=1}^{n} n(X_{i} - \bar{X})^{2} + \frac{2}{n(n-1)}\sum_{j=1}^{n} n(X_{j} - \bar{X})^{2} \} \nonumber \\
+&=& \frac{1}{n-1}\sum_{i=1}^{n} (X_{i} - \bar{X})^{2}
+\end{eqnarray}
 
 ### Example 3: Gini's Mean Difference
 
-* The parameter of interest is
+* Gini's mean difference statistic is defined as
+\begin{equation}
+\frac{1}{{n \choose 2}} \sum_{i=1}^{n}\sum_{j=i+1} | X_{i} - X_{j} | \nonumber
+\end{equation}
+
+* This is a U-statistic with kernel
+\begin{equation}
+h(X_{1},X_{2}) = | X_{1} - X_{2} |
+\end{equation}
+
+* The parameter that we are estimating with Gini's mean difference statistic is:
 \begin{equation}
 \theta = E\Big\{ \Big| X_{1} - X_{2} \Big|  \Big\}
 \end{equation}
 
-## U-statistics for One and Two-Sample Problems
+* We can interpret $\theta$ in the following way: If we draw 
+two observations at random from our population, $\theta$ 
+represents the expected absolute difference between these
+two observations.
+
+### Example 4: Wilcoxon Signed Rank Statistic
+
+
+## U-statistics for Two-Sample Problems
+
+* In two-sample problems, we have data from two groups which
+we label $X_{1}, \ldots, X_{n}$ and $Y_{1}, \ldots, Y_{m}$
+
+* A U-statistic with order $(r,s)$ for a two-sample problem is
+\begin{equation}
+U = \frac{1}{{n \choose r}{m \choose s}} \sum \sum h(X_{p_{1}}, \ldots, X_{p_{r}}, Y_{q_{1}}, \ldots, Y_{q_{s}})
+\end{equation}
+
 
 ### The Mann-Whitney Statistic
+
+* Consider the following U-statistic 
+\begin{equation}
+U = \frac{1}{mn}\sum_{i=1}^{n}\sum_{j=1}^{m} I( X_{i} \leq Y_{j})
+\end{equation}
+
+* This is a U-statistic with kernel $h(x, y) = I(x \leq y)$.
+
+* The statistic $mn U$ is known as the **Mann-Whitney** statistic.
+
+* Relation to Wilcoxon rank sum statistic?
+
 
 ## Measures of Association
 

@@ -527,7 +527,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.83
+## [1] 0.835
 ```
 
 
@@ -703,7 +703,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.7579408
+## [1] 0.1356265
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -721,7 +721,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.7579408
+## [1] 0.1356265
 ```
 
 #### Two-sided Sign Test

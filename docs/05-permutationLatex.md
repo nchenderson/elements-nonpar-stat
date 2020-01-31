@@ -161,7 +161,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.74
+## [1] 0.75
 ```
     
 ### Example 2: Ratios of Means
@@ -352,7 +352,6 @@ what is the probability
 \begin{equation}
 P\Big\{ T_{4}(Z_{1}, Z_{2}, Z_{3}, Z_{4}) \geq 2.5 | Z_{(1)}=z_{1}, Z_{(2)}=z_{2}, Z_{(3)}=z_{3}, Z_{(4)} = z_{4} \Big \}
 \end{equation}
-
 
 ## A Permutation Test for Correlation
 

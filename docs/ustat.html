@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-30" />
+<meta name="date" content="2020-01-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -201,8 +201,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.2.1" data-path="ustat.html"><a href="ustat.html#example-1-the-sample-mean"><i class="fa fa-check"></i><b>6.2.1</b> Example 1: The Sample Mean</a></li>
 <li class="chapter" data-level="6.2.2" data-path="ustat.html"><a href="ustat.html#example-2-the-sample-variance"><i class="fa fa-check"></i><b>6.2.2</b> Example 2: The Sample Variance</a></li>
 <li class="chapter" data-level="6.2.3" data-path="ustat.html"><a href="ustat.html#example-3-ginis-mean-difference"><i class="fa fa-check"></i><b>6.2.3</b> Example 3: Gini’s Mean Difference</a></li>
+<li class="chapter" data-level="6.2.4" data-path="ustat.html"><a href="ustat.html#example-4-wilcoxon-signed-rank-statistic"><i class="fa fa-check"></i><b>6.2.4</b> Example 4: Wilcoxon Signed Rank Statistic</a></li>
 </ul></li>
-<li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#u-statistics-for-one-and-two-sample-problems"><i class="fa fa-check"></i><b>6.3</b> U-statistics for One and Two-Sample Problems</a><ul>
+<li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#u-statistics-for-two-sample-problems"><i class="fa fa-check"></i><b>6.3</b> U-statistics for Two-Sample Problems</a><ul>
 <li class="chapter" data-level="6.3.1" data-path="ustat.html"><a href="ustat.html#the-mann-whitney-statistic"><i class="fa fa-check"></i><b>6.3.1</b> The Mann-Whitney Statistic</a></li>
 </ul></li>
 <li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.4</b> Measures of Association</a><ul>
@@ -334,27 +335,63 @@ E\{ h(X_{1}, X_{2}) \} &amp;=&amp; \frac{1}{2}\Big[ E(X_{1}^{2}) - 2E(X_{1})E(X_
 &amp;=&amp; \frac{1}{2}\Big[ \sigma^{2} + \mu^{2} - 2\mu^{2}  + \sigma^{2} + \mu^{2} \Big] \nonumber \\
 &amp;=&amp; \sigma^{2}
 \end{eqnarray}\]</span></p></li>
-<li><p>Also, this choice of kernel generates the sample variance because
-<span class="math display">\[\begin{equation}
-U = \frac{1}{{n \choose 2}} \sum_{p \in \mathcal{P}_{n,2}} h(X_{p_{1}}, X_{p_{2}})
-= \frac{1}{2}\sum_{i=1}^{n} \sum_{j=i+1}^{n} (X_{i} - X_{j})^{2}
-\end{equation}\]</span></p></li>
+<li><p>Also, by using formula <a href="ustat.html#eq:ustat-definition">(6.2)</a>, this choice of kernel generates the sample variance at its U-statistic:
+<span class="math display">\[\begin{eqnarray}
+U &amp;=&amp; \frac{1}{{n \choose 2}} \sum_{p \in \mathcal{P}_{n,2}} h(X_{p_{1}}, X_{p_{2}})
+= \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=i+1}^{n} \frac{1}{2} (X_{i} - X_{j})^{2}  \nonumber \\
+&amp;=&amp; \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} (X_{i} - X_{j})^{2} \nonumber \\
+&amp;=&amp; \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} \{ (X_{i} - \bar{X})^{2} - 2(X_{i} - \bar{X})(X_{j} - \bar{X}) + (X_{j} - \bar{X})^{2} \} \nonumber \\
+&amp;=&amp; \frac{2}{n(n-1)}\sum_{i=1}^{n} n(X_{i} - \bar{X})^{2} + \frac{2}{n(n-1)}\sum_{j=1}^{n} n(X_{j} - \bar{X})^{2} \} \nonumber \\
+&amp;=&amp; \frac{1}{n-1}\sum_{i=1}^{n} (X_{i} - \bar{X})^{2}
+\end{eqnarray}\]</span></p></li>
 </ul>
 </div>
 <div id="example-3-ginis-mean-difference" class="section level3">
 <h3><span class="header-section-number">6.2.3</span> Example 3: Gini’s Mean Difference</h3>
 <ul>
-<li>The parameter of interest is
+<li><p>Gini’s mean difference statistic is defined as
+<span class="math display">\[\begin{equation}
+\frac{1}{{n \choose 2}} \sum_{i=1}^{n}\sum_{j=i+1} | X_{i} - X_{j} | \nonumber
+\end{equation}\]</span></p></li>
+<li><p>This is a U-statistic with kernel
+<span class="math display">\[\begin{equation}
+h(X_{1},X_{2}) = | X_{1} - X_{2} |
+\end{equation}\]</span></p></li>
+<li><p>The parameter that we are estimating with Gini’s mean difference statistic is:
 <span class="math display">\[\begin{equation}
 \theta = E\Big\{ \Big| X_{1} - X_{2} \Big|  \Big\}
-\end{equation}\]</span></li>
+\end{equation}\]</span></p></li>
+<li><p>We can interpret <span class="math inline">\(\theta\)</span> in the following way: If we draw
+two observations at random from our population, <span class="math inline">\(\theta\)</span>
+represents the expected absolute difference between these
+two observations.</p></li>
 </ul>
 </div>
+<div id="example-4-wilcoxon-signed-rank-statistic" class="section level3">
+<h3><span class="header-section-number">6.2.4</span> Example 4: Wilcoxon Signed Rank Statistic</h3>
 </div>
-<div id="u-statistics-for-one-and-two-sample-problems" class="section level2">
-<h2><span class="header-section-number">6.3</span> U-statistics for One and Two-Sample Problems</h2>
+</div>
+<div id="u-statistics-for-two-sample-problems" class="section level2">
+<h2><span class="header-section-number">6.3</span> U-statistics for Two-Sample Problems</h2>
+<ul>
+<li><p>In two-sample problems, we have data from two groups which
+we label <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> and <span class="math inline">\(Y_{1}, \ldots, Y_{m}\)</span></p></li>
+<li><p>A U-statistic with order <span class="math inline">\((r,s)\)</span> for a two-sample problem is
+<span class="math display">\[\begin{equation}
+U = \frac{1}{{n \choose r}{m \choose s}} \sum \sum h(X_{p_{1}}, \ldots, X_{p_{r}}, Y_{q_{1}}, \ldots, Y_{q_{s}})
+\end{equation}\]</span></p></li>
+</ul>
 <div id="the-mann-whitney-statistic" class="section level3">
 <h3><span class="header-section-number">6.3.1</span> The Mann-Whitney Statistic</h3>
+<ul>
+<li><p>Consider the following U-statistic
+<span class="math display">\[\begin{equation}
+U = \frac{1}{mn}\sum_{i=1}^{n}\sum_{j=1}^{m} I( X_{i} \leq Y_{j})
+\end{equation}\]</span></p></li>
+<li><p>This is a U-statistic with kernel <span class="math inline">\(h(x, y) = I(x \leq y)\)</span>.</p></li>
+<li><p>The statistic <span class="math inline">\(mn U\)</span> is known as the <strong>Mann-Whitney</strong> statistic.</p></li>
+<li><p>Relation to Wilcoxon rank sum statistic?</p></li>
+</ul>
 </div>
 </div>
 <div id="measures-of-association" class="section level2">

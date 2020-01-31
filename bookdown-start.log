@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  30 JAN 2020 12:10
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  31 JAN 2020 13:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1259,7 +1259,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 File: 05-permutationLatex_files/figure-latex/unnamed-chunk-12-1.pdf Graphic fil
 e (type pdf)
 <use 05-permutationLatex_files/figure-latex/unnamed-chunk-12-1.pdf>
-(./bookdown-start.bbl
+
 Overfull \hbox (166.73904pt too wide) has occurred while \output is active
 \TU/lmr/m/sl/10 5.5.  A PERMUTATION TEST FOR VARIABLE IMPORTANCE IN REGRESSION 
 AND MACHINE LEARNING \TU/lmr/m/n/10 81
@@ -1267,24 +1267,33 @@ AND MACHINE LEARNING \TU/lmr/m/n/10 81
 
 [81] [82
 
-])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3722.
+]
+Chapter 6.
 [83]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 3722.
+Overfull \hbox (0.24246pt too wide) in alignment at lines 3791--3798
+ [][][] []
+ []
+
+[84] (./bookdown-start.bbl [85] [86])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3876.
+[87
+
+]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 3876.
 (./bookdown-start.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3722.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3722.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3876.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3876.
 
 Package rerunfilecheck Info: File `bookdown-start.out' has not changed.
-(rerunfilecheck)             Checksum: 580D89FFC4228E8AF6A66376C1AB3EDD.
+(rerunfilecheck)             Checksum: 5CE3F3887520600A1307EAE54F8526C9.
  ) 
 Here is how much of TeX's memory you used:
- 22688 strings out of 492970
- 428136 string characters out of 6133938
- 561232 words of memory out of 5000000
- 26426 multiletter control sequences out of 15000+600000
+ 22704 strings out of 492970
+ 428506 string characters out of 6133938
+ 562429 words of memory out of 5000000
+ 26442 multiletter control sequences out of 15000+600000
  572732 words of font info for 80 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  45i,14n,54p,10455b,454s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on bookdown-start.pdf (83 pages).
+Output written on bookdown-start.pdf (87 pages).
