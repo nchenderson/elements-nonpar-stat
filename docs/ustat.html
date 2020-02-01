@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 6 U-Statistics | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 U-Statistics | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-01-31" />
+<meta name="date" content="2020-02-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -337,7 +340,7 @@ E\{ h(X_{1}, X_{2}) \} &amp;=&amp; \frac{1}{2}\Big[ E(X_{1}^{2}) - 2E(X_{1})E(X_
 \end{eqnarray}\]</span></p></li>
 <li><p>Also, by using formula <a href="ustat.html#eq:ustat-definition">(6.2)</a>, this choice of kernel generates the sample variance at its U-statistic:
 <span class="math display">\[\begin{eqnarray}
-U &amp;=&amp; \frac{1}{{n \choose 2}} \sum_{p \in \mathcal{P}_{n,2}} h(X_{p_{1}}, X_{p_{2}})
+U_{var} &amp;=&amp; \frac{1}{{n \choose 2}} \sum_{p \in \mathcal{P}_{n,2}} h(X_{p_{1}}, X_{p_{2}})
 = \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=i+1}^{n} \frac{1}{2} (X_{i} - X_{j})^{2}  \nonumber \\
 &amp;=&amp; \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} (X_{i} - X_{j})^{2} \nonumber \\
 &amp;=&amp; \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} \{ (X_{i} - \bar{X})^{2} - 2(X_{i} - \bar{X})(X_{j} - \bar{X}) + (X_{j} - \bar{X})^{2} \} \nonumber \\
@@ -351,7 +354,7 @@ U &amp;=&amp; \frac{1}{{n \choose 2}} \sum_{p \in \mathcal{P}_{n,2}} h(X_{p_{1}}
 <ul>
 <li><p>Gini’s mean difference statistic is defined as
 <span class="math display">\[\begin{equation}
-\frac{1}{{n \choose 2}} \sum_{i=1}^{n}\sum_{j=i+1} | X_{i} - X_{j} | \nonumber
+U_{G} = \frac{1}{{n \choose 2}} \sum_{i=1}^{n}\sum_{j=i+1} | X_{i} - X_{j} | \nonumber
 \end{equation}\]</span></p></li>
 <li><p>This is a U-statistic with kernel
 <span class="math display">\[\begin{equation}
@@ -359,16 +362,48 @@ h(X_{1},X_{2}) = | X_{1} - X_{2} |
 \end{equation}\]</span></p></li>
 <li><p>The parameter that we are estimating with Gini’s mean difference statistic is:
 <span class="math display">\[\begin{equation}
-\theta = E\Big\{ \Big| X_{1} - X_{2} \Big|  \Big\}
+\theta_{G} = E\Big\{ \Big| X_{1} - X_{2} \Big|  \Big\}
 \end{equation}\]</span></p></li>
-<li><p>We can interpret <span class="math inline">\(\theta\)</span> in the following way: If we draw
-two observations at random from our population, <span class="math inline">\(\theta\)</span>
+<li><p>Gini’s mean difference parameter <span class="math inline">\(\theta_{G}\)</span> can be interpreted in the following way: If we draw
+two observations at random from our population, <span class="math inline">\(\theta_{G}\)</span>
 represents the expected absolute difference between these
 two observations.</p></li>
+<li><p>The Gini coefficient <span class="math inline">\(\theta_{Gc}\)</span> is a popular measure of inequality. It is related
+to the mean difference parameter via
+<span class="math display">\[\begin{equation}
+\theta_{Gc} = \frac{ \theta_{G}}{ 2\mu },
+\end{equation}\]</span>
+where <span class="math inline">\(\mu = E( X_{i} )\)</span>.</p></li>
 </ul>
+<hr />
+<ul>
+<li><strong>Exercise 6.1</strong>. Compute the Gini coefficient <span class="math inline">\(\theta_{Gc}\)</span> when it is assumed that
+<ul>
+<li><span class="math inline">\(X_{i} \sim \textrm{Normal}( \mu, \sigma^{2})\)</span>, for <span class="math inline">\(\mu &gt; 0\)</span>.</li>
+<li><span class="math inline">\(X_{i} \sim \textrm{Exponential}(\lambda)\)</span>, (<strong>Hint</strong>: The difference between two independent Exponential random variables has a Laplace distribution).</li>
+</ul></li>
+</ul>
+<hr />
 </div>
 <div id="example-4-wilcoxon-signed-rank-statistic" class="section level3">
 <h3><span class="header-section-number">6.2.4</span> Example 4: Wilcoxon Signed Rank Statistic</h3>
+<ul>
+<li><p>The Wilcoxon signed rank test statistic has some relation to the following U statistic
+<span class="math display">\[\begin{equation}
+U_{WS} = \frac{2}{n(n-1)}\sum_{i=1}^{n}\sum_{j=i+1}^{n} I\Big( X_{i} + X_{j} &gt; 0 \Big)
+\end{equation}\]</span></p></li>
+<li><p>Hence, the Wilcoxon signed ran test statistic can be interpreted as an estimate of
+the following parameter
+<span class="math display">\[\begin{equation}
+\theta_{WS} = P\Big( X_{i} + X_{j} &gt; 0  \Big) = P\Big( X_{i} &gt; -X_{j} \Big)
+\end{equation}\]</span></p></li>
+<li><p>If the distribution of <span class="math inline">\(X_{i}\)</span> is symmetric around <span class="math inline">\(0\)</span>, <span class="math inline">\(\theta_{WS}\)</span> will be equal
+to <span class="math inline">\(1/2\)</span>.</p></li>
+<li><p>Recall that the Wilcoxon signed rank test is designed to detect
+distributions which are not symmetric around <span class="math inline">\(0\)</span>.</p></li>
+<li><p><span class="math inline">\(U_{WS} = a T_{n}\)</span>, where <span class="math inline">\(T_{n}\)</span> is the signed rank statistic that we defined in
+Section 3.3.</p></li>
+</ul>
 </div>
 </div>
 <div id="u-statistics-for-two-sample-problems" class="section level2">
@@ -386,24 +421,125 @@ U = \frac{1}{{n \choose r}}\frac{1}{{m \choose s}} \sum \sum h(X_{p_{1}}, \ldots
 <ul>
 <li><p>Consider the following U-statistic
 <span class="math display">\[\begin{equation}
-U = \frac{1}{mn}\sum_{i=1}^{n}\sum_{j=1}^{m} I( X_{i} \leq Y_{j})
+U_{MW} = \frac{1}{mn}\sum_{i=1}^{n}\sum_{j=1}^{m} I( X_{i} \geq Y_{j})
 \end{equation}\]</span></p></li>
-<li><p>This is a U-statistic with kernel <span class="math inline">\(h(x, y) = I(x \leq y)\)</span>.</p></li>
-<li><p>The statistic <span class="math inline">\(mn U\)</span> is known as the <strong>Mann-Whitney</strong> statistic.</p></li>
-<li><p>Relation to Wilcoxon rank sum statistic?</p></li>
+<li><p>This is a U-statistic of order <span class="math inline">\((1,1)\)</span> with kernel <span class="math inline">\(h(x, y) = I(x \geq y)\)</span>.</p></li>
+<li><p>The U-statistic <span class="math inline">\(U_{MW}\)</span> can be thought of as an estimate of the following
+parameter
+<span class="math display">\[\begin{equation}
+\theta_{MW} = P\Big( X_{i} \geq Y_{j} \Big)
+\end{equation}\]</span></p></li>
+<li><p>If both <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{j}\)</span> have the same distribution, then
+<span class="math inline">\(\theta_{MW}\)</span> should equal <span class="math inline">\(1/2\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The statistic <span class="math inline">\(mn U_{MW}\)</span> is known as the <strong>Mann-Whitney</strong> statistic.</p></li>
+<li><p>The Mann-Whitney statistic has a close relation to the Wilcoxon
+rank sum statistic <span class="math inline">\(W\)</span> that we defined in Section 3.2:
+<span class="math display">\[\begin{eqnarray}
+mn U_{MW} &amp;=&amp; 
+\sum_{i=1}^{n}\sum_{j=1}^{m} I( X_{i} \geq Y_{j}) \nonumber \\
+&amp;=&amp; \sum_{i=1}^{n}\Big[ \sum_{j=1}^{m} I( X_{i} \geq Y_{j}) +
+\sum_{k=1}^{n} I( X_{i} \geq X_{k}) \Big] -
+\sum_{i=1}^{n}\sum_{k=1}^{n} I( X_{i} \geq X_{k}) \nonumber \\
+&amp;=&amp; \sum_{i=1}^{n} R_{i}(\mathbf{Z}) -
+\sum_{i=1}^{n} R_{i}( \mathbf{X} ) \nonumber \\
+&amp;=&amp; W - \frac{n(n+1)}{2} \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>In other words, the Mann-Whitney statistic is equal to
+the WRS statistic minus a constant term.</p></li>
+<li><p>In the above derivation, we are using <span class="math inline">\(\mathbf{Z}\)</span> as
+the pooled-data vector <span class="math inline">\(\mathbf{Z} = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})\)</span>.</p></li>
+<li><p>Also, the above derivation assumes no ties so that
+<span class="math inline">\(\sum_{i=1}^{n} R_{i}( \mathbf{X} ) = n(n+1)/2\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li>Comment on implications for alternative in the WRS test here.</li>
 </ul>
 </div>
 </div>
 <div id="measures-of-association" class="section level2">
 <h2><span class="header-section-number">6.4</span> Measures of Association</h2>
+<ul>
+<li><p>Many important measures of association are also examples of U-statistics.</p></li>
+<li><p>For measures of association, we have observations on <span class="math inline">\(n\)</span> pairs of variables
+<span class="math display">\[\begin{equation}
+(X_{1}, Y_{1}), \ldots, (X_{n}, Y_{n}), \nonumber 
+\end{equation}\]</span>
+and our goal is to report some measure which quantifies the relationship between these
+two variables.</p></li>
+<li><p>In this context, we will think about U-statistics having the form
+<span class="math display">\[\begin{equation}
+U = \frac{1}{{n \choose 2}} \sum_{p \in \mathcal{P}_{n,2} } h\Bigg( \begin{bmatrix} X_{p_{1}} \\ Y_{p_{1}} \end{bmatrix},
+\begin{bmatrix} X_{p_{2}} \\ Y_{p_{2}} \end{bmatrix} \Bigg)
+\end{equation}\]</span></p></li>
+</ul>
 <div id="spearmans-rank-correlation" class="section level3">
 <h3><span class="header-section-number">6.4.1</span> Spearman’s Rank Correlation</h3>
 </div>
 <div id="kendalls-tau" class="section level3">
 <h3><span class="header-section-number">6.4.2</span> Kendall’s tau</h3>
+<ul>
+<li><p>Kendall’s <span class="math inline">\(\tau\)</span>-statistic <span class="math inline">\(U_{\tau}\)</span> is given by
+<span class="math display">\[\begin{eqnarray}
+U_{\tau} &amp;=&amp; \frac{2}{n(n-1)}\sum_{i=1}^{n}\sum_{j=1}^{n} I\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) &gt; 0 \Big\}  - 1 \nonumber \\
+&amp;=&amp; \frac{4}{n(n-1)}\sum_{i=1}^{n}\sum_{j=i+1}^{n} I\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) &gt; 0 \Big\}  - 1
+\end{eqnarray}\]</span></p></li>
+<li><p>Note that <span class="math inline">\(U_{\tau}\)</span> is a U-statistic of order <span class="math inline">\(2\)</span> with kernel
+<span class="math display">\[\begin{equation}
+h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix},
+\begin{bmatrix} X_{2} \\ Y_{2} \end{bmatrix} \Bigg)
+= 2 \times I\Big\{ (X_{2} - X_{1})(Y_{2} - Y_{1}) &gt; 0 \Big\}  - 
+I\Big\{ X_{2} \neq X_{1} \Big\}I\Big\{ Y_{2} \neq Y_{1} \Big\}
+\end{equation}\]</span></p></li>
+<li><p>Assuming the probability of ties is zero, Kendall’s <span class="math inline">\(\tau\)</span> can be thought of as an estimate of the following quantity
+<span class="math display">\[\begin{equation}
+2 P\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) &gt; 0 \Big\} - 1
+\end{equation}\]</span></p></li>
+<li><p>If <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{i}\)</span> are idependent, Kendall’s <span class="math inline">\(\tau\)</span> will be equal to zero (why?).</p></li>
+<li><p>Also, Kendall’s <span class="math inline">\(\tau\)</span> must be in between <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>In the context of computing <span class="math inline">\(U_{\tau}\)</span>, pairs of observations <span class="math inline">\((X_{i}, Y_{i})\)</span> and <span class="math inline">\((X_{j}, Y_{j})\)</span> are said to be <strong>concordant</strong> if
+the sign of <span class="math inline">\(X_{j} - X_{i}\)</span> agrees with the sign of <span class="math inline">\(Y_{j} - Y_{i}\)</span>.</p></li>
+<li><p>If the sign of <span class="math inline">\(X_{j} - X_{i}\)</span> and <span class="math inline">\(Y_{j} - Y_{i}\)</span> do <strong>not</strong> agree, then the
+pairs <span class="math inline">\((X_{i}, Y_{i})\)</span> and <span class="math inline">\((X_{j}, Y_{j})\)</span> are said to be <strong>discordant</strong>.</p></li>
+<li><p>If either <span class="math inline">\(X_{j}=X_{i}\)</span> or <span class="math inline">\(Y_{j}=Y_{i}\)</span>, then the pairs <span class="math inline">\((X_{i}, Y_{i})\)</span> and <span class="math inline">\((X_{j}, Y_{j})\)</span>
+are neither concordant or discordant.</p></li>
+<li><p>Let us defined
+<span class="math display">\[\begin{eqnarray}
+n_{c} &amp;=&amp; \textrm{ the number of concordant pairs} \nonumber \\
+n_{d} &amp;=&amp; \textrm{ the number of discordant pairs} \nonumber \\
+n_{n} &amp;=&amp; \textrm{ number of pairs which are neither}  \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>Then,
+<span class="math display">\[\begin{equation}
+n_{c} + n_{d} + n_{n} = {n \choose 2} = \frac{n(n-1)}{2}
+\end{equation}\]</span></p></li>
+<li><p>If we assume that there are no ties (i.e., <span class="math inline">\(n_{n} = 0\)</span>), then <span class="math inline">\(U_{\tau}\)</span>
+can be written as
+<span class="math display">\[\begin{equation}
+U_{\tau} = \frac{4n_{c}}{n(n-1)} - 1
+= \frac{2n_{c} + 2n_{c} - n(n - 1)}{n(n-1)}
+= \frac{2n_{c} - 2n_{d} }{n(n-1)} 
+= \frac{2(n_{c} - n_{d})}{n(n-1)} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Under independence, the number of concordant and discordant pairs should be roughly equal.</p></li>
+</ul>
+<hr />
 </div>
 <div id="distance-covariance" class="section level3">
 <h3><span class="header-section-number">6.4.3</span> Distance Covariance</h3>
+<ul>
+<li>Define <span class="math inline">\(a_{ij}\)</span> and <span class="math inline">\(b_{ij}\)</span> as
+<span class="math display">\[\begin{eqnarray}
+a_{ij} &amp;=&amp; | X_{i} - X_{j}|  \nonumber \\
+b_{ij} &amp;=&amp; | Y_{i} - Y_{j}|  \nonumber
+\end{eqnarray}\]</span></li>
+</ul>
 
 </div>
 </div>
@@ -422,11 +558,13 @@ U = \frac{1}{mn}\sum_{i=1}^{n}\sum_{j=1}^{m} I( X_{i} \leq Y_{j})
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -434,12 +572,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -454,7 +591,11 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"view": {
+"link": null,
+"text": null
+},
+"download": ["ElementsNonparStat.pdf"],
 "toc": {
 "collapse": "section"
 }
