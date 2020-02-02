@@ -141,12 +141,17 @@ where $\mu = E( X_{i} )$.
 
 ### Example 4: Wilcoxon Signed Rank Statistic
 
-* The Wilcoxon signed rank test statistic has some relation to the following U statistic
+* The Wilcoxon signed rank test statistic is related to the following U statistic
 \begin{equation}
 U_{WS} = \frac{2}{n(n-1)}\sum_{i=1}^{n}\sum_{j=i+1}^{n} I\Big( X_{i} + X_{j} > 0 \Big)
 \end{equation}
 
-* Hence, the Wilcoxon signed ran test statistic can be interpreted as an estimate of
+* $U_{WS}$ is a U-statistic of order $2$ with kernel
+\begin{equation}
+h(x, y) = I\Big( x + y > 0\Big)
+\end{equation}
+
+* Hence, $U_{WS}$ can be interpreted as an estimate of
 the following parameter
 \begin{equation}
 \theta_{WS} = P\Big( X_{i} + X_{j} > 0  \Big) = P\Big( X_{i} > -X_{j} \Big)
@@ -155,11 +160,28 @@ the following parameter
 * If the distribution of $X_{i}$ is symmetric around $0$, $\theta_{WS}$ will be equal 
 to $1/2$.
 
+---
+
 * Recall that the Wilcoxon signed rank test is designed to detect
 distributions which are not symmetric around $0$.
 
-* $U_{WS} = a T_{n}$, where $T_{n}$ is the signed rank statistic that we defined in 
-Section 3.3.
+* The Wilcoxon signed rank statistic $T_{n}$ that we defined in Chapter 3 had the following formula
+\begin{equation}
+T_{n} = \sum_{i=1}^{n} \textrm{sign}( X_{i}) R_{i}( |\mathbf{X}| )
+\end{equation}
+
+* A considerable amount of algebra can show that
+\begin{eqnarray}
+T_{n} &=& n(n-1) U_{WS} + 2\sum_{i=1}^{n} I(X_{i} > 0) - \frac{n(n+1)}{2} \nonumber \\
+&=& n(n-1) U_{WS} + 2 S_{n} - \frac{n(n+1)}{2} \nonumber
+\end{eqnarray}
+where $S_{n}$ is the sign test statistic defined in Chapter 3.
+
+* For large $n$, $T_{n}$ is largely determined by $U_{WS} - 1/2$. 
+Hence, a "large" value of $U_{WS} - 1/2$ will lead to rejection
+of the one-sample null hypothesis discussed in Section 3.3. 
+
+
 
 ## U-statistics for Two-Sample Problems
 
@@ -181,10 +203,11 @@ U_{MW} = \frac{1}{mn}\sum_{i=1}^{n}\sum_{j=1}^{m} I( X_{i} \geq Y_{j})
 
 * This is a U-statistic of order $(1,1)$ with kernel $h(x, y) = I(x \geq y)$.
 
-* The U-statistic $U_{MW}$ can be thought of as an estimate of the following
+* Hence, the U-statistic $U_{MW}$ can be thought of as an estimate of the following
 parameter
 \begin{equation}
 \theta_{MW} = P\Big( X_{i} \geq Y_{j} \Big)
+(\#eq:mw-parameter)
 \end{equation}
 
 * If both $X_{i}$ and $Y_{j}$ have the same distribution, then
@@ -204,14 +227,14 @@ mn U_{MW} &=&
 \sum_{k=1}^{n} I( X_{i} \geq X_{k}) \Big] -
 \sum_{i=1}^{n}\sum_{k=1}^{n} I( X_{i} \geq X_{k}) \nonumber \\
 &=& \sum_{i=1}^{n} R_{i}(\mathbf{Z}) -
-\sum_{i=1}^{n} R_{i}( \mathbf{X} ) \nonumber \\
+\sum_{i=1}^{n} R_{i}( \mathbf{X} ) (\#eq:wrs-mw-deriv1)  \\
 &=& W - \frac{n(n+1)}{2} \nonumber
 \end{eqnarray}
 
 * In other words, the Mann-Whitney statistic is equal to 
 the WRS statistic minus a constant term.
 
-* In the above derivation, we are using $\mathbf{Z}$ as
+* In \@ref(eq:wrs-mw-deriv1), we are defining $\mathbf{Z}$ as
 the pooled-data vector $\mathbf{Z} = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})$.
 
 * Also, the above derivation assumes no ties so that 
@@ -219,7 +242,14 @@ $\sum_{i=1}^{n} R_{i}( \mathbf{X} ) = n(n+1)/2$.
 
 ---
 
-* Comment on implications for alternative in the WRS test here.
+* Because $W = n(n+1)/2 + mn U_{MW}$ is a linear function of $U_{MW}$, 
+inference from the Wilcoxon rank sum test (when using large sample p-values)
+should match inferences made from using $U_{MW}$ to test the hypothesis $H_{0}: \theta_{MW} = 0$.
+
+* In other words, the two-sided Wilcoxon rank sum test can 
+be thought of as a test of $H_{0}: \theta_{MW} = 0$ vs. $H_{A}:\theta_{MW} \neq 0$,
+where $\theta_{MW}$ is the parameter defined in \@ref(eq:mw-parameter).
+
 
 ## Measures of Association
 
@@ -232,7 +262,7 @@ $\sum_{i=1}^{n} R_{i}( \mathbf{X} ) = n(n+1)/2$.
 and our goal is to report some measure which quantifies the relationship between these
 two variables.
 
-* In this context, we will think about U-statistics having the form
+* In this context, we will think about U-statistics which have the form
 \begin{equation}
 U = \frac{1}{{n \choose r}} \sum_{c \in \mathcal{C}_{n,r} } h\Bigg( \begin{bmatrix} X_{c_{1}} \\ Y_{c_{1}} \end{bmatrix},
 \ldots \begin{bmatrix} X_{c_{r}} \\ Y_{c_{r}} \end{bmatrix} \Bigg)

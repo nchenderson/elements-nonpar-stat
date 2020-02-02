@@ -377,9 +377,9 @@ the expected squared distance between <span class="math inline">\(X_{i}\)</span>
 <a class="sourceLine" id="cb79-6" data-line-number="6">   diff.sq[k] &lt;-<span class="st"> </span>(xx[idx[<span class="dv">1</span>]] <span class="op">-</span><span class="st"> </span>xx[idx[<span class="dv">2</span>]])<span class="op">^</span><span class="dv">2</span></a>
 <a class="sourceLine" id="cb79-7" data-line-number="7">}</a>
 <a class="sourceLine" id="cb79-8" data-line-number="8"><span class="kw">round</span>(<span class="kw">var</span>(xx), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 1.844</code></pre>
+<pre><code>## [1] 1.838</code></pre>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">mean</span>(diff.sq)<span class="op">/</span><span class="dv">2</span>, <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 1.781</code></pre>
+<pre><code>## [1] 1.792</code></pre>
 </div>
 <div id="example-3-ginis-mean-difference" class="section level3">
 <h3><span class="header-section-number">6.2.3</span> Example 3: Gini’s Mean Difference</h3>
@@ -420,21 +420,39 @@ where <span class="math inline">\(\mu = E( X_{i} )\)</span>.</p></li>
 <div id="example-4-wilcoxon-signed-rank-statistic" class="section level3">
 <h3><span class="header-section-number">6.2.4</span> Example 4: Wilcoxon Signed Rank Statistic</h3>
 <ul>
-<li><p>The Wilcoxon signed rank test statistic has some relation to the following U statistic
+<li><p>The Wilcoxon signed rank test statistic is related to the following U statistic
 <span class="math display">\[\begin{equation}
 U_{WS} = \frac{2}{n(n-1)}\sum_{i=1}^{n}\sum_{j=i+1}^{n} I\Big( X_{i} + X_{j} &gt; 0 \Big)
 \end{equation}\]</span></p></li>
-<li><p>Hence, the Wilcoxon signed ran test statistic can be interpreted as an estimate of
+<li><p><span class="math inline">\(U_{WS}\)</span> is a U-statistic of order <span class="math inline">\(2\)</span> with kernel
+<span class="math display">\[\begin{equation}
+h(x, y) = I\Big( x + y &gt; 0\Big)
+\end{equation}\]</span></p></li>
+<li><p>Hence, <span class="math inline">\(U_{WS}\)</span> can be interpreted as an estimate of
 the following parameter
 <span class="math display">\[\begin{equation}
 \theta_{WS} = P\Big( X_{i} + X_{j} &gt; 0  \Big) = P\Big( X_{i} &gt; -X_{j} \Big)
 \end{equation}\]</span></p></li>
 <li><p>If the distribution of <span class="math inline">\(X_{i}\)</span> is symmetric around <span class="math inline">\(0\)</span>, <span class="math inline">\(\theta_{WS}\)</span> will be equal
 to <span class="math inline">\(1/2\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
 <li><p>Recall that the Wilcoxon signed rank test is designed to detect
 distributions which are not symmetric around <span class="math inline">\(0\)</span>.</p></li>
-<li><p><span class="math inline">\(U_{WS} = a T_{n}\)</span>, where <span class="math inline">\(T_{n}\)</span> is the signed rank statistic that we defined in
-Section 3.3.</p></li>
+<li><p>The Wilcoxon signed rank statistic <span class="math inline">\(T_{n}\)</span> that we defined in Chapter 3 had the following formula
+<span class="math display">\[\begin{equation}
+T_{n} = \sum_{i=1}^{n} \textrm{sign}( X_{i}) R_{i}( |\mathbf{X}| )
+\end{equation}\]</span></p></li>
+<li><p>A considerable amount of algebra can show that
+<span class="math display">\[\begin{eqnarray}
+T_{n} &amp;=&amp; n(n-1) U_{WS} + 2\sum_{i=1}^{n} I(X_{i} &gt; 0) - \frac{n(n+1)}{2} \nonumber \\
+&amp;=&amp; n(n-1) U_{WS} + 2 S_{n} - \frac{n(n+1)}{2} \nonumber
+\end{eqnarray}\]</span>
+where <span class="math inline">\(S_{n}\)</span> is the sign test statistic defined in Chapter 3.</p></li>
+<li><p>For large <span class="math inline">\(n\)</span>, <span class="math inline">\(T_{n}\)</span> is largely determined by <span class="math inline">\(U_{WS} - 1/2\)</span>.
+Hence, a “large” value of <span class="math inline">\(U_{WS} - 1/2\)</span> will lead to rejection
+of the one-sample null hypothesis discussed in Section 3.3.</p></li>
 </ul>
 </div>
 </div>
@@ -456,10 +474,11 @@ U = \frac{1}{{n \choose r}}\frac{1}{{m \choose s}} \sum_{c \in \mathcal{C}_{n,r}
 U_{MW} = \frac{1}{mn}\sum_{i=1}^{n}\sum_{j=1}^{m} I( X_{i} \geq Y_{j})
 \end{equation}\]</span></p></li>
 <li><p>This is a U-statistic of order <span class="math inline">\((1,1)\)</span> with kernel <span class="math inline">\(h(x, y) = I(x \geq y)\)</span>.</p></li>
-<li><p>The U-statistic <span class="math inline">\(U_{MW}\)</span> can be thought of as an estimate of the following
+<li><p>Hence, the U-statistic <span class="math inline">\(U_{MW}\)</span> can be thought of as an estimate of the following
 parameter
-<span class="math display">\[\begin{equation}
+<span class="math display" id="eq:mw-parameter">\[\begin{equation}
 \theta_{MW} = P\Big( X_{i} \geq Y_{j} \Big)
+\tag{6.4}
 \end{equation}\]</span></p></li>
 <li><p>If both <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{j}\)</span> have the same distribution, then
 <span class="math inline">\(\theta_{MW}\)</span> should equal <span class="math inline">\(1/2\)</span>.</p></li>
@@ -469,26 +488,31 @@ parameter
 <li><p>The statistic <span class="math inline">\(mn U_{MW}\)</span> is known as the <strong>Mann-Whitney</strong> statistic.</p></li>
 <li><p>The Mann-Whitney statistic has a close relation to the Wilcoxon
 rank sum statistic <span class="math inline">\(W\)</span> that we defined in Section 3.2:
-<span class="math display">\[\begin{eqnarray}
+<span class="math display" id="eq:wrs-mw-deriv1">\[\begin{eqnarray}
 mn U_{MW} &amp;=&amp; 
 \sum_{i=1}^{n}\sum_{j=1}^{m} I( X_{i} \geq Y_{j}) \nonumber \\
 &amp;=&amp; \sum_{i=1}^{n}\Big[ \sum_{j=1}^{m} I( X_{i} \geq Y_{j}) +
 \sum_{k=1}^{n} I( X_{i} \geq X_{k}) \Big] -
 \sum_{i=1}^{n}\sum_{k=1}^{n} I( X_{i} \geq X_{k}) \nonumber \\
 &amp;=&amp; \sum_{i=1}^{n} R_{i}(\mathbf{Z}) -
-\sum_{i=1}^{n} R_{i}( \mathbf{X} ) \nonumber \\
+\sum_{i=1}^{n} R_{i}( \mathbf{X} ) \tag{6.5}  \\
 &amp;=&amp; W - \frac{n(n+1)}{2} \nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>In other words, the Mann-Whitney statistic is equal to
 the WRS statistic minus a constant term.</p></li>
-<li><p>In the above derivation, we are using <span class="math inline">\(\mathbf{Z}\)</span> as
+<li><p>In <a href="ustat.html#eq:wrs-mw-deriv1">(6.5)</a>, we are defining <span class="math inline">\(\mathbf{Z}\)</span> as
 the pooled-data vector <span class="math inline">\(\mathbf{Z} = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})\)</span>.</p></li>
 <li><p>Also, the above derivation assumes no ties so that
 <span class="math inline">\(\sum_{i=1}^{n} R_{i}( \mathbf{X} ) = n(n+1)/2\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
-<li>Comment on implications for alternative in the WRS test here.</li>
+<li><p>Because <span class="math inline">\(W = n(n+1)/2 + mn U_{MW}\)</span> is a linear function of <span class="math inline">\(U_{MW}\)</span>,
+inference from the Wilcoxon rank sum test (when using large sample p-values)
+should match inferences made from using <span class="math inline">\(U_{MW}\)</span> to test the hypothesis <span class="math inline">\(H_{0}: \theta_{MW} = 0\)</span>.</p></li>
+<li><p>In other words, the two-sided Wilcoxon rank sum test can
+be thought of as a test of <span class="math inline">\(H_{0}: \theta_{MW} = 0\)</span> vs. <span class="math inline">\(H_{A}:\theta_{MW} \neq 0\)</span>,
+where <span class="math inline">\(\theta_{MW}\)</span> is the parameter defined in <a href="ustat.html#eq:mw-parameter">(6.4)</a>.</p></li>
 </ul>
 </div>
 </div>
@@ -502,7 +526,7 @@ the pooled-data vector <span class="math inline">\(\mathbf{Z} = (X_{1}, \ldots, 
 \end{equation}\]</span>
 and our goal is to report some measure which quantifies the relationship between these
 two variables.</p></li>
-<li><p>In this context, we will think about U-statistics having the form
+<li><p>In this context, we will think about U-statistics which have the form
 <span class="math display">\[\begin{equation}
 U = \frac{1}{{n \choose r}} \sum_{c \in \mathcal{C}_{n,r} } h\Bigg( \begin{bmatrix} X_{c_{1}} \\ Y_{c_{1}} \end{bmatrix},
 \ldots \begin{bmatrix} X_{c_{r}} \\ Y_{c_{r}} \end{bmatrix} \Bigg)
