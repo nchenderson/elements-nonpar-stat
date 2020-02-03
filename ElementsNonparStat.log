@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  3 FEB 2020 14:14
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  3 FEB 2020 17:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1297,8 +1297,8 @@ the pooled-data vector $\OT1/lmr/bx/n/10 Z \OT1/lmr/m/n/10 = (\OML/lmm/m/it/10
 X[]; [] ; X[]; Y[]; [] ; Y[]\OT1/lmr/m/n/10 )$\TU/lmr/m/n/10 . 
  []
 
-[88]
-Overfull \hbox (15.4834pt too wide) detected at line 4117
+[88] [89]
+Overfull \hbox (15.4834pt too wide) detected at line 4177
 []\OML/lmm/m/it/10 h[] [] ; [] [] \OT1/lmr/m/n/10 = 2 \OMS/lmsy/m/n/10 ^^B \OML
 /lmm/m/it/10 I[]\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 X[] \OMS/lmsy/m/n/10 ^^@ \OML
 /lmm/m/it/10 X[]\OT1/lmr/m/n/10 )(\OML/lmm/m/it/10 Y[] \OMS/lmsy/m/n/10 ^^@ \OM
@@ -1308,15 +1308,15 @@ L/lmm/m/it/10 X[][]I[]Y[] \OMS/lmsy/m/n/10 6\OT1/lmr/m/n/10 = \OML/lmm/m/it/10
 Y[][]
  []
 
-[89] (./ElementsNonparStat.bbl [90])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 4185.
-[91
+[90] (./ElementsNonparStat.bbl [91] [92
 
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 4185.
+])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 4259.
+[93]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 4259.
 (./ElementsNonparStat.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 4185.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 4185.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 4259.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 4259.
 
 Package rerunfilecheck Info: File `ElementsNonparStat.out' has not changed.
 (rerunfilecheck)             Checksum: 5CE3F3887520600A1307EAE54F8526C9.
@@ -1330,4 +1330,4 @@ Here is how much of TeX's memory you used:
  1348 hyphenation exceptions out of 8191
  45i,14n,54p,10459b,454s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on ElementsNonparStat.pdf (91 pages).
+Output written on ElementsNonparStat.pdf (93 pages).

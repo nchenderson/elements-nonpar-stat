@@ -374,9 +374,9 @@ the expected squared distance between <span class="math inline">\(X_{i}\)</span>
 <a class="sourceLine" id="cb79-6" data-line-number="6">   diff.sq[k] &lt;-<span class="st"> </span>(xx[idx[<span class="dv">1</span>]] <span class="op">-</span><span class="st"> </span>xx[idx[<span class="dv">2</span>]])<span class="op">^</span><span class="dv">2</span></a>
 <a class="sourceLine" id="cb79-7" data-line-number="7">}</a>
 <a class="sourceLine" id="cb79-8" data-line-number="8"><span class="kw">round</span>(<span class="kw">var</span>(xx), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 1.842</code></pre>
+<pre><code>## [1] 1.838</code></pre>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">mean</span>(diff.sq)<span class="op">/</span><span class="dv">2</span>, <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 1.765</code></pre>
+<pre><code>## [1] 1.82</code></pre>
 </div>
 <div id="example-3-ginis-mean-difference" class="section level3">
 <h3><span class="header-section-number">6.2.3</span> Example 3: Gini’s Mean Difference</h3>
@@ -532,12 +532,43 @@ U = \frac{1}{{n \choose r}} \sum_{c \in \mathcal{C}_{n,r} } h\Bigg( \begin{bmatr
 <div id="spearmans-rank-correlation" class="section level3">
 <h3><span class="header-section-number">6.4.1</span> Spearman’s Rank Correlation</h3>
 <ul>
-<li>Spearman’s rank correlation coefficient is defined as
+<li><p>Spearman’s rank correlation coefficient is defined as
 <span class="math display">\[\begin{eqnarray}
-\rho_{R} &amp;=&amp; \frac{\sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}}{ \big[ \sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\sum_{i=1}^{n}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}^{2} \big]^{1/2} } \nonumber \\
+\hat{\rho}_{R} &amp;=&amp; \frac{\sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}}{ \big[ \sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\sum_{i=1}^{n}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}^{2} \big]^{1/2} } \nonumber \\
 &amp;=&amp; \frac{12}{n(n-1)(n+1)}\sum_{i=1}^{n} R_{i}( \mathbf{X} )R_{i}(\mathbf{Y}) - \frac{3(n+1)}{n-1},
 \end{eqnarray}\]</span>
-where <span class="math inline">\(\bar{R}(X) = \frac{1}{n}\sum_{i=1}^{n} R_{i}( \mathbf{X} )\)</span> and <span class="math inline">\(\bar{R}( \mathbf{Y} ) = \frac{1}{n} \sum_{i=1}^{n}\)</span>.</li>
+where <span class="math inline">\(\bar{R}(X) = \frac{1}{n}\sum_{i=1}^{n} R_{i}( \mathbf{X} )\)</span> and <span class="math inline">\(\bar{R}( \mathbf{Y} ) = \frac{1}{n} \sum_{i=1}^{n} R_{i}( \mathbf{Y} )\)</span>.</p></li>
+<li><p>Remember that <span class="math inline">\(R_{i}(\mathbf{X})\)</span> denotes the rank of <span class="math inline">\(X_{i}\)</span> when only using the vector <span class="math inline">\(\mathbf{X}\)</span> to compute the rankings. Likewise, <span class="math inline">\(R_{i}(\mathbf{Y})\)</span> denotes the rank of <span class="math inline">\(Y_{i}\)</span> when only using the vector <span class="math inline">\(\mathbf{X}\)</span> to compute the rankings.</p></li>
+<li><p>Notice that <span class="math inline">\(\hat{\rho}\)</span> comes from applying the usual Pearson’s estimate of correlation to the ranks <span class="math inline">\((R_{i}( \mathbf{X} )\)</span>, <span class="math inline">\(R_{i}(\mathbf{Y}) )\)</span> rather than the original data <span class="math inline">\((X_{i}, Y_{i})\)</span>.</p></li>
+<li><p>As with the usual estimate of correlation, <span class="math inline">\(\hat{\rho}\)</span> is large (i.e., closer to 1) whenever large values of <span class="math inline">\(X_{i}\)</span> tend to be associated with large values of <span class="math inline">\(Y_{i}\)</span>. Similarly, <span class="math inline">\(\hat{\rho}\)</span> is small wheneve large values of <span class="math inline">\(X_{i}\)</span> tend to be associated with small values of <span class="math inline">\(Y_{i}\)</span>.</p></li>
+<li><p>Values of <span class="math inline">\(\hat{\rho}_{R}\)</span> near zero indicate that there is little association
+between these two variables.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Due to its use of ranks, <span class="math inline">\(\hat{\rho}_{R}\)</span> is less sensitive to outliers.</p></li>
+<li><p>Another important feature of <span class="math inline">\(\hat{\rho}_{R}\)</span> is that it is invariant to monotone transformations
+of the data.</p></li>
+<li><p>While Pearson’s correlation is very effective for detecting linear associations between two variables,
+the rank correlation is very effective at detecting any monotone associations between two variables.</p></li>
+<li><p><span class="math inline">\(\hat{\rho}_{R}\)</span> will equal 1 if <span class="math inline">\(Y_{i}\)</span> is a monotone increasing function of <span class="math inline">\(X_{i}\)</span>,
+and <span class="math inline">\(\hat{\rho}_{R}\)</span> will equal -1 if <span class="math inline">\(Y_{i}\)</span> is a monotone decreasing function <span class="math inline">\(X_{i}\)</span>.</p></li>
+</ul>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="kw">pmax</span>(<span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dt">mean=</span><span class="dv">10</span>), <span class="fl">0.01</span>)</a>
+<a class="sourceLine" id="cb83-2" data-line-number="2">yy &lt;-<span class="st"> </span><span class="kw">pmax</span>(xx <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dt">sd=</span>.<span class="dv">5</span>), <span class="fl">0.01</span>)</a>
+<a class="sourceLine" id="cb83-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb83-4" data-line-number="4"><span class="co">## Compare the usual Pearson&#39;s correlation between </span></a>
+<a class="sourceLine" id="cb83-5" data-line-number="5"><span class="co">## (xx, yy) and (xx, yy^2)</span></a>
+<a class="sourceLine" id="cb83-6" data-line-number="6"><span class="kw">round</span>( <span class="kw">c</span>( <span class="kw">cor</span>(xx, yy), <span class="kw">cor</span>(xx, yy<span class="op">^</span><span class="dv">2</span>)), <span class="dv">3</span>)</a></code></pre></div>
+<pre><code>## [1] 0.907 0.902</code></pre>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1"><span class="co">## Now do the same for Spearman&#39;s rank correlation</span></a>
+<a class="sourceLine" id="cb85-2" data-line-number="2"><span class="kw">round</span>(<span class="kw">c</span>( <span class="kw">cor</span>(xx, yy, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>), </a>
+<a class="sourceLine" id="cb85-3" data-line-number="3">         <span class="kw">cor</span>(xx, yy<span class="op">^</span><span class="dv">2</span>, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>)), <span class="dv">3</span>)</a></code></pre></div>
+<pre><code>## [1] 0.899 0.899</code></pre>
+<hr />
+<ul>
+<li><span class="math inline">\(\hat{\rho}_{R}\)</span> can be thought of as an estimate of the following population
+quantity:</li>
 </ul>
 </div>
 <div id="kendalls-tau" class="section level3">
@@ -592,6 +623,16 @@ U_{\tau} = \frac{4n_{c}}{n(n-1)} - 1
 <li><p>Under independence, the number of concordant and discordant pairs should be roughly equal.</p></li>
 </ul>
 <hr />
+<ul>
+<li><p>We just need ordinal data to use Kendall’s <span class="math inline">\(\tau\)</span>. Kendall’s <span class="math inline">\(\tau\)</span> can be computed
+as long you can tell if one observation is “larger” than another.</p></li>
+<li><p>Kendall’s <span class="math inline">\(\tau\)</span> is often used in the context of assessing the agreement between
+different ratings.</p></li>
+<li><p>Here, we might have <span class="math inline">\(K\)</span> different judges which are rating <span class="math inline">\(J\)</span> different objects.
+If <span class="math inline">\(r_{jk}\)</span> denotes the object-j rating given by judge <span class="math inline">\(k\)</span>, Kendall’s <span class="math inline">\(\tau\)</span>
+from the <span class="math inline">\(J\)</span> pairs <span class="math inline">\((r_{11}, r_{12}), \ldots, (r_{J1}, r_{J2})\)</span> would give
+a measure of the agreement between judges 1 and 2.</p></li>
+</ul>
 </div>
 <div id="distance-covariance" class="section level3">
 <h3><span class="header-section-number">6.4.3</span> Distance Covariance</h3>

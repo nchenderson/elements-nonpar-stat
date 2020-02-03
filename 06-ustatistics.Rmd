@@ -273,10 +273,50 @@ U = \frac{1}{{n \choose r}} \sum_{c \in \mathcal{C}_{n,r} } h\Bigg( \begin{bmatr
 
 * Spearman's rank correlation coefficient is defined as
 \begin{eqnarray}
-\rho_{R} &=& \frac{\sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}}{ \big[ \sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\sum_{i=1}^{n}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}^{2} \big]^{1/2} } \nonumber \\
+\hat{\rho}_{R} &=& \frac{\sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}}{ \big[ \sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\sum_{i=1}^{n}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}^{2} \big]^{1/2} } \nonumber \\
 &=& \frac{12}{n(n-1)(n+1)}\sum_{i=1}^{n} R_{i}( \mathbf{X} )R_{i}(\mathbf{Y}) - \frac{3(n+1)}{n-1},
 \end{eqnarray}
-where $\bar{R}(X) = \frac{1}{n}\sum_{i=1}^{n} R_{i}( \mathbf{X} )$ and $\bar{R}( \mathbf{Y} ) = \frac{1}{n} \sum_{i=1}^{n}$.
+where $\bar{R}(X) = \frac{1}{n}\sum_{i=1}^{n} R_{i}( \mathbf{X} )$ and $\bar{R}( \mathbf{Y} ) = \frac{1}{n} \sum_{i=1}^{n} R_{i}( \mathbf{Y} )$.
+
+* Remember that $R_{i}(\mathbf{X})$ denotes the rank of $X_{i}$ when only using the vector $\mathbf{X}$ to compute the rankings. Likewise, $R_{i}(\mathbf{Y})$ denotes the rank of $Y_{i}$ when only using the vector $\mathbf{X}$ to compute the rankings.
+
+* Notice that $\hat{\rho}$ comes from applying the usual Pearson's estimate of correlation to the ranks $(R_{i}( \mathbf{X} )$, $R_{i}(\mathbf{Y}) )$ rather than the original data $(X_{i}, Y_{i})$.
+
+* As with the usual estimate of correlation, $\hat{\rho}$ is large (i.e., closer to 1) whenever large values of $X_{i}$ tend to be associated with large values of $Y_{i}$. Similarly, $\hat{\rho}$ is small wheneve large values of $X_{i}$ tend to be associated with small values of $Y_{i}$.
+
+* Values of $\hat{\rho}_{R}$ near zero indicate that there is little association
+between these two variables.
+
+---
+
+* Due to its use of ranks, $\hat{\rho}_{R}$ is less sensitive to outliers.
+
+* Another important feature of $\hat{\rho}_{R}$ is that it is invariant to monotone transformations
+of the data.
+
+* While Pearson's correlation is very effective for detecting linear associations between two variables,
+the rank correlation is very effective at detecting any monotone associations between two variables.
+
+* $\hat{\rho}_{R}$ will equal 1 if $Y_{i}$ is a monotone increasing function of $X_{i}$,
+and $\hat{\rho}_{R}$ will equal -1 if $Y_{i}$ is a monotone decreasing function $X_{i}$.
+
+```{r}
+xx <- pmax(rnorm(100, mean=10), 0.01)
+yy <- pmax(xx + rnorm(100, sd=.5), 0.01)
+
+## Compare the usual Pearson's correlation between 
+## (xx, yy) and (xx, yy^2)
+round( c( cor(xx, yy), cor(xx, yy^2)), 3)
+## Now do the same for Spearman's rank correlation
+round(c( cor(xx, yy, method="spearman"), 
+         cor(xx, yy^2, method="spearman")), 3)
+```
+
+---
+
+
+* $\hat{\rho}_{R}$ can be thought of as an estimate of the following population
+quantity:
 
 
 
@@ -343,6 +383,17 @@ U_{\tau} = \frac{4n_{c}}{n(n-1)} - 1
 
 ---
 
+* We just need ordinal data to use Kendall's $\tau$. Kendall's $\tau$ can be computed
+as long you can tell if one observation is "larger" than another.
+
+* Kendall's $\tau$ is often used in the context of assessing the agreement between
+different ratings.
+
+* Here, we might have $K$ different judges which are rating $J$ different objects.
+If $r_{jk}$ denotes the object-j rating given by judge $k$, Kendall's $\tau$
+from the $J$ pairs $(r_{11}, r_{12}), \ldots, (r_{J1}, r_{J2})$ would give
+a measure of the agreement between judges 1 and 2.
+ 
 
 ### Distance Covariance
 
