@@ -155,7 +155,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.76
+## [1] 0.75
 ```
     
 ### Example 2: Ratios of Means
@@ -245,11 +245,20 @@ Compute the (two-sided) permutation p-value for the following two statistics:
 
 * **Exercise 5.2.** Suppose we have data from two groups
 such that $X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)$ and
-$Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(0, 1)$. For 
+$Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)$. Using 
 $n=m=50$ and 500 simulation replications, compute 
 $500$ significance thresholds from the one-sided permutation 
 test which uses the statistic $T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$.
 How, does this compare with the t-statistic threshold of $1.66$?
+
+* **Exercise 5.3.** Suppose we have data from two groups
+such that $X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)$ and
+$Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)$. Using 
+$n=m=50$ and 500 simulation replications, compute the power of 
+the permutation test which uses the statistic 
+$T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$ to detect this true alternative.
+How, does the power compare with the (two-sided) two-sample t-statistic and 
+the (two-sided) Wilcoxon rank sum test?
 
 ---
 
