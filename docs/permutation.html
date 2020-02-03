@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Permutation Tests | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Permutation Tests | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-02-02" />
+<meta name="date" content="2020-02-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -40,9 +40,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
-
 
 
 
@@ -689,7 +686,7 @@ where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly
 </ul>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(mean.diff) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(observed.diff)))<span class="op">/</span>(nreps <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.76</code></pre>
+<pre><code>## [1] 0.74</code></pre>
 </div>
 <div id="example-2-ratios-of-means" class="section level3">
 <h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means</h3>
@@ -749,6 +746,24 @@ where <span class="math inline">\(Q_{p}(X_{1}, \ldots, X_{H})\)</span> denotes t
 <li>Note that setting <strong>probs=.5</strong> in the <strong>quantile</strong> function will return the median.</li>
 </ul>
 <p><img src="05-permutation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<hr />
+<ul>
+<li><strong>Exercise 5.1</strong> Suppose we have the following data from two groups
+<span class="math inline">\((X_{1}, X_{2}, X_{3}) = (-1, 0, 3)\)</span> and <span class="math inline">\((Y_{1}, Y_{2}, Y_{3}) = (2, 0, 1)\)</span>.
+Compute the (two-sided) permutation p-value for the following two statistics:
+<ul>
+<li><span class="math inline">\(T_{N}( \mathbf{Z} ) = \textrm{median}(X_{1}, X_{2}, X_{3}) - \textrm{median}(Y_{1}, Y_{2}, Y_{3})\)</span>.</li>
+<li><span class="math inline">\(T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}\)</span>.</li>
+</ul></li>
+<li><strong>Exercise 5.2.</strong> Suppose we have data from two groups
+such that <span class="math inline">\(X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)\)</span> and
+<span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(0, 1)\)</span>. For
+<span class="math inline">\(n=m=50\)</span> and 500 simulation replications, compute
+<span class="math inline">\(500\)</span> significance thresholds from the one-sided permutation
+test which uses the statistic <span class="math inline">\(T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}\)</span>.
+How, does this compare with the t-statistic threshold of <span class="math inline">\(1.66\)</span>?</li>
+</ul>
+<hr />
 </div>
 </div>
 <div id="the-permutation-test-as-a-conditional-test" class="section level2">
@@ -1526,13 +1541,11 @@ a covariate.</p></li>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -1540,11 +1553,12 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
+"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -1556,10 +1570,6 @@ gitbook.start({
 "text": null
 },
 "history": {
-"link": null,
-"text": null
-},
-"view": {
 "link": null,
 "text": null
 },

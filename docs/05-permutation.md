@@ -155,7 +155,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.76
+## [1] 0.74
 ```
     
 ### Example 2: Ratios of Means
@@ -235,7 +235,23 @@ quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
 
 <img src="05-permutation_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
+---
 
+* **Exercise 5.1** Suppose we have the following data from two groups 
+$(X_{1}, X_{2}, X_{3}) = (-1, 0, 3)$ and $(Y_{1}, Y_{2}, Y_{3}) = (2, 0, 1)$.
+Compute the (two-sided) permutation p-value for the following two statistics:
+    + $T_{N}( \mathbf{Z} ) = \textrm{median}(X_{1}, X_{2}, X_{3}) - \textrm{median}(Y_{1}, Y_{2}, Y_{3})$.
+    + $T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$.
+
+* **Exercise 5.2.** Suppose we have data from two groups
+such that $X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)$ and
+$Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(0, 1)$. For 
+$n=m=50$ and 500 simulation replications, compute 
+$500$ significance thresholds from the one-sided permutation 
+test which uses the statistic $T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$.
+How, does this compare with the t-statistic threshold of $1.66$?
+
+---
 
 ## The Permutation Test as a Conditional Test    
       

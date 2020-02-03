@@ -204,6 +204,33 @@ $U_{MW} = mn + n(n+1)/2 - W$).
 P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2.
 \end{equation}
 
+---
+
+* The reason for stating $H_{0}$ in \@ref(eq:mw-formulation) as 
+\begin{equation}
+H_{0}: P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2 \quad \textrm{ versus } \\
+\end{equation}
+is to cover the case of either a continuous or discrete distribution. 
+
+* When both $X_{i}$ and $Y_{j}$ are samples from a continuous distribution
+we will have $P(X_{i} = Y_{j}) = 0$, and we should then think of the null 
+hypothesis as $H_{0}: P(X_{i} > Y_{j})$.
+
+* For the case when both $X_{i}$ and $Y_{j}$ have a discrete distribution,
+consider an example where $X_{i}$ and $Y_{j}$ have the same discrete 
+distribution with probabilities $P(X_{i} = 0) = p_{0}, P(X_{i} = 1) = p_{1}$,
+and $P(X_{i} = 2) = 1 - p_{0} - p_{2}$.
+
+* With this common discrete distribution on $\{0, 1, 2\}$, we can see
+that $P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2$ because
+\begin{eqnarray}
+P(X_{i} > Y_{j}) + \frac{1}{2}P(X_{i} = Y_{j}&)& = P(X_{i}=1, Y_{j}=0) + P(X_{i} = 2, Y_{j}=0) + P(X_{i}=2, Y_{j}=1)  \nonumber \\
+&+& \frac{1}{2}\Big[P(X_{i}=0, Y_{j}=0) + P(X_{i} = 1, Y_{j}=1) + P(X_{i}=2, Y_{j}=2) \Big] \nonumber \\
+&=& p_{1}p_{0} + (1 - p_{1} - p_{0})p_{0} + (1 - p_{1} - p_{0})p_{1}  \nonumber \\
+&+&  p_{0}^{2} + p_{1}^{2} + \frac{1}{2} - p_{0} - p_{1} + p_{0}p_{1} \nonumber \\
+&=& 1/2 \nonumber
+\end{eqnarray}
+
 
 ### Definition of the WRS Test Statistic
 
