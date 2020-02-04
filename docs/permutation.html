@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Permutation Tests | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Permutation Tests | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-02-03" />
+<meta name="date" content="2020-02-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -40,9 +40,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
-
 
 
 
@@ -1534,16 +1531,27 @@ a covariate.</p></li>
 <p><img src="05-permutation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <hr />
 <ul>
-<li><p>This idea can be useful in the context of difficult-to-interpret
+<li><p>The approach of permuting the response vector can be useful in the context of difficult-to-interpret
 variable importance measures or variable importance measures which
 are known to have certain biases.</p></li>
 <li><p>This idea has been suggested as an alternative way of
 measuring variable importance for random forests (see e.g., <span class="citation">Altmann et al. (<a href="#ref-altmann2010">2010</a>)</span>
 or <span class="citation">Nembrini (<a href="#ref-nembrini2019">2019</a>)</span>)</p></li>
 <li><p>With these approaches, we permute the response vector <span class="math inline">\(\mathbf{y}\)</span> many times.</p></li>
-<li><p>Our permutation variable importance p-value for a particular variable will be the proportion of
+<li><p>A permutation p-value for the importance of a particular variable will be the proportion of
 permutations where that variable’s importance score exceeded the importance score from the original data.
 (In this case, a smaller p-value would mean the variable was more important).</p></li>
+<li><p>Specifically, the permutation p-value for the importance of variable <span class="math inline">\(h\)</span> would be given by
+<span class="math display" id="eq:varimp-pvalue">\[\begin{equation}
+\textrm{p-value}_{h} = \sum_{\pi \in \mathcal{S}_{N}} I\Big( s_{h}(\mathbf{y}_{\pi}, \mathbf{X})  \geq s_{h}(\mathbf{y}, \mathbf{X}) \Big)
+\tag{5.1}
+\end{equation}\]</span>
+where <span class="math inline">\(\mathbf{y}\)</span> denotes the vector of responses and <span class="math inline">\(\mathbf{X}\)</span> denotes the design matrix.</p></li>
+<li><p>Here, <span class="math inline">\(s_{h}(\mathbf{y}, \mathbf{X})\)</span> denotes the variable importance score for variable <span class="math inline">\(h\)</span>
+when using reponse vector <span class="math inline">\(\mathbf{y}\)</span> and design matrix <span class="math inline">\(\mathbf{X}\)</span>.</p></li>
+<li><p>Note that the formula <a href="permutation.html#eq:varimp-pvalue">(5.1)</a> could be applied in the context of
+any method that generates a variable importance score
+from <span class="math inline">\(\mathbf{y}\)</span> and <span class="math inline">\(\mathbf{X}\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
@@ -1596,9 +1604,8 @@ the importance scores obtained across 10,000 permuted datasets.</li>
 <a class="sourceLine" id="cb84-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb84-11" data-line-number="11">perm.pval &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, nvars)</a>
 <a class="sourceLine" id="cb84-12" data-line-number="12"><span class="cf">for</span>(h <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nvars) {</a>
-<a class="sourceLine" id="cb84-13" data-line-number="13">  <span class="co">#apply(VarImpMat, 1, function(x) mean(x &gt;= var.imp))</span></a>
-<a class="sourceLine" id="cb84-14" data-line-number="14">  perm.pval[h] &lt;-<span class="st"> </span><span class="kw">mean</span>(VarImpMat[,h] <span class="op">&gt;=</span><span class="st"> </span>var.imp[h])</a>
-<a class="sourceLine" id="cb84-15" data-line-number="15">}</a></code></pre></div>
+<a class="sourceLine" id="cb84-13" data-line-number="13">  perm.pval[h] &lt;-<span class="st"> </span><span class="kw">mean</span>(VarImpMat[,h] <span class="op">&gt;=</span><span class="st"> </span>var.imp[h])</a>
+<a class="sourceLine" id="cb84-14" data-line-number="14">}</a></code></pre></div>
 <table border="1">
 <tr>
 <th>
@@ -1738,13 +1745,11 @@ Proline
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -1752,11 +1757,12 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
+"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -1768,10 +1774,6 @@ gitbook.start({
 "text": null
 },
 "history": {
-"link": null,
-"text": null
-},
-"view": {
 "link": null,
 "text": null
 },

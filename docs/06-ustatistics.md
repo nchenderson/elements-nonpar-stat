@@ -48,7 +48,13 @@ U = \frac{2}{n(n-1)} \sum_{i=1}^{n}\sum_{j=i+1}^{n} h(X_{i}, X_{j})
 
 * Choosing $h(x) = x$ means that the corresponding U-statistic is
 \begin{equation}
-U = \frac{1}{n} \sum_{i=1}^{n} X_{i}
+U_{m} = \frac{1}{n} \sum_{i=1}^{n} X_{i}
+\end{equation}
+
+* Taking the expectation of $h(X_{1})$ gives the parameter that $U_{m}$
+is estimating
+\begin{equation}
+E\{ h(X_{1}) \} = E\{ X_{1} \} = \mu \nonumber
 \end{equation}
 
 ### Example 2: The Sample Variance
@@ -75,7 +81,7 @@ U_{var} &=& \frac{1}{{n \choose 2}} \sum_{c \in \mathcal{C}_{n,2}} h(X_{c_{1}}, 
 = \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=i+1}^{n} \frac{1}{2} (X_{i} - X_{j})^{2}  \nonumber \\
 &=& \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} (X_{i} - X_{j})^{2} \nonumber \\
 &=& \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} \{ (X_{i} - \bar{X})^{2} - 2(X_{i} - \bar{X})(X_{j} - \bar{X}) + (X_{j} - \bar{X})^{2} \} \nonumber \\
-&=& \frac{2}{n(n-1)}\sum_{i=1}^{n} n(X_{i} - \bar{X})^{2} + \frac{2}{n(n-1)}\sum_{j=1}^{n} n(X_{j} - \bar{X})^{2} \} \nonumber \\
+&=& \frac{2}{n(n-1)}\sum_{i=1}^{n} n(X_{i} - \bar{X})^{2} + \frac{2}{n(n-1)}\sum_{j=1}^{n} n(X_{j} - \bar{X})^{2}  \nonumber \\
 &=& \frac{1}{n-1}\sum_{i=1}^{n} (X_{i} - \bar{X})^{2}
 \end{eqnarray}
 
@@ -102,7 +108,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.837
+## [1] 1.841
 ```
 
 ```r
@@ -110,7 +116,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.868
+## [1] 1.905
 ```
 
 
@@ -118,10 +124,10 @@ round(mean(diff.sq)/2, 3)
 
 * Gini's mean difference statistic is defined as
 \begin{equation}
-U_{G} = \frac{1}{{n \choose 2}} \sum_{i=1}^{n}\sum_{j=i+1} | X_{i} - X_{j} | \nonumber
+U_{G} = \frac{1}{{n \choose 2}} \sum_{i=1}^{n}\sum_{j=i+1}^{n} | X_{i} - X_{j} | \nonumber
 \end{equation}
 
-* This is a U-statistic with kernel
+* This is a U-statistic with $r=2$ and kernel
 \begin{equation}
 h(X_{1},X_{2}) = | X_{1} - X_{2} |
 \end{equation}
@@ -323,7 +329,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.895 0.895
+## [1] 0.902 0.895
 ```
 
 ```r
@@ -333,7 +339,7 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.883 0.883
+## [1] 0.915 0.915
 ```
 
 ---

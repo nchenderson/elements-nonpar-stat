@@ -161,7 +161,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.77
+## [1] 0.75
 ```
     
 ### Example 2: Ratios of Means
@@ -241,7 +241,32 @@ quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
 
 ![](05-permutationLatex_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> 
 
+---
 
+* **Exercise 5.1** Suppose we have the following data from two groups 
+$(X_{1}, X_{2}, X_{3}) = (-1, 0, 3)$ and $(Y_{1}, Y_{2}, Y_{3}) = (2, 0, 1)$.
+Compute the (two-sided) permutation p-value for the following two statistics:
+    + $T_{N}( \mathbf{Z} ) = \textrm{median}(X_{1}, X_{2}, X_{3}) - \textrm{median}(Y_{1}, Y_{2}, Y_{3})$.
+    + $T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$.
+
+* **Exercise 5.2.** Suppose we have data from two groups
+such that $X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)$ and
+$Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)$. Using 
+$n=m=50$ and 500 simulation replications, compute 
+$500$ significance thresholds from the one-sided permutation 
+test which uses the statistic $T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$.
+How, does this compare with the t-statistic threshold of $1.66$?
+
+* **Exercise 5.3.** Suppose we have data from two groups
+such that $X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)$ and
+$Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)$. Using 
+$n=m=50$ and 500 simulation replications, compute the power of 
+the permutation test which uses the statistic 
+$T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$ to detect this true alternative.
+How, does the power compare with the (two-sided) two-sample t-statistic and 
+the (two-sided) Wilcoxon rank sum test?
+
+---
 
 ## The Permutation Test as a Conditional Test    
       
@@ -353,9 +378,51 @@ what is the probability
 P\Big\{ T_{4}(Z_{1}, Z_{2}, Z_{3}, Z_{4}) \geq 2.5 | Z_{(1)}=z_{1}, Z_{(2)}=z_{2}, Z_{(3)}=z_{3}, Z_{(4)} = z_{4} \Big \}
 \end{equation}
 
+* From the below table, we see that the number of times $T_{4} \geq 2.5$ occurs is $8$.
+Hence,
+\begin{eqnarray}
+& & P\Big\{ T_{4}(Z_{1}, Z_{2}, Z_{3}, Z_{4}) \geq 2.5 | Z_{(1)}=z_{1}, Z_{(2)}=z_{2}, Z_{(3)}=z_{3}, Z_{(4)} = z_{4} \Big \} \nonumber \\
+&=& 8/24 = 1/3. \nonumber
+\end{eqnarray}
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{ccccccc}
+  \hline
+a1 & a2 & a3 & a4 & P(Z1 = a1, Z2=a2, Z3=a3, Z4=a4$|$order stat) & T(a1, a2, a3, a4) & T(a1, a2, a3, a4) $>$= 2.5 \\ 
+  \hline
+-3 & -1 & 2 & 5 & 1/24 & -5.50 & 0 \\ 
+  -3 & -1 & 5 & 2 & 1/24 & -5.50 & 0 \\ 
+  -3 & 2 & -1 & 5 & 1/24 & -2.50 & 0 \\ 
+  -3 & 2 & 5 & -1 & 1/24 & -2.50 & 0 \\ 
+  -3 & 5 & -1 & 2 & 1/24 & 0.50 & 0 \\ 
+  -3 & 5 & 2 & -1 & 1/24 & 0.50 & 0 \\ 
+  -1 & -3 & 2 & 5 & 1/24 & -5.50 & 0 \\ 
+  -1 & -3 & 5 & 2 & 1/24 & -5.50 & 0 \\ 
+  -1 & 2 & -3 & 5 & 1/24 & -0.50 & 0 \\ 
+  -1 & 2 & 5 & -3 & 1/24 & -0.50 & 0 \\ 
+  -1 & 5 & -3 & 2 & 1/24 & 2.50 & 1 \\ 
+  -1 & 5 & 2 & -3 & 1/24 & 2.50 & 1 \\ 
+  2 & -3 & -1 & 5 & 1/24 & -2.50 & 0 \\ 
+  2 & -3 & 5 & -1 & 1/24 & -2.50 & 0 \\ 
+  2 & -1 & -3 & 5 & 1/24 & -0.50 & 0 \\ 
+  2 & -1 & 5 & -3 & 1/24 & -0.50 & 0 \\ 
+  2 & 5 & -3 & -1 & 1/24 & 5.50 & 1 \\ 
+  2 & 5 & -1 & -3 & 1/24 & 5.50 & 1 \\ 
+  5 & -3 & -1 & 2 & 1/24 & 0.50 & 0 \\ 
+  5 & -3 & 2 & -1 & 1/24 & 0.50 & 0 \\ 
+  5 & -1 & -3 & 2 & 1/24 & 2.50 & 1 \\ 
+  5 & -1 & 2 & -3 & 1/24 & 2.50 & 1 \\ 
+  5 & 2 & -3 & -1 & 1/24 & 5.50 & 1 \\ 
+  5 & 2 & -1 & -3 & 1/24 & 5.50 & 1 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
 ## A Permutation Test for Correlation
 
-![](05-permutationLatex_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
+![](05-permutationLatex_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
 
 
 * Suppose we have $N$ pairs of observations $(U_{1}, V_{1}), \ldots, (U_{N}, V_{N})$
@@ -410,10 +477,10 @@ hist(cor.perm.pf, xlim=c(-1, 1), las=1, col="grey", main="Permutation
 abline(v=t.obs.pf, lwd=3)
 ```
 
-![](05-permutationLatex_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
-
-
 ![](05-permutationLatex_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
+
+
+![](05-permutationLatex_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
 
 * Now let us compute the p-values for both the 
 Phenols/Flavanoids and Phenols/Color association tests.
@@ -462,12 +529,130 @@ will be when we break any association between $\mathbf{y}$ and
 a covariate.
 
 
-![](05-permutationLatex_files/figure-latex/unnamed-chunk-12-1.pdf)<!-- --> 
+![](05-permutationLatex_files/figure-latex/unnamed-chunk-13-1.pdf)<!-- --> 
+
+---
+
+* The approach of permuting the response vector can be useful in the context of difficult-to-interpret 
+variable importance measures or variable importance measures which 
+are known to have certain biases.
+
+* This idea has been suggested as an alternative way of 
+measuring variable importance for random forests (see e.g., @altmann2010
+or @nembrini2019)
+
+* With these approaches, we permute the response vector $\mathbf{y}$ many times.
+
+* A permutation p-value for the importance of a particular variable will be the proportion of
+permutations where that variable's importance score exceeded the importance score from the original data.
+(In this case, a smaller p-value would mean the variable was more important).
+
+* Specifically, the permutation p-value for the importance of variable $h$ would be given by
+\begin{equation}
+\textrm{p-value}_{h} = \sum_{\pi \in \mathcal{S}_{N}} I\Big( s_{h}(\mathbf{y}_{\pi}, \mathbf{X})  \geq s_{h}(\mathbf{y}, \mathbf{X}) \Big)
+(\#eq:varimp-pvalue)
+\end{equation}
+where $\mathbf{y}$ denotes the vector of responses and $\mathbf{X}$ denotes the design matrix.
+
+* Here, $s_{h}(\mathbf{y}, \mathbf{X})$ denotes the variable importance score for variable $h$ 
+when using reponse vector $\mathbf{y}$ and design matrix $\mathbf{X}$.
+
+* Note that the formula \@ref(eq:varimp-pvalue) could be applied in the context of
+any method that generates a variable importance score 
+from $\mathbf{y}$ and $\mathbf{X}$.
+
+---
+
+* Let us see an example of that if we look at a random forest model for predicting wine type from 
+the **wine** data.
+
+* First, we will load the data and fit a random forest model.
 
 
+```r
+library(rattle.data)
+library(randomForest)
+```
+
+```
+## randomForest 4.6-14
+```
+
+```
+## Type rfNews() to see new features/changes/bug fixes.
+```
+
+```r
+wine2 <- subset(wine, Type==1 | Type==2)
+wine2$Type <- factor(wine2$Type)
+X <- model.matrix(Type ~ . -1, data=wine2)
+yy <- wine2$Type
+n <- length(yy)
+nvars <- ncol(X)
+
+## Variable importance scores using original data
+originalRF <- randomForest(X, y=yy)
+var.imp <- originalRF$importance
+var.imp
+```
+
+```
+##                 MeanDecreaseGini
+## Alcohol               16.4477773
+## Malic                  1.6547628
+## Ash                    0.9512346
+## Alcalinity             1.8280983
+## Magnesium              4.2799222
+## Phenols                2.4436762
+## Flavanoids             6.2584880
+## Nonflavanoids          0.5184224
+## Proanthocyanins        0.6201685
+## Color                 10.0968269
+## Hue                    0.5552606
+## Dilution               1.0398252
+## Proline               17.3324599
+```
+
+* Now, let us compare these original variable importance scores with 
+the importance scores obtained across 10,000 permuted datasets.
 
 
+```r
+nperm <- 10000
+VarImpMat <- matrix(0, nrow=nperm, ncol=ncol(X))
+for(k in 1:nperm) {
+  ytmp <- yy[sample(1:n,size=n)]
+  rf.fit <- randomForest(X, y=ytmp)
+  VarImpMat[k,] <- rf.fit$importance
+  ## VarImpMat[k,h] contains the importance score of 
+  ##  variable h in permutation k
+}
 
+perm.pval <- rep(0, nvars)
+for(h in 1:nvars) {
+  perm.pval[h] <- mean(VarImpMat[,h] >= var.imp[h])
+}
+```
 
-      
-
+\begin{table}[ht]
+\centering
+\begin{tabular}{cc}
+  \hline
+ & Permutation p-val \\ 
+  \hline
+Alcohol & 0.000 \\ 
+  Malic & 1.000 \\ 
+  Ash & 1.000 \\ 
+  Alcalinity & 1.000 \\ 
+  Magnesium & 0.923 \\ 
+  Phenols & 1.000 \\ 
+  Flavanoids & 0.080 \\ 
+  Nonflavanoids & 1.000 \\ 
+  Proanthocyanins & 1.000 \\ 
+  Color & 0.000 \\ 
+  Hue & 1.000 \\ 
+  Dilution & 1.000 \\ 
+  Proline & 0.000 \\ 
+   \hline
+\end{tabular}
+\end{table}

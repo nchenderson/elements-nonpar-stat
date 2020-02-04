@@ -521,7 +521,7 @@ a covariate.
 
 ---
 
-* This idea can be useful in the context of difficult-to-interpret 
+* The approach of permuting the response vector can be useful in the context of difficult-to-interpret 
 variable importance measures or variable importance measures which 
 are known to have certain biases.
 
@@ -531,9 +531,23 @@ or @nembrini2019)
 
 * With these approaches, we permute the response vector $\mathbf{y}$ many times.
 
-* Our permutation variable importance p-value for a particular variable will be the proportion of
+* A permutation p-value for the importance of a particular variable will be the proportion of
 permutations where that variable's importance score exceeded the importance score from the original data.
 (In this case, a smaller p-value would mean the variable was more important).
+
+* Specifically, the permutation p-value for the importance of variable $h$ would be given by
+\begin{equation}
+\textrm{p-value}_{h} = \sum_{\pi \in \mathcal{S}_{N}} I\Big( s_{h}(\mathbf{y}_{\pi}, \mathbf{X})  \geq s_{h}(\mathbf{y}, \mathbf{X}) \Big)
+(\#eq:varimp-pvalue)
+\end{equation}
+where $\mathbf{y}$ denotes the vector of responses and $\mathbf{X}$ denotes the design matrix.
+
+* Here, $s_{h}(\mathbf{y}, \mathbf{X})$ denotes the variable importance score for variable $h$ 
+when using reponse vector $\mathbf{y}$ and design matrix $\mathbf{X}$.
+
+* Note that the formula \@ref(eq:varimp-pvalue) could be applied in the context of
+any method that generates a variable importance score 
+from $\mathbf{y}$ and $\mathbf{X}$.
 
 ---
 
@@ -604,7 +618,6 @@ for(k in 1:nperm) {
 
 perm.pval <- rep(0, nvars)
 for(h in 1:nvars) {
-  #apply(VarImpMat, 1, function(x) mean(x >= var.imp))
   perm.pval[h] <- mean(VarImpMat[,h] >= var.imp[h])
 }
 ```
