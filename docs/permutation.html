@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Permutation Tests | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Permutation Tests | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -686,7 +689,7 @@ where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly
 </ul>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(mean.diff) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(observed.diff)))<span class="op">/</span>(nreps <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.76</code></pre>
+<pre><code>## [1] 0.78</code></pre>
 </div>
 <div id="example-2-ratios-of-means" class="section level3">
 <h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means</h3>
@@ -755,13 +758,21 @@ Compute the (two-sided) permutation p-value for the following two statistics:
 <li><span class="math inline">\(T_{N}( \mathbf{Z} ) = \textrm{median}(X_{1}, X_{2}, X_{3}) - \textrm{median}(Y_{1}, Y_{2}, Y_{3})\)</span>.</li>
 <li><span class="math inline">\(T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}\)</span>.</li>
 </ul></li>
-<li><strong>Exercise 5.2.</strong> Suppose we have data from two groups
+<li><p><strong>Exercise 5.2.</strong> Suppose we have data from two groups
 such that <span class="math inline">\(X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)\)</span> and
-<span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(0, 1)\)</span>. For
+<span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)\)</span>. Using
 <span class="math inline">\(n=m=50\)</span> and 500 simulation replications, compute
 <span class="math inline">\(500\)</span> significance thresholds from the one-sided permutation
 test which uses the statistic <span class="math inline">\(T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}\)</span>.
-How, does this compare with the t-statistic threshold of <span class="math inline">\(1.66\)</span>?</li>
+How, does this compare with the t-statistic threshold of <span class="math inline">\(1.66\)</span>?</p></li>
+<li><p><strong>Exercise 5.3.</strong> Suppose we have data from two groups
+such that <span class="math inline">\(X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)\)</span> and
+<span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)\)</span>. Using
+<span class="math inline">\(n=m=50\)</span> and 500 simulation replications, compute the power of
+the permutation test which uses the statistic
+<span class="math inline">\(T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}\)</span> to detect this true alternative.
+How, does the power compare with the (two-sided) two-sample t-statistic and
+the (two-sided) Wilcoxon rank sum test?</p></li>
 </ul>
 <hr />
 </div>
@@ -1521,13 +1532,199 @@ will be when we break any association between <span class="math inline">\(\mathb
 a covariate.</p></li>
 </ul>
 <p><img src="05-permutation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<hr />
+<ul>
+<li><p>This idea can be useful in the context of difficult-to-interpret
+variable importance measures or variable importance measures which
+are known to have certain biases.</p></li>
+<li><p>This idea has been suggested as an alternative way of
+measuring variable importance for random forests (see e.g., <span class="citation">Altmann et al. (<a href="#ref-altmann2010">2010</a>)</span>
+or <span class="citation">Nembrini (<a href="#ref-nembrini2019">2019</a>)</span>)</p></li>
+<li><p>With these approaches, we permute the response vector <span class="math inline">\(\mathbf{y}\)</span> many times.</p></li>
+<li><p>Our permutation variable importance p-value for a particular variable will be the proportion of
+permutations where that variable’s importance score exceeded the importance score from the original data.
+(In this case, a smaller p-value would mean the variable was more important).</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Let us see an example of that if we look at a random forest model for predicting wine type from
+the <strong>wine</strong> data.</p></li>
+<li><p>First, we will load the data and fit a random forest model.</p></li>
+</ul>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="kw">library</span>(rattle.data)</a>
+<a class="sourceLine" id="cb79-2" data-line-number="2"><span class="kw">library</span>(randomForest)</a></code></pre></div>
+<pre><code>## randomForest 4.6-14</code></pre>
+<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1">wine2 &lt;-<span class="st"> </span><span class="kw">subset</span>(wine, Type<span class="op">==</span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Type<span class="op">==</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb82-2" data-line-number="2">wine2<span class="op">$</span>Type &lt;-<span class="st"> </span><span class="kw">factor</span>(wine2<span class="op">$</span>Type)</a>
+<a class="sourceLine" id="cb82-3" data-line-number="3">X &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(Type <span class="op">~</span><span class="st"> </span>. <span class="dv">-1</span>, <span class="dt">data=</span>wine2)</a>
+<a class="sourceLine" id="cb82-4" data-line-number="4">yy &lt;-<span class="st"> </span>wine2<span class="op">$</span>Type</a>
+<a class="sourceLine" id="cb82-5" data-line-number="5">n &lt;-<span class="st"> </span><span class="kw">length</span>(yy)</a>
+<a class="sourceLine" id="cb82-6" data-line-number="6">nvars &lt;-<span class="st"> </span><span class="kw">ncol</span>(X)</a>
+<a class="sourceLine" id="cb82-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb82-8" data-line-number="8"><span class="co">## Variable importance scores using original data</span></a>
+<a class="sourceLine" id="cb82-9" data-line-number="9">originalRF &lt;-<span class="st"> </span><span class="kw">randomForest</span>(X, <span class="dt">y=</span>yy)</a>
+<a class="sourceLine" id="cb82-10" data-line-number="10">var.imp &lt;-<span class="st"> </span>originalRF<span class="op">$</span>importance</a>
+<a class="sourceLine" id="cb82-11" data-line-number="11">var.imp</a></code></pre></div>
+<pre><code>##                 MeanDecreaseGini
+## Alcohol               16.4477773
+## Malic                  1.6547628
+## Ash                    0.9512346
+## Alcalinity             1.8280983
+## Magnesium              4.2799222
+## Phenols                2.4436762
+## Flavanoids             6.2584880
+## Nonflavanoids          0.5184224
+## Proanthocyanins        0.6201685
+## Color                 10.0968269
+## Hue                    0.5552606
+## Dilution               1.0398252
+## Proline               17.3324599</code></pre>
+<ul>
+<li>Now, let us compare these original variable importance scores with
+the importance scores obtained across 10,000 permuted datasets.</li>
+</ul>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1">nperm &lt;-<span class="st"> </span><span class="dv">10000</span></a>
+<a class="sourceLine" id="cb84-2" data-line-number="2">VarImpMat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow=</span>nperm, <span class="dt">ncol=</span><span class="kw">ncol</span>(X))</a>
+<a class="sourceLine" id="cb84-3" data-line-number="3"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nperm) {</a>
+<a class="sourceLine" id="cb84-4" data-line-number="4">  ytmp &lt;-<span class="st"> </span>yy[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>n,<span class="dt">size=</span>n)]</a>
+<a class="sourceLine" id="cb84-5" data-line-number="5">  rf.fit &lt;-<span class="st"> </span><span class="kw">randomForest</span>(X, <span class="dt">y=</span>ytmp)</a>
+<a class="sourceLine" id="cb84-6" data-line-number="6">  VarImpMat[k,] &lt;-<span class="st"> </span>rf.fit<span class="op">$</span>importance</a>
+<a class="sourceLine" id="cb84-7" data-line-number="7">  <span class="co">## VarImpMat[k,h] contains the importance score of </span></a>
+<a class="sourceLine" id="cb84-8" data-line-number="8">  <span class="co">##  variable h in permutation k</span></a>
+<a class="sourceLine" id="cb84-9" data-line-number="9">}</a>
+<a class="sourceLine" id="cb84-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb84-11" data-line-number="11">perm.pval &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, nvars)</a>
+<a class="sourceLine" id="cb84-12" data-line-number="12"><span class="cf">for</span>(h <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nvars) {</a>
+<a class="sourceLine" id="cb84-13" data-line-number="13">  <span class="co">#apply(VarImpMat, 1, function(x) mean(x &gt;= var.imp))</span></a>
+<a class="sourceLine" id="cb84-14" data-line-number="14">  perm.pval[h] &lt;-<span class="st"> </span><span class="kw">mean</span>(VarImpMat[,h] <span class="op">&gt;=</span><span class="st"> </span>var.imp[h])</a>
+<a class="sourceLine" id="cb84-15" data-line-number="15">}</a></code></pre></div>
+<table border="1">
+<tr>
+<th>
+</th>
+<th>
+Permutation p-val
+</th>
+</tr>
+<tr>
+<td align="center">
+Alcohol
+</td>
+<td align="center">
+0.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Malic
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Ash
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Alcalinity
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Magnesium
+</td>
+<td align="center">
+0.923
+</td>
+</tr>
+<tr>
+<td align="center">
+Phenols
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Flavanoids
+</td>
+<td align="center">
+0.080
+</td>
+</tr>
+<tr>
+<td align="center">
+Nonflavanoids
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Proanthocyanins
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Color
+</td>
+<td align="center">
+0.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Hue
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Dilution
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Proline
+</td>
+<td align="center">
+0.000
+</td>
+</tr>
+</table>
 
 </div>
 </div>
 <h3>References</h3>
 <div id="refs" class="references">
+<div id="ref-altmann2010">
+<p>Altmann, André, Laura Toloşi, Oliver Sander, and Thomas Lengauer. 2010. “Permutation Importance: A Corrected Feature Importance Measure.” <em>Bioinformatics</em> 26 (10). Oxford University Press: 1340–7.</p>
+</div>
 <div id="ref-casella2002">
 <p>Casella, George, and Roger L Berger. 2002. <em>Statistical Inference</em>. Vol. 2. Duxbury Pacific Grove, CA.</p>
+</div>
+<div id="ref-nembrini2019">
+<p>Nembrini, Stefano. 2019. “On What to Permute in Test-Based Approaches for Variable Importance Measures in Random Forests.” <em>Bioinformatics</em> 35 (15). Oxford University Press: 2701–5.</p>
 </div>
 </div>
             </section>
@@ -1541,11 +1738,13 @@ a covariate.</p></li>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -1553,12 +1752,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -1570,6 +1768,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },

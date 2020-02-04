@@ -155,7 +155,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.76
+## [1] 0.78
 ```
     
 ### Example 2: Ratios of Means
@@ -245,11 +245,20 @@ Compute the (two-sided) permutation p-value for the following two statistics:
 
 * **Exercise 5.2.** Suppose we have data from two groups
 such that $X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)$ and
-$Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(0, 1)$. For 
+$Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)$. Using 
 $n=m=50$ and 500 simulation replications, compute 
 $500$ significance thresholds from the one-sided permutation 
 test which uses the statistic $T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$.
 How, does this compare with the t-statistic threshold of $1.66$?
+
+* **Exercise 5.3.** Suppose we have data from two groups
+such that $X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)$ and
+$Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)$. Using 
+$n=m=50$ and 500 simulation replications, compute the power of 
+the permutation test which uses the statistic 
+$T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$ to detect this true alternative.
+How, does the power compare with the (two-sided) two-sample t-statistic and 
+the (two-sided) Wilcoxon rank sum test?
 
 ---
 
@@ -510,6 +519,109 @@ a covariate.
 
 <img src="05-permutation_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
+---
+
+* This idea can be useful in the context of difficult-to-interpret 
+variable importance measures or variable importance measures which 
+are known to have certain biases.
+
+* This idea has been suggested as an alternative way of 
+measuring variable importance for random forests (see e.g., @altmann2010
+or @nembrini2019)
+
+* With these approaches, we permute the response vector $\mathbf{y}$ many times.
+
+* Our permutation variable importance p-value for a particular variable will be the proportion of
+permutations where that variable's importance score exceeded the importance score from the original data.
+(In this case, a smaller p-value would mean the variable was more important).
+
+---
+
+* Let us see an example of that if we look at a random forest model for predicting wine type from 
+the **wine** data.
+
+* First, we will load the data and fit a random forest model.
 
 
+```r
+library(rattle.data)
+library(randomForest)
+```
 
+```
+## randomForest 4.6-14
+```
+
+```
+## Type rfNews() to see new features/changes/bug fixes.
+```
+
+```r
+wine2 <- subset(wine, Type==1 | Type==2)
+wine2$Type <- factor(wine2$Type)
+X <- model.matrix(Type ~ . -1, data=wine2)
+yy <- wine2$Type
+n <- length(yy)
+nvars <- ncol(X)
+
+## Variable importance scores using original data
+originalRF <- randomForest(X, y=yy)
+var.imp <- originalRF$importance
+var.imp
+```
+
+```
+##                 MeanDecreaseGini
+## Alcohol               16.4477773
+## Malic                  1.6547628
+## Ash                    0.9512346
+## Alcalinity             1.8280983
+## Magnesium              4.2799222
+## Phenols                2.4436762
+## Flavanoids             6.2584880
+## Nonflavanoids          0.5184224
+## Proanthocyanins        0.6201685
+## Color                 10.0968269
+## Hue                    0.5552606
+## Dilution               1.0398252
+## Proline               17.3324599
+```
+
+* Now, let us compare these original variable importance scores with 
+the importance scores obtained across 10,000 permuted datasets.
+
+
+```r
+nperm <- 10000
+VarImpMat <- matrix(0, nrow=nperm, ncol=ncol(X))
+for(k in 1:nperm) {
+  ytmp <- yy[sample(1:n,size=n)]
+  rf.fit <- randomForest(X, y=ytmp)
+  VarImpMat[k,] <- rf.fit$importance
+  ## VarImpMat[k,h] contains the importance score of 
+  ##  variable h in permutation k
+}
+
+perm.pval <- rep(0, nvars)
+for(h in 1:nvars) {
+  #apply(VarImpMat, 1, function(x) mean(x >= var.imp))
+  perm.pval[h] <- mean(VarImpMat[,h] >= var.imp[h])
+}
+```
+
+<table border=1>
+<tr> <th>  </th> <th> Permutation p-val </th>  </tr>
+  <tr> <td align="center"> Alcohol </td> <td align="center"> 0.000 </td> </tr>
+  <tr> <td align="center"> Malic </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Ash </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Alcalinity </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Magnesium </td> <td align="center"> 0.923 </td> </tr>
+  <tr> <td align="center"> Phenols </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Flavanoids </td> <td align="center"> 0.080 </td> </tr>
+  <tr> <td align="center"> Nonflavanoids </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Proanthocyanins </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Color </td> <td align="center"> 0.000 </td> </tr>
+  <tr> <td align="center"> Hue </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Dilution </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Proline </td> <td align="center"> 0.000 </td> </tr>
+   </table>
