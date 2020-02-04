@@ -79,9 +79,9 @@ E\{ h(X_{1}, X_{2}) \} &=& \frac{1}{2}\Big[ E(X_{1}^{2}) - 2E(X_{1})E(X_{2})  + 
 \begin{eqnarray}
 U_{var} &=& \frac{1}{{n \choose 2}} \sum_{c \in \mathcal{C}_{n,2}} h(X_{c_{1}}, X_{c_{2}})
 = \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=i+1}^{n} \frac{1}{2} (X_{i} - X_{j})^{2}  \nonumber \\
-&=& \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} (X_{i} - X_{j})^{2} \nonumber \\
-&=& \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} \{ (X_{i} - \bar{X})^{2} - 2(X_{i} - \bar{X})(X_{j} - \bar{X}) + (X_{j} - \bar{X})^{2} \} \nonumber \\
-&=& \frac{2}{n(n-1)}\sum_{i=1}^{n} n(X_{i} - \bar{X})^{2} + \frac{2}{n(n-1)}\sum_{j=1}^{n} n(X_{j} - \bar{X})^{2}  \nonumber \\
+&=& \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} \frac{1}{4}(X_{i} - X_{j})^{2} \nonumber \\
+&=& \frac{1}{2n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} \{ (X_{i} - \bar{X})^{2} - 2(X_{i} - \bar{X})(X_{j} - \bar{X}) + (X_{j} - \bar{X})^{2} \} \nonumber \\
+&=& \frac{1}{2n(n-1)}\sum_{i=1}^{n} n(X_{i} - \bar{X})^{2} + \frac{1}{2n(n-1)}\sum_{j=1}^{n} n(X_{j} - \bar{X})^{2}  \nonumber \\
 &=& \frac{1}{n-1}\sum_{i=1}^{n} (X_{i} - \bar{X})^{2}
 \end{eqnarray}
 
@@ -108,7 +108,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.841
+## [1] 1.856
 ```
 
 ```r
@@ -116,7 +116,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.905
+## [1] 1.879
 ```
 
 
@@ -329,7 +329,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.902 0.895
+## [1] 0.915 0.920
 ```
 
 ```r
@@ -339,7 +339,7 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.915 0.915
+## [1] 0.925 0.925
 ```
 
 ---
