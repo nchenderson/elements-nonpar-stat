@@ -155,7 +155,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.78
+## [1] 0.74
 ```
     
 ### Example 2: Ratios of Means
@@ -238,7 +238,7 @@ quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
 ---
 
 * **Exercise 5.1** Suppose we have the following data from two groups 
-$(X_{1}, X_{2}, X_{3}) = (-1, 0, 3)$ and $(Y_{1}, Y_{2}, Y_{3}) = (2, 0, 1)$.
+$(X_{1}, X_{2}, X_{3}) = (-1, 0, 1)$ and $(Y_{1}, Y_{2}, Y_{3}) = (4, -2, 2)$.
 Compute the (two-sided) permutation p-value for the following two statistics:
     + $T_{N}( \mathbf{Z} ) = \textrm{median}(X_{1}, X_{2}, X_{3}) - \textrm{median}(Y_{1}, Y_{2}, Y_{3})$.
     + $T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$.
