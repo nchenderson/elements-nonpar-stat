@@ -736,7 +736,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.2420592
+## [1] 0.6913503
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -754,7 +754,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.2420592
+## [1] 0.6913503
 ```
 
 #### Two-sided Sign Test
