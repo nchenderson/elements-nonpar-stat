@@ -108,7 +108,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.864
+## [1] 1.839
 ```
 
 ```r
@@ -116,7 +116,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.843
+## [1] 1.789
 ```
 
 
@@ -366,7 +366,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.891 0.896
+## [1] 0.906 0.909
 ```
 
 ```r
@@ -376,7 +376,7 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.849 0.849
+## [1] 0.881 0.881
 ```
 
 ---
@@ -626,19 +626,29 @@ plot(xx2, yy2, xlab="x", ylab="y", main=paste("Sample Distance Corr. = ",
 
 ```r
 ## Let's just compare the values of distance correlation and Pearson's 
-## for both examples correlation
-round(c(cor(xx1, yy1), d.cor1), 4) ## parabola
+## for both examples 
+p.cor1 <- cor(xx1, yy1)
+p.cor2 <- cor(xx2, yy2)
+
+kend.cor1 <- cor(xx1, yy1, method="kendall") 
+kend.cor2 <- cor(xx2, yy2, method="kendall")
+
+spear.cor1 <- cor(xx1, yy1, method="spearman") 
+spear.cor2 <- cor(xx2, yy2, method="spearman")
+
+# Pearson, Kendall-tau, Rank, Distance Correlation
+round(c(p.cor1, kend.cor1, spear.cor1, d.cor1), 4) ## parabola
 ```
 
 ```
-## [1] -0.0316  0.5250
+## [1] -0.0316 -0.0145 -0.0223  0.5250
 ```
 
 ```r
-round(c(cor(xx2, yy2), d.cor2), 4) ## circle
+round(c(p.cor1, kend.cor1, spear.cor1, d.cor2), 4) ## circle
 ```
 
 ```
-## [1] -0.0151  0.1523
+## [1] -0.0316 -0.0145 -0.0223  0.1523
 ```
 

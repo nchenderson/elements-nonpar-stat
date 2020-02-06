@@ -383,9 +383,9 @@ the expected squared distance between <span class="math inline">\(X_{i}\)</span>
 <a class="sourceLine" id="cb85-6" data-line-number="6">   diff.sq[k] &lt;-<span class="st"> </span>(xx[idx[<span class="dv">1</span>]] <span class="op">-</span><span class="st"> </span>xx[idx[<span class="dv">2</span>]])<span class="op">^</span><span class="dv">2</span></a>
 <a class="sourceLine" id="cb85-7" data-line-number="7">}</a>
 <a class="sourceLine" id="cb85-8" data-line-number="8"><span class="kw">round</span>(<span class="kw">var</span>(xx), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 1.864</code></pre>
+<pre><code>## [1] 1.839</code></pre>
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">mean</span>(diff.sq)<span class="op">/</span><span class="dv">2</span>, <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 1.843</code></pre>
+<pre><code>## [1] 1.789</code></pre>
 </div>
 <div id="example-3-ginis-mean-difference" class="section level3">
 <h3><span class="header-section-number">6.2.3</span> Example 3: Gini’s Mean Difference</h3>
@@ -606,11 +606,11 @@ and <span class="math inline">\(\hat{\rho}_{R}\)</span> will equal -1 if <span c
 <a class="sourceLine" id="cb89-4" data-line-number="4"><span class="co">## Compare the usual Pearson&#39;s correlation between </span></a>
 <a class="sourceLine" id="cb89-5" data-line-number="5"><span class="co">## (xx, yy) and (xx, yy^2)</span></a>
 <a class="sourceLine" id="cb89-6" data-line-number="6"><span class="kw">round</span>( <span class="kw">c</span>( <span class="kw">cor</span>(xx, yy), <span class="kw">cor</span>(xx, yy<span class="op">^</span><span class="dv">2</span>)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.891 0.896</code></pre>
+<pre><code>## [1] 0.906 0.909</code></pre>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="co">## Now do the same for Spearman&#39;s rank correlation</span></a>
 <a class="sourceLine" id="cb91-2" data-line-number="2"><span class="kw">round</span>(<span class="kw">c</span>( <span class="kw">cor</span>(xx, yy, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>), </a>
 <a class="sourceLine" id="cb91-3" data-line-number="3">         <span class="kw">cor</span>(xx, yy<span class="op">^</span><span class="dv">2</span>, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.849 0.849</code></pre>
+<pre><code>## [1] 0.881 0.881</code></pre>
 <hr />
 <ul>
 <li><p><span class="math inline">\(\hat{\rho}_{R}\)</span> can be thought of as an estimate of the following population
@@ -816,11 +816,21 @@ h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y
 <a class="sourceLine" id="cb93-19" data-line-number="19">                                              <span class="kw">round</span>(d.cor2, <span class="dv">4</span>)), <span class="dt">las=</span><span class="dv">1</span>)</a></code></pre></div>
 <p><img src="06-ustatistics_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1"><span class="co">## Let&#39;s just compare the values of distance correlation and Pearson&#39;s </span></a>
-<a class="sourceLine" id="cb94-2" data-line-number="2"><span class="co">## for both examples correlation</span></a>
-<a class="sourceLine" id="cb94-3" data-line-number="3"><span class="kw">round</span>(<span class="kw">c</span>(<span class="kw">cor</span>(xx1, yy1), d.cor1), <span class="dv">4</span>) <span class="co">## parabola</span></a></code></pre></div>
-<pre><code>## [1] -0.0316  0.5250</code></pre>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(<span class="kw">cor</span>(xx2, yy2), d.cor2), <span class="dv">4</span>) <span class="co">## circle</span></a></code></pre></div>
-<pre><code>## [1] -0.0151  0.1523</code></pre>
+<a class="sourceLine" id="cb94-2" data-line-number="2"><span class="co">## for both examples </span></a>
+<a class="sourceLine" id="cb94-3" data-line-number="3">p.cor1 &lt;-<span class="st"> </span><span class="kw">cor</span>(xx1, yy1)</a>
+<a class="sourceLine" id="cb94-4" data-line-number="4">p.cor2 &lt;-<span class="st"> </span><span class="kw">cor</span>(xx2, yy2)</a>
+<a class="sourceLine" id="cb94-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb94-6" data-line-number="6">kend.cor1 &lt;-<span class="st"> </span><span class="kw">cor</span>(xx1, yy1, <span class="dt">method=</span><span class="st">&quot;kendall&quot;</span>) </a>
+<a class="sourceLine" id="cb94-7" data-line-number="7">kend.cor2 &lt;-<span class="st"> </span><span class="kw">cor</span>(xx2, yy2, <span class="dt">method=</span><span class="st">&quot;kendall&quot;</span>)</a>
+<a class="sourceLine" id="cb94-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb94-9" data-line-number="9">spear.cor1 &lt;-<span class="st"> </span><span class="kw">cor</span>(xx1, yy1, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>) </a>
+<a class="sourceLine" id="cb94-10" data-line-number="10">spear.cor2 &lt;-<span class="st"> </span><span class="kw">cor</span>(xx2, yy2, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>)</a>
+<a class="sourceLine" id="cb94-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb94-12" data-line-number="12"><span class="co"># Pearson, Kendall-tau, Rank, Distance Correlation</span></a>
+<a class="sourceLine" id="cb94-13" data-line-number="13"><span class="kw">round</span>(<span class="kw">c</span>(p.cor1, kend.cor1, spear.cor1, d.cor1), <span class="dv">4</span>) <span class="co">## parabola</span></a></code></pre></div>
+<pre><code>## [1] -0.0316 -0.0145 -0.0223  0.5250</code></pre>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(p.cor1, kend.cor1, spear.cor1, d.cor2), <span class="dv">4</span>) <span class="co">## circle</span></a></code></pre></div>
+<pre><code>## [1] -0.0316 -0.0145 -0.0223  0.1523</code></pre>
 
 </div>
 </div>
