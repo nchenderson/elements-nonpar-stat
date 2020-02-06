@@ -108,7 +108,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.863
+## [1] 1.844
 ```
 
 ```r
@@ -116,7 +116,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.91
+## [1] 1.873
 ```
 
 
@@ -327,7 +327,7 @@ U = \frac{1}{{n \choose r}} \sum_{c \in \mathcal{C}_{n,r} } h\Bigg( \begin{bmatr
 
 * Spearman's sample rank correlation is defined as
 \begin{eqnarray}
-\hat{\rho}_{R} &=& \frac{\sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}}{ \big[ \sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\sum_{i=1}^{n}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}^{2} \big]^{1/2} } \nonumber \\
+\hat{\rho}_{R} &=& \frac{\sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}}{ \big[ \sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}^{2} \sum_{i=1}^{n}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}^{2} \big]^{1/2} } \nonumber \\
 &=& \frac{12}{n(n-1)(n+1)}\sum_{i=1}^{n} R_{i}( \mathbf{X} )R_{i}(\mathbf{Y}) - \frac{3(n+1)}{n-1},
 (\#eq:spearman-simplifiation)
 \end{eqnarray}
@@ -366,7 +366,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.841 0.841
+## [1] 0.892 0.885
 ```
 
 ```r
@@ -376,7 +376,7 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.824 0.824
+## [1] 0.886 0.886
 ```
 
 ---
@@ -420,19 +420,27 @@ Why is $-1\leq \theta_{R} \leq 1$?
 
 ### Kendall's tau
 
-* Kendall's $\tau$-statistic $U_{\tau}$ is given by
+* Ignoring the possibility of ties, Kendall's $\tau$-statistic $U_{\tau}$ is given by
 \begin{eqnarray}
-U_{\tau} &=& \frac{2}{n(n-1)}\sum_{i=1}^{n}\sum_{j=1}^{n} I\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) > 0 \Big\}  - 1 \nonumber \\
-&=& \frac{4}{n(n-1)}\sum_{i=1}^{n}\sum_{j=i+1}^{n} I\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) > 0 \Big\}  - 1
+U_{\tau}
+&=& \frac{2}{n(n-1)}\sum_{i=1}^{n}\sum_{j=i+1}^{n} \Bigg[ 2 \times I\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) > 0 \Big\}  - 1 \Bigg]
 \end{eqnarray}
 
 * Note that $U_{\tau}$ is a U-statistic of order $2$ with kernel
 \begin{equation}
 h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix},
 \begin{bmatrix} X_{2} \\ Y_{2} \end{bmatrix} \Bigg)
+= 2 \times I\Big\{ (X_{2} - X_{1})(Y_{2} - Y_{1}) > 0 \Big\}  - 1
+\end{equation}
+
+<!--
+\begin{equation}
+h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix},
+\begin{bmatrix} X_{2} \\ Y_{2} \end{bmatrix} \Bigg)
 = 2 \times I\Big\{ (X_{2} - X_{1})(Y_{2} - Y_{1}) > 0 \Big\}  - 
 I\Big\{ X_{2} \neq X_{1} \Big\}I\Big\{ Y_{2} \neq Y_{1} \Big\}
 \end{equation}
+-->
 
 * Assuming the probability of ties is zero, Kendall's $\tau$ can be thought of as an estimate of the following quantity
 \begin{equation}
@@ -466,6 +474,11 @@ n_{n} &=& \textrm{ number of pairs which are neither}  \nonumber
 are $n(n-1)/2$ unique pairings, and hence
 \begin{equation}
 n_{c} + n_{d} + n_{n} = {n \choose 2} = \frac{n(n-1)}{2}
+\end{equation}
+
+* Notice that $n_{c}$ can be expressed in terms of indicator functions as
+\begin{equation}
+n_{c} = \sum_{i=1}^{n}\sum_{j=i+1}^{n} I\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) > 0 \Big\} \nonumber
 \end{equation}
 
 * If we assume that there are no ties (i.e., $n_{n} = 0$), then $U_{\tau}$

@@ -1,6 +1,6 @@
 # (PART) Nonparametric Estimation {-} 
 
-# The Empirical Distribution Function {#regression}
+# The Empirical Distribution Function {#edf}
 
 ## Empirical Distribution Functions
 
@@ -37,9 +37,23 @@ constitute an i.i.d. sample from some common distribution function $F$.
 
 * For a fixed value of $t$, the distribution of $\hat{F}_{n}(t)$ is
 \begin{equation}
-\hat{F}_{n}(t) \sim \textrm{Binomial}( n, F(t))
+n \hat{F}_{n}(t) \sim \textrm{Binomial}\big( n, F(t) \big)
 \end{equation}
 (why?)
+
+* For a fixed $t$, $n\hat{F}_{n}(t)$ is the sum of $n$ independent
+Bernoulli random variables $W_{1}^{t}, \ldots, W_{n}^{t}$
+\begin{equation}
+\hat{F}_{n}(t) = \sum_{i=1}^{n} W_{i}^{t} = \sum_{i=1}^{n} I( X_{i} \leq t)
+\end{equation}
+
+* The probability that $W_{i}^{t} = 1$ is
+\begin{equation}
+P( W_{i}^{t} = 1) = P(X_{i} \leq t) = F(t) \nonumber
+\end{equation}
+
+---
+
 
 
 ## The Empirical Distribution Function in R
