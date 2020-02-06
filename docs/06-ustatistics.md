@@ -108,7 +108,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.874
+## [1] 1.863
 ```
 
 ```r
@@ -116,7 +116,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.858
+## [1] 1.91
 ```
 
 
@@ -205,7 +205,7 @@ of the one-sample null hypothesis discussed in Section 3.3.
 * If you want to derive \@ref(eq:wilcoxsign-equivalence) (though you don't need to know how), I think it is helpful to note
 the following
 \begin{eqnarray}
-I( X_{(i)} > 0)R_{i}(|\mathbf{X}|)
+I( X_{(i)} > 0)R_{(i)}(|\mathbf{X}|)
 &=& \sum_{j=1}^{n} I( X_{(i)} > 0)I(|X_{(i)}| \geq |X_{j}|)
 = \sum_{j=1}^{n} I(X_{(i)} \geq |X_{j}|) \nonumber \\
 &=& \sum_{j=1}^{n} I(X_{(i)} \geq |X_{(j)}|) 
@@ -366,7 +366,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.889 0.888
+## [1] 0.841 0.841
 ```
 
 ```r
@@ -376,7 +376,7 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.872 0.872
+## [1] 0.824 0.824
 ```
 
 ---

@@ -193,7 +193,7 @@ of the one-sample null hypothesis discussed in Section 3.3.
 * If you want to derive \@ref(eq:wilcoxsign-equivalence) (though you don't need to know how), I think it is helpful to note
 the following
 \begin{eqnarray}
-I( X_{(i)} > 0)R_{i}(|\mathbf{X}|)
+I( X_{(i)} > 0)R_{(i)}(|\mathbf{X}|)
 &=& \sum_{j=1}^{n} I( X_{(i)} > 0)I(|X_{(i)}| \geq |X_{j}|)
 = \sum_{j=1}^{n} I(X_{(i)} \geq |X_{j}|) \nonumber \\
 &=& \sum_{j=1}^{n} I(X_{(i)} \geq |X_{(j)}|) 
