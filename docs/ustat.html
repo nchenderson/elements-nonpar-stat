@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="permutation.html"/>
-<link rel="next" href="edf.html"/>
+<link rel="next" href="regression.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -214,13 +214,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="part"><span><b>II Nonparametric Estimation</b></span></li>
-<li class="chapter" data-level="7" data-path="edf.html"><a href="edf.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
-<li class="chapter" data-level="7.1" data-path="edf.html"><a href="edf.html#empirical-distribution-functions"><i class="fa fa-check"></i><b>7.1</b> Empirical Distribution Functions</a><ul>
-<li class="chapter" data-level="7.1.1" data-path="edf.html"><a href="edf.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1.1</b> Definition and Basic Properties</a></li>
-<li class="chapter" data-level="7.1.2" data-path="edf.html"><a href="edf.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.1.2</b> Confidence intervals for F(t)</a></li>
+<li class="chapter" data-level="7" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
+<li class="chapter" data-level="7.1" data-path="regression.html"><a href="regression.html#empirical-distribution-functions"><i class="fa fa-check"></i><b>7.1</b> Empirical Distribution Functions</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="regression.html"><a href="regression.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1.1</b> Definition and Basic Properties</a></li>
+<li class="chapter" data-level="7.1.2" data-path="regression.html"><a href="regression.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.1.2</b> Confidence intervals for F(t)</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.2</b> The Empirical Distribution Function in R</a></li>
-<li class="chapter" data-level="7.3" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-and-statistical-functionals"><i class="fa fa-check"></i><b>7.3</b> The empirical distribution function and statistical functionals</a></li>
+<li class="chapter" data-level="7.2" data-path="regression.html"><a href="regression.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.2</b> The Empirical Distribution Function in R</a></li>
+<li class="chapter" data-level="7.3" data-path="regression.html"><a href="regression.html#the-empirical-distribution-function-and-statistical-functionals"><i class="fa fa-check"></i><b>7.3</b> The empirical distribution function and statistical functionals</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
 <li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
@@ -380,9 +380,9 @@ the expected squared distance between <span class="math inline">\(X_{i}\)</span>
 <a class="sourceLine" id="cb85-6" data-line-number="6">   diff.sq[k] &lt;-<span class="st"> </span>(xx[idx[<span class="dv">1</span>]] <span class="op">-</span><span class="st"> </span>xx[idx[<span class="dv">2</span>]])<span class="op">^</span><span class="dv">2</span></a>
 <a class="sourceLine" id="cb85-7" data-line-number="7">}</a>
 <a class="sourceLine" id="cb85-8" data-line-number="8"><span class="kw">round</span>(<span class="kw">var</span>(xx), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 1.84</code></pre>
+<pre><code>## [1] 1.874</code></pre>
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">mean</span>(diff.sq)<span class="op">/</span><span class="dv">2</span>, <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 1.795</code></pre>
+<pre><code>## [1] 1.816</code></pre>
 </div>
 <div id="example-3-ginis-mean-difference" class="section level3">
 <h3><span class="header-section-number">6.2.3</span> Example 3: Gini’s Mean Difference</h3>
@@ -576,7 +576,7 @@ U = \frac{1}{{n \choose r}} \sum_{c \in \mathcal{C}_{n,r} } h\Bigg( \begin{bmatr
 <ul>
 <li><p>Spearman’s sample rank correlation is defined as
 <span class="math display" id="eq:spearman-simplifiation">\[\begin{eqnarray}
-\hat{\rho}_{R} &amp;=&amp; \frac{\sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}}{ \big[ \sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}^{2} \sum_{i=1}^{n}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}^{2} \big]^{1/2} } \nonumber \\
+\hat{\rho}_{R} &amp;=&amp; \frac{\sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}}{ \big[ \sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\sum_{i=1}^{n}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}^{2} \big]^{1/2} } \nonumber \\
 &amp;=&amp; \frac{12}{n(n-1)(n+1)}\sum_{i=1}^{n} R_{i}( \mathbf{X} )R_{i}(\mathbf{Y}) - \frac{3(n+1)}{n-1},
 \tag{6.7}
 \end{eqnarray}\]</span>
@@ -603,11 +603,11 @@ and <span class="math inline">\(\hat{\rho}_{R}\)</span> will equal -1 if <span c
 <a class="sourceLine" id="cb89-4" data-line-number="4"><span class="co">## Compare the usual Pearson&#39;s correlation between </span></a>
 <a class="sourceLine" id="cb89-5" data-line-number="5"><span class="co">## (xx, yy) and (xx, yy^2)</span></a>
 <a class="sourceLine" id="cb89-6" data-line-number="6"><span class="kw">round</span>( <span class="kw">c</span>( <span class="kw">cor</span>(xx, yy), <span class="kw">cor</span>(xx, yy<span class="op">^</span><span class="dv">2</span>)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.872 0.872</code></pre>
+<pre><code>## [1] 0.898 0.895</code></pre>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="co">## Now do the same for Spearman&#39;s rank correlation</span></a>
 <a class="sourceLine" id="cb91-2" data-line-number="2"><span class="kw">round</span>(<span class="kw">c</span>( <span class="kw">cor</span>(xx, yy, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>), </a>
 <a class="sourceLine" id="cb91-3" data-line-number="3">         <span class="kw">cor</span>(xx, yy<span class="op">^</span><span class="dv">2</span>, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.855 0.855</code></pre>
+<pre><code>## [1] 0.902 0.902</code></pre>
 <hr />
 <ul>
 <li><p><span class="math inline">\(\hat{\rho}_{R}\)</span> can be thought of as an estimate of the following population
@@ -641,27 +641,18 @@ Why is <span class="math inline">\(-1\leq \theta_{R} \leq 1\)</span>?</p>
 <div id="kendalls-tau" class="section level3">
 <h3><span class="header-section-number">6.5.2</span> Kendall’s tau</h3>
 <ul>
-<li><p>Ignoring the possibility of ties, Kendall’s <span class="math inline">\(\tau\)</span>-statistic <span class="math inline">\(U_{\tau}\)</span> is given by
+<li><p>Kendall’s <span class="math inline">\(\tau\)</span>-statistic <span class="math inline">\(U_{\tau}\)</span> is given by
 <span class="math display">\[\begin{eqnarray}
-U_{\tau}
-&amp;=&amp; \frac{2}{n(n-1)}\sum_{i=1}^{n}\sum_{j=i+1}^{n} \Bigg[ 2 \times I\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) &gt; 0 \Big\}  - 1 \Bigg]
+U_{\tau} &amp;=&amp; \frac{2}{n(n-1)}\sum_{i=1}^{n}\sum_{j=1}^{n} I\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) &gt; 0 \Big\}  - 1 \nonumber \\
+&amp;=&amp; \frac{4}{n(n-1)}\sum_{i=1}^{n}\sum_{j=i+1}^{n} I\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) &gt; 0 \Big\}  - 1
 \end{eqnarray}\]</span></p></li>
 <li><p>Note that <span class="math inline">\(U_{\tau}\)</span> is a U-statistic of order <span class="math inline">\(2\)</span> with kernel
 <span class="math display">\[\begin{equation}
 h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix},
 \begin{bmatrix} X_{2} \\ Y_{2} \end{bmatrix} \Bigg)
-= 2 \times I\Big\{ (X_{2} - X_{1})(Y_{2} - Y_{1}) &gt; 0 \Big\}  - 1
-\end{equation}\]</span></p></li>
-</ul>
-<!--
-\begin{equation}
-h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix},
-\begin{bmatrix} X_{2} \\ Y_{2} \end{bmatrix} \Bigg)
-= 2 \times I\Big\{ (X_{2} - X_{1})(Y_{2} - Y_{1}) > 0 \Big\}  - 
+= 2 \times I\Big\{ (X_{2} - X_{1})(Y_{2} - Y_{1}) &gt; 0 \Big\}  - 
 I\Big\{ X_{2} \neq X_{1} \Big\}I\Big\{ Y_{2} \neq Y_{1} \Big\}
-\end{equation}
--->
-<ul>
+\end{equation}\]</span></p></li>
 <li><p>Assuming the probability of ties is zero, Kendall’s <span class="math inline">\(\tau\)</span> can be thought of as an estimate of the following quantity
 <span class="math display">\[\begin{equation}
 \theta_{\tau} = 2 P\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) &gt; 0 \Big\} - 1
@@ -687,10 +678,6 @@ n_{n} &amp;=&amp; \textrm{ number of pairs which are neither}  \nonumber
 are <span class="math inline">\(n(n-1)/2\)</span> unique pairings, and hence
 <span class="math display">\[\begin{equation}
 n_{c} + n_{d} + n_{n} = {n \choose 2} = \frac{n(n-1)}{2}
-\end{equation}\]</span></p></li>
-<li><p>Notice that <span class="math inline">\(n_{c}\)</span> can be expressed in terms of indicator functions as
-<span class="math display">\[\begin{equation}
-n_{c} = \sum_{i=1}^{n}\sum_{j=i+1}^{n} I\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) &gt; 0 \Big\} \nonumber
 \end{equation}\]</span></p></li>
 <li><p>If we assume that there are no ties (i.e., <span class="math inline">\(n_{n} = 0\)</span>), then <span class="math inline">\(U_{\tau}\)</span>
 can be written as
@@ -863,7 +850,7 @@ h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y
         </div>
       </div>
 <a href="permutation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="edf.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
