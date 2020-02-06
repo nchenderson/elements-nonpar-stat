@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Working with R | Elements of Nonparametric Statistics</title>
+  <title>Chapter 7 The Empirical Distribution Function | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Working with R | Elements of Nonparametric Statistics" />
+  <meta property="og:title" content="Chapter 7 The Empirical Distribution Function | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Working with R | Elements of Nonparametric Statistics" />
+  <meta name="twitter:title" content="Chapter 7 The Empirical Distribution Function | Elements of Nonparametric Statistics" />
   
   <meta name="twitter:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="intro.html"/>
-<link rel="next" href="rank-tests.html"/>
+<link rel="prev" href="ustat.html"/>
+<link rel="next" href="density-estimation.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -284,33 +284,70 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="getting-started" class="section level1">
-<h1><span class="header-section-number">Chapter 2</span> Working with R</h1>
-<p>You can download R by visiting <a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a> and clicking on the <strong>download R</strong> link. Follow the instructions
-to complete installation. THe most recent version is version 3.6.2.</p>
-<p>It is not necessary to use this, but I find <strong>RStudio</strong> to be a very useful integrated development environment (IDE)
-for computing with <strong>R</strong>. <strong>RStudio</strong> may be downloaded and installed by visiting <a href="https://rstudio.com/" class="uri">https://rstudio.com/</a></p>
-<!--  
-Before we can start exploring data in R, there are some key concepts to understand first:
-
-1. What are R and RStudio?
-1. How do I code in R?
-1. What are R packages?
-
-If you are already familiar with these concepts, feel free to skip to Section \@ref(nycflights13) below introducing some of the datasets we will explore in depth in this book. Much of this chapter is based on two sources which you should feel free to use as references if you are looking for additional details:
--->
+<div id="edf" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> The Empirical Distribution Function</h1>
+<div id="empirical-distribution-functions" class="section level2">
+<h2><span class="header-section-number">7.1</span> Empirical Distribution Functions</h2>
+<div id="definition-and-basic-properties" class="section level3">
+<h3><span class="header-section-number">7.1.1</span> Definition and Basic Properties</h3>
+<ul>
+<li><p>Every random variable has a cumulative distribution function (cdf).</p></li>
+<li><p>The cdf of a random variable <span class="math inline">\(X\)</span> is defined as
+<span class="math display">\[\begin{equation}
+F(t) = P( X \leq t)
+\end{equation}\]</span></p></li>
+<li><p>The empirical distribution function or empirical cumulative distribution function (ecdf)
+estimates <span class="math inline">\(F(t)\)</span> by computing the proportion of observations which are less than or equal
+to <span class="math inline">\(t\)</span>.</p></li>
+<li><p>For i.i.d. random variables <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> with cdf <span class="math inline">\(F\)</span>, the empirical distribution function
+is defined as
+<span class="math display">\[\begin{equation}
+\hat{F}_{n}(t) = \frac{1}{n}\sum_{i=1}^{n} I( X_{i} \leq t) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Note that the empirical distribution function can be computed for any type
+of data without making any assumptions about the distribution from which
+the data arose.</p></li>
+<li><p>The only assumption we are making is that <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>
+constitute an i.i.d. sample from some common distribution function <span class="math inline">\(F\)</span>.</p></li>
+</ul>
+<hr />
+</div>
+<div id="confidence-intervals-for-ft" class="section level3">
+<h3><span class="header-section-number">7.1.2</span> Confidence intervals for F(t)</h3>
+<ul>
+<li><p>For a fixed value of <span class="math inline">\(t\)</span>, the distribution of <span class="math inline">\(\hat{F}_{n}(t)\)</span> is
+<span class="math display">\[\begin{equation}
+n \hat{F}_{n}(t) \sim \textrm{Binomial}\big( n, F(t) \big)
+\end{equation}\]</span>
+(why?)</p></li>
+<li><p>For a fixed <span class="math inline">\(t\)</span>, <span class="math inline">\(n\hat{F}_{n}(t)\)</span> is the sum of <span class="math inline">\(n\)</span> independent
+Bernoulli random variables <span class="math inline">\(W_{1}^{t}, \ldots, W_{n}^{t}\)</span>
+<span class="math display">\[\begin{equation}
+\hat{F}_{n}(t) = \sum_{i=1}^{n} W_{i}^{t} = \sum_{i=1}^{n} I( X_{i} \leq t)
+\end{equation}\]</span></p></li>
+<li><p>The probability that <span class="math inline">\(W_{i}^{t} = 1\)</span> is
+<span class="math display">\[\begin{equation}
+P( W_{i}^{t} = 1) = P(X_{i} \leq t) = F(t) \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="the-empirical-distribution-function-in-r" class="section level2">
+<h2><span class="header-section-number">7.2</span> The Empirical Distribution Function in R</h2>
+</div>
+<div id="the-empirical-distribution-function-and-statistical-functionals" class="section level2">
+<h2><span class="header-section-number">7.3</span> The empirical distribution function and statistical functionals</h2>
 
 </div>
-
-
-
+</div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="rank-tests.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="ustat.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="density-estimation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
