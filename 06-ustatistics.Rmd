@@ -149,18 +149,18 @@ where $\mu = E( X_{i} )$.
 
 * The Wilcoxon signed rank test statistic is related to the following U statistic
 \begin{equation}
-U_{WS} = \frac{2}{n(n-1)}\sum_{i=1}^{n}\sum_{j=i+1}^{n} I\Big( X_{i} + X_{j} > 0 \Big)
+U_{WS} = \frac{2}{n(n-1)}\sum_{i=1}^{n}\sum_{j=i+1}^{n} I\Big( X_{i} + X_{j} \geq 0 \Big)
 \end{equation}
 
 * $U_{WS}$ is a U-statistic of order $2$ with kernel
 \begin{equation}
-h(x, y) = I\Big( x + y > 0\Big)
+h(x, y) = I\Big( x + y \geq 0\Big)
 \end{equation}
 
 * Hence, $U_{WS}$ can be interpreted as an estimate of
 the following parameter
 \begin{equation}
-\theta_{WS} = P\Big( X_{i} + X_{j} > 0  \Big) = P\Big( X_{i} > -X_{j} \Big)
+\theta_{WS} = P\Big( X_{i} + X_{j} \geq 0  \Big) = P\Big( X_{i} \geq -X_{j} \Big)
 \end{equation}
 
 * If the distribution of $X_{i}$ is symmetric around $0$, $\theta_{WS}$ will be equal 
@@ -176,10 +176,11 @@ distributions which are not symmetric around $0$.
 T_{n} = \sum_{i=1}^{n} \textrm{sign}( X_{i}) R_{i}( |\mathbf{X}| )
 \end{equation}
 
-* A considerable amount of algebra can show that
+* Some extra algebra can show that
 \begin{eqnarray}
 T_{n} &=& n(n-1) U_{WS} + 2\sum_{i=1}^{n} I(X_{i} > 0) - \frac{n(n+1)}{2} \nonumber \\
-&=& n(n-1) U_{WS} + 2 S_{n} - \frac{n(n+1)}{2} \nonumber
+&=& n(n-1) U_{WS} + 2 S_{n} - \frac{n(n+1)}{2} 
+(\#eq:wilcoxsign-equivalence)
 \end{eqnarray}
 where $S_{n}$ is the sign test statistic defined in Chapter 3.
 
@@ -187,6 +188,41 @@ where $S_{n}$ is the sign test statistic defined in Chapter 3.
 Hence, a "large" value of $U_{WS} - 1/2$ will lead to rejection
 of the one-sample null hypothesis discussed in Section 3.3. 
 
+---
+
+* If you want to derive \@ref(eq:wilcoxsign-equivalence) (though you don't need to know how), I think it is helpful to note
+the following
+\begin{eqnarray}
+I( X_{(i)} > 0)R_{i}(|\mathbf{X}|)
+&=& \sum_{j=1}^{n} I( X_{(i)} > 0)I(|X_{(i)}| \geq |X_{j}|)
+= \sum_{j=1}^{n} I(X_{(i)} \geq |X_{j}|) \nonumber \\
+&=& \sum_{j=1}^{n} I(X_{(i)} \geq |X_{(j)}|) 
+= \sum_{j=1}^{i} I(X_{(i)} \geq -X_{(j)}) \nonumber \\
+&=&  \sum_{j=1}^{i} I(X_{(i)} + X_{(j)} \geq 0) \nonumber
+\end{eqnarray}
+
+## Inference using U-statistics
+
+* By using a large-sample approximation, you can construct a confidence interval 
+for your U-statistic parameter of interest $\theta$ where 
+\begin{equation}
+\theta = E\Big\{ h(X_{1}, \ldots, X_{r})  \Big\}
+\end{equation}
+
+* While the U-statistic is a sum of random variables that are not necessarily independent,
+you can state a Central Limit Theorem for $U$-statistics.
+
+* Specifically, under appropriate regularity conditions:
+\begin{equation}
+\sqrt{n}(U - \theta) \longrightarrow \textrm{Normal}\Big( 0, r^{2} \varphi) \nonumber
+\end{equation}
+
+* The formula for $\varphi$ is
+\begin{equation}
+\varphi = \textrm{Cov}\Big( h(X_{1}, X_{2}, \ldots, X_{r}) , h(X_{1}, X_{2}', \ldots, X_{r}') \Big),
+\end{equation}
+where $X_{1}', X_{2}', \ldots, X_{r}'$ are thought of as another i.i.d. sample from 
+the same distribution as $X_{1}, \ldots, X_{r}$. 
 
 
 ## U-statistics for Two-Sample Problems
@@ -249,7 +285,7 @@ $\sum_{i=1}^{n} R_{i}( \mathbf{X} ) = n(n+1)/2$.
 ---
 
 * Because $W = n(n+1)/2 + mn U_{MW}$ is a linear function of $U_{MW}$, 
-inference from the Wilcoxon rank sum test (when using large sample p-values)
+inference from the Wilcoxon rank sum test (when using large-sample p-values)
 should match inferences made from using $U_{MW}$ to test the hypothesis $H_{0}: \theta_{MW} = 0$.
 
 * In other words, the two-sided Wilcoxon rank sum test can 
@@ -281,6 +317,7 @@ U = \frac{1}{{n \choose r}} \sum_{c \in \mathcal{C}_{n,r} } h\Bigg( \begin{bmatr
 \begin{eqnarray}
 \hat{\rho}_{R} &=& \frac{\sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}}{ \big[ \sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\sum_{i=1}^{n}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}^{2} \big]^{1/2} } \nonumber \\
 &=& \frac{12}{n(n-1)(n+1)}\sum_{i=1}^{n} R_{i}( \mathbf{X} )R_{i}(\mathbf{Y}) - \frac{3(n+1)}{n-1},
+(\#eq:spearman-simplifiation)
 \end{eqnarray}
 where $\bar{R}(X) = \frac{1}{n}\sum_{i=1}^{n} R_{i}( \mathbf{X} )$ and $\bar{R}( \mathbf{Y} ) = \frac{1}{n} \sum_{i=1}^{n} R_{i}( \mathbf{Y} )$.
 
@@ -295,7 +332,7 @@ between these two variables.
 
 ---
 
-* Due to its use of ranks, $\hat{\rho}_{R}$ is less sensitive to outliers.
+* Due to its use of ranks, $\hat{\rho}_{R}$ is less sensitive to outliers than Pearson's correlation.
 
 * Another important feature of $\hat{\rho}_{R}$ is that it is invariant to monotone transformations
 of the data.
@@ -323,7 +360,39 @@ round(c( cor(xx, yy, method="spearman"),
 
 * $\hat{\rho}_{R}$ can be thought of as an estimate of the following population
 quantity:
+\begin{equation}
+\theta_{R} = 12 P\Big( X_{1} \geq X_{2}, Y_{1} \geq Y_{3} \Big) - 3
+\end{equation}
 
+* To justify this, first notice that
+\begin{eqnarray}
+V_{R} &=& \frac{1}{n^{3}}\sum_{i=1}^{n} R_{i}(\mathbf{X})R_{i}(\mathbf{Y})
+= \frac{1}{n^{3}}\sum_{i=1}^{n} \sum_{j=1}^{n} I(X_{i} \geq X_{j}) \sum_{k=1}^{n} I(Y_{i} \geq Y_{k}) \nonumber \\
+&=& \frac{1}{n^{3}}\sum_{i=1}^{n} \sum_{j=1}^{n} \sum_{k=1}^{n} I(X_{i} \geq X_{j}) I(Y_{i} \geq Y_{k})  \nonumber
+\end{eqnarray}
+
+* While $V_{R}$ is not exactly U-statistic. It is like a U-statistic with non-symmetric kernel function
+\begin{equation}
+h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix},
+\begin{bmatrix} X_{3} \\ Y_{3} \end{bmatrix} \Bigg) = I(X_{1} \geq X_{2}) I(Y_{1} \geq Y_{3}) \nonumber
+\end{equation}
+
+* So, we should expect $V_{R}$ to converge to $P\{X_{1} \geq X_{2}, Y_{1} \geq Y_{3}\}$ as $n$ gets larger.
+
+* Using \@ref(eq:spearman-simplifiation) and our formula for $V_{R}$, we can write $\hat{\rho}_{R}$ as
+\begin{eqnarray}
+\hat{\rho}_{R} &=& \frac{12}{n(n-1)(n+1)}\sum_{i=1}^{n} R_{i}( \mathbf{X} )R_{i}(\mathbf{Y}) - \frac{3(n+1)}{n-1} \nonumber \\
+&=& 12 V_{R} \Big( \frac{n^{3}}{n(n-1)(n+1)} \Big)  - \frac{3(n+1)}{n-1}. \nonumber
+\end{eqnarray}
+
+---
+
+**Exercise 6.2.**
+
+**Exercise 6.3.** Why does $\theta_{R}$ equal zero when $X_{i}$ and $Y_{i}$ are independent?
+Why is $-1\leq \theta_{R} \leq 1$?
+
+---
 
 
 ### Kendall's tau
@@ -344,7 +413,7 @@ I\Big\{ X_{2} \neq X_{1} \Big\}I\Big\{ Y_{2} \neq Y_{1} \Big\}
 
 * Assuming the probability of ties is zero, Kendall's $\tau$ can be thought of as an estimate of the following quantity
 \begin{equation}
-2 P\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) > 0 \Big\} - 1
+\theta_{\tau} = 2 P\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) > 0 \Big\} - 1
 \end{equation}
 
 * Kendall's $\tau$ must be in between $-1$ and $1$.
@@ -403,11 +472,146 @@ a measure of the agreement between judges 1 and 2.
 
 ### Distance Covariance
 
-* Define $a_{ij}$ and $b_{ij}$ as
+* A value of the correlation which equals zero does not imply that two random variables
+are independent.
+
+* For example, if $X \sim \textrm{Normal}(0, 1)$, then
+\begin{equation}
+\textrm{Corr}(X, X^{2}) = \textrm{Cov}(X, X^{3}) = E( X^{3} ) = 0 \nonumber
+\end{equation}
+
+* This is also true Spearman's rank correlation and Kendall's $\tau$. You 
+can have situations where $\theta_{R} = 0$ but $X$ and $Y$ are not independent.
+Similarly, you can have situations where $\theta_{\tau} = 0$
+while $X$ and $Y$ are not independent.
+
+```{r, echo=FALSE}
+set.seed(1738)
+n <- 5000
+xx1 <- rnorm(n, sd=0.5)  
+yy1 <- xx1^2 + rnorm(n, sd=0.05)
+xx2 <- runif(n, min=-1, max=1)
+yy2 <- sample(c(-1,1), size=n, replace=TRUE)*sqrt(1 - xx2^2) + rnorm(n, sd=.05)
+
+par(mfrow=c(1,2))
+plot(xx1, yy1, xlab="x", ylab="y", main=paste("Sample Pearson Corr. = ", round(cor(xx1, yy1),4)), las=1)
+plot(xx2, yy2, las=1, xlab="x", ylab="y", main=paste("Sample Pearson Corr. = ", round(cor(xx2, yy2),4)))
+
+```
+
+---
+
+* **Distance covariance** and **distance correlation** are two measures of dependence that have been developed 
+much more recently (see @szekely2007).
+
+* The interesting thing about these two measures is that: if they equal zero then it
+implies that the two random variables are independent.
+
+* Moreover, the measures have a relatively straightforward formula, and
+they have easily computable estimates.
+
+* For i.i.d. bivariate random variables $(X_{1}, Y_{1}), \ldots, (X_{n}, Y_{n})$,
+the squared distance covariance parameter is defined as
+\begin{equation}
+\theta_{dCov,XY}^{2} 
+= E\Big\{ |X_{1} - X_{2}| |Y_{1} - Y_{2}|  \Big\} + E\Big\{ |X_{1} - X_{2}| \Big\}E\Big\{ |Y_{1} - Y_{2}| \Big\} - 2E\Big\{ |X_{1} - X_{2}||Y_{1} - Y_{3}| \Big\} \nonumber
+\end{equation}
+
+* The distance correlation bettween $X_{i}$ and $Y_{i}$ is then defined as
+\begin{equation}
+\rho_{d, XY} = \frac{ \theta_{dCov,XY} }{\theta_{dCov,XX} \theta_{dCov, YY} } 
+\end{equation}
+
+* Notice that we must have $\theta_{dCov, XY} \geq 0$ and $\rho_{d, XY} \geq 0$. 
+
+* There is no notion of a negative correlation when using distance correlation. 
+
+* The interpretation of $\theta_{dCov,XY}^{2}$ is perhaps not as clear as 
+the usual correlation parameter. Nevertheless, $\theta_{dCov,XY} = 0$
+implies independence, and larger values of $\theta_{dCov,XY}$ imply
+that $X_{i}$ and $Y_{i}$ have some form of greater association.
+
+---
+
+* The distance covariance and correlation are estimated by using a bunch of pairwise distances
+between our observations.
+
+* The pairwise distances $a_{ij}$ and $b_{ij}$ for the $X_{i}$ and $Y_{i}$ are defined as
 \begin{eqnarray}
 a_{ij} &=& | X_{i} - X_{j}|  \nonumber \\
 b_{ij} &=& | Y_{i} - Y_{j}|  \nonumber
 \end{eqnarray}
 
+* We then construct the $n \times n$ matrix $\mathbf{A}$ 
+(with elements $A_{ij}$) and the $n \times n$ matrix $\mathbf{B}$
+(with elements $B_{ij}$) in the following way
+\begin{equation}
+A_{ij} = 
+\begin{cases}
+a_{ij} - \frac{1}{n-2} A_{i.} - \frac{1}{n-2} A_{.j} + \frac{1}{(n-1)(n-2)}A_{..} & \textrm{ if } i \neq j \nonumber \\
+0 & \textrm{ if } i = j \nonumber
+\end{cases}
+\end{equation}
+\begin{equation}
+B_{ij} = 
+\begin{cases}
+b_{ij} - \frac{1}{n-2} B_{i.} - \frac{1}{n-2} B_{.j} + \frac{1}{(n-1)(n-2)}B_{..} & \textrm{ if } i \neq j \nonumber \\
+0 & \textrm{ if } i = j \nonumber
+\end{cases}
+\end{equation}
 
+* In other words, $\mathbf{A}$ is a matrix containing "centered" pairwise distances.
+
+---
+
+* The estimate of the squared distance covariance parameter is then given by
+\begin{equation}
+\hat{\theta}_{dCov,XY}^{2} = \frac{1}{n(n-3)}\sum_{i=1}^{n}\sum_{j=1}^{n} A_{ij}B_{ij}
+\end{equation}
+
+* The estimate of the distance correlation is
+\begin{equation}
+\hat{\rho}_{d, XY} = \frac{ \hat{\theta}_{dCov,XY} }{\hat{\theta}_{dCov,XX} \hat{\theta}_{dCov, YY} } 
+\end{equation}
+
+* It turns out that $\hat{\theta}_{dCov, XY}^{2}$ is a U-statistic of order $4$ (see @huo2016 for a justification of this).
+It has kernel function
+\begin{equation}
+h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix},
+\begin{bmatrix} X_{3} \\ Y_{3} \end{bmatrix}, \begin{bmatrix} X_{4} \\ Y_{4}\end{bmatrix} \Bigg) 
+= \frac{1}{4}\sum_{i=1}^{4}\sum_{j=1}^{4} A_{ij}B_{ij}
+\end{equation}
+
+---
+
+* You can compute distance covariances and distance correlations using the **energy** package in **R**.
+
+```{r}
+library(energy)
+
+n <- 5000
+## generate "parabola" data
+xx1 <- rnorm(n, sd=0.5)  
+yy1 <- xx1^2 + rnorm(n, sd=0.05)
+
+## generate circle data
+xx2 <- runif(n, min=-1, max=1)
+yy2 <- sample(c(-1,1), size=n, replace=TRUE)*sqrt(1 - xx2^2) + rnorm(n, sd=.05)
+
+d.cor1 <- dcor(xx1, yy1)
+d.cor2 <- dcor(xx2, yy2)
+
+par(mfrow=c(1,2))
+plot(xx1, yy1, xlab="x", ylab="y", main=paste("Sample Distance Corr. = ", 
+                                              round(d.cor1 ,4)), las=1)
+plot(xx2, yy2, xlab="x", ylab="y", main=paste("Sample Distance Corr. = ", 
+                                              round(d.cor2, 4)), las=1)
+```
+
+```{r}
+## Let's just compare the values of distance correlation and Pearson's 
+## for both examples correlation
+round(c(cor(xx1, yy1), d.cor1), 4) ## parabola
+round(c(cor(xx2, yy2), d.cor2), 4) ## circle
+```
 
