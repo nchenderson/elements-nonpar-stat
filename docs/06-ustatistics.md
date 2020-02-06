@@ -108,7 +108,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.839
+## [1] 1.837
 ```
 
 ```r
@@ -116,7 +116,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.789
+## [1] 1.859
 ```
 
 
@@ -226,7 +226,7 @@ you can state a Central Limit Theorem for $U$-statistics.
 
 * Specifically, under appropriate regularity conditions:
 \begin{equation}
-\sqrt{n}(U - \theta) \longrightarrow \textrm{Normal}\Big( 0, r^{2} \varphi) \nonumber
+\sqrt{n}(U - \theta) \longrightarrow \textrm{Normal}\Big( 0, r^{2} \varphi \Big) \nonumber
 \end{equation}
 
 * The formula for $\varphi$ is
@@ -298,10 +298,10 @@ $\sum_{i=1}^{n} R_{i}( \mathbf{X} ) = n(n+1)/2$.
 
 * Because $W = n(n+1)/2 + mn U_{MW}$ is a linear function of $U_{MW}$, 
 inference from the Wilcoxon rank sum test (when using large-sample p-values)
-should match inferences made from using $U_{MW}$ to test the hypothesis $H_{0}: \theta_{MW} = 0$.
+should match inferences made from using $U_{MW}$ to test the hypothesis $H_{0}: \theta_{MW} = 1/2$.
 
 * In other words, the two-sided Wilcoxon rank sum test can 
-be thought of as a test of $H_{0}: \theta_{MW} = 0$ vs. $H_{A}:\theta_{MW} \neq 0$,
+be thought of as a test of $H_{0}: \theta_{MW} = 1/2$ vs. $H_{A}:\theta_{MW} \neq 1/2$,
 where $\theta_{MW}$ is the parameter defined in \@ref(eq:mw-parameter).
 
 
@@ -319,13 +319,13 @@ two variables.
 * In this context, we will think about U-statistics which have the form
 \begin{equation}
 U = \frac{1}{{n \choose r}} \sum_{c \in \mathcal{C}_{n,r} } h\Bigg( \begin{bmatrix} X_{c_{1}} \\ Y_{c_{1}} \end{bmatrix},
-\ldots \begin{bmatrix} X_{c_{r}} \\ Y_{c_{r}} \end{bmatrix} \Bigg)
+\ldots, \begin{bmatrix} X_{c_{r}} \\ Y_{c_{r}} \end{bmatrix} \Bigg)
 \end{equation}
 
 
 ### Spearman's Rank Correlation
 
-* Spearman's rank correlation coefficient is defined as
+* Spearman's sample rank correlation is defined as
 \begin{eqnarray}
 \hat{\rho}_{R} &=& \frac{\sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}}{ \big[ \sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\sum_{i=1}^{n}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}^{2} \big]^{1/2} } \nonumber \\
 &=& \frac{12}{n(n-1)(n+1)}\sum_{i=1}^{n} R_{i}( \mathbf{X} )R_{i}(\mathbf{Y}) - \frac{3(n+1)}{n-1},
@@ -333,11 +333,11 @@ U = \frac{1}{{n \choose r}} \sum_{c \in \mathcal{C}_{n,r} } h\Bigg( \begin{bmatr
 \end{eqnarray}
 where $\bar{R}(X) = \frac{1}{n}\sum_{i=1}^{n} R_{i}( \mathbf{X} )$ and $\bar{R}( \mathbf{Y} ) = \frac{1}{n} \sum_{i=1}^{n} R_{i}( \mathbf{Y} )$.
 
-* Remember that $R_{i}(\mathbf{X})$ denotes the rank of $X_{i}$ when only using the vector $\mathbf{X}$ to compute the rankings. Likewise, $R_{i}(\mathbf{Y})$ denotes the rank of $Y_{i}$ when only using the vector $\mathbf{X}$ to compute the rankings.
+* Remember that $R_{i}(\mathbf{X})$ denotes the rank of $X_{i}$ when only using the vector $\mathbf{X} = (X_{1}, \ldots, X_{n})$ to compute the rankings. Likewise, $R_{i}(\mathbf{Y})$ denotes the rank of $Y_{i}$ when only using the vector $\mathbf{Y} = (Y_{1}, \ldots, Y_{n})$ to compute the rankings.
 
-* Notice that $\hat{\rho}$ comes from applying the usual Pearson's estimate of correlation to the ranks $(R_{i}( \mathbf{X} )$, $R_{i}(\mathbf{Y}) )$ rather than the original data $(X_{i}, Y_{i})$.
+* Notice that $\hat{\rho}_{R}$ comes from applying the usual Pearson's estimate of correlation to the ranks $(R_{i}( \mathbf{X} )$, $R_{i}(\mathbf{Y}) )$ rather than the original data $(X_{i}, Y_{i})$.
 
-* As with the usual estimate of correlation, $\hat{\rho}$ is large (i.e., closer to 1) whenever large values of $X_{i}$ tend to be associated with large values of $Y_{i}$. Similarly, $\hat{\rho}$ is small wheneve large values of $X_{i}$ tend to be associated with small values of $Y_{i}$.
+* As with the usual estimate of correlation, $\hat{\rho}_{R}$ is large (i.e., closer to 1) whenever large values of $X_{i}$ tend to be associated with large values of $Y_{i}$. Similarly, $\hat{\rho}_{R}$ is small wheneve large values of $X_{i}$ tend to be associated with small values of $Y_{i}$.
 
 * Values of $\hat{\rho}_{R}$ near zero indicate that there is little association
 between these two variables.
@@ -366,7 +366,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.906 0.909
+## [1] 0.912 0.903
 ```
 
 ```r
@@ -376,7 +376,7 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.881 0.881
+## [1] 0.884 0.884
 ```
 
 ---
@@ -395,7 +395,7 @@ V_{R} &=& \frac{1}{n^{3}}\sum_{i=1}^{n} R_{i}(\mathbf{X})R_{i}(\mathbf{Y})
 &=& \frac{1}{n^{3}}\sum_{i=1}^{n} \sum_{j=1}^{n} \sum_{k=1}^{n} I(X_{i} \geq X_{j}) I(Y_{i} \geq Y_{k})  \nonumber
 \end{eqnarray}
 
-* While $V_{R}$ is not exactly U-statistic. It is like a U-statistic with non-symmetric kernel function
+* While $V_{R}$ is not exactly U-statistic, it can be thought of as roughly a "U-statistic" with non-symmetric kernel function
 \begin{equation}
 h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix},
 \begin{bmatrix} X_{3} \\ Y_{3} \end{bmatrix} \Bigg) = I(X_{1} \geq X_{2}) I(Y_{1} \geq Y_{3}) \nonumber
@@ -411,9 +411,8 @@ h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y
 
 ---
 
-**Exercise 6.2.**
 
-**Exercise 6.3.** Why does $\theta_{R}$ equal zero when $X_{i}$ and $Y_{i}$ are independent?
+**Exercise 6.2.** Why does $\theta_{R}$ equal zero when $X_{i}$ and $Y_{i}$ are independent?
 Why is $-1\leq \theta_{R} \leq 1$?
 
 ---
@@ -560,17 +559,19 @@ b_{ij} &=& | Y_{i} - Y_{j}|  \nonumber
 \begin{equation}
 A_{ij} = 
 \begin{cases}
-a_{ij} - \frac{1}{n-2} A_{i.} - \frac{1}{n-2} A_{.j} + \frac{1}{(n-1)(n-2)}A_{..} & \textrm{ if } i \neq j \nonumber \\
+a_{ij} - \frac{1}{n-2} a_{i.} - \frac{1}{n-2} a_{.j} + \frac{1}{(n-1)(n-2)}a_{..} & \textrm{ if } i \neq j \nonumber \\
 0 & \textrm{ if } i = j \nonumber
 \end{cases}
 \end{equation}
 \begin{equation}
 B_{ij} = 
 \begin{cases}
-b_{ij} - \frac{1}{n-2} B_{i.} - \frac{1}{n-2} B_{.j} + \frac{1}{(n-1)(n-2)}B_{..} & \textrm{ if } i \neq j \nonumber \\
+b_{ij} - \frac{1}{n-2} b_{i.} - \frac{1}{n-2} b_{.j} + \frac{1}{(n-1)(n-2)}b_{..} & \textrm{ if } i \neq j \nonumber \\
 0 & \textrm{ if } i = j \nonumber
 \end{cases}
 \end{equation}
+where $a_{i.} = \sum_{k=1}^{n} a_{ik}$, $a_{.j} = \sum_{k=1}^{n} a_{kj}$, and $a_{..} = \sum_{k=1}^{n}\sum_{l=1}^{n} a_{ij}$.
+
 
 * In other words, $\mathbf{A}$ is a matrix containing "centered" pairwise distances.
 
