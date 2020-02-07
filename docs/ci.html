@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 10 The Bootstrap and Confidence Intervals | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 10 The Bootstrap and Confidence Intervals | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -40,9 +40,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
-
 
 
 
@@ -218,11 +215,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="part"><span><b>II Nonparametric Estimation</b></span></li>
 <li class="chapter" data-level="7" data-path="edf.html"><a href="edf.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
-<li class="chapter" data-level="7.1" data-path="edf.html"><a href="edf.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1</b> Definition and Basic Properties</a></li>
-<li class="chapter" data-level="7.2" data-path="edf.html"><a href="edf.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.2</b> Confidence intervals for F(t)</a></li>
-<li class="chapter" data-level="7.3" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.3</b> The Empirical Distribution Function in R</a></li>
-<li class="chapter" data-level="7.4" data-path="edf.html"><a href="edf.html#the-kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>7.4</b> The Kolmogorov-Smirnov Test</a></li>
-<li class="chapter" data-level="7.5" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-and-statistical-functionals"><i class="fa fa-check"></i><b>7.5</b> The empirical distribution function and statistical functionals</a></li>
+<li class="chapter" data-level="7.1" data-path="edf.html"><a href="edf.html#empirical-distribution-functions"><i class="fa fa-check"></i><b>7.1</b> Empirical Distribution Functions</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="edf.html"><a href="edf.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1.1</b> Definition and Basic Properties</a></li>
+<li class="chapter" data-level="7.1.2" data-path="edf.html"><a href="edf.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.1.2</b> Confidence intervals for F(t)</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.2</b> The Empirical Distribution Function in R</a></li>
+<li class="chapter" data-level="7.3" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-and-statistical-functionals"><i class="fa fa-check"></i><b>7.3</b> The empirical distribution function and statistical functionals</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
 <li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
@@ -308,13 +306,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -322,11 +318,12 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
+"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -338,10 +335,6 @@ gitbook.start({
 "text": null
 },
 "history": {
-"link": null,
-"text": null
-},
-"view": {
 "link": null,
 "text": null
 },

@@ -2,8 +2,9 @@
 
 # The Empirical Distribution Function {#edf}
 
+## Empirical Distribution Functions
 
-## Definition and Basic Properties
+### Definition and Basic Properties
 
 * Every random variable has a cumulative distribution function (cdf).
 
@@ -32,7 +33,7 @@ constitute an i.i.d. sample from some common distribution function $F$.
 ---
 
 
-## Confidence intervals for F(t)
+### Confidence intervals for F(t)
 
 * For a fixed value of $t$, the distribution of $\hat{F}_{n}(t)$ is
 \begin{equation}
@@ -57,52 +58,6 @@ P( W_{i}^{t} = 1) = P(X_{i} \leq t) = F(t) \nonumber
 
 ## The Empirical Distribution Function in R
 
-* We will see how to work with empirical distribution functions in **R** by using the "kidney data."
-
-
-```r
-kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
-                     header=TRUE)
-head(kidney)
-```
-
-```
-##   age   tot
-## 1  18  2.44
-## 2  19  3.86
-## 3  19 -1.22
-## 4  20  2.30
-## 5  21  0.98
-## 6  21 -0.50
-```
-
-* The **ecdf** function is the main function which computes the empirical distribution function
-in **R**
-
-* The **ecdf** function will create an **ecdf** object. To create an ecdf object
-for the kidney totals, use the following code:
-
-```r
-kidney.Fhat <- ecdf(kidney$tot)
-```
-
-* You can plot the ecdf for the kidney totals by just calling **plot(ecdf)**
-
-```r
-plot(kidney.Fhat)
-```
-
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-3-1.png" width="672" />
-
-* You can plot the ecdf for the kidney totals by just calling **plot(ecdf)**
-
-```r
-plot(kidney.Fhat, verticals=TRUE)
-```
-
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-
-## The Kolmogorov-Smirnov Test
 
 
 
