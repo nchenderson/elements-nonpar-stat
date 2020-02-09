@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-02-06" />
+<meta name="date" content="2020-02-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -311,6 +311,7 @@ the data arose.</p></li>
 constitute an i.i.d. sample from some common distribution function <span class="math inline">\(F\)</span>.</p></li>
 </ul>
 <hr />
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 </div>
 <div id="confidence-intervals-for-ft" class="section level2">
 <h2><span class="header-section-number">7.2</span> Confidence intervals for F(t)</h2>
@@ -331,11 +332,33 @@ P( W_{i}^{t} = 1) = P(X_{i} \leq t) = F(t) \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
+<p><strong>Pointwise Confidence Intervals</strong></p>
+<ul>
+<li><p>Because <span class="math inline">\(\hat{F}_{n}(t)\)</span> is a mean of independent random variables, we can say that
+<span class="math display">\[\begin{equation}
+\frac{ \sqrt{n}\Big( \hat{F}_{n}(t) - F(t) \Big) }{\sqrt{ \hat{F}_{n}(t)(1 - \hat{F}_{n}(t))}} \longrightarrow \textrm{Normal}\Big(0, 1 \Big)
+\end{equation}\]</span></p></li>
+<li><p>The above asymptotic statement is the basis for constructing <strong>pointwise confidence intervals</strong> for <span class="math inline">\(F(t)\)</span>.</p></li>
+<li><p>For a fixed <span class="math inline">\(t\)</span>, a <span class="math inline">\(95\%\)</span> confidence interval for <span class="math inline">\(F(t)\)</span> is the following
+<span class="math display" id="eq:pointwise-cis">\[\begin{equation}
+CI_{pw}(t) = \Bigg[ \hat{F}_{n}(t) - z_{0.975} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} },
+\hat{F}_{n}(t) + z_{0.975} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} } \Bigg]
+\tag{7.1}
+\end{equation}\]</span></p></li>
+<li><p>Plotting <span class="math inline">\(CI_{pw}(t)\)</span> for different values of <span class="math inline">\(t\)</span>, would give pointwise confidence intervals
+for the distribution function. This is fairly common in practice.</p></li>
+<li><p>However,</p></li>
+</ul>
+<hr />
+<p><strong>Confidence Bands</strong></p>
 </div>
 <div id="the-empirical-distribution-function-in-r" class="section level2">
 <h2><span class="header-section-number">7.3</span> The Empirical Distribution Function in R</h2>
 <ul>
-<li>We will see how to work with empirical distribution functions in <strong>R</strong> by using the “kidney data.”</li>
+<li><p>We will see how to work with empirical distribution functions in <strong>R</strong> by using data
+from a study on kidney function.</p></li>
+<li><p>This dataset has <span class="math inline">\(157\)</span> observations which has the age of each study participant and
+a measure of overall kidney function. The data can be obtained at <a href="https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" class="uri">https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</a></p></li>
 </ul>
 <div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1">kidney &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </a>
 <a class="sourceLine" id="cb98-2" data-line-number="2">                     <span class="dt">header=</span><span class="ot">TRUE</span>)</a>
@@ -357,16 +380,128 @@ for the kidney totals, use the following code:</p></li>
 <ul>
 <li>You can plot the ecdf for the kidney totals by just calling <strong>plot(ecdf)</strong></li>
 </ul>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1"><span class="kw">plot</span>(kidney.Fhat)</a></code></pre></div>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<ul>
-<li>You can plot the ecdf for the kidney totals by just calling <strong>plot(ecdf)</strong></li>
-</ul>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1"><span class="kw">plot</span>(kidney.Fhat, <span class="dt">verticals=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1"><span class="kw">plot</span>(kidney.Fhat, <span class="dt">main =</span> <span class="st">&quot;Kidney Data: Default plot for ecdf&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>)</a></code></pre></div>
 <p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<ul>
+<li>If you don’t like the look of the points in the ecdf plot, you can use add the argument
+<strong>do.points = FALSE</strong> when calling plot. Also, you can add the argument <strong>verticals =TRUE</strong>
+if you want the plot to draw vertical lines whenever there is a jump in the empirical distribution function.</li>
+</ul>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1"><span class="kw">plot</span>(kidney.Fhat, <span class="dt">do.points=</span><span class="ot">FALSE</span>, <span class="dt">verticals=</span><span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">&quot;Kidney Data:  ecdf with </span></a>
+<a class="sourceLine" id="cb102-2" data-line-number="2"><span class="st">     vertical lines and without points&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<hr />
+<ul>
+<li><p><strong>R</strong> does not plot confidence intervals when plotting the empirical distribution function.</p></li>
+<li><p>We can do this ourselves, by using the pointwise confidence interval formula shown in <a href="edf.html#eq:pointwise-cis">(7.1)</a></p></li>
+</ul>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" data-line-number="1"><span class="co">## 1. First, we will compute the standard errors at each of the observed time points</span></a>
+<a class="sourceLine" id="cb103-2" data-line-number="2">tt &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">unique</span>(kidney<span class="op">$</span>tot)) </a>
+<a class="sourceLine" id="cb103-3" data-line-number="3">std.err &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">kidney.Fhat</span>(tt)<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">kidney.Fhat</span>(tt))<span class="op">/</span><span class="st"> </span><span class="kw">length</span>(kidney<span class="op">$</span>tot))</a>
+<a class="sourceLine" id="cb103-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb103-5" data-line-number="5"><span class="co">## 2. Now, compute the confidence intervals at each time point</span></a>
+<a class="sourceLine" id="cb103-6" data-line-number="6">ci.low &lt;-<span class="st"> </span><span class="kw">pmax</span>(<span class="kw">kidney.Fhat</span>(tt) <span class="op">-</span><span class="st"> </span><span class="kw">qnorm</span>(.<span class="dv">975</span>)<span class="op">*</span>std.err, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb103-7" data-line-number="7">ci.upper &lt;-<span class="st"> </span><span class="kw">pmin</span>(<span class="kw">kidney.Fhat</span>(tt) <span class="op">+</span><span class="st"> </span><span class="kw">qnorm</span>(.<span class="dv">975</span>)<span class="op">*</span>std.err, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb103-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb103-9" data-line-number="9"><span class="co">## 3. Now, plot the results. Note that type=&quot;s&quot; in the lines function produces</span></a>
+<a class="sourceLine" id="cb103-10" data-line-number="10"><span class="co">##    &quot;step functions&quot; which pass through the provided points.</span></a>
+<a class="sourceLine" id="cb103-11" data-line-number="11"><span class="kw">plot</span>(kidney.Fhat, <span class="dt">do.points=</span><span class="ot">FALSE</span>, <span class="dt">verticals=</span><span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">&quot;Kidney Data: </span></a>
+<a class="sourceLine" id="cb103-12" data-line-number="12"><span class="st">     pointwise confidence intervals&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb103-13" data-line-number="13"><span class="kw">lines</span>(tt, ci.low, <span class="dt">type=</span><span class="st">&quot;s&quot;</span>, <span class="dt">lty=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb103-14" data-line-number="14"><span class="kw">lines</span>(tt, ci.upper, <span class="dt">type=</span><span class="st">&quot;s&quot;</span>, <span class="dt">lty=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<ul>
+<li>confidence bands</li>
+</ul>
+<hr />
+<ul>
+<li>A nice feature of of the <strong>ecdf</strong> function is that <strong>ecdf</strong> object
+can be treated as a function which computes the empirical distribution function.
+For example,</li>
+</ul>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1">kidney.Fhat &lt;-<span class="st"> </span><span class="kw">ecdf</span>(kidney<span class="op">$</span>tot)</a>
+<a class="sourceLine" id="cb104-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb104-3" data-line-number="3"><span class="kw">kidney.Fhat</span>(<span class="dv">0</span>)</a></code></pre></div>
+<pre><code>## [1] 0.5095541</code></pre>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1"><span class="kw">kidney.Fhat</span>( <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">4</span>) )</a></code></pre></div>
+<pre><code>## [1] 0.3057325 0.6560510 0.9745223</code></pre>
 </div>
 <div id="the-kolmogorov-smirnov-test" class="section level2">
 <h2><span class="header-section-number">7.4</span> The Kolmogorov-Smirnov Test</h2>
+<ul>
+<li><p>The one-sample Kolmogorov-Smirnov (KS) test is a type of goodness-of-fit test
+that is mainly based on the empirical distribution function.</p></li>
+<li><p>The KS test will test whether or not our data <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> comes
+from a specific distribution of interest <span class="math inline">\(F_{0}\)</span>.</p></li>
+<li><p>Supposing our data <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> are an i.i.d. sample with distribution
+function <span class="math inline">\(F\)</span>, the hypothesis test of interest can be stated as
+<span class="math display">\[\begin{equation}
+H_{0}: F = F_{0} \quad \textrm{ vs. } \quad H_{A}: F \neq F_{0}
+\end{equation}\]</span></p></li>
+<li><p>The one-sample KS test could be used, for example, as a test of normality.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The Kolmogorov-Smirnov test statistic <span class="math inline">\(KS_{n}^{(1)}\)</span> looks at the maximum distance
+between the empirical distribution function and <span class="math inline">\(F_{0}\)</span>
+<span class="math display">\[\begin{equation}
+KS_{n}^{(1)} = \sup_{t} \big| \hat{F}_{n}(t) - F_{0}(t)  \big|
+\end{equation}\]</span></p></li>
+<li><p>Large values of <span class="math inline">\(KS_{n}^{(1)}\)</span> provide evidence againts the null hypothesis.</p></li>
+<li><p>Under <span class="math inline">\(H_{0}\)</span>, <span class="math inline">\(\sqrt{n}KS_{n}^{(1)}\)</span> converges in distribution to a <strong>Kolmogorov distribution</strong>
+as <span class="math inline">\(n\)</span> goes to infinity.</p></li>
+<li><p>The Kolmogorov distribution has the following cumulative distribution function:
+<span class="math display">\[\begin{equation}
+F_{Kolmo}(t) = 1 - 2\sum_{j=1}^{\infty} (-1)^{(j+1)} e^{-2j^{2}t^{2}} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The one-sample KS test can be performed in <strong>R</strong> using the <strong>ks.test</strong> function.
+For one-sample tests, you have to provide the “name” of the distribution function
+that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
+</ul>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="kw">rt</span>(<span class="dv">100</span>, <span class="dt">df=</span><span class="dv">2</span>) <span class="co">## generate 100 observations from a t-dist with 2 d.f.</span></a>
+<a class="sourceLine" id="cb108-2" data-line-number="2"><span class="kw">ks.test</span>(xx, <span class="dt">y=</span><span class="st">&quot;pnorm&quot;</span>)  <span class="co">## test that these data follow Normal(0, 1)</span></a></code></pre></div>
+<pre><code>## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  xx
+## D = 0.065618, p-value = 0.7824
+## alternative hypothesis: two-sided</code></pre>
+<ul>
+<li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
+by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
+</ul>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1"><span class="kw">ks.test</span>(xx, <span class="dt">y=</span><span class="st">&quot;pnorm&quot;</span>, <span class="dt">mean=</span><span class="dv">1</span>, <span class="dt">sd=</span><span class="dv">2</span>)  </a></code></pre></div>
+<pre><code>## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  xx
+## D = 0.36401, p-value = 6.198e-12
+## alternative hypothesis: two-sided</code></pre>
+<hr />
+<ul>
+<li><p>Suppose we have data from two groups: <span class="math inline">\(X_{1}, \ldots, X_{n} \sim F_{X}\)</span> and <span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim F_{Y}\)</span>.
+The two-sample KS test performs a test of the following hypothesis
+<span class="math display">\[\begin{equation}
+H_{0}: F_{X} = F_{Y} \quad \textrm{vs.} \quad H_{A}: F_{X} \neq F_{Y}.
+\end{equation}\]</span></p></li>
+<li><p>In this case, we are only testing whether the distributions of the two groups are different.
+We are not testing whether observations from group 1 tend to be larger (or smaller)
+than those from group 2.</p></li>
+<li><p>The two-sample KS test compares the empirical distribution functions from these
+two groups.</p></li>
+<li><p>The two-sample KS test statistic is defined as the maximum distance between the
+two empirical distribution functions:
+<span class="math display">\[\begin{equation}
+KS_{n}^{(2)} = \sup_{t} \big| \hat{F}_{n,X}(t) - \hat{F}_{m,Y}(t)  \big|
+\end{equation}\]</span>
+Here, <span class="math inline">\(\hat{F}_{n,X}(t) = \frac{1}{n}\sum_{i=1}^{n} I(X_{i} \leq t)\)</span> and
+<span class="math inline">\(\hat{F}_{m,Y}(t) = \frac{1}{m}\sum_{j=1}^{m} I(Y_{j} \leq t)\)</span> denote
+the empirical distribution functions from the X and Y samples.</p></li>
+</ul>
+<hr />
+<ul>
+<li>The <strong>ks.test</strong> function in <strong>R</strong> also performs two-sample KS tests.</li>
+</ul>
 </div>
 <div id="the-empirical-distribution-function-and-statistical-functionals" class="section level2">
 <h2><span class="header-section-number">7.5</span> The empirical distribution function and statistical functionals</h2>

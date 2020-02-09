@@ -3,17 +3,19 @@
 ## Introduction
 
 * In this section, we focus on methods for estimating a **probability density function** (pdf) $f(x)$.
+
 * For a continuous random variable $X$, areas under the probability density function are probabilities
 \begin{equation}
 P(a < X < b) = \int_{a}^{b} f(x) dx \nonumber
 \end{equation}
 and $f(x)$ is related to the distribution function via $f(x) = F'(x)$.
 
-
 * With parametric approaches to density estimation, you only need to estimate a couple of parameters as
 these parameters completely determine the form of $f(x)$.
+
 * For example, with a Gaussian distribution you only need to estimate $\mu$ and $\sigma^{2}$ to 
 draw the appropriate bell curve.
+
 * In a nonparametric approach, you assume that your observations $X_{1}, \ldots, X_{n}$
 are an independent sample from a distribution having pdf $f(x)$, but otherwise you
 make few assumptions about the particular form of $f(x)$.
@@ -30,11 +32,10 @@ hist(nhgh$wt, main="", xlab="Body Weight from NHANES")
 
 * Histograms are one of the oldest ways to estimate a pdf.
 
-
 * To construct a histogram, you first need to define a series
 of "bins": $B_{1}, \ldots, B_{D_{n}}$. 
 
-* Each bin is a left-closed interval which is often
+* Each bin is a left-closed interval. The bins are usually
 assumed to have the form $B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n})$:
 \begin{eqnarray}
 B_{1} &=& [x_{0}, x_{0} + h_{n}) \nonumber \\
@@ -47,8 +48,7 @@ B_{D_{n}} &=& [x_{0} + (D-1)h, x_{0} + D_{n}h_{n}) \nonumber
 * $h_{n}$ - bin width
 * $D_{n}$ - number of bins
 
-
-* For each bin, you first need to count the number of observations which fall into that bin
+* To construct a histograme you first need to count the number of observations which fall into each bin
 \begin{eqnarray}
 n_{k} &=& \# \text{ of observations falling into the $k^{th}$ bin }  \nonumber \\
 &=& \sum_{i=1}^{n} I( x_{0} + (k-1)h_{n} \leq X_{i} < x_{0} + kh_{n}  )
@@ -75,7 +75,6 @@ P(x < X_{i} < x + h_{n}) = \int_{x}^{x + h_{n}} f(x) dx \approx h_{n}f(x)
 \begin{equation}
 E\{ \hat{f}(x) \} = \frac{1}{h_{n}} P( x_{0} + (k-1)h_{n} \leq X_{i} < x_{0} + kh_{n}  ) \approx f(x)
 \end{equation}
-
 
 
 ### Histograms in R
@@ -277,9 +276,11 @@ h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f'(x)]^{2} dx}  \Big)^{1
 ---
 
 * Both Scott and the FD rule are based on the optimal bin width formula ().
+
 * The main problem with this formula is the presence of $\int_{-\infty}^{\infty} [f'(x)]^{2} dx$.
 * **Solution:** See what this quantity looks like if we assume that $f(x)$ corresponds 
 to a $N(\mu, \sigma^{2})$ density.
+
 * With this assumption,
 \begin{equation}
 h_{n}^{opt} = 3.5 \sigma n^{-1/3}
