@@ -80,6 +80,31 @@ for the distribution function. This is fairly common in practice.
 
 **Confidence Bands**
 
+* Confidence bands can be thought of as two functions $L(t)$ and $U(t)$
+such that we are "100 \times (1 - \alpha)\% confident" that all of $F(t)$ is contained
+within $L(t)$ and $U(t)$.
+
+* Specifically, we want the statement
+\begin{equation}
+L(t) \leq F(t) \leq U(t) \quad \textrm{ for all } t
+\end{equation}
+to hold with $1 - \alpha$ probability.
+
+* One choice of $L(t)$ and $U(t)$ which has this property is the following
+\begin{equation}
+L(t) = \hat{F}_{n}(t) - \sqrt{\frac{1}{2n} \log\Big( \frac{2}{\alpha} \Big) }
+\end{equation}
+
+---
+
+* The reason why this choice of confidence band works is the 
+Dvoretzky-Kiefer-Wolfowitz (DKW) inequality.
+This states that
+\begin{equation}
+P\Bigg( \sup_{t} |F(t) - \hat{F}_{n}(t) | > \varepsilon \Bigg) \leq 2 e^{-2n \varepsilon^{2}}
+\end{equation}
+
+
 
 ## The Empirical Distribution Function in R
 
@@ -162,7 +187,26 @@ lines(tt, ci.upper, type="s", lty=2)
 
 <img src="07-empiricalcdf_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
-* confidence bands
+* We could plot the confidence bands as well.
+
+
+```r
+n <- length(kidney$tot)
+
+## Compute the confidence bands at each time point
+ci.band.low <- pmax(kidney.Fhat(tt) - sqrt(log(2/0.05)/(2*n)), 0)
+ci.band.upper <- pmin(kidney.Fhat(tt) + sqrt(log(2/0.05)/(2*n)), 1)
+
+plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data: 
+     Confidence Bands", las=1, lwd=2)
+lines(tt, ci.band.low, type="s", lty=2)
+lines(tt, ci.band.upper, type="s", lty=2)
+```
+
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+
+
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 ---
 
@@ -236,7 +280,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.065618, p-value = 0.7824
+## D = 0.072321, p-value = 0.6723
 ## alternative hypothesis: two-sided
 ```
 
@@ -252,7 +296,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.36401, p-value = 6.198e-12
+## D = 0.33755, p-value = 2.536e-10
 ## alternative hypothesis: two-sided
 ```
 

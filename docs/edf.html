@@ -238,7 +238,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.3.3" data-path="density-estimation.html"><a href="density-estimation.html#bias-and-variance-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.3.3</b> Bias and Variance of Kernel Density Estimates</a></li>
 <li class="chapter" data-level="8.3.4" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection"><i class="fa fa-check"></i><b>8.3.4</b> Bandwidth Selection</a></li>
 </ul></li>
-<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation-in-practice"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation in Practice</a></li>
+<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation-in-practice"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation in Practice</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.4.1</b> Density Estimation in R</a></li>
+<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.4.2</b> Cross-Validation for Bandwidth Selection</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>III Uncertainty Measures</b></span></li>
 <li class="chapter" data-level="9" data-path="sampling.html"><a href="sampling.html"><i class="fa fa-check"></i><b>9</b> The Jackknife</a><ul>
@@ -351,6 +354,29 @@ for the distribution function. This is fairly common in practice.</p></li>
 </ul>
 <hr />
 <p><strong>Confidence Bands</strong></p>
+<ul>
+<li><p>Confidence bands can be thought of as two functions <span class="math inline">\(L(t)\)</span> and <span class="math inline">\(U(t)\)</span>
+such that we are “100 (1 - )% confident” that all of <span class="math inline">\(F(t)\)</span> is contained
+within <span class="math inline">\(L(t)\)</span> and <span class="math inline">\(U(t)\)</span>.</p></li>
+<li><p>Specifically, we want the statement
+<span class="math display">\[\begin{equation}
+L(t) \leq F(t) \leq U(t) \quad \textrm{ for all } t
+\end{equation}\]</span>
+to hold with <span class="math inline">\(1 - \alpha\)</span> probability.</p></li>
+<li><p>One choice of <span class="math inline">\(L(t)\)</span> and <span class="math inline">\(U(t)\)</span> which has this property is the following
+<span class="math display">\[\begin{equation}
+L(t) = \hat{F}_{n}(t) - \sqrt{\frac{1}{2n} \log\Big( \frac{2}{\alpha} \Big) }
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li>The reason why this choice of confidence band works is the
+Dvoretzky-Kiefer-Wolfowitz (DKW) inequality.
+This states that
+<span class="math display">\[\begin{equation}
+P\Bigg( \sup_{t} |F(t) - \hat{F}_{n}(t) | &gt; \varepsilon \Bigg) \leq 2 e^{-2n \varepsilon^{2}}
+\end{equation}\]</span></li>
+</ul>
 </div>
 <div id="the-empirical-distribution-function-in-r" class="section level2">
 <h2><span class="header-section-number">7.3</span> The Empirical Distribution Function in R</h2>
@@ -411,19 +437,31 @@ if you want the plot to draw vertical lines whenever there is a jump in the empi
 <a class="sourceLine" id="cb103-14" data-line-number="14"><span class="kw">lines</span>(tt, ci.upper, <span class="dt">type=</span><span class="st">&quot;s&quot;</span>, <span class="dt">lty=</span><span class="dv">2</span>)</a></code></pre></div>
 <p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <ul>
-<li>confidence bands</li>
+<li>We could plot the confidence bands as well.</li>
 </ul>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="kw">length</span>(kidney<span class="op">$</span>tot)</a>
+<a class="sourceLine" id="cb104-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb104-3" data-line-number="3"><span class="co">## Compute the confidence bands at each time point</span></a>
+<a class="sourceLine" id="cb104-4" data-line-number="4">ci.band.low &lt;-<span class="st"> </span><span class="kw">pmax</span>(<span class="kw">kidney.Fhat</span>(tt) <span class="op">-</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">log</span>(<span class="dv">2</span><span class="op">/</span><span class="fl">0.05</span>)<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>n)), <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb104-5" data-line-number="5">ci.band.upper &lt;-<span class="st"> </span><span class="kw">pmin</span>(<span class="kw">kidney.Fhat</span>(tt) <span class="op">+</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">log</span>(<span class="dv">2</span><span class="op">/</span><span class="fl">0.05</span>)<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>n)), <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb104-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb104-7" data-line-number="7"><span class="kw">plot</span>(kidney.Fhat, <span class="dt">do.points=</span><span class="ot">FALSE</span>, <span class="dt">verticals=</span><span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">&quot;Kidney Data: </span></a>
+<a class="sourceLine" id="cb104-8" data-line-number="8"><span class="st">     Confidence Bands&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb104-9" data-line-number="9"><span class="kw">lines</span>(tt, ci.band.low, <span class="dt">type=</span><span class="st">&quot;s&quot;</span>, <span class="dt">lty=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb104-10" data-line-number="10"><span class="kw">lines</span>(tt, ci.band.upper, <span class="dt">type=</span><span class="st">&quot;s&quot;</span>, <span class="dt">lty=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <hr />
 <ul>
 <li>A nice feature of of the <strong>ecdf</strong> function is that <strong>ecdf</strong> object
 can be treated as a function which computes the empirical distribution function.
 For example,</li>
 </ul>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1">kidney.Fhat &lt;-<span class="st"> </span><span class="kw">ecdf</span>(kidney<span class="op">$</span>tot)</a>
-<a class="sourceLine" id="cb104-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb104-3" data-line-number="3"><span class="kw">kidney.Fhat</span>(<span class="dv">0</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1">kidney.Fhat &lt;-<span class="st"> </span><span class="kw">ecdf</span>(kidney<span class="op">$</span>tot)</a>
+<a class="sourceLine" id="cb105-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb105-3" data-line-number="3"><span class="kw">kidney.Fhat</span>(<span class="dv">0</span>)</a></code></pre></div>
 <pre><code>## [1] 0.5095541</code></pre>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1"><span class="kw">kidney.Fhat</span>( <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">4</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" data-line-number="1"><span class="kw">kidney.Fhat</span>( <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">4</span>) )</a></code></pre></div>
 <pre><code>## [1] 0.3057325 0.6560510 0.9745223</code></pre>
 </div>
 <div id="the-kolmogorov-smirnov-test" class="section level2">
@@ -458,24 +496,24 @@ F_{Kolmo}(t) = 1 - 2\sum_{j=1}^{\infty} (-1)^{(j+1)} e^{-2j^{2}t^{2}} \nonumber
 For one-sample tests, you have to provide the “name” of the distribution function
 that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
 </ul>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="kw">rt</span>(<span class="dv">100</span>, <span class="dt">df=</span><span class="dv">2</span>) <span class="co">## generate 100 observations from a t-dist with 2 d.f.</span></a>
-<a class="sourceLine" id="cb108-2" data-line-number="2"><span class="kw">ks.test</span>(xx, <span class="dt">y=</span><span class="st">&quot;pnorm&quot;</span>)  <span class="co">## test that these data follow Normal(0, 1)</span></a></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="kw">rt</span>(<span class="dv">100</span>, <span class="dt">df=</span><span class="dv">2</span>) <span class="co">## generate 100 observations from a t-dist with 2 d.f.</span></a>
+<a class="sourceLine" id="cb109-2" data-line-number="2"><span class="kw">ks.test</span>(xx, <span class="dt">y=</span><span class="st">&quot;pnorm&quot;</span>)  <span class="co">## test that these data follow Normal(0, 1)</span></a></code></pre></div>
 <pre><code>## 
 ##  One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.065618, p-value = 0.7824
+## D = 0.072321, p-value = 0.6723
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
 by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
 </ul>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1"><span class="kw">ks.test</span>(xx, <span class="dt">y=</span><span class="st">&quot;pnorm&quot;</span>, <span class="dt">mean=</span><span class="dv">1</span>, <span class="dt">sd=</span><span class="dv">2</span>)  </a></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1"><span class="kw">ks.test</span>(xx, <span class="dt">y=</span><span class="st">&quot;pnorm&quot;</span>, <span class="dt">mean=</span><span class="dv">1</span>, <span class="dt">sd=</span><span class="dv">2</span>)  </a></code></pre></div>
 <pre><code>## 
 ##  One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.36401, p-value = 6.198e-12
+## D = 0.33755, p-value = 2.536e-10
 ## alternative hypothesis: two-sided</code></pre>
 <hr />
 <ul>

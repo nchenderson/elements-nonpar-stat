@@ -341,7 +341,10 @@ h_{n}^{opt} = 3.5 \sigma n^{-1/3}
 
 ## Kernel Density Estimation in Practice
 
+### Density Estimation in R
 
+
+### Cross-Validation for Bandwidth Selection
 
 
 
