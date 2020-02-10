@@ -32,6 +32,22 @@ constitute an i.i.d. sample from some common distribution function $F$.
 
 <img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
+* For example, if we observed $X_{1} = 0.7$, $X_{2} = 0.2$, and $X_{3} = 1.3$,
+the corresponding empirical distribution function would be
+\begin{equation}
+\hat{F}_{3}(t) = 
+\begin{cases}
+0 & \textrm{ for } t < 0.2  \\
+1/3 & \textrm{ for } 0.2 \leq t < 0.7 \\
+2/3 & \textrm{ for } 0.7 \leq t < 1.3 \\
+1   & \textrm{ for } t \geq 1.3
+\end{cases}
+\end{equation}
+
+
+
+
+
 ## Confidence intervals for F(t)
 
 * For a fixed value of $t$, the distribution of $\hat{F}_{n}(t)$ is
@@ -316,7 +332,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.14707, p-value = 0.02645
+## D = 0.12076, p-value = 0.1082
 ## alternative hypothesis: two-sided
 ```
 
@@ -332,7 +348,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.26271, p-value = 2.025e-06
+## D = 0.35397, p-value = 2.617e-11
 ## alternative hypothesis: two-sided
 ```
 
@@ -382,7 +398,7 @@ ks.test(xx, yy)
 ## 	Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.2, p-value = 0.03663
+## D = 0.22, p-value = 0.01581
 ## alternative hypothesis: two-sided
 ```
 
@@ -401,7 +417,7 @@ KS.stat
 ```
 
 ```
-## [1] 0.2
+## [1] 0.22
 ```
 
 

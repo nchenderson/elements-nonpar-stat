@@ -31,9 +31,26 @@ constitute an i.i.d. sample from some common distribution function $F$.
 ---
 
 ```{r, echo=FALSE}
-xx <- c(-1, 0, 2)
-plot(ecdf(xx), verticals=TRUE, las=1, main="An Empirical Distribution Function", lwd=2)
+xx <- c(0.2, 0.7, 1.3)
+plot(ecdf(xx), verticals=TRUE, las=1, main="An Empirical Distribution Function", lwd=2,
+     xlim=c(-.2, 1.7))
 ```
+
+* For example, if we observed $X_{1} = 0.7$, $X_{2} = 0.2$, and $X_{3} = 1.3$,
+the corresponding empirical distribution function would be
+\begin{equation}
+\hat{F}_{3}(t) = 
+\begin{cases}
+0 & \textrm{ for } t < 0.2  \\
+1/3 & \textrm{ for } 0.2 \leq t < 0.7 \\
+2/3 & \textrm{ for } 0.7 \leq t < 1.3 \\
+1   & \textrm{ for } t \geq 1.3
+\end{cases}
+\end{equation}
+
+
+
+
 
 ## Confidence intervals for F(t)
 
@@ -224,8 +241,8 @@ in the same plot shows how much wider our confidence bands are:
 ```{r, echo=FALSE}
 plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data: 
      Confidence Bands", las=1, lwd=2)
-lines(tt, ci.low, type="s", lty=2)
-lines(tt, ci.upper, type="s", lty=2)
+lines(tt, ci.low, type="s", lty=2, lwd=2)
+lines(tt, ci.upper, type="s", lty=2, lwd=2)
 lines(tt, ci.band.low, type="s", lty=2, lwd=2, col="red")
 lines(tt, ci.band.upper, type="s", lty=2, lwd=2, col="red")
 legend("bottomright", legend=c("Pointwise", "Bands"), col=c("black", "red"), bty='n', lty=2, lwd=2)

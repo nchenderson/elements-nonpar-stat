@@ -108,7 +108,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.858
+## [1] 1.873
 ```
 
 ```r
@@ -116,7 +116,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.82
+## [1] 1.935
 ```
 
 
@@ -366,7 +366,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.909 0.902
+## [1] 0.910 0.914
 ```
 
 ```r
@@ -376,7 +376,7 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.92 0.92
+## [1] 0.907 0.907
 ```
 
 ---
@@ -521,7 +521,7 @@ can have situations where $\theta_{R} = 0$ but $X$ and $Y$ are not independent.
 Similarly, you can have situations where $\theta_{\tau} = 0$
 while $X$ and $Y$ are not independent.
 
-<img src="06-ustatistics_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+![](06-ustatistics_files/figure-latex/unnamed-chunk-3-1.pdf)<!-- --> 
 
 ---
 
@@ -635,7 +635,7 @@ plot(xx2, yy2, xlab="x", ylab="y", main=paste("Sample Distance Corr. = ",
                                               round(d.cor2, 4)), las=1)
 ```
 
-<img src="06-ustatistics_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+![](06-ustatistics_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
 
 
 ```r
