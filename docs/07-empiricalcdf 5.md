@@ -61,11 +61,11 @@ P( W_{i}^{t} = 1) = P(X_{i} \leq t) = F(t) \nonumber
 
 * The above asymptotic statement is the basis for constructing **pointwise confidence intervals** for $F(t)$.
 
-* For a fixed $t$, a $100 \times (1-\alpha)\%$ confidence interval for $F(t)$ is the following
+* For a fixed $t$, a $95\%$ confidence interval for $F(t)$ is the following
 \begin{eqnarray}
-CI_{\alpha}^{pw}(t) &=& [L_{\alpha}^{pw}(t), U_{\alpha}^{pw}(t)] \nonumber \\
-L_{\alpha}^{pw}(t) &=& \max\Bigg\{\hat{F}_{n}(t) - z_{1 - \alpha/2} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 0 \Bigg\} \nonumber \\
-U_{\alpha}^{pw}(t) &=& \min\Bigg\{ \hat{F}_{n}(t) + z_{1 - \alpha/2} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 1 \Bigg\}
+CI^{pw}(t) &=& [L^{pw}(t), U^{pw}(t)] \nonumber \\
+L^{pw}(t) &=& \max\Big\{\hat{F}_{n}(t) - z_{0.975} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 0 \Big\} \nonumber \\
+U^{pw}(t) &=& \min\Big\{ \hat{F}_{n}(t) + z_{0.975} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 1 \Big\}
 (\#eq:pointwise-cis)
 \end{eqnarray}
 
@@ -82,27 +82,22 @@ intervals for $F(t)$ or for survival functions $S(t) = 1 - F(t)$ is fairly commo
 
 * Simultaneous confidence bands can be thought of as two functions $L_{\alpha}^{band}(t)$ and $U_{\alpha}^{band}(t)$
 such that we are "$100 \times (1 - \alpha)$\% confident" that all of $F(t)$ is contained
-within the bands $L_{\alpha}^{band}(t)$ and $U_{\alpha}^{band}(t)$.
+within the bands $L(t)$ and $U(t)$.
 
 * Specifically, we want the statement
 \begin{equation}
-L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{ for all } t
+L(t) \leq F(t) \leq U(t) \quad \textrm{ for all } t
 \end{equation}
 to hold with at least $1 - \alpha$ probability.
 
 * In other words, we want less than $\alpha$ probability of any part
 of the path of $F(t)$ going outside of 
 
-* One choice of $L_{\alpha}^{band}(t)$ and $U_{\alpha}^{band}(t)$ which has this property is the following
-\begin{equation}
-L_{\alpha}^{band}(t) = \max\{\hat{F}_{n}(t) - \delta_{\alpha,n}, 0 \} \qquad
-U_{\alpha}^{band}(t) = \min\{\hat{F}_{n}(t) + \delta_{\alpha,n}, 1 \}, 
-(\#eq:simultaneous-cis)
-\end{equation}
-where $\delta_{\alpha,n}$ is given by
-\begin{equation}
-\delta_{\alpha, n} = \sqrt{\frac{1}{2n} \ln\Big(\frac{2}{\alpha})} \nonumber
-\end{equation}
+* One choice of $L(t)$ and $U(t)$ which has this property is the following
+\begin{eqnarray}
+L(t) &=& \max\Bigg\{ \hat{F}_{n}(t) - \sqrt{\frac{1}{2n} \log\Big( \frac{2}{\alpha} \Big) }, 0 \Bigg\} \nonumber \\
+U(t) &=& \min\Bigg\{ \hat{F}_{n}(t) + \sqrt{\frac{1}{2n} \log\Big( \frac{2}{\alpha} \Big) }, 1 \Bigg\} \nonumber
+\end{eqnarray}
 
 ---
 
@@ -113,22 +108,22 @@ The DKW inequality states that
 P\Bigg( \sup_{t} |F(t) - \hat{F}_{n}(t) | > \varepsilon \Bigg) \leq 2 e^{-2n \varepsilon^{2}}
 \end{equation}
 
-* Our choice of confidence bands \@ref(eq:simultaneous-cis) then works because 
+* This choice works because 
 \begin{equation}
-\sup_{t} | F(t) - \hat{F}_{n}(t)| \leq \delta_{n, \alpha} \nonumber
+\sup_{t} | F(t) - \hat{F}_{n}(t)| \leq \delta_{n, \alpha}
 \end{equation}
 is equivalent to
 \begin{equation}
-L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \qquad \textrm{for all } t
+L(t) \leq F(t) \leq U(t) \quad \textrm{for all} t
 \end{equation}
 
-* Then, from the DKW inequality we have
-\begin{eqnarray}
-P\Bigg( L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{for all } t \Bigg)
-&=& P\Bigg( \sup_{t} | F(t) - \hat{F}_{n}(t)| \leq \delta_{n, \alpha} \Bigg) \nonumber \\
-&\geq& 1 - 2 e^{-2n \delta_{\alpha,n}^{2}} \nonumber \\
-&=& 1 - \alpha.
-\end{eqnarray}
+* Hence, from the DKW inequality
+\begin{equation}
+P\Bigg( L(t) \leq F(t) \leq U(t) \quad \textrm{for all} t \Bigg)
+= P\Bigg( \sup_{t} | F(t) - \hat{F}_{n}(t)| \leq \delta_{n, \alpha} \Bigg)
+\geq 2 e^{-2n \delta_{n,\alpha}^{2}}
+= 1 - \alpha.
+\end{equation}
 
 
 ---
@@ -136,10 +131,9 @@ P\Bigg( L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{f
 * Confidence bands will almost always be wider than 
 the pointwise confidence intervals.
 
-* This extra width is due to the fact that we are requiring the coverage probability
+* This is because we are requiring the coverage probability
 to hold for the entire path of $F(t)$ rather than at 
 just a single point.
-
 
 ## The Empirical Distribution Function in R
 
@@ -316,7 +310,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.14707, p-value = 0.02645
+## D = 0.084562, p-value = 0.472
 ## alternative hypothesis: two-sided
 ```
 
@@ -332,7 +326,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.26271, p-value = 2.025e-06
+## D = 0.30731, p-value = 1.254e-08
 ## alternative hypothesis: two-sided
 ```
 
@@ -354,68 +348,15 @@ two groups.
 * The two-sample KS test statistic is defined as the maximum distance between the
 two empirical distribution functions:
 \begin{equation}
-KS_{n,m}^{(2)} = \sup_{t} \big| \hat{F}_{n,X}(t) - \hat{F}_{m,Y}(t)  \big|
+KS_{n}^{(2)} = \sup_{t} \big| \hat{F}_{n,X}(t) - \hat{F}_{m,Y}(t)  \big|
 \end{equation}
 Here, $\hat{F}_{n,X}(t) = \frac{1}{n}\sum_{i=1}^{n} I(X_{i} \leq t)$ and
 $\hat{F}_{m,Y}(t) = \frac{1}{m}\sum_{j=1}^{m} I(Y_{j} \leq t)$ denote
 the empirical distribution functions from the X and Y samples.
 
-* The two-sample KS test statistic also converges to the same limit as 
-the one-sample KS test statistic. In particular, under $H_{0}$:
-\begin{equation}
-\sqrt{ \frac{nm}{n + m } }KS_{n,m}^{(2)} \longrightarrow \textrm{Kolmogorov}
-\qquad \textrm{ as } n,m \longrightarrow \infty
-\end{equation}
-
 ---
 
 * The **ks.test** function in **R** also performs two-sample KS tests.
-
-```r
-xx <- rnorm(100)
-yy <- rlogis(100)
-ks.test(xx, yy)  
-```
-
-```
-## 
-## 	Two-sample Kolmogorov-Smirnov test
-## 
-## data:  xx and yy
-## D = 0.2, p-value = 0.03663
-## alternative hypothesis: two-sided
-```
-
-* We can compute the KS statistic ourselves and check that this matches the value of the KS statistic 
-returned by the **ks.test** function:
-
-
-```r
-zz <- c(xx, yy)
-zz.order <- sort(zz)
-F.x <- ecdf(xx)
-F.y <- ecdf(yy)
-
-KS.stat <- max( abs( F.x(zz.order) - F.y(zz.order) ) )
-KS.stat
-```
-
-```
-## [1] 0.2
-```
-
-
----
-
-* **Exercise 7.1.** Why does
-\begin{equation}
-KS_{n,m}^{(2)} = \max_{1 \leq i \leq n+m} \big| \hat{F}_{n,X}(Z_{(i)}) -  \hat{F}_{n,Y}(Z_{(i)}) \big|, \nonumber
-\end{equation}
-where $\mathbf{Z} = (Z_{1}, \ldots, Z_{n+m})$ denotes the pooled sample and $Z_{(1)}, \ldots, Z_{(n+m)}$
-denote the order statistics from $\mathbf{Z}$?
-
----
-
 
 ## The empirical distribution function and statistical functionals
 

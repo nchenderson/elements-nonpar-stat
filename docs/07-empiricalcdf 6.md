@@ -61,11 +61,11 @@ P( W_{i}^{t} = 1) = P(X_{i} \leq t) = F(t) \nonumber
 
 * The above asymptotic statement is the basis for constructing **pointwise confidence intervals** for $F(t)$.
 
-* For a fixed $t$, a $100 \times (1-\alpha)\%$ confidence interval for $F(t)$ is the following
+* For a fixed $t$, a $95\%$ confidence interval for $F(t)$ is the following
 \begin{eqnarray}
-CI_{\alpha}^{pw}(t) &=& [L_{\alpha}^{pw}(t), U_{\alpha}^{pw}(t)] \nonumber \\
-L_{\alpha}^{pw}(t) &=& \max\Bigg\{\hat{F}_{n}(t) - z_{1 - \alpha/2} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 0 \Bigg\} \nonumber \\
-U_{\alpha}^{pw}(t) &=& \min\Bigg\{ \hat{F}_{n}(t) + z_{1 - \alpha/2} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 1 \Bigg\}
+CI^{pw}(t) &=& [L^{pw}(t), U^{pw}(t)] \nonumber \\
+L^{pw}(t) &=& \max\Big\{\hat{F}_{n}(t) - z_{0.975} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 0 \Big\} \nonumber \\
+U^{pw}(t) &=& \min\Big\{ \hat{F}_{n}(t) + z_{0.975} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 1 \Big\}
 (\#eq:pointwise-cis)
 \end{eqnarray}
 
@@ -316,7 +316,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.14707, p-value = 0.02645
+## D = 0.18091, p-value = 0.002872
 ## alternative hypothesis: two-sided
 ```
 
@@ -332,7 +332,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.26271, p-value = 2.025e-06
+## D = 0.23428, p-value = 3.418e-05
 ## alternative hypothesis: two-sided
 ```
 
@@ -354,18 +354,11 @@ two groups.
 * The two-sample KS test statistic is defined as the maximum distance between the
 two empirical distribution functions:
 \begin{equation}
-KS_{n,m}^{(2)} = \sup_{t} \big| \hat{F}_{n,X}(t) - \hat{F}_{m,Y}(t)  \big|
+KS_{n}^{(2)} = \sup_{t} \big| \hat{F}_{n,X}(t) - \hat{F}_{m,Y}(t)  \big|
 \end{equation}
 Here, $\hat{F}_{n,X}(t) = \frac{1}{n}\sum_{i=1}^{n} I(X_{i} \leq t)$ and
 $\hat{F}_{m,Y}(t) = \frac{1}{m}\sum_{j=1}^{m} I(Y_{j} \leq t)$ denote
 the empirical distribution functions from the X and Y samples.
-
-* The two-sample KS test statistic also converges to the same limit as 
-the one-sample KS test statistic. In particular, under $H_{0}$:
-\begin{equation}
-\sqrt{ \frac{nm}{n + m } }KS_{n,m}^{(2)} \longrightarrow \textrm{Kolmogorov}
-\qquad \textrm{ as } n,m \longrightarrow \infty
-\end{equation}
 
 ---
 
@@ -382,40 +375,9 @@ ks.test(xx, yy)
 ## 	Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.2, p-value = 0.03663
+## D = 0.28, p-value = 0.0007873
 ## alternative hypothesis: two-sided
 ```
-
-* We can compute the KS statistic ourselves and check that this matches the value of the KS statistic 
-returned by the **ks.test** function:
-
-
-```r
-zz <- c(xx, yy)
-zz.order <- sort(zz)
-F.x <- ecdf(xx)
-F.y <- ecdf(yy)
-
-KS.stat <- max( abs( F.x(zz.order) - F.y(zz.order) ) )
-KS.stat
-```
-
-```
-## [1] 0.2
-```
-
-
----
-
-* **Exercise 7.1.** Why does
-\begin{equation}
-KS_{n,m}^{(2)} = \max_{1 \leq i \leq n+m} \big| \hat{F}_{n,X}(Z_{(i)}) -  \hat{F}_{n,Y}(Z_{(i)}) \big|, \nonumber
-\end{equation}
-where $\mathbf{Z} = (Z_{1}, \ldots, Z_{n+m})$ denotes the pooled sample and $Z_{(1)}, \ldots, Z_{(n+m)}$
-denote the order statistics from $\mathbf{Z}$?
-
----
-
 
 ## The empirical distribution function and statistical functionals
 

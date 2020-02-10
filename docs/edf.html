@@ -322,8 +322,7 @@ constitute an i.i.d. sample from some common distribution function <span class="
 <li><p>For a fixed value of <span class="math inline">\(t\)</span>, the distribution of <span class="math inline">\(\hat{F}_{n}(t)\)</span> is
 <span class="math display">\[\begin{equation}
 n \hat{F}_{n}(t) \sim \textrm{Binomial}\big( n, F(t) \big)
-\end{equation}\]</span>
-(why?)</p></li>
+\end{equation}\]</span></p></li>
 <li><p>For a fixed <span class="math inline">\(t\)</span>, <span class="math inline">\(n\hat{F}_{n}(t)\)</span> is the sum of <span class="math inline">\(n\)</span> independent
 Bernoulli random variables <span class="math inline">\(W_{1}^{t}, \ldots, W_{n}^{t}\)</span>
 <span class="math display">\[\begin{equation}
@@ -342,40 +341,73 @@ P( W_{i}^{t} = 1) = P(X_{i} \leq t) = F(t) \nonumber
 \frac{ \sqrt{n}\Big( \hat{F}_{n}(t) - F(t) \Big) }{\sqrt{ \hat{F}_{n}(t)(1 - \hat{F}_{n}(t))}} \longrightarrow \textrm{Normal}\Big(0, 1 \Big)
 \end{equation}\]</span></p></li>
 <li><p>The above asymptotic statement is the basis for constructing <strong>pointwise confidence intervals</strong> for <span class="math inline">\(F(t)\)</span>.</p></li>
-<li><p>For a fixed <span class="math inline">\(t\)</span>, a <span class="math inline">\(95\%\)</span> confidence interval for <span class="math inline">\(F(t)\)</span> is the following
-<span class="math display" id="eq:pointwise-cis">\[\begin{equation}
-CI_{pw}(t) = \Bigg[ \hat{F}_{n}(t) - z_{0.975} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} },
-\hat{F}_{n}(t) + z_{0.975} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} } \Bigg]
+<li><p>For a fixed <span class="math inline">\(t\)</span>, a <span class="math inline">\(100 \times (1-\alpha)\%\)</span> confidence interval for <span class="math inline">\(F(t)\)</span> is the following
+<span class="math display" id="eq:pointwise-cis">\[\begin{eqnarray}
+CI_{\alpha}^{pw}(t) &amp;=&amp; [L_{\alpha}^{pw}(t), U_{\alpha}^{pw}(t)] \nonumber \\
+L_{\alpha}^{pw}(t) &amp;=&amp; \max\Bigg\{\hat{F}_{n}(t) - z_{1 - \alpha/2} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 0 \Bigg\} \nonumber \\
+U_{\alpha}^{pw}(t) &amp;=&amp; \min\Bigg\{ \hat{F}_{n}(t) + z_{1 - \alpha/2} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 1 \Bigg\}
 \tag{7.1}
-\end{equation}\]</span></p></li>
-<li><p>Plotting <span class="math inline">\(CI_{pw}(t)\)</span> for different values of <span class="math inline">\(t\)</span>, would give pointwise confidence intervals
-for the distribution function. This is fairly common in practice.</p></li>
-<li><p>However,</p></li>
+\end{eqnarray}\]</span></p></li>
+<li><p>Plotting <span class="math inline">\(CI_{\alpha}^{pw}(t)\)</span> for different values of <span class="math inline">\(t\)</span>, would give pointwise confidence intervals
+for the distribution function. Plotting pointwise confidence
+intervals for <span class="math inline">\(F(t)\)</span> or for survival functions <span class="math inline">\(S(t) = 1 - F(t)\)</span> is fairly common in practice.</p></li>
+<li><p>However, these pointwise confidence intervals only hold for each point separately.</p></li>
 </ul>
 <hr />
-<p><strong>Confidence Bands</strong></p>
+<p><strong>Simultaneous Confidence Bands</strong></p>
 <ul>
-<li><p>Confidence bands can be thought of as two functions <span class="math inline">\(L(t)\)</span> and <span class="math inline">\(U(t)\)</span>
-such that we are “100 (1 - )% confident” that all of <span class="math inline">\(F(t)\)</span> is contained
-within <span class="math inline">\(L(t)\)</span> and <span class="math inline">\(U(t)\)</span>.</p></li>
+<li><p>Simultaneous confidence bands can be thought of as two functions <span class="math inline">\(L_{\alpha}^{band}(t)\)</span> and <span class="math inline">\(U_{\alpha}^{band}(t)\)</span>
+such that we are “<span class="math inline">\(100 \times (1 - \alpha)\)</span>% confident” that all of <span class="math inline">\(F(t)\)</span> is contained
+within the bands <span class="math inline">\(L_{\alpha}^{band}(t)\)</span> and <span class="math inline">\(U_{\alpha}^{band}(t)\)</span>.</p></li>
 <li><p>Specifically, we want the statement
 <span class="math display">\[\begin{equation}
-L(t) \leq F(t) \leq U(t) \quad \textrm{ for all } t
+L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{ for all } t
 \end{equation}\]</span>
-to hold with <span class="math inline">\(1 - \alpha\)</span> probability.</p></li>
-<li><p>One choice of <span class="math inline">\(L(t)\)</span> and <span class="math inline">\(U(t)\)</span> which has this property is the following
+to hold with at least <span class="math inline">\(1 - \alpha\)</span> probability.</p></li>
+<li><p>In other words, we want less than <span class="math inline">\(\alpha\)</span> probability of any part
+of the path of <span class="math inline">\(F(t)\)</span> going outside of</p></li>
+<li><p>One choice of <span class="math inline">\(L_{\alpha}^{band}(t)\)</span> and <span class="math inline">\(U_{\alpha}^{band}(t)\)</span> which has this property is the following
+<span class="math display" id="eq:simultaneous-cis">\[\begin{equation}
+L_{\alpha}^{band}(t) = \max\{\hat{F}_{n}(t) - \delta_{\alpha,n}, 0 \} \qquad
+U_{\alpha}^{band}(t) = \min\{\hat{F}_{n}(t) + \delta_{\alpha,n}, 1 \}, 
+\tag{7.2}
+\end{equation}\]</span>
+where <span class="math inline">\(\delta_{\alpha,n}\)</span> is given by
 <span class="math display">\[\begin{equation}
-L(t) = \hat{F}_{n}(t) - \sqrt{\frac{1}{2n} \log\Big( \frac{2}{\alpha} \Big) }
+\delta_{\alpha, n} = \sqrt{\frac{1}{2n} \ln\Big(\frac{2}{\alpha})} \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
 <ul>
-<li>The reason why this choice of confidence band works is the
+<li><p>The reason why this choice of confidence band works is the
 Dvoretzky-Kiefer-Wolfowitz (DKW) inequality.
-This states that
+The DKW inequality states that
 <span class="math display">\[\begin{equation}
 P\Bigg( \sup_{t} |F(t) - \hat{F}_{n}(t) | &gt; \varepsilon \Bigg) \leq 2 e^{-2n \varepsilon^{2}}
-\end{equation}\]</span></li>
+\end{equation}\]</span></p></li>
+<li><p>Our choice of confidence bands <a href="edf.html#eq:simultaneous-cis">(7.2)</a> then works because
+<span class="math display">\[\begin{equation}
+\sup_{t} | F(t) - \hat{F}_{n}(t)| \leq \delta_{n, \alpha} \nonumber
+\end{equation}\]</span>
+is equivalent to
+<span class="math display">\[\begin{equation}
+L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \qquad \textrm{for all } t
+\end{equation}\]</span></p></li>
+<li><p>Then, from the DKW inequality we have
+<span class="math display">\[\begin{eqnarray}
+P\Bigg( L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{for all } t \Bigg)
+&amp;=&amp; P\Bigg( \sup_{t} | F(t) - \hat{F}_{n}(t)| \leq \delta_{n, \alpha} \Bigg) \nonumber \\
+&amp;\geq&amp; 1 - 2 e^{-2n \delta_{\alpha,n}^{2}} \nonumber \\
+&amp;=&amp; 1 - \alpha.
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Confidence bands will almost always be wider than
+the pointwise confidence intervals.</p></li>
+<li><p>This extra width is due to the fact that we are requiring the coverage probability
+to hold for the entire path of <span class="math inline">\(F(t)\)</span> rather than at
+just a single point.</p></li>
 </ul>
 </div>
 <div id="the-empirical-distribution-function-in-r" class="section level2">
@@ -445,12 +477,16 @@ if you want the plot to draw vertical lines whenever there is a jump in the empi
 <a class="sourceLine" id="cb104-4" data-line-number="4">ci.band.low &lt;-<span class="st"> </span><span class="kw">pmax</span>(<span class="kw">kidney.Fhat</span>(tt) <span class="op">-</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">log</span>(<span class="dv">2</span><span class="op">/</span><span class="fl">0.05</span>)<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>n)), <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb104-5" data-line-number="5">ci.band.upper &lt;-<span class="st"> </span><span class="kw">pmin</span>(<span class="kw">kidney.Fhat</span>(tt) <span class="op">+</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">log</span>(<span class="dv">2</span><span class="op">/</span><span class="fl">0.05</span>)<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>n)), <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb104-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb104-7" data-line-number="7"><span class="kw">plot</span>(kidney.Fhat, <span class="dt">do.points=</span><span class="ot">FALSE</span>, <span class="dt">verticals=</span><span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">&quot;Kidney Data: </span></a>
-<a class="sourceLine" id="cb104-8" data-line-number="8"><span class="st">     Confidence Bands&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb104-7" data-line-number="7"><span class="kw">plot</span>(kidney.Fhat, <span class="dt">do.points=</span><span class="ot">FALSE</span>, <span class="dt">verticals=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb104-8" data-line-number="8">    <span class="dt">main =</span> <span class="st">&quot;Kidney Data: Confidence Bands&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb104-9" data-line-number="9"><span class="kw">lines</span>(tt, ci.band.low, <span class="dt">type=</span><span class="st">&quot;s&quot;</span>, <span class="dt">lty=</span><span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb104-10" data-line-number="10"><span class="kw">lines</span>(tt, ci.band.upper, <span class="dt">type=</span><span class="st">&quot;s&quot;</span>, <span class="dt">lty=</span><span class="dv">2</span>)</a></code></pre></div>
 <p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<ul>
+<li>Comparing the pointwise confidence intervals and the simultaneous confidence bands
+in the same plot shows how much wider our confidence bands are:
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" /></li>
+</ul>
 <hr />
 <ul>
 <li>A nice feature of of the <strong>ecdf</strong> function is that <strong>ecdf</strong> object
@@ -502,7 +538,7 @@ that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
 ##  One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.072321, p-value = 0.6723
+## D = 0.14707, p-value = 0.02645
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
@@ -513,7 +549,7 @@ by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
 ##  One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.33755, p-value = 2.536e-10
+## D = 0.26271, p-value = 2.025e-06
 ## alternative hypothesis: two-sided</code></pre>
 <hr />
 <ul>
@@ -530,16 +566,53 @@ two groups.</p></li>
 <li><p>The two-sample KS test statistic is defined as the maximum distance between the
 two empirical distribution functions:
 <span class="math display">\[\begin{equation}
-KS_{n}^{(2)} = \sup_{t} \big| \hat{F}_{n,X}(t) - \hat{F}_{m,Y}(t)  \big|
+KS_{n,m}^{(2)} = \sup_{t} \big| \hat{F}_{n,X}(t) - \hat{F}_{m,Y}(t)  \big|
 \end{equation}\]</span>
 Here, <span class="math inline">\(\hat{F}_{n,X}(t) = \frac{1}{n}\sum_{i=1}^{n} I(X_{i} \leq t)\)</span> and
 <span class="math inline">\(\hat{F}_{m,Y}(t) = \frac{1}{m}\sum_{j=1}^{m} I(Y_{j} \leq t)\)</span> denote
 the empirical distribution functions from the X and Y samples.</p></li>
+<li><p>The two-sample KS test statistic also converges to the same limit as
+the one-sample KS test statistic. In particular, under <span class="math inline">\(H_{0}\)</span>:
+<span class="math display">\[\begin{equation}
+\sqrt{ \frac{nm}{n + m } }KS_{n,m}^{(2)} \longrightarrow \textrm{Kolmogorov}
+\qquad \textrm{ as } n,m \longrightarrow \infty
+\end{equation}\]</span></p></li>
 </ul>
 <hr />
 <ul>
 <li>The <strong>ks.test</strong> function in <strong>R</strong> also performs two-sample KS tests.</li>
 </ul>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb113-2" data-line-number="2">yy &lt;-<span class="st"> </span><span class="kw">rlogis</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb113-3" data-line-number="3"><span class="kw">ks.test</span>(xx, yy)  </a></code></pre></div>
+<pre><code>## 
+##  Two-sample Kolmogorov-Smirnov test
+## 
+## data:  xx and yy
+## D = 0.2, p-value = 0.03663
+## alternative hypothesis: two-sided</code></pre>
+<ul>
+<li>We can compute the KS statistic ourselves and check that this matches the value of the KS statistic
+returned by the <strong>ks.test</strong> function:</li>
+</ul>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1">zz &lt;-<span class="st"> </span><span class="kw">c</span>(xx, yy)</a>
+<a class="sourceLine" id="cb115-2" data-line-number="2">zz.order &lt;-<span class="st"> </span><span class="kw">sort</span>(zz)</a>
+<a class="sourceLine" id="cb115-3" data-line-number="3">F.x &lt;-<span class="st"> </span><span class="kw">ecdf</span>(xx)</a>
+<a class="sourceLine" id="cb115-4" data-line-number="4">F.y &lt;-<span class="st"> </span><span class="kw">ecdf</span>(yy)</a>
+<a class="sourceLine" id="cb115-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb115-6" data-line-number="6">KS.stat &lt;-<span class="st"> </span><span class="kw">max</span>( <span class="kw">abs</span>( <span class="kw">F.x</span>(zz.order) <span class="op">-</span><span class="st"> </span><span class="kw">F.y</span>(zz.order) ) )</a>
+<a class="sourceLine" id="cb115-7" data-line-number="7">KS.stat</a></code></pre></div>
+<pre><code>## [1] 0.2</code></pre>
+<hr />
+<ul>
+<li><strong>Exercise 7.1.</strong> Why does
+<span class="math display">\[\begin{equation}
+KS_{n,m}^{(2)} = \max_{1 \leq i \leq n+m} \big| \hat{F}_{n,X}(Z_{(i)}) -  \hat{F}_{n,Y}(Z_{(i)}) \big|, \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldots, Z_{n+m})\)</span> denotes the pooled sample and <span class="math inline">\(Z_{(1)}, \ldots, Z_{(n+m)}\)</span>
+denote the order statistics from <span class="math inline">\(\mathbf{Z}\)</span>?</li>
+</ul>
+<hr />
 </div>
 <div id="the-empirical-distribution-function-and-statistical-functionals" class="section level2">
 <h2><span class="header-section-number">7.5</span> The empirical distribution function and statistical functionals</h2>
