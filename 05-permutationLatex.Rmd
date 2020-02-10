@@ -389,7 +389,7 @@ A[,5] <- rep("1/24", 24)
 A[,6] <- rowMeans(A[,1:2]) - rowMeans(A[,3:4])
 A[,7] <- as.numeric(A[,6] >= 2.5)
 
-colnames(A) <- c("a1", "a2", "a3", "a4", "P(Z1 = a1, Z2=a2, Z3=a3, Z4=a4|order stat)", 
+colnames(A) <- c("a1", "a2", "a3", "a4", "P(Z1 = a1,..., Z4=a4|order stat)", 
                  "T(a1, a2, a3, a4)", "T(a1, a2, a3, a4) >= 2.5")
 tab <- xtable(A, digits=c(2, 0, 0, 0, 0, 2,2,0), align=rep("c", 8))
 print(tab, type="latex", comment=FALSE, include.rownames=FALSE)

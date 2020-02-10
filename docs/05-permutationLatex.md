@@ -161,7 +161,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.75
+## [1] 0.76
 ```
     
 ### Example 2: Ratios of Means
@@ -391,7 +391,7 @@ Hence,
 \centering
 \begin{tabular}{ccccccc}
   \hline
-a1 & a2 & a3 & a4 & P(Z1 = a1, Z2=a2, Z3=a3, Z4=a4$|$order stat) & T(a1, a2, a3, a4) & T(a1, a2, a3, a4) $>$= 2.5 \\ 
+a1 & a2 & a3 & a4 & P(Z1 = a1,..., Z4=a4$|$order stat) & T(a1, a2, a3, a4) & T(a1, a2, a3, a4) $>$= 2.5 \\ 
   \hline
 -3 & -1 & 2 & 5 & 1/24 & -5.50 & 0 \\ 
   -3 & -1 & 5 & 2 & 1/24 & -5.50 & 0 \\ 

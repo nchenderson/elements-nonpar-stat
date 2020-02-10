@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  10 FEB 2020 14:09
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  10 FEB 2020 14:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1252,7 +1252,7 @@ Overfull \hbox (7.96202pt too wide) in alignment at lines 3663--3666
  []
 
 
-Overfull \hbox (161.46559pt too wide) in paragraph at lines 3671--3701
+Overfull \hbox (102.58559pt too wide) in paragraph at lines 3671--3701
  [][] 
  []
 
