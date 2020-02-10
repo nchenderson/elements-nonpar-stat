@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  10 FEB 2020 14:23
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  10 FEB 2020 14:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1339,26 +1339,89 @@ lmsy/m/n/10 j[]
 File: 06-ustatistics_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (typ
 e pdf)
 <use 06-ustatistics_files/figure-latex/unnamed-chunk-4-1.pdf>
-[97] (./ElementsNonparStat.bbl [98])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 4733.
-[99
+[97] [98] [99
 
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 4733.
+] [100]
+Chapter 7.
+File: 07-empiricalcdf_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (ty
+pe pdf)
+<use 07-empiricalcdf_files/figure-latex/unnamed-chunk-1-1.pdf>
+[101
+
+] [102] [103]
+Overfull \hbox (25.60463pt too wide) in alignment at lines 4888--4893
+ [][][] []
+ []
+
+[104]
+File: 07-empiricalcdf_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (ty
+pe pdf)
+<use 07-empiricalcdf_files/figure-latex/unnamed-chunk-4-1.pdf>
+[105]
+File: 07-empiricalcdf_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (ty
+pe pdf)
+<use 07-empiricalcdf_files/figure-latex/unnamed-chunk-5-1.pdf>
+File: 07-empiricalcdf_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (ty
+pe pdf)
+<use 07-empiricalcdf_files/figure-latex/unnamed-chunk-6-1.pdf>
+
+Underfull \vbox (badness 3657) has occurred while \output is active []
+
+[106]
+File: 07-empiricalcdf_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (ty
+pe pdf)
+<use 07-empiricalcdf_files/figure-latex/unnamed-chunk-7-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[107]
+File: 07-empiricalcdf_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (ty
+pe pdf)
+<use 07-empiricalcdf_files/figure-latex/unnamed-chunk-8-1.pdf>
+
+Overfull \hbox (20.02237pt too wide) in paragraph at lines 5040--5043
+\TU/lmr/m/n/10 are: [] 
+ []
+
+[108] [109]
+Underfull \hbox (badness 1117) in paragraph at lines 5164--5166
+[]\TU/lmr/m/n/10 Suppose we have data from two groups: $\OML/lmm/m/it/10 X[]; [
+] ; X[] \OMS/lmsy/m/n/10 ^^X \OML/lmm/m/it/10 F[]$ \TU/lmr/m/n/10 and
+ []
+
+[110]
+Overfull \hbox (1.26793pt too wide) in paragraph at lines 5250--5253
+\TU/lmr/m/n/10 where $\OT1/lmr/bx/n/10 Z \OT1/lmr/m/n/10 = (\OML/lmm/m/it/10 Z[
+]; [] ; Z[]\OT1/lmr/m/n/10 )$ \TU/lmr/m/n/10 denotes the pooled sample and $\OM
+L/lmm/m/it/10 Z[]; [] ; Z[]$
+ []
+
+(./ElementsNonparStat.bbl
+Overfull \hbox (79.20341pt too wide) has occurred while \output is active
+\TU/lmr/m/sl/10 7.5.  THE EMPIRICAL DISTRIBUTION FUNCTION AND STATISTICAL FUNCT
+IONALS \TU/lmr/m/n/10 111
+ []
+
+[111] [112
+
+])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 5263.
+[113]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 5263.
 (./ElementsNonparStat.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 4733.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 4733.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 5263.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 5263.
 
 Package rerunfilecheck Info: File `ElementsNonparStat.out' has not changed.
-(rerunfilecheck)             Checksum: BE4548A6C09C40F78D761AF8AA814D85.
+(rerunfilecheck)             Checksum: C92223F101A135DD4DDBD31A5A425BE3.
  ) 
 Here is how much of TeX's memory you used:
- 22730 strings out of 492970
- 429381 string characters out of 6133938
- 563157 words of memory out of 5000000
- 26467 multiletter control sequences out of 15000+600000
+ 22760 strings out of 492970
+ 430914 string characters out of 6133938
+ 564453 words of memory out of 5000000
+ 26496 multiletter control sequences out of 15000+600000
  572732 words of font info for 80 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  45i,14n,54p,10459b,454s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on ElementsNonparStat.pdf (99 pages).
+Output written on ElementsNonparStat.pdf (113 pages).

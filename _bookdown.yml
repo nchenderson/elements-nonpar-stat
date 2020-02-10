@@ -7,6 +7,6 @@ rmd_files:
             "07-empiricalcdf.Rmd", "08-densityestimation.Rmd", "09-bootstrap.Rmd", "10-confidence-intervals.Rmd", "11-kernel-regression.Rmd",
             "12-splines.Rmd","13-cart.Rmd","14-ensemble.Rmd"]
     latex: ["index.Rmd", "01-IntroductionLatex.Rmd", "02-getting-started.Rmd", "03-rankstatLatex.Rmd", "04-multistatLatex.Rmd",
-            "05-permutationLatex.Rmd", "06-ustatistics.Rmd"]
+            "05-permutationLatex.Rmd", "06-ustatistics.Rmd", "07-empiricalcdf.Rmd"]
 clean: [packages.bib, bookdown.bbl]
 new_session: yes

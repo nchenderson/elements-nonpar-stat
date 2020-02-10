@@ -239,8 +239,8 @@ lines(tt, ci.band.upper, type="s", lty=2)
 * Comparing the pointwise confidence intervals and the simultaneous confidence bands
 in the same plot shows how much wider our confidence bands are:
 ```{r, echo=FALSE}
-plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data: 
-     Confidence Bands", las=1, lwd=2)
+plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, 
+     main = "Kidney Data: Confidence Bands", las=1, lwd=2)
 lines(tt, ci.low, type="s", lty=2, lwd=2)
 lines(tt, ci.upper, type="s", lty=2, lwd=2)
 lines(tt, ci.band.low, type="s", lty=2, lwd=2, col="red")
