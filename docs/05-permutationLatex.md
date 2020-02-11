@@ -161,7 +161,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.79
+## [1] 0.76
 ```
     
 ### Example 2: Ratios of Means
