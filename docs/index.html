@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -210,7 +213,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.5" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.5</b> Measures of Association</a><ul>
 <li class="chapter" data-level="6.5.1" data-path="ustat.html"><a href="ustat.html#spearmans-rank-correlation"><i class="fa fa-check"></i><b>6.5.1</b> Spearman’s Rank Correlation</a></li>
 <li class="chapter" data-level="6.5.2" data-path="ustat.html"><a href="ustat.html#kendalls-tau"><i class="fa fa-check"></i><b>6.5.2</b> Kendall’s tau</a></li>
-<li class="chapter" data-level="6.5.3" data-path="ustat.html"><a href="ustat.html#distance-covariance"><i class="fa fa-check"></i><b>6.5.3</b> Distance Covariance</a></li>
+<li class="chapter" data-level="6.5.3" data-path="ustat.html"><a href="ustat.html#distance-covariance-and-correlation"><i class="fa fa-check"></i><b>6.5.3</b> Distance Covariance and Correlation</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>II Nonparametric Estimation</b></span></li>
@@ -224,7 +227,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
 <li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
 <li class="chapter" data-level="8.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms"><i class="fa fa-check"></i><b>8.2</b> Histograms</a><ul>
-<li class="chapter" data-level="8.2.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-4"><i class="fa fa-check"></i><b>8.2.1</b> Definition</a></li>
+<li class="chapter" data-level="8.2.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-5"><i class="fa fa-check"></i><b>8.2.1</b> Definition</a></li>
 <li class="chapter" data-level="8.2.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms-in-r"><i class="fa fa-check"></i><b>8.2.2</b> Histograms in R</a></li>
 <li class="chapter" data-level="8.2.3" data-path="density-estimation.html"><a href="density-estimation.html#performance-of-the-histogram-estimate"><i class="fa fa-check"></i><b>8.2.3</b> Performance of the Histogram Estimate</a></li>
 <li class="chapter" data-level="8.2.4" data-path="density-estimation.html"><a href="density-estimation.html#choosing-the-histogram-bin-width"><i class="fa fa-check"></i><b>8.2.4</b> Choosing the Histogram Bin Width</a></li>
@@ -307,11 +310,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -319,12 +324,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -336,6 +340,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },

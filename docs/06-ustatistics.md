@@ -108,7 +108,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.862
+## [1] 1.854
 ```
 
 ```r
@@ -116,7 +116,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.874
+## [1] 1.841
 ```
 
 
@@ -366,7 +366,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.908 0.903
+## [1] 0.916 0.913
 ```
 
 ```r
@@ -376,7 +376,7 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.891 0.891
+## [1] 0.922 0.922
 ```
 
 ---
@@ -506,14 +506,14 @@ from the $J$ pairs $(r_{11}, r_{12}), \ldots, (r_{J1}, r_{J2})$ would give
 a measure of the agreement between judges 1 and 2.
  
 
-### Distance Covariance
+### Distance Covariance and Correlation
 
 * A value of the correlation which equals zero does not imply that two random variables
 are independent.
 
 * For example, if $X \sim \textrm{Normal}(0, 1)$, then
 \begin{equation}
-\textrm{Corr}(X, X^{2}) = \textrm{Cov}(X, X^{3}) = E( X^{3} ) = 0 \nonumber
+\textrm{Corr}(X, X^{2}) = \textrm{Cov}(X, X^{2}) = E( X^{3} ) = 0 \nonumber
 \end{equation}
 
 * This is also true Spearman's rank correlation and Kendall's $\tau$. You 
@@ -521,9 +521,12 @@ can have situations where $\theta_{R} = 0$ but $X$ and $Y$ are not independent.
 Similarly, you can have situations where $\theta_{\tau} = 0$
 while $X$ and $Y$ are not independent.
 
-![](06-ustatistics_files/figure-latex/unnamed-chunk-3-1.pdf)<!-- --> 
+* Note that the association between the two variables in the figures below
+is **non-monotone**.
 
----
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+
+#### Definition
 
 * **Distance covariance** and **distance correlation** are two measures of dependence that have been developed 
 much more recently (see @szekely2007).
@@ -556,6 +559,54 @@ implies independence, and larger values of $\theta_{dCov,XY}$ imply
 that $X_{i}$ and $Y_{i}$ have some form of greater association.
 
 ---
+
+**Example**
+
+* Let us consider the example we had before where we compared $X$ and $X^{2}$.
+
+* Specifically, suppose we have observed pairs $(X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})$
+where $X_{i} \sim \textrm{Normal}(0, 1)$ and $Y_{i} = X_{i}^{2}$.
+
+* In this case, the distance covariance turns out to be
+\begin{eqnarray}
+&&\theta_{dCov,XY}^{2} 
+= E\Big\{ |X_{1} - X_{2}| |Y_{1} - Y_{2}|  \Big\} + E\Big\{ |X_{1} - X_{2}| \Big\}E\Big\{ |Y_{1} - Y_{2}| \Big\} - 2E\Big\{ |X_{1} - X_{2}||Y_{1} - Y_{3}| \Big\} \nonumber \\
+&&= E\Big\{ |X_{1} - X_{2}| |X_{1}^{2} - X_{2}^{2}|  \Big\} + E\Big\{ |X_{1} - X_{2}| \Big\}E\Big\{ |X_{1}^{2} - X_{2}^{2}| \Big\} - 2E\Big\{ |X_{1} - X_{2}||X_{1}^{2} - X_{3}^{2}| \Big\} \nonumber 
+\end{eqnarray}
+
+* It could be a lot work to compute the above expectation exactly. However,
+we can estimate it pretty closely using simulation:
+
+
+```r
+set.seed(4157)
+nreps <- 500000 ## number of simulation replications
+term1 <- term2 <- term3 <- term4 <- rep(0, nreps)
+for(k in 1:nreps) {
+    xx <- rnorm(3)
+    term1[k] <- abs(xx[1] - xx[2])*abs(xx[1]^2 - xx[2]^2) 
+    term2[k] <- abs(xx[1] - xx[2])
+    term3[k] <- abs(xx[1]^2 - xx[2]^2)
+    term4[k] <- abs(xx[1] - xx[2])*abs(xx[1]^2 - xx[3]^2)
+}
+dcov.sq.est <- mean(term1) + mean(term2)*mean(term3) - 2*mean(term4)
+dcov.sq.est
+```
+
+```
+## [1] 0.137895
+```
+
+* The squared distance covariance for this example seems to be about $0.14$. 
+
+---
+
+* **Exercise 6.2**. For this example, where we have observed pairs $(X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})$
+    with $X_{i} \sim \textrm{Normal}(0, 1)$ and $Y_{i} = X_{i}^{2}$, compute Kendall's $\tau$ parameter $\theta_{\tau}$.
+
+---
+
+#### Estimation of Distance Covariance and Distance Correlation
 
 * The distance covariance and correlation are estimated by using a bunch of pairwise distances
 between our observations.
@@ -635,7 +686,7 @@ plot(xx2, yy2, xlab="x", ylab="y", main=paste("Sample Distance Corr. = ",
                                               round(d.cor2, 4)), las=1)
 ```
 
-![](06-ustatistics_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 
 ```r
@@ -655,7 +706,7 @@ round(c(p.cor1, kend.cor1, spear.cor1, d.cor1), 4) ## parabola
 ```
 
 ```
-## [1] -0.0316 -0.0145 -0.0223  0.5250
+## [1] -0.0124  0.0077  0.0109  0.5268
 ```
 
 ```r
@@ -663,6 +714,6 @@ round(c(p.cor1, kend.cor1, spear.cor1, d.cor2), 4) ## circle
 ```
 
 ```
-## [1] -0.0316 -0.0145 -0.0223  0.1523
+## [1] -0.0124  0.0077  0.0109  0.1508
 ```
 
