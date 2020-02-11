@@ -554,7 +554,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.82
+## [1] 0.775
 ```
 
 
@@ -730,7 +730,7 @@ sign.stat <- sum(xx > 0)
 ```
 
 ```
-## [1] 0.8643735
+## [1] 0.5397946
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -748,7 +748,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.8643735
+## [1] 0.5397946
 ```
 
 #### Two-sided Sign Test
@@ -1070,7 +1070,7 @@ $\Phi( z_{1-\alpha}) = 1-\alpha$.
 
 * Notice that the power of the test depends more directly on the term $p(\delta) = P_{\theta = \delta}(D_{i} > 0)$. 
 Recall from Section \@ref(sign-test) that
-$p(\delta) = 1 - F_{\epsilon}(\delta)$, where $F_{\epsilon}$ is the distribution function
+$p(\delta) = 1 - F_{\epsilon}(-\delta)$, where $F_{\epsilon}$ is the distribution function
 of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
 
 * So, in any power or sample size calculation, it would be more sensible to think about plausible
