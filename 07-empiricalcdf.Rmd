@@ -30,11 +30,6 @@ constitute an i.i.d. sample from some common distribution function $F$.
 
 ---
 
-```{r, echo=FALSE}
-xx <- c(0.2, 0.7, 1.3)
-plot(ecdf(xx), verticals=TRUE, las=1, main="An Empirical Distribution Function", lwd=2,
-     xlim=c(-.2, 1.7))
-```
 
 * For example, if we observed $X_{1} = 0.7$, $X_{2} = 0.2$, and $X_{3} = 1.3$,
 the corresponding empirical distribution function would be
@@ -48,7 +43,11 @@ the corresponding empirical distribution function would be
 \end{cases}
 \end{equation}
 
-
+```{r, echo=FALSE}
+xx <- c(0.2, 0.7, 1.3)
+plot(ecdf(xx), verticals=TRUE, las=1, main="An Empirical Distribution Function", lwd=2,
+     xlim=c(-.2, 1.7), xlab="t", ylab="Fn(t)")
+```
 
 
 
@@ -59,10 +58,10 @@ the corresponding empirical distribution function would be
 n \hat{F}_{n}(t) \sim \textrm{Binomial}\big( n, F(t) \big)
 \end{equation}
 
-* For a fixed $t$, $n\hat{F}_{n}(t)$ is the sum of $n$ independent
+* This is because, for a fixed $t$, $n\hat{F}_{n}(t)$ is the sum of $n$ independent
 Bernoulli random variables $W_{1}^{t}, \ldots, W_{n}^{t}$
 \begin{equation}
-\hat{F}_{n}(t) = \sum_{i=1}^{n} W_{i}^{t} = \sum_{i=1}^{n} I( X_{i} \leq t)
+n \hat{F}_{n}(t) = \sum_{i=1}^{n} W_{i}^{t} = \sum_{i=1}^{n} I( X_{i} \leq t)
 \end{equation}
 
 * The probability that $W_{i}^{t} = 1$ is

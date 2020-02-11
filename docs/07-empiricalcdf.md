@@ -30,7 +30,6 @@ constitute an i.i.d. sample from some common distribution function $F$.
 
 ---
 
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
 * For example, if we observed $X_{1} = 0.7$, $X_{2} = 0.2$, and $X_{3} = 1.3$,
 the corresponding empirical distribution function would be
@@ -44,7 +43,7 @@ the corresponding empirical distribution function would be
 \end{cases}
 \end{equation}
 
-
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
 
 
@@ -55,10 +54,10 @@ the corresponding empirical distribution function would be
 n \hat{F}_{n}(t) \sim \textrm{Binomial}\big( n, F(t) \big)
 \end{equation}
 
-* For a fixed $t$, $n\hat{F}_{n}(t)$ is the sum of $n$ independent
+* This is because, for a fixed $t$, $n\hat{F}_{n}(t)$ is the sum of $n$ independent
 Bernoulli random variables $W_{1}^{t}, \ldots, W_{n}^{t}$
 \begin{equation}
-\hat{F}_{n}(t) = \sum_{i=1}^{n} W_{i}^{t} = \sum_{i=1}^{n} I( X_{i} \leq t)
+n \hat{F}_{n}(t) = \sum_{i=1}^{n} W_{i}^{t} = \sum_{i=1}^{n} I( X_{i} \leq t)
 \end{equation}
 
 * The probability that $W_{i}^{t} = 1$ is
@@ -332,7 +331,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.14612, p-value = 0.02796
+## D = 0.088965, p-value = 0.4072
 ## alternative hypothesis: two-sided
 ```
 
@@ -348,7 +347,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.36261, p-value = 7.59e-12
+## D = 0.32077, p-value = 2.311e-09
 ## alternative hypothesis: two-sided
 ```
 
@@ -398,7 +397,7 @@ ks.test(xx, yy)
 ## 	Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.15, p-value = 0.2106
+## D = 0.14, p-value = 0.281
 ## alternative hypothesis: two-sided
 ```
 
@@ -417,7 +416,7 @@ KS.stat
 ```
 
 ```
-## [1] 0.15
+## [1] 0.14
 ```
 
 

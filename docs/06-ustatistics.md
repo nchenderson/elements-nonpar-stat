@@ -108,7 +108,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.854
+## [1] 1.842
 ```
 
 ```r
@@ -116,7 +116,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.841
+## [1] 1.819
 ```
 
 
@@ -366,7 +366,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.916 0.913
+## [1] 0.865 0.873
 ```
 
 ```r
@@ -376,7 +376,7 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.922 0.922
+## [1] 0.867 0.867
 ```
 
 ---
@@ -599,6 +599,10 @@ dcov.sq.est
 
 * The squared distance covariance for this example seems to be about $0.14$. 
 
+* Thus, the distance covariance is positive for this example where
+the two variables are dependent while the usual covariance between
+these two variables is zero.
+
 ---
 
 * **Exercise 6.2**. For this example, where we have observed pairs $(X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})$
@@ -701,7 +705,7 @@ kend.cor2 <- cor(xx2, yy2, method="kendall")
 spear.cor1 <- cor(xx1, yy1, method="spearman") 
 spear.cor2 <- cor(xx2, yy2, method="spearman")
 
-# Pearson, Kendall-tau, Rank, Distance Correlation
+# Pearson, Kendall's-tau, Rank, Distance Correlation
 round(c(p.cor1, kend.cor1, spear.cor1, d.cor1), 4) ## parabola
 ```
 
@@ -710,10 +714,10 @@ round(c(p.cor1, kend.cor1, spear.cor1, d.cor1), 4) ## parabola
 ```
 
 ```r
-round(c(p.cor1, kend.cor1, spear.cor1, d.cor2), 4) ## circle
+round(c(p.cor2, kend.cor2, spear.cor2, d.cor2), 4) ## circle
 ```
 
 ```
-## [1] -0.0124  0.0077  0.0109  0.1508
+## [1] 0.0134 0.0041 0.0138 0.1508
 ```
 

@@ -314,7 +314,6 @@ the data arose.</p></li>
 constitute an i.i.d. sample from some common distribution function <span class="math inline">\(F\)</span>.</p></li>
 </ul>
 <hr />
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <ul>
 <li>For example, if we observed <span class="math inline">\(X_{1} = 0.7\)</span>, <span class="math inline">\(X_{2} = 0.2\)</span>, and <span class="math inline">\(X_{3} = 1.3\)</span>,
 the corresponding empirical distribution function would be
@@ -328,6 +327,7 @@ the corresponding empirical distribution function would be
 \end{cases}
 \end{equation}\]</span></li>
 </ul>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 </div>
 <div id="confidence-intervals-for-ft" class="section level2">
 <h2><span class="header-section-number">7.2</span> Confidence intervals for F(t)</h2>
@@ -336,10 +336,10 @@ the corresponding empirical distribution function would be
 <span class="math display">\[\begin{equation}
 n \hat{F}_{n}(t) \sim \textrm{Binomial}\big( n, F(t) \big)
 \end{equation}\]</span></p></li>
-<li><p>For a fixed <span class="math inline">\(t\)</span>, <span class="math inline">\(n\hat{F}_{n}(t)\)</span> is the sum of <span class="math inline">\(n\)</span> independent
+<li><p>This is because, for a fixed <span class="math inline">\(t\)</span>, <span class="math inline">\(n\hat{F}_{n}(t)\)</span> is the sum of <span class="math inline">\(n\)</span> independent
 Bernoulli random variables <span class="math inline">\(W_{1}^{t}, \ldots, W_{n}^{t}\)</span>
 <span class="math display">\[\begin{equation}
-\hat{F}_{n}(t) = \sum_{i=1}^{n} W_{i}^{t} = \sum_{i=1}^{n} I( X_{i} \leq t)
+n \hat{F}_{n}(t) = \sum_{i=1}^{n} W_{i}^{t} = \sum_{i=1}^{n} I( X_{i} \leq t)
 \end{equation}\]</span></p></li>
 <li><p>The probability that <span class="math inline">\(W_{i}^{t} = 1\)</span> is
 <span class="math display">\[\begin{equation}
@@ -551,7 +551,7 @@ that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
 ##  One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.14612, p-value = 0.02796
+## D = 0.088965, p-value = 0.4072
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
@@ -562,7 +562,7 @@ by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
 ##  One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.36261, p-value = 7.59e-12
+## D = 0.32077, p-value = 2.311e-09
 ## alternative hypothesis: two-sided</code></pre>
 <hr />
 <ul>
@@ -602,7 +602,7 @@ the one-sample KS test statistic. In particular, under <span class="math inline"
 ##  Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.15, p-value = 0.2106
+## D = 0.14, p-value = 0.281
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>We can compute the KS statistic ourselves and check that this matches the value of the KS statistic
@@ -615,7 +615,7 @@ returned by the <strong>ks.test</strong> function:</li>
 <a class="sourceLine" id="cb117-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb117-6" data-line-number="6">KS.stat &lt;-<span class="st"> </span><span class="kw">max</span>( <span class="kw">abs</span>( <span class="kw">F.x</span>(zz.order) <span class="op">-</span><span class="st"> </span><span class="kw">F.y</span>(zz.order) ) )</a>
 <a class="sourceLine" id="cb117-7" data-line-number="7">KS.stat</a></code></pre></div>
-<pre><code>## [1] 0.15</code></pre>
+<pre><code>## [1] 0.14</code></pre>
 <hr />
 <ul>
 <li><strong>Exercise 7.1.</strong> Why does
