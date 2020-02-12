@@ -106,7 +106,7 @@ L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{ for all 
 to hold with at least $1 - \alpha$ probability.
 
 * In other words, we want less than $\alpha$ probability of any part
-of the path of $F(t)$ going outside of 
+of the path of $F(t)$ going outside of the bands.
 
 * One choice of $L_{\alpha}^{band}(t)$ and $U_{\alpha}^{band}(t)$ which has this property is the following
 \begin{equation}
@@ -116,12 +116,12 @@ U_{\alpha}^{band}(t) = \min\{\hat{F}_{n}(t) + \delta_{\alpha,n}, 1 \},
 \end{equation}
 where $\delta_{\alpha,n}$ is given by
 \begin{equation}
-\delta_{\alpha, n} = \sqrt{\frac{1}{2n} \ln\Big(\frac{2}{\alpha})} \nonumber
+\delta_{\alpha, n} = \sqrt{\frac{1}{2n} \ln\Big(\frac{2}{\alpha} \Big)} \nonumber
 \end{equation}
 
 ---
 
-* The reason why this choice of confidence band works is the 
+* The reason this choice of confidence band works is the 
 Dvoretzky-Kiefer-Wolfowitz (DKW) inequality.
 The DKW inequality states that
 \begin{equation}
@@ -130,7 +130,7 @@ P\Bigg( \sup_{t} |F(t) - \hat{F}_{n}(t) | > \varepsilon \Bigg) \leq 2 e^{-2n \va
 
 * Our choice of confidence bands \@ref(eq:simultaneous-cis) then works because 
 \begin{equation}
-\sup_{t} | F(t) - \hat{F}_{n}(t)| \leq \delta_{n, \alpha} \nonumber
+\sup_{t} | F(t) - \hat{F}_{n}(t)| \leq \delta_{\alpha, n} \nonumber
 \end{equation}
 is equivalent to
 \begin{equation}
@@ -163,6 +163,8 @@ from a study on kidney function.
 
 * This dataset has $157$ observations which has the age of each study participant and
 a measure of overall kidney function. The data can be obtained at https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt
+
+* We will only look at the **tot** variable in this chapter. 
 
 ```r
 kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
@@ -210,55 +212,6 @@ plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data:  ecdf wi
 
 <img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
-
----
-
-* **R** does not plot confidence intervals when plotting the empirical distribution function.
-
-* We can do this ourselves, by using the pointwise confidence interval formula shown in \@ref(eq:pointwise-cis)
-
-
-```r
-## 1. First, we will compute the standard errors at each of the observed time points
-tt <- sort(unique(kidney$tot)) 
-std.err <- sqrt(kidney.Fhat(tt)*(1 - kidney.Fhat(tt))/ length(kidney$tot))
-
-## 2. Now, compute the confidence intervals at each time point
-ci.low <- pmax(kidney.Fhat(tt) - qnorm(.975)*std.err, 0)
-ci.upper <- pmin(kidney.Fhat(tt) + qnorm(.975)*std.err, 1)
-
-## 3. Now, plot the results. Note that type="s" in the lines function produces
-##    "step functions" which pass through the provided points.
-plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data: 
-     pointwise confidence intervals", las=1, lwd=2)
-lines(tt, ci.low, type="s", lty=2)
-lines(tt, ci.upper, type="s", lty=2)
-```
-
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-6-1.png" width="672" />
-
-* We could plot the confidence bands as well.
-
-
-```r
-n <- length(kidney$tot)
-
-## Compute the confidence bands at each time point
-ci.band.low <- pmax(kidney.Fhat(tt) - sqrt(log(2/0.05)/(2*n)), 0)
-ci.band.upper <- pmin(kidney.Fhat(tt) + sqrt(log(2/0.05)/(2*n)), 1)
-
-plot(kidney.Fhat, do.points=FALSE, verticals=TRUE,
-    main = "Kidney Data: Confidence Bands", las=1, lwd=2)
-lines(tt, ci.band.low, type="s", lty=2)
-lines(tt, ci.band.upper, type="s", lty=2)
-```
-
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-7-1.png" width="672" />
-
-* Comparing the pointwise confidence intervals and the simultaneous confidence bands
-in the same plot shows how much wider our confidence bands are:
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" />
-
 ---
 
 * A nice feature of of the **ecdf** function is that **ecdf** object
@@ -283,6 +236,56 @@ kidney.Fhat( c(-1,1,4) )
 ## [1] 0.3057325 0.6560510 0.9745223
 ```
 
+---
+
+* **R** does not plot confidence intervals when plotting the empirical distribution function.
+
+* We can do this ourselves, by using the pointwise confidence interval formula shown in \@ref(eq:pointwise-cis)
+
+
+```r
+## 1. First, we will compute the standard errors at each of the observed time points
+tt <- sort(unique(kidney$tot)) 
+std.err <- sqrt(kidney.Fhat(tt)*(1 - kidney.Fhat(tt))/ length(kidney$tot))
+
+## 2. Now, compute the confidence intervals at each time point
+ci.low <- pmax(kidney.Fhat(tt) - qnorm(.975)*std.err, 0)
+ci.upper <- pmin(kidney.Fhat(tt) + qnorm(.975)*std.err, 1)
+
+## 3. Now, plot the results. Note that type="s" in the lines function produces
+##    "step functions" which pass through the provided points.
+plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data: 
+     95% pointwise confidence intervals", las=1, lwd=2)
+lines(tt, ci.low, type="s", lty=2, lwd=2)
+lines(tt, ci.upper, type="s", lty=2, lwd=2)
+```
+
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+
+* We could plot the confidence bands as well.
+
+
+```r
+n <- length(kidney$tot)
+
+## Compute the confidence bands at each time point
+ci.band.low <- pmax(kidney.Fhat(tt) - sqrt(log(2/0.05)/(2*n)), 0)
+ci.band.upper <- pmin(kidney.Fhat(tt) + sqrt(log(2/0.05)/(2*n)), 1)
+
+plot(kidney.Fhat, do.points=FALSE, verticals=TRUE,
+    main = "Kidney Data: 95% Confidence Bands", las=1, lwd=2)
+lines(tt, ci.band.low, type="s", lty=2, lwd=2)
+lines(tt, ci.band.upper, type="s", lty=2, lwd=2)
+```
+
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+
+* Comparing the pointwise confidence intervals and the simultaneous confidence bands
+in the same plot shows how much wider our confidence bands are:
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+
+
+
 ## The Kolmogorov-Smirnov Test
 
 * The one-sample Kolmogorov-Smirnov (KS) test is a type of goodness-of-fit test
@@ -301,7 +304,7 @@ H_{0}: F = F_{0} \quad \textrm{ vs. } \quad H_{A}: F \neq F_{0}
 
 ---
 
-* The Kolmogorov-Smirnov test statistic $KS_{n}^{(1)}$ looks at the maximum distance
+* The one-sample Kolmogorov-Smirnov test statistic $KS_{n}^{(1)}$ looks at the maximum distance
 between the empirical distribution function and $F_{0}$
 \begin{equation}
 KS_{n}^{(1)} = \sup_{t} \big| \hat{F}_{n}(t) - F_{0}(t)  \big|
@@ -331,7 +334,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.11657, p-value = 0.132
+## D = 0.12174, p-value = 0.1032
 ## alternative hypothesis: two-sided
 ```
 
@@ -347,7 +350,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.27586, p-value = 4.913e-07
+## D = 0.31593, p-value = 4.282e-09
 ## alternative hypothesis: two-sided
 ```
 
@@ -434,7 +437,7 @@ denote the order statistics from $\mathbf{Z}$?
 
 ## The empirical distribution function and statistical functionals
 
-* In many areas of mathematics, it is common to refer to refere to a function
+* In many areas of mathematics, it is common to refer to a function
 which is a "functions of functions" as a **functional**.
 
 * For example, $T(f)$ which is defined as
