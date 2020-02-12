@@ -43,11 +43,7 @@ the corresponding empirical distribution function would be
 \end{cases}
 \end{equation}
 
-```{r, echo=FALSE}
-xx <- c(0.2, 0.7, 1.3)
-plot(ecdf(xx), verticals=TRUE, las=1, main="An Empirical Distribution Function", lwd=2,
-     xlim=c(-.2, 1.7), xlab="t", ylab="Fn(t)")
-```
+![](07-empiricalcdf_files/figure-latex/unnamed-chunk-1-1.pdf)<!-- --> 
 
 
 
@@ -167,10 +163,21 @@ from a study on kidney function.
 
 * This dataset has $157$ observations which has the age of each study participant and
 a measure of overall kidney function. The data can be obtained at https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt
-```{r}
+
+```r
 kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
                      header=TRUE)
 head(kidney)
+```
+
+```
+##   age   tot
+## 1  18  2.44
+## 2  19  3.86
+## 3  19 -1.22
+## 4  20  2.30
+## 5  21  0.98
+## 6  21 -0.50
 ```
 
 * The **ecdf** function is the main function which computes the empirical distribution function
@@ -178,23 +185,30 @@ in **R**
 
 * The **ecdf** function will create an **ecdf** object. To create an ecdf object
 for the kidney totals, use the following code:
-```{r}
+
+```r
 kidney.Fhat <- ecdf(kidney$tot)
 ```
 
 * You can plot the ecdf for the kidney totals by just calling **plot(ecdf)**
-```{r}
+
+```r
 plot(kidney.Fhat, main = "Kidney Data: Default plot for ecdf", las=1)
 ```
+
+![](07-empiricalcdf_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
 
 * If you don't like the look of the points in the ecdf plot, you can use add the argument
 **do.points = FALSE** when calling plot. Also, you can add the argument **verticals =TRUE**
 if you want the plot to draw vertical lines whenever there is a jump in the empirical distribution function.
 
-```{r}
+
+```r
 plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data:  ecdf with 
      vertical lines and without points", las=1, lwd=2)
 ```
+
+![](07-empiricalcdf_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
 
 
 ---
@@ -203,7 +217,8 @@ plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data:  ecdf wi
 
 * We can do this ourselves, by using the pointwise confidence interval formula shown in \@ref(eq:pointwise-cis)
 
-```{r}
+
+```r
 ## 1. First, we will compute the standard errors at each of the observed time points
 tt <- sort(unique(kidney$tot)) 
 std.err <- sqrt(kidney.Fhat(tt)*(1 - kidney.Fhat(tt))/ length(kidney$tot))
@@ -220,9 +235,12 @@ lines(tt, ci.low, type="s", lty=2)
 lines(tt, ci.upper, type="s", lty=2)
 ```
 
+![](07-empiricalcdf_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> 
+
 * We could plot the confidence bands as well.
 
-```{r}
+
+```r
 n <- length(kidney$tot)
 
 ## Compute the confidence bands at each time point
@@ -235,28 +253,34 @@ lines(tt, ci.band.low, type="s", lty=2)
 lines(tt, ci.band.upper, type="s", lty=2)
 ```
 
+![](07-empiricalcdf_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
+
 * Comparing the pointwise confidence intervals and the simultaneous confidence bands
 in the same plot shows how much wider our confidence bands are:
-```{r, echo=FALSE}
-plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, 
-     main = "Kidney Data: Confidence Bands", las=1, lwd=2)
-lines(tt, ci.low, type="s", lty=2, lwd=2)
-lines(tt, ci.upper, type="s", lty=2, lwd=2)
-lines(tt, ci.band.low, type="s", lty=2, lwd=2, col="red")
-lines(tt, ci.band.upper, type="s", lty=2, lwd=2, col="red")
-legend("bottomright", legend=c("Pointwise", "Bands"), col=c("black", "red"), bty='n', lty=2, lwd=2)
-```
+![](07-empiricalcdf_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
 
 ---
 
 * A nice feature of of the **ecdf** function is that **ecdf** object
 can be treated as a function which computes the empirical distribution function.
 For example,
-```{r}
+
+```r
 kidney.Fhat <- ecdf(kidney$tot)
 
 kidney.Fhat(0)
+```
+
+```
+## [1] 0.5095541
+```
+
+```r
 kidney.Fhat( c(-1,1,4) )
+```
+
+```
+## [1] 0.3057325 0.6560510 0.9745223
 ```
 
 ## The Kolmogorov-Smirnov Test
@@ -296,15 +320,35 @@ F_{Kolmo}(t) = 1 - 2\sum_{j=1}^{\infty} (-1)^{(j+1)} e^{-2j^{2}t^{2}} \nonumber
 * The one-sample KS test can be performed in **R** using the **ks.test** function. 
 For one-sample tests, you have to provide the "name" of the distribution function
 that you are choosing for $F_{0}$.
-```{r}
+
+```r
 xx <- rt(100, df=2) ## generate 100 observations from a t-dist with 2 d.f.
 ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ```
 
+```
+## 
+## 	One-sample Kolmogorov-Smirnov test
+## 
+## data:  xx
+## D = 0.11606, p-value = 0.1352
+## alternative hypothesis: two-sided
+```
+
 * You can even test that the data follow some other $\textrm{Normal}(\mu, \sigma^{2})$
 by just providing **mean** and **sd** arguments.
-```{r}
+
+```r
 ks.test(xx, y="pnorm", mean=1, sd=2)  
+```
+
+```
+## 
+## 	One-sample Kolmogorov-Smirnov test
+## 
+## data:  xx
+## D = 0.34313, p-value = 1.187e-10
+## alternative hypothesis: two-sided
 ```
 
 ---
@@ -341,16 +385,27 @@ the one-sample KS test statistic. In particular, under $H_{0}$:
 ---
 
 * The **ks.test** function in **R** also performs two-sample KS tests.
-```{r}
+
+```r
 xx <- rnorm(100)
 yy <- rlogis(100)
 ks.test(xx, yy)  
 ```
 
+```
+## 
+## 	Two-sample Kolmogorov-Smirnov test
+## 
+## data:  xx and yy
+## D = 0.16, p-value = 0.1545
+## alternative hypothesis: two-sided
+```
+
 * We can compute the KS statistic ourselves and check that this matches the value of the KS statistic 
 returned by the **ks.test** function:
 
-```{r}
+
+```r
 zz <- c(xx, yy)
 zz.order <- sort(zz)
 F.x <- ecdf(xx)
@@ -358,6 +413,10 @@ F.y <- ecdf(yy)
 
 KS.stat <- max( abs( F.x(zz.order) - F.y(zz.order) ) )
 KS.stat
+```
+
+```
+## [1] 0.16
 ```
 
 

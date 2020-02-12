@@ -30,26 +30,7 @@ constitute an i.i.d. sample from some common distribution function $F$.
 
 ---
 
-
-* For example, if we observed $X_{1} = 0.7$, $X_{2} = 0.2$, and $X_{3} = 1.3$,
-the corresponding empirical distribution function would be
-\begin{equation}
-\hat{F}_{3}(t) = 
-\begin{cases}
-0 & \textrm{ for } t < 0.2  \\
-1/3 & \textrm{ for } 0.2 \leq t < 0.7 \\
-2/3 & \textrm{ for } 0.7 \leq t < 1.3 \\
-1   & \textrm{ for } t \geq 1.3
-\end{cases}
-\end{equation}
-
-```{r, echo=FALSE}
-xx <- c(0.2, 0.7, 1.3)
-plot(ecdf(xx), verticals=TRUE, las=1, main="An Empirical Distribution Function", lwd=2,
-     xlim=c(-.2, 1.7), xlab="t", ylab="Fn(t)")
-```
-
-
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
 ## Confidence intervals for F(t)
 
@@ -58,10 +39,10 @@ plot(ecdf(xx), verticals=TRUE, las=1, main="An Empirical Distribution Function",
 n \hat{F}_{n}(t) \sim \textrm{Binomial}\big( n, F(t) \big)
 \end{equation}
 
-* This is because, for a fixed $t$, $n\hat{F}_{n}(t)$ is the sum of $n$ independent
+* For a fixed $t$, $n\hat{F}_{n}(t)$ is the sum of $n$ independent
 Bernoulli random variables $W_{1}^{t}, \ldots, W_{n}^{t}$
 \begin{equation}
-n \hat{F}_{n}(t) = \sum_{i=1}^{n} W_{i}^{t} = \sum_{i=1}^{n} I( X_{i} \leq t)
+\hat{F}_{n}(t) = \sum_{i=1}^{n} W_{i}^{t} = \sum_{i=1}^{n} I( X_{i} \leq t)
 \end{equation}
 
 * The probability that $W_{i}^{t} = 1$ is
@@ -80,11 +61,11 @@ P( W_{i}^{t} = 1) = P(X_{i} \leq t) = F(t) \nonumber
 
 * The above asymptotic statement is the basis for constructing **pointwise confidence intervals** for $F(t)$.
 
-* For a fixed $t$, a $100 \times (1-\alpha)\%$ confidence interval for $F(t)$ is the following
+* For a fixed $t$, a $95\%$ confidence interval for $F(t)$ is the following
 \begin{eqnarray}
-CI_{\alpha}^{pw}(t) &=& [L_{\alpha}^{pw}(t), U_{\alpha}^{pw}(t)] \nonumber \\
-L_{\alpha}^{pw}(t) &=& \max\Bigg\{\hat{F}_{n}(t) - z_{1 - \alpha/2} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 0 \Bigg\} \nonumber \\
-U_{\alpha}^{pw}(t) &=& \min\Bigg\{ \hat{F}_{n}(t) + z_{1 - \alpha/2} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 1 \Bigg\}
+CI^{pw}(t) &=& [L^{pw}(t), U^{pw}(t)] \nonumber \\
+L^{pw}(t) &=& \max\Big\{\hat{F}_{n}(t) - z_{0.975} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 0 \Big\} \nonumber \\
+U^{pw}(t) &=& \min\Big\{ \hat{F}_{n}(t) + z_{0.975} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 1 \Big\}
 (\#eq:pointwise-cis)
 \end{eqnarray}
 
@@ -167,10 +148,21 @@ from a study on kidney function.
 
 * This dataset has $157$ observations which has the age of each study participant and
 a measure of overall kidney function. The data can be obtained at https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt
-```{r}
+
+```r
 kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
                      header=TRUE)
 head(kidney)
+```
+
+```
+##   age   tot
+## 1  18  2.44
+## 2  19  3.86
+## 3  19 -1.22
+## 4  20  2.30
+## 5  21  0.98
+## 6  21 -0.50
 ```
 
 * The **ecdf** function is the main function which computes the empirical distribution function
@@ -178,23 +170,30 @@ in **R**
 
 * The **ecdf** function will create an **ecdf** object. To create an ecdf object
 for the kidney totals, use the following code:
-```{r}
+
+```r
 kidney.Fhat <- ecdf(kidney$tot)
 ```
 
 * You can plot the ecdf for the kidney totals by just calling **plot(ecdf)**
-```{r}
+
+```r
 plot(kidney.Fhat, main = "Kidney Data: Default plot for ecdf", las=1)
 ```
+
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 * If you don't like the look of the points in the ecdf plot, you can use add the argument
 **do.points = FALSE** when calling plot. Also, you can add the argument **verticals =TRUE**
 if you want the plot to draw vertical lines whenever there is a jump in the empirical distribution function.
 
-```{r}
+
+```r
 plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data:  ecdf with 
      vertical lines and without points", las=1, lwd=2)
 ```
+
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 
 ---
@@ -203,7 +202,8 @@ plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data:  ecdf wi
 
 * We can do this ourselves, by using the pointwise confidence interval formula shown in \@ref(eq:pointwise-cis)
 
-```{r}
+
+```r
 ## 1. First, we will compute the standard errors at each of the observed time points
 tt <- sort(unique(kidney$tot)) 
 std.err <- sqrt(kidney.Fhat(tt)*(1 - kidney.Fhat(tt))/ length(kidney$tot))
@@ -220,9 +220,12 @@ lines(tt, ci.low, type="s", lty=2)
 lines(tt, ci.upper, type="s", lty=2)
 ```
 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+
 * We could plot the confidence bands as well.
 
-```{r}
+
+```r
 n <- length(kidney$tot)
 
 ## Compute the confidence bands at each time point
@@ -235,28 +238,34 @@ lines(tt, ci.band.low, type="s", lty=2)
 lines(tt, ci.band.upper, type="s", lty=2)
 ```
 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+
 * Comparing the pointwise confidence intervals and the simultaneous confidence bands
 in the same plot shows how much wider our confidence bands are:
-```{r, echo=FALSE}
-plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, 
-     main = "Kidney Data: Confidence Bands", las=1, lwd=2)
-lines(tt, ci.low, type="s", lty=2, lwd=2)
-lines(tt, ci.upper, type="s", lty=2, lwd=2)
-lines(tt, ci.band.low, type="s", lty=2, lwd=2, col="red")
-lines(tt, ci.band.upper, type="s", lty=2, lwd=2, col="red")
-legend("bottomright", legend=c("Pointwise", "Bands"), col=c("black", "red"), bty='n', lty=2, lwd=2)
-```
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 ---
 
 * A nice feature of of the **ecdf** function is that **ecdf** object
 can be treated as a function which computes the empirical distribution function.
 For example,
-```{r}
+
+```r
 kidney.Fhat <- ecdf(kidney$tot)
 
 kidney.Fhat(0)
+```
+
+```
+## [1] 0.5095541
+```
+
+```r
 kidney.Fhat( c(-1,1,4) )
+```
+
+```
+## [1] 0.3057325 0.6560510 0.9745223
 ```
 
 ## The Kolmogorov-Smirnov Test
@@ -296,15 +305,35 @@ F_{Kolmo}(t) = 1 - 2\sum_{j=1}^{\infty} (-1)^{(j+1)} e^{-2j^{2}t^{2}} \nonumber
 * The one-sample KS test can be performed in **R** using the **ks.test** function. 
 For one-sample tests, you have to provide the "name" of the distribution function
 that you are choosing for $F_{0}$.
-```{r}
+
+```r
 xx <- rt(100, df=2) ## generate 100 observations from a t-dist with 2 d.f.
 ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ```
 
+```
+## 
+## 	One-sample Kolmogorov-Smirnov test
+## 
+## data:  xx
+## D = 0.18091, p-value = 0.002872
+## alternative hypothesis: two-sided
+```
+
 * You can even test that the data follow some other $\textrm{Normal}(\mu, \sigma^{2})$
 by just providing **mean** and **sd** arguments.
-```{r}
+
+```r
 ks.test(xx, y="pnorm", mean=1, sd=2)  
+```
+
+```
+## 
+## 	One-sample Kolmogorov-Smirnov test
+## 
+## data:  xx
+## D = 0.23428, p-value = 3.418e-05
+## alternative hypothesis: two-sided
 ```
 
 ---
@@ -325,53 +354,30 @@ two groups.
 * The two-sample KS test statistic is defined as the maximum distance between the
 two empirical distribution functions:
 \begin{equation}
-KS_{n,m}^{(2)} = \sup_{t} \big| \hat{F}_{n,X}(t) - \hat{F}_{m,Y}(t)  \big|
+KS_{n}^{(2)} = \sup_{t} \big| \hat{F}_{n,X}(t) - \hat{F}_{m,Y}(t)  \big|
 \end{equation}
 Here, $\hat{F}_{n,X}(t) = \frac{1}{n}\sum_{i=1}^{n} I(X_{i} \leq t)$ and
 $\hat{F}_{m,Y}(t) = \frac{1}{m}\sum_{j=1}^{m} I(Y_{j} \leq t)$ denote
 the empirical distribution functions from the X and Y samples.
 
-* The two-sample KS test statistic also converges to the same limit as 
-the one-sample KS test statistic. In particular, under $H_{0}$:
-\begin{equation}
-\sqrt{ \frac{nm}{n + m } }KS_{n,m}^{(2)} \longrightarrow \textrm{Kolmogorov}
-\qquad \textrm{ as } n,m \longrightarrow \infty
-\end{equation}
-
 ---
 
 * The **ks.test** function in **R** also performs two-sample KS tests.
-```{r}
+
+```r
 xx <- rnorm(100)
 yy <- rlogis(100)
 ks.test(xx, yy)  
 ```
 
-* We can compute the KS statistic ourselves and check that this matches the value of the KS statistic 
-returned by the **ks.test** function:
-
-```{r}
-zz <- c(xx, yy)
-zz.order <- sort(zz)
-F.x <- ecdf(xx)
-F.y <- ecdf(yy)
-
-KS.stat <- max( abs( F.x(zz.order) - F.y(zz.order) ) )
-KS.stat
 ```
-
-
----
-
-* **Exercise 7.1.** Why does
-\begin{equation}
-KS_{n,m}^{(2)} = \max_{1 \leq i \leq n+m} \big| \hat{F}_{n,X}(Z_{(i)}) -  \hat{F}_{n,Y}(Z_{(i)}) \big|, \nonumber
-\end{equation}
-where $\mathbf{Z} = (Z_{1}, \ldots, Z_{n+m})$ denotes the pooled sample and $Z_{(1)}, \ldots, Z_{(n+m)}$
-denote the order statistics from $\mathbf{Z}$?
-
----
-
+## 
+## 	Two-sample Kolmogorov-Smirnov test
+## 
+## data:  xx and yy
+## D = 0.28, p-value = 0.0007873
+## alternative hypothesis: two-sided
+```
 
 ## The empirical distribution function and statistical functionals
 
