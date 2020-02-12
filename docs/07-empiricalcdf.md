@@ -43,7 +43,7 @@ the corresponding empirical distribution function would be
 \end{cases}
 \end{equation}
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-1-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
 
 
@@ -196,7 +196,7 @@ kidney.Fhat <- ecdf(kidney$tot)
 plot(kidney.Fhat, main = "Kidney Data: Default plot for ecdf", las=1)
 ```
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 * If you don't like the look of the points in the ecdf plot, you can use add the argument
 **do.points = FALSE** when calling plot. Also, you can add the argument **verticals =TRUE**
@@ -208,7 +208,7 @@ plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data:  ecdf wi
      vertical lines and without points", las=1, lwd=2)
 ```
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 
 ---
@@ -235,7 +235,7 @@ lines(tt, ci.low, type="s", lty=2)
 lines(tt, ci.upper, type="s", lty=2)
 ```
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 * We could plot the confidence bands as well.
 
@@ -253,11 +253,11 @@ lines(tt, ci.band.low, type="s", lty=2)
 lines(tt, ci.band.upper, type="s", lty=2)
 ```
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 
 * Comparing the pointwise confidence intervals and the simultaneous confidence bands
 in the same plot shows how much wider our confidence bands are:
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 ---
 
@@ -331,7 +331,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.11606, p-value = 0.1352
+## D = 0.11657, p-value = 0.132
 ## alternative hypothesis: two-sided
 ```
 
@@ -347,7 +347,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.34313, p-value = 1.187e-10
+## D = 0.27586, p-value = 4.913e-07
 ## alternative hypothesis: two-sided
 ```
 
@@ -397,7 +397,7 @@ ks.test(xx, yy)
 ## 	Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.16, p-value = 0.1545
+## D = 0.19, p-value = 0.0541
 ## alternative hypothesis: two-sided
 ```
 
@@ -416,7 +416,7 @@ KS.stat
 ```
 
 ```
-## [1] 0.16
+## [1] 0.19
 ```
 
 
@@ -433,4 +433,81 @@ denote the order statistics from $\mathbf{Z}$?
 
 
 ## The empirical distribution function and statistical functionals
+
+* In many areas of mathematics, it is common to refer to refere to a function
+which is a "functions of functions" as a **functional**.
+
+* For example, $T(f)$ which is defined as
+\begin{equation}
+T(f) = \int_{0}^{1} f^{2}(x) dx
+\end{equation}
+is a functional because $T(f)$ takes arguments which are functions
+and outputs real numbers.
+
+---
+
+* Many common parameters that we encounter in statistics can be thought of
+as functionals where the input of the functional is usually a distribution function.
+
+* For example, the mean is an example of a functional
+\begin{equation}
+\mu(F) = \int x dF(x) = \int x f(x) dx \nonumber 
+\end{equation}
+As indicated by the notation $\mu(F)$, the value of the mean
+depends on the underlying distribution function $F$.
+
+* Also, the variance is an example of a functional
+\begin{equation}
+\sigma^{2}(F) = \int (x - \mu(F))^{2} dF(x)
+= \int x^{2} dF(x) - \mu^{2}(F) \nonumber
+\end{equation}
+
+* The median is an example of a functional
+\begin{equation}
+\textrm{med}(F) = F^{-1}(1/2) \nonumber
+\end{equation}
+
+* The tail probability $P(X_{i} > c)$ is also a functional
+\begin{equation}
+\theta_{c}(F) = \int I(x > c) dF(x) \nonumber
+\end{equation}
+
+---
+
+* Many common estimators can be thought of as coming
+from "plugging in" the empirical cdf into the appropriate statistical functional.
+
+* For example, plugging in the empirical cdf into the mean functional gives:
+\begin{equation}
+\mu( \hat{F}_{n} ) = \int x d\hat{F}_{n}(x) = \frac{1}{n}\sum_{i=1}^{n} X_{i} = \bar{X}  \nonumber
+\end{equation}
+
+* Plugging in the empirical cdf into the tail probability functional gives
+\begin{equation}
+\theta_{c}( \hat{F}_{n} ) = \int I(x > c) d\hat{F}_{n}(x) = \frac{1}{n}\sum_{i=1}^{n}I(X_{i} > c)
+= 1 - \hat{F}_{n}(c) \nonumber
+\end{equation}
+
+* The sample variance is not quite a plug-in estimate for $\sigma^{2}(F)$ but it is very close
+\begin{eqnarray}
+\sigma^{2}(\hat{F}_{n})
+&=& \int x^{2} d\hat{F}_{n}(x) - \mu^{2}(\hat{F}_{n})
+= \frac{1}{n} \sum_{i=1}^{n} X_{i}^{2} - \bar{X}^{2} \nonumber \\
+&=& \frac{1}{n} \sum_{i=1}^{n} (X_{i} - \bar{X})^{2}
+= \frac{n-1}{n} \hat{\sigma}^{2} \nonumber 
+\end{eqnarray}
+
+---
+
+* This notation for statistical functionals will be useful when we discuss the bootstrap later in
+the course.
+
+* The notation for statistical functionals is also very useful in the context 
+of influence functions and robust statistics, but we will not discuss these
+topics in this course.
+
+
+
+
+
 
