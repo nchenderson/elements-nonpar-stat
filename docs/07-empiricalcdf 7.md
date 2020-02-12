@@ -331,7 +331,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.11657, p-value = 0.132
+## D = 0.17764, p-value = 0.003632
 ## alternative hypothesis: two-sided
 ```
 
@@ -347,7 +347,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.27586, p-value = 4.913e-07
+## D = 0.26635, p-value = 1.378e-06
 ## alternative hypothesis: two-sided
 ```
 
@@ -397,7 +397,7 @@ ks.test(xx, yy)
 ## 	Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.19, p-value = 0.0541
+## D = 0.18, p-value = 0.07832
 ## alternative hypothesis: two-sided
 ```
 
@@ -416,7 +416,7 @@ KS.stat
 ```
 
 ```
-## [1] 0.19
+## [1] 0.18
 ```
 
 
@@ -468,7 +468,7 @@ depends on the underlying distribution function $F$.
 \end{equation}
 
 * The tail probability $P(X_{i} > c)$ is also a functional
-\begin{equation}
+\begin{equatoin}
 \theta_{c}(F) = \int I(x > c) dF(x) \nonumber
 \end{equation}
 
@@ -489,13 +489,13 @@ from "plugging in" the empirical cdf into the appropriate statistical functional
 \end{equation}
 
 * The sample variance is not quite a plug-in estimate for $\sigma^{2}(F)$ but it is very close
-\begin{eqnarray}
+\begin{equation}
 \sigma^{2}(\hat{F}_{n})
-&=& \int x^{2} d\hat{F}_{n}(x) - \mu^{2}(\hat{F}_{n})
-= \frac{1}{n} \sum_{i=1}^{n} X_{i}^{2} - \bar{X}^{2} \nonumber \\
-&=& \frac{1}{n} \sum_{i=1}^{n} (X_{i} - \bar{X})^{2}
-= \frac{n-1}{n} \hat{\sigma}^{2} \nonumber 
-\end{eqnarray}
+= \int x^{2} d\hat{F}_{n}(x) - \mu^{2}(\hat{F}_{n})
+= \frac{1}{n} \sum_{i=1}^{n} X_{i}^{2} - \bar{X}^{2}
+= \frac{1}{n} \sum_{i=1}^{n} (X_{i} - \bar{X})^{2}
+= \frac{n-1}{n} \hat{\sigma}^{2}
+\end{equation}
 
 ---
 

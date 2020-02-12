@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 7 The Empirical Distribution Function | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 7 The Empirical Distribution Function | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -548,7 +551,7 @@ that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
 ##  One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.1535, p-value = 0.01797
+## D = 0.11657, p-value = 0.132
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
@@ -559,7 +562,7 @@ by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
 ##  One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.27012, p-value = 9.191e-07
+## D = 0.27586, p-value = 4.913e-07
 ## alternative hypothesis: two-sided</code></pre>
 <hr />
 <ul>
@@ -599,7 +602,7 @@ the one-sample KS test statistic. In particular, under <span class="math inline"
 ##  Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.22, p-value = 0.01581
+## D = 0.19, p-value = 0.0541
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>We can compute the KS statistic ourselves and check that this matches the value of the KS statistic
@@ -612,7 +615,7 @@ returned by the <strong>ks.test</strong> function:</li>
 <a class="sourceLine" id="cb117-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb117-6" data-line-number="6">KS.stat &lt;-<span class="st"> </span><span class="kw">max</span>( <span class="kw">abs</span>( <span class="kw">F.x</span>(zz.order) <span class="op">-</span><span class="st"> </span><span class="kw">F.y</span>(zz.order) ) )</a>
 <a class="sourceLine" id="cb117-7" data-line-number="7">KS.stat</a></code></pre></div>
-<pre><code>## [1] 0.22</code></pre>
+<pre><code>## [1] 0.19</code></pre>
 <hr />
 <ul>
 <li><strong>Exercise 7.1.</strong> Why does
@@ -626,6 +629,70 @@ denote the order statistics from <span class="math inline">\(\mathbf{Z}\)</span>
 </div>
 <div id="the-empirical-distribution-function-and-statistical-functionals" class="section level2">
 <h2><span class="header-section-number">7.5</span> The empirical distribution function and statistical functionals</h2>
+<ul>
+<li><p>In many areas of mathematics, it is common to refer to refere to a function
+which is a “functions of functions” as a <strong>functional</strong>.</p></li>
+<li><p>For example, <span class="math inline">\(T(f)\)</span> which is defined as
+<span class="math display">\[\begin{equation}
+T(f) = \int_{0}^{1} f^{2}(x) dx
+\end{equation}\]</span>
+is a functional because <span class="math inline">\(T(f)\)</span> takes arguments which are functions
+and outputs real numbers.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Many common parameters that we encounter in statistics can be thought of
+as functionals where the input of the functional is usually a distribution function.</p></li>
+<li><p>For example, the mean is an example of a functional
+<span class="math display">\[\begin{equation}
+\mu(F) = \int x dF(x) = \int x f(x) dx \nonumber 
+\end{equation}\]</span>
+As indicated by the notation <span class="math inline">\(\mu(F)\)</span>, the value of the mean
+depends on the underlying distribution function <span class="math inline">\(F\)</span>.</p></li>
+<li><p>Also, the variance is an example of a functional
+<span class="math display">\[\begin{equation}
+\sigma^{2}(F) = \int (x - \mu(F))^{2} dF(x)
+= \int x^{2} dF(x) - \mu^{2}(F) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The median is an example of a functional
+<span class="math display">\[\begin{equation}
+\textrm{med}(F) = F^{-1}(1/2) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The tail probability <span class="math inline">\(P(X_{i} &gt; c)\)</span> is also a functional
+<span class="math display">\[\begin{equation}
+\theta_{c}(F) = \int I(x &gt; c) dF(x) \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Many common estimators can be thought of as coming
+from “plugging in” the empirical cdf into the appropriate statistical functional.</p></li>
+<li><p>For example, plugging in the empirical cdf into the mean functional gives:
+<span class="math display">\[\begin{equation}
+\mu( \hat{F}_{n} ) = \int x d\hat{F}_{n}(x) = \frac{1}{n}\sum_{i=1}^{n} X_{i} = \bar{X}  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Plugging in the empirical cdf into the tail probability functional gives
+<span class="math display">\[\begin{equation}
+\theta_{c}( \hat{F}_{n} ) = \int I(x &gt; c) d\hat{F}_{n}(x) = \frac{1}{n}\sum_{i=1}^{n}I(X_{i} &gt; c)
+= 1 - \hat{F}_{n}(c) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The sample variance is not quite a plug-in estimate for <span class="math inline">\(\sigma^{2}(F)\)</span> but it is very close
+<span class="math display">\[\begin{eqnarray}
+\sigma^{2}(\hat{F}_{n})
+&amp;=&amp; \int x^{2} d\hat{F}_{n}(x) - \mu^{2}(\hat{F}_{n})
+= \frac{1}{n} \sum_{i=1}^{n} X_{i}^{2} - \bar{X}^{2} \nonumber \\
+&amp;=&amp; \frac{1}{n} \sum_{i=1}^{n} (X_{i} - \bar{X})^{2}
+= \frac{n-1}{n} \hat{\sigma}^{2} \nonumber 
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>This notation for statistical functionals will be useful when we discuss the bootstrap later in
+the course.</p></li>
+<li><p>The notation for statistical functionals is also very useful in the context
+of influence functions and robust statistics, but we will not discuss these
+topics in this course.</p></li>
+</ul>
 
 </div>
 </div>
@@ -640,11 +707,13 @@ denote the order statistics from <span class="math inline">\(\mathbf{Z}\)</span>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -652,12 +721,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -669,6 +737,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },
