@@ -22,10 +22,7 @@ make few assumptions about the particular form of $f(x)$.
 
 ## Histograms
 
-```{r, echo=FALSE}
-load("~/Documents/STAT685Notes/Data/nhgh.rda")
-hist(nhgh$wt, main="", xlab="Body Weight from NHANES")
-```
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
 ### Definition
 
@@ -84,7 +81,8 @@ E\{ \hat{f}_{h_{n}}^{H}(x) \} &=& \frac{1}{n h_{n}} \sum_{i=1}^{n} P( x_{0} + (k
 ### Histograms in R
 
 In **R**, use histograms are computed using the `hist` function 
-```{r, eval=FALSE}
+
+```r
 hist(x, breaks, probability, plot, ...)
 ```
 
@@ -102,20 +100,31 @@ hist(x, breaks, probability, plot, ...)
 **Note:** The default for R, is to use right-closed intervals $(a, b]$. 
 This can be changed using the **right** argument of the **hist** function.
 
-```{r }
+
+```r
 bodywt.hist <- hist(nhgh$wt, main="", xlab="Body Weight from NHANES")
 ```
 
-```{r }
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+
+
+```r
 bodywt.hist2 <- hist(nhgh$wt, main="Hist of BW on Probability Scale", 
                      xlab="Body Weight from NHANES", probability=TRUE)
 ```
 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+
 
 In addition to generating a histogram plot, the histogram function 
 also returns useful stuff.
-```{r}
+
+```r
 names(bodywt.hist)
+```
+
+```
+## [1] "breaks"   "counts"   "density"  "mids"     "xname"    "equidist"
 ```
 * **breaks** 
    +
@@ -123,15 +132,43 @@ names(bodywt.hist)
 * **mids** 
 * **density**
 
-```{r}
+
+```r
 bodywt.hist$breaks
+```
+
+```
+##  [1]  20  40  60  80 100 120 140 160 180 200 220 240
+```
+
+```r
 bodywt.hist$counts
 ```
 
-```{r}
+```
+##  [1]   44 1160 2705 1846  721  212   71   24    7    2    3
+```
+
+
+```r
 binwidth <- bodywt.hist$breaks[2] - bodywt.hist$breaks[1]
 bodywt.hist$density
+```
+
+```
+##  [1] 3.237675e-04 8.535688e-03 1.990434e-02 1.358352e-02 5.305372e-03
+##  [6] 1.559971e-03 5.224430e-04 1.766004e-04 5.150846e-05 1.471670e-05
+## [11] 2.207506e-05
+```
+
+```r
 bodywt.hist$counts/(length(nhgh$wt)*binwidth)
+```
+
+```
+##  [1] 3.237675e-04 8.535688e-03 1.990434e-02 1.358352e-02 5.305372e-03
+##  [6] 1.559971e-03 5.224430e-04 1.766004e-04 5.150846e-05 1.471670e-05
+## [11] 2.207506e-05
 ```
 
 ### Performance of the Histogram Estimate
@@ -148,9 +185,9 @@ through its **mean-squared error** (MSE).
 
 * We will first look at the mean-squared error of $\hat{f}_{h_{n}}^{H}( x )$ at a single point $x$
 \begin{eqnarray}
-\textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
-&=& E\Big( \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}  \Big) \nonumber \\
-&=& \underbrace{\Big( E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x)  \Big)^{2} }_{\textrm{Bias Squared}} + \underbrace{\textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \}}_{\textrm{Variance}} \nonumber
+\textrm{MSE}\{ \hat{f}(x) \} 
+&=& E\Big( \{ \hat{f}(x) - f(x) \}^{2}  \Big) \nonumber \\
+&=& \underbrace{\Big( E\{ \hat{f}(x) \} - f(x)  \Big)^{2} }_{\textrm{Bias Squared}} + \underbrace{\textrm{Var}\{ \hat{f}(x) \}}_{\textrm{Variance}} \nonumber
 \end{eqnarray}
 
 * In general, as the bin width $h_{n}$ increases, the histogram estimate
@@ -199,7 +236,7 @@ p_{h_{n}}(x) = P\Big\{ X_{i} \textrm{ falls into bin } A_{h_{n}}(x) \Big\}
 
 * Using what is known about the Binomial distribution (i.e., $E( n_{A_{h_{n}}(x)} ) = np_{h_{n}}(x)$ and 
 $\textrm{Var}( n_{A_{h_{n}}(x)} ) = np_{h_{n}}(x)\{1 - p_{h_{n}}(x) \}$), we
-can express the bias and variance of $\hat{f}_{h_{n}}^{H}(x)$ as
+can express the bias and variance of $\hat{f}(x)$ as
 \begin{eqnarray}
 \textrm{Bias}\{ \hat{f}(x) \} &=& E\{ \hat{f}(x) \} - f(x) \nonumber \\
 &=& \frac{1}{nh_{n}}E( n_{A_{h_{n}}(x)} ) - f(x) \nonumber \\
@@ -220,7 +257,7 @@ and
 
 * So, the bias of the histogram density estimate $\hat{f}(x)$ is
 \begin{equation}
-\textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} 
+\textrm{Bias}\{ \hat{f}(x) \} 
 \approx f'(x)\{ x - (x_{0} + (A_{h_{n}}(x) - 1)h_{n}) \}
 \end{equation}
 
@@ -233,7 +270,7 @@ bin $x_{0} + (A_{h_{n}}(x) - 1)h_{n}$ will always be very close to $x$.
 
 * Now, turning to the variance of the histogram estimate
 \begin{equation}
-\textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \} = \frac{p_{h_{n}}(x) }{nh_{n}^{2}}\{1 - p_{h_{n}}(x)\}
+\textrm{Var}\{ \hat{f}(x) \} = \frac{p_{h_{n}}(x) }{nh_{n}^{2}}\{1 - p_{h_{n}}(x)\}
 \approx \frac{f(x) + f'(x)\{ x - x_{0} - (A_{h_{n}}(x) - 1)h_{n} \}}{nh_{n}}\{1 - p_{h_{n}}(x)\}
 \approx \frac{f(x)}{n h_{n} }
 \end{equation}
@@ -247,9 +284,9 @@ bin $x_{0} + (A_{h_{n}}(x) - 1)h_{n}$ will always be very close to $x$.
 * Recalling (), the approximate mean-squared error of the histogram density estimate
 at a particular point $x$ is given by
 \begin{eqnarray}
-\textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
-&=& E\Big( \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}  \Big) \nonumber \\
-&=& \Big( \textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} \Big)^{2} + \textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \} \nonumber \\
+\textrm{MSE}\{ \hat{f}(x) \} 
+&=& E\Big( \{ \hat{f}(x) - f(x) \}^{2}  \Big) \nonumber \\
+&=& \Big( \textrm{Bias}\{ \hat{f}(x) \} \Big)^{2} + \textrm{Var}\{ \hat{f}(x) \} \nonumber \\
 &\approx&  [f'(x)]^{2}\{ x - (x_{0} + (A_{h_{n}}(x) - 1)h_{n}) \}^{2} + \frac{f(x)}{n h_{n} }
 \end{eqnarray}
 
@@ -267,13 +304,13 @@ that does not depend on a particular choice of $x$.
 
 * The MISE is defined as
 \begin{eqnarray}
-MISE\{ \hat{f}_{h_{n}}^{H}(x) \} 
-&=& E\Big\{ \int_{-\infty}^{\infty} \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}dx   \Big\} \nonumber \\
-&=& \int_{-\infty}^{\infty} \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} dx 
+MISE\{ \hat{f}(x) \} 
+&=& E\Big\{ \int_{-\infty}^{\infty} \{ \hat{f}(x) - f(x) \}^{2}dx   \Big\} \nonumber \\
+&=& \int_{-\infty}^{\infty} \textrm{MSE}\{ \hat{f}(x) \} dx 
 \end{eqnarray}
 Using our previously derived approximation for the MSE, we have
 \begin{eqnarray}
-MISE\{ \hat{f}_{h_{n}}^{H}(x) \} &\approx&
+MISE\{ \hat{f}(x) \} &\approx&
 \int x [f'(x)]^{2} - x_{0}\int [f'(x)]^{2} dx + (A_{h_{n}}(x) - 1)h_{n}) \}^{2} + \frac{1}{n h_{n} } \int f(x) dx \nonumber \\
 &=& 
 \end{eqnarray}
@@ -315,66 +352,11 @@ h_{n}^{opt} = 3.5 \sigma n^{-1/3}
 
 * Scott rule: use $\hat{\sigma} = 2$
 
-## A "Naive", Box-type Density Estimate
-
-* A related estimator $\hat{f}_{h_{n}}^{B}$ of the density $f(x)$ uses a 
-"sliding bin" at each point $x$ to calculate the estimate of $f(x)$.
-
-* Specifically, the estimate $\hat{f}_{h_{n}}^{B}(x)$ at the point $x$ is defined as
-\begin{equation}
-\hat{f}_{h_{n}}^{B}(x) = \frac{1}{2nh_{n}} \Big[ \# \text{ of observations falling in the interval } (x - h_{n}, x + h_{n}) \Big] \nonumber
-\end{equation}
-
-* In other words, for each $x$ we are forming a bin with width $2h_{n}$ around $x$, and counting
-the number of observations that fall in this bin.
-
-* This is also an intuitive estimator because 
-\begin{equation}
-E \{ \hat{f}_{h_{n}}^{B}(x) \}
-= \frac{1}{2h_{n}} P(x - h_{n} < X_{i}  < x + h_{n}) 
-\approx f(x)  \nonumber 
-\end{equation}
-
----
-
-* We can also express $\hat{f}_{h_{n}}^{B}(x)$ in the following way:
-\begin{equation}
-\hat{f}_{h_{n}}^{B}(x)
-= \frac{1}{n} \sum_{i=1}^{n} \frac{1}{h_{n}} w\Big( \frac{X_{i} - x}{h_{n}} \Big),  \nonumber
-\end{equation}
-where $w(t)$ is defined as the following "box function"
-\begin{equation}
-w(t) = 
-\begin{cases}
-\frac{1}{2} & \textrm{ if } |t| < 1 \nonumber \\
-0 & \textrm{ otherwise } \nonumber
-\end{cases}
-\end{equation}
-
-```{r, echo=FALSE}
-tt <- seq(-2.5, 2.5, length.out=100)
-plot(0,0, type="n", xlim=c(-2.5, 2.5), ylim=c(0, .6), las=1, xlab="t",
-     ylab="w(t)", main="Box Function w(t)")
-lines(tt, (abs(tt) < 1)/2, type="s", lwd=2, lty=2)
-```
-
-* While the estimator $\hat{f}_{h_{n}}^{B}$ does seem reasonable, it always
-results in density estimates which are "not smooth."
-
----
-
-* **Exercise 8.?**. Write an **R** function which computes the $\hat{f}_{h_{n}}^{B}(x)$
-at a collection of specified points.
-
----
 
 
 ## Kernel Density Estimation
 
-* Kernel density estimates are a generalization of the box-type density estimate $\hat{f}_{h_{n}}^{B}(x)$.
-
-* Specifically, with kernel density estimation, we are going to replace the "box function" in ()
-with a function which is much smoother. 
+### Histograms and a "Naive" Density Estimate
 
 ### Kernels, Bandwidth, and Smooth Density Estimation
 
