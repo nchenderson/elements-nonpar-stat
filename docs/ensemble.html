@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 14 Ensemble Methods for Prediction | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 14 Ensemble Methods for Prediction | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -40,9 +40,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
-
 
 
 
@@ -232,15 +229,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.2.3" data-path="density-estimation.html"><a href="density-estimation.html#performance-of-the-histogram-estimate"><i class="fa fa-check"></i><b>8.2.3</b> Performance of the Histogram Estimate</a></li>
 <li class="chapter" data-level="8.2.4" data-path="density-estimation.html"><a href="density-estimation.html#choosing-the-histogram-bin-width"><i class="fa fa-check"></i><b>8.2.4</b> Choosing the Histogram Bin Width</a></li>
 </ul></li>
-<li class="chapter" data-level="8.3" data-path="density-estimation.html"><a href="density-estimation.html#a-naive-box-type-density-estimate"><i class="fa fa-check"></i><b>8.3</b> A “Naive”, Box-type Density Estimate</a></li>
-<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a><ul>
-<li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#kernels-bandwidth-and-smooth-density-estimation"><i class="fa fa-check"></i><b>8.4.1</b> Kernels, Bandwidth, and Smooth Density Estimation</a></li>
-<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-and-variance-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias and Variance of Kernel Density Estimates</a></li>
-<li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection</a></li>
+<li class="chapter" data-level="8.3" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.3</b> Kernel Density Estimation</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="density-estimation.html"><a href="density-estimation.html#histograms-and-a-naive-density-estimate"><i class="fa fa-check"></i><b>8.3.1</b> Histograms and a “Naive” Density Estimate</a></li>
+<li class="chapter" data-level="8.3.2" data-path="density-estimation.html"><a href="density-estimation.html#kernels-bandwidth-and-smooth-density-estimation"><i class="fa fa-check"></i><b>8.3.2</b> Kernels, Bandwidth, and Smooth Density Estimation</a></li>
+<li class="chapter" data-level="8.3.3" data-path="density-estimation.html"><a href="density-estimation.html#bias-and-variance-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.3.3</b> Bias and Variance of Kernel Density Estimates</a></li>
+<li class="chapter" data-level="8.3.4" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection"><i class="fa fa-check"></i><b>8.3.4</b> Bandwidth Selection</a></li>
 </ul></li>
-<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation-in-practice"><i class="fa fa-check"></i><b>8.5</b> Kernel Density Estimation in Practice</a><ul>
-<li class="chapter" data-level="8.5.1" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.5.1</b> Density Estimation in R</a></li>
-<li class="chapter" data-level="8.5.2" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5.2</b> Cross-Validation for Bandwidth Selection</a></li>
+<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation-in-practice"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation in Practice</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.4.1</b> Density Estimation in R</a></li>
+<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.4.2</b> Cross-Validation for Bandwidth Selection</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>III Uncertainty Measures</b></span></li>
@@ -337,13 +334,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -351,11 +346,12 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
+"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -367,10 +363,6 @@ gitbook.start({
 "text": null
 },
 "history": {
-"link": null,
-"text": null
-},
-"view": {
 "link": null,
 "text": null
 },
