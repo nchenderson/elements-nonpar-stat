@@ -108,7 +108,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.864
+## [1] 1.854
 ```
 
 ```r
@@ -116,7 +116,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.911
+## [1] 1.927
 ```
 
 
@@ -366,7 +366,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.879 0.877
+## [1] 0.907 0.910
 ```
 
 ```r
@@ -376,7 +376,7 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.873 0.873
+## [1] 0.907 0.907
 ```
 
 ---
@@ -524,7 +524,7 @@ while $X$ and $Y$ are not independent.
 * Note that the association between the two variables in the figures below
 is **non-monotone**.
 
-![](06-ustatistics_files/figure-latex/unnamed-chunk-3-1.pdf)<!-- --> 
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 #### Definition
 
@@ -690,7 +690,7 @@ plot(xx2, yy2, xlab="x", ylab="y", main=paste("Sample Distance Corr. = ",
                                               round(d.cor2, 4)), las=1)
 ```
 
-![](06-ustatistics_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 
 ```r
