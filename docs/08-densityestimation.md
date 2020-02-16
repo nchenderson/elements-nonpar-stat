@@ -226,7 +226,10 @@ through its **mean-squared error** (MSE).
 \begin{eqnarray}
 \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
 &=& E\Big( \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}  \Big) \nonumber \\
-&=& \underbrace{\Big( E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x)  \Big)^{2} }_{\textrm{Bias Squared}} + \underbrace{\textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \}}_{\textrm{Variance}} \nonumber
+&=& E\Big( \Big[ \hat{f}_{h_{n}}^{H}(x) - E\{ \hat{f}_{n}^{H}(x) \} + E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \Big]^{2}  \Big) \nonumber \\
+&=& E\Big( \Big[ \hat{f}_{h_{n}}^{H}(x) - E\{ \hat{f}_{n}^{H}(x) \} \Big]^{2}  \Big) + E\Big( \Big[ E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \Big]^{2}  \Big) \nonumber \\
+&+& 2E\Big( \Big[ \hat{f}_{h_{n}}^{H}(x) - E\{ \hat{f}_{n}^{H}(x) \}\Big]\Big[ E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \Big]  \Big)  \nonumber \\ 
+&=& \underbrace{\textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \}}_{\textrm{Variance}} + \underbrace{\Big( E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x)  \Big)^{2} }_{\textrm{Bias Squared}}  \nonumber
 \end{eqnarray}
 
 * In general, as the bin width $h_{n}$ increases, the histogram estimate
@@ -243,7 +246,7 @@ B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n}) \nonumber
 
 * For a point $x \in B_{k}$, that "belongs" to the $k^{th}$ bin, the histogram density estimate is
 \begin{equation}
-\hat{f}(x) = \frac{n_{k}}{nh_{n}}, \quad \textrm{ where } n_{k} = \textrm{ number of observations falling into bin } B_{k}
+\hat{f}_{n}^{H}(x) = \frac{n_{k}}{nh_{n}}, \quad \textrm{ where } n_{k} = \textrm{ number of observations falling into bin } B_{k}
 \end{equation}
 
 * To better examine what happens as $n$ changes, we will define the function $A_{h_{n}, x_{0}}(x)$ as the function 
@@ -278,7 +281,7 @@ n_{A_{h_{n}}(x)} \sim \textrm{Binomial}\{ n, p_{h_{n}, x_{0}}(x) \} \nonumber
 
 * The success probability $p_{h_{n}, x_{0}}(x)$ is defined as
 \begin{eqnarray}
-p_{h_{n}, x_{0}}(x) &=& P\Big\{ X_{i} \textrm{ falls into bin } A_{h_{n}, x_{0}}(x) \Big\}   \nonumber \\
+p_{h_{n}, x_{0}}(x) &=& P\Big\{ X_{i} \textrm{ falls into bin } B_{A_{h_{n}, x_{0}}}(x) \Big\}   \nonumber \\
 &=& \int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt.
 \end{eqnarray}
 
@@ -287,13 +290,13 @@ p_{h_{n}, x_{0}}(x) &=& P\Big\{ X_{i} \textrm{ falls into bin } A_{h_{n}, x_{0}}
 * Because $n_{A_{h_{n}, x_{0}}(x)}$ follows a binomial distribution, we know that 
 \begin{eqnarray}
 E( n_{A_{h_{n}, x_{0}}(x)} ) &=& np_{h_{n}, x_{0}}(x)  \nonumber \\ 
-\textrm{Var}( n_{A_{h_{n}, x_{0}}(x)} ) &=& np_{h_{n}, x_{0}}(x)\{1 - p_{h_{n},x_{0}}(x) \}) \nonumber
+\textrm{Var}( n_{A_{h_{n}, x_{0}}(x)} ) &=& np_{h_{n}, x_{0}}(x)\{1 - p_{h_{n},x_{0}}(x) \} \nonumber
 \end{eqnarray}
 
 * So, we can express the bias of the histogram density 
 estimate $\hat{f}_{h_{n}}^{H}(x) = n_{A_{h_{n}, x_{0}}(x)}/(nh_{n})$ as
 \begin{eqnarray}
-\textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} &=& E\{ \hat{f}(x) \} - f(x) \nonumber \\
+\textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} &=& E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \nonumber \\
 &=& \frac{1}{nh_{n}}E( n_{A_{h_{n}, x_{0}}(x)} ) - f(x) \nonumber \\
 &=& \frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } - f(x), \nonumber
 \end{eqnarray}
@@ -311,11 +314,12 @@ and we can express the variance as:
 \end{eqnarray}
 
 * So, the bias of the histogram density estimate $\hat{f}_{h_{n}}^{H}(x)$ is
-\begin{equation}
+\begin{eqnarray}
 \textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} 
-\approx f'(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big] 
+&=& \frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } - f(x)  \nonumber \\
+&\approx& f'(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big] 
 (\#eq:approx-bias-hist)
-\end{equation}
+\end{eqnarray}
 
 
 * Choosing a very small bin width $h_{n}$ will result in a small bias because the left endpoint of the
@@ -363,13 +367,13 @@ that does not depend on a particular choice of $x$.
 
 * The MISE is defined as
 \begin{eqnarray}
-\textrm{MISE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
+\textrm{MISE}\{ \hat{f}_{h_{n}}^{H} \} 
 &=& E\Big\{ \int_{-\infty}^{\infty} \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}dx   \Big\} \nonumber \\
 &=& \int_{-\infty}^{\infty} \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} dx \nonumber
 \end{eqnarray}
 Using the previously derived approximation \@ref(eq:mse-hist-decomp) for the MSE, it can be shown that
 \begin{eqnarray}
-\textrm{MISE}\{ \hat{f}_{h_{n}}^{H}(x) \} \approx
+\textrm{MISE}\{ \hat{f}_{h_{n}}^{H} \} \approx
 \frac{1}{nh_{n}} + \frac{h_{n}^{2}}{12}\int_{-\infty}^{\infty} [f'(x)]^{2} dx  
 (\#eq:mise-formula)
 \end{eqnarray}
@@ -427,12 +431,12 @@ intervals.
 * A related estimator $\hat{f}_{h_{n}}^{B}$ of the density $f(x)$ uses a 
 "sliding bin" at each point $x$ to calculate the estimate of $f(x)$.
 
-* Specifically, the estimate $\hat{f}_{h_{n}}^{B}(x)$ at the point $x$ is defined as
+* Specifically, the "box estimate" $\hat{f}_{h_{n}}^{B}(x)$ at the point $x$ is defined as
 \begin{equation}
 \hat{f}_{h_{n}}^{B}(x) = \frac{1}{2nh_{n}} \Big[ \# \text{ of observations falling in the interval } (x - h_{n}, x + h_{n}) \Big] \nonumber
 \end{equation}
 
-* In other words, for each $x$ we are forming a bin with width $2h_{n}$ around $x$, and counting
+* In other words, for each $x$ we are forming a bin of width $2h_{n}$ around $x$, and we are counting
 the number of observations that fall in this bin.
 
 * This is also an intuitive estimator because 
@@ -444,10 +448,21 @@ E \{ \hat{f}_{h_{n}}^{B}(x) \}
 
 ---
 
+* Unlike the histogram, the box estimate does not require the density estimate 
+to be constant within each bin.
+
+* Also, the box estimate will not tend to have as dramatic changes near
+the bin edges.
+
+* However, plots of the box estimate will still largely be non-smooth.
+
+---
+
 * We can also express $\hat{f}_{h_{n}}^{B}(x)$ in the following way:
 \begin{equation}
 \hat{f}_{h_{n}}^{B}(x)
-= \frac{1}{n} \sum_{i=1}^{n} \frac{1}{h_{n}} w\Big( \frac{X_{i} - x}{h_{n}} \Big),  \nonumber
+= \frac{1}{n} \sum_{i=1}^{n} \frac{1}{h_{n}} w\Big( \frac{X_{i} - x}{h_{n}} \Big),  
+(\#eq:box-density)
 \end{equation}
 where $w(t)$ is defined as the following "box function"
 \begin{equation}
@@ -461,7 +476,7 @@ w(t) =
 <img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 * While the estimator $\hat{f}_{h_{n}}^{B}$ does seem reasonable, it always
-results in density estimates which are "not smooth."
+results in density estimates which are not "smooth."
 
 ---
 
@@ -475,10 +490,42 @@ at a collection of specified points.
 
 * Kernel density estimates are a generalization of the box-type density estimate $\hat{f}_{h_{n}}^{B}(x)$.
 
-* Specifically, with kernel density estimation, we are going to replace the "box function" in ()
+* Specifically, with kernel density estimation, we are going to replace the "box function" in \@ref(eq:box-density)
 with a function which is much smoother. 
 
+* A kernel density estimator $\hat{f}(x)$ is defined as
+\begin{equation}
+\hat{f}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) \nonumber
+\end{equation}
+
+* The function $K( \cdot )$ is referred to as the **kernel function**.
+
 ### Kernels, Bandwidth, and Smooth Density Estimation
+
+* Kernel functions are often chosen so that they satisfy the following properties
+\begin{eqnarray}
+K(t) &\geq& 0 \textrm{ for all } t \nonumber \\
+K(t) &=& K(-t) \nonumber \\
+\int_{-\infty}^{\infty} K(t) dt &=& 1 \nonumber
+\end{eqnarray}
+
+* You can think of $K(u)$ as a probability density function
+which is symmetric around $0$.
+
+* When plotting $\frac{1}{h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$,
+
+---
+
+* Some of the most common choices of kernel functions include
+\begin{eqnarray}
+\textrm{Gaussian} :&& \quad  K(u) = \exp(-u^{2}/2)/\sqrt{2\pi} \nonumber \\
+\textrm{Epanechnikov} :&& \quad  K(u) = \tfrac{3}{4\sqrt{5}}(1 - \tfrac{1}{5} u^{2}) I(|u| < \sqrt{5}) \nonumber \\
+\textrm{biweight} :&& \quad  K(u) = \tfrac{15}{16\sqrt{7}}(1 - \tfrac{1}{7} u^{2})^{2} I(|u| < \sqrt{7}) \nonumber \\
+\end{eqnarray}
+
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+
 
 ### Bias and Variance of Kernel Density Estimates
 
@@ -486,6 +533,17 @@ with a function which is much smoother.
 
 
 ## Kernel Density Estimation in Practice
+
+
+```r
+library(MASS)
+galaxies[1:5]
+```
+
+```
+## [1] 9172 9350 9483 9558 9775
+```
+
 
 ### Density Estimation in R
 

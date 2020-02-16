@@ -334,7 +334,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.15406, p-value = 0.01736
+## D = 0.087294, p-value = 0.4312
 ## alternative hypothesis: two-sided
 ```
 
@@ -350,7 +350,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.21786, p-value = 0.0001508
+## D = 0.41018, p-value = 4.885e-15
 ## alternative hypothesis: two-sided
 ```
 
@@ -400,7 +400,7 @@ ks.test(xx, yy)
 ## 	Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.2, p-value = 0.03663
+## D = 0.21, p-value = 0.02431
 ## alternative hypothesis: two-sided
 ```
 
@@ -419,7 +419,7 @@ KS.stat
 ```
 
 ```
-## [1] 0.2
+## [1] 0.21
 ```
 
 
