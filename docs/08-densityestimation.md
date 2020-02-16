@@ -69,9 +69,9 @@ the values of $\hat{f}_{h_{n}}^{H}(x)$.
 * To see the motivation for the histogram estimate, notice that if we choose a 
 relatively small value $h_{n} > 0$ 
 \begin{equation}
-P(x < X_{i} < x + h_{n}) = \int_{x}^{x + h_{n}} f(t) dt \approx h_{n}f(c), \nonumber
+P(a < X_{i} < a + h_{n}) = \int_{a}^{a + h_{n}} f(t) dt \approx h_{n}f(c), \nonumber
 \end{equation}
-for any point $x \leq c \leq x + h_{n}$.
+for any point $a \leq c \leq a + h_{n}$.
 
 * So, for a point $x \in B_{k}$, the expected value of $\hat{f}_{h_{n}}^{H}(x)$ is
 \begin{eqnarray}
@@ -91,11 +91,12 @@ hist(x, breaks, probability, plot, ...)
 ```
 
 * The **breaks** argument
-    + Default is "Sturges". This is a method for finding the binwidth.
-    + Can be a name giving the name of an algorithm for computing binwidth
+    + Default is "Sturges". This is a method for finding the bin width.
+    + Can be a name giving the name of an algorithm for computing bin width
     (e.g., "Scott" and "FD").
     + Can also be a single number. This gives the number of bins used.
-    + Could also be a ..
+    + Could be a vector giving the breakpoints between bins.
+    + Could also be a function which computes the number of bins.
 
 * The **probability** argument. If this is set to FALSE, then the 
 bin counts are shown in the histogram. If set to TRUE, then the
@@ -155,10 +156,10 @@ names(kidney.hist)
    + the boundaries for the histogram bins. The bins are of the form ( breaks[k], breaks[k+1] ]
 * **counts** 
    + the number of observations falling into each bin
-* **mids** 
-   + the midpoint of each of the bins
 * **density**
    + the value of the estimated density within each of the bins
+* **mids** 
+   + the midpoint of each of the bins
 
 
 ```r
@@ -209,7 +210,7 @@ kidney.hist$counts/(length(kidney$age)*binwidth)
 ```
 
 
-### Performance of the Histogram Estimate and Binwidth Selection
+### Performance of the Histogram Estimate and Bin Width Selection
 
 #### Bias/Variance Decomposition
 
@@ -356,20 +357,21 @@ $nh_{n} \longrightarrow \infty$.
 because the best choice of $h_{n}$ will often depend on your choice of $x$.
 
 #### Integrated Mean Squared Error and Optimal Histogram Bin Width
+
 * Using mean integrated squared error (MISE) allows us to find an optimal bin width
 that does not depend on a particular choice of $x$.
 
 * The MISE is defined as
 \begin{eqnarray}
-MISE\{ \hat{f}_{h_{n}}^{H}(x) \} 
+\textrm{MISE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
 &=& E\Big\{ \int_{-\infty}^{\infty} \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}dx   \Big\} \nonumber \\
-&=& \int_{-\infty}^{\infty} \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} dx 
+&=& \int_{-\infty}^{\infty} \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} dx \nonumber
 \end{eqnarray}
-Using our previously derived approximation for the MSE, we have
+Using the previously derived approximation \@ref(eq:mse-hist-decomp) for the MSE, it can be shown that
 \begin{eqnarray}
-MISE\{ \hat{f}_{h_{n}}^{H}(x) \} &\approx&
-\int x [f'(x)]^{2} - x_{0}\int [f'(x)]^{2} dx + (A_{h_{n}}(x) - 1)h_{n}) \}^{2} + \frac{1}{n h_{n} } \int f(x) dx \nonumber \\
-&=& 
+\textrm{MISE}\{ \hat{f}_{h_{n}}^{H}(x) \} \approx
+\frac{1}{nh_{n}} + \frac{h_{n}^{2}}{12}\int_{-\infty}^{\infty} [f'(x)]^{2} dx  
+(\#eq:mise-formula)
 \end{eqnarray}
 
 
@@ -377,7 +379,7 @@ MISE\{ \hat{f}_{h_{n}}^{H}(x) \} &\approx&
 
 * To select the optimal bin width, we minimize the MISE as a function of $h_{n}$.
 
-* Minimizing (), as a function of $h_{n}$ yields the following formula for the optimal bin width
+* Minimizing \@ref(eq:mise-formula), as a function of $h_{n}$ yields the following formula for the optimal bin width
 \begin{equation}
 h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f'(x)]^{2} dx}  \Big)^{1/3} = C n^{-1/3} 
 (\#eq:opt-binwidth-hist)
@@ -392,26 +394,35 @@ h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f'(x)]^{2} dx}  \Big)^{1
 * We will mention three rules for selecting the bin width of a histogram.
    + Scott rule: (based on the optimal bin width formula \@ref(eq:opt-binwidth-hist))
    + Friedman and Diaconis rule (also based on the optimal bin width formula \@ref(eq:opt-binwidth-hist))
-   + Sturges rule: (based on ...)
+   + Sturges rule: (based on )
 
 ---
 
 * Both Scott and the FD rule are based on the optimal bin width formula \@ref(eq:opt-binwidth-hist).
 
-* The main problem with this formula is the presence of $\int_{-\infty}^{\infty} [f'(x)]^{2} dx$.
+* The main problem with using the formula \@ref(eq:opt-binwidth-hist) is the presence of $\int_{-\infty}^{\infty} [f'(x)]^{2} dx$.
+
 * **Solution:** See what this quantity looks like if we assume that $f(x)$ corresponds 
 to a $N(\mu, \sigma^{2})$ density.
 
 * With this assumption,
 \begin{equation}
-h_{n}^{opt} = 3.5 \sigma n^{-1/3}
+h_{n}^{opt} = 3.5 \sigma n^{-1/3}  \nonumber
 \end{equation}
 
-* Scott rule: use $\hat{\sigma} = 2$
+---
+
+* **Scott rule**: Use $h_{n}^{*} = 3.5 \hat{\sigma} n^{-1/3}$, where $\hat{\sigma}$ denotes the sample standard deviation.
+
+* **FD rule**: Use $h_{n}^{*} = 2 IQR n^{-1/3}$. This is a somewhat more robust choice of $h_{n}$ as it is not as 
+sensitive to outliers.
+
+* **Sturges rule**: The bin width is chosen so that we have $1 + log_{2}(n)$ bins. This choice tends to give wide
+intervals. 
 
 
 
-## A "Naive", Box-type Density Estimate
+## A Box-type Density Estimate
 
 * A related estimator $\hat{f}_{h_{n}}^{B}$ of the density $f(x)$ uses a 
 "sliding bin" at each point $x$ to calculate the estimate of $f(x)$.
@@ -454,7 +465,7 @@ results in density estimates which are "not smooth."
 
 ---
 
-* **Exercise 8.?**. Write an **R** function which computes the $\hat{f}_{h_{n}}^{B}(x)$
+* **Exercise 8.3**. Write an **R** function which computes the $\hat{f}_{h_{n}}^{B}(x)$
 at a collection of specified points.
 
 ---
