@@ -305,7 +305,7 @@ these parameters completely determine the form of <span class="math inline">\(f(
 <li><p>For example, with a Gaussian distribution you only need to find <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^{2}\)</span> to
 determine the form of <span class="math inline">\(f(x)\)</span>.</p></li>
 <li><p>In a nonparametric approach to estimating, we will assume that our observations <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>
-are an independent sample from a distribution having pdf <span class="math inline">\(f(x)\)</span>, but otherwise we will
+are an independent identically distribution sample from a distribution with pdf <span class="math inline">\(f(x)\)</span>, but otherwise we will
 make few assumptions about the particular form of <span class="math inline">\(f(x)\)</span>.</p></li>
 </ul>
 </div>
@@ -330,7 +330,7 @@ assumed to have the form <span class="math inline">\(B_{k} = [x_{0} + (k-1)h_{n}
 B_{1} &amp;=&amp; [x_{0}, x_{0} + h_{n}) \nonumber \\
 B_{2} &amp;=&amp; [x_{0} + h_{n}, x_{0} + 2h_{n}) \nonumber \\
 &amp;\vdots&amp; \nonumber \\
-B_{D_{n}} &amp;=&amp; [x_{0} + (D-1)h, x_{0} + D_{n}h_{n}) \nonumber 
+B_{D_{n}} &amp;=&amp; [x_{0} + (D_{n}-1)h_{n}, x_{0} + D_{n}h_{n}) \nonumber 
 \end{eqnarray}\]</span></p></li>
 <li><span class="math inline">\(x_{0}\)</span> - the origin</li>
 <li><span class="math inline">\(h_{n}\)</span> - bin width</li>
@@ -354,11 +354,13 @@ the values of <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span>.</p></
 <li><p>To see the motivation for the histogram estimate, notice that if we choose a
 relatively small value <span class="math inline">\(h_{n} &gt; 0\)</span>
 <span class="math display">\[\begin{equation}
-P(x &lt; X_{i} &lt; x + h_{n}) = \int_{x}^{x + h_{n}} f(x) dx \approx h_{n}f(x)
-\end{equation}\]</span></p></li>
+P(x &lt; X_{i} &lt; x + h_{n}) = \int_{x}^{x + h_{n}} f(t) dt \approx h_{n}f(c), \nonumber
+\end{equation}\]</span>
+for any point <span class="math inline">\(x \leq c \leq x + h_{n}\)</span>.</p></li>
 <li><p>So, for a point <span class="math inline">\(x \in B_{k}\)</span>, the expected value of <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span> is
 <span class="math display">\[\begin{eqnarray}
-E\{ \hat{f}_{h_{n}}^{H}(x) \} &amp;=&amp; \frac{1}{n h_{n}} \sum_{i=1}^{n} P( x_{0} + (k-1)h_{n} \leq X_{i} &lt; x_{0} + kh_{n}  ) \nonumber \\
+E\{ \hat{f}_{h_{n}}^{H}(x) \} &amp;=&amp; \frac{1}{n h_{n}} E\{ n_{k} \} \nonumber \\
+&amp;=&amp; \frac{1}{n h_{n}} \sum_{i=1}^{n} P( x_{0} + (k-1)h_{n} \leq X_{i} &lt; x_{0} + kh_{n}  ) \nonumber \\
 &amp;=&amp; \frac{1}{h_{n}} P( x_{0} + (k-1)h_{n} \leq X_{i} &lt; x_{0} + kh_{n}  )  \nonumber \\
 &amp;\approx&amp; f(x) \nonumber
 \end{eqnarray}\]</span></p></li>

@@ -17,7 +17,7 @@ these parameters completely determine the form of $f(x)$.
 determine the form of $f(x)$.
 
 * In a nonparametric approach to estimating, we will assume that our observations $X_{1}, \ldots, X_{n}$
-are an independent sample from a distribution having pdf $f(x)$, but otherwise we will
+are an independent identically distribution sample from a distribution with pdf $f(x)$, but otherwise we will
 make few assumptions about the particular form of $f(x)$.
 
 ## Histograms
@@ -41,7 +41,7 @@ assumed to have the form $B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n})$:
 B_{1} &=& [x_{0}, x_{0} + h_{n}) \nonumber \\
 B_{2} &=& [x_{0} + h_{n}, x_{0} + 2h_{n}) \nonumber \\
 &\vdots& \nonumber \\
-B_{D_{n}} &=& [x_{0} + (D-1)h, x_{0} + D_{n}h_{n}) \nonumber 
+B_{D_{n}} &=& [x_{0} + (D_{n}-1)h_{n}, x_{0} + D_{n}h_{n}) \nonumber 
 \end{eqnarray}
 
 * $x_{0}$ - the origin
@@ -69,12 +69,14 @@ the values of $\hat{f}_{h_{n}}^{H}(x)$.
 * To see the motivation for the histogram estimate, notice that if we choose a 
 relatively small value $h_{n} > 0$ 
 \begin{equation}
-P(x < X_{i} < x + h_{n}) = \int_{x}^{x + h_{n}} f(x) dx \approx h_{n}f(x)
+P(x < X_{i} < x + h_{n}) = \int_{x}^{x + h_{n}} f(t) dt \approx h_{n}f(c), \nonumber
 \end{equation}
+for any point $x \leq c \leq x + h_{n}$.
 
 * So, for a point $x \in B_{k}$, the expected value of $\hat{f}_{h_{n}}^{H}(x)$ is
 \begin{eqnarray}
-E\{ \hat{f}_{h_{n}}^{H}(x) \} &=& \frac{1}{n h_{n}} \sum_{i=1}^{n} P( x_{0} + (k-1)h_{n} \leq X_{i} < x_{0} + kh_{n}  ) \nonumber \\
+E\{ \hat{f}_{h_{n}}^{H}(x) \} &=& \frac{1}{n h_{n}} E\{ n_{k} \} \nonumber \\
+&=& \frac{1}{n h_{n}} \sum_{i=1}^{n} P( x_{0} + (k-1)h_{n} \leq X_{i} < x_{0} + kh_{n}  ) \nonumber \\
 &=& \frac{1}{h_{n}} P( x_{0} + (k-1)h_{n} \leq X_{i} < x_{0} + kh_{n}  )  \nonumber \\
 &\approx& f(x) \nonumber
 \end{eqnarray}
