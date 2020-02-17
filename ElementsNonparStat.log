@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  12 FEB 2020 17:22
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  17 FEB 2020 15:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1421,26 +1421,79 @@ Overfull \hbox (79.20341pt too wide) has occurred while \output is active
 IONALS \TU/lmr/m/n/10 113
  []
 
-[113] (./ElementsNonparStat.bbl [114])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 5417.
-[115
+[113] [114] [115] [116
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 5417.
+Chapter 8.
+File: 08-densityestimation_files/figure-latex/unnamed-chunk-1-1.pdf Graphic fil
+e (type pdf)
+<use 08-densityestimation_files/figure-latex/unnamed-chunk-1-1.pdf>
+
+Underfull \vbox (badness 4108) has occurred while \output is active []
+
+[117] [118] [119]
+File: 08-densityestimation_files/figure-latex/unnamed-chunk-4-1.pdf Graphic fil
+e (type pdf)
+<use 08-densityestimation_files/figure-latex/unnamed-chunk-4-1.pdf>
+File: 08-densityestimation_files/figure-latex/unnamed-chunk-5-1.pdf Graphic fil
+e (type pdf)
+<use 08-densityestimation_files/figure-latex/unnamed-chunk-5-1.pdf>
+[120]
+Overfull \hbox (33.0pt too wide) in paragraph at lines 5637--5637
+[]\TU/lmtt/m/n/10 ## [1] "breaks"   "counts"   "density"  "mids"     "xname"   
+ "equidist"[] 
+ []
+
+[121]
+Overfull \hbox (64.5pt too wide) in paragraph at lines 5722--5722
+[]\TU/lmtt/m/n/10 ## [1] 0.002547771 0.047133758 0.022292994 0.007006369 0.0082
+80255 0.007643312[] 
+ []
+
+
+Overfull \hbox (64.5pt too wide) in paragraph at lines 5733--5733
+[]\TU/lmtt/m/n/10 ## [1] 0.002547771 0.047133758 0.022292994 0.007006369 0.0082
+80255 0.007643312[] 
+ []
+
+
+Overfull \hbox (11.50822pt too wide) in alignment at lines 5752--5759
+ [][][] []
+ []
+
+[122] [123]
+Overfull \hbox (43.11807pt too wide) in alignment at lines 5872--5877
+ [][][] []
+ []
+
+[124] [125] [126]
+File: 08-densityestimation_files/figure-latex/unnamed-chunk-9-1.pdf Graphic fil
+e (type pdf)
+<use 08-densityestimation_files/figure-latex/unnamed-chunk-9-1.pdf>
+[127] [128]
+File: 08-densityestimation_files/figure-latex/unnamed-chunk-10-1.pdf Graphic fi
+le (type pdf)
+<use 08-densityestimation_files/figure-latex/unnamed-chunk-10-1.pdf>
+[129] (./ElementsNonparStat.bbl [130] [131
+
+])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 6177.
+[132]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 6177.
 (./ElementsNonparStat.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 5417.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 5417.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 6177.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 6177.
 
 Package rerunfilecheck Info: File `ElementsNonparStat.out' has not changed.
-(rerunfilecheck)             Checksum: C92223F101A135DD4DDBD31A5A425BE3.
+(rerunfilecheck)             Checksum: FA8AE3D92804D68E23F75768679A5746.
  ) 
 Here is how much of TeX's memory you used:
- 22762 strings out of 492970
- 431004 string characters out of 6133938
- 564621 words of memory out of 5000000
- 26498 multiletter control sequences out of 15000+600000
+ 22823 strings out of 492970
+ 433243 string characters out of 6133938
+ 567430 words of memory out of 5000000
+ 26558 multiletter control sequences out of 15000+600000
  572732 words of font info for 80 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 45i,14n,54p,10459b,454s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 45i,17n,54p,10459b,454s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on ElementsNonparStat.pdf (115 pages).
+Output written on ElementsNonparStat.pdf (132 pages).

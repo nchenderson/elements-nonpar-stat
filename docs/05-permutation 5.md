@@ -75,28 +75,22 @@ denote the corresponding permuted dataset
 
 
 
-\begin{table}[ht]
-\centering
-\begin{tabular}{ccccccc}
-  \hline
- & OriginalData & Perm1 & Perm2 & Perm3 & Perm4 & Perm5 \\ 
-  \hline
-z1 & 0.60 & -0.60 & 0.60 & -0.90 & 0.70 & 0.60 \\ 
-  z2 & -0.80 & -1.40 & -0.60 & 0.70 & -0.40 & -0.60 \\ 
-  z3 & -0.60 & 0.70 & 0.20 & 0.60 & -1.40 & -0.80 \\ 
-  z4 & -0.90 & 0.20 & -0.40 & 0.20 & 0.20 & 0.30 \\ 
-  z5 & 0.30 & -0.40 & -1.30 & -0.40 & -0.90 & -0.40 \\ 
-  z6 & -1.30 & -1.30 & -1.40 & -0.60 & -0.80 & 0.70 \\ 
-  z7 & 0.20 & 0.30 & 0.70 & -1.40 & 0.30 & -0.90 \\ 
-  z8 & 0.70 & 0.60 & 0.30 & -1.30 & 0.60 & 0.20 \\ 
-  z9 & -1.40 & -0.90 & -0.80 & 0.30 & -0.60 & -1.40 \\ 
-  z10 & -0.40 & -0.80 & -0.90 & -0.80 & -1.30 & -1.30 \\ 
-  mean difference & 0.16 & 0.12 & 0.12 & 0.80 & 0.00 & 0.36 \\ 
-   \hline
-\end{tabular}
-\caption{Example of Permuting a Vector of Responses.
-              This example assumes n=m=5.} 
-\end{table}
+<table border=1>
+<caption align="bottom"> Example of Permuting a Vector of Responses.
+              This example assumes n=m=5. </caption>
+<tr> <th>  </th> <th> OriginalData </th> <th> Perm1 </th> <th> Perm2 </th> <th> Perm3 </th> <th> Perm4 </th> <th> Perm5 </th>  </tr>
+  <tr> <td align="center"> z1 </td> <td align="center"> 0.60 </td> <td align="center"> -0.60 </td> <td align="center"> 0.60 </td> <td align="center"> -0.90 </td> <td align="center"> 0.70 </td> <td align="center"> 0.60 </td> </tr>
+  <tr> <td align="center"> z2 </td> <td align="center"> -0.80 </td> <td align="center"> -1.40 </td> <td align="center"> -0.60 </td> <td align="center"> 0.70 </td> <td align="center"> -0.40 </td> <td align="center"> -0.60 </td> </tr>
+  <tr> <td align="center"> z3 </td> <td align="center"> -0.60 </td> <td align="center"> 0.70 </td> <td align="center"> 0.20 </td> <td align="center"> 0.60 </td> <td align="center"> -1.40 </td> <td align="center"> -0.80 </td> </tr>
+  <tr> <td align="center"> z4 </td> <td align="center"> -0.90 </td> <td align="center"> 0.20 </td> <td align="center"> -0.40 </td> <td align="center"> 0.20 </td> <td align="center"> 0.20 </td> <td align="center"> 0.30 </td> </tr>
+  <tr> <td align="center"> z5 </td> <td align="center"> 0.30 </td> <td align="center"> -0.40 </td> <td align="center"> -1.30 </td> <td align="center"> -0.40 </td> <td align="center"> -0.90 </td> <td align="center"> -0.40 </td> </tr>
+  <tr> <td align="center"> z6 </td> <td align="center"> -1.30 </td> <td align="center"> -1.30 </td> <td align="center"> -1.40 </td> <td align="center"> -0.60 </td> <td align="center"> -0.80 </td> <td align="center"> 0.70 </td> </tr>
+  <tr> <td align="center"> z7 </td> <td align="center"> 0.20 </td> <td align="center"> 0.30 </td> <td align="center"> 0.70 </td> <td align="center"> -1.40 </td> <td align="center"> 0.30 </td> <td align="center"> -0.90 </td> </tr>
+  <tr> <td align="center"> z8 </td> <td align="center"> 0.70 </td> <td align="center"> 0.60 </td> <td align="center"> 0.30 </td> <td align="center"> -1.30 </td> <td align="center"> 0.60 </td> <td align="center"> 0.20 </td> </tr>
+  <tr> <td align="center"> z9 </td> <td align="center"> -1.40 </td> <td align="center"> -0.90 </td> <td align="center"> -0.80 </td> <td align="center"> 0.30 </td> <td align="center"> -0.60 </td> <td align="center"> -1.40 </td> </tr>
+  <tr> <td align="center"> z10 </td> <td align="center"> -0.40 </td> <td align="center"> -0.80 </td> <td align="center"> -0.90 </td> <td align="center"> -0.80 </td> <td align="center"> -1.30 </td> <td align="center"> -1.30 </td> </tr>
+  <tr> <td align="center"> mean difference </td> <td align="center"> 0.16 </td> <td align="center"> 0.12 </td> <td align="center"> 0.12 </td> <td align="center"> 0.80 </td> <td align="center"> 0.00 </td> <td align="center"> 0.36 </td> </tr>
+   </table>
 
 * The columns in the above table are just permutations of the original data $\mathbf{Z}$.
 
@@ -128,7 +122,7 @@ hist(mean.diff, las=1, col="grey", main="Permutation Distribution of Mean Differ
 abline(v=observed.diff, lwd=3)
 ```
 
-![](05-permutationLatex_files/figure-latex/unnamed-chunk-1-1.pdf)<!-- --> 
+<img src="05-permutation_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
 ### Permutation Test p-values
 * The one-sided p-value for the permutation test is
@@ -161,7 +155,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.75
+## [1] 0.73
 ```
     
 ### Example 2: Ratios of Means
@@ -196,7 +190,7 @@ hist(mean.ratio, las=1, col="grey", main="Permutation Distribution of Maximum Me
 abline(v=t.obs, lwd=3)
 ```
 
-![](05-permutationLatex_files/figure-latex/unnamed-chunk-3-1.pdf)<!-- --> 
+<img src="05-permutation_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 * The two-side (Monte Carlo) permutation test p-value is:
 
@@ -239,7 +233,7 @@ quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
 
 * Note that setting **probs=.5** in the **quantile** function will return the median.
 
-![](05-permutationLatex_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> 
+<img src="05-permutation_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 ---
 
@@ -255,8 +249,8 @@ $Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)$. Using
 $n=m=50$ and 500 simulation replications, compute 
 $500$ significance thresholds from the one-sided permutation 
 test which uses the statistic $T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$.
-How, does this compare with the t-statistic threshold of approximately
-$1.64*\sqrt{2/50}$?
+How, does this compare with the t-statistic threshold of 
+approximately $1.64*\sqrt{2/50}$?
 
 * **Exercise 5.3.** Suppose we have data from two groups
 such that $X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)$ and
@@ -387,43 +381,37 @@ Hence,
 \end{eqnarray}
 
 
-\begin{table}[ht]
-\centering
-\begin{tabular}{ccccccc}
-  \hline
-a1 & a2 & a3 & a4 & P(Z1 = a1,..., Z4=a4$|$order stat) & T(a1, a2, a3, a4) & T(a1, a2, a3, a4) $>$= 2.5 \\ 
-  \hline
--3 & -1 & 2 & 5 & 1/24 & -5.50 & 0 \\ 
-  -3 & -1 & 5 & 2 & 1/24 & -5.50 & 0 \\ 
-  -3 & 2 & -1 & 5 & 1/24 & -2.50 & 0 \\ 
-  -3 & 2 & 5 & -1 & 1/24 & -2.50 & 0 \\ 
-  -3 & 5 & -1 & 2 & 1/24 & 0.50 & 0 \\ 
-  -3 & 5 & 2 & -1 & 1/24 & 0.50 & 0 \\ 
-  -1 & -3 & 2 & 5 & 1/24 & -5.50 & 0 \\ 
-  -1 & -3 & 5 & 2 & 1/24 & -5.50 & 0 \\ 
-  -1 & 2 & -3 & 5 & 1/24 & -0.50 & 0 \\ 
-  -1 & 2 & 5 & -3 & 1/24 & -0.50 & 0 \\ 
-  -1 & 5 & -3 & 2 & 1/24 & 2.50 & 1 \\ 
-  -1 & 5 & 2 & -3 & 1/24 & 2.50 & 1 \\ 
-  2 & -3 & -1 & 5 & 1/24 & -2.50 & 0 \\ 
-  2 & -3 & 5 & -1 & 1/24 & -2.50 & 0 \\ 
-  2 & -1 & -3 & 5 & 1/24 & -0.50 & 0 \\ 
-  2 & -1 & 5 & -3 & 1/24 & -0.50 & 0 \\ 
-  2 & 5 & -3 & -1 & 1/24 & 5.50 & 1 \\ 
-  2 & 5 & -1 & -3 & 1/24 & 5.50 & 1 \\ 
-  5 & -3 & -1 & 2 & 1/24 & 0.50 & 0 \\ 
-  5 & -3 & 2 & -1 & 1/24 & 0.50 & 0 \\ 
-  5 & -1 & -3 & 2 & 1/24 & 2.50 & 1 \\ 
-  5 & -1 & 2 & -3 & 1/24 & 2.50 & 1 \\ 
-  5 & 2 & -3 & -1 & 1/24 & 5.50 & 1 \\ 
-  5 & 2 & -1 & -3 & 1/24 & 5.50 & 1 \\ 
-   \hline
-\end{tabular}
-\end{table}
+<table border=1>
+<tr> <th> a1 </th> <th> a2 </th> <th> a3 </th> <th> a4 </th> <th> P(Z1 = a1, Z2=a2, Z3=a3, Z4=a4|order stat) </th> <th> T(a1, a2, a3, a4) </th> <th> T(a1, a2, a3, a4) &gt;= 2.5 </th>  </tr>
+  <tr> <td align="center"> -3 </td> <td align="center"> -1 </td> <td align="center"> 2 </td> <td align="center"> 5 </td> <td align="center"> 1/24 </td> <td align="center"> -5.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -3 </td> <td align="center"> -1 </td> <td align="center"> 5 </td> <td align="center"> 2 </td> <td align="center"> 1/24 </td> <td align="center"> -5.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -3 </td> <td align="center"> 2 </td> <td align="center"> -1 </td> <td align="center"> 5 </td> <td align="center"> 1/24 </td> <td align="center"> -2.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -3 </td> <td align="center"> 2 </td> <td align="center"> 5 </td> <td align="center"> -1 </td> <td align="center"> 1/24 </td> <td align="center"> -2.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -3 </td> <td align="center"> 5 </td> <td align="center"> -1 </td> <td align="center"> 2 </td> <td align="center"> 1/24 </td> <td align="center"> 0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -3 </td> <td align="center"> 5 </td> <td align="center"> 2 </td> <td align="center"> -1 </td> <td align="center"> 1/24 </td> <td align="center"> 0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -1 </td> <td align="center"> -3 </td> <td align="center"> 2 </td> <td align="center"> 5 </td> <td align="center"> 1/24 </td> <td align="center"> -5.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -1 </td> <td align="center"> -3 </td> <td align="center"> 5 </td> <td align="center"> 2 </td> <td align="center"> 1/24 </td> <td align="center"> -5.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -1 </td> <td align="center"> 2 </td> <td align="center"> -3 </td> <td align="center"> 5 </td> <td align="center"> 1/24 </td> <td align="center"> -0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -1 </td> <td align="center"> 2 </td> <td align="center"> 5 </td> <td align="center"> -3 </td> <td align="center"> 1/24 </td> <td align="center"> -0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> -1 </td> <td align="center"> 5 </td> <td align="center"> -3 </td> <td align="center"> 2 </td> <td align="center"> 1/24 </td> <td align="center"> 2.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> -1 </td> <td align="center"> 5 </td> <td align="center"> 2 </td> <td align="center"> -3 </td> <td align="center"> 1/24 </td> <td align="center"> 2.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> 2 </td> <td align="center"> -3 </td> <td align="center"> -1 </td> <td align="center"> 5 </td> <td align="center"> 1/24 </td> <td align="center"> -2.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> 2 </td> <td align="center"> -3 </td> <td align="center"> 5 </td> <td align="center"> -1 </td> <td align="center"> 1/24 </td> <td align="center"> -2.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> 2 </td> <td align="center"> -1 </td> <td align="center"> -3 </td> <td align="center"> 5 </td> <td align="center"> 1/24 </td> <td align="center"> -0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> 2 </td> <td align="center"> -1 </td> <td align="center"> 5 </td> <td align="center"> -3 </td> <td align="center"> 1/24 </td> <td align="center"> -0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> 2 </td> <td align="center"> 5 </td> <td align="center"> -3 </td> <td align="center"> -1 </td> <td align="center"> 1/24 </td> <td align="center"> 5.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> 2 </td> <td align="center"> 5 </td> <td align="center"> -1 </td> <td align="center"> -3 </td> <td align="center"> 1/24 </td> <td align="center"> 5.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> 5 </td> <td align="center"> -3 </td> <td align="center"> -1 </td> <td align="center"> 2 </td> <td align="center"> 1/24 </td> <td align="center"> 0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> 5 </td> <td align="center"> -3 </td> <td align="center"> 2 </td> <td align="center"> -1 </td> <td align="center"> 1/24 </td> <td align="center"> 0.50 </td> <td align="center"> 0 </td> </tr>
+  <tr> <td align="center"> 5 </td> <td align="center"> -1 </td> <td align="center"> -3 </td> <td align="center"> 2 </td> <td align="center"> 1/24 </td> <td align="center"> 2.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> 5 </td> <td align="center"> -1 </td> <td align="center"> 2 </td> <td align="center"> -3 </td> <td align="center"> 1/24 </td> <td align="center"> 2.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> 5 </td> <td align="center"> 2 </td> <td align="center"> -3 </td> <td align="center"> -1 </td> <td align="center"> 1/24 </td> <td align="center"> 5.50 </td> <td align="center"> 1 </td> </tr>
+  <tr> <td align="center"> 5 </td> <td align="center"> 2 </td> <td align="center"> -1 </td> <td align="center"> -3 </td> <td align="center"> 1/24 </td> <td align="center"> 5.50 </td> <td align="center"> 1 </td> </tr>
+   </table>
 
 ## A Permutation Test for Correlation
 
-![](05-permutationLatex_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
+<img src="05-permutation_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 
 * Suppose we have $N$ pairs of observations $(U_{1}, V_{1}), \ldots, (U_{N}, V_{N})$
@@ -478,10 +466,10 @@ hist(cor.perm.pf, xlim=c(-1, 1), las=1, col="grey", main="Permutation
 abline(v=t.obs.pf, lwd=3)
 ```
 
-![](05-permutationLatex_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
+<img src="05-permutation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 
-![](05-permutationLatex_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
+<img src="05-permutation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 * Now let us compute the p-values for both the 
 Phenols/Flavanoids and Phenols/Color association tests.
@@ -530,7 +518,7 @@ will be when we break any association between $\mathbf{y}$ and
 a covariate.
 
 
-![](05-permutationLatex_files/figure-latex/unnamed-chunk-13-1.pdf)<!-- --> 
+<img src="05-permutation_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
 ---
 
@@ -635,25 +623,19 @@ for(h in 1:nvars) {
 }
 ```
 
-\begin{table}[ht]
-\centering
-\begin{tabular}{cc}
-  \hline
- & Permutation p-val \\ 
-  \hline
-Alcohol & 0.000 \\ 
-  Malic & 1.000 \\ 
-  Ash & 1.000 \\ 
-  Alcalinity & 1.000 \\ 
-  Magnesium & 0.923 \\ 
-  Phenols & 1.000 \\ 
-  Flavanoids & 0.080 \\ 
-  Nonflavanoids & 1.000 \\ 
-  Proanthocyanins & 1.000 \\ 
-  Color & 0.000 \\ 
-  Hue & 1.000 \\ 
-  Dilution & 1.000 \\ 
-  Proline & 0.000 \\ 
-   \hline
-\end{tabular}
-\end{table}
+<table border=1>
+<tr> <th>  </th> <th> Permutation p-val </th>  </tr>
+  <tr> <td align="center"> Alcohol </td> <td align="center"> 0.000 </td> </tr>
+  <tr> <td align="center"> Malic </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Ash </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Alcalinity </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Magnesium </td> <td align="center"> 0.923 </td> </tr>
+  <tr> <td align="center"> Phenols </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Flavanoids </td> <td align="center"> 0.080 </td> </tr>
+  <tr> <td align="center"> Nonflavanoids </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Proanthocyanins </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Color </td> <td align="center"> 0.000 </td> </tr>
+  <tr> <td align="center"> Hue </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Dilution </td> <td align="center"> 1.000 </td> </tr>
+  <tr> <td align="center"> Proline </td> <td align="center"> 0.000 </td> </tr>
+   </table>

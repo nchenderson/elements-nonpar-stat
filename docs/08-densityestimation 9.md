@@ -22,7 +22,10 @@ make few assumptions about the particular form of $f(x)$.
 
 ## Histograms
 
-![(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt](08-densityestimation_files/figure-latex/unnamed-chunk-1-1.pdf) 
+<div class="figure">
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" width="672" />
+<p class="caption">(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</p>
+</div>
 
 ### Definition
 
@@ -123,7 +126,7 @@ kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.tx
 kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
 ```
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 
 * Use the `probability = TRUE` argument to plot the density-estimate version of histogram.
@@ -134,7 +137,7 @@ kidney.hist2 <- hist(kidney$age, main="Histogram of Age on Probability Scale",
                      xlab="Age from Kidney Data", probability=TRUE)
 ```
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 ---
 
@@ -470,7 +473,7 @@ w(t) =
 \end{cases}
 \end{equation}
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 * While the estimator $\hat{f}_{h_{n}}^{B}$ does seem reasonable, it always
 results in density estimates which are not "smooth."
@@ -522,7 +525,7 @@ look like a "small hill" centered around $X_{i}$.
 \end{eqnarray}
 
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 
 ### Bias and Variance of Kernel Density Estimates

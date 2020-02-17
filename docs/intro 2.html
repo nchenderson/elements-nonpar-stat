@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics</title>
+  <title>Chapter 1 Introduction | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics" />
+  <meta property="og:title" content="Chapter 1 Introduction | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics" />
+  <meta name="twitter:title" content="Chapter 1 Introduction | Elements of Nonparametric Statistics" />
   
   <meta name="twitter:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   
@@ -24,15 +24,15 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-02-17" />
+<meta name="date" content="2020-02-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="rank-tests.html"/>
-<link rel="next" href="permutation.html"/>
+<link rel="prev" href="index.html"/>
+<link rel="next" href="getting-started.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -288,429 +291,488 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="krusk-wallis" class="section level1">
-<h1><span class="header-section-number">Chapter 4</span> Rank Tests for Multiple Groups</h1>
+<div id="intro" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
+<hr />
+<hr />
+<div id="sec:whatisnonpar" class="section level2">
+<h2><span class="header-section-number">1.1</span> What is Nonparametric Statistics?</h2>
+<p><strong>What is Parametric Statistics?</strong></p>
 <ul>
-<li><p>We can roughly think of the tests discussed in Chapter 3
-as being related to the parametric tests shown in the table below.
-<span class="math display">\[\begin{eqnarray}
-\textbf{Parametric Test} &amp; &amp; \qquad  \textbf{ Nonparametric Tests } \nonumber \\
-    &amp; &amp; \nonumber \\
-\textrm{One-Sample t-test} &amp; &amp; \qquad  \textrm{Wilcoxon Signed Rank/Sign Test} \nonumber \\
-\textrm{Two-Sample t-test} &amp; &amp; \qquad \textrm{Wilcoxon Rank Sum/Normal Scores/Median Test} \nonumber
-\end{eqnarray}\]</span></p></li>
-<li><p>The <strong>Kruskal-Wallis</strong> test can be though of as the
-nonparametric analogue of one-way analysis of variance (ANOVA).</p></li>
-<li><p>For <span class="math inline">\(K \geq 3\)</span> groups, one-way ANOVA considers the analysis of data
-arising from the following model
-<span class="math display" id="eq:normal-anova-model">\[\begin{equation}
-Y_{kj} = \mu_{k} + \varepsilon_{kj}, \qquad j=1,\ldots, n_{k}; k=1,\ldots,K  
-\tag{4.1}
-\end{equation}\]</span>
-where it is often assumed that <span class="math inline">\(\varepsilon_{kj} \sim \textrm{Normal}(0, \sigma^{2})\)</span>.</p></li>
-<li><p>Usually, the one-way ANOVA hypothesis of interest is something like
-<span class="math display" id="eq:homogeneity-hyp">\[\begin{equation}
-H_{0}: \mu_{1} = \mu_{2} = \ldots = \mu_{K}
-\tag{4.2}
-\end{equation}\]</span>
-which is sometimes referred to as the homogeneity hypothesis.</p></li>
-<li><p>A test of the hypothesis <a href="krusk-wallis.html#eq:homogeneity-hyp">(4.2)</a> is based on decomposing the observed variation in
-the responses <span class="math inline">\(Y_{kj}\)</span>:
-<span class="math display" id="eq:anova-decomp">\[\begin{eqnarray}
-\underbrace{ \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{..})^{2}}_{SST} &amp;=&amp; \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} + \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2} \nonumber \\
-&amp;=&amp; \underbrace{\sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}}_{SSA} + \underbrace{\sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2}}_{SSE} 
-\tag{4.3}
-\end{eqnarray}\]</span>
-where <span class="math inline">\(\bar{Y}_{k.} = \frac{1}{n_{k}}\sum_{j=1}^{n_{k}} Y_{kj}\)</span> and <span class="math inline">\(\bar{Y}_{..} = \frac{1}{K}\sum_{k=1}^{K} \bar{Y}_{k.}\)</span>.</p></li>
-<li><p>Large values of <span class="math inline">\(SSA = \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}\)</span> provide evidence against the null hypothesis <a href="krusk-wallis.html#eq:homogeneity-hyp">(4.2)</a>. The alternative hypothesis here is that there is at least one pair of means <span class="math inline">\(\mu_{h}, \mu_{l}\)</span>
-such that <span class="math inline">\(\mu_{h} \neq \mu_{l}\)</span>.</p></li>
+<li><p>Parametric models refer to probability distributions that can
+be fully described by a fixed number of parameters that do not change
+with the sample size.</p></li>
+<li>Typical examples include
+<ul>
+<li>Gaussian</li>
+<li>Poisson</li>
+<li>Exponential</li>
+<li>Beta</li>
+</ul></li>
+<li><p>Could also refer to a regression setting where the mean function
+is described by a fixed number of parameters.</p></li>
 </ul>
-<div id="the-kruskal-wallis-test" class="section level2">
-<h2><span class="header-section-number">4.1</span> The Kruskal-Wallis Test</h2>
-<div id="definition-2" class="section level3">
-<h3><span class="header-section-number">4.1.1</span> Definition</h3>
+<p><strong>What is Nonparametric Statistics?</strong></p>
 <ul>
-<li><p>Instead of assuming <a href="krusk-wallis.html#eq:normal-anova-model">(4.1)</a> for the responses <span class="math inline">\(Y_{kj}\)</span>, nonparametric way of thinking
-about this problem is to instead only assume that
+<li><p>It is difficult to give a concise, all-encompassing definition, but nonparametric
+statistics generally refers to statistical methods where there is not a clear parametric component.</p></li>
+<li><p>A more practical definition is that nonparametric statistics refers to flexible statistical procedures where
+very few assumptions are made regarding the distribution of the data or the form
+of a regression model.</p></li>
+<li><p>The uses of nonparametric methods in several common statistical contexts are described in Sections <a href="intro.html#sec:example-nonpar-tests">1.3</a> - <a href="intro.html#sec:example-nonpar-regress2">1.7</a>.</p></li>
+</ul>
+</div>
+<div id="sec:course-outline" class="section level2">
+<h2><span class="header-section-number">1.2</span> Outline of Course</h2>
+<p>This course is roughly divided into the following 5 categories.</p>
+<ol style="list-style-type: decimal">
+<li><strong>Nonparametric Testing</strong>
+<ul>
+<li>Rank-based Tests</li>
+<li>Permutation Tests</li>
+</ul></li>
+<li><strong>Estimation of Basic Nonparametric Quantities</strong>
+<ul>
+<li>The Empirical Distribution Function</li>
+<li>Density Estimation</li>
+</ul></li>
+<li><strong>Nonparametric Confidence Intervals</strong>
+<ul>
+<li>Bootstrap</li>
+<li>Jacknife</li>
+</ul></li>
+<li><strong>Nonparametric Regression Part I (Smoothing Methods)</strong>
+<ul>
+<li>Kernel Methods</li>
+<li>Splines</li>
+<li>Local Regression</li>
+</ul></li>
+<li><strong>Nonparametric Regression Part II (Machine Learning Methods)</strong>
+<ul>
+<li>Decision Trees/CART</li>
+<li>Ensemble Methods</li>
+</ul></li>
+</ol>
+</div>
+<div id="sec:example-nonpar-tests" class="section level2">
+<h2><span class="header-section-number">1.3</span> Example 1: Nonparametric vs. Parametric Two-Sample Testing</h2>
+<p>Suppose we have data from two groups. For example, outcomes from
+two different treatments.</p>
+<ul>
+<li><p><strong>Group 1 outcomes</strong>: <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> an i.i.d (independent and identically distributed) sample from distribution function <span class="math inline">\(F_{X}\)</span>.
+This means that
 <span class="math display">\[\begin{equation}
-Y_{kj} \sim F_{k}
-\end{equation}\]</span>
-That is, <span class="math inline">\(Y_{k1}, Y_{k2}, \ldots, Y_{kn_{k}}\)</span> is an i.i.d. sample from <span class="math inline">\(F_{k}\)</span> for each <span class="math inline">\(k\)</span>.</p></li>
-<li><p>A nonparametric version of the one-way ANOVA homogeneity hypothesis is
-<span class="math display" id="eq:nonpar-homogeneity-hyp">\[\begin{equation}
-H_{0}: F_{1} = F_{2} = \ldots = F_{K}
-\tag{4.4}
+F_{X}(t) = P( X_{i} \leq t) \quad \textrm{ for any } 1 \leq i \leq n  \nonumber
 \end{equation}\]</span></p></li>
-<li><p>The “shift alternative” in this case can be stated as
+<li><p><strong>Group 2 outcomes</strong>: <span class="math inline">\(Y_{1}, \ldots, Y_{m}\)</span> an i.i.d. sample from distribution function <span class="math inline">\(F_{Y}\)</span>.
 <span class="math display">\[\begin{equation}
-H_{A}: F_{k}(t) = F(t - \Delta_{k}), \quad \textrm{ for } k = 1, \ldots K \quad \textrm{ and not all $\Delta_{k}$ equal}
+F_{Y}(t) = P( Y_{i} \leq t) \quad \textrm{ for any } 1 \leq i \leq n  \nonumber
 \end{equation}\]</span></p></li>
+<li><p>To test the impact of a new treatment, we usually want to test whether or not <span class="math inline">\(F_{X}\)</span> differs from <span class="math inline">\(F_{Y}\)</span> in some way.
+This can be stated in hypothesis testing language as
+<span class="math display" id="eq:nonpar-twosample-hypothesis">\[\begin{eqnarray}
+H_{0}&amp;:&amp; F_{X} = F_{Y} \quad \textrm{( populations are the same)} \nonumber \\
+H_{A}&amp;:&amp; F_{X} \neq F_{Y} \quad \textrm{( populations are different)} \tag{1.1}
+                                                                      \end{eqnarray}\]</span></p></li>
 </ul>
-<hr />
+<p><strong>Parametric Tests</strong></p>
 <ul>
-<li><p>The Kruskal-Wallis test statistic is similar to the SSA term (defined in <a href="krusk-wallis.html#eq:anova-decomp">(4.3)</a>)
-in the one-way ANOVA setting.</p></li>
-<li><p>Rather than comparing the group-specific means <span class="math inline">\(\bar{Y}_{k.}\)</span> with the overall mean <span class="math inline">\(\bar{Y}_{..}\)</span>,
-the Kruskal-Wallis test statistic will be comparing the group-specific rank
-means <span class="math inline">\(\bar{R}_{k.}\)</span> with their overall expectation under the null hypothesis.</p></li>
-<li><p>The Kruskal-Wallis test statistic is defined as
-<span class="math display" id="eq:kw-definition">\[\begin{equation}
-KW_{N} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)^{2}, \quad \textrm{ where } N = \sum_{k=1}^{K} n_{k}
-\tag{4.5}
-\end{equation}\]</span></p></li>
-<li><p>In <a href="krusk-wallis.html#eq:kw-definition">(4.5)</a>, <span class="math inline">\(\bar{R}_{k.}\)</span> is the average rank of those <span class="math inline">\(k^{th}\)</span> group
+<li><p>Perhaps the most common parametric test for <a href="intro.html#eq:nonpar-twosample-hypothesis">(1.1)</a> is the <strong>t-test</strong>. The t-test assumes that
 <span class="math display">\[\begin{equation}
-\bar{R}_{k.} = \frac{1}{n_{k}} \sum_{j=1}^{n_{k}} R_{kj}(\mathbf{Z}),
-\end{equation}\]</span>
-where <span class="math inline">\(\mathbf{Z}\)</span> denotes the pooled-data vector and <span class="math inline">\(R_{kj}(\mathbf{Z})\)</span> denotes
-the rank of <span class="math inline">\(Y_{kj}\)</span> in the “pooled-data ranking”.</p></li>
-</ul>
-<hr />
-<ul>
-<li><p>What is the expectation of <span class="math inline">\(\bar{R}_{k.}\)</span> under the null hypothesis <a href="krusk-wallis.html#eq:nonpar-homogeneity-hyp">(4.4)</a>?</p></li>
-<li><p>Again, if the null hypothesis is true, we can treat all of our responses <span class="math inline">\(Y_{kj}\)</span> as just
-an i.i.d. sample of size <span class="math inline">\(N\)</span> from a common distribution function <span class="math inline">\(F\)</span>.</p></li>
-<li><p>Hence, as we showed in <a href="rank-tests.html#eq:rank-expectation">(3.2)</a> from Chapter 3, <span class="math inline">\(E\{ R_{kj}(\mathbf{Z}) \} = (N+1)/2\)</span> under the
-assumption that the data are an i.i.d. sample from a common distribution function.</p></li>
-<li><p>So, the intuition behind the definition of <span class="math inline">\(KW_{N}\)</span> is that the differences
-<span class="math inline">\(\bar{R}_{k.} - \frac{N + 1}{2}\)</span> should be small whenever the homogeneity
-hypothesis <a href="krusk-wallis.html#eq:nonpar-homogeneity-hyp">(4.4)</a> is true.</p></li>
-</ul>
-<hr />
-<ul>
-<li><p>When <span class="math inline">\(K=2\)</span>, the following relationship between the Kruskal-Wallis statistic
-<span class="math inline">\(KW_{N}\)</span> and the Wilcoxon rank sum test statistic <span class="math inline">\(W\)</span> from Chapter 3 holds.
-<span class="math display" id="eq:kw-wrs-equivalence">\[\begin{equation}
-KW_{N} = \frac{12}{mn(N+1)}\Big( W - \frac{n(N+1)}{2}  \Big)^{2}.
-\tag{4.6}
+F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2}) \quad \textrm{ and } \quad F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})
 \end{equation}\]</span></p></li>
-<li><p>Hence, the p-value from a Kruskal-Wallis test and a (two-sided)
-WRS test should be the same when <span class="math inline">\(K = 2\)</span>.</p></li>
-<li><p>However, you cannot directly perform a one-sided test using
-the Kruskal-Wallis test.</p></li>
+<li><p>Under this parametric assumption, the hypothesis test <a href="intro.html#eq:nonpar-twosample-hypothesis">(1.1)</a> reduces to
+<span class="math display">\[\begin{equation}
+H_{0}: \mu_{x} = \mu_{y}  \quad \textrm{ vs. } \quad H_{A}: \mu_{x} \neq \mu_{y}
+\end{equation}\]</span></p></li>
+<li><p>The standard t-statistic (with a pooled estimate of <span class="math inline">\(\sigma^{2}\)</span>) is the following
+<span class="math display">\[\begin{equation}
+T = \frac{\bar{X} - \bar{Y}}{ s_{p}\sqrt{\frac{1}{n} + \frac{1}{m}}  },
+\end{equation}\]</span>
+where <span class="math inline">\(\bar{X} = \frac{1}{n}\sum_{i=1}^{n} X_{i}\)</span> and <span class="math inline">\(\bar{Y} = \frac{1}{m}\sum_{i=1}^{m} Y_{i}\)</span> are
+the group-specific sample means and <span class="math inline">\(s_{p}^{2}\)</span> is the pooled estimate of <span class="math inline">\(\sigma^{2}\)</span>
+<span class="math display">\[\begin{equation}
+s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \sum_{i=1}^{m} (Y_{i} - \bar{Y})^{2}   \Big\}
+\end{equation}\]</span></p></li>
 </ul>
 <hr />
 <ul>
-<li><strong>Exercise 4.1</strong> If <span class="math inline">\(K=2\)</span>, show that equation <a href="krusk-wallis.html#eq:kw-wrs-equivalence">(4.6)</a> holds.</li>
+<li><p>The t-test is based on the <strong>null distribution</strong> of <span class="math inline">\(T\)</span> - the distribution of <span class="math inline">\(T\)</span> under the null hypothesis.</p></li>
+<li><p>Under the assumption of normality, the null distribution of <span class="math inline">\(T\)</span> is a t distribution with <span class="math inline">\(n + m - 2\)</span> degrees of freedom.</p></li>
+</ul>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<ul>
+<li><p>Notice that the null distribution of <span class="math inline">\(T\)</span> depends on the parametric assumption that both <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span>
+and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>. Appealing to the Central Limit Theorem, one could
+argue that is a quite reasonable assumption.</p></li>
+<li><p>In addition to using the assumption that <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span> and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>, we used this parametric assumption (at least implicitly) in the formulation of the hypothesis test itself because we assumed that any difference between <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span> would be fully described by difference in <span class="math inline">\(\mu_{x}\)</span> and <span class="math inline">\(\mu_{y}\)</span>.</p></li>
+<li><p>So, in a sense, you are using the assumption of normality twice in the construction of the two-sample t-test.</p></li>
 </ul>
 <hr />
-<p><strong>An Example</strong></p>
+<p><strong>Nonparametric Tests</strong></p>
+<ul>
+<li><p>Two-sample nonparametric tests are meant to be “distribution-free”. This means the null distribution of the test statistic does not depend on any parametric
+assumptions about the two populations <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span>.</p></li>
+<li><p>Many such tests are based on <strong>ranks</strong>. The distribution of the ranks under the assumption that <span class="math inline">\(F_{X} = F_{Y}\)</span> do
+not depend on the form of <span class="math inline">\(F_{X}\)</span> (assuming <span class="math inline">\(F_{X}\)</span> is continuous).</p></li>
+<li><p>Also, the statements of hypotheses tests for nonparametric tests should not rely on any parametric assumptions about <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span>.</p></li>
+<li><p>For example, <span class="math inline">\(H_{A}: F_{X} \neq F_{Y}\)</span> or <span class="math inline">\(H_{A}: F_{X} \geq F_{Y}\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Nonparametric tests usually tradeoff power for greater robustness.</p></li>
+<li><p>In general, if the parametric assumptions are correct, a nonparametric test will have less power than its parametric counterpart.</p></li>
+<li><p>If the parametric assumptions are not correct, parametric tests might have inappropriate type-I error control
+or lose power.</p></li>
+</ul>
+</div>
+<div id="sec:example-nonpar-estimation" class="section level2">
+<h2><span class="header-section-number">1.4</span> Example 2: Nonparametric Estimation</h2>
+<ul>
+<li><p>Suppose we have <span class="math inline">\(n\)</span> observations <span class="math inline">\((X_{1}, \ldots, X_{n})\)</span> which are assumed to be i.i.d. (independent and identically distributed).
+The distribution function of <span class="math inline">\(X_{i}\)</span> is <span class="math inline">\(F_{X}\)</span>.</p></li>
+<li><p>Suppose we are interested in estimating the entire distribution function <span class="math inline">\(F_{X}\)</span> rather than specific features
+of the distribution of <span class="math inline">\(X_{i}\)</span> such as the mean or standard deviation.</p></li>
+<li>In a <strong>parametric</strong> approach to estimating <span class="math inline">\(F_{X}\)</span>, we would assume the distribution of <span class="math inline">\(X_{i}\)</span> belongs to some parametric family of distributions.
+For example,
+<ul>
+<li><span class="math inline">\(X_{i} \sim \textrm{Normal}(\mu, \sigma^{2})\)</span></li>
+<li><span class="math inline">\(X_{i} \sim \textrm{Exponential}(\lambda)\)</span></li>
+<li><span class="math inline">\(X_{i} \sim \textrm{Beta}(\alpha, \beta)\)</span></li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li><p>If we assume that <span class="math inline">\(X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )\)</span>, we only need to estimate 2 parameters to
+fully describe the distribution of <span class="math inline">\(X_{i}\)</span>, and the number of parameters will not depend on the sample size.</p></li>
+<li><p>In a nonparametric approach to characterizing the distribution of <span class="math inline">\(X_{i}\)</span>, we need to instead
+estimate the entire distribution function <span class="math inline">\(F_{X}\)</span> or density function <span class="math inline">\(f_{X}\)</span>.</p></li>
+<li><p>The distribution function <span class="math inline">\(F_{X}\)</span> is usually estimated by the <strong>empirical distribution function</strong>
+<span class="math display">\[\begin{equation}
+\hat{F}_{n}(t) = \frac{1}{n}\sum_{i=1}^{n} I( X_{i} \leq t),
+\end{equation}\]</span>
+where <span class="math inline">\(I()\)</span> denotes the indicator function. That is, <span class="math inline">\(I( X_{i} \leq t) = 1\)</span> if <span class="math inline">\(X_{i} \leq t\)</span>,
+and <span class="math inline">\(I(X_{i} \leq t) = 0\)</span> if <span class="math inline">\(X_{i} &gt; t\)</span>.</p></li>
+<li><p>The empirical distribution function is a discrete distribution function,
+and it can be thought of as an estimate having <span class="math inline">\(n\)</span> “parameters”.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Kernel density estimation is probably the most common nonparametric method for estimating
+a probability distribution function <span class="math inline">\(f_{X}(t) = F_{X}&#39;(t)\)</span>.</p></li>
+<li><p>The density function of <span class="math inline">\(X_{i}\)</span> is often estimated by a kernel density estimator (KDE). This
+is defined as
+<span class="math display">\[\begin{equation}
+\hat{f}_{n}(t) = \frac{1}{n h_{n}} \sum_{i=1}^{n} K\Big( \frac{t - X_{i}}{ h_{n} } \Big).
+\end{equation}\]</span></p></li>
+<li><span class="math inline">\(K()\)</span> - the kernel function</li>
+<li><p><span class="math inline">\(h_{n}\)</span> - the bandwidth</p></li>
+<li><p>The KDE is a type of smoothing procedure.</p></li>
+</ul>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-3-1.png" width="672" /><img src="01-Introduction_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+</div>
+<div id="sec:example-nonpar-confint" class="section level2">
+<h2><span class="header-section-number">1.5</span> Example 3: Confidence Intervals</h2>
+<ul>
+<li><p>Inference for a wide range of statistical procedures is based on the following argument
+<span class="math display" id="eq:normal-approx">\[\begin{equation}
+\hat{\theta}_{n} \textrm{ has an approximate Normal}\Big( \theta, \widehat{\textrm{Var}(\hat{\theta}_{n})} \Big) \textrm{ distribution }
+\tag{1.2}
+\end{equation}\]</span></p></li>
+<li><p>Above, <span class="math inline">\(\hat{\theta}_{n}\)</span> is an estimate of a parameter <span class="math inline">\(\theta\)</span>, and <span class="math inline">\(\widehat{\textrm{Var}(\hat{\theta}_{n})}\)</span> is an estimate of the variance of <span class="math inline">\(\hat{\theta}_{n}\)</span>.</p></li>
+<li><p><span class="math inline">\(se_{n} = \sqrt{\widehat{\textrm{Var}(\hat{\theta}_{n})}}\)</span> is usually referred to as the <strong>standard error</strong>.</p></li>
+<li><p><span class="math inline">\(95\%\)</span> confidence intervals are reported using the following formula
+<span class="math display">\[\begin{equation}
+[\hat{\theta}_{n} - 1.96 se_{n}, \hat{\theta}_{n} + 1.96 se_{n}  ]
+\end{equation}\]</span></p></li>
+<li>Common examples of this include:
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(\hat{\theta}_{n} = \bar{X}_{n}\)</span>.</li>
+</ol>
+<p>In this case, appeals to the Central Limit Theorem would justify approximation <a href="intro.html#eq:normal-approx">(1.2)</a>. The variance of <span class="math inline">\(\hat{\theta}_{n}\)</span> would be <span class="math inline">\(\sigma^{2}/n\)</span>, and the standard error would typically be <span class="math inline">\(se_{n} = \hat{\sigma}/\sqrt{n}\)</span>.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><span class="math inline">\(\hat{\theta}_{n} = \textrm{Maximum Likelihood Estimate of } \theta\)</span>.</li>
+</ol>
+<p>In this case, asymptotics would justify the approximate distribution <span class="math inline">\(\hat{\theta}_{n} \sim \textrm{Normal}(\theta, \frac{1}{nI(\theta)} )\)</span>, where <span class="math inline">\(I(\theta)\)</span> denotes the Fisher information. The standard error in this context is often <span class="math inline">\(se_{n} = \{ n I(\hat{\theta}_{n}) \}^{-1/2}\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Confidence intervals using <a href="intro.html#eq:normal-approx">(1.2)</a> rely on a parametric approximation to the
+sampling distribution of the statistic <span class="math inline">\(\hat{\theta}_{n}\)</span>.</p></li>
+<li><p>Moreover, even if one wanted to use something like <a href="intro.html#eq:normal-approx">(1.2)</a>, working out
+standard error formulas can be a great challenge in more complicated situations.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The <strong>bootstrap</strong> is a simulation-based approach for computing standard errors and
+confidence intervals.</p></li>
+<li><p>The bootstrap does not rely on any particular parametric assumptions and
+can be applied in almost any context
+(though bootstrap confidence intervals can fail to work as desired in some situations).</p></li>
+<li><p>Through resampling from the original dataset, the bootstrap uses many possible alternative datasets to
+assess the variability in <span class="math inline">\(\hat{\theta}_{n}\)</span>.</p></li>
+</ul>
 <table border="1">
 <tr>
 <th>
-Group
 </th>
 <th>
-Y
+OriginalDat
 </th>
 <th>
-Rank
+Dat1
+</th>
+<th>
+Dat2
+</th>
+<th>
+Dat3
+</th>
+<th>
+Dat4
 </th>
 </tr>
 <tr>
 <td align="center">
-Group 1
+Obs. 1
 </td>
 <td align="center">
-1.00
+0.20
 </td>
 <td align="center">
-8
-</td>
-</tr>
-<tr>
-<td align="center">
-Group 1
+0.20
 </td>
 <td align="center">
--1.20
+0.80
 </td>
 <td align="center">
-2
+0.20
+</td>
+<td align="center">
+0.30
 </td>
 </tr>
 <tr>
 <td align="center">
-Group 1
+Obs. 2
 </td>
 <td align="center">
--1.50
+0.50
 </td>
 <td align="center">
-1
-</td>
-</tr>
-<tr>
-<td align="center">
-Group 2
+0.20
 </td>
 <td align="center">
-0.00
+0.80
 </td>
 <td align="center">
-5
+0.20
+</td>
+<td align="center">
+0.70
 </td>
 </tr>
 <tr>
 <td align="center">
-Group 2
+Obs. 3
 </td>
 <td align="center">
--0.10
+0.30
 </td>
 <td align="center">
-4
-</td>
-</tr>
-<tr>
-<td align="center">
-Group 2
+0.30
 </td>
 <td align="center">
-1.10
+0.50
 </td>
 <td align="center">
-9
+0.80
+</td>
+<td align="center">
+0.20
 </td>
 </tr>
 <tr>
 <td align="center">
-Group 3
+Obs. 4
 </td>
 <td align="center">
-0.90
+0.80
 </td>
 <td align="center">
-7
-</td>
-</tr>
-<tr>
-<td align="center">
-Group 3
+0.30
 </td>
 <td align="center">
--0.40
+0.70
 </td>
 <td align="center">
-3
+0.50
+</td>
+<td align="center">
+0.50
 </td>
 </tr>
 <tr>
 <td align="center">
-Group 3
+Obs. 5
+</td>
+<td align="center">
+0.70
+</td>
+<td align="center">
+0.70
+</td>
+<td align="center">
+0.20
+</td>
+<td align="center">
+0.30
+</td>
+<td align="center">
+0.20
+</td>
+</tr>
+<tr>
+<td align="center">
+theta.hat
+</td>
+<td align="center">
+0.50
+</td>
+<td align="center">
+0.34
 </td>
 <td align="center">
 0.60
 </td>
 <td align="center">
-6
+0.40
+</td>
+<td align="center">
+0.38
 </td>
 </tr>
 </table>
-<ul>
-<li>In this case, <span class="math inline">\(N = 9\)</span>, <span class="math inline">\(\bar{R}_{1.} = 11/3\)</span>, <span class="math inline">\(\bar{R}_{2.} = 6\)</span>, and <span class="math inline">\(\bar{R}_{3.} = 16/3\)</span>. The Kruskall-Wallis
-statistic is
-<span class="math display">\[\begin{equation}
-KW_{N} = \frac{1}{2}\Big\{ 3(11/3 - 5)^{2} + 3(6 - 5)^{2} + 3(16/3 - 5)^{2}   \Big\} = 13/9
-\end{equation}\]</span></li>
-</ul>
-</div>
-<div id="asymptotic-distribution-and-connection-to-one-way-anova" class="section level3">
-<h3><span class="header-section-number">4.1.2</span> Asymptotic Distribution and Connection to One-Way ANOVA</h3>
-<ul>
-<li><p>The Kruskal-Wallis statistic <span class="math inline">\(KW_{N}\)</span> has
-an asymptotic chi-square distribution with <span class="math inline">\(K-1\)</span> degrees of freedom under the null hypothesis <a href="krusk-wallis.html#eq:nonpar-homogeneity-hyp">(4.4)</a>.</p></li>
-<li><p>This follows from the fact that <span class="math inline">\((\bar{R}_{k.} - (N+1)/2)\)</span> is approximately normally distributed
-for large <span class="math inline">\(n_{k}\)</span>.</p></li>
-<li><p><strong>R</strong> uses the large-sample approximation when computing
-the p-value for the Kruskal-Wallis test.</p></li>
-</ul>
 <hr />
 <ul>
-<li><p>The Kruskal-Wallis test can also be thought of as the test you would obtain
-if you applied the one-way ANOVA setup to the ranks of <span class="math inline">\(Y_{kj}\)</span>.</p></li>
-<li><p>The one-way ANOVA test is based on the value of SSA where, as in <a href="krusk-wallis.html#eq:anova-decomp">(4.3)</a>,
-SSA is defined as
-<span class="math display">\[\begin{equation}
-SSA = \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}
-\end{equation}\]</span></p></li>
-<li><p>You then reject <span class="math inline">\(H_{0}\)</span>, when <span class="math inline">\(SSA/SSE = SSA/(SST - SSA)\)</span> is sufficiently large.</p></li>
-<li><p>Notice that if we computed SSA using the ranks <span class="math inline">\(R_{kj}( \mathbf{Z} )\)</span>
-rather than the observations <span class="math inline">\(Y_{kj}\)</span>, we would get:
-<span class="math display" id="eq:ssa-kw">\[\begin{eqnarray}
-SSA_{r} &amp;=&amp; \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \bar{R}_{..})^{2}  \nonumber \\
-&amp;=&amp; \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \frac{N+1}{2})^{2}  \nonumber \\
-&amp;=&amp; \frac{N(N-1)}{12} KW_{N}  
-\tag{4.7}
+<li><p>In the above example, we have 4 <strong>boostrap replications</strong> for the statistic <span class="math inline">\(\hat{\theta}\)</span>:
+<span class="math display">\[\begin{eqnarray}
+\hat{\theta}^{(1)} &amp;=&amp; 0.34 \\ 
+\hat{\theta}^{(2)} &amp;=&amp; 0.60 \\
+\hat{\theta}^{(3)} &amp;=&amp; 0.40 \\ 
+\hat{\theta}^{(4)} &amp;=&amp; 0.38
 \end{eqnarray}\]</span></p></li>
-<li><p>If you were applying ANOVA to the ranks of <span class="math inline">\(Y_{kj}\)</span>, <span class="math inline">\(SST_{r}\)</span> would be
-the following fixed constant:
+<li><p>In the above example, the bootstrap standard error for <span class="math inline">\(\hat{\theta}_{n}\)</span> would be
+the standard deviation of the bootstrap replications
+<span class="math display">\[\begin{eqnarray}
+se_{boot} &amp;=&amp; \Big( \frac{1}{3} \sum_{b=1}^{4} \{ \hat{\theta}^{(b)} - \hat{\theta}^{(-)}  \}^{2} \Big)^{1/2} \nonumber \\
+&amp;=&amp; \Big( (0.34 - 0.43)^{2}/3 + (0.60 - 0.43)^{2}/3 + (0.40 - 0.43)^{2}/3 + (0.38 - 0.43)^{2}/3 \Big)^{1/2} \nonumber \\
+&amp;=&amp; 0.116
+\end{eqnarray}\]</span>
+where <span class="math inline">\(\hat{\theta}^{(-)} = 0.43\)</span> is the average of the bootstrap replications.</p></li>
+<li><p>One would then report the confidence interval <span class="math inline">\([\hat{\theta} - 1.96 \times 0.116, \hat{\theta} + 1.96 \times 0.116]\)</span>.
+In practice, the number of bootstrap replications is typically much larger than <span class="math inline">\(4\)</span>.</p></li>
+<li><p>It is often better to construct confidence intervals using the percentiles from the bootstrap distribution
+of <span class="math inline">\(\hat{\theta}\)</span> rather than use a confidence interval of the form: <span class="math inline">\(\hat{\theta} \pm 1.96 \times se_{boot}\)</span>.</p></li>
+</ul>
+<div class="figure"><span id="fig:unnamed-chunk-4"></span>
+<img src="01-Introduction_files/figure-html/unnamed-chunk-4-1.png" alt="Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dasjed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution." width="672" />
+<p class="caption">
+Figure 1.1: Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dasjed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution.
+</p>
+</div>
+</div>
+<div id="sec:example-nonpar-regress1" class="section level2">
+<h2><span class="header-section-number">1.6</span> Example 4: Nonparametric Regression with a Single Covariate</h2>
+<ul>
+<li><p>Regression is a common way of modeling the relationship between two different variables.</p></li>
+<li><p>Suppose we have <span class="math inline">\(n\)</span> pairs of observations <span class="math inline">\((y_{1}, x_{1}), \ldots, (y_{n}, x_{n})\)</span> where
+<span class="math inline">\(y_{i}\)</span> and <span class="math inline">\(x_{i}\)</span> are suspected to have some association.</p></li>
+<li><p>Linear regression would assume that these <span class="math inline">\(y_{i}\)</span> and <span class="math inline">\(x_{i}\)</span> are related by the following
 <span class="math display">\[\begin{equation}
-\textrm{SST}_{r} = \frac{N(N + 1)(N-1)}{12}
-\end{equation}\]</span></p></li>
-<li><p>So, any test of the homogeneity hypothesis would
-be based on just the value of <span class="math inline">\(SSA_{r}\)</span> which as we showed in <a href="krusk-wallis.html#eq:ssa-kw">(4.7)</a>
-is just a constant times the Kruskal-Wallis statistic.</p></li>
+y_{i} = \beta_{0} + \beta_{1}x_{i} + \varepsilon_{i} 
+\end{equation}\]</span>
+with the assumption <span class="math inline">\(\varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2})\)</span> often made.</p></li>
+<li><p>In this model, there are only 3 parameters: <span class="math inline">\((\beta_{0}, \beta_{1}, \sigma^{2})\)</span>,
+and the number of parameters stays fixed for all <span class="math inline">\(n\)</span>.</p></li>
 </ul>
-</div>
-</div>
-<div id="performing-the-kruskal-wallis-test-in-r" class="section level2">
-<h2><span class="header-section-number">4.2</span> Performing the Kruskal-Wallis Test in R</h2>
-<ul>
-<li>We will look at performing Kruskal-Wallis tests in <strong>R</strong> by using the
-“InsectSprays” dataset.</li>
-</ul>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">head</span>(InsectSprays)</a></code></pre></div>
-<pre><code>##   count spray
-## 1    10     A
-## 2     7     A
-## 3    20     A
-## 4    14     A
-## 5    14     A
-## 6    12     A</code></pre>
-<ul>
-<li><p>This dataset has 72 observations.</p></li>
-<li><p>The variable <strong>count</strong> is the number of
-insects measured in some agricultural unit.</p></li>
-<li><p>The variable <strong>spray</strong> was the type of spray used on
-that unit.</p></li>
-<li><p>You could certainly argue that a standard ANOVA is not
-appropriate in this situation because the responses are counts,
-and for count data, the variance is usually a function of the mean.</p></li>
-<li><p>A generalized linear model with a log link function might be more appropriate.</p></li>
-<li><p>Applying a square-root transformation to count data is also a commonly suggested
-approach. (The square-root transformation is the “variance-stabilizing transformation”
-for Poisson-distributed data).</p></li>
-</ul>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">boxplot</span>(<span class="kw">sqrt</span>(count) <span class="op">~</span><span class="st"> </span>spray, <span class="dt">data=</span>InsectSprays,<span class="dt">las=</span><span class="dv">1</span>, <span class="dt">ylab=</span><span class="st">&quot;square root of insect counts&quot;</span>)</a></code></pre></div>
-<p><img src="04-multistat_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <hr />
 <ul>
-<li>Let us perform a test of homogeneity using both the one-way ANOVA approach and a Kruskal-Wallis
-test</li>
-</ul>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">anova</span>(<span class="kw">lm</span>(<span class="kw">sqrt</span>(count) <span class="op">~</span><span class="st"> </span>spray, <span class="dt">data=</span>InsectSprays))</a></code></pre></div>
-<pre><code>## Analysis of Variance Table
-## 
-## Response: sqrt(count)
-##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
-## spray      5 88.438 17.6876  44.799 &lt; 2.2e-16 ***
-## Residuals 66 26.058  0.3948                      
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">a  &lt;-<span class="st"> </span><span class="kw">kruskal.test</span>(<span class="kw">sqrt</span>(count) <span class="op">~</span><span class="st"> </span>spray, <span class="dt">data=</span>InsectSprays)</a>
-<a class="sourceLine" id="cb54-2" data-line-number="2">a<span class="op">$</span>p.value</a></code></pre></div>
-<pre><code>## [1] 1.510844e-10</code></pre>
-<hr />
-<ul>
-<li>Notice that it applying the square root transformation or not does not affect the
-value of the Kruskal-Wallis statistic or the Kruskal-Wallis p-value.</li>
-</ul>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">kruskal.test</span>(count <span class="op">~</span><span class="st"> </span>spray, <span class="dt">data=</span>InsectSprays)</a></code></pre></div>
-<pre><code>## 
-##  Kruskal-Wallis rank sum test
-## 
-## data:  count by spray
-## Kruskal-Wallis chi-squared = 54.691, df = 5, p-value = 1.511e-10</code></pre>
-<ul>
-<li>This invariance to data transformation is not true for the standard one-way ANOVA.</li>
-</ul>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">anova</span>(<span class="kw">lm</span>(count <span class="op">~</span><span class="st"> </span>spray, <span class="dt">data=</span>InsectSprays))</a></code></pre></div>
-<pre><code>## Analysis of Variance Table
-## 
-## Response: count
-##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
-## spray      5 2668.8  533.77  34.702 &lt; 2.2e-16 ***
-## Residuals 66 1015.2   15.38                      
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-</div>
-<div id="comparison-of-specific-groups" class="section level2">
-<h2><span class="header-section-number">4.3</span> Comparison of Specific Groups</h2>
-<ul>
-<li><p>A Kruskal-Wallis test performs a test of the overall homogeneity hypothesis
+<li><p>The nonparametric counterpart to linear regression is usually formulated in the following way
 <span class="math display">\[\begin{equation}
-H_{0}: F_{1} = F_{2} = \ldots = F_{K}
+y_{i} = m( x_{i} ) + \varepsilon_{i}
 \end{equation}\]</span></p></li>
-<li><p>However, a rejection of the homogeneity hypothesis does not indicate which
-group differences are primarily the source of this rejection nor
-does it provide any measure of the “magnitude” of the differences between
-each of the groups.</p></li>
-<li><p>Dunn’s test is the suggested way to compute pairwise tests of stochatic dominance.</p></li>
-<li><p>Performing a series of pairwise Wilcoxon rank sum test can
-lead to violations of transitivity. For example,
-group A is “better” than B which is better than C, but
-group C is better than A.</p></li>
-<li><p>In <strong>R</strong>, Dunn’s test can be performed using the <strong>dunn.test</strong> package.</p></li>
+<li><p>Typically, one makes very few assumptions about the form of the mean function <span class="math inline">\(m\)</span>, and it is not assumed <span class="math inline">\(m\)</span>
+can be described by a finite number of parameters.</p></li>
+<li><p>There are a large number of nonparametric methods for estimating <span class="math inline">\(m\)</span>.</p></li>
+<li><p>One popular method is the use of <strong>smoothing splines</strong>.</p></li>
+<li><p>With smoothing splines, one considers mean functions of the form
+<span class="math display" id="eq:smoothspline-model">\[\begin{equation}
+m(x) = \sum_{j=1}^{n} \beta_{j}g_{j}(x) 
+\tag{1.3}
+\end{equation}\]</span>
+where <span class="math inline">\(g_{1}, \ldots, g_{n}(x)\)</span> are a collection of spline basis functions.</p></li>
 </ul>
 <hr />
 <ul>
-<li><p>In traditional one-way ANOVA one often reports pairwise differences
-in the means and their associated confidence intervals.</p></li>
-<li><p>In the context of a Kruskal-Wallis test, one could
-report pairwise differences in the Hodges-Lehmann estimate
-though other comparisons may also be of interest.</p></li>
-<li><p>One nice approach is to use the proportional odds model
-interpretation of the Kruskal-Wallis test and
-then report the difference in the estimated proportional odds coefficients.
-See Section 7.6 of <a href="http://hbiostat.org/doc/bbr.pdf" class="uri">http://hbiostat.org/doc/bbr.pdf</a> for more details
-on the proportional odds model.</p></li>
+<li><p>Because of the large number of parameters in <a href="intro.html#eq:smoothspline-model">(1.3)</a>, one should
+estimate the basis function weights <span class="math inline">\(\beta_{j}\)</span> through penalized regression
+<span class="math display" id="eq:smoothspline-estimation">\[\begin{equation}
+\textrm{minimize} \quad \sum_{i=1}^{n} \Big( y_{i} - \sum_{j=1}^{n} \beta_{j}g_{j}( x_{i} ) \Big)^{2} + \lambda \sum_{i=1}^{n}\sum_{j=1}^{n} \Omega_{ij}\beta_{i}\beta_{j}
+\tag{1.4}
+\end{equation}\]</span>
+where <span class="math inline">\(\Omega_{ij} = \int g_{i}&#39;&#39;(t)g_{j}&#39;&#39;(t) dt\)</span>.</p></li>
+<li><p>Using coefficient estimates <span class="math inline">\(\hat{\beta}_{1}, \ldots, \hat{\beta}_{n}\)</span> found from solving <a href="intro.html#eq:smoothspline-model">(1.3)</a>, the nonparametric estimate of the mean function is defined as
+<span class="math display">\[\begin{equation}
+\hat{m}(x) = \sum_{j=1}^{n} \hat{\beta}_{j}g_{j}(x) 
+\end{equation}\]</span></p></li>
+<li><p>While the estimation in <a href="intro.html#eq:smoothspline-estimation">(1.4)</a> resembles parametric estimation for linear regression, notice
+that the number of parameters to be estimated will change with the sample size.</p></li>
+<li><p>Allowing the number of basis functions to grow with <span class="math inline">\(n\)</span> is important. For a sufficiently large number of basis functions, one should be able to approximate the
+true mean function <span class="math inline">\(m(x)\)</span> arbitrarily closely.</p></li>
 </ul>
-<p><img src="04-multistat_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
-<div id="an-additional-example" class="section level2">
-<h2><span class="header-section-number">4.4</span> An Additional Example</h2>
+<div id="sec:example-nonpar-regress2" class="section level2">
+<h2><span class="header-section-number">1.7</span> Example 5: Classification and Regression Trees (CART)</h2>
 <ul>
-<li>We will use the “cane” dataset from the <strong>boot</strong> package.</li>
+<li><p>Suppose we now have observations <span class="math inline">\((y_{1}, \mathbf{x}_{1}), \ldots, (y_{n}, \mathbf{x}_{n})\)</span> where
+<span class="math inline">\(y_{i}\)</span> is a continuous response and <span class="math inline">\(\mathbf{x}_{i}\)</span> is a p-dimensional vector of covariates.</p></li>
+<li><p>Regression trees are a nonparametric approach for predicting <span class="math inline">\(y_{i}\)</span> from <span class="math inline">\(\mathbf{x}_{i}\)</span>.</p></li>
+<li><p>Here, the regression function is a <strong>decision tree</strong> rather than some fitted curve.</p></li>
+<li><p>With a decision tree, a final prediction from a covariate vector <span class="math inline">\(\mathbf{x}_{i}\)</span> is obtained by answering
+a sequence of “yes or no” questions.</p></li>
+<li><p>When the responses <span class="math inline">\(y_{i}\)</span> are binary, such trees are referred to as classification trees.
+Hence, the name: classification and regression trees (CART).</p></li>
 </ul>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">library</span>(boot)</a>
-<a class="sourceLine" id="cb60-2" data-line-number="2"><span class="kw">data</span>(cane)</a>
-<a class="sourceLine" id="cb60-3" data-line-number="3"><span class="kw">head</span>(cane)</a></code></pre></div>
-<pre><code>##     n  r  x var block
-## 1  87 76 19   1     A
-## 2 119  8 14   2     A
-## 3  94 74  9   3     A
-## 4  95 11 12   4     A
-## 5 134  0 12   5     A
-## 6  92  0  3   6     A</code></pre>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<!-- If true go left down tree. E.g., if someone is in treatment arm A, they get a prediction of 13.95  -->
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<hr />
 <ul>
-<li><p>These data come from a study trying to determine the susceptibility of different types
-of sugar cane to a particular type of disease.</p></li>
-<li><p>The variable <strong>n</strong> contains the total number of shoots in each plot.</p></li>
-<li><p>The variable <strong>r</strong> containes the total number of diseased shoots.</p></li>
-<li><p>We can create a new variable <strong>prop</strong> that measures the proportion
-of shoots that are diseased.</p></li>
+<li><p>Classification and regression trees are constructed through <strong>recursive partitioning</strong>.</p></li>
+<li><p>Recursive partitioning is the process of deciding if and how to split a given
+node into two child nodes.</p></li>
+<li><p>Tree splits are usually chosen to minimize the “within-node” sum of squares.</p></li>
+<li><p>The size of the final tree is determined by a process of “pruning” the tree
+with cross-validation determining the best place to stop pruning.</p></li>
+<li><p>Regression trees are an example of a more algorithmic approach to
+constructing predictions (as opposed to probability modeling in more
+traditional statistical methods) with a strong emphasis on predictive
+performance as measured through cross-validation.</p></li>
 </ul>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">cane<span class="op">$</span>prop &lt;-<span class="st"> </span>cane<span class="op">$</span>r<span class="op">/</span>cane<span class="op">$</span>n</a></code></pre></div>
+<hr />
 <ul>
-<li>You could certainly argue that a logistic regression model is a better approach here,
-but we will analyze the transformed proportions using the arcsine square root transformation.</li>
-</ul>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">cane<span class="op">$</span>prop.trans &lt;-<span class="st"> </span><span class="kw">asin</span>(<span class="kw">sqrt</span>(cane<span class="op">$</span>prop))</a>
-<a class="sourceLine" id="cb63-2" data-line-number="2"><span class="kw">boxplot</span>(prop.trans <span class="op">~</span><span class="st"> </span>block, <span class="dt">data=</span>cane, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">ylab=</span><span class="st">&quot;number of shoots&quot;</span>)</a></code></pre></div>
-<p><img src="04-multistat_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">kruskal.test</span>(prop <span class="op">~</span><span class="st"> </span>block, <span class="dt">data=</span>cane)</a></code></pre></div>
-<pre><code>## 
-##  Kruskal-Wallis rank sum test
-## 
-## data:  prop by block
-## Kruskal-Wallis chi-squared = 1.1355, df = 3, p-value = 0.7685</code></pre>
-</div>
-<div id="additional-reading-1" class="section level2">
-<h2><span class="header-section-number">4.5</span> Additional Reading</h2>
-<ul>
-<li>Additional reading which covers the material discussed in this chapter includes:
-<ul>
-<li>Chapters 6 from <span class="citation">Hollander, Wolfe, and Chicken (<a href="#ref-hollander2013">2013</a>)</span></li>
-</ul></li>
+<li><p>While single regression trees have the advantage of being directly interpretable,
+their prediction performance is often not that great.</p></li>
+<li><p>However, using collections of trees can be very effective for prediction and
+has been used in many popular learning methods. Examples include: random forests,
+boosting, and Bayesian additive regression trees (BART).</p></li>
+<li><p>Methods such as these can perform well on much larger datasets. We will discuss
+additional methods if time allows.</p></li>
 </ul>
 
-</div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-hollander2013">
-<p>Hollander, Myles, Douglas A Wolfe, and Eric Chicken. 2013. <em>Nonparametric Statistical Methods</em>. Vol. 751. John Wiley &amp; Sons.</p>
 </div>
 </div>
             </section>
@@ -718,17 +780,19 @@ but we will analyze the transformed proportions using the arcsine square root tr
           </div>
         </div>
       </div>
-<a href="rank-tests.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="permutation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="getting-started.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -736,12 +800,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -753,6 +816,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },
