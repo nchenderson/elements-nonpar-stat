@@ -223,6 +223,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.3" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.3</b> The Empirical Distribution Function in R</a></li>
 <li class="chapter" data-level="7.4" data-path="edf.html"><a href="edf.html#the-kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>7.4</b> The Kolmogorov-Smirnov Test</a></li>
 <li class="chapter" data-level="7.5" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-and-statistical-functionals"><i class="fa fa-check"></i><b>7.5</b> The empirical distribution function and statistical functionals</a></li>
+<li class="chapter" data-level="7.6" data-path="edf.html"><a href="edf.html#additional-reading-2"><i class="fa fa-check"></i><b>7.6</b> Additional Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
 <li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
@@ -242,6 +243,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.5.1" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.5.1</b> Density Estimation in R</a></li>
 <li class="chapter" data-level="8.5.2" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5.2</b> Cross-Validation for Bandwidth Selection</a></li>
 </ul></li>
+<li class="chapter" data-level="8.6" data-path="density-estimation.html"><a href="density-estimation.html#additional-reading-3"><i class="fa fa-check"></i><b>8.6</b> Additional Reading</a></li>
 </ul></li>
 <li class="part"><span><b>III Uncertainty Measures</b></span></li>
 <li class="chapter" data-level="9" data-path="sampling.html"><a href="sampling.html"><i class="fa fa-check"></i><b>9</b> The Jackknife</a><ul>
@@ -626,7 +628,7 @@ h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx}  \Big
 <ul>
 <li>Scott rule: (based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a>)</li>
 <li>Friedman and Diaconis rule (also based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a>)</li>
-<li>Sturges rule: (based on )</li>
+<li>Sturges rule: (based on wanting the histogram to look Gaussian when the data are in fact Gaussian-distributed)</li>
 </ul></li>
 </ul>
 <hr />
@@ -643,7 +645,7 @@ h_{n}^{opt} = 3.5 \sigma n^{-1/3}  \nonumber
 <hr />
 <ul>
 <li><p><strong>Scott rule</strong>: Use <span class="math inline">\(h_{n}^{*} = 3.5 \hat{\sigma} n^{-1/3}\)</span>, where <span class="math inline">\(\hat{\sigma}\)</span> denotes the sample standard deviation.</p></li>
-<li><p><strong>FD rule</strong>: Use <span class="math inline">\(h_{n}^{*} = 2 IQR n^{-1/3}\)</span>. This is a somewhat more robust choice of <span class="math inline">\(h_{n}\)</span> as it is not as
+<li><p><strong>FD rule</strong>: Use <span class="math inline">\(h_{n}^{*} = 2 \times IQR \times n^{-1/3}\)</span>. This is a somewhat more robust choice of <span class="math inline">\(h_{n}\)</span> as it is not as
 sensitive to outliers.</p></li>
 <li><p><strong>Sturges rule</strong>: The bin width is chosen so that we have <span class="math inline">\(1 + log_{2}(n)\)</span> bins. This choice tends to give wide
 intervals.</p></li>
@@ -700,7 +702,7 @@ results in density estimates which are not “smooth.”</li>
 </ul>
 <hr />
 <ul>
-<li><strong>Exercise 8.3</strong>. Write an <strong>R</strong> function which computes the <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>
+<li><strong>Exercise 8.2</strong>. Write an <strong>R</strong> function which computes the <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>
 at a collection of specified points.</li>
 </ul>
 <hr />
@@ -728,7 +730,8 @@ K(t) &amp;=&amp; K(-t) \nonumber \\
 \end{eqnarray}\]</span></p></li>
 <li><p>You can think of <span class="math inline">\(K(u)\)</span> as a probability density function
 which is symmetric around <span class="math inline">\(0\)</span>.</p></li>
-<li><p>When plotting <span class="math inline">\(\frac{1}{h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)\)</span> as a function of <span class="math inline">\(x\)</span>,</p></li>
+<li><p>When plotting <span class="math inline">\(\frac{1}{h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)\)</span> as a function of <span class="math inline">\(x\)</span>, it should
+look like a “small hill” centered around <span class="math inline">\(X_{i}\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
@@ -758,8 +761,20 @@ which is symmetric around <span class="math inline">\(0\)</span>.</p></li>
 </div>
 <div id="cross-validation-for-bandwidth-selection" class="section level3">
 <h3><span class="header-section-number">8.5.2</span> Cross-Validation for Bandwidth Selection</h3>
-
 </div>
+</div>
+<div id="additional-reading-3" class="section level2">
+<h2><span class="header-section-number">8.6</span> Additional Reading</h2>
+<ul>
+<li>Additional reading which covers the material discussed in this chapter includes:
+<ul>
+<li>Chapters 2-3 from <span class="citation">Silverman (<a href="#ref-silverman2018">2018</a>)</span></li>
+<li>Chapter 6 from <span class="citation">Wasserman (<a href="#ref-wasserman2006">2006</a>)</span></li>
+<li>Chapters 2-3 from <span class="citation">Härdle et al. (<a href="#ref-hardle2012">2012</a>)</span></li>
+<li>Chapter 4 from <span class="citation">Izenman (<a href="#ref-izenman2008">2008</a>)</span></li>
+</ul></li>
+</ul>
+
 </div>
 </div>
 
@@ -767,8 +782,20 @@ which is symmetric around <span class="math inline">\(0\)</span>.</p></li>
 
 <h3>References</h3>
 <div id="refs" class="references">
+<div id="ref-hardle2012">
+<p>Härdle, Wolfgang Karl, Marlene Müller, Stefan Sperlich, and Axel Werwatz. 2012. <em>Nonparametric and Semiparametric Models</em>. Springer Science &amp; Business Media.</p>
+</div>
+<div id="ref-izenman2008">
+<p>Izenman, Alan Julian. 2008. “Modern Multivariate Statistical Techniques.” <em>Regression, Classification and Manifold Learning</em> 10. Springer: 978–0.</p>
+</div>
 <div id="ref-scott1979">
 <p>Scott, David W. 1979. “On Optimal and Data-Based Histograms.” <em>Biometrika</em> 66 (3). Oxford University Press: 605–10.</p>
+</div>
+<div id="ref-silverman2018">
+<p>Silverman, Bernard W. 2018. <em>Density Estimation for Statistics and Data Analysis</em>. Routledge.</p>
+</div>
+<div id="ref-wasserman2006">
+<p>Wasserman, Larry. 2006. <em>All of Nonparametric Statistics</em>. Springer Science &amp; Business Media.</p>
 </div>
 </div>
             </section>

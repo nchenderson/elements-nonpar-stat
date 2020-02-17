@@ -334,7 +334,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.087294, p-value = 0.4312
+## D = 0.15114, p-value = 0.02074
 ## alternative hypothesis: two-sided
 ```
 
@@ -350,7 +350,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.41018, p-value = 4.885e-15
+## D = 0.30664, p-value = 1.361e-08
 ## alternative hypothesis: two-sided
 ```
 
@@ -509,7 +509,10 @@ the course.
 of influence functions and robust statistics, but we will not discuss these
 topics in this course.
 
+## Additional Reading
 
+* Additional reading which covers the material discussed in this chapter includes:
+    + Chapter 2 from @wasserman2006
 
 
 

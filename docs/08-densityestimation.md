@@ -398,7 +398,7 @@ h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f'(x)]^{2} dx}  \Big)^{1
 * We will mention three rules for selecting the bin width of a histogram.
    + Scott rule: (based on the optimal bin width formula \@ref(eq:opt-binwidth-hist))
    + Friedman and Diaconis rule (also based on the optimal bin width formula \@ref(eq:opt-binwidth-hist))
-   + Sturges rule: (based on )
+   + Sturges rule: (based on wanting the histogram to look Gaussian when the data are in fact Gaussian-distributed)
 
 ---
 
@@ -418,7 +418,7 @@ h_{n}^{opt} = 3.5 \sigma n^{-1/3}  \nonumber
 
 * **Scott rule**: Use $h_{n}^{*} = 3.5 \hat{\sigma} n^{-1/3}$, where $\hat{\sigma}$ denotes the sample standard deviation.
 
-* **FD rule**: Use $h_{n}^{*} = 2 IQR n^{-1/3}$. This is a somewhat more robust choice of $h_{n}$ as it is not as 
+* **FD rule**: Use $h_{n}^{*} = 2 \times IQR \times n^{-1/3}$. This is a somewhat more robust choice of $h_{n}$ as it is not as 
 sensitive to outliers.
 
 * **Sturges rule**: The bin width is chosen so that we have $1 + log_{2}(n)$ bins. This choice tends to give wide
@@ -480,7 +480,7 @@ results in density estimates which are not "smooth."
 
 ---
 
-* **Exercise 8.3**. Write an **R** function which computes the $\hat{f}_{h_{n}}^{B}(x)$
+* **Exercise 8.2**. Write an **R** function which computes the $\hat{f}_{h_{n}}^{B}(x)$
 at a collection of specified points.
 
 ---
@@ -512,7 +512,8 @@ K(t) &=& K(-t) \nonumber \\
 * You can think of $K(u)$ as a probability density function
 which is symmetric around $0$.
 
-* When plotting $\frac{1}{h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$,
+* When plotting $\frac{1}{h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$, it should
+look like a "small hill" centered around $X_{i}$.
 
 ---
 
@@ -551,10 +552,12 @@ galaxies[1:5]
 ### Cross-Validation for Bandwidth Selection
 
 
+## Additional Reading
 
-
-
-
-
+* Additional reading which covers the material discussed in this chapter includes:
+    + Chapters 2-3 from @silverman2018
+    + Chapter 6 from @wasserman2006
+    + Chapters 2-3 from @hardle2012
+    + Chapter 4 from @izenman2008
 
 

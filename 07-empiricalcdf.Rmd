@@ -450,7 +450,10 @@ the course.
 of influence functions and robust statistics, but we will not discuss these
 topics in this course.
 
+## Additional Reading
 
+* Additional reading which covers the material discussed in this chapter includes:
+    + Chapter 2 from @wasserman2006
 
 
 

@@ -223,6 +223,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.3" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.3</b> The Empirical Distribution Function in R</a></li>
 <li class="chapter" data-level="7.4" data-path="edf.html"><a href="edf.html#the-kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>7.4</b> The Kolmogorov-Smirnov Test</a></li>
 <li class="chapter" data-level="7.5" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-and-statistical-functionals"><i class="fa fa-check"></i><b>7.5</b> The empirical distribution function and statistical functionals</a></li>
+<li class="chapter" data-level="7.6" data-path="edf.html"><a href="edf.html#additional-reading-2"><i class="fa fa-check"></i><b>7.6</b> Additional Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
 <li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
@@ -242,6 +243,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.5.1" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.5.1</b> Density Estimation in R</a></li>
 <li class="chapter" data-level="8.5.2" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5.2</b> Cross-Validation for Bandwidth Selection</a></li>
 </ul></li>
+<li class="chapter" data-level="8.6" data-path="density-estimation.html"><a href="density-estimation.html#additional-reading-3"><i class="fa fa-check"></i><b>8.6</b> Additional Reading</a></li>
 </ul></li>
 <li class="part"><span><b>III Uncertainty Measures</b></span></li>
 <li class="chapter" data-level="9" data-path="sampling.html"><a href="sampling.html"><i class="fa fa-check"></i><b>9</b> The Jackknife</a><ul>
@@ -692,7 +694,7 @@ where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly
 </ul>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(mean.diff) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(observed.diff)))<span class="op">/</span>(nreps <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.75</code></pre>
+<pre><code>## [1] 0.73</code></pre>
 </div>
 <div id="example-2-ratios-of-means" class="section level3">
 <h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means</h3>
