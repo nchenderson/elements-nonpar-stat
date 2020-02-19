@@ -22,7 +22,10 @@ make few assumptions about the particular form of $f(x)$.
 
 ## Histograms
 
-![(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt](08-densityestimation_files/figure-latex/unnamed-chunk-1-1.pdf) 
+<div class="figure">
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" width="672" />
+<p class="caption">(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</p>
+</div>
 
 ### Definition
 
@@ -123,7 +126,7 @@ kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.tx
 kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
 ```
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 
 * Use the `probability = TRUE` argument to plot the density-estimate version of histogram.
@@ -134,7 +137,7 @@ kidney.hist2 <- hist(kidney$age, main="Histogram of Age on Probability Scale",
                      xlab="Age from Kidney Data", probability=TRUE)
 ```
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 ---
 
@@ -436,7 +439,9 @@ intervals.
 * In other words, for each $x$ we are forming a bin of width $2h_{n}$ around $x$, and we are counting
 the number of observations that fall in this bin.
 
-* This is also an intuitive estimator because 
+* You can think that each point $x$ as being the center of its own bin.
+
+* The expectation of the box estimator at the point $x$ is  
 \begin{equation}
 E \{ \hat{f}_{h_{n}}^{B}(x) \}
 = \frac{1}{2h_{n}} P(x - h_{n} < X_{i}  < x + h_{n}) 
@@ -449,9 +454,13 @@ E \{ \hat{f}_{h_{n}}^{B}(x) \}
 to be constant within each bin.
 
 * Also, the box estimate will not tend to have as dramatic changes near
-the bin edges.
+the bin edges as the histogram does.
 
-* However, plots of the box estimate will still largely be non-smooth.
+* However, plots of the box estimate will still largely be non-smooth and 
+have a "jagged" appearance. 
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+
 
 ---
 
@@ -470,20 +479,32 @@ w(t) =
 \end{cases}
 \end{equation}
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 * While the estimator $\hat{f}_{h_{n}}^{B}$ does seem reasonable, it always
 results in density estimates which are not "smooth."
+
+* Most kernel density estimates are formed by replacing the box function $w(t)$ with 
+a smoother function.
 
 ---
 
 * **Exercise 8.2**. Write an **R** function which computes the $\hat{f}_{h_{n}}^{B}(x)$
 at a collection of specified points.
 
+* **Exercise 8.3**. Suppose we have observations $(X_{1}, X_{2}, X_{3}, X_{4}) = (-1, 0, 1/2, 1)$.
+Plot $w(\tfrac{X_{i} - x}{h_{n}})/nh_{n}$ for $i = 1, \ldots, 4$ and plot the box
+density estimate $\hat{f}_{h_{n}}^{B}(x)$.
+
+* **Exercise 8.4**. Suppose we have i.i.d. observations $X_{1}, \ldots, X_{n} \sim F$ where
+the cdf $F$ is assumed to be continuous. What is $\textrm{Var}\{ \hat{f}_{h_{n}}^{B}(x) \}$?
+
 ---
 
 
 ## Kernel Density Estimation
+
+### Definition
 
 * Kernel density estimates are a generalization of the box-type density estimate $\hat{f}_{h_{n}}^{B}(x)$.
 
@@ -492,27 +513,29 @@ with a function which is much smoother.
 
 * A kernel density estimator $\hat{f}(x)$ is defined as
 \begin{equation}
-\hat{f}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) \nonumber
+\hat{f}_{h_{n}}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) 
+(\#eq:kernel-density-formula)
 \end{equation}
 
 * The function $K( \cdot )$ is referred to as the **kernel function**.
 
-### Kernels, Bandwidth, and Smooth Density Estimation
+---
 
-* Kernel functions are often chosen so that they satisfy the following properties
+* Kernel functions are often chosen so that 
+\begin{equation}
+K(t) \geq  0 \textrm{ for all } t
+\end{equation}
+and that they also satisfy the following properties:
 \begin{eqnarray}
-K(t) &\geq& 0 \textrm{ for all } t \nonumber \\
-K(t) &=& K(-t) \nonumber \\
-\int_{-\infty}^{\infty} K(t) dt &=& 1 \nonumber
+K(t) = K(-t) \qquad 
+\int_{-\infty}^{\infty} K(t) dt = 1 
+\qquad 
+\int_{-\infty}^{\infty} K^{2}(t) dt  < \infty
+\nonumber
 \end{eqnarray}
 
 * You can think of $K(u)$ as a probability density function
 which is symmetric around $0$.
-
-* When plotting $\frac{1}{h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$, it should
-look like a "small hill" centered around $X_{i}$.
-
----
 
 * Some of the most common choices of kernel functions include
 \begin{eqnarray}
@@ -522,12 +545,40 @@ look like a "small hill" centered around $X_{i}$.
 \end{eqnarray}
 
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+
+* When plotting $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$, it should
+look like a "small hill" centered around $X_{i}$.
+
+* As $h_{n}$ decreases, $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$
+becomes more strongly concentrated around $X_{i}$ and has a higher peak.
+
+* The kernel density estimate is a sum of all of these "small hills".
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+
+---
+
+* The nice thing about \@ref(eq:kernel-density-formula) is that it guarantees that $\hat{f}_{h_{n}}(x)$ is a probability
+density function
+\begin{eqnarray}
+\int_{-\infty}^{\infty} \hat{f}_{h_{n}}(x) dx 
+&=& \int_{-\infty}^{\infty} \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big)  dx  \nonumber \\
+&=&  \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{\infty} \frac{1}{h_{n}} K\Big( \frac{x - X_{i}}{h_{n}} \Big) dx  \nonumber \\
+&=& 1 \nonumber
+\end{eqnarray}
+
+* Also, formula \@ref(eq:kernel-density-formula) guarantees that $\hat{f}_{h_{n}}(x)$ inherits the smoothness properties
+of $K(u)$
+\begin{equation}
+\hat{f}_{h_{n}}'(x) = \frac{1}{n} \sum_{i=1}^{n} \frac{1}{h_{n}^{2}} K'\Big( \frac{x - X_{i}}{h_{n}} \Big)  \nonumber
+\end{equation}
 
 
-### Bias and Variance of Kernel Density Estimates
 
-### Bandwidth Selection
+### Bias, Variance, and MSE of a Kernel Density Estimates
+
+### Bandwidth Selection with the Normal Reference Rule
 
 
 ## Kernel Density Estimation in Practice

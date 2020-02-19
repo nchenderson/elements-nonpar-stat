@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 Density Estimation | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 Density Estimation | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-02-17" />
+<meta name="date" content="2020-02-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -232,9 +235,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8.3" data-path="density-estimation.html"><a href="density-estimation.html#a-box-type-density-estimate"><i class="fa fa-check"></i><b>8.3</b> A Box-type Density Estimate</a></li>
 <li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a><ul>
-<li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#kernels-bandwidth-and-smooth-density-estimation"><i class="fa fa-check"></i><b>8.4.1</b> Kernels, Bandwidth, and Smooth Density Estimation</a></li>
-<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-and-variance-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias and Variance of Kernel Density Estimates</a></li>
-<li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection</a></li>
+<li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-6"><i class="fa fa-check"></i><b>8.4.1</b> Definition</a></li>
+<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-mse-of-a-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and MSE of a Kernel Density Estimates</a></li>
+<li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection with the Normal Reference Rule</a></li>
 </ul></li>
 <li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation-in-practice"><i class="fa fa-check"></i><b>8.5</b> Kernel Density Estimation in Practice</a><ul>
 <li class="chapter" data-level="8.5.1" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.5.1</b> Density Estimation in R</a></li>
@@ -660,7 +663,8 @@ intervals.</p></li>
 \end{equation}\]</span></p></li>
 <li><p>In other words, for each <span class="math inline">\(x\)</span> we are forming a bin of width <span class="math inline">\(2h_{n}\)</span> around <span class="math inline">\(x\)</span>, and we are counting
 the number of observations that fall in this bin.</p></li>
-<li><p>This is also an intuitive estimator because
+<li><p>You can think that each point <span class="math inline">\(x\)</span> as being the center of its own bin.</p></li>
+<li><p>The expectation of the box estimator at the point <span class="math inline">\(x\)</span> is<br />
 <span class="math display">\[\begin{equation}
 E \{ \hat{f}_{h_{n}}^{B}(x) \}
 = \frac{1}{2h_{n}} P(x - h_{n} &lt; X_{i}  &lt; x + h_{n}) 
@@ -672,9 +676,11 @@ E \{ \hat{f}_{h_{n}}^{B}(x) \}
 <li><p>Unlike the histogram, the box estimate does not require the density estimate
 to be constant within each bin.</p></li>
 <li><p>Also, the box estimate will not tend to have as dramatic changes near
-the bin edges.</p></li>
-<li><p>However, plots of the box estimate will still largely be non-smooth.</p></li>
+the bin edges as the histogram does.</p></li>
+<li><p>However, plots of the box estimate will still largely be non-smooth and
+have a “jagged” appearance.</p></li>
 </ul>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <hr />
 <ul>
 <li>We can also express <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span> in the following way:
@@ -692,60 +698,94 @@ w(t) =
 \end{cases}
 \end{equation}\]</span></li>
 </ul>
-<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <ul>
-<li>While the estimator <span class="math inline">\(\hat{f}_{h_{n}}^{B}\)</span> does seem reasonable, it always
-results in density estimates which are not “smooth.”</li>
+<li><p>While the estimator <span class="math inline">\(\hat{f}_{h_{n}}^{B}\)</span> does seem reasonable, it always
+results in density estimates which are not “smooth.”</p></li>
+<li><p>Most kernel density estimates are formed by replacing the box function <span class="math inline">\(w(t)\)</span> with
+a smoother function.</p></li>
 </ul>
 <hr />
 <ul>
-<li><strong>Exercise 8.2</strong>. Write an <strong>R</strong> function which computes the <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>
-at a collection of specified points.</li>
+<li><p><strong>Exercise 8.2</strong>. Write an <strong>R</strong> function which computes the <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>
+at a collection of specified points.</p></li>
+<li><p><strong>Exercise 8.3</strong>. Suppose we have observations <span class="math inline">\((X_{1}, X_{2}, X_{3}, X_{4}) = (-1, 0, 1/2, 1)\)</span>.
+Plot <span class="math inline">\(w(\tfrac{X_{i} - x}{h_{n}})/nh_{n}\)</span> for <span class="math inline">\(i = 1, \ldots, 4\)</span> and plot the box
+density estimate <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>.</p></li>
+<li><p><strong>Exercise 8.4</strong>. Suppose we have i.i.d. observations <span class="math inline">\(X_{1}, \ldots, X_{n} \sim F\)</span> where
+the cdf <span class="math inline">\(F\)</span> is assumed to be continuous. What is <span class="math inline">\(\textrm{Var}\{ \hat{f}_{h_{n}}^{B}(x) \}\)</span>?</p></li>
 </ul>
 <hr />
 </div>
 <div id="kernel-density-estimation" class="section level2">
 <h2><span class="header-section-number">8.4</span> Kernel Density Estimation</h2>
+<div id="definition-6" class="section level3">
+<h3><span class="header-section-number">8.4.1</span> Definition</h3>
 <ul>
 <li><p>Kernel density estimates are a generalization of the box-type density estimate <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>.</p></li>
 <li><p>Specifically, with kernel density estimation, we are going to replace the “box function” in <a href="density-estimation.html#eq:box-density">(8.7)</a>
 with a function which is much smoother.</p></li>
 <li><p>A kernel density estimator <span class="math inline">\(\hat{f}(x)\)</span> is defined as
-<span class="math display">\[\begin{equation}
-\hat{f}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) \nonumber
+<span class="math display" id="eq:kernel-density-formula">\[\begin{equation}
+\hat{f}_{h_{n}}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) 
+\tag{8.8}
 \end{equation}\]</span></p></li>
 <li><p>The function <span class="math inline">\(K( \cdot )\)</span> is referred to as the <strong>kernel function</strong>.</p></li>
 </ul>
-<div id="kernels-bandwidth-and-smooth-density-estimation" class="section level3">
-<h3><span class="header-section-number">8.4.1</span> Kernels, Bandwidth, and Smooth Density Estimation</h3>
+<hr />
 <ul>
-<li><p>Kernel functions are often chosen so that they satisfy the following properties
+<li><p>Kernel functions are often chosen so that
+<span class="math display">\[\begin{equation}
+K(t) \geq  0 \textrm{ for all } t
+\end{equation}\]</span>
+and that they also satisfy the following properties:
 <span class="math display">\[\begin{eqnarray}
-K(t) &amp;\geq&amp; 0 \textrm{ for all } t \nonumber \\
-K(t) &amp;=&amp; K(-t) \nonumber \\
-\int_{-\infty}^{\infty} K(t) dt &amp;=&amp; 1 \nonumber
+K(t) = K(-t) \qquad 
+\int_{-\infty}^{\infty} K(t) dt = 1 
+\qquad 
+\int_{-\infty}^{\infty} K^{2}(t) dt  &lt; \infty
+\nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>You can think of <span class="math inline">\(K(u)\)</span> as a probability density function
 which is symmetric around <span class="math inline">\(0\)</span>.</p></li>
-<li><p>When plotting <span class="math inline">\(\frac{1}{h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)\)</span> as a function of <span class="math inline">\(x\)</span>, it should
-look like a “small hill” centered around <span class="math inline">\(X_{i}\)</span>.</p></li>
-</ul>
-<hr />
-<ul>
-<li>Some of the most common choices of kernel functions include
+<li><p>Some of the most common choices of kernel functions include
 <span class="math display">\[\begin{eqnarray}
 \textrm{Gaussian} :&amp;&amp; \quad  K(u) = \exp(-u^{2}/2)/\sqrt{2\pi} \nonumber \\
 \textrm{Epanechnikov} :&amp;&amp; \quad  K(u) = \tfrac{3}{4\sqrt{5}}(1 - \tfrac{1}{5} u^{2}) I(|u| &lt; \sqrt{5}) \nonumber \\
 \textrm{biweight} :&amp;&amp; \quad  K(u) = \tfrac{15}{16\sqrt{7}}(1 - \tfrac{1}{7} u^{2})^{2} I(|u| &lt; \sqrt{7}) \nonumber \\
-\end{eqnarray}\]</span></li>
+\end{eqnarray}\]</span></p></li>
 </ul>
-<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<ul>
+<li><p>When plotting <span class="math inline">\(\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)\)</span> as a function of <span class="math inline">\(x\)</span>, it should
+look like a “small hill” centered around <span class="math inline">\(X_{i}\)</span>.</p></li>
+<li><p>As <span class="math inline">\(h_{n}\)</span> decreases, <span class="math inline">\(\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)\)</span>
+becomes more strongly concentrated around <span class="math inline">\(X_{i}\)</span> and has a higher peak.</p></li>
+<li><p>The kernel density estimate is a sum of all of these “small hills”.</p></li>
+</ul>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<hr />
+<ul>
+<li><p>The nice thing about <a href="density-estimation.html#eq:kernel-density-formula">(8.8)</a> is that it guarantees that <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is a probability
+density function
+<span class="math display">\[\begin{eqnarray}
+\int_{-\infty}^{\infty} \hat{f}_{h_{n}}(x) dx 
+&amp;=&amp; \int_{-\infty}^{\infty} \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big)  dx  \nonumber \\
+&amp;=&amp;  \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{\infty} \frac{1}{h_{n}} K\Big( \frac{x - X_{i}}{h_{n}} \Big) dx  \nonumber \\
+&amp;=&amp; 1 \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>Also, formula <a href="density-estimation.html#eq:kernel-density-formula">(8.8)</a> guarantees that <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> inherits the smoothness properties
+of <span class="math inline">\(K(u)\)</span>
+<span class="math display">\[\begin{equation}
+\hat{f}_{h_{n}}&#39;(x) = \frac{1}{n} \sum_{i=1}^{n} \frac{1}{h_{n}^{2}} K&#39;\Big( \frac{x - X_{i}}{h_{n}} \Big)  \nonumber
+\end{equation}\]</span></p></li>
+</ul>
 </div>
-<div id="bias-and-variance-of-kernel-density-estimates" class="section level3">
-<h3><span class="header-section-number">8.4.2</span> Bias and Variance of Kernel Density Estimates</h3>
+<div id="bias-variance-and-mse-of-a-kernel-density-estimates" class="section level3">
+<h3><span class="header-section-number">8.4.2</span> Bias, Variance, and MSE of a Kernel Density Estimates</h3>
 </div>
-<div id="bandwidth-selection" class="section level3">
-<h3><span class="header-section-number">8.4.3</span> Bandwidth Selection</h3>
+<div id="bandwidth-selection-with-the-normal-reference-rule" class="section level3">
+<h3><span class="header-section-number">8.4.3</span> Bandwidth Selection with the Normal Reference Rule</h3>
 </div>
 </div>
 <div id="kernel-density-estimation-in-practice" class="section level2">
@@ -806,11 +846,13 @@ look like a “small hill” centered around <span class="math inline">\(X_{i}\)
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -818,12 +860,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -835,6 +876,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },
