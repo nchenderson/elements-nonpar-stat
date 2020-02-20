@@ -509,7 +509,7 @@ which returns the index of the interval to which <span class="math inline">\(x\)
 n_{A_{h_{n}, x_{0}}(x)} = \sum_{i = 1}^{n} I\Big( X_{i} \in B_{A_{h_{n}, x_{0}}(x)} \Big) \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Hence, is a binomial random variable with <span class="math inline">\(n\)</span> trials
-and success probability <span class="math inline">\(p_{h_{n}}(x)\)</span> (why?)
+and success probability <span class="math inline">\(p_{h_{n}, x_{0}}(x)\)</span> (why?)
 <span class="math display">\[\begin{equation}
 n_{A_{h_{n}}(x)} \sim \textrm{Binomial}\{ n, p_{h_{n}, x_{0}}(x) \} \nonumber
 \end{equation}\]</span></p></li>
@@ -541,8 +541,14 @@ and we can express the variance as:
 \end{eqnarray}\]</span></p></li>
 <li><p>Using the approximation <span class="math inline">\(f(t) \approx f(x) + f&#39;(x)(t - x)\)</span> for <span class="math inline">\(t\)</span> close to <span class="math inline">\(x\)</span>, we have that
 <span class="math display">\[\begin{eqnarray}
-\frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } &amp;=&amp; \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt \nonumber \\
-&amp;\approx&amp; f(x) + f&#39;(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big] \nonumber
+\frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } &amp;=&amp; \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt \nonumber \\
+ &amp;\approx&amp; \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(x) dt + \frac{f&#39;(x)}{h_{n}}\int_{x_{0} + (A_{h_{n}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } (t - x) dt \nonumber \\
+&amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ (t - x)^{2}\Big|_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } \Big] \nonumber \\
+&amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ (x_{0} + A_{h_{n}, x_{0}}(x)h_{n})^{2} - (x_{0} + (A_{h_{n}, x_{0}}(x)-1)h_{n} )^{2} - 2xh_{n} \Big] \nonumber \\
+&amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ 2x_{0}A_{h_{n}, x_{0}}(x)h_{n} + A_{h_{n}, x_{0}}^{2}(x)h_{n}^{2} - 2x_{0}(A_{h_{n}, x_{0}}(x)-1)h_{n}  \nonumber \\
+&amp; &amp; - (A_{h_{n}, x_{0}}(x)-1)^{2}h_{n}^{2} - 2xh_{n} \Big] \nonumber \\
+&amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ 2x_{0}h_{n} + 2A_{h_{n}, x_{0}}(x)h_{n}^{2} - h_{n}^{2} - 2xh_{n} \Big] \nonumber \\
+&amp;=&amp; f(x) + f&#39;(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big] \nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>So, the bias of the histogram density estimate <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span> is
 <span class="math display" id="eq:approx-bias-hist">\[\begin{eqnarray}
@@ -647,6 +653,7 @@ sensitive to outliers.</p></li>
 <li><p><strong>Sturges rule</strong>: The bin width is chosen so that we have <span class="math inline">\(1 + log_{2}(n)\)</span> bins. This choice tends to give wide
 intervals.</p></li>
 </ul>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 </div>
 <div id="a-box-type-density-estimate" class="section level2">
@@ -677,7 +684,7 @@ the bin edges as the histogram does.</p></li>
 <li><p>However, plots of the box estimate will still largely be non-smooth and
 have a “jagged” appearance.</p></li>
 </ul>
-<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <hr />
 <ul>
 <li>We can also express <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span> in the following way:
@@ -695,7 +702,7 @@ w(t) =
 \end{cases}
 \end{equation}\]</span></li>
 </ul>
-<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <ul>
 <li><p>While the estimator <span class="math inline">\(\hat{f}_{h_{n}}^{B}\)</span> does seem reasonable, it always
 results in density estimates which are not “smooth.”</p></li>
@@ -707,7 +714,7 @@ a smoother function.</p></li>
 <li><p><strong>Exercise 8.2</strong>. Write an <strong>R</strong> function which computes the <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>
 at a collection of specified points.</p></li>
 <li><p><strong>Exercise 8.3</strong>. Suppose we have observations <span class="math inline">\((X_{1}, X_{2}, X_{3}, X_{4}) = (-1, 0, 1/2, 1)\)</span>.
-Plot <span class="math inline">\(w(\tfrac{X_{i} - x}{h_{n}})/nh_{n}\)</span> for <span class="math inline">\(i = 1, \ldots, 4\)</span> and plot the box
+Assuming <span class="math inline">\(h_{n} = 1/2\)</span>, plot <span class="math inline">\(w(\tfrac{X_{i} - x}{h_{n}})/nh_{n}\)</span> for <span class="math inline">\(i = 1, \ldots, 4\)</span> and plot the box
 density estimate <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>.</p></li>
 <li><p><strong>Exercise 8.4</strong>. Suppose we have i.i.d. observations <span class="math inline">\(X_{1}, \ldots, X_{n} \sim F\)</span> where
 the cdf <span class="math inline">\(F\)</span> is assumed to be continuous. What is <span class="math inline">\(\textrm{Var}\{ \hat{f}_{h_{n}}^{B}(x) \}\)</span>?</p></li>
@@ -752,7 +759,7 @@ which is symmetric around <span class="math inline">\(0\)</span>.</p></li>
 \textrm{biweight} :&amp;&amp; \quad  K(u) = \tfrac{15}{16\sqrt{7}}(1 - \tfrac{1}{7} u^{2})^{2} I(|u| &lt; \sqrt{7}) \nonumber \\
 \end{eqnarray}\]</span></p></li>
 </ul>
-<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <ul>
 <li><p>When plotting <span class="math inline">\(\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)\)</span> as a function of <span class="math inline">\(x\)</span>, it should
 look like a “small hill” centered around <span class="math inline">\(X_{i}\)</span>.</p></li>
@@ -760,7 +767,7 @@ look like a “small hill” centered around <span class="math inline">\(X_{i}\)
 becomes more strongly concentrated around <span class="math inline">\(X_{i}\)</span> and has a higher peak.</p></li>
 <li><p>The kernel density estimate is a sum of all of these “small hills”.</p></li>
 </ul>
-<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <hr />
 <ul>
 <li><p>The nice thing about <a href="density-estimation.html#eq:kernel-density-formula">(8.8)</a> is that it guarantees that <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is a probability

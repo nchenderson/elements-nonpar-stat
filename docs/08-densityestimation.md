@@ -271,7 +271,7 @@ n_{A_{h_{n}, x_{0}}(x)} = \sum_{i = 1}^{n} I\Big( X_{i} \in B_{A_{h_{n}, x_{0}}(
 \end{equation}
 
 * Hence, is a binomial random variable with $n$ trials 
-and success probability $p_{h_{n}}(x)$ (why?) 
+and success probability $p_{h_{n}, x_{0}}(x)$ (why?) 
 \begin{equation}
 n_{A_{h_{n}}(x)} \sim \textrm{Binomial}\{ n, p_{h_{n}, x_{0}}(x) \} \nonumber
 \end{equation}
@@ -306,8 +306,14 @@ and we can express the variance as:
 
 * Using the approximation $f(t) \approx f(x) + f'(x)(t - x)$ for $t$ close to $x$, we have that
 \begin{eqnarray}
-\frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } &=& \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt \nonumber \\
-&\approx& f(x) + f'(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big] \nonumber
+\frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } &=& \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt \nonumber \\
+ &\approx& \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(x) dt + \frac{f'(x)}{h_{n}}\int_{x_{0} + (A_{h_{n}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } (t - x) dt \nonumber \\
+&=& f(x) + \frac{f'(x)}{2h_{n}}\Big[ (t - x)^{2}\Big|_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } \Big] \nonumber \\
+&=& f(x) + \frac{f'(x)}{2h_{n}}\Big[ (x_{0} + A_{h_{n}, x_{0}}(x)h_{n})^{2} - (x_{0} + (A_{h_{n}, x_{0}}(x)-1)h_{n} )^{2} - 2xh_{n} \Big] \nonumber \\
+&=& f(x) + \frac{f'(x)}{2h_{n}}\Big[ 2x_{0}A_{h_{n}, x_{0}}(x)h_{n} + A_{h_{n}, x_{0}}^{2}(x)h_{n}^{2} - 2x_{0}(A_{h_{n}, x_{0}}(x)-1)h_{n}  \nonumber \\
+& & - (A_{h_{n}, x_{0}}(x)-1)^{2}h_{n}^{2} - 2xh_{n} \Big] \nonumber \\
+&=& f(x) + \frac{f'(x)}{2h_{n}}\Big[ 2x_{0}h_{n} + 2A_{h_{n}, x_{0}}(x)h_{n}^{2} - h_{n}^{2} - 2xh_{n} \Big] \nonumber \\
+&=& f(x) + f'(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big] \nonumber
 \end{eqnarray}
 
 * So, the bias of the histogram density estimate $\hat{f}_{h_{n}}^{H}(x)$ is
@@ -421,6 +427,7 @@ sensitive to outliers.
 * **Sturges rule**: The bin width is chosen so that we have $1 + log_{2}(n)$ bins. This choice tends to give wide
 intervals. 
 
+![](08-densityestimation_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
 
 
 ## A Box-type Density Estimate
@@ -456,7 +463,7 @@ the bin edges as the histogram does.
 * However, plots of the box estimate will still largely be non-smooth and 
 have a "jagged" appearance. 
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
+![](08-densityestimation_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
 
 
 ---
@@ -476,7 +483,7 @@ w(t) =
 \end{cases}
 \end{equation}
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
+![](08-densityestimation_files/figure-latex/unnamed-chunk-11-1.pdf)<!-- --> 
 
 * While the estimator $\hat{f}_{h_{n}}^{B}$ does seem reasonable, it always
 results in density estimates which are not "smooth."
@@ -490,7 +497,7 @@ a smoother function.
 at a collection of specified points.
 
 * **Exercise 8.3**. Suppose we have observations $(X_{1}, X_{2}, X_{3}, X_{4}) = (-1, 0, 1/2, 1)$.
-Plot $w(\tfrac{X_{i} - x}{h_{n}})/nh_{n}$ for $i = 1, \ldots, 4$ and plot the box
+Assuming $h_{n} = 1/2$, plot $w(\tfrac{X_{i} - x}{h_{n}})/nh_{n}$ for $i = 1, \ldots, 4$ and plot the box
 density estimate $\hat{f}_{h_{n}}^{B}(x)$.
 
 * **Exercise 8.4**. Suppose we have i.i.d. observations $X_{1}, \ldots, X_{n} \sim F$ where
@@ -542,7 +549,7 @@ which is symmetric around $0$.
 \end{eqnarray}
 
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-11-1.pdf)<!-- --> 
+![](08-densityestimation_files/figure-latex/unnamed-chunk-12-1.pdf)<!-- --> 
 
 * When plotting $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$, it should
 look like a "small hill" centered around $X_{i}$.
@@ -552,7 +559,7 @@ becomes more strongly concentrated around $X_{i}$ and has a higher peak.
 
 * The kernel density estimate is a sum of all of these "small hills".
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-12-1.pdf)<!-- --> 
+![](08-densityestimation_files/figure-latex/unnamed-chunk-13-1.pdf)<!-- --> 
 
 ---
 
