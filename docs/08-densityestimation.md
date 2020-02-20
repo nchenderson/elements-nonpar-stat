@@ -22,10 +22,7 @@ make few assumptions about the particular form of $f(x)$.
 
 ## Histograms
 
-<div class="figure">
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" width="672" />
-<p class="caption">(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</p>
-</div>
+![(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt](08-densityestimation_files/figure-latex/unnamed-chunk-1-1.pdf) 
 
 ### Definition
 
@@ -126,10 +123,10 @@ kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.tx
 kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
 
 
-* Use the `probability = TRUE` argument to plot the density-estimate version of histogram.
+* Use the `probability = TRUE` argument to plot the density-estimate version of the histogram.
 This histogram should integrate to 1.
 
 ```r
@@ -137,7 +134,7 @@ kidney.hist2 <- hist(kidney$age, main="Histogram of Age on Probability Scale",
                      xlab="Age from Kidney Data", probability=TRUE)
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
 
 ---
 
@@ -335,7 +332,7 @@ bin $x_{0} + (A_{h_{n}}(x) - 1)h_{n}$ will always be very close to $x$.
 (\#eq:approx-var-hist)
 \end{eqnarray}
 
-* For a more detailed description of the above approximation see @scott1979.
+* For a more detailed description of the above approximation see @scott1979 or Chapter 6 of @wasserman2006.
 
 * Note that large bin widths will reduce the variance of $\hat{f}_{h_{n}}^{H}(x)$.
 
@@ -459,7 +456,7 @@ the bin edges as the histogram does.
 * However, plots of the box estimate will still largely be non-smooth and 
 have a "jagged" appearance. 
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
 
 
 ---
@@ -479,7 +476,7 @@ w(t) =
 \end{cases}
 \end{equation}
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
 
 * While the estimator $\hat{f}_{h_{n}}^{B}$ does seem reasonable, it always
 results in density estimates which are not "smooth."
@@ -545,7 +542,7 @@ which is symmetric around $0$.
 \end{eqnarray}
 
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-11-1.pdf)<!-- --> 
 
 * When plotting $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$, it should
 look like a "small hill" centered around $X_{i}$.
@@ -555,7 +552,7 @@ becomes more strongly concentrated around $X_{i}$ and has a higher peak.
 
 * The kernel density estimate is a sum of all of these "small hills".
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-12-1.pdf)<!-- --> 
 
 ---
 

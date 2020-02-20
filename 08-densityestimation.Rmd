@@ -126,7 +126,7 @@ kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
 ```
 
 
-* Use the `probability = TRUE` argument to plot the density-estimate version of histogram.
+* Use the `probability = TRUE` argument to plot the density-estimate version of the histogram.
 This histogram should integrate to 1.
 ```{r }
 kidney.hist2 <- hist(kidney$age, main="Histogram of Age on Probability Scale", 
@@ -292,7 +292,7 @@ bin $x_{0} + (A_{h_{n}}(x) - 1)h_{n}$ will always be very close to $x$.
 (\#eq:approx-var-hist)
 \end{eqnarray}
 
-* For a more detailed description of the above approximation see @scott1979.
+* For a more detailed description of the above approximation see @scott1979 or Chapter 6 of @wasserman2006.
 
 * Note that large bin widths will reduce the variance of $\hat{f}_{h_{n}}^{H}(x)$.
 
