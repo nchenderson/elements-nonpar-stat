@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Density Estimation | Elements of Nonparametric Statistics</title>
+  <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Density Estimation | Elements of Nonparametric Statistics" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
+  
+  <meta property="og:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
+  <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Density Estimation | Elements of Nonparametric Statistics" />
+  
+  <meta name="twitter:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
+  
+
+<meta name="author" content="Nicholas Henderson" />
+
+
+<meta name="date" content="2020-02-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="edf.html"/>
+<link rel="next" href="sampling.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Biostat 685/Stat 560</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#sec:whatisnonpar"><i class="fa fa-check"></i><b>1.1</b> What is Nonparametric Statistics?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#sec:course-outline"><i class="fa fa-check"></i><b>1.2</b> Outline of Course</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#sec:example-nonpar-tests"><i class="fa fa-check"></i><b>1.3</b> Example 1: Nonparametric vs. Parametric Two-Sample Testing</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#sec:example-nonpar-estimation"><i class="fa fa-check"></i><b>1.4</b> Example 2: Nonparametric Estimation</a></li>
+<li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#sec:example-nonpar-confint"><i class="fa fa-check"></i><b>1.5</b> Example 3: Confidence Intervals</a></li>
+<li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress1"><i class="fa fa-check"></i><b>1.6</b> Example 4: Nonparametric Regression with a Single Covariate</a></li>
+<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress2"><i class="fa fa-check"></i><b>1.7</b> Example 5: Classification and Regression Trees (CART)</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Working with R</a></li>
+<li class="part"><span><b>I Nonparametric Testing</b></span></li>
+<li class="chapter" data-level="3" data-path="rank-tests.html"><a href="rank-tests.html"><i class="fa fa-check"></i><b>3</b> Rank and Sign Statistics</a><ul>
+<li class="chapter" data-level="3.1" data-path="rank-tests.html"><a href="rank-tests.html#ranks"><i class="fa fa-check"></i><b>3.1</b> Ranks</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="rank-tests.html"><a href="rank-tests.html#definition"><i class="fa fa-check"></i><b>3.1.1</b> Definition</a></li>
+<li class="chapter" data-level="3.1.2" data-path="rank-tests.html"><a href="rank-tests.html#handling-ties"><i class="fa fa-check"></i><b>3.1.2</b> Handling Ties</a></li>
+<li class="chapter" data-level="3.1.3" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-ranks"><i class="fa fa-check"></i><b>3.1.3</b> Properties of Ranks</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test-a-two-sample-test"><i class="fa fa-check"></i><b>3.2</b> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="rank-tests.html"><a href="rank-tests.html#goal-of-the-test"><i class="fa fa-check"></i><b>3.2.1</b> Goal of the Test</a></li>
+<li class="chapter" data-level="3.2.2" data-path="rank-tests.html"><a href="rank-tests.html#definition-of-the-wrs-test-statistic"><i class="fa fa-check"></i><b>3.2.2</b> Definition of the WRS Test Statistic</a></li>
+<li class="chapter" data-level="3.2.3" data-path="rank-tests.html"><a href="rank-tests.html#computing-p-values-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.3</b> Computing p-values for the WRS Test</a></li>
+<li class="chapter" data-level="3.2.4" data-path="rank-tests.html"><a href="rank-tests.html#computing-the-wrs-test-in-r"><i class="fa fa-check"></i><b>3.2.4</b> Computing the WRS test in R</a></li>
+<li class="chapter" data-level="3.2.5" data-path="rank-tests.html"><a href="rank-tests.html#additional-notes-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.5</b> Additional Notes for the WRS test</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.3</b> One Sample Tests</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#sign-test"><i class="fa fa-check"></i><b>3.3.1</b> The Sign Test</a></li>
+<li class="chapter" data-level="3.3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-signed-rank-test"><i class="fa fa-check"></i><b>3.3.2</b> The Wilcoxon Signed Rank Test</a></li>
+<li class="chapter" data-level="3.3.3" data-path="rank-tests.html"><a href="rank-tests.html#using-r-to-perform-the-sign-and-wilcoxon-tests"><i class="fa fa-check"></i><b>3.3.3</b> Using R to Perform the Sign and Wilcoxon Tests</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#power-and-comparisons-with-parametric-tests"><i class="fa fa-check"></i><b>3.4</b> Power and Comparisons with Parametric Tests</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="rank-tests.html"><a href="rank-tests.html#the-power-function-of-a-test"><i class="fa fa-check"></i><b>3.4.1</b> The Power Function of a Test</a></li>
+<li class="chapter" data-level="3.4.2" data-path="rank-tests.html"><a href="rank-tests.html#power-comparisons-and-asymptotic-relative-efficiency"><i class="fa fa-check"></i><b>3.4.2</b> Power Comparisons and Asymptotic Relative Efficiency</a></li>
+<li class="chapter" data-level="3.4.3" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-examples"><i class="fa fa-check"></i><b>3.4.3</b> Efficiency Examples</a></li>
+<li class="chapter" data-level="3.4.4" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-comparisons-for-several-distributions"><i class="fa fa-check"></i><b>3.4.4</b> Efficiency Comparisons for Several Distributions</a></li>
+<li class="chapter" data-level="3.4.5" data-path="rank-tests.html"><a href="rank-tests.html#a-power-contest"><i class="fa fa-check"></i><b>3.4.5</b> A Power “Contest”</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#linear-rank-statistics-in-general"><i class="fa fa-check"></i><b>3.5</b> Linear Rank Statistics in General</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="rank-tests.html"><a href="rank-tests.html#definition-1"><i class="fa fa-check"></i><b>3.5.1</b> Definition</a></li>
+<li class="chapter" data-level="3.5.2" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.2</b> Properties of Linear Rank Statistics</a></li>
+<li class="chapter" data-level="3.5.3" data-path="rank-tests.html"><a href="rank-tests.html#other-examples-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.3</b> Other Examples of Linear Rank Statistics</a></li>
+<li class="chapter" data-level="3.5.4" data-path="rank-tests.html"><a href="rank-tests.html#choosing-the-scores-a_ni"><i class="fa fa-check"></i><b>3.5.4</b> Choosing the scores <span class="math inline">\(a_{N}(i)\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#additional-reading"><i class="fa fa-check"></i><b>3.6</b> Additional Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a><ul>
+<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskal-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskal-Wallis Test</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#definition-2"><i class="fa fa-check"></i><b>4.1.1</b> Definition</a></li>
+<li class="chapter" data-level="4.1.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#asymptotic-distribution-and-connection-to-one-way-anova"><i class="fa fa-check"></i><b>4.1.2</b> Asymptotic Distribution and Connection to One-Way ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#performing-the-kruskal-wallis-test-in-r"><i class="fa fa-check"></i><b>4.2</b> Performing the Kruskal-Wallis Test in R</a></li>
+<li class="chapter" data-level="4.3" data-path="krusk-wallis.html"><a href="krusk-wallis.html#comparison-of-specific-groups"><i class="fa fa-check"></i><b>4.3</b> Comparison of Specific Groups</a></li>
+<li class="chapter" data-level="4.4" data-path="krusk-wallis.html"><a href="krusk-wallis.html#an-additional-example"><i class="fa fa-check"></i><b>4.4</b> An Additional Example</a></li>
+<li class="chapter" data-level="4.5" data-path="krusk-wallis.html"><a href="krusk-wallis.html#additional-reading-1"><i class="fa fa-check"></i><b>4.5</b> Additional Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a><ul>
+<li class="chapter" data-level="5.1" data-path="permutation.html"><a href="permutation.html#notation"><i class="fa fa-check"></i><b>5.1</b> Notation</a></li>
+<li class="chapter" data-level="5.2" data-path="permutation.html"><a href="permutation.html#permutation-tests-for-the-two-sample-problem"><i class="fa fa-check"></i><b>5.2</b> Permutation Tests for the Two-Sample Problem</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="permutation.html"><a href="permutation.html#example-1"><i class="fa fa-check"></i><b>5.2.1</b> Example 1</a></li>
+<li class="chapter" data-level="5.2.2" data-path="permutation.html"><a href="permutation.html#permutation-test-p-values"><i class="fa fa-check"></i><b>5.2.2</b> Permutation Test p-values</a></li>
+<li class="chapter" data-level="5.2.3" data-path="permutation.html"><a href="permutation.html#example-2-ratios-of-means"><i class="fa fa-check"></i><b>5.2.3</b> Example 2: Ratios of Means</a></li>
+<li class="chapter" data-level="5.2.4" data-path="permutation.html"><a href="permutation.html#example-3-differences-in-quantiles"><i class="fa fa-check"></i><b>5.2.4</b> Example 3: Differences in Quantiles</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3</b> The Permutation Test as a Conditional Test</a></li>
+<li class="chapter" data-level="5.4" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-correlation"><i class="fa fa-check"></i><b>5.4</b> A Permutation Test for Correlation</a></li>
+<li class="chapter" data-level="5.5" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-variable-importance-in-regression-and-machine-learning"><i class="fa fa-check"></i><b>5.5</b> A Permutation Test for Variable Importance in Regression and Machine Learning</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
+<li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-3"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
+<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="ustat.html"><a href="ustat.html#example-1-the-sample-mean"><i class="fa fa-check"></i><b>6.2.1</b> Example 1: The Sample Mean</a></li>
+<li class="chapter" data-level="6.2.2" data-path="ustat.html"><a href="ustat.html#example-2-the-sample-variance"><i class="fa fa-check"></i><b>6.2.2</b> Example 2: The Sample Variance</a></li>
+<li class="chapter" data-level="6.2.3" data-path="ustat.html"><a href="ustat.html#example-3-ginis-mean-difference"><i class="fa fa-check"></i><b>6.2.3</b> Example 3: Gini’s Mean Difference</a></li>
+<li class="chapter" data-level="6.2.4" data-path="ustat.html"><a href="ustat.html#example-4-wilcoxon-signed-rank-statistic"><i class="fa fa-check"></i><b>6.2.4</b> Example 4: Wilcoxon Signed Rank Statistic</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#inference-using-u-statistics"><i class="fa fa-check"></i><b>6.3</b> Inference using U-statistics</a></li>
+<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#u-statistics-for-two-sample-problems"><i class="fa fa-check"></i><b>6.4</b> U-statistics for Two-Sample Problems</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="ustat.html"><a href="ustat.html#the-mann-whitney-statistic"><i class="fa fa-check"></i><b>6.4.1</b> The Mann-Whitney Statistic</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.5</b> Measures of Association</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="ustat.html"><a href="ustat.html#spearmans-rank-correlation"><i class="fa fa-check"></i><b>6.5.1</b> Spearman’s Rank Correlation</a></li>
+<li class="chapter" data-level="6.5.2" data-path="ustat.html"><a href="ustat.html#kendalls-tau"><i class="fa fa-check"></i><b>6.5.2</b> Kendall’s tau</a></li>
+<li class="chapter" data-level="6.5.3" data-path="ustat.html"><a href="ustat.html#distance-covariance-and-correlation"><i class="fa fa-check"></i><b>6.5.3</b> Distance Covariance and Correlation</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Nonparametric Estimation</b></span></li>
+<li class="chapter" data-level="7" data-path="edf.html"><a href="edf.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
+<li class="chapter" data-level="7.1" data-path="edf.html"><a href="edf.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1</b> Definition and Basic Properties</a></li>
+<li class="chapter" data-level="7.2" data-path="edf.html"><a href="edf.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.2</b> Confidence intervals for F(t)</a></li>
+<li class="chapter" data-level="7.3" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.3</b> The Empirical Distribution Function in R</a></li>
+<li class="chapter" data-level="7.4" data-path="edf.html"><a href="edf.html#the-kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>7.4</b> The Kolmogorov-Smirnov Test</a></li>
+<li class="chapter" data-level="7.5" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-and-statistical-functionals"><i class="fa fa-check"></i><b>7.5</b> The empirical distribution function and statistical functionals</a></li>
+<li class="chapter" data-level="7.6" data-path="edf.html"><a href="edf.html#additional-reading-2"><i class="fa fa-check"></i><b>7.6</b> Additional Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
+<li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms"><i class="fa fa-check"></i><b>8.2</b> Histograms</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-5"><i class="fa fa-check"></i><b>8.2.1</b> Definition</a></li>
+<li class="chapter" data-level="8.2.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms-in-r"><i class="fa fa-check"></i><b>8.2.2</b> Histograms in R</a></li>
+<li class="chapter" data-level="8.2.3" data-path="density-estimation.html"><a href="density-estimation.html#performance-of-the-histogram-estimate-and-bin-width-selection"><i class="fa fa-check"></i><b>8.2.3</b> Performance of the Histogram Estimate and Bin Width Selection</a></li>
+<li class="chapter" data-level="8.2.4" data-path="density-estimation.html"><a href="density-estimation.html#choosing-the-histogram-bin-width"><i class="fa fa-check"></i><b>8.2.4</b> Choosing the Histogram Bin Width</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="density-estimation.html"><a href="density-estimation.html#a-box-type-density-estimate"><i class="fa fa-check"></i><b>8.3</b> A Box-type Density Estimate</a></li>
+<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-6"><i class="fa fa-check"></i><b>8.4.1</b> Definition</a></li>
+<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-mise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and MISE of Kernel Density Estimates</a></li>
+<li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection with the Normal Reference Rule</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation-in-practice"><i class="fa fa-check"></i><b>8.5</b> Kernel Density Estimation in Practice</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.5.1</b> Density Estimation in R</a></li>
+<li class="chapter" data-level="8.5.2" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5.2</b> Cross-Validation for Bandwidth Selection</a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="density-estimation.html"><a href="density-estimation.html#additional-reading-3"><i class="fa fa-check"></i><b>8.6</b> Additional Reading</a></li>
+</ul></li>
+<li class="part"><span><b>III Uncertainty Measures</b></span></li>
+<li class="chapter" data-level="9" data-path="sampling.html"><a href="sampling.html"><i class="fa fa-check"></i><b>9</b> The Jackknife</a><ul>
+<li class="chapter" data-level="9.1" data-path="sampling.html"><a href="sampling.html#introduction-1"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> The Bootstrap and Confidence Intervals</a><ul>
+<li class="chapter" data-level="10.1" data-path="ci.html"><a href="ci.html#bootstrapping"><i class="fa fa-check"></i><b>10.1</b> Bootstrapping</a></li>
+</ul></li>
+<li class="part"><span><b>IV Nonparametric Regression: Part I</b></span></li>
+<li class="chapter" data-level="11" data-path="kernel-regression.html"><a href="kernel-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression</a><ul>
+<li class="chapter" data-level="11.1" data-path="kernel-regression.html"><a href="kernel-regression.html#introduction-2"><i class="fa fa-check"></i><b>11.1</b> Introduction</a><ul>
+<li class="chapter" data-level="11.1.1" data-path="kernel-regression.html"><a href="kernel-regression.html#an-example"><i class="fa fa-check"></i><b>11.1.1</b> An Example</a></li>
+<li class="chapter" data-level="11.1.2" data-path="kernel-regression.html"><a href="kernel-regression.html#linear-smoothers-and-naive-nonparametric-estimates"><i class="fa fa-check"></i><b>11.1.2</b> Linear Smoothers and Naive Nonparametric Estimates</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="kernel-regression.html"><a href="kernel-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>11.2</b> The Nadaraya-Watson estimator</a></li>
+<li class="chapter" data-level="11.3" data-path="kernel-regression.html"><a href="kernel-regression.html#local-linear-and-polynomial-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear and Polynomial Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
+<li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a></li>
+<li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#spline-basis-functions"><i class="fa fa-check"></i><b>12.2</b> Spline Basis Functions</a></li>
+<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splinespenalized-regression"><i class="fa fa-check"></i><b>12.3</b> Smoothing Splines/Penalized Regression</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#selection-of-smoothing-parameter"><i class="fa fa-check"></i><b>12.3.1</b> Selection of Smoothing Parameter</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
+<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a></li>
+<li class="chapter" data-level="14" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>14</b> Ensemble Methods for Prediction</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Elements of Nonparametric Statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="density-estimation" class="section level1">
+<h1><span class="header-section-number">Chapter 8</span> Density Estimation</h1>
+<div id="introduction" class="section level2">
+<h2><span class="header-section-number">8.1</span> Introduction</h2>
+<ul>
+<li><p>In this section, we focus on methods for estimating a <strong>probability density function</strong> (pdf) <span class="math inline">\(f(x)\)</span>.</p></li>
+<li><p>For a continuous random variable <span class="math inline">\(X\)</span>, areas under the probability density function are probabilities
+<span class="math display">\[\begin{equation}
+P(a &lt; X &lt; b) = \int_{a}^{b} f(x) dx \nonumber
+\end{equation}\]</span>
+and <span class="math inline">\(f(x)\)</span> is related to the cumulative distribution function via <span class="math inline">\(f(x) = F&#39;(x)\)</span>.</p></li>
+<li><p>With parametric approaches to density estimation, you only need to estimate several parameters as
+these parameters completely determine the form of <span class="math inline">\(f(x)\)</span>.</p></li>
+<li><p>For example, with a Gaussian distribution you only need to find <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^{2}\)</span> to
+determine the form of <span class="math inline">\(f(x)\)</span>.</p></li>
+<li><p>In a nonparametric approach to estimating, we will assume that our observations <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>
+are an independent identically distribution sample from a distribution with pdf <span class="math inline">\(f(x)\)</span>, but otherwise we will
+make few assumptions about the particular form of <span class="math inline">\(f(x)\)</span>.</p></li>
+</ul>
+</div>
+<div id="histograms" class="section level2">
+<h2><span class="header-section-number">8.2</span> Histograms</h2>
+<div class="figure"><span id="fig:unnamed-chunk-1"></span>
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" width="672" />
+<p class="caption">
+Figure 8.1: Histogram of ages from kidney function data. Data retrieved from: <a href="https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" class="uri">https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</a>
+</p>
+</div>
+<div id="definition-5" class="section level3">
+<h3><span class="header-section-number">8.2.1</span> Definition</h3>
+<ul>
+<li><p>While histograms are often thought of as maily a visualization tool,
+a histogram can also be thought of as an estimate of the density <span class="math inline">\(f(x)\)</span>.</p></li>
+<li><p>To construct a histogram, you first need to define a series
+of “bins”: <span class="math inline">\(B_{1}, \ldots, B_{D_{n}}\)</span>.</p></li>
+<li><p>Each bin is a left-closed interval. The bins are usually
+assumed to have the form <span class="math inline">\(B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n})\)</span>:
+<span class="math display">\[\begin{eqnarray}
+B_{1} &amp;=&amp; [x_{0}, x_{0} + h_{n}) \nonumber \\
+B_{2} &amp;=&amp; [x_{0} + h_{n}, x_{0} + 2h_{n}) \nonumber \\
+&amp;\vdots&amp; \nonumber \\
+B_{D_{n}} &amp;=&amp; [x_{0} + (D_{n}-1)h_{n}, x_{0} + D_{n}h_{n}) \nonumber 
+\end{eqnarray}\]</span></p></li>
+<li><span class="math inline">\(x_{0}\)</span> - the origin</li>
+<li><span class="math inline">\(h_{n}\)</span> - bin width</li>
+<li><p><span class="math inline">\(D_{n}\)</span> - number of bins</p></li>
+<li><p>Histograms are based on the counts <span class="math inline">\(n_{k}\)</span> of observations that fall into each bin:
+<span class="math display">\[\begin{eqnarray}
+n_{k} &amp;=&amp; \# \text{ of observations falling into the $k^{th}$ bin }  \nonumber \\
+&amp;=&amp; \sum_{i=1}^{n} I( x_{0} + (k-1)h_{n} \leq X_{i} &lt; x_{0} + kh_{n}  )
+\end{eqnarray}\]</span></p></li>
+<li><p>From the counts <span class="math inline">\(n_{k}\)</span>, the histogram estimate of the density at a point <span class="math inline">\(x\)</span> in
+the <span class="math inline">\(k^{th}\)</span> bin (that is if <span class="math inline">\(x_{0} + (k-1)h_{n} \leq x &lt; x_{0} + kh_{n}\)</span>), is defined as
+<span class="math display" id="eq:hist-density">\[\begin{equation}
+\hat{f}_{h_{n}}^{H}(x) = \frac{n_{k}}{nh_{n}}  
+\tag{8.1}
+\end{equation}\]</span></p></li>
+<li><p><strong>Note:</strong> Histogram plots often show the actual bin counts <span class="math inline">\(n_{k}\)</span> rather than
+the values of <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>To see the motivation for the histogram estimate, notice that if we choose a
+relatively small value <span class="math inline">\(h_{n} &gt; 0\)</span>
+<span class="math display">\[\begin{equation}
+P(a &lt; X_{i} &lt; a + h_{n}) = \int_{a}^{a + h_{n}} f(t) dt \approx h_{n}f(c), \nonumber
+\end{equation}\]</span>
+for any point <span class="math inline">\(a \leq c \leq a + h_{n}\)</span>.</p></li>
+<li><p>So, for a point <span class="math inline">\(x \in B_{k}\)</span>, the expected value of <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span> is
+<span class="math display">\[\begin{eqnarray}
+E\{ \hat{f}_{h_{n}}^{H}(x) \} &amp;=&amp; \frac{1}{n h_{n}} E\{ n_{k} \} \nonumber \\
+&amp;=&amp; \frac{1}{n h_{n}} \sum_{i=1}^{n} P( x_{0} + (k-1)h_{n} \leq X_{i} &lt; x_{0} + kh_{n}  ) \nonumber \\
+&amp;=&amp; \frac{1}{h_{n}} P( x_{0} + (k-1)h_{n} \leq X_{i} &lt; x_{0} + kh_{n}  )  \nonumber \\
+&amp;\approx&amp; f(x) \nonumber
+\end{eqnarray}\]</span></p></li>
+</ul>
+</div>
+<div id="histograms-in-r" class="section level3">
+<h3><span class="header-section-number">8.2.2</span> Histograms in R</h3>
+<ul>
+<li>In <strong>R</strong>, use histograms are computed using the <code>hist</code> function</li>
+</ul>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1"><span class="kw">hist</span>(x, breaks, probability, plot, ...)</a></code></pre></div>
+<ul>
+<li>The <strong>breaks</strong> argument
+<ul>
+<li>Default is “Sturges”. This is a method for finding the bin width.</li>
+<li>Can be a name giving the name of an algorithm for computing bin width
+(e.g., “Scott” and “FD”).</li>
+<li>Can also be a single number. This gives the number of bins used.</li>
+<li>Could be a vector giving the breakpoints between bins.</li>
+<li>Could also be a function which computes the number of bins.</li>
+</ul></li>
+<li><p>The <strong>probability</strong> argument. If this is set to FALSE, then the
+bin counts are shown in the histogram. If set to TRUE, then the
+bin counts divided by <span class="math inline">\(nh_{n}\)</span> are shown in the histogram.</p></li>
+<li><p>The <strong>plot</strong> argument. If TRUE, a histogram is plotted
+whenever <code>hist</code> is called. If FALSE, a histogram is not
+plotted when <code>hist</code> is called.</p></li>
+</ul>
+<p><strong>Note:</strong> The default for R, is to use right-closed intervals <span class="math inline">\((a, b]\)</span>.
+This can be changed using the <strong>right</strong> argument of the <strong>hist</strong> function.</p>
+<hr />
+<ul>
+<li>Let’s use the kidney function data again to demonstrate the use of histograms in <strong>R</strong>. This time
+we will focus on the <strong>age</strong> variable.</li>
+</ul>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1">kidney &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </a>
+<a class="sourceLine" id="cb120-2" data-line-number="2">                     <span class="dt">header=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<ul>
+<li>You can plot a histogram of <strong>age</strong> just by calling the <code>hist</code> function.</li>
+</ul>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1">kidney.hist &lt;-<span class="st"> </span><span class="kw">hist</span>(kidney<span class="op">$</span>age, <span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Age from Kidney Data&quot;</span>)</a></code></pre></div>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<ul>
+<li>Use the <code>probability = TRUE</code> argument to plot the density-estimate version of the histogram.
+This histogram should integrate to 1.</li>
+</ul>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" data-line-number="1">kidney.hist2 &lt;-<span class="st"> </span><span class="kw">hist</span>(kidney<span class="op">$</span>age, <span class="dt">main=</span><span class="st">&quot;Histogram of Age on Probability Scale&quot;</span>, </a>
+<a class="sourceLine" id="cb122-2" data-line-number="2">                     <span class="dt">xlab=</span><span class="st">&quot;Age from Kidney Data&quot;</span>, <span class="dt">probability=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<hr />
+<ul>
+<li>In addition to generating a histogram plot, the histogram function
+also returns useful stuff.</li>
+</ul>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1"><span class="kw">names</span>(kidney.hist)</a></code></pre></div>
+<pre><code>## [1] &quot;breaks&quot;   &quot;counts&quot;   &quot;density&quot;  &quot;mids&quot;     &quot;xname&quot;    &quot;equidist&quot;</code></pre>
+<ul>
+<li><strong>breaks</strong>
+<ul>
+<li>the boundaries for the histogram bins. The bins are of the form ( breaks[k], breaks[k+1] ]</li>
+</ul></li>
+<li><strong>counts</strong>
+<ul>
+<li>the number of observations falling into each bin</li>
+</ul></li>
+<li><strong>density</strong>
+<ul>
+<li>the value of the estimated density within each of the bins</li>
+</ul></li>
+<li><strong>mids</strong>
+<ul>
+<li>the midpoint of each of the bins</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1">kidney.hist<span class="op">$</span>breaks</a></code></pre></div>
+<pre><code>## [1] 10 20 30 40 50 60 70 80 90</code></pre>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" data-line-number="1">kidney.hist<span class="op">$</span>counts</a></code></pre></div>
+<pre><code>## [1]  4 74 35 11 13 12  6  2</code></pre>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" data-line-number="1"><span class="co">## The following sum should match the first element of kidney.hist$counts[1]</span></a>
+<a class="sourceLine" id="cb129-2" data-line-number="2"><span class="kw">sum</span>(kidney.hist<span class="op">$</span>breaks[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>kidney<span class="op">$</span>age <span class="op">&amp;</span><span class="st"> </span>kidney<span class="op">$</span>age <span class="op">&lt;=</span><span class="st"> </span>kidney.hist<span class="op">$</span>breaks[<span class="dv">2</span>]) </a></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<ul>
+<li>Let’s check that the density values returned by <code>hist</code> match our definition of the histogram density estimate in <a href="density-estimation.html#eq:hist-density">(8.1)</a>.</li>
+</ul>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" data-line-number="1">binwidth &lt;-<span class="st"> </span>kidney.hist<span class="op">$</span>breaks[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>kidney.hist<span class="op">$</span>breaks[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb131-2" data-line-number="2">kidney.hist<span class="op">$</span>density</a></code></pre></div>
+<pre><code>## [1] 0.002547771 0.047133758 0.022292994 0.007006369 0.008280255 0.007643312
+## [7] 0.003821656 0.001273885</code></pre>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1">kidney.hist<span class="op">$</span>counts<span class="op">/</span>(<span class="kw">length</span>(kidney<span class="op">$</span>age)<span class="op">*</span>binwidth)</a></code></pre></div>
+<pre><code>## [1] 0.002547771 0.047133758 0.022292994 0.007006369 0.008280255 0.007643312
+## [7] 0.003821656 0.001273885</code></pre>
+</div>
+<div id="performance-of-the-histogram-estimate-and-bin-width-selection" class="section level3">
+<h3><span class="header-section-number">8.2.3</span> Performance of the Histogram Estimate and Bin Width Selection</h3>
+<div id="biasvariance-decomposition" class="section level4">
+<h4><span class="header-section-number">8.2.3.1</span> Bias/Variance Decomposition</h4>
+<ul>
+<li><p>It is common to evaluate the performance of a density estimator
+through its <strong>mean-squared error</strong> (MSE).</p></li>
+<li><p>In general, MSE is a function of bias and variance
+<span class="math display">\[\begin{equation}
+\textrm{MSE} = \textrm{Bias}^2 + \textrm{Variance}  \nonumber 
+\end{equation}\]</span></p></li>
+<li><p>We will first look at the mean-squared error of <span class="math inline">\(\hat{f}_{h_{n}}^{H}( x )\)</span> at a single point <span class="math inline">\(x\)</span>
+<span class="math display">\[\begin{eqnarray}
+\textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
+&amp;=&amp; E\Big( \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}  \Big) \nonumber \\
+&amp;=&amp; E\Big( \Big[ \hat{f}_{h_{n}}^{H}(x) - E\{ \hat{f}_{n}^{H}(x) \} + E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \Big]^{2}  \Big) \nonumber \\
+&amp;=&amp; E\Big( \Big[ \hat{f}_{h_{n}}^{H}(x) - E\{ \hat{f}_{n}^{H}(x) \} \Big]^{2}  \Big) + E\Big( \Big[ E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \Big]^{2}  \Big) \nonumber \\
+&amp;+&amp; 2E\Big( \Big[ \hat{f}_{h_{n}}^{H}(x) - E\{ \hat{f}_{n}^{H}(x) \}\Big]\Big[ E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \Big]  \Big)  \nonumber \\ 
+&amp;=&amp; \underbrace{\textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \}}_{\textrm{Variance}} + \underbrace{\Big( E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x)  \Big)^{2} }_{\textrm{Bias Squared}}  \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>In general, as the bin width <span class="math inline">\(h_{n}\)</span> increases, the histogram estimate
+will have less variation but will become more biased.</p></li>
+</ul>
+</div>
+<div id="bias-and-variance-of-the-histogram-estimate" class="section level4">
+<h4><span class="header-section-number">8.2.3.2</span> Bias and Variance of the Histogram Estimate</h4>
+<ul>
+<li><p>Recall that, for a histogram estimate, we have <span class="math inline">\(D_{n}\)</span> bins where the <span class="math inline">\(k^{th}\)</span> bin
+takes the form
+<span class="math display">\[\begin{equation}
+B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n}) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>For a point <span class="math inline">\(x \in B_{k}\)</span>, that “belongs” to the <span class="math inline">\(k^{th}\)</span> bin, the histogram density estimate is
+<span class="math display">\[\begin{equation}
+\hat{f}_{n}^{H}(x) = \frac{n_{k}}{nh_{n}}, \quad \textrm{ where } n_{k} = \textrm{ number of observations falling into bin } B_{k}
+\end{equation}\]</span></p></li>
+<li><p>To better examine what happens as <span class="math inline">\(n\)</span> changes, we will define the function <span class="math inline">\(A_{h_{n}, x_{0}}(x)\)</span> as the function
+which returns the index of the interval to which <span class="math inline">\(x\)</span> belongs.</p></li>
+<li><p>For example, if <span class="math inline">\(x_{0} = 0\)</span>, <span class="math inline">\(h_{n} = 1/3\)</span>, and <span class="math inline">\(x = 1/2\)</span>, then <span class="math inline">\(A_{h_{n}, x_{0}}( x ) = 2\)</span>.</p></li>
+<li><p>So, we can also write the histogram density estimate at the value <span class="math inline">\(x\)</span> as
+<span class="math display">\[\begin{equation}
+\hat{f}_{h_{n}}^{H}(x) = \frac{n_{A_{h_{n}, x_{0}}(x)}}{ nh_{n} }  \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><strong>Exercise 8.1.</strong> Suppose <span class="math inline">\(x_{0} = -2\)</span> and <span class="math inline">\(h_{n} = 1/2\)</span>. What are the values of
+<span class="math inline">\(A_{h_{n}, x_{0}}( -1 )\)</span>, <span class="math inline">\(A_{h_{n}, x_{0}}( 1.3 )\)</span>, and <span class="math inline">\(A_{h_{n}, x_{0}}( 0.75 )\)</span>?</li>
+</ul>
+<hr />
+<hr />
+<ul>
+<li><p>Note that we can express <span class="math inline">\(n_{A_{h_{n}, x_{0}}(x)}\)</span> as
+<span class="math display">\[\begin{equation}
+n_{A_{h_{n}, x_{0}}(x)} = \sum_{i = 1}^{n} I\Big( X_{i} \in B_{A_{h_{n}, x_{0}}(x)} \Big) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Hence, is a binomial random variable with <span class="math inline">\(n\)</span> trials
+and success probability <span class="math inline">\(p_{h_{n}, x_{0}}(x)\)</span> (why?)
+<span class="math display">\[\begin{equation}
+n_{A_{h_{n}}(x)} \sim \textrm{Binomial}\{ n, p_{h_{n}, x_{0}}(x) \} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The success probability <span class="math inline">\(p_{h_{n}, x_{0}}(x)\)</span> is defined as
+<span class="math display">\[\begin{eqnarray}
+p_{h_{n}, x_{0}}(x) &amp;=&amp; P\Big\{ X_{i} \textrm{ falls into bin } B_{A_{h_{n}, x_{0}}}(x) \Big\}   \nonumber \\
+&amp;=&amp; \int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt.
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Because <span class="math inline">\(n_{A_{h_{n}, x_{0}}(x)}\)</span> follows a binomial distribution, we know that
+<span class="math display">\[\begin{eqnarray}
+E( n_{A_{h_{n}, x_{0}}(x)} ) &amp;=&amp; np_{h_{n}, x_{0}}(x)  \nonumber \\ 
+\textrm{Var}( n_{A_{h_{n}, x_{0}}(x)} ) &amp;=&amp; np_{h_{n}, x_{0}}(x)\{1 - p_{h_{n},x_{0}}(x) \} \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>So, we can express the bias of the histogram density
+estimate <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x) = n_{A_{h_{n}, x_{0}}(x)}/(nh_{n})\)</span> as
+<span class="math display">\[\begin{eqnarray}
+\textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} &amp;=&amp; E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \nonumber \\
+&amp;=&amp; \frac{1}{nh_{n}}E( n_{A_{h_{n}, x_{0}}(x)} ) - f(x) \nonumber \\
+&amp;=&amp; \frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } - f(x), \nonumber
+\end{eqnarray}\]</span>
+and we can express the variance as:
+<span class="math display">\[\begin{eqnarray}
+\textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \}
+&amp;=&amp; \frac{1}{n^{2}h_{n}^{2}}\textrm{Var}( n_{A_{h_{n}, x_{0}}(x)} )  \nonumber \\
+&amp;=&amp; \frac{ p_{h_{n}, x_{0}}(x)\{1 - p_{h_{n}, x_{0}}(x) \} }{ nh_{n}^{2} } \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>Using the approximation <span class="math inline">\(f(t) \approx f(x) + f&#39;(x)(t - x)\)</span> for <span class="math inline">\(t\)</span> close to <span class="math inline">\(x\)</span>, we have that
+<span class="math display">\[\begin{eqnarray}
+\frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } &amp;=&amp; \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt \nonumber \\
+ &amp;\approx&amp; \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(x) dt + \frac{f&#39;(x)}{h_{n}}\int_{x_{0} + (A_{h_{n}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } (t - x) dt \nonumber \\
+&amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ (t - x)^{2}\Big|_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } \Big] \nonumber \\
+&amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ (x_{0} + A_{h_{n}, x_{0}}(x)h_{n})^{2} - (x_{0} + (A_{h_{n}, x_{0}}(x)-1)h_{n} )^{2} - 2xh_{n} \Big] \nonumber \\
+&amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ 2x_{0}A_{h_{n}, x_{0}}(x)h_{n} + A_{h_{n}, x_{0}}^{2}(x)h_{n}^{2} - 2x_{0}(A_{h_{n}, x_{0}}(x)-1)h_{n}  \nonumber \\
+&amp; &amp; - (A_{h_{n}, x_{0}}(x)-1)^{2}h_{n}^{2} - 2xh_{n} \Big] \nonumber \\
+&amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ 2x_{0}h_{n} + 2A_{h_{n}, x_{0}}(x)h_{n}^{2} - h_{n}^{2} - 2xh_{n} \Big] \nonumber \\
+&amp;=&amp; f(x) + f&#39;(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big] \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>So, the bias of the histogram density estimate <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span> is
+<span class="math display" id="eq:approx-bias-hist">\[\begin{eqnarray}
+\textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} 
+&amp;=&amp; \frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } - f(x)  \nonumber \\
+&amp;\approx&amp; f&#39;(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big] 
+\tag{8.2}
+\end{eqnarray}\]</span></p></li>
+<li><p>Choosing a very small bin width <span class="math inline">\(h_{n}\)</span> will result in a small bias because the left endpoint of the
+bin <span class="math inline">\(x_{0} + (A_{h_{n}}(x) - 1)h_{n}\)</span> will always be very close to <span class="math inline">\(x\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Now, let us turn to the variance of the histogram estimate at <span class="math inline">\(x\)</span>:
+<span class="math display" id="eq:approx-var-hist">\[\begin{eqnarray}
+\textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \} &amp;=&amp; \frac{p_{h_{n}, x_{0}}(x) }{nh_{n}^{2}}\{1 - p_{h_{n}, x_{0}}(x) \}  \nonumber \\
+&amp;\approx&amp; \frac{f(x) + f&#39;(x)\{ \tfrac{h_{n}}{2} - [ x - x_{0} - (A_{h_{n}, x_{0}}(x) - 1)h_{n} ] \}}{nh_{n}}\{1 - p_{h_{n}, x_{0}}(x)\}  \nonumber \\
+&amp;\approx&amp; \frac{f(x)}{n h_{n} }
+\tag{8.3}
+\end{eqnarray}\]</span></p></li>
+<li><p>For a more detailed description of the above approximation see <span class="citation">Scott (<a href="#ref-scott1979">1979</a>)</span> or Chapter 6 of <span class="citation">Wasserman (<a href="#ref-wasserman2006">2006</a>)</span>.</p></li>
+<li><p>Note that large bin widths will reduce the variance of <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span>.</p></li>
+</ul>
+</div>
+<div id="pointwise-mean-squared-error" class="section level4">
+<h4><span class="header-section-number">8.2.3.3</span> Pointwise Mean Squared Error</h4>
+<ul>
+<li><p>Using <a href="density-estimation.html#eq:approx-var-hist">(8.3)</a> and <a href="density-estimation.html#eq:approx-bias-hist">(8.2)</a>, the approximate mean-squared error of the histogram density estimate
+at a particular point <span class="math inline">\(x\)</span> is given by
+<span class="math display" id="eq:mse-hist-decomp">\[\begin{eqnarray}
+\textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
+&amp;=&amp; E\Big( \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}  \Big) \nonumber \\
+&amp;=&amp; \Big( \textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} \Big)^{2} + \textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \} \nonumber \\
+&amp;\approx&amp;  \frac{h_{n}^{2}[f&#39;(x)]^{2} }{4} - h_{n}f&#39;(x)[ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ]  \nonumber \\
+&amp;+&amp; [f&#39;(x)]^{2}\Big( x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} \Big)^{2} + \frac{f(x)}{n h_{n} }
+\tag{8.4}
+\end{eqnarray}\]</span></p></li>
+<li><p>For any approach to bin width selection, we should have <span class="math inline">\(h_{n} \longrightarrow 0\)</span> and
+<span class="math inline">\(nh_{n} \longrightarrow \infty\)</span>.</p></li>
+<li><p>This MSE approximation depends on a particular choice of <span class="math inline">\(x\)</span>.</p></li>
+<li><p>Difficult to use <a href="density-estimation.html#eq:mse-hist-decomp">(8.4)</a> as a criterion for selecting the bandwidth
+because the best choice of <span class="math inline">\(h_{n}\)</span> will often depend on your choice of <span class="math inline">\(x\)</span>.</p></li>
+</ul>
+</div>
+<div id="integrated-mean-squared-error-and-optimal-histogram-bin-width" class="section level4">
+<h4><span class="header-section-number">8.2.3.4</span> Integrated Mean Squared Error and Optimal Histogram Bin Width</h4>
+<ul>
+<li><p>Using mean integrated squared error (MISE) allows us to find an optimal bin width
+that does not depend on a particular choice of <span class="math inline">\(x\)</span>.</p></li>
+<li><p>The MISE is defined as
+<span class="math display">\[\begin{eqnarray}
+\textrm{MISE}\{ \hat{f}_{h_{n}}^{H} \} 
+&amp;=&amp; E\Big\{ \int_{-\infty}^{\infty} \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}dx   \Big\} \nonumber \\
+&amp;=&amp; \int_{-\infty}^{\infty} \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} dx \nonumber
+\end{eqnarray}\]</span>
+Using the previously derived approximation <a href="density-estimation.html#eq:mse-hist-decomp">(8.4)</a> for the MSE, it can be shown that
+<span class="math display" id="eq:mise-formula">\[\begin{eqnarray}
+\textrm{MISE}\{ \hat{f}_{h_{n}}^{H} \} \approx
+\frac{1}{nh_{n}} + \frac{h_{n}^{2}}{12}\int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx  
+\tag{8.5}
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>To select the optimal bin width, we minimize the MISE as a function of <span class="math inline">\(h_{n}\)</span>.</p></li>
+<li><p>Minimizing <a href="density-estimation.html#eq:mise-formula">(8.5)</a>, as a function of <span class="math inline">\(h_{n}\)</span> yields the following formula for the optimal bin width
+<span class="math display" id="eq:opt-binwidth-hist">\[\begin{equation}
+h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx}  \Big)^{1/3} = C n^{-1/3} 
+\tag{8.6}
+\end{equation}\]</span></p></li>
+<li><p>Notice that <span class="math inline">\(h_{n}^{opt} \longrightarrow 0\)</span> and <span class="math inline">\(nh_{n}^{opt} \longrightarrow \infty\)</span> as <span class="math inline">\(n \longrightarrow \infty\)</span>.</p></li>
+<li><p>Notice also that the optimal bin width depends on the unknown quantity <span class="math inline">\(\int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx\)</span>.</p></li>
+</ul>
+</div>
+</div>
+<div id="choosing-the-histogram-bin-width" class="section level3">
+<h3><span class="header-section-number">8.2.4</span> Choosing the Histogram Bin Width</h3>
+<ul>
+<li>We will mention three rules for selecting the bin width of a histogram.
+<ul>
+<li>Scott rule: (based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a>)</li>
+<li>Friedman and Diaconis rule (also based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a>)</li>
+<li>Sturges rule: (based on wanting the histogram to look Gaussian when the data are in fact Gaussian-distributed)</li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li><p>Both Scott and the FD rule are based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a>.</p></li>
+<li><p>The main problem with using the formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a> is the presence of <span class="math inline">\(\int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx\)</span>.</p></li>
+<li><p><strong>Solution:</strong> See what this quantity looks like if we assume that <span class="math inline">\(f(x)\)</span> corresponds
+to a <span class="math inline">\(N(\mu, \sigma^{2})\)</span> density.</p></li>
+<li><p>With this assumption,
+<span class="math display">\[\begin{equation}
+h_{n}^{opt} = 3.5 \sigma n^{-1/3}  \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p><strong>Scott rule</strong>: Use <span class="math inline">\(h_{n}^{*} = 3.5 \hat{\sigma} n^{-1/3}\)</span>, where <span class="math inline">\(\hat{\sigma}\)</span> denotes the sample standard deviation.</p></li>
+<li><p><strong>FD rule</strong>: Use <span class="math inline">\(h_{n}^{*} = 2 \times IQR \times n^{-1/3}\)</span>. This is a somewhat more robust choice of <span class="math inline">\(h_{n}\)</span> as it is not as
+sensitive to outliers.</p></li>
+<li><p><strong>Sturges rule</strong>: The bin width is chosen so that we have <span class="math inline">\(1 + log_{2}(n)\)</span> bins. This choice tends to give wide
+intervals.</p></li>
+</ul>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+</div>
+<div id="a-box-type-density-estimate" class="section level2">
+<h2><span class="header-section-number">8.3</span> A Box-type Density Estimate</h2>
+<ul>
+<li><p>A related estimator <span class="math inline">\(\hat{f}_{h_{n}}^{B}\)</span> of the density <span class="math inline">\(f(x)\)</span> uses a
+“sliding bin” at each point <span class="math inline">\(x\)</span> to calculate the estimate of <span class="math inline">\(f(x)\)</span>.</p></li>
+<li><p>Specifically, the “box estimate” <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span> at the point <span class="math inline">\(x\)</span> is defined as
+<span class="math display">\[\begin{equation}
+\hat{f}_{h_{n}}^{B}(x) = \frac{1}{2nh_{n}} \Big[ \# \text{ of observations falling in the interval } (x - h_{n}, x + h_{n}) \Big] \nonumber
+\end{equation}\]</span></p></li>
+<li><p>In other words, for each <span class="math inline">\(x\)</span> we are forming a bin of width <span class="math inline">\(2h_{n}\)</span> around <span class="math inline">\(x\)</span>, and we are counting
+the number of observations that fall in this bin.</p></li>
+<li><p>You can think that each point <span class="math inline">\(x\)</span> as being the center of its own bin.</p></li>
+<li><p>The expectation of the box estimator at the point <span class="math inline">\(x\)</span> is<br />
+<span class="math display">\[\begin{equation}
+E \{ \hat{f}_{h_{n}}^{B}(x) \}
+= \frac{1}{2h_{n}} P(x - h_{n} &lt; X_{i}  &lt; x + h_{n}) 
+\approx f(x)  \nonumber 
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Unlike the histogram, the box estimate does not require the density estimate
+to be constant within each bin.</p></li>
+<li><p>Also, the box estimate will not tend to have as dramatic changes near
+the bin edges as the histogram does.</p></li>
+<li><p>However, plots of the box estimate will still largely be non-smooth and
+have a “jagged” appearance.</p></li>
+</ul>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<hr />
+<ul>
+<li>We can also express <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span> in the following way:
+<span class="math display" id="eq:box-density">\[\begin{equation}
+\hat{f}_{h_{n}}^{B}(x)
+= \frac{1}{n} \sum_{i=1}^{n} \frac{1}{h_{n}} w\Big( \frac{X_{i} - x}{h_{n}} \Big),  
+\tag{8.7}
+\end{equation}\]</span>
+where <span class="math inline">\(w(t)\)</span> is defined as the following “box function”
+<span class="math display">\[\begin{equation}
+w(t) = 
+\begin{cases}
+\frac{1}{2} &amp; \textrm{ if } |t| &lt; 1 \nonumber \\
+0 &amp; \textrm{ otherwise } \nonumber
+\end{cases}
+\end{equation}\]</span></li>
+</ul>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<ul>
+<li><p>While the estimator <span class="math inline">\(\hat{f}_{h_{n}}^{B}\)</span> does seem reasonable, it always
+results in density estimates which are not “smooth.”</p></li>
+<li><p>Most kernel density estimates are formed by replacing the box function <span class="math inline">\(w(t)\)</span> with
+a smoother function.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p><strong>Exercise 8.2</strong>. Write an <strong>R</strong> function which computes the <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>
+at a collection of specified points.</p></li>
+<li><p><strong>Exercise 8.3</strong>. Suppose we have observations <span class="math inline">\((X_{1}, X_{2}, X_{3}, X_{4}) = (-1, 0, 1/2, 1)\)</span>.
+Assuming <span class="math inline">\(h_{n} = 1/2\)</span>, plot <span class="math inline">\(w(\tfrac{X_{i} - x}{h_{n}})/nh_{n}\)</span> for <span class="math inline">\(i = 1, \ldots, 4\)</span> and plot the box
+density estimate <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>.</p></li>
+<li><p><strong>Exercise 8.4</strong>. Suppose we have i.i.d. observations <span class="math inline">\(X_{1}, \ldots, X_{n} \sim F\)</span> where
+the cdf <span class="math inline">\(F\)</span> is assumed to be continuous. What is <span class="math inline">\(\textrm{Var}\{ \hat{f}_{h_{n}}^{B}(x) \}\)</span>?</p></li>
+</ul>
+<hr />
+</div>
+<div id="kernel-density-estimation" class="section level2">
+<h2><span class="header-section-number">8.4</span> Kernel Density Estimation</h2>
+<div id="definition-6" class="section level3">
+<h3><span class="header-section-number">8.4.1</span> Definition</h3>
+<ul>
+<li><p>Kernel density estimates are a generalization of the box-type density estimate <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>.</p></li>
+<li><p>Specifically, with kernel density estimation, we are going to replace the “box function” in <a href="density-estimation.html#eq:box-density">(8.7)</a>
+with a function which is much smoother.</p></li>
+<li><p>A kernel density estimator <span class="math inline">\(\hat{f}(x)\)</span> is defined as
+<span class="math display" id="eq:kernel-density-formula">\[\begin{equation}
+\hat{f}_{h_{n}}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) 
+\tag{8.8}
+\end{equation}\]</span></p></li>
+<li><p>The function <span class="math inline">\(K( \cdot )\)</span> is referred to as the <strong>kernel function</strong>.</p></li>
+<li><p>The scalar term <span class="math inline">\(h_{n} &gt; 0\)</span> is called the <strong>bandwidth</strong>.</p></li>
+<li><p>The value of the bandwidth largely determines how “bumpy” the density estimate
+will appear.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Kernel functions are often chosen so that
+<span class="math display">\[\begin{equation}
+K(t) \geq  0 \textrm{ for all } t
+\end{equation}\]</span>
+and that they also satisfy the following properties:
+<span class="math display">\[\begin{eqnarray}
+K(t) = K(-t) \qquad 
+\int_{-\infty}^{\infty} K(t) dt = 1 
+\qquad 
+\int_{-\infty}^{\infty} K^{2}(t) dt  &lt; \infty
+\nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>You can think of <span class="math inline">\(K(u)\)</span> as a probability density function
+which is symmetric around <span class="math inline">\(0\)</span>.</p></li>
+<li><p>Some of the most common choices of kernel functions include
+<span class="math display">\[\begin{eqnarray}
+\textrm{Gaussian} :&amp;&amp; \quad  K(u) = \exp(-u^{2}/2)/\sqrt{2\pi} \nonumber \\
+\textrm{Epanechnikov} :&amp;&amp; \quad  K(u) = \tfrac{3}{4\sqrt{5}}(1 - \tfrac{1}{5} u^{2}) I(|u| &lt; \sqrt{5}) \nonumber \\
+\textrm{biweight} :&amp;&amp; \quad  K(u) = \tfrac{15}{16\sqrt{7}}(1 - \tfrac{1}{7} u^{2})^{2} I(|u| &lt; \sqrt{7}) \nonumber \\
+\end{eqnarray}\]</span></p></li>
+</ul>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<ul>
+<li><p>When plotting <span class="math inline">\(\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)\)</span> as a function of <span class="math inline">\(x\)</span>, it should
+look like a “small hill” centered around <span class="math inline">\(X_{i}\)</span>.</p></li>
+<li><p>As <span class="math inline">\(h_{n}\)</span> decreases, <span class="math inline">\(\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)\)</span>
+becomes more strongly concentrated around <span class="math inline">\(X_{i}\)</span> and has a higher peak.</p></li>
+<li><p>The kernel density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is a sum of all of these “small hills”.</p></li>
+</ul>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<hr />
+<ul>
+<li><p>The nice thing about <a href="density-estimation.html#eq:kernel-density-formula">(8.8)</a> is that it guarantees that <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is a probability
+density function
+<span class="math display">\[\begin{eqnarray}
+\int_{-\infty}^{\infty} \hat{f}_{h_{n}}(x) dx 
+&amp;=&amp; \int_{-\infty}^{\infty} \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big)  dx  \nonumber \\
+&amp;=&amp;  \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{\infty} \frac{1}{h_{n}} K\Big( \frac{x - X_{i}}{h_{n}} \Big) dx  \nonumber \\
+&amp;=&amp; 1 \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>Also, formula <a href="density-estimation.html#eq:kernel-density-formula">(8.8)</a> guarantees that <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> inherits the smoothness properties
+of <span class="math inline">\(K(u)\)</span>
+<span class="math display">\[\begin{equation}
+\hat{f}_{h_{n}}&#39;(x) = \frac{1}{n} \sum_{i=1}^{n} \frac{1}{h_{n}^{2}} K&#39;\Big( \frac{x - X_{i}}{h_{n}} \Big)  \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+</div>
+<div id="bias-variance-and-mise-of-kernel-density-estimates" class="section level3">
+<h3><span class="header-section-number">8.4.2</span> Bias, Variance, and MISE of Kernel Density Estimates</h3>
+<ul>
+<li>As with the binwidth in histogram estimation, the bias/variance tradeoff
+drives the best choice of the bandwidth <span class="math inline">\(h_{n}\)</span>.</li>
+</ul>
+<hr />
+<p><strong>Approximate Bias</strong></p>
+<ul>
+<li><p>The exact expectation of a kernel density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is
+<span class="math display">\[\begin{eqnarray}
+E\{ \hat{f}_{h_{n}}(x) \}
+&amp;=&amp; \frac{1}{nh_{n}} \sum_{i=1}^{n} E\Big\{ K\Big( \frac{x - X_{i}}{h_{n}} \Big) \Big\} \nonumber \\
+&amp;=&amp; \frac{1}{h_{n}} E\Big\{ K\Big( \frac{x - X_{1}}{h_{n}} \Big) \Big\} \nonumber \\
+&amp;=&amp; \frac{1}{h_{n}} \int_{-\infty}^{\infty} K\Big( \frac{x - t}{h_{n}} \Big) f(t) dt \nonumber \\
+&amp;=&amp;  \int_{-\infty}^{\infty} K( u ) f(x - uh_{n}) du \nonumber 
+\end{eqnarray}\]</span>
+Above, we used the substitution <span class="math inline">\(u = (x - t)/h_{n}\)</span>.</p></li>
+<li><p>Thus, the exact bias of <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is
+<span class="math display">\[\begin{eqnarray}
+\textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
+&amp;=&amp; \int_{-\infty}^{\infty} K( u ) f(x - uh_{n}) du - f(x)  \nonumber \\
+&amp;=&amp; \int_{-\infty}^{\infty} K( u ) \{ f(x - uh_{n}) - f(x) \} du \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>This will only …</p></li>
+<li><p>To approximate the bias, we can use the following Taylor series approximation
+<span class="math display">\[\begin{equation}
+f(x - uh_{n}) - f(x) \approx -uh_{n}f&#39;(x) + \frac{u^{2}h_{n}^{2}}{2} f&#39;&#39;(x) \nonumber 
+\end{equation}\]</span>
+Plugging this approximation into our expression for the bias in () gives:
+<span class="math display" id="eq:asymp-bias-density">\[\begin{eqnarray}
+\textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
+&amp;\approx&amp;  -h_{n}f&#39;(x) \int_{-\infty}^{\infty} u K( u )  du + \frac{h_{n}^{2}f&#39;&#39;(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du  \nonumber \\
+&amp;=&amp; \frac{h_{n}^{2}f&#39;&#39;(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du \nonumber \\
+&amp;=&amp; \frac{h_{n}^{2}f&#39;&#39;(x)\mu_{2}(K)}{2} \nonumber \\
+&amp;=&amp; \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} 
+\tag{8.9}
+\end{eqnarray}\]</span>
+Here, <span class="math inline">\(\textrm{ABias}\{ \hat{f}_{h_{n}}(x) \}\)</span> stands for the approximate bias.</p></li>
+<li><p>Formula <a href="density-estimation.html#eq:asymp-bias-density">(8.9)</a> shows the direct dependence of the magnitude of bias on
+the value of the bandwidth.</p></li>
+</ul>
+<hr />
+<p><strong>Approximate Variance</strong></p>
+<ul>
+<li><p>The exact variance of a kernel density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is
+<span class="math display">\[\begin{eqnarray}
+\textrm{Var}\{ \hat{f}_{h_{n}}(x) \}
+&amp;=&amp; \frac{1}{n^{2}h_{n}^{2}} \sum_{i=1}^{n} \textrm{Var}\Big\{  K\Big( \frac{x - X_{i}}{ h_{n} } \Big) \Big\} \nonumber \\
+&amp;=&amp; \frac{1}{nh_{n}^{2}} \textrm{Var}\Big\{  K\Big( \frac{x - X_{1}}{ h_{n} } \Big) \Big\} \nonumber \\
+&amp;=&amp; \frac{1}{n h_{n}^{2} }\int_{-\infty}^{\infty} K^{2}\Big( \frac{x - t}{h_{n}} \Big) f(t) dt - \frac{1}{n}\Big[ \frac{1}{h_{n}}E\Big\{  K\Big( \frac{x - X_{1}}{ h_{n} } \Big) \Big\} \Big]^{2}  \nonumber \\
+&amp;=&amp; \frac{1}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) f(x - uh_{n}) du - \frac{1}{n}\Big[ \textrm{Bias}\{ \hat{f}_{h_{n}}(x) \} + f(x) \Big]^{2}
+\end{eqnarray}\]</span></p></li>
+<li><p>Use <span class="math inline">\(f(x - uh_{n}) = f(x) - uh_{n}f&#39;(x)\)</span>
+<span class="math display">\[\begin{eqnarray}
+\textrm{Var}\{ \hat{f}_{h_{n}}(x) \}
+&amp;\approx&amp; \frac{f(x)}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) du - \frac{f&#39;(x)}{n}\int_{-\infty}^{\infty} u K^{2}(u) du  +  ... \nonumber \\
+&amp;\approx&amp; \frac{f(x)\kappa_{2} }{n h_{n} }  \nonumber \\
+&amp;=&amp; \textrm{AVar}\{ \hat{f}_{h_{n}}(x) \}  \nonumber
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<p><strong>Approximate Mean Integrated Squared Error (AMISE)</strong></p>
+<ul>
+<li><p>Using our approximations for the bias and variance, we can get an approximate expression
+for the mean-squared error of <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> at the point <span class="math inline">\(x\)</span>
+<span class="math display">\[\begin{eqnarray}
+\textrm{MSE}\{ \hat{f}_{h_{n}}(x) \} 
+&amp;\approx&amp; 
+\textrm{AVar}\{ \hat{f}_{h_{n}}(x) \} + \Big( \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} \Big)^{2} \nonumber \\
+&amp;=&amp; \frac{f(x)\kappa_{2} }{n h_{n} } + \frac{h_{n}^{4}[f&#39;&#39;(x)]^{2}\mu_{2}^{2}(K)}{4}  \nonumber 
+\end{eqnarray}\]</span></p></li>
+<li><p>The approximate mean integrated squared error is obtained by integrating
+the above approximation across <span class="math inline">\(x\)</span>
+<span class="math display">\[\begin{eqnarray}
+AMISE\{ \hat{f}_{h_{n}} \} &amp;=&amp; \frac{\kappa_{2} }{n h_{n} }\int_{-\infty}^{\infty} f(x) + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \nonumber \\
+&amp;=&amp; \frac{\kappa_{2} }{n h_{n} } + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx
+\end{eqnarray}\]</span></p></li>
+</ul>
+</div>
+<div id="bandwidth-selection-with-the-normal-reference-rule" class="section level3">
+<h3><span class="header-section-number">8.4.3</span> Bandwidth Selection with the Normal Reference Rule</h3>
+<ul>
+<li><p>If we differentiate the above expression and set to zero, we get the following equation for <span class="math inline">\(h_{n}^{opt}\)</span> which
+would minimize <span class="math inline">\(AMISE\{ \hat{f}_{h_{n}} \}\)</span>:
+<span class="math display">\[\begin{equation}
+0 = \frac{-\kappa_{2} }{n (h_{n}^{opt})^{2} } + (h_{n}^{opt})^{3}\mu_{2}^{2}(K) \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx
+\end{equation}\]</span></p></li>
+<li><p>Now,
+<span class="math display">\[\begin{equation}
+h_{n}^{opt} = n^{-1/5} \Big( \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \Big)^{-1/5}\kappa_{2}^{1/5} \mu_{2}(K)^{-2/5} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The optimal bandwidth <span class="math inline">\(h_{n}^{opt}\)</span> for a kernel density estimate depends on the unknown quantity
+<span class="math display">\[\begin{equation}
+\int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><strong>Exercise 8.4</strong> Suppose <span class="math inline">\(X_{1}, \ldots, X_{n} \sim N(0, \sigma^{2})\)</span>. Assume that
+our density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is using a Gaussian kernel.
+<ul>
+<li>Compute the exact value of <span class="math inline">\(E\{ \hat{f}_{h_{n}}(x) \}\)</span>.</li>
+<li>Compute the MISE. Which choice of <span class="math inline">\(h_{n}\)</span> is best in this setup?</li>
+</ul></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="kernel-density-estimation-in-practice" class="section level2">
+<h2><span class="header-section-number">8.5</span> Kernel Density Estimation in Practice</h2>
+<div id="density-estimation-in-r" class="section level3">
+<h3><span class="header-section-number">8.5.1</span> Density Estimation in R</h3>
+<ul>
+<li>In this section, we will use the <code>galaxies</code> dataset in the <code>MASS</code> package.
+The first few observations of the <code>galaxies</code> dataset look like:</li>
+</ul>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1"><span class="kw">library</span>(MASS)</a>
+<a class="sourceLine" id="cb135-2" data-line-number="2">galaxies[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
+<pre><code>## [1] 9172 9350 9483 9558 9775</code></pre>
+<ul>
+<li>Kernel density estimates can be computed in <strong>R</strong> using the <code>density</code> function</li>
+</ul>
+</div>
+<div id="cross-validation-for-bandwidth-selection" class="section level3">
+<h3><span class="header-section-number">8.5.2</span> Cross-Validation for Bandwidth Selection</h3>
+</div>
+</div>
+<div id="additional-reading-3" class="section level2">
+<h2><span class="header-section-number">8.6</span> Additional Reading</h2>
+<ul>
+<li>Additional reading which covers the material discussed in this chapter includes:
+<ul>
+<li>Chapters 2-3 from <span class="citation">Silverman (<a href="#ref-silverman2018">2018</a>)</span></li>
+<li>Chapter 6 from <span class="citation">Wasserman (<a href="#ref-wasserman2006">2006</a>)</span></li>
+<li>Chapters 2-3 from <span class="citation">Härdle et al. (<a href="#ref-hardle2012">2012</a>)</span></li>
+<li>Chapter 4 from <span class="citation">Izenman (<a href="#ref-izenman2008">2008</a>)</span></li>
+</ul></li>
+</ul>
+
+</div>
+</div>
+
+
+
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-hardle2012">
+<p>Härdle, Wolfgang Karl, Marlene Müller, Stefan Sperlich, and Axel Werwatz. 2012. <em>Nonparametric and Semiparametric Models</em>. Springer Science &amp; Business Media.</p>
+</div>
+<div id="ref-izenman2008">
+<p>Izenman, Alan Julian. 2008. “Modern Multivariate Statistical Techniques.” <em>Regression, Classification and Manifold Learning</em> 10. Springer: 978–0.</p>
+</div>
+<div id="ref-scott1979">
+<p>Scott, David W. 1979. “On Optimal and Data-Based Histograms.” <em>Biometrika</em> 66 (3). Oxford University Press: 605–10.</p>
+</div>
+<div id="ref-silverman2018">
+<p>Silverman, Bernard W. 2018. <em>Density Estimation for Statistics and Data Analysis</em>. Routledge.</p>
+</div>
+<div id="ref-wasserman2006">
+<p>Wasserman, Larry. 2006. <em>All of Nonparametric Statistics</em>. Springer Science &amp; Business Media.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="edf.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sampling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["ElementsNonparStat.pdf"],
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
