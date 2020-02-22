@@ -22,10 +22,7 @@ make few assumptions about the particular form of $f(x)$.
 
 ## Histograms
 
-<div class="figure">
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" width="672" />
-<p class="caption">(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</p>
-</div>
+![(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt](08-densityestimation_files/figure-latex/unnamed-chunk-1-1.pdf) 
 
 ### Definition
 
@@ -126,7 +123,7 @@ kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.tx
 kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
 
 
 * Use the `probability = TRUE` argument to plot the density-estimate version of the histogram.
@@ -137,7 +134,7 @@ kidney.hist2 <- hist(kidney$age, main="Histogram of Age on Probability Scale",
                      xlab="Age from Kidney Data", probability=TRUE)
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
 
 ---
 
@@ -430,7 +427,7 @@ sensitive to outliers.
 * **Sturges rule**: The bin width is chosen so that we have $1 + log_{2}(n)$ bins. This choice tends to give wide
 intervals. 
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
 
 
 ## A Box-type Density Estimate
@@ -466,7 +463,7 @@ the bin edges as the histogram does.
 * However, plots of the box estimate will still largely be non-smooth and 
 have a "jagged" appearance. 
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
 
 
 ---
@@ -486,7 +483,7 @@ w(t) =
 \end{cases}
 \end{equation}
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-11-1.pdf)<!-- --> 
 
 * While the estimator $\hat{f}_{h_{n}}^{B}$ does seem reasonable, it always
 results in density estimates which are not "smooth."
@@ -526,11 +523,6 @@ with a function which is much smoother.
 
 * The function $K( \cdot )$ is referred to as the **kernel function**.
 
-* The scalar term $h_{n} > 0$ is called the **bandwidth**. 
-
-* The value of the bandwidth largely determines how "bumpy" the density estimate
-will appear.
-
 ---
 
 * Kernel functions are often chosen so that 
@@ -557,7 +549,7 @@ which is symmetric around $0$.
 \end{eqnarray}
 
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-12-1.pdf)<!-- --> 
 
 * When plotting $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$, it should
 look like a "small hill" centered around $X_{i}$.
@@ -565,9 +557,9 @@ look like a "small hill" centered around $X_{i}$.
 * As $h_{n}$ decreases, $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$
 becomes more strongly concentrated around $X_{i}$ and has a higher peak.
 
-* The kernel density estimate $\hat{f}_{h_{n}}(x)$ is a sum of all of these "small hills".
+* The kernel density estimate is a sum of all of these "small hills".
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-13-1.pdf)<!-- --> 
 
 ---
 
@@ -588,133 +580,13 @@ of $K(u)$
 
 
 
-### Bias, Variance, and MISE of Kernel Density Estimates
-
-* As with the binwidth in histogram estimation, the bias/variance tradeoff
-drives the best choice of the bandwidth $h_{n}$.  
-
----
-
-**Approximate Bias**
-
-* The exact expectation of a kernel density estimate $\hat{f}_{h_{n}}(x)$ is
-\begin{eqnarray}
-E\{ \hat{f}_{h_{n}}(x) \}
-&=& \frac{1}{nh_{n}} \sum_{i=1}^{n} E\Big\{ K\Big( \frac{x - X_{i}}{h_{n}} \Big) \Big\} \nonumber \\
-&=& \frac{1}{h_{n}} E\Big\{ K\Big( \frac{x - X_{1}}{h_{n}} \Big) \Big\} \nonumber \\
-&=& \frac{1}{h_{n}} \int_{-\infty}^{\infty} K\Big( \frac{x - t}{h_{n}} \Big) f(t) dt \nonumber \\
-&=&  \int_{-\infty}^{\infty} K( u ) f(x - uh_{n}) du \nonumber 
-\end{eqnarray}
-Above, we used the substitution $u = (x - t)/h_{n}$.
-
-
-* Thus, the exact bias of $\hat{f}_{h_{n}}(x)$ is
-\begin{eqnarray}
-\textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
-&=& \int_{-\infty}^{\infty} K( u ) f(x - uh_{n}) du - f(x)  \nonumber \\
-&=& \int_{-\infty}^{\infty} K( u ) \{ f(x - uh_{n}) - f(x) \} du \nonumber
-\end{eqnarray}
-
-* This will only ...
-
-* To approximate the bias, we can use the following Taylor series approximation
-\begin{equation}
-f(x - uh_{n}) - f(x) \approx -uh_{n}f'(x) + \frac{u^{2}h_{n}^{2}}{2} f''(x) \nonumber 
-\end{equation}
-Plugging this approximation into our expression for the bias in () gives:
-\begin{eqnarray}
-\textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
-&\approx&  -h_{n}f'(x) \int_{-\infty}^{\infty} u K( u )  du + \frac{h_{n}^{2}f''(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du  \nonumber \\
-&=& \frac{h_{n}^{2}f''(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du \nonumber \\
-&=& \frac{h_{n}^{2}f''(x)\mu_{2}(K)}{2} \nonumber \\
-&=& \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} 
-(\#eq:asymp-bias-density)
-\end{eqnarray}
-Here, $\textrm{ABias}\{ \hat{f}_{h_{n}}(x) \}$ stands for the approximate bias.
-
-* Formula \@ref(eq:asymp-bias-density) shows the direct dependence of the magnitude of bias on 
-the value of the bandwidth.
-
----
-
-**Approximate Variance**
-
-* The exact variance of a kernel density estimate $\hat{f}_{h_{n}}(x)$ is
-\begin{eqnarray}
-\textrm{Var}\{ \hat{f}_{h_{n}}(x) \}
-&=& \frac{1}{n^{2}h_{n}^{2}} \sum_{i=1}^{n} \textrm{Var}\Big\{  K\Big( \frac{x - X_{i}}{ h_{n} } \Big) \Big\} \nonumber \\
-&=& \frac{1}{nh_{n}^{2}} \textrm{Var}\Big\{  K\Big( \frac{x - X_{1}}{ h_{n} } \Big) \Big\} \nonumber \\
-&=& \frac{1}{n h_{n}^{2} }\int_{-\infty}^{\infty} K^{2}\Big( \frac{x - t}{h_{n}} \Big) f(t) dt - \frac{1}{n}\Big[ \frac{1}{h_{n}}E\Big\{  K\Big( \frac{x - X_{1}}{ h_{n} } \Big) \Big\} \Big]^{2}  \nonumber \\
-&=& \frac{1}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) f(x - uh_{n}) du - \frac{1}{n}\Big[ \textrm{Bias}\{ \hat{f}_{h_{n}}(x) \} + f(x) \Big]^{2}
-\end{eqnarray}
-
-* Use $f(x - uh_{n}) = f(x) - uh_{n}f'(x)$
-\begin{eqnarray}
-\textrm{Var}\{ \hat{f}_{h_{n}}(x) \}
-&\approx& \frac{f(x)}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) du - \frac{f'(x)}{n}\int_{-\infty}^{\infty} u K^{2}(u) du  +  ... \nonumber \\
-&\approx& \frac{f(x)\kappa_{2} }{n h_{n} }  \nonumber \\
-&=& \textrm{AVar}\{ \hat{f}_{h_{n}}(x) \}  \nonumber
-\end{eqnarray}
-
---- 
-
-**Approximate Mean Integrated Squared Error (AMISE)**
-
-* Using our approximations for the bias and variance, we can get an approximate expression
-for the mean-squared error of $\hat{f}_{h_{n}}(x)$ at the point $x$
-\begin{eqnarray}
-\textrm{MSE}\{ \hat{f}_{h_{n}}(x) \} 
-&\approx& 
-\textrm{AVar}\{ \hat{f}_{h_{n}}(x) \} + \Big( \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} \Big)^{2} \nonumber \\
-&=& \frac{f(x)\kappa_{2} }{n h_{n} } + \frac{h_{n}^{4}[f''(x)]^{2}\mu_{2}^{2}(K)}{4}  \nonumber 
-\end{eqnarray}
-
-* The approximate mean integrated squared error is obtained by integrating
-the above approximation across $x$
-\begin{eqnarray}
-AMISE\{ \hat{f}_{h_{n}} \} &=& \frac{\kappa_{2} }{n h_{n} }\int_{-\infty}^{\infty} f(x) + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber \\
-&=& \frac{\kappa_{2} }{n h_{n} } + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx
-\end{eqnarray}
-
-
-
+### Bias, Variance, and MSE of a Kernel Density Estimates
 
 ### Bandwidth Selection with the Normal Reference Rule
 
-* If we differentiate the above expression and set to zero, we get the following equation for $h_{n}^{opt}$ which 
-would minimize $AMISE\{ \hat{f}_{h_{n}} \}$:
-\begin{equation}
-0 = \frac{-\kappa_{2} }{n (h_{n}^{opt})^{2} } + (h_{n}^{opt})^{3}\mu_{2}^{2}(K) \int_{-\infty}^{\infty} [f''(x)]^{2} dx
-\end{equation}
-
-
-* Now,
-\begin{equation}
-h_{n}^{opt} = n^{-1/5} \Big( \int_{-\infty}^{\infty} [f''(x)]^{2} dx \Big)^{-1/5}\kappa_{2}^{1/5} \mu_{2}(K)^{-2/5} \nonumber
-\end{equation}
-
-
-* The optimal bandwidth $h_{n}^{opt}$ for a kernel density estimate depends on the unknown quantity
-\begin{equation}
-\int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber
-\end{equation}
-
----
-
-* **Exercise 8.4** Suppose $X_{1}, \ldots, X_{n} \sim N(0, \sigma^{2})$. Assume that
-   our density estimate $\hat{f}_{h_{n}}(x)$ is using a Gaussian kernel.
-  + Compute the exact value of $E\{ \hat{f}_{h_{n}}(x) \}$.
-  + Compute the MISE. Which choice of $h_{n}$ is best in this setup?
-
----
 
 ## Kernel Density Estimation in Practice
 
-
-### Density Estimation in R
-
-* In this section, we will use the `galaxies` dataset in the `MASS` package. 
-The first few observations of the `galaxies` dataset look like:  
 
 ```r
 library(MASS)
@@ -725,8 +597,8 @@ galaxies[1:5]
 ## [1] 9172 9350 9483 9558 9775
 ```
 
-* Kernel density estimates can be computed in **R** using the `density` function
 
+### Density Estimation in R
 
 
 ### Cross-Validation for Bandwidth Selection
