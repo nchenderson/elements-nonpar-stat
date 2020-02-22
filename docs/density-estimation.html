@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 Density Estimation | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 Density Estimation | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-02-20" />
+<meta name="date" content="2020-02-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -233,7 +236,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.3" data-path="density-estimation.html"><a href="density-estimation.html#a-box-type-density-estimate"><i class="fa fa-check"></i><b>8.3</b> A Box-type Density Estimate</a></li>
 <li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a><ul>
 <li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-6"><i class="fa fa-check"></i><b>8.4.1</b> Definition</a></li>
-<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-mse-of-a-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and MSE of a Kernel Density Estimates</a></li>
+<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-mise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and MISE of Kernel Density Estimates</a></li>
 <li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection with the Normal Reference Rule</a></li>
 </ul></li>
 <li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation-in-practice"><i class="fa fa-check"></i><b>8.5</b> Kernel Density Estimation in Practice</a><ul>
@@ -735,6 +738,9 @@ with a function which is much smoother.</p></li>
 \tag{8.8}
 \end{equation}\]</span></p></li>
 <li><p>The function <span class="math inline">\(K( \cdot )\)</span> is referred to as the <strong>kernel function</strong>.</p></li>
+<li><p>The scalar term <span class="math inline">\(h_{n} &gt; 0\)</span> is called the <strong>bandwidth</strong>.</p></li>
+<li><p>The value of the bandwidth largely determines how “bumpy” the density estimate
+will appear.</p></li>
 </ul>
 <hr />
 <ul>
@@ -765,7 +771,7 @@ which is symmetric around <span class="math inline">\(0\)</span>.</p></li>
 look like a “small hill” centered around <span class="math inline">\(X_{i}\)</span>.</p></li>
 <li><p>As <span class="math inline">\(h_{n}\)</span> decreases, <span class="math inline">\(\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)\)</span>
 becomes more strongly concentrated around <span class="math inline">\(X_{i}\)</span> and has a higher peak.</p></li>
-<li><p>The kernel density estimate is a sum of all of these “small hills”.</p></li>
+<li><p>The kernel density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is a sum of all of these “small hills”.</p></li>
 </ul>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <hr />
@@ -785,20 +791,129 @@ of <span class="math inline">\(K(u)\)</span>
 \end{equation}\]</span></p></li>
 </ul>
 </div>
-<div id="bias-variance-and-mse-of-a-kernel-density-estimates" class="section level3">
-<h3><span class="header-section-number">8.4.2</span> Bias, Variance, and MSE of a Kernel Density Estimates</h3>
+<div id="bias-variance-and-mise-of-kernel-density-estimates" class="section level3">
+<h3><span class="header-section-number">8.4.2</span> Bias, Variance, and MISE of Kernel Density Estimates</h3>
+<ul>
+<li>As with the binwidth in histogram estimation, the bias/variance tradeoff
+drives the best choice of the bandwidth <span class="math inline">\(h_{n}\)</span>.</li>
+</ul>
+<hr />
+<p><strong>Approximate Bias</strong></p>
+<ul>
+<li><p>The exact expectation of a kernel density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is
+<span class="math display">\[\begin{eqnarray}
+E\{ \hat{f}_{h_{n}}(x) \}
+&amp;=&amp; \frac{1}{nh_{n}} \sum_{i=1}^{n} E\Big\{ K\Big( \frac{x - X_{i}}{h_{n}} \Big) \Big\} \nonumber \\
+&amp;=&amp; \frac{1}{h_{n}} E\Big\{ K\Big( \frac{x - X_{1}}{h_{n}} \Big) \Big\} \nonumber \\
+&amp;=&amp; \frac{1}{h_{n}} \int_{-\infty}^{\infty} K\Big( \frac{x - t}{h_{n}} \Big) f(t) dt \nonumber \\
+&amp;=&amp;  \int_{-\infty}^{\infty} K( u ) f(x - uh_{n}) du \nonumber 
+\end{eqnarray}\]</span>
+Above, we used the substitution <span class="math inline">\(u = (x - t)/h_{n}\)</span>.</p></li>
+<li><p>Thus, the exact bias of <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is
+<span class="math display">\[\begin{eqnarray}
+\textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
+&amp;=&amp; \int_{-\infty}^{\infty} K( u ) f(x - uh_{n}) du - f(x)  \nonumber \\
+&amp;=&amp; \int_{-\infty}^{\infty} K( u ) \{ f(x - uh_{n}) - f(x) \} du \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>This will only …</p></li>
+<li><p>To approximate the bias, we can use the following Taylor series approximation
+<span class="math display">\[\begin{equation}
+f(x - uh_{n}) - f(x) \approx -uh_{n}f&#39;(x) + \frac{u^{2}h_{n}^{2}}{2} f&#39;&#39;(x) \nonumber 
+\end{equation}\]</span>
+Plugging this approximation into our expression for the bias in () gives:
+<span class="math display" id="eq:asymp-bias-density">\[\begin{eqnarray}
+\textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
+&amp;\approx&amp;  -h_{n}f&#39;(x) \int_{-\infty}^{\infty} u K( u )  du + \frac{h_{n}^{2}f&#39;&#39;(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du  \nonumber \\
+&amp;=&amp; \frac{h_{n}^{2}f&#39;&#39;(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du \nonumber \\
+&amp;=&amp; \frac{h_{n}^{2}f&#39;&#39;(x)\mu_{2}(K)}{2} \nonumber \\
+&amp;=&amp; \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} 
+\tag{8.9}
+\end{eqnarray}\]</span>
+Here, <span class="math inline">\(\textrm{ABias}\{ \hat{f}_{h_{n}}(x) \}\)</span> stands for the approximate bias.</p></li>
+<li><p>Formula <a href="density-estimation.html#eq:asymp-bias-density">(8.9)</a> shows the direct dependence of the magnitude of bias on
+the value of the bandwidth.</p></li>
+</ul>
+<hr />
+<p><strong>Approximate Variance</strong></p>
+<ul>
+<li><p>The exact variance of a kernel density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is
+<span class="math display">\[\begin{eqnarray}
+\textrm{Var}\{ \hat{f}_{h_{n}}(x) \}
+&amp;=&amp; \frac{1}{n^{2}h_{n}^{2}} \sum_{i=1}^{n} \textrm{Var}\Big\{  K\Big( \frac{x - X_{i}}{ h_{n} } \Big) \Big\} \nonumber \\
+&amp;=&amp; \frac{1}{nh_{n}^{2}} \textrm{Var}\Big\{  K\Big( \frac{x - X_{1}}{ h_{n} } \Big) \Big\} \nonumber \\
+&amp;=&amp; \frac{1}{n h_{n}^{2} }\int_{-\infty}^{\infty} K^{2}\Big( \frac{x - t}{h_{n}} \Big) f(t) dt - \frac{1}{n}\Big[ \frac{1}{h_{n}}E\Big\{  K\Big( \frac{x - X_{1}}{ h_{n} } \Big) \Big\} \Big]^{2}  \nonumber \\
+&amp;=&amp; \frac{1}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) f(x - uh_{n}) du - \frac{1}{n}\Big[ \textrm{Bias}\{ \hat{f}_{h_{n}}(x) \} + f(x) \Big]^{2}
+\end{eqnarray}\]</span></p></li>
+<li><p>Use <span class="math inline">\(f(x - uh_{n}) = f(x) - uh_{n}f&#39;(x)\)</span>
+<span class="math display">\[\begin{eqnarray}
+\textrm{Var}\{ \hat{f}_{h_{n}}(x) \}
+&amp;\approx&amp; \frac{f(x)}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) du - \frac{f&#39;(x)}{n}\int_{-\infty}^{\infty} u K^{2}(u) du  +  ... \nonumber \\
+&amp;\approx&amp; \frac{f(x)\kappa_{2} }{n h_{n} }  \nonumber \\
+&amp;=&amp; \textrm{AVar}\{ \hat{f}_{h_{n}}(x) \}  \nonumber
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<p><strong>Approximate Mean Integrated Squared Error (AMISE)</strong></p>
+<ul>
+<li><p>Using our approximations for the bias and variance, we can get an approximate expression
+for the mean-squared error of <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> at the point <span class="math inline">\(x\)</span>
+<span class="math display">\[\begin{eqnarray}
+\textrm{MSE}\{ \hat{f}_{h_{n}}(x) \} 
+&amp;\approx&amp; 
+\textrm{AVar}\{ \hat{f}_{h_{n}}(x) \} + \Big( \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} \Big)^{2} \nonumber \\
+&amp;=&amp; \frac{f(x)\kappa_{2} }{n h_{n} } + \frac{h_{n}^{4}[f&#39;&#39;(x)]^{2}\mu_{2}^{2}(K)}{4}  \nonumber 
+\end{eqnarray}\]</span></p></li>
+<li><p>The approximate mean integrated squared error is obtained by integrating
+the above approximation across <span class="math inline">\(x\)</span>
+<span class="math display">\[\begin{eqnarray}
+AMISE\{ \hat{f}_{h_{n}} \} &amp;=&amp; \frac{\kappa_{2} }{n h_{n} }\int_{-\infty}^{\infty} f(x) + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \nonumber \\
+&amp;=&amp; \frac{\kappa_{2} }{n h_{n} } + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx
+\end{eqnarray}\]</span></p></li>
+</ul>
 </div>
 <div id="bandwidth-selection-with-the-normal-reference-rule" class="section level3">
 <h3><span class="header-section-number">8.4.3</span> Bandwidth Selection with the Normal Reference Rule</h3>
+<ul>
+<li><p>If we differentiate the above expression and set to zero, we get the following equation for <span class="math inline">\(h_{n}^{opt}\)</span> which
+would minimize <span class="math inline">\(AMISE\{ \hat{f}_{h_{n}} \}\)</span>:
+<span class="math display">\[\begin{equation}
+0 = \frac{-\kappa_{2} }{n (h_{n}^{opt})^{2} } + (h_{n}^{opt})^{3}\mu_{2}^{2}(K) \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx
+\end{equation}\]</span></p></li>
+<li><p>Now,
+<span class="math display">\[\begin{equation}
+h_{n}^{opt} = n^{-1/5} \Big( \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \Big)^{-1/5}\kappa_{2}^{1/5} \mu_{2}(K)^{-2/5} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The optimal bandwidth <span class="math inline">\(h_{n}^{opt}\)</span> for a kernel density estimate depends on the unknown quantity
+<span class="math display">\[\begin{equation}
+\int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><strong>Exercise 8.4</strong> Suppose <span class="math inline">\(X_{1}, \ldots, X_{n} \sim N(0, \sigma^{2})\)</span>. Assume that
+our density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is using a Gaussian kernel.
+<ul>
+<li>Compute the exact value of <span class="math inline">\(E\{ \hat{f}_{h_{n}}(x) \}\)</span>.</li>
+<li>Compute the MISE. Which choice of <span class="math inline">\(h_{n}\)</span> is best in this setup?</li>
+</ul></li>
+</ul>
+<hr />
 </div>
 </div>
 <div id="kernel-density-estimation-in-practice" class="section level2">
 <h2><span class="header-section-number">8.5</span> Kernel Density Estimation in Practice</h2>
+<div id="density-estimation-in-r" class="section level3">
+<h3><span class="header-section-number">8.5.1</span> Density Estimation in R</h3>
+<ul>
+<li>In this section, we will use the <code>galaxies</code> dataset in the <code>MASS</code> package.
+The first few observations of the <code>galaxies</code> dataset look like:</li>
+</ul>
 <div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1"><span class="kw">library</span>(MASS)</a>
 <a class="sourceLine" id="cb135-2" data-line-number="2">galaxies[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
 <pre><code>## [1] 9172 9350 9483 9558 9775</code></pre>
-<div id="density-estimation-in-r" class="section level3">
-<h3><span class="header-section-number">8.5.1</span> Density Estimation in R</h3>
+<ul>
+<li>Kernel density estimates can be computed in <strong>R</strong> using the <code>density</code> function</li>
+</ul>
 </div>
 <div id="cross-validation-for-bandwidth-selection" class="section level3">
 <h3><span class="header-section-number">8.5.2</span> Cross-Validation for Bandwidth Selection</h3>
@@ -850,11 +965,13 @@ of <span class="math inline">\(K(u)\)</span>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -862,12 +979,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -879,6 +995,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },
