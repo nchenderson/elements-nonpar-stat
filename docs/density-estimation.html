@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-02-21" />
+<meta name="date" content="2020-02-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -236,7 +236,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.3" data-path="density-estimation.html"><a href="density-estimation.html#a-box-type-density-estimate"><i class="fa fa-check"></i><b>8.3</b> A Box-type Density Estimate</a></li>
 <li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a><ul>
 <li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-6"><i class="fa fa-check"></i><b>8.4.1</b> Definition</a></li>
-<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-mise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and MISE of Kernel Density Estimates</a></li>
+<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-amise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and AMISE of Kernel Density Estimates</a></li>
 <li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection with the Normal Reference Rule</a></li>
 </ul></li>
 <li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation-in-practice"><i class="fa fa-check"></i><b>8.5</b> Kernel Density Estimation in Practice</a><ul>
@@ -682,8 +682,8 @@ E \{ \hat{f}_{h_{n}}^{B}(x) \}
 <ul>
 <li><p>Unlike the histogram, the box estimate does not require the density estimate
 to be constant within each bin.</p></li>
-<li><p>Also, the box estimate will not tend to have as dramatic changes near
-the bin edges as the histogram does.</p></li>
+<li><p>Also, histograms can have dramatic changes near
+the bin edges while the box estimate suffers less from this problem.</p></li>
 <li><p>However, plots of the box estimate will still largely be non-smooth and
 have a “jagged” appearance.</p></li>
 </ul>
@@ -730,28 +730,36 @@ the cdf <span class="math inline">\(F\)</span> is assumed to be continuous. What
 <h3><span class="header-section-number">8.4.1</span> Definition</h3>
 <ul>
 <li><p>Kernel density estimates are a generalization of the box-type density estimate <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>.</p></li>
-<li><p>Specifically, with kernel density estimation, we are going to replace the “box function” in <a href="density-estimation.html#eq:box-density">(8.7)</a>
-with a function which is much smoother.</p></li>
-<li><p>A kernel density estimator <span class="math inline">\(\hat{f}(x)\)</span> is defined as
+<li><p>With kernel density estimation, we replace the “box function” in <a href="density-estimation.html#eq:box-density">(8.7)</a>
+with a function <span class="math inline">\(K(\cdot)\)</span> which is much smoother.</p></li>
+<li><p>The function <span class="math inline">\(K(\cdot)\)</span> will also give higher weight to observations which are closer to <span class="math inline">\(x\)</span>
+than those that are further away from <span class="math inline">\(x\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>A kernel density estimator <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is defined as
 <span class="math display" id="eq:kernel-density-formula">\[\begin{equation}
 \hat{f}_{h_{n}}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) 
 \tag{8.8}
 \end{equation}\]</span></p></li>
 <li><p>The function <span class="math inline">\(K( \cdot )\)</span> is referred to as the <strong>kernel function</strong>.</p></li>
 <li><p>The scalar term <span class="math inline">\(h_{n} &gt; 0\)</span> is called the <strong>bandwidth</strong>.</p></li>
-<li><p>The value of the bandwidth largely determines how “bumpy” the density estimate
+<li><p>The value of the bandwidth <span class="math inline">\(h_{n}\)</span> largely determines how “bumpy” the density estimate
 will appear.</p></li>
+<li><p>The appearance of <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> depends much more on the value of <span class="math inline">\(h_{n}\)</span> than
+the choice of kernel function.</p></li>
 </ul>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <hr />
 <ul>
 <li><p>Kernel functions are often chosen so that
 <span class="math display">\[\begin{equation}
-K(t) \geq  0 \textrm{ for all } t
+K(t) \geq  0 \textrm{ for all } t \nonumber 
 \end{equation}\]</span>
 and that they also satisfy the following properties:
 <span class="math display">\[\begin{eqnarray}
 K(t) = K(-t) \qquad 
-\int_{-\infty}^{\infty} K(t) dt = 1 
+\int_{-\infty}^{\infty} K(t) dt = 1  \nonumber 
 \qquad 
 \int_{-\infty}^{\infty} K^{2}(t) dt  &lt; \infty
 \nonumber
@@ -765,15 +773,15 @@ which is symmetric around <span class="math inline">\(0\)</span>.</p></li>
 \textrm{biweight} :&amp;&amp; \quad  K(u) = \tfrac{15}{16\sqrt{7}}(1 - \tfrac{1}{7} u^{2})^{2} I(|u| &lt; \sqrt{7}) \nonumber \\
 \end{eqnarray}\]</span></p></li>
 </ul>
-<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <ul>
 <li><p>When plotting <span class="math inline">\(\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)\)</span> as a function of <span class="math inline">\(x\)</span>, it should
 look like a “small hill” centered around <span class="math inline">\(X_{i}\)</span>.</p></li>
 <li><p>As <span class="math inline">\(h_{n}\)</span> decreases, <span class="math inline">\(\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)\)</span>
 becomes more strongly concentrated around <span class="math inline">\(X_{i}\)</span> and has a higher peak.</p></li>
-<li><p>The kernel density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is a sum of all of these “small hills”.</p></li>
+<li><p>The kernel density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is a sum of all these “small hills”.</p></li>
 </ul>
-<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <hr />
 <ul>
 <li><p>The nice thing about <a href="density-estimation.html#eq:kernel-density-formula">(8.8)</a> is that it guarantees that <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is a probability
@@ -791,11 +799,11 @@ of <span class="math inline">\(K(u)\)</span>
 \end{equation}\]</span></p></li>
 </ul>
 </div>
-<div id="bias-variance-and-mise-of-kernel-density-estimates" class="section level3">
-<h3><span class="header-section-number">8.4.2</span> Bias, Variance, and MISE of Kernel Density Estimates</h3>
+<div id="bias-variance-and-amise-of-kernel-density-estimates" class="section level3">
+<h3><span class="header-section-number">8.4.2</span> Bias, Variance, and AMISE of Kernel Density Estimates</h3>
 <ul>
-<li>As with the binwidth in histogram estimation, the bias/variance tradeoff
-drives the best choice of the bandwidth <span class="math inline">\(h_{n}\)</span>.</li>
+<li>As with the bin width in histogram estimation, the bias/variance tradeoff
+drives the best choice of the bandwidth <span class="math inline">\(h_{n}\)</span> in kernel density estimation.</li>
 </ul>
 <hr />
 <p><strong>Approximate Bias</strong></p>
@@ -866,7 +874,7 @@ for the mean-squared error of <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</
 <li><p>The approximate mean integrated squared error is obtained by integrating
 the above approximation across <span class="math inline">\(x\)</span>
 <span class="math display">\[\begin{eqnarray}
-AMISE\{ \hat{f}_{h_{n}} \} &amp;=&amp; \frac{\kappa_{2} }{n h_{n} }\int_{-\infty}^{\infty} f(x) + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \nonumber \\
+AMISE\{ \hat{f}_{h_{n}} \} &amp;=&amp; \frac{\kappa_{2} }{n h_{n} }\int_{-\infty}^{\infty} f(x) dx + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \nonumber \\
 &amp;=&amp; \frac{\kappa_{2} }{n h_{n} } + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx
 \end{eqnarray}\]</span></p></li>
 </ul>
@@ -879,22 +887,46 @@ would minimize <span class="math inline">\(AMISE\{ \hat{f}_{h_{n}} \}\)</span>:
 <span class="math display">\[\begin{equation}
 0 = \frac{-\kappa_{2} }{n (h_{n}^{opt})^{2} } + (h_{n}^{opt})^{3}\mu_{2}^{2}(K) \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx
 \end{equation}\]</span></p></li>
-<li><p>Now,
+<li><p>The solution of the above equation is the optimal bandwidth:
 <span class="math display">\[\begin{equation}
 h_{n}^{opt} = n^{-1/5} \Big( \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \Big)^{-1/5}\kappa_{2}^{1/5} \mu_{2}(K)^{-2/5} \nonumber
 \end{equation}\]</span></p></li>
+<li><p>For the case of a Gaussian kernel, <span class="math inline">\(\kappa_{2} = (1/2\sqrt{\pi})\)</span> and <span class="math inline">\(\mu_{2}(K) = 1\)</span> so that
+the optimal bandwidth is given by
+<span class="math display">\[\begin{equation}
+h_{n}^{opt} = n^{-1/5} (2\sqrt{\pi})^{-1/5} \Big( \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \Big)^{-1/5}
+\end{equation}\]</span></p></li>
 <li><p>The optimal bandwidth <span class="math inline">\(h_{n}^{opt}\)</span> for a kernel density estimate depends on the unknown quantity
 <span class="math display">\[\begin{equation}
-\int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \nonumber
+\int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx  \nonumber
 \end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Similar to the Scott and FD rules for choosing the bin width of histogram, one way of setting the bandwidth <span class="math inline">\(h_{n}\)</span>
+of a kernel density estimate is to use the value of <span class="math inline">\(\int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx\)</span> when it is assumed that
+<span class="math inline">\(f(x)\)</span> is the density of a <span class="math inline">\(\textrm{Normal}(0, \sigma^{2})\)</span> random variable.</p></li>
+<li><p>If <span class="math inline">\(f(x) = \textrm{Normal}(0, \sigma^{2})\)</span>, then
+<span class="math display">\[\begin{equation}
+\int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx = \frac{3}{8\sqrt{\pi}\sigma^{5}} \nonumber 
+\end{equation}\]</span></p></li>
+<li><p>If we use this assumption about <span class="math inline">\(f&#39;&#39;(x)\)</span> for the case of a Gaussian kernel, the formula for the optimal bandwidth becomes
+bandwidth is
+<span class="math display">\[\begin{equation}
+h_{n}^{opt} = n^{-1/5}(2\sqrt{\pi})^{-1/5}\Big( \frac{3}{8\sqrt{\pi}\sigma^{5}} \Big)^{-1/5}
+= \sigma n^{-1/5} \sigma \Big( \frac{4}{3} \Big)^{1/5}
+\approx 1.06 \sigma n^{-1/5}
+\end{equation}\]</span></p></li>
+<li><p>Normal reference rule</p></li>
+<li><p>Silverman’s “rule-of-thumb” for the bandwidth.</p></li>
 </ul>
 <hr />
 <ul>
 <li><strong>Exercise 8.4</strong> Suppose <span class="math inline">\(X_{1}, \ldots, X_{n} \sim N(0, \sigma^{2})\)</span>. Assume that
 our density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is using a Gaussian kernel.
 <ul>
-<li>Compute the exact value of <span class="math inline">\(E\{ \hat{f}_{h_{n}}(x) \}\)</span>.</li>
-<li>Compute the MISE. Which choice of <span class="math inline">\(h_{n}\)</span> is best in this setup?</li>
+<li>Compute the exact values of <span class="math inline">\(E\{ \hat{f}_{h_{n}}(x) \}\)</span> and <span class="math inline">\(\textrm{Var}\{ \hat{f}_{h_{n}}(x) \}\)</span>.</li>
+<li>Compute AMISE<span class="math inline">\(\{ \hat{f}_{h_{n}} \}\)</span>. Can you get an expression for the value of <span class="math inline">\(h_{n}\)</span> which minimizes AMISE?</li>
 </ul></li>
 </ul>
 <hr />
@@ -914,9 +946,29 @@ The first few observations of the <code>galaxies</code> dataset look like:</li>
 <ul>
 <li>Kernel density estimates can be computed in <strong>R</strong> using the <code>density</code> function</li>
 </ul>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" data-line-number="1">galax.dens &lt;-<span class="st"> </span><span class="kw">density</span>(galaxies)</a>
+<a class="sourceLine" id="cb137-2" data-line-number="2"><span class="kw">plot</span>(galax.dens, <span class="dt">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;veclocity in km/sec&quot;</span>, </a>
+<a class="sourceLine" id="cb137-3" data-line-number="3">     <span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
 <div id="cross-validation-for-bandwidth-selection" class="section level3">
 <h3><span class="header-section-number">8.5.2</span> Cross-Validation for Bandwidth Selection</h3>
+<ul>
+<li>The overall goal in bandwidth selection is to choose the bandwidth
+to minimize the criterion
+<span class="math display">\[\begin{equation}
+\int E\Big\{ \{ \hat{f}_{h}(x) - f(x)   \}^{2} \Big\} dx
+\end{equation}\]</span>
+or some related criterion which also measures an expected discrepancy between <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> and <span class="math inline">\(f(x)\)</span>.</li>
+</ul>
+<hr />
+<ul>
+<li>Another possible criterion for which to minimize is the KL divergence
+<span class="math display">\[\begin{equation}
+\int \log \Big( \frac{ \hat{f}_{h}(x) }{f(x)} \Big)  f(x) dx
+= \int \log \Big( \hat{f}_{h}(x) \Big)  f(x) dx - \int \log\Big( f(x) \Big)f(x) dx
+\end{equation}\]</span></li>
+</ul>
 </div>
 </div>
 <div id="additional-reading-3" class="section level2">

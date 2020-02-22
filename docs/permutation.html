@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-02-21" />
+<meta name="date" content="2020-02-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -236,7 +236,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.3" data-path="density-estimation.html"><a href="density-estimation.html#a-box-type-density-estimate"><i class="fa fa-check"></i><b>8.3</b> A Box-type Density Estimate</a></li>
 <li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a><ul>
 <li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-6"><i class="fa fa-check"></i><b>8.4.1</b> Definition</a></li>
-<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-mise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and MISE of Kernel Density Estimates</a></li>
+<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-amise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and AMISE of Kernel Density Estimates</a></li>
 <li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection with the Normal Reference Rule</a></li>
 </ul></li>
 <li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation-in-practice"><i class="fa fa-check"></i><b>8.5</b> Kernel Density Estimation in Practice</a><ul>
@@ -694,7 +694,7 @@ where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly
 </ul>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(mean.diff) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(observed.diff)))<span class="op">/</span>(nreps <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.78</code></pre>
+<pre><code>## [1] 0.75</code></pre>
 </div>
 <div id="example-2-ratios-of-means" class="section level3">
 <h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means</h3>

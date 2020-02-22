@@ -460,8 +460,8 @@ E \{ \hat{f}_{h_{n}}^{B}(x) \}
 * Unlike the histogram, the box estimate does not require the density estimate 
 to be constant within each bin.
 
-* Also, the box estimate will not tend to have as dramatic changes near
-the bin edges as the histogram does.
+* Also, histograms can have dramatic changes near
+the bin edges while the box estimate suffers less from this problem.
 
 * However, plots of the box estimate will still largely be non-smooth and 
 have a "jagged" appearance. 
@@ -515,10 +515,15 @@ the cdf $F$ is assumed to be continuous. What is $\textrm{Var}\{ \hat{f}_{h_{n}}
 
 * Kernel density estimates are a generalization of the box-type density estimate $\hat{f}_{h_{n}}^{B}(x)$.
 
-* Specifically, with kernel density estimation, we are going to replace the "box function" in \@ref(eq:box-density)
-with a function which is much smoother. 
+* With kernel density estimation, we replace the "box function" in \@ref(eq:box-density)
+with a function $K(\cdot)$ which is much smoother. 
 
-* A kernel density estimator $\hat{f}(x)$ is defined as
+* The function $K(\cdot)$ will also give higher weight to observations which are closer to $x$
+than those that are further away from $x$.
+
+---
+
+* A kernel density estimator $\hat{f}_{h_{n}}(x)$ is defined as
 \begin{equation}
 \hat{f}_{h_{n}}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) 
 (\#eq:kernel-density-formula)
@@ -528,19 +533,24 @@ with a function which is much smoother.
 
 * The scalar term $h_{n} > 0$ is called the **bandwidth**. 
 
-* The value of the bandwidth largely determines how "bumpy" the density estimate
+* The value of the bandwidth $h_{n}$ largely determines how "bumpy" the density estimate
 will appear.
+
+* The appearance of $\hat{f}_{h_{n}}(x)$ depends much more on the value of $h_{n}$ than 
+the choice of kernel function.
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 
 ---
 
 * Kernel functions are often chosen so that 
 \begin{equation}
-K(t) \geq  0 \textrm{ for all } t
+K(t) \geq  0 \textrm{ for all } t \nonumber 
 \end{equation}
 and that they also satisfy the following properties:
 \begin{eqnarray}
 K(t) = K(-t) \qquad 
-\int_{-\infty}^{\infty} K(t) dt = 1 
+\int_{-\infty}^{\infty} K(t) dt = 1  \nonumber 
 \qquad 
 \int_{-\infty}^{\infty} K^{2}(t) dt  < \infty
 \nonumber
@@ -557,7 +567,7 @@ which is symmetric around $0$.
 \end{eqnarray}
 
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
 * When plotting $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$, it should
 look like a "small hill" centered around $X_{i}$.
@@ -565,9 +575,9 @@ look like a "small hill" centered around $X_{i}$.
 * As $h_{n}$ decreases, $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$
 becomes more strongly concentrated around $X_{i}$ and has a higher peak.
 
-* The kernel density estimate $\hat{f}_{h_{n}}(x)$ is a sum of all of these "small hills".
+* The kernel density estimate $\hat{f}_{h_{n}}(x)$ is a sum of all these "small hills".
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 
 ---
 
@@ -588,10 +598,10 @@ of $K(u)$
 
 
 
-### Bias, Variance, and MISE of Kernel Density Estimates
+### Bias, Variance, and AMISE of Kernel Density Estimates
 
-* As with the binwidth in histogram estimation, the bias/variance tradeoff
-drives the best choice of the bandwidth $h_{n}$.  
+* As with the bin width in histogram estimation, the bias/variance tradeoff
+drives the best choice of the bandwidth $h_{n}$ in kernel density estimation.  
 
 ---
 
@@ -672,11 +682,9 @@ for the mean-squared error of $\hat{f}_{h_{n}}(x)$ at the point $x$
 * The approximate mean integrated squared error is obtained by integrating
 the above approximation across $x$
 \begin{eqnarray}
-AMISE\{ \hat{f}_{h_{n}} \} &=& \frac{\kappa_{2} }{n h_{n} }\int_{-\infty}^{\infty} f(x) + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber \\
+AMISE\{ \hat{f}_{h_{n}} \} &=& \frac{\kappa_{2} }{n h_{n} }\int_{-\infty}^{\infty} f(x) dx + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber \\
 &=& \frac{\kappa_{2} }{n h_{n} } + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx
 \end{eqnarray}
-
-
 
 
 ### Bandwidth Selection with the Normal Reference Rule
@@ -688,23 +696,52 @@ would minimize $AMISE\{ \hat{f}_{h_{n}} \}$:
 \end{equation}
 
 
-* Now,
+* The solution of the above equation is the optimal bandwidth:
 \begin{equation}
 h_{n}^{opt} = n^{-1/5} \Big( \int_{-\infty}^{\infty} [f''(x)]^{2} dx \Big)^{-1/5}\kappa_{2}^{1/5} \mu_{2}(K)^{-2/5} \nonumber
+\end{equation}
+
+* For the case of a Gaussian kernel, $\kappa_{2} = (1/2\sqrt{\pi})$ and $\mu_{2}(K) = 1$ so that
+the optimal bandwidth is given by
+\begin{equation}
+h_{n}^{opt} = n^{-1/5} (2\sqrt{\pi})^{-1/5} \Big( \int_{-\infty}^{\infty} [f''(x)]^{2} dx \Big)^{-1/5}
 \end{equation}
 
 
 * The optimal bandwidth $h_{n}^{opt}$ for a kernel density estimate depends on the unknown quantity
 \begin{equation}
-\int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber
+\int_{-\infty}^{\infty} [f''(x)]^{2} dx  \nonumber
 \end{equation}
+
+---
+
+* Similar to the Scott and FD rules for choosing the bin width of histogram, one way of setting the bandwidth $h_{n}$
+of a kernel density estimate is to use the value of $\int_{-\infty}^{\infty} [f''(x)]^{2} dx$ when it is assumed that
+$f(x)$ is the density of a $\textrm{Normal}(0, \sigma^{2})$ random variable.
+
+* If $f(x) = \textrm{Normal}(0, \sigma^{2})$, then
+\begin{equation}
+\int_{-\infty}^{\infty} [f''(x)]^{2} dx = \frac{3}{8\sqrt{\pi}\sigma^{5}} \nonumber 
+\end{equation}
+
+* If we use this assumption about $f''(x)$ for the case of a Gaussian kernel, the formula for the optimal bandwidth becomes
+bandwidth is
+\begin{equation}
+h_{n}^{opt} = n^{-1/5}(2\sqrt{\pi})^{-1/5}\Big( \frac{3}{8\sqrt{\pi}\sigma^{5}} \Big)^{-1/5}
+= \sigma n^{-1/5} \sigma \Big( \frac{4}{3} \Big)^{1/5}
+\approx 1.06 \sigma n^{-1/5}
+\end{equation}
+
+* Normal reference rule
+
+* Silverman's "rule-of-thumb" for the bandwidth.
 
 ---
 
 * **Exercise 8.4** Suppose $X_{1}, \ldots, X_{n} \sim N(0, \sigma^{2})$. Assume that
    our density estimate $\hat{f}_{h_{n}}(x)$ is using a Gaussian kernel.
-  + Compute the exact value of $E\{ \hat{f}_{h_{n}}(x) \}$.
-  + Compute the MISE. Which choice of $h_{n}$ is best in this setup?
+  + Compute the exact values of $E\{ \hat{f}_{h_{n}}(x) \}$ and $\textrm{Var}\{ \hat{f}_{h_{n}}(x) \}$.
+  + Compute AMISE$\{ \hat{f}_{h_{n}} \}$. Can you get an expression for the value of $h_{n}$ which minimizes AMISE?
 
 ---
 
@@ -727,9 +764,32 @@ galaxies[1:5]
 
 * Kernel density estimates can be computed in **R** using the `density` function
 
+```r
+galax.dens <- density(galaxies)
+plot(galax.dens, main="Default Density Estimate for Galaxy Data", xlab="veclocity in km/sec", 
+     ylab="Density", lwd=2)
+```
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-16-1.png" width="672" />
 
 
 ### Cross-Validation for Bandwidth Selection
+
+* The overall goal in bandwidth selection is to choose the bandwidth
+to minimize the criterion
+\begin{equation}
+\int E\Big\{ \{ \hat{f}_{h}(x) - f(x)   \}^{2} \Big\} dx
+\end{equation}
+or some related criterion which also measures an expected discrepancy between $\hat{f}_{h_{n}}(x)$ and $f(x)$.
+
+---
+
+* Another possible criterion for which to minimize is the KL divergence
+\begin{equation}
+\int \log \Big( \frac{ \hat{f}_{h}(x) }{f(x)} \Big)  f(x) dx
+= \int \log \Big( \hat{f}_{h}(x) \Big)  f(x) dx - \int \log\Big( f(x) \Big)f(x) dx
+\end{equation}
+
 
 
 ## Additional Reading
