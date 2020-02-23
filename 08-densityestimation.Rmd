@@ -86,7 +86,7 @@ E\{ \hat{f}_{h_{n}}^{H}(x) \} &=& \frac{1}{n h_{n}} E\{ n_{k} \} \nonumber \\
 
 ### Histograms in R
 
-* In **R**, use histograms are computed using the `hist` function 
+* In **R**, histograms are computed using the `hist` function 
 ```{r, eval=FALSE}
 hist(x, breaks, probability, plot, ...)
 ```
@@ -513,7 +513,7 @@ than those that are further away from $x$.
 * The value of the bandwidth $h_{n}$ largely determines how "bumpy" the density estimate
 will appear.
 
-* The appearance of $\hat{f}_{h_{n}}(x)$ depends much more on the value of $h_{n}$ than 
+* The appearance and the statistical performance of $\hat{f}_{h_{n}}(x)$ depend much more on the value of $h_{n}$ than 
 the choice of kernel function.
 
 ```{r, echo=FALSE}
@@ -527,7 +527,7 @@ plot(kidney.dens2, lwd=2, las=1, xlab="Age", main="Bandwidth = 9")
 
 ---
 
-* Kernel functions are often chosen so that 
+* Kernel functions are usually chosen so that 
 \begin{equation}
 K(t) \geq  0 \textrm{ for all } t \nonumber 
 \end{equation}
@@ -651,16 +651,20 @@ Above, we used the substitution $u = (x - t)/h_{n}$.
 \begin{eqnarray}
 \textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
 &=& \int_{-\infty}^{\infty} K( u ) f(x - uh_{n}) du - f(x)  \nonumber \\
-&=& \int_{-\infty}^{\infty} K( u ) \{ f(x - uh_{n}) - f(x) \} du \nonumber
+&=& \int_{-\infty}^{\infty} K( u ) \{ f(x - uh_{n}) - f(x) \} du 
+(\#eq:exact-density-bias)
 \end{eqnarray}
 
-* This will only ...
+* The expression for bias shown in \@ref(eq:exact-density-bias) will only
+have a closed form for special choices of $K(\cdot)$ and $f( \cdot )$.
 
-* To approximate the bias, we can use the following Taylor series approximation
+* Nevertheless, we can get a reasonable approximation of this bias for small $h_{n}$.
+
+* To approximate the bias for small $h_{n}$, we can use the following Taylor series approximation
 \begin{equation}
 f(x - uh_{n}) - f(x) \approx -uh_{n}f'(x) + \frac{u^{2}h_{n}^{2}}{2} f''(x) \nonumber 
 \end{equation}
-Plugging this approximation into our expression for the bias in () gives:
+Plugging this approximation into our expression for the bias in \@ref(eq:exact-density-bias) gives:
 \begin{eqnarray}
 \textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
 &\approx&  -h_{n}f'(x) \int_{-\infty}^{\infty} u K( u )  du + \frac{h_{n}^{2}f''(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du  \nonumber \\
@@ -674,6 +678,9 @@ Here, $\textrm{ABias}\{ \hat{f}_{h_{n}}(x) \}$ stands for the approximate bias.
 * Formula \@ref(eq:asymp-bias-density) shows the direct dependence of the magnitude of bias on 
 the value of the bandwidth.
 
+* Formula \@ref(eq:asymp-bias-density) also shows the effect of the curvature $f''(x)$ 
+of the density on the magnitude of bias. 
+
 ---
 
 **Approximate Variance**
@@ -684,14 +691,15 @@ the value of the bandwidth.
 &=& \frac{1}{n^{2}h_{n}^{2}} \sum_{i=1}^{n} \textrm{Var}\Big\{  K\Big( \frac{x - X_{i}}{ h_{n} } \Big) \Big\} \nonumber \\
 &=& \frac{1}{nh_{n}^{2}} \textrm{Var}\Big\{  K\Big( \frac{x - X_{1}}{ h_{n} } \Big) \Big\} \nonumber \\
 &=& \frac{1}{n h_{n}^{2} }\int_{-\infty}^{\infty} K^{2}\Big( \frac{x - t}{h_{n}} \Big) f(t) dt - \frac{1}{n}\Big[ \frac{1}{h_{n}}E\Big\{  K\Big( \frac{x - X_{1}}{ h_{n} } \Big) \Big\} \Big]^{2}  \nonumber \\
-&=& \frac{1}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) f(x - uh_{n}) du - \frac{1}{n}\Big[ \textrm{Bias}\{ \hat{f}_{h_{n}}(x) \} + f(x) \Big]^{2}
+&=& \frac{1}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) f(x - uh_{n}) du - \frac{1}{n}\Big[ \textrm{Bias}\{ \hat{f}_{h_{n}}(x) \} + f(x) \Big]^{2} \nonumber
 \end{eqnarray}
 
-* Use $f(x - uh_{n}) = f(x) - uh_{n}f'(x)$
+* We will ignore the last term because it is of order $1/n$. Then, if we use the Taylor series approximation 
+$f(x - uh_{n}) = f(x) - uh_{n}f'(x) + ...$, we have:
 \begin{eqnarray}
 \textrm{Var}\{ \hat{f}_{h_{n}}(x) \}
 &\approx& \frac{f(x)}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) du - \frac{f'(x)}{n}\int_{-\infty}^{\infty} u K^{2}(u) du  +  ... \nonumber \\
-&\approx& \frac{f(x)\kappa_{2} }{n h_{n} }  \nonumber \\
+&\approx& \frac{f(x)\kappa_{2}(K) }{n h_{n} }  \nonumber \\
 &=& \textrm{AVar}\{ \hat{f}_{h_{n}}(x) \}  \nonumber
 \end{eqnarray}
 
@@ -705,37 +713,48 @@ for the mean-squared error of $\hat{f}_{h_{n}}(x)$ at the point $x$
 \textrm{MSE}\{ \hat{f}_{h_{n}}(x) \} 
 &\approx& 
 \textrm{AVar}\{ \hat{f}_{h_{n}}(x) \} + \Big( \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} \Big)^{2} \nonumber \\
-&=& \frac{f(x)\kappa_{2} }{n h_{n} } + \frac{h_{n}^{4}[f''(x)]^{2}\mu_{2}^{2}(K)}{4}  \nonumber 
+&=& \frac{f(x)\kappa_{2}(K) }{n h_{n} } + \frac{h_{n}^{4}[f''(x)]^{2}\mu_{2}^{2}(K)}{4} 
+(\#eq:asymp-mse-density)
 \end{eqnarray}
+
+* Notice that if we want the MSE to go to $0$ as $n \longrightarrow \infty$, we need the 
+following two things to happen
+    + $h_{n} \longrightarrow 0$ as $n \longrightarrow \infty$
+    + $n h_{n} \longrightarrow \infty$ as $n \longrightarrow \infty$
+
+---
 
 * The approximate mean integrated squared error is obtained by integrating
-the above approximation across $x$
+the approximation \@ref(eq:asymp-mse-density) for MSE across $x$
 \begin{eqnarray}
-AMISE\{ \hat{f}_{h_{n}} \} &=& \frac{\kappa_{2} }{n h_{n} }\int_{-\infty}^{\infty} f(x) dx + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber \\
-&=& \frac{\kappa_{2} }{n h_{n} } + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx
+\textrm{AMISE}\{ \hat{f}_{h_{n}} \} &=& \frac{\kappa_{2} }{n h_{n} }\int_{-\infty}^{\infty} f(x) dx + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber \\
+&=& \frac{\kappa_{2}(K) }{n h_{n} } + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx
+(\#eq:amise-density)
 \end{eqnarray}
 
 
-### Bandwidth Selection with the Normal Reference Rule
+### Bandwidth Selection with the Normal Reference Rule and Silverman's "Rule of Thumb"
 
-* If we differentiate the above expression and set to zero, we get the following equation for $h_{n}^{opt}$ which 
-would minimize $AMISE\{ \hat{f}_{h_{n}} \}$:
+* If we differentiate the formula for AMISE given in \@ref(eq:amise-density) with respect to $h_{n}$ and set it to zero, 
+we get the following equation for $h_{n}^{opt}$ which would be the bandwidth minimizing $\textrm{AMISE}\{ \hat{f}_{h_{n}} \}$:
 \begin{equation}
-0 = \frac{-\kappa_{2} }{n (h_{n}^{opt})^{2} } + (h_{n}^{opt})^{3}\mu_{2}^{2}(K) \int_{-\infty}^{\infty} [f''(x)]^{2} dx
+0 = \frac{-\kappa_{2}(K) }{n (h_{n}^{opt})^{2} } + (h_{n}^{opt})^{3}\mu_{2}^{2}(K) \int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber
 \end{equation}
 
-
-* The solution of the above equation is the optimal bandwidth:
+* The solution of the above equation gives the optimal bandwidth:
 \begin{equation}
-h_{n}^{opt} = n^{-1/5} \Big( \int_{-\infty}^{\infty} [f''(x)]^{2} dx \Big)^{-1/5}\kappa_{2}^{1/5} \mu_{2}(K)^{-2/5} \nonumber
+h_{n}^{opt} = n^{-1/5} \Big( \int_{-\infty}^{\infty} [f''(x)]^{2} dx \Big)^{-1/5}\kappa_{2}(K)^{1/5} \mu_{2}(K)^{-2/5} \nonumber
 \end{equation}
 
-* For the case of a Gaussian kernel, $\kappa_{2} = (1/2\sqrt{\pi})$ and $\mu_{2}(K) = 1$ so that
-the optimal bandwidth is given by
+* For the case of a Gaussian kernel, 
+\begin{eqnarray}
+\kappa_{2}(K) &=& \frac{1}{2\pi}\int_{-\infty}^{\infty} e^{-u^{2}} du = \frac{1}{2\sqrt{\pi}}\int_{-\infty}^{\infty} \frac{\sqrt{2}}{\sqrt{2\pi}} e^{-u^{2}} du = \frac{1}{2\sqrt{\pi}} \nonumber \\
+\mu_{2}(K) &=& \int_{-\infty}^{\infty} u^{2}e^{-u^{2}/2} du = 1
+\end{eqnarray}
+so that, in the case of a Gaussian kernel, the optimal bandwidth is given by
 \begin{equation}
 h_{n}^{opt} = n^{-1/5} (2\sqrt{\pi})^{-1/5} \Big( \int_{-\infty}^{\infty} [f''(x)]^{2} dx \Big)^{-1/5}
 \end{equation}
-
 
 * The optimal bandwidth $h_{n}^{opt}$ for a kernel density estimate depends on the unknown quantity
 \begin{equation}
@@ -761,14 +780,46 @@ h_{n}^{opt} = n^{-1/5}(2\sqrt{\pi})^{-1/5}\Big( \frac{3}{8\sqrt{\pi}\sigma^{5}} 
 \approx 1.06 \sigma n^{-1/5}
 \end{equation}
 
-* Normal reference rule
+--- 
 
-* Silverman's "rule-of-thumb" for the bandwidth.
+* The rule $h_{n}^{opt} = 1.06 \sigma n^{-1/5}$ works pretty well if the true density has a roughly Gaussian shape. For example,
+unimodal, non-heavy tails, not too strong skewness, etc.
+
+* However, $h_{n} = 1.06 \hat{\sigma} n^{-1/5}$ is typically too large if $f(x)$ is multimodal or
+if $f(x)$ has substantial skewness.
+
+* This oversmoothing effect of $h_{n} = 1.06 \hat{\sigma} n^{-1/5}$  can be reduced somewhat by replacing $\hat{\sigma}$ with
+\begin{equation}
+s = \min\Big\{ \hat{\sigma}, \frac{IQR}{1.34} \Big\} \nonumber 
+\end{equation}
+
+* For multimodal distributions, we typically have $\hat{\sigma} \leq IQR/1.34$ while for strongly skewed
+distributions such as the log-normal distribution we typically have $\hat{\sigma} \geq IQR/1.34$.
+
+* These observations lead to the construction of the **Normal reference rule** for the bandwidth
+\begin{equation}
+h_{n}^{NR} = 1.06 s n^{-1/5}  \nonumber
+\end{equation}
+
 
 ---
 
-* **Exercise 8.4** Suppose $X_{1}, \ldots, X_{n} \sim N(0, \sigma^{2})$. Assume that
-   our density estimate $\hat{f}_{h_{n}}(x)$ is using a Gaussian kernel.
+* Silverman's "rule-of-thumb" for the bandwidth.
+\begin{equation}
+h_{n}^{SR} = 1.06 s n^{-1/5}  \nonumber
+\end{equation}
+
+
+---
+
+* **Exercise 8.5** Assuming that $f(x) = \tfrac{1}{\sqrt{2\pi}\sigma}e^{-x^{2}/2\sigma^{2}}$, show 
+that 
+\begin{equation}
+\int_{-\infty}^{\infty} [f''(x)]^{2} dx = \frac{3}{8\sqrt{\pi}\sigma^{5}} \nonumber
+\end{equation}
+
+* **Exercise 8.6** Suppose $X_{1}, \ldots, X_{n} \sim N(0, \sigma^{2})$. Suppose that
+   we have density estimate $\hat{f}_{h_{n}}(x)$ that uses the Gaussian kernel.
   + Compute the exact values of $E\{ \hat{f}_{h_{n}}(x) \}$ and $\textrm{Var}\{ \hat{f}_{h_{n}}(x) \}$.
   + Compute AMISE$\{ \hat{f}_{h_{n}} \}$. Can you get an expression for the value of $h_{n}$ which minimizes AMISE?
 
@@ -778,6 +829,21 @@ h_{n}^{opt} = n^{-1/5}(2\sqrt{\pi})^{-1/5}\Big( \frac{3}{8\sqrt{\pi}\sigma^{5}} 
 
 
 ### Density Estimation in R
+
+
+
+* In **R**, kernel density estimates are computed using the `density` function 
+```{r, eval=FALSE}
+density(x, bw, kernel, n, ...)
+```
+* **x** the vector containing the data
+
+* **bw** the value of the bandwidth. Be careful, ....
+
+* **kernel** the choice of kernel function. The default is to use a Gaussian kernel.
+
+
+---
 
 * In this section, we will use the `galaxies` dataset in the `MASS` package. 
 The first few observations of the `galaxies` dataset look like:  

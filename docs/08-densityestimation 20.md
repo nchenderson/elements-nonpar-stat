@@ -1,0 +1,870 @@
+# Density Estimation {#density-estimation}
+
+## Introduction
+
+* In this section, we focus on methods for estimating a **probability density function** (pdf) $f(x)$.
+
+* For a continuous random variable $X$, areas under the probability density function are probabilities
+\begin{equation}
+P(a < X < b) = \int_{a}^{b} f(x) dx \nonumber
+\end{equation}
+and $f(x)$ is related to the cumulative distribution function via $f(x) = F'(x)$.
+
+* With parametric approaches to density estimation, you only need to estimate several parameters as
+these parameters completely determine the form of $f(x)$.
+
+* For example, with a Gaussian distribution you only need to find $\mu$ and $\sigma^{2}$ to 
+determine the form of $f(x)$.
+
+* In a nonparametric approach to estimating, we will assume that our observations $X_{1}, \ldots, X_{n}$
+are an independent identically distribution sample from a distribution with pdf $f(x)$, but otherwise we will
+make few assumptions about the particular form of $f(x)$.
+
+## Histograms
+
+<div class="figure">
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" width="672" />
+<p class="caption">(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</p>
+</div>
+
+### Definition
+
+* While histograms are often thought of as maily a visualization tool,
+a histogram can also be thought of as an estimate of the density $f(x)$. 
+
+* To construct a histogram, you first need to define a series
+of "bins": $B_{1}, \ldots, B_{D_{n}}$. 
+
+* Each bin is a left-closed interval. The bins are usually
+assumed to have the form $B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n})$:
+\begin{eqnarray}
+B_{1} &=& [x_{0}, x_{0} + h_{n}) \nonumber \\
+B_{2} &=& [x_{0} + h_{n}, x_{0} + 2h_{n}) \nonumber \\
+&\vdots& \nonumber \\
+B_{D_{n}} &=& [x_{0} + (D_{n}-1)h_{n}, x_{0} + D_{n}h_{n}) \nonumber 
+\end{eqnarray}
+
+* $x_{0}$ - the origin
+* $h_{n}$ - bin width
+* $D_{n}$ - number of bins
+
+* Histograms are based on the counts $n_{k}$ of observations that fall into each bin:
+\begin{eqnarray}
+n_{k} &=& \# \text{ of observations falling into the $k^{th}$ bin }  \nonumber \\
+&=& \sum_{i=1}^{n} I( x_{0} + (k-1)h_{n} \leq X_{i} < x_{0} + kh_{n}  )
+\end{eqnarray}
+
+* From the counts $n_{k}$, the histogram estimate of the density at a point $x$ in 
+the $k^{th}$ bin (that is if $x_{0} + (k-1)h_{n} \leq x < x_{0} + kh_{n}$), is defined as
+\begin{equation}
+\hat{f}_{h_{n}}^{H}(x) = \frac{n_{k}}{nh_{n}}  
+(\#eq:hist-density)
+\end{equation}
+
+* **Note:** Histogram plots often show the actual bin counts $n_{k}$ rather than 
+the values of $\hat{f}_{h_{n}}^{H}(x)$.
+
+---
+
+* To see the motivation for the histogram estimate, notice that if we choose a 
+relatively small value $h_{n} > 0$ 
+\begin{equation}
+P(a < X_{i} < a + h_{n}) = \int_{a}^{a + h_{n}} f(t) dt \approx h_{n}f(c), \nonumber
+\end{equation}
+for any point $a \leq c \leq a + h_{n}$.
+
+* So, for a point $x \in B_{k}$, the expected value of $\hat{f}_{h_{n}}^{H}(x)$ is
+\begin{eqnarray}
+E\{ \hat{f}_{h_{n}}^{H}(x) \} &=& \frac{1}{n h_{n}} E\{ n_{k} \} \nonumber \\
+&=& \frac{1}{n h_{n}} \sum_{i=1}^{n} P( x_{0} + (k-1)h_{n} \leq X_{i} < x_{0} + kh_{n}  ) \nonumber \\
+&=& \frac{1}{h_{n}} P( x_{0} + (k-1)h_{n} \leq X_{i} < x_{0} + kh_{n}  )  \nonumber \\
+&\approx& f(x) \nonumber
+\end{eqnarray}
+
+
+### Histograms in R
+
+* In **R**, histograms are computed using the `hist` function 
+
+```r
+hist(x, breaks, probability, plot, ...)
+```
+
+* The **breaks** argument
+    + Default is "Sturges". This is a method for finding the bin width.
+    + Can be a name giving the name of an algorithm for computing bin width
+    (e.g., "Scott" and "FD").
+    + Can also be a single number. This gives the number of bins used.
+    + Could be a vector giving the breakpoints between bins.
+    + Could also be a function which computes the number of bins.
+
+* The **probability** argument. If this is set to FALSE, then the 
+bin counts are shown in the histogram. If set to TRUE, then the
+bin counts divided by $nh_{n}$ are shown in the histogram.
+
+* The **plot** argument. If TRUE, a histogram is plotted
+whenever `hist` is called. If FALSE, a histogram is not 
+plotted when `hist` is called.
+
+**Note:** The default for R, is to use right-closed intervals $(a, b]$. 
+This can be changed using the **right** argument of the **hist** function.
+
+---
+
+* Let's use the kidney function data again to demonstrate the use of histograms in **R**. This time
+we will focus on the **age** variable.
+
+
+```r
+kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
+                     header=TRUE)
+```
+
+* You can plot a histogram of **age** just by calling the `hist` function.
+
+```r
+kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
+```
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+
+
+* Use the `probability = TRUE` argument to plot the density-estimate version of the histogram.
+This histogram should integrate to 1.
+
+```r
+kidney.hist2 <- hist(kidney$age, main="Histogram of Age on Probability Scale", 
+                     xlab="Age from Kidney Data", probability=TRUE)
+```
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+
+---
+
+* In addition to generating a histogram plot, the histogram function 
+also returns useful stuff.
+
+```r
+names(kidney.hist)
+```
+
+```
+## [1] "breaks"   "counts"   "density"  "mids"     "xname"    "equidist"
+```
+
+* **breaks** 
+   + the boundaries for the histogram bins. The bins are of the form ( breaks[k], breaks[k+1] ]
+* **counts** 
+   + the number of observations falling into each bin
+* **density**
+   + the value of the estimated density within each of the bins
+* **mids** 
+   + the midpoint of each of the bins
+
+
+```r
+kidney.hist$breaks
+```
+
+```
+## [1] 10 20 30 40 50 60 70 80 90
+```
+
+```r
+kidney.hist$counts
+```
+
+```
+## [1]  4 74 35 11 13 12  6  2
+```
+
+```r
+## The following sum should match the first element of kidney.hist$counts[1]
+sum(kidney.hist$breaks[1] < kidney$age & kidney$age <= kidney.hist$breaks[2]) 
+```
+
+```
+## [1] 4
+```
+
+* Let's check that the density values returned by `hist` match our definition of the histogram density estimate in \@ref(eq:hist-density).
+
+
+```r
+binwidth <- kidney.hist$breaks[2] - kidney.hist$breaks[1]
+kidney.hist$density
+```
+
+```
+## [1] 0.002547771 0.047133758 0.022292994 0.007006369 0.008280255 0.007643312
+## [7] 0.003821656 0.001273885
+```
+
+```r
+kidney.hist$counts/(length(kidney$age)*binwidth)
+```
+
+```
+## [1] 0.002547771 0.047133758 0.022292994 0.007006369 0.008280255 0.007643312
+## [7] 0.003821656 0.001273885
+```
+
+
+### Performance of the Histogram Estimate and Bin Width Selection
+
+#### Bias/Variance Decomposition
+
+* It is common to evaluate the performance of a density estimator
+through its **mean-squared error** (MSE).
+
+* In general, MSE is a function of bias and variance
+\begin{equation}
+\textrm{MSE} = \textrm{Bias}^2 + \textrm{Variance}  \nonumber 
+\end{equation}
+
+* We will first look at the mean-squared error of $\hat{f}_{h_{n}}^{H}( x )$ at a single point $x$
+\begin{eqnarray}
+\textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
+&=& E\Big( \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}  \Big) \nonumber \\
+&=& E\Big( \Big[ \hat{f}_{h_{n}}^{H}(x) - E\{ \hat{f}_{n}^{H}(x) \} + E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \Big]^{2}  \Big) \nonumber \\
+&=& E\Big( \Big[ \hat{f}_{h_{n}}^{H}(x) - E\{ \hat{f}_{n}^{H}(x) \} \Big]^{2}  \Big) + E\Big( \Big[ E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \Big]^{2}  \Big) \nonumber \\
+&+& 2E\Big( \Big[ \hat{f}_{h_{n}}^{H}(x) - E\{ \hat{f}_{n}^{H}(x) \}\Big]\Big[ E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \Big]  \Big)  \nonumber \\ 
+&=& \underbrace{\textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \}}_{\textrm{Variance}} + \underbrace{\Big( E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x)  \Big)^{2} }_{\textrm{Bias Squared}}  \nonumber
+\end{eqnarray}
+
+* In general, as the bin width $h_{n}$ increases, the histogram estimate
+will have less variation but will become more biased.
+
+
+#### Bias and Variance of the Histogram Estimate
+
+* Recall that, for a histogram estimate, we have $D_{n}$ bins where the $k^{th}$ bin
+takes the form 
+\begin{equation}
+B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n}) \nonumber
+\end{equation}
+
+* For a point $x \in B_{k}$, that "belongs" to the $k^{th}$ bin, the histogram density estimate is
+\begin{equation}
+\hat{f}_{n}^{H}(x) = \frac{n_{k}}{nh_{n}}, \quad \textrm{ where } n_{k} = \textrm{ number of observations falling into bin } B_{k}
+\end{equation}
+
+* To better examine what happens as $n$ changes, we will define the function $A_{h_{n}, x_{0}}(x)$ as the function 
+which returns the index of the interval to which $x$ belongs.
+
+* For example, if $x_{0} = 0$, $h_{n} = 1/3$, and $x = 1/2$, then $A_{h_{n}, x_{0}}( x ) = 2$. 
+
+* So, we can also write the histogram density estimate at the value $x$ as
+\begin{equation}
+\hat{f}_{h_{n}}^{H}(x) = \frac{n_{A_{h_{n}, x_{0}}(x)}}{ nh_{n} }  \nonumber
+\end{equation}
+
+---
+
+* **Exercise 8.1.** Suppose $x_{0} = -2$ and $h_{n} = 1/2$. What are the values of
+$A_{h_{n}, x_{0}}( -1 )$, $A_{h_{n}, x_{0}}( 1.3 )$, and $A_{h_{n}, x_{0}}( 0.75 )$?
+
+---
+
+---
+
+* Note that we can express $n_{A_{h_{n}, x_{0}}(x)}$ as
+\begin{equation}
+n_{A_{h_{n}, x_{0}}(x)} = \sum_{i = 1}^{n} I\Big( X_{i} \in B_{A_{h_{n}, x_{0}}(x)} \Big) \nonumber
+\end{equation}
+
+* Hence, is a binomial random variable with $n$ trials 
+and success probability $p_{h_{n}, x_{0}}(x)$ (why?) 
+\begin{equation}
+n_{A_{h_{n}}(x)} \sim \textrm{Binomial}\{ n, p_{h_{n}, x_{0}}(x) \} \nonumber
+\end{equation}
+
+* The success probability $p_{h_{n}, x_{0}}(x)$ is defined as
+\begin{eqnarray}
+p_{h_{n}, x_{0}}(x) &=& P\Big\{ X_{i} \textrm{ falls into bin } B_{A_{h_{n}, x_{0}}}(x) \Big\}   \nonumber \\
+&=& \int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt.
+\end{eqnarray}
+
+---
+
+* Because $n_{A_{h_{n}, x_{0}}(x)}$ follows a binomial distribution, we know that 
+\begin{eqnarray}
+E( n_{A_{h_{n}, x_{0}}(x)} ) &=& np_{h_{n}, x_{0}}(x)  \nonumber \\ 
+\textrm{Var}( n_{A_{h_{n}, x_{0}}(x)} ) &=& np_{h_{n}, x_{0}}(x)\{1 - p_{h_{n},x_{0}}(x) \} \nonumber
+\end{eqnarray}
+
+* So, we can express the bias of the histogram density 
+estimate $\hat{f}_{h_{n}}^{H}(x) = n_{A_{h_{n}, x_{0}}(x)}/(nh_{n})$ as
+\begin{eqnarray}
+\textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} &=& E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \nonumber \\
+&=& \frac{1}{nh_{n}}E( n_{A_{h_{n}, x_{0}}(x)} ) - f(x) \nonumber \\
+&=& \frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } - f(x), \nonumber
+\end{eqnarray}
+and we can express the variance as:
+\begin{eqnarray}
+\textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \}
+&=& \frac{1}{n^{2}h_{n}^{2}}\textrm{Var}( n_{A_{h_{n}, x_{0}}(x)} )  \nonumber \\
+&=& \frac{ p_{h_{n}, x_{0}}(x)\{1 - p_{h_{n}, x_{0}}(x) \} }{ nh_{n}^{2} } \nonumber
+\end{eqnarray}
+
+* Using the approximation $f(t) \approx f(x) + f'(x)(t - x)$ for $t$ close to $x$, we have that
+\begin{eqnarray}
+\frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } &=& \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt \nonumber \\
+ &\approx& \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(x) dt + \frac{f'(x)}{h_{n}}\int_{x_{0} + (A_{h_{n}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } (t - x) dt \nonumber \\
+&=& f(x) + \frac{f'(x)}{2h_{n}}\Big[ (t - x)^{2}\Big|_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } \Big] \nonumber \\
+&=& f(x) + \frac{f'(x)}{2h_{n}}\Big[ (x_{0} + A_{h_{n}, x_{0}}(x)h_{n})^{2} - (x_{0} + (A_{h_{n}, x_{0}}(x)-1)h_{n} )^{2} - 2xh_{n} \Big] \nonumber \\
+&=& f(x) + \frac{f'(x)}{2h_{n}}\Big[ 2x_{0}A_{h_{n}, x_{0}}(x)h_{n} + A_{h_{n}, x_{0}}^{2}(x)h_{n}^{2} - 2x_{0}(A_{h_{n}, x_{0}}(x)-1)h_{n}  \nonumber \\
+& & - (A_{h_{n}, x_{0}}(x)-1)^{2}h_{n}^{2} - 2xh_{n} \Big] \nonumber \\
+&=& f(x) + \frac{f'(x)}{2h_{n}}\Big[ 2x_{0}h_{n} + 2A_{h_{n}, x_{0}}(x)h_{n}^{2} - h_{n}^{2} - 2xh_{n} \Big] \nonumber \\
+&=& f(x) + f'(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big] \nonumber
+\end{eqnarray}
+
+* So, the bias of the histogram density estimate $\hat{f}_{h_{n}}^{H}(x)$ is
+\begin{eqnarray}
+\textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} 
+&=& \frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } - f(x)  \nonumber \\
+&\approx& f'(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big] 
+(\#eq:approx-bias-hist)
+\end{eqnarray}
+
+
+* Choosing a very small bin width $h_{n}$ will result in a small bias because the left endpoint of the
+bin $x_{0} + (A_{h_{n}}(x) - 1)h_{n}$ will always be very close to $x$.
+
+--- 
+
+* Now, let us turn to the variance of the histogram estimate at $x$:
+\begin{eqnarray}
+\textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \} &=& \frac{p_{h_{n}, x_{0}}(x) }{nh_{n}^{2}}\{1 - p_{h_{n}, x_{0}}(x) \}  \nonumber \\
+&\approx& \frac{f(x) + f'(x)\{ \tfrac{h_{n}}{2} - [ x - x_{0} - (A_{h_{n}, x_{0}}(x) - 1)h_{n} ] \}}{nh_{n}}\{1 - p_{h_{n}, x_{0}}(x)\}  \nonumber \\
+&\approx& \frac{f(x)}{n h_{n} }
+(\#eq:approx-var-hist)
+\end{eqnarray}
+
+* For a more detailed description of the above approximation see @scott1979 or Chapter 6 of @wasserman2006.
+
+* Note that large bin widths will reduce the variance of $\hat{f}_{h_{n}}^{H}(x)$.
+
+
+#### Pointwise Mean Squared Error
+* Using \@ref(eq:approx-var-hist) and \@ref(eq:approx-bias-hist), the approximate mean-squared error of the histogram density estimate
+at a particular point $x$ is given by
+\begin{eqnarray}
+\textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
+&=& E\Big( \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}  \Big) \nonumber \\
+&=& \Big( \textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} \Big)^{2} + \textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \} \nonumber \\
+&\approx&  \frac{h_{n}^{2}[f'(x)]^{2} }{4} - h_{n}f'(x)[ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ]  \nonumber \\
+&+& [f'(x)]^{2}\Big( x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} \Big)^{2} + \frac{f(x)}{n h_{n} }
+(\#eq:mse-hist-decomp)
+\end{eqnarray}
+
+* For any approach to bin width selection, we should have $h_{n} \longrightarrow 0$ and 
+$nh_{n} \longrightarrow \infty$.
+
+* This MSE approximation depends on a particular choice of $x$.
+
+* Difficult to use \@ref(eq:mse-hist-decomp) as a criterion for selecting the bandwidth
+because the best choice of $h_{n}$ will often depend on your choice of $x$.
+
+#### Integrated Mean Squared Error and Optimal Histogram Bin Width
+
+* Using mean integrated squared error (MISE) allows us to find an optimal bin width
+that does not depend on a particular choice of $x$.
+
+* The MISE is defined as
+\begin{eqnarray}
+\textrm{MISE}\{ \hat{f}_{h_{n}}^{H} \} 
+&=& E\Big\{ \int_{-\infty}^{\infty} \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}dx   \Big\} \nonumber \\
+&=& \int_{-\infty}^{\infty} \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} dx \nonumber
+\end{eqnarray}
+Using the previously derived approximation \@ref(eq:mse-hist-decomp) for the MSE, it can be shown that
+\begin{eqnarray}
+\textrm{MISE}\{ \hat{f}_{h_{n}}^{H} \} \approx
+\frac{1}{nh_{n}} + \frac{h_{n}^{2}}{12}\int_{-\infty}^{\infty} [f'(x)]^{2} dx  
+(\#eq:mise-formula)
+\end{eqnarray}
+
+
+---
+
+* To select the optimal bin width, we minimize the MISE as a function of $h_{n}$.
+
+* Minimizing \@ref(eq:mise-formula), as a function of $h_{n}$ yields the following formula for the optimal bin width
+\begin{equation}
+h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f'(x)]^{2} dx}  \Big)^{1/3} = C n^{-1/3} 
+(\#eq:opt-binwidth-hist)
+\end{equation}
+
+* Notice that $h_{n}^{opt} \longrightarrow 0$ and $nh_{n}^{opt} \longrightarrow \infty$ as $n \longrightarrow \infty$.
+
+* Notice also that the optimal bin width depends on the unknown quantity $\int_{-\infty}^{\infty} [f'(x)]^{2} dx$.
+
+### Choosing the Histogram Bin Width
+
+* We will mention three rules for selecting the bin width of a histogram.
+   + Scott rule: (based on the optimal bin width formula \@ref(eq:opt-binwidth-hist))
+   + Friedman and Diaconis rule (also based on the optimal bin width formula \@ref(eq:opt-binwidth-hist))
+   + Sturges rule: (based on wanting the histogram to look Gaussian when the data are in fact Gaussian-distributed)
+
+---
+
+* Both Scott and the FD rule are based on the optimal bin width formula \@ref(eq:opt-binwidth-hist).
+
+* The main problem with using the formula \@ref(eq:opt-binwidth-hist) is the presence of $\int_{-\infty}^{\infty} [f'(x)]^{2} dx$.
+
+* **Solution:** See what this quantity looks like if we assume that $f(x)$ corresponds 
+to a $N(\mu, \sigma^{2})$ density.
+
+* With this assumption,
+\begin{equation}
+h_{n}^{opt} = 3.5 \sigma n^{-1/3}  \nonumber
+\end{equation}
+
+---
+
+* **Scott rule**: Use $h_{n}^{*} = 3.5 \hat{\sigma} n^{-1/3}$, where $\hat{\sigma}$ denotes the sample standard deviation.
+
+* **FD rule**: Use $h_{n}^{*} = 2 \times IQR \times n^{-1/3}$. This is a somewhat more robust choice of $h_{n}$ as it is not as 
+sensitive to outliers.
+
+* **Sturges rule**: The bin width is chosen so that we have $1 + log_{2}(n)$ bins. This choice tends to give wide
+intervals. 
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+
+
+## A Box-type Density Estimate
+
+* A related estimator $\hat{f}_{h_{n}}^{B}$ of the density $f(x)$ uses a 
+"sliding bin" at each point $x$ to calculate the estimate of $f(x)$.
+
+* Specifically, the "box estimate" $\hat{f}_{h_{n}}^{B}(x)$ at the point $x$ is defined as
+\begin{equation}
+\hat{f}_{h_{n}}^{B}(x) = \frac{1}{2nh_{n}} \Big[ \# \text{ of observations falling in the interval } (x - h_{n}, x + h_{n}) \Big] \nonumber
+\end{equation}
+
+* In other words, for each $x$ we are forming a bin of width $2h_{n}$ around $x$, and we are counting
+the number of observations that fall in this bin.
+
+* You can think that each point $x$ as being the center of its own bin.
+
+* The expectation of the box estimator at the point $x$ is  
+\begin{equation}
+E \{ \hat{f}_{h_{n}}^{B}(x) \}
+= \frac{1}{2h_{n}} P(x - h_{n} < X_{i}  < x + h_{n}) 
+\approx f(x)  \nonumber 
+\end{equation}
+
+---
+
+* Unlike the histogram, the box estimate does not require the density estimate 
+to be constant within each bin.
+
+* Also, histograms can have dramatic changes near
+the bin edges while the box estimate suffers less from this problem.
+
+* However, plots of the box estimate will still largely be non-smooth and 
+have a "jagged" appearance. 
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+
+
+---
+
+* We can also express $\hat{f}_{h_{n}}^{B}(x)$ in the following way:
+\begin{equation}
+\hat{f}_{h_{n}}^{B}(x)
+= \frac{1}{n} \sum_{i=1}^{n} \frac{1}{h_{n}} w\Big( \frac{X_{i} - x}{h_{n}} \Big),  
+(\#eq:box-density)
+\end{equation}
+where $w(t)$ is defined as the following "box function"
+\begin{equation}
+w(t) = 
+\begin{cases}
+\frac{1}{2} & \textrm{ if } |t| < 1 \nonumber \\
+0 & \textrm{ otherwise } \nonumber
+\end{cases}
+\end{equation}
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+
+* While the estimator $\hat{f}_{h_{n}}^{B}$ does seem reasonable, it always
+results in density estimates which are not "smooth."
+
+* Most kernel density estimates are formed by replacing the box function $w(t)$ with 
+a smoother function.
+
+---
+
+* **Exercise 8.2**. Write an **R** function which computes the $\hat{f}_{h_{n}}^{B}(x)$
+at a collection of specified points.
+
+* **Exercise 8.3**. Suppose we have observations $(X_{1}, X_{2}, X_{3}, X_{4}) = (-1, 0, 1/2, 1)$.
+Assuming $h_{n} = 1/2$, plot $w(\tfrac{X_{i} - x}{h_{n}})/nh_{n}$ for $i = 1, \ldots, 4$ and plot the box
+density estimate $\hat{f}_{h_{n}}^{B}(x)$.
+
+* **Exercise 8.4**. Suppose we have i.i.d. observations $X_{1}, \ldots, X_{n} \sim F$ where
+the cdf $F$ is assumed to be continuous. What is $\textrm{Var}\{ \hat{f}_{h_{n}}^{B}(x) \}$?
+
+---
+
+
+## Kernel Density Estimation
+
+### Definition
+
+* Kernel density estimates are a generalization of the box-type density estimate $\hat{f}_{h_{n}}^{B}(x)$.
+
+* With kernel density estimation, we replace the "box function" in \@ref(eq:box-density)
+with a function $K(\cdot)$ which is much smoother. 
+
+* The function $K(\cdot)$ will also give higher weight to observations which are closer to $x$
+than those that are further away from $x$.
+
+---
+
+* A kernel density estimator $\hat{f}_{h_{n}}(x)$ is defined as
+\begin{equation}
+\hat{f}_{h_{n}}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) 
+(\#eq:kernel-density-formula)
+\end{equation}
+
+* The function $K( \cdot )$ is referred to as the **kernel function**.
+
+* The scalar term $h_{n} > 0$ is called the **bandwidth**. 
+
+* The value of the bandwidth $h_{n}$ largely determines how "bumpy" the density estimate
+will appear.
+
+* The appearance and the statistical performance of $\hat{f}_{h_{n}}(x)$ depend much more on the value of $h_{n}$ than 
+the choice of kernel function.
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+
+---
+
+* Kernel functions are usually chosen so that 
+\begin{equation}
+K(t) \geq  0 \textrm{ for all } t \nonumber 
+\end{equation}
+and that they also satisfy the following properties:
+\begin{eqnarray}
+K(t) = K(-t) \qquad 
+\int_{-\infty}^{\infty} K(t) dt = 1  \nonumber 
+\qquad 
+\int_{-\infty}^{\infty} K^{2}(t) dt  < \infty
+\nonumber
+\end{eqnarray}
+
+* You can think of $K(u)$ as a probability density function
+which is symmetric around $0$.
+
+* Some of the most common choices of kernel functions include
+\begin{eqnarray}
+\textrm{Gaussian} :&& \quad  K(u) = \exp(-u^{2}/2)/\sqrt{2\pi} \nonumber \\
+\textrm{Epanechnikov} :&& \quad  K(u) = \tfrac{3}{4\sqrt{5}}(1 - \tfrac{1}{5} u^{2}) I(|u| < \sqrt{5}) \nonumber \\
+\textrm{biweight} :&& \quad  K(u) = \tfrac{15}{16\sqrt{7}}(1 - \tfrac{1}{7} u^{2})^{2} I(|u| < \sqrt{7}) \nonumber \\
+\end{eqnarray}
+
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+
+* When plotting $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$, it should
+look like a "small hill" centered around $X_{i}$.
+
+* As $h_{n}$ decreases, $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$
+becomes more strongly concentrated around $X_{i}$ and has a higher peak.
+
+* The kernel density estimate $\hat{f}_{h_{n}}(x)$ is a sum of all these "small hills".
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-14-1.png" width="672" />
+
+---
+
+* The nice thing about \@ref(eq:kernel-density-formula) is that it guarantees that $\hat{f}_{h_{n}}(x)$ is a probability
+density function
+\begin{eqnarray}
+\int_{-\infty}^{\infty} \hat{f}_{h_{n}}(x) dx 
+&=& \int_{-\infty}^{\infty} \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big)  dx  \nonumber \\
+&=&  \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{\infty} \frac{1}{h_{n}} K\Big( \frac{x - X_{i}}{h_{n}} \Big) dx  \nonumber \\
+&=& 1 \nonumber
+\end{eqnarray}
+
+* Also, formula \@ref(eq:kernel-density-formula) guarantees that $\hat{f}_{h_{n}}(x)$ inherits the smoothness properties
+of $K(u)$
+\begin{equation}
+\hat{f}_{h_{n}}'(x) = \frac{1}{n} \sum_{i=1}^{n} \frac{1}{h_{n}^{2}} K'\Big( \frac{x - X_{i}}{h_{n}} \Big)  \nonumber
+\end{equation}
+
+
+
+### Bias, Variance, and AMISE of Kernel Density Estimates
+
+* As with the bin width in histogram estimation, the bias/variance tradeoff
+drives the best choice of the bandwidth $h_{n}$ in kernel density estimation.  
+
+---
+
+**Approximate Bias**
+
+* The exact expectation of a kernel density estimate $\hat{f}_{h_{n}}(x)$ is
+\begin{eqnarray}
+E\{ \hat{f}_{h_{n}}(x) \}
+&=& \frac{1}{nh_{n}} \sum_{i=1}^{n} E\Big\{ K\Big( \frac{x - X_{i}}{h_{n}} \Big) \Big\} \nonumber \\
+&=& \frac{1}{h_{n}} E\Big\{ K\Big( \frac{x - X_{1}}{h_{n}} \Big) \Big\} \nonumber \\
+&=& \frac{1}{h_{n}} \int_{-\infty}^{\infty} K\Big( \frac{x - t}{h_{n}} \Big) f(t) dt \nonumber \\
+&=&  \int_{-\infty}^{\infty} K( u ) f(x - uh_{n}) du \nonumber 
+\end{eqnarray}
+Above, we used the substitution $u = (x - t)/h_{n}$.
+
+
+* Thus, the exact bias of $\hat{f}_{h_{n}}(x)$ is
+\begin{eqnarray}
+\textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
+&=& \int_{-\infty}^{\infty} K( u ) f(x - uh_{n}) du - f(x)  \nonumber \\
+&=& \int_{-\infty}^{\infty} K( u ) \{ f(x - uh_{n}) - f(x) \} du 
+(\#eq:exact-density-bias)
+\end{eqnarray}
+
+* The expression for bias shown in \@ref(eq:exact-density-bias) will only
+have a closed form for special choices of $K(\cdot)$ and $f( \cdot )$.
+
+* Nevertheless, we can get a reasonable approximation of this bias for small $h_{n}$.
+
+* To approximate the bias for small $h_{n}$, we can use the following Taylor series approximation
+\begin{equation}
+f(x - uh_{n}) - f(x) \approx -uh_{n}f'(x) + \frac{u^{2}h_{n}^{2}}{2} f''(x) \nonumber 
+\end{equation}
+Plugging this approximation into our expression for the bias in \@ref(eq:exact-density-bias) gives:
+\begin{eqnarray}
+\textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
+&\approx&  -h_{n}f'(x) \int_{-\infty}^{\infty} u K( u )  du + \frac{h_{n}^{2}f''(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du  \nonumber \\
+&=& \frac{h_{n}^{2}f''(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du \nonumber \\
+&=& \frac{h_{n}^{2}f''(x)\mu_{2}(K)}{2} \nonumber \\
+&=& \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} 
+(\#eq:asymp-bias-density)
+\end{eqnarray}
+Here, $\textrm{ABias}\{ \hat{f}_{h_{n}}(x) \}$ stands for the approximate bias.
+
+* Formula \@ref(eq:asymp-bias-density) shows the direct dependence of the magnitude of bias on 
+the value of the bandwidth.
+
+* Formula \@ref(eq:asymp-bias-density) also shows the effect of the curvature $f''(x)$ 
+of the density on the magnitude of bias. 
+
+---
+
+**Approximate Variance**
+
+* The exact variance of a kernel density estimate $\hat{f}_{h_{n}}(x)$ is
+\begin{eqnarray}
+\textrm{Var}\{ \hat{f}_{h_{n}}(x) \}
+&=& \frac{1}{n^{2}h_{n}^{2}} \sum_{i=1}^{n} \textrm{Var}\Big\{  K\Big( \frac{x - X_{i}}{ h_{n} } \Big) \Big\} \nonumber \\
+&=& \frac{1}{nh_{n}^{2}} \textrm{Var}\Big\{  K\Big( \frac{x - X_{1}}{ h_{n} } \Big) \Big\} \nonumber \\
+&=& \frac{1}{n h_{n}^{2} }\int_{-\infty}^{\infty} K^{2}\Big( \frac{x - t}{h_{n}} \Big) f(t) dt - \frac{1}{n}\Big[ \frac{1}{h_{n}}E\Big\{  K\Big( \frac{x - X_{1}}{ h_{n} } \Big) \Big\} \Big]^{2}  \nonumber \\
+&=& \frac{1}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) f(x - uh_{n}) du - \frac{1}{n}\Big[ \textrm{Bias}\{ \hat{f}_{h_{n}}(x) \} + f(x) \Big]^{2} \nonumber
+\end{eqnarray}
+
+* We will ignore the last term because it is of order $1/n$. Then, if we use the Taylor series approximation 
+$f(x - uh_{n}) = f(x) - uh_{n}f'(x) + ...$, we have:
+\begin{eqnarray}
+\textrm{Var}\{ \hat{f}_{h_{n}}(x) \}
+&\approx& \frac{f(x)}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) du - \frac{f'(x)}{n}\int_{-\infty}^{\infty} u K^{2}(u) du  +  ... \nonumber \\
+&\approx& \frac{f(x)\kappa_{2}(K) }{n h_{n} }  \nonumber \\
+&=& \textrm{AVar}\{ \hat{f}_{h_{n}}(x) \}  \nonumber
+\end{eqnarray}
+
+--- 
+
+**Approximate Mean Integrated Squared Error (AMISE)**
+
+* Using our approximations for the bias and variance, we can get an approximate expression
+for the mean-squared error of $\hat{f}_{h_{n}}(x)$ at the point $x$
+\begin{eqnarray}
+\textrm{MSE}\{ \hat{f}_{h_{n}}(x) \} 
+&\approx& 
+\textrm{AVar}\{ \hat{f}_{h_{n}}(x) \} + \Big( \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} \Big)^{2} \nonumber \\
+&=& \frac{f(x)\kappa_{2}(K) }{n h_{n} } + \frac{h_{n}^{4}[f''(x)]^{2}\mu_{2}^{2}(K)}{4} 
+(\#eq:asymp-mse-density)
+\end{eqnarray}
+
+* Notice that if we want the MSE to go to $0$ as $n \longrightarrow \infty$, we need the 
+following two things to happen
+    + $h_{n} \longrightarrow 0$ as $n \longrightarrow \infty$
+    + $n h_{n} \longrightarrow \infty$ as $n \longrightarrow \infty$
+
+---
+
+* The approximate mean integrated squared error is obtained by integrating
+the approximation \@ref(eq:asymp-mse-density) for MSE across $x$
+\begin{eqnarray}
+\textrm{AMISE}\{ \hat{f}_{h_{n}} \} &=& \frac{\kappa_{2} }{n h_{n} }\int_{-\infty}^{\infty} f(x) dx + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber \\
+&=& \frac{\kappa_{2}(K) }{n h_{n} } + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx
+(\#eq:amise-density)
+\end{eqnarray}
+
+
+### Bandwidth Selection with the Normal Reference Rule
+
+* If we differentiate the formula for AMISE given in \@ref(eq:amise-density) with respect to $h_{n}$ and set it to zero, 
+we get the following equation for $h_{n}^{opt}$ which would be the bandwidth minimizing $\textrm{AMISE}\{ \hat{f}_{h_{n}} \}$:
+\begin{equation}
+0 = \frac{-\kappa_{2}(K) }{n (h_{n}^{opt})^{2} } + (h_{n}^{opt})^{3}\mu_{2}^{2}(K) \int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber
+\end{equation}
+
+* The solution of the above equation gives the optimal bandwidth:
+\begin{equation}
+h_{n}^{opt} = n^{-1/5} \Big( \int_{-\infty}^{\infty} [f''(x)]^{2} dx \Big)^{-1/5}\kappa_{2}(K)^{1/5} \mu_{2}(K)^{-2/5} \nonumber
+\end{equation}
+
+* For the case of a Gaussian kernel, 
+\begin{eqnarray}
+\kappa_{2}(K) &=& \frac{1}{2\pi}\int_{-\infty}^{\infty} e^{-u^{2}} du = \frac{1}{2\sqrt{\pi}}\int_{-\infty}^{\infty} \frac{\sqrt{2}}{\sqrt{2\pi}} e^{-u^{2}} du = \frac{1}{2\sqrt{\pi}} \nonumber \\
+\mu_{2}(K) &=& \int_{-\infty}^{\infty} u^{2}e^{-u^{2}/2} du = 1
+\end{eqnarray}
+so that, in the case of a Gaussian kernel, the optimal bandwidth is given by
+\begin{equation}
+h_{n}^{opt} = n^{-1/5} (2\sqrt{\pi})^{-1/5} \Big( \int_{-\infty}^{\infty} [f''(x)]^{2} dx \Big)^{-1/5}
+\end{equation}
+
+* The optimal bandwidth $h_{n}^{opt}$ for a kernel density estimate depends on the unknown quantity
+\begin{equation}
+\int_{-\infty}^{\infty} [f''(x)]^{2} dx  \nonumber
+\end{equation}
+
+---
+
+* Similar to the Scott and FD rules for choosing the bin width of histogram, one way of setting the bandwidth $h_{n}$
+of a kernel density estimate is to use the value of $\int_{-\infty}^{\infty} [f''(x)]^{2} dx$ when it is assumed that
+$f(x)$ is the density of a $\textrm{Normal}(0, \sigma^{2})$ random variable.
+
+* If $f(x) = \textrm{Normal}(0, \sigma^{2})$, then
+\begin{equation}
+\int_{-\infty}^{\infty} [f''(x)]^{2} dx = \frac{3}{8\sqrt{\pi}\sigma^{5}} \nonumber 
+\end{equation}
+
+* If we use this assumption about $f''(x)$ for the case of a Gaussian kernel, the formula for the optimal bandwidth becomes
+bandwidth is
+\begin{equation}
+h_{n}^{opt} = n^{-1/5}(2\sqrt{\pi})^{-1/5}\Big( \frac{3}{8\sqrt{\pi}\sigma^{5}} \Big)^{-1/5}
+= \sigma n^{-1/5} \sigma \Big( \frac{4}{3} \Big)^{1/5}
+\approx 1.06 \sigma n^{-1/5}
+\end{equation}
+
+--- 
+
+* The rule $h_{n}^{opt} = 1.06 \sigma n^{-1/5}$ works pretty well if the true density has a roughly Gaussian shape. For example,
+unimodal, non-heavy tails, not too strong skewness, ...
+
+* However, $h_{n} = 1.06 \hat{\sigma} n^{-1/5}$ is typically too large if $f(x)$ is multimodal or
+if $f(x)$ has substantial skewness.
+
+* This oversmoothing effect of $h_{n} = 1.06 \hat{\sigma} n^{-1/5}$  can be reduced somewhat by replacing $\hat{\sigma}$ with
+\begin{equation}
+s = \min\Big\{ \hat{\sigma}, \frac{IQR}{1.34} \Big\} \nonumber 
+\end{equation}
+
+* For multimodal distributions, we typically have $\hat{\sigma} \leq IQR/1.34$ while for strongly skewed
+distributions such as the log-normal distribution we typically have $\hat{\sigma} \geq IQR/1.34$.
+
+* These observations lead to the construction of the **Normal reference rule** for the bandwidth
+\begin{equation}
+h_{n}^{NR} = 1.06 s n^{-1/5}  \nonumber
+\end{equation}
+
+
+---
+
+* Silverman's "rule-of-thumb" for the bandwidth.
+\begin{equation}
+h_{n}^{SR} = 1.06 s n^{-1/5}  \nonumber
+\end{equation}
+
+
+---
+
+* **Exercise 8.5** Assuming that $f(x) = \tfrac{1}{\sqrt{2\pi}\sigma}e^{-x^{2}/2\sigma^{2}}$, show 
+that 
+\begin{equation}
+\int_{-\infty}^{\infty} [f''(x)]^{2} dx = \frac{3}{8\sqrt{\pi}\sigma^{5}} \nonumber
+\end{equation}
+
+* **Exercise 8.6** Suppose $X_{1}, \ldots, X_{n} \sim N(0, \sigma^{2})$. Suppose that
+   we have density estimate $\hat{f}_{h_{n}}(x)$ that uses the Gaussian kernel.
+  + Compute the exact values of $E\{ \hat{f}_{h_{n}}(x) \}$ and $\textrm{Var}\{ \hat{f}_{h_{n}}(x) \}$.
+  + Compute AMISE$\{ \hat{f}_{h_{n}} \}$. Can you get an expression for the value of $h_{n}$ which minimizes AMISE?
+
+---
+
+## Kernel Density Estimation in Practice
+
+
+### Density Estimation in R
+
+
+
+* In **R**, kernel density estimates are computed using the `density` function 
+
+```r
+density(x, bw, kernel, n, ...)
+```
+* **x** the vector containing the data
+
+* **bw** the value of the bandwidth. Be careful, ....
+
+* **kernel** the choice of kernel function. The default is to use a Gaussian kernel.
+
+
+---
+
+* In this section, we will use the `galaxies` dataset in the `MASS` package. 
+The first few observations of the `galaxies` dataset look like:  
+
+```r
+library(MASS)
+galaxies[1:5]
+```
+
+```
+## [1] 9172 9350 9483 9558 9775
+```
+
+* Kernel density estimates can be computed in **R** using the `density` function
+
+```r
+galax.dens <- density(galaxies)
+plot(galax.dens, main="Default Density Estimate for Galaxy Data", xlab="veclocity in km/sec", 
+     ylab="Density", lwd=2)
+```
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+
+
+### Cross-Validation for Bandwidth Selection
+
+* The overall goal in bandwidth selection is to choose the bandwidth
+to minimize the criterion
+\begin{equation}
+\int E\Big\{ \{ \hat{f}_{h}(x) - f(x)   \}^{2} \Big\} dx
+\end{equation}
+or some related criterion which also measures an expected discrepancy between $\hat{f}_{h_{n}}(x)$ and $f(x)$.
+
+---
+
+* Another possible criterion for which to minimize is the KL divergence
+\begin{equation}
+\int \log \Big( \frac{ \hat{f}_{h}(x) }{f(x)} \Big)  f(x) dx
+= \int \log \Big( \hat{f}_{h}(x) \Big)  f(x) dx - \int \log\Big( f(x) \Big)f(x) dx
+\end{equation}
+
+
+
+## Additional Reading
+
+* Additional reading which covers the material discussed in this chapter includes:
+    + Chapters 2-3 from @silverman2018
+    + Chapter 6 from @wasserman2006
+    + Chapters 2-3 from @hardle2012
+    + Chapter 4 from @izenman2008
+
+

@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Permutation Tests | Elements of Nonparametric Statistics</title>
+  <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Permutation Tests | Elements of Nonparametric Statistics" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
+  
+  <meta property="og:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
+  <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Permutation Tests | Elements of Nonparametric Statistics" />
+  
+  <meta name="twitter:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
+  
+
+<meta name="author" content="Nicholas Henderson" />
+
+
+<meta name="date" content="2020-02-23" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="krusk-wallis.html"/>
+<link rel="next" href="ustat.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Biostat 685/Stat 560</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#sec:whatisnonpar"><i class="fa fa-check"></i><b>1.1</b> What is Nonparametric Statistics?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#sec:course-outline"><i class="fa fa-check"></i><b>1.2</b> Outline of Course</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#sec:example-nonpar-tests"><i class="fa fa-check"></i><b>1.3</b> Example 1: Nonparametric vs. Parametric Two-Sample Testing</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#sec:example-nonpar-estimation"><i class="fa fa-check"></i><b>1.4</b> Example 2: Nonparametric Estimation</a></li>
+<li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#sec:example-nonpar-confint"><i class="fa fa-check"></i><b>1.5</b> Example 3: Confidence Intervals</a></li>
+<li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress1"><i class="fa fa-check"></i><b>1.6</b> Example 4: Nonparametric Regression with a Single Covariate</a></li>
+<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress2"><i class="fa fa-check"></i><b>1.7</b> Example 5: Classification and Regression Trees (CART)</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Working with R</a></li>
+<li class="part"><span><b>I Nonparametric Testing</b></span></li>
+<li class="chapter" data-level="3" data-path="rank-tests.html"><a href="rank-tests.html"><i class="fa fa-check"></i><b>3</b> Rank and Sign Statistics</a><ul>
+<li class="chapter" data-level="3.1" data-path="rank-tests.html"><a href="rank-tests.html#ranks"><i class="fa fa-check"></i><b>3.1</b> Ranks</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="rank-tests.html"><a href="rank-tests.html#definition"><i class="fa fa-check"></i><b>3.1.1</b> Definition</a></li>
+<li class="chapter" data-level="3.1.2" data-path="rank-tests.html"><a href="rank-tests.html#handling-ties"><i class="fa fa-check"></i><b>3.1.2</b> Handling Ties</a></li>
+<li class="chapter" data-level="3.1.3" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-ranks"><i class="fa fa-check"></i><b>3.1.3</b> Properties of Ranks</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test-a-two-sample-test"><i class="fa fa-check"></i><b>3.2</b> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="rank-tests.html"><a href="rank-tests.html#goal-of-the-test"><i class="fa fa-check"></i><b>3.2.1</b> Goal of the Test</a></li>
+<li class="chapter" data-level="3.2.2" data-path="rank-tests.html"><a href="rank-tests.html#definition-of-the-wrs-test-statistic"><i class="fa fa-check"></i><b>3.2.2</b> Definition of the WRS Test Statistic</a></li>
+<li class="chapter" data-level="3.2.3" data-path="rank-tests.html"><a href="rank-tests.html#computing-p-values-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.3</b> Computing p-values for the WRS Test</a></li>
+<li class="chapter" data-level="3.2.4" data-path="rank-tests.html"><a href="rank-tests.html#computing-the-wrs-test-in-r"><i class="fa fa-check"></i><b>3.2.4</b> Computing the WRS test in R</a></li>
+<li class="chapter" data-level="3.2.5" data-path="rank-tests.html"><a href="rank-tests.html#additional-notes-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.5</b> Additional Notes for the WRS test</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.3</b> One Sample Tests</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#sign-test"><i class="fa fa-check"></i><b>3.3.1</b> The Sign Test</a></li>
+<li class="chapter" data-level="3.3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-signed-rank-test"><i class="fa fa-check"></i><b>3.3.2</b> The Wilcoxon Signed Rank Test</a></li>
+<li class="chapter" data-level="3.3.3" data-path="rank-tests.html"><a href="rank-tests.html#using-r-to-perform-the-sign-and-wilcoxon-tests"><i class="fa fa-check"></i><b>3.3.3</b> Using R to Perform the Sign and Wilcoxon Tests</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#power-and-comparisons-with-parametric-tests"><i class="fa fa-check"></i><b>3.4</b> Power and Comparisons with Parametric Tests</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="rank-tests.html"><a href="rank-tests.html#the-power-function-of-a-test"><i class="fa fa-check"></i><b>3.4.1</b> The Power Function of a Test</a></li>
+<li class="chapter" data-level="3.4.2" data-path="rank-tests.html"><a href="rank-tests.html#power-comparisons-and-asymptotic-relative-efficiency"><i class="fa fa-check"></i><b>3.4.2</b> Power Comparisons and Asymptotic Relative Efficiency</a></li>
+<li class="chapter" data-level="3.4.3" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-examples"><i class="fa fa-check"></i><b>3.4.3</b> Efficiency Examples</a></li>
+<li class="chapter" data-level="3.4.4" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-comparisons-for-several-distributions"><i class="fa fa-check"></i><b>3.4.4</b> Efficiency Comparisons for Several Distributions</a></li>
+<li class="chapter" data-level="3.4.5" data-path="rank-tests.html"><a href="rank-tests.html#a-power-contest"><i class="fa fa-check"></i><b>3.4.5</b> A Power “Contest”</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#linear-rank-statistics-in-general"><i class="fa fa-check"></i><b>3.5</b> Linear Rank Statistics in General</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="rank-tests.html"><a href="rank-tests.html#definition-1"><i class="fa fa-check"></i><b>3.5.1</b> Definition</a></li>
+<li class="chapter" data-level="3.5.2" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.2</b> Properties of Linear Rank Statistics</a></li>
+<li class="chapter" data-level="3.5.3" data-path="rank-tests.html"><a href="rank-tests.html#other-examples-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.3</b> Other Examples of Linear Rank Statistics</a></li>
+<li class="chapter" data-level="3.5.4" data-path="rank-tests.html"><a href="rank-tests.html#choosing-the-scores-a_ni"><i class="fa fa-check"></i><b>3.5.4</b> Choosing the scores <span class="math inline">\(a_{N}(i)\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#additional-reading"><i class="fa fa-check"></i><b>3.6</b> Additional Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a><ul>
+<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskal-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskal-Wallis Test</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#definition-2"><i class="fa fa-check"></i><b>4.1.1</b> Definition</a></li>
+<li class="chapter" data-level="4.1.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#asymptotic-distribution-and-connection-to-one-way-anova"><i class="fa fa-check"></i><b>4.1.2</b> Asymptotic Distribution and Connection to One-Way ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#performing-the-kruskal-wallis-test-in-r"><i class="fa fa-check"></i><b>4.2</b> Performing the Kruskal-Wallis Test in R</a></li>
+<li class="chapter" data-level="4.3" data-path="krusk-wallis.html"><a href="krusk-wallis.html#comparison-of-specific-groups"><i class="fa fa-check"></i><b>4.3</b> Comparison of Specific Groups</a></li>
+<li class="chapter" data-level="4.4" data-path="krusk-wallis.html"><a href="krusk-wallis.html#an-additional-example"><i class="fa fa-check"></i><b>4.4</b> An Additional Example</a></li>
+<li class="chapter" data-level="4.5" data-path="krusk-wallis.html"><a href="krusk-wallis.html#additional-reading-1"><i class="fa fa-check"></i><b>4.5</b> Additional Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a><ul>
+<li class="chapter" data-level="5.1" data-path="permutation.html"><a href="permutation.html#notation"><i class="fa fa-check"></i><b>5.1</b> Notation</a></li>
+<li class="chapter" data-level="5.2" data-path="permutation.html"><a href="permutation.html#permutation-tests-for-the-two-sample-problem"><i class="fa fa-check"></i><b>5.2</b> Permutation Tests for the Two-Sample Problem</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="permutation.html"><a href="permutation.html#example-1"><i class="fa fa-check"></i><b>5.2.1</b> Example 1</a></li>
+<li class="chapter" data-level="5.2.2" data-path="permutation.html"><a href="permutation.html#permutation-test-p-values"><i class="fa fa-check"></i><b>5.2.2</b> Permutation Test p-values</a></li>
+<li class="chapter" data-level="5.2.3" data-path="permutation.html"><a href="permutation.html#example-2-ratios-of-means"><i class="fa fa-check"></i><b>5.2.3</b> Example 2: Ratios of Means</a></li>
+<li class="chapter" data-level="5.2.4" data-path="permutation.html"><a href="permutation.html#example-3-differences-in-quantiles"><i class="fa fa-check"></i><b>5.2.4</b> Example 3: Differences in Quantiles</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3</b> The Permutation Test as a Conditional Test</a></li>
+<li class="chapter" data-level="5.4" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-correlation"><i class="fa fa-check"></i><b>5.4</b> A Permutation Test for Correlation</a></li>
+<li class="chapter" data-level="5.5" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-variable-importance-in-regression-and-machine-learning"><i class="fa fa-check"></i><b>5.5</b> A Permutation Test for Variable Importance in Regression and Machine Learning</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
+<li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-3"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
+<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="ustat.html"><a href="ustat.html#example-1-the-sample-mean"><i class="fa fa-check"></i><b>6.2.1</b> Example 1: The Sample Mean</a></li>
+<li class="chapter" data-level="6.2.2" data-path="ustat.html"><a href="ustat.html#example-2-the-sample-variance"><i class="fa fa-check"></i><b>6.2.2</b> Example 2: The Sample Variance</a></li>
+<li class="chapter" data-level="6.2.3" data-path="ustat.html"><a href="ustat.html#example-3-ginis-mean-difference"><i class="fa fa-check"></i><b>6.2.3</b> Example 3: Gini’s Mean Difference</a></li>
+<li class="chapter" data-level="6.2.4" data-path="ustat.html"><a href="ustat.html#example-4-wilcoxon-signed-rank-statistic"><i class="fa fa-check"></i><b>6.2.4</b> Example 4: Wilcoxon Signed Rank Statistic</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#inference-using-u-statistics"><i class="fa fa-check"></i><b>6.3</b> Inference using U-statistics</a></li>
+<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#u-statistics-for-two-sample-problems"><i class="fa fa-check"></i><b>6.4</b> U-statistics for Two-Sample Problems</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="ustat.html"><a href="ustat.html#the-mann-whitney-statistic"><i class="fa fa-check"></i><b>6.4.1</b> The Mann-Whitney Statistic</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.5</b> Measures of Association</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="ustat.html"><a href="ustat.html#spearmans-rank-correlation"><i class="fa fa-check"></i><b>6.5.1</b> Spearman’s Rank Correlation</a></li>
+<li class="chapter" data-level="6.5.2" data-path="ustat.html"><a href="ustat.html#kendalls-tau"><i class="fa fa-check"></i><b>6.5.2</b> Kendall’s tau</a></li>
+<li class="chapter" data-level="6.5.3" data-path="ustat.html"><a href="ustat.html#distance-covariance-and-correlation"><i class="fa fa-check"></i><b>6.5.3</b> Distance Covariance and Correlation</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Nonparametric Estimation</b></span></li>
+<li class="chapter" data-level="7" data-path="edf.html"><a href="edf.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
+<li class="chapter" data-level="7.1" data-path="edf.html"><a href="edf.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1</b> Definition and Basic Properties</a></li>
+<li class="chapter" data-level="7.2" data-path="edf.html"><a href="edf.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.2</b> Confidence intervals for F(t)</a></li>
+<li class="chapter" data-level="7.3" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.3</b> The Empirical Distribution Function in R</a></li>
+<li class="chapter" data-level="7.4" data-path="edf.html"><a href="edf.html#the-kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>7.4</b> The Kolmogorov-Smirnov Test</a></li>
+<li class="chapter" data-level="7.5" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-and-statistical-functionals"><i class="fa fa-check"></i><b>7.5</b> The empirical distribution function and statistical functionals</a></li>
+<li class="chapter" data-level="7.6" data-path="edf.html"><a href="edf.html#additional-reading-2"><i class="fa fa-check"></i><b>7.6</b> Additional Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
+<li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms"><i class="fa fa-check"></i><b>8.2</b> Histograms</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-5"><i class="fa fa-check"></i><b>8.2.1</b> Definition</a></li>
+<li class="chapter" data-level="8.2.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms-in-r"><i class="fa fa-check"></i><b>8.2.2</b> Histograms in R</a></li>
+<li class="chapter" data-level="8.2.3" data-path="density-estimation.html"><a href="density-estimation.html#performance-of-the-histogram-estimate-and-bin-width-selection"><i class="fa fa-check"></i><b>8.2.3</b> Performance of the Histogram Estimate and Bin Width Selection</a></li>
+<li class="chapter" data-level="8.2.4" data-path="density-estimation.html"><a href="density-estimation.html#choosing-the-histogram-bin-width"><i class="fa fa-check"></i><b>8.2.4</b> Choosing the Histogram Bin Width</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="density-estimation.html"><a href="density-estimation.html#a-box-type-density-estimate"><i class="fa fa-check"></i><b>8.3</b> A Box-type Density Estimate</a></li>
+<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-6"><i class="fa fa-check"></i><b>8.4.1</b> Definition</a></li>
+<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-amise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and AMISE of Kernel Density Estimates</a></li>
+<li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection with the Normal Reference Rule</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation-in-practice"><i class="fa fa-check"></i><b>8.5</b> Kernel Density Estimation in Practice</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.5.1</b> Density Estimation in R</a></li>
+<li class="chapter" data-level="8.5.2" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5.2</b> Cross-Validation for Bandwidth Selection</a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="density-estimation.html"><a href="density-estimation.html#additional-reading-3"><i class="fa fa-check"></i><b>8.6</b> Additional Reading</a></li>
+</ul></li>
+<li class="part"><span><b>III Uncertainty Measures</b></span></li>
+<li class="chapter" data-level="9" data-path="sampling.html"><a href="sampling.html"><i class="fa fa-check"></i><b>9</b> The Jackknife</a><ul>
+<li class="chapter" data-level="9.1" data-path="sampling.html"><a href="sampling.html#introduction-1"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> The Bootstrap and Confidence Intervals</a><ul>
+<li class="chapter" data-level="10.1" data-path="ci.html"><a href="ci.html#bootstrapping"><i class="fa fa-check"></i><b>10.1</b> Bootstrapping</a></li>
+</ul></li>
+<li class="part"><span><b>IV Nonparametric Regression: Part I</b></span></li>
+<li class="chapter" data-level="11" data-path="kernel-regression.html"><a href="kernel-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression</a><ul>
+<li class="chapter" data-level="11.1" data-path="kernel-regression.html"><a href="kernel-regression.html#introduction-2"><i class="fa fa-check"></i><b>11.1</b> Introduction</a><ul>
+<li class="chapter" data-level="11.1.1" data-path="kernel-regression.html"><a href="kernel-regression.html#an-example"><i class="fa fa-check"></i><b>11.1.1</b> An Example</a></li>
+<li class="chapter" data-level="11.1.2" data-path="kernel-regression.html"><a href="kernel-regression.html#linear-smoothers-and-naive-nonparametric-estimates"><i class="fa fa-check"></i><b>11.1.2</b> Linear Smoothers and Naive Nonparametric Estimates</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="kernel-regression.html"><a href="kernel-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>11.2</b> The Nadaraya-Watson estimator</a></li>
+<li class="chapter" data-level="11.3" data-path="kernel-regression.html"><a href="kernel-regression.html#local-linear-and-polynomial-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear and Polynomial Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
+<li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a></li>
+<li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#spline-basis-functions"><i class="fa fa-check"></i><b>12.2</b> Spline Basis Functions</a></li>
+<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splinespenalized-regression"><i class="fa fa-check"></i><b>12.3</b> Smoothing Splines/Penalized Regression</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#selection-of-smoothing-parameter"><i class="fa fa-check"></i><b>12.3.1</b> Selection of Smoothing Parameter</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
+<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a></li>
+<li class="chapter" data-level="14" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>14</b> Ensemble Methods for Prediction</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Elements of Nonparametric Statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="permutation" class="section level1">
+<h1><span class="header-section-number">Chapter 5</span> Permutation Tests</h1>
+<ul>
+<li><p>Permutation tests are a useful tool to avoid having to depend on
+specific parametric assumptions.</p></li>
+<li><p>Permutation tests are also useful in more complex modern applications where it can be
+difficult to work out the theoretical null distribution of a certain test statistic.</p></li>
+</ul>
+<div id="notation" class="section level2">
+<h2><span class="header-section-number">5.1</span> Notation</h2>
+<ul>
+<li><p>A <strong>permutation</strong> <span class="math inline">\(\pi\)</span> of a set <span class="math inline">\(S\)</span> is a function <span class="math inline">\(\pi: S \longrightarrow S\)</span> is a
+function that is both one-to-one and onto.</p></li>
+<li><p>We will usually think of <span class="math inline">\(S\)</span> as the set of observation indices in which case
+<span class="math inline">\(S = \{1, \ldots, N\}\)</span> for sample size <span class="math inline">\(N\)</span>.</p></li>
+<li><p>Each permutation <span class="math inline">\(\pi\)</span> of <span class="math inline">\(S = \{1, \ldots, N\}\)</span> defines a particular ordering of the elements of <span class="math inline">\(S\)</span>.
+For this reason, a permutation is often expressed as the following ordered list
+<span class="math display">\[\begin{equation}
+\pi = \big( \pi(1), \pi(2), \ldots, \pi(N)  \big)
+\end{equation}\]</span></p></li>
+<li><p>In other words, we can think of a permutation of <span class="math inline">\(S\)</span>
+as a particular ordering of the elements of <span class="math inline">\(S\)</span>.</p></li>
+<li><p>For example, if <span class="math inline">\(S = \{1,2,3\}\)</span>, and <span class="math inline">\(\pi_{1}\)</span> is a permutation of <span class="math inline">\(S\)</span>
+defined as <span class="math inline">\(\pi_{1}(1) = 3\)</span>, <span class="math inline">\(\pi_{1}(2) = 1\)</span>, <span class="math inline">\(\pi_{1}(3) = 2\)</span>, then
+this permutation expressed as an ordered list would be
+<span class="math display">\[\begin{equation}
+\pi_{1} = (3, 1, 2)
+\end{equation}\]</span></p></li>
+<li><p>There are <span class="math inline">\(5\)</span> other possible permutations of <span class="math inline">\(S\)</span>:
+<span class="math display">\[\begin{eqnarray}
+\pi_{2} &amp;=&amp; (1,2,3) \nonumber \\
+\pi_{3} &amp;=&amp; (2,1,3) \nonumber \\
+\pi_{4} &amp;=&amp; (1,3,2) \nonumber \\
+\pi_{5} &amp;=&amp; (3,2,1) \nonumber \\
+\pi_{6} &amp;=&amp; (2, 3, 1) \nonumber  
+\end{eqnarray}\]</span></p></li>
+<li><p>If <span class="math inline">\(S\)</span> has <span class="math inline">\(N\)</span> distinct elements, there are <span class="math inline">\(N!\)</span> possible permutations of <span class="math inline">\(S\)</span>.</p></li>
+<li><p>We will let <span class="math inline">\(\mathcal{S}_{N}\)</span> denote the set of all permutations of the
+set <span class="math inline">\(\{1, \ldots, N\}\)</span>.</p></li>
+</ul>
+</div>
+<div id="permutation-tests-for-the-two-sample-problem" class="section level2">
+<h2><span class="header-section-number">5.2</span> Permutation Tests for the Two-Sample Problem</h2>
+<ul>
+<li>A permutation test is motivated by the following reasoning.
+<ul>
+<li>If there is no real difference between the two groups,
+there is nothing “special” about the difference in means
+between the two groups.</li>
+<li>The observed difference in the mean between the two groups
+should not be notably different than mean differences from
+randomly formed groups.</li>
+<li>Forming “random” groups can be done by using many permutations
+of the original data.</li>
+</ul></li>
+</ul>
+<div id="example-1" class="section level3">
+<h3><span class="header-section-number">5.2.1</span> Example 1</h3>
+<ul>
+<li><p>Suppose we have observations from two groups <span class="math inline">\(X_{1}, \ldots, X_{n} \sim F_{X}\)</span>
+and <span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim F_{Y}\)</span>.</p></li>
+<li><p>Let <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldots, Z_{N})\)</span> denote pooled data
+<span class="math display">\[\begin{equation}
+(Z_{1}, \ldots, Z_{N}) = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})
+\end{equation}\]</span></p></li>
+<li><p>For a permutation <span class="math inline">\(\pi\)</span> of <span class="math inline">\(\{1, \ldots, N\}\)</span>, we will let <span class="math inline">\(\mathbf{Z}_{\pi}\)</span>
+denote the corresponding permuted dataset
+<span class="math display">\[\begin{equation}
+\mathbf{Z}_{\pi} = (Z_{\pi(1)}, Z_{\pi(2)}, \ldots, Z_{\pi(N)})
+\end{equation}\]</span></p></li>
+</ul>
+<table border="1">
+<caption align="bottom">
+Example of Permuting a Vector of Responses.
+This example assumes n=m=5.
+</caption>
+<tr>
+<th>
+</th>
+<th>
+OriginalData
+</th>
+<th>
+Perm1
+</th>
+<th>
+Perm2
+</th>
+<th>
+Perm3
+</th>
+<th>
+Perm4
+</th>
+<th>
+Perm5
+</th>
+</tr>
+<tr>
+<td align="center">
+z1
+</td>
+<td align="center">
+0.60
+</td>
+<td align="center">
+-0.60
+</td>
+<td align="center">
+0.60
+</td>
+<td align="center">
+-0.90
+</td>
+<td align="center">
+0.70
+</td>
+<td align="center">
+0.60
+</td>
+</tr>
+<tr>
+<td align="center">
+z2
+</td>
+<td align="center">
+-0.80
+</td>
+<td align="center">
+-1.40
+</td>
+<td align="center">
+-0.60
+</td>
+<td align="center">
+0.70
+</td>
+<td align="center">
+-0.40
+</td>
+<td align="center">
+-0.60
+</td>
+</tr>
+<tr>
+<td align="center">
+z3
+</td>
+<td align="center">
+-0.60
+</td>
+<td align="center">
+0.70
+</td>
+<td align="center">
+0.20
+</td>
+<td align="center">
+0.60
+</td>
+<td align="center">
+-1.40
+</td>
+<td align="center">
+-0.80
+</td>
+</tr>
+<tr>
+<td align="center">
+z4
+</td>
+<td align="center">
+-0.90
+</td>
+<td align="center">
+0.20
+</td>
+<td align="center">
+-0.40
+</td>
+<td align="center">
+0.20
+</td>
+<td align="center">
+0.20
+</td>
+<td align="center">
+0.30
+</td>
+</tr>
+<tr>
+<td align="center">
+z5
+</td>
+<td align="center">
+0.30
+</td>
+<td align="center">
+-0.40
+</td>
+<td align="center">
+-1.30
+</td>
+<td align="center">
+-0.40
+</td>
+<td align="center">
+-0.90
+</td>
+<td align="center">
+-0.40
+</td>
+</tr>
+<tr>
+<td align="center">
+z6
+</td>
+<td align="center">
+-1.30
+</td>
+<td align="center">
+-1.30
+</td>
+<td align="center">
+-1.40
+</td>
+<td align="center">
+-0.60
+</td>
+<td align="center">
+-0.80
+</td>
+<td align="center">
+0.70
+</td>
+</tr>
+<tr>
+<td align="center">
+z7
+</td>
+<td align="center">
+0.20
+</td>
+<td align="center">
+0.30
+</td>
+<td align="center">
+0.70
+</td>
+<td align="center">
+-1.40
+</td>
+<td align="center">
+0.30
+</td>
+<td align="center">
+-0.90
+</td>
+</tr>
+<tr>
+<td align="center">
+z8
+</td>
+<td align="center">
+0.70
+</td>
+<td align="center">
+0.60
+</td>
+<td align="center">
+0.30
+</td>
+<td align="center">
+-1.30
+</td>
+<td align="center">
+0.60
+</td>
+<td align="center">
+0.20
+</td>
+</tr>
+<tr>
+<td align="center">
+z9
+</td>
+<td align="center">
+-1.40
+</td>
+<td align="center">
+-0.90
+</td>
+<td align="center">
+-0.80
+</td>
+<td align="center">
+0.30
+</td>
+<td align="center">
+-0.60
+</td>
+<td align="center">
+-1.40
+</td>
+</tr>
+<tr>
+<td align="center">
+z10
+</td>
+<td align="center">
+-0.40
+</td>
+<td align="center">
+-0.80
+</td>
+<td align="center">
+-0.90
+</td>
+<td align="center">
+-0.80
+</td>
+<td align="center">
+-1.30
+</td>
+<td align="center">
+-1.30
+</td>
+</tr>
+<tr>
+<td align="center">
+mean difference
+</td>
+<td align="center">
+0.16
+</td>
+<td align="center">
+0.12
+</td>
+<td align="center">
+0.12
+</td>
+<td align="center">
+0.80
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+0.36
+</td>
+</tr>
+</table>
+<ul>
+<li><p>The columns in the above table are just permutations of the original data <span class="math inline">\(\mathbf{Z}\)</span>.</p></li>
+<li><p>Suppose we want to base a test on the difference in the means between the two groups
+<span class="math display">\[\begin{equation}
+T_{N}(\mathbf{Z}) = \bar{X} - \bar{Y} = \frac{1}{n}\sum_{i=1}^{n} Z_{i} - \frac{1}{m}\sum_{i=n+1}^{N} Z_{i}
+\end{equation}\]</span></p></li>
+<li><p>We will let <span class="math inline">\(t_{obs}\)</span> denote the observed value of the mean difference. That is,
+<span class="math inline">\(t_{obs} = T_{N}(\mathbf{Z}_{obs})\)</span>, where <span class="math inline">\(\mathbf{Z}_{obs}\)</span> is the vector of the observed data.</p></li>
+<li><p>Under the null hypothesis that <span class="math inline">\(F_{X} = F_{Y}\)</span>, the observed mean difference
+should not be “abnormal” when compared with the mean differences from
+many other permutations of the data.</p></li>
+</ul>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">z &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.6</span>, <span class="fl">-0.8</span>, <span class="fl">-0.6</span>, <span class="fl">-0.9</span>, <span class="fl">0.3</span>, <span class="fl">-1.3</span>, <span class="fl">0.2</span>, <span class="fl">0.7</span>, <span class="fl">-1.4</span>, <span class="fl">-0.4</span>) <span class="co">## data</span></a>
+<a class="sourceLine" id="cb66-2" data-line-number="2">observed.diff &lt;-<span class="st"> </span><span class="kw">mean</span>(z[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]) <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(z[<span class="dv">6</span><span class="op">:</span><span class="dv">10</span>])  <span class="co">## observed mean difference</span></a>
+<a class="sourceLine" id="cb66-3" data-line-number="3">nreps &lt;-<span class="st"> </span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb66-4" data-line-number="4">mean.diff &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, nreps)</a>
+<a class="sourceLine" id="cb66-5" data-line-number="5"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nreps) {</a>
+<a class="sourceLine" id="cb66-6" data-line-number="6">    ss &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">size=</span><span class="dv">10</span>)  <span class="co">## draw a random permutation</span></a>
+<a class="sourceLine" id="cb66-7" data-line-number="7">    z.perm &lt;-<span class="st"> </span>z[ss]   <span class="co">## form the permuted dataset</span></a>
+<a class="sourceLine" id="cb66-8" data-line-number="8">    mean.diff[k] &lt;-<span class="st"> </span><span class="kw">mean</span>(z.perm[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]) <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(z.perm[<span class="dv">6</span><span class="op">:</span><span class="dv">10</span>]) <span class="co">## compute mean difference</span></a>
+<a class="sourceLine" id="cb66-9" data-line-number="9">                                                           <span class="co">## for permuted dataset</span></a>
+<a class="sourceLine" id="cb66-10" data-line-number="10">}</a>
+<a class="sourceLine" id="cb66-11" data-line-number="11"><span class="kw">hist</span>(mean.diff, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Permutation Distribution of Mean Difference&quot;</span>)</a>
+<a class="sourceLine" id="cb66-12" data-line-number="12"><span class="kw">abline</span>(<span class="dt">v=</span>observed.diff, <span class="dt">lwd=</span><span class="dv">3</span>)</a></code></pre></div>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>
+<div id="permutation-test-p-values" class="section level3">
+<h3><span class="header-section-number">5.2.2</span> Permutation Test p-values</h3>
+<ul>
+<li><p>The one-sided p-value for the permutation test is
+<span class="math display">\[\begin{eqnarray}
+\textrm{p-value} &amp;=&amp; \frac{\textrm{number of permutations such that } T_{N} \geq t_{obs}}{ N! } \nonumber \\
+&amp;=&amp; \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(\mathbf{Z}_{\pi}) \geq t_{obs} \Big) \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>The two-sided p-value for the two-sample problem would be
+<span class="math display">\[\begin{equation}
+\textrm{p-value} 
+= \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( \Big| T_{N}(\mathbf{Z}_{\pi}) \Big|  \geq |t_{obs}| \Big) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>As we did when producing the above histogram, the permutation-test p-value is
+often computed by using a large number of random permutations rather
+than computing the test statistic for every possible permutation.</p></li>
+<li><p>The Monte Carlo permutation-test p-value is defined as
+<span class="math display">\[\begin{equation}
+\textrm{p-value}_{mc} = \frac{1}{S+1}\Bigg[ 1 +  \sum_{s = 1}^{S} I\Big( T_{N}(\mathbf{Z}_{\pi_{s}}) \geq t_{obs} \Big) \Bigg]
+\end{equation}\]</span>
+where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly drawn permutations</p></li>
+<li><p>The two-sided (Monte Carlo) p-value for the example shown in the above Table is</p></li>
+</ul>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(mean.diff) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(observed.diff)))<span class="op">/</span>(nreps <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## [1] 0.76</code></pre>
+</div>
+<div id="example-2-ratios-of-means" class="section level3">
+<h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means</h3>
+<ul>
+<li><p>With permutation tests, you are not limited to difference in means. You can choose
+the statistic <span class="math inline">\(T_{N}(\mathbf{Z})\)</span> to measure other contrasts of interest.</p></li>
+<li><p>For example, with nonnegative data you might be interested in the ratio of means between the two groups
+<span class="math display">\[\begin{equation}
+T_{N}( \mathbf{Z} ) = \max\Big\{ \bar{X}/\bar{Y} , \bar{Y}/\bar{X}  \Big\}
+\end{equation}\]</span></p></li>
+<li><p>Let us see how this works for a simulated example where we assume that
+<span class="math inline">\(X_{1}, \ldots, X_{n} \sim \textrm{Exponential}(1)\)</span> and <span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim \textrm{Exponential}(1/2)\)</span></p></li>
+</ul>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">5127</span>)</a>
+<a class="sourceLine" id="cb69-2" data-line-number="2">xx &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">20</span>, <span class="dt">rate=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb69-3" data-line-number="3">yy &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">20</span>, <span class="dt">rate=</span><span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb69-4" data-line-number="4">zz &lt;-<span class="st"> </span><span class="kw">c</span>(xx, yy) <span class="co">## this is the original data</span></a>
+<a class="sourceLine" id="cb69-5" data-line-number="5">t.obs &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">mean</span>(zz[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>])<span class="op">/</span><span class="kw">mean</span>(zz[<span class="dv">21</span><span class="op">:</span><span class="dv">40</span>]), <span class="kw">mean</span>(zz[<span class="dv">21</span><span class="op">:</span><span class="dv">40</span>])<span class="op">/</span><span class="kw">mean</span>(zz[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>]))</a>
+<a class="sourceLine" id="cb69-6" data-line-number="6">nperms &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb69-7" data-line-number="7">mean.ratio &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, nperms)</a>
+<a class="sourceLine" id="cb69-8" data-line-number="8"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nperms) {</a>
+<a class="sourceLine" id="cb69-9" data-line-number="9">     ss &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">40</span>, <span class="dt">size=</span><span class="dv">40</span>)</a>
+<a class="sourceLine" id="cb69-10" data-line-number="10">     zz.perm &lt;-<span class="st"> </span>zz[ss]</a>
+<a class="sourceLine" id="cb69-11" data-line-number="11">     mean.ratio[k] &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">mean</span>(zz.perm[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>])<span class="op">/</span><span class="kw">mean</span>(zz.perm[<span class="dv">21</span><span class="op">:</span><span class="dv">40</span>]), </a>
+<a class="sourceLine" id="cb69-12" data-line-number="12">                          <span class="kw">mean</span>(zz.perm[<span class="dv">21</span><span class="op">:</span><span class="dv">40</span>])<span class="op">/</span><span class="kw">mean</span>(zz.perm[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>]))</a>
+<a class="sourceLine" id="cb69-13" data-line-number="13">}</a>
+<a class="sourceLine" id="cb69-14" data-line-number="14"><span class="kw">hist</span>(mean.ratio, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Permutation Distribution of Maximum Mean Ratio&quot;</span>,</a>
+<a class="sourceLine" id="cb69-15" data-line-number="15">     <span class="dt">xlab=</span><span class="st">&quot;maximum mean ratio&quot;</span>)</a>
+<a class="sourceLine" id="cb69-16" data-line-number="16"><span class="kw">abline</span>(<span class="dt">v=</span>t.obs, <span class="dt">lwd=</span><span class="dv">3</span>)</a></code></pre></div>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<ul>
+<li>The two-side (Monte Carlo) permutation test p-value is:</li>
+</ul>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(mean.ratio <span class="op">&gt;=</span><span class="st"> </span>t.obs))<span class="op">/</span>(nperms <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb70-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## [1] 0.04</code></pre>
+</div>
+<div id="example-3-differences-in-quantiles" class="section level3">
+<h3><span class="header-section-number">5.2.4</span> Example 3: Differences in Quantiles</h3>
+<ul>
+<li><p>Permutation tests are especially useful in problems where working out the null distribution
+is difficult, or when certain approximations of the null distributions are hard to justify.</p></li>
+<li><p>An example of this occurrs if you want to compare medians, or more generally,
+compare quantiles.</p></li>
+<li><p>The difference-in-quantiles statistic would be defined as
+<span class="math display">\[\begin{equation}
+T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{N})
+\end{equation}\]</span>
+where <span class="math inline">\(Q_{p}(X_{1}, \ldots, X_{H})\)</span> denotes the <span class="math inline">\(p^{th}\)</span> quantile from the data <span class="math inline">\(X_{1}, \ldots, X_{H}\)</span>.</p></li>
+<li><p>The difference in quantiles could be computed with the following <strong>R</strong> code:</p></li>
+</ul>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">z &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb72-2" data-line-number="2"><span class="kw">quantile</span>(z[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], <span class="dt">probs=</span>.<span class="dv">3</span>) <span class="op">-</span><span class="st"> </span><span class="kw">quantile</span>(z[<span class="dv">6</span><span class="op">:</span><span class="dv">10</span>], <span class="dt">probs=</span>.<span class="dv">3</span>)</a></code></pre></div>
+<pre><code>##       30% 
+## 0.2671133</code></pre>
+<ul>
+<li>Note that setting <strong>probs=.5</strong> in the <strong>quantile</strong> function will return the median.</li>
+</ul>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<hr />
+<ul>
+<li><strong>Exercise 5.1</strong> Suppose we have the following data from two groups
+<span class="math inline">\((X_{1}, X_{2}, X_{3}) = (-1, 0, 1)\)</span> and <span class="math inline">\((Y_{1}, Y_{2}, Y_{3}) = (4, -2, 2)\)</span>.
+Compute the (two-sided) permutation p-value for the following two statistics:
+<ul>
+<li><span class="math inline">\(T_{N}( \mathbf{Z} ) = \textrm{median}(X_{1}, X_{2}, X_{3}) - \textrm{median}(Y_{1}, Y_{2}, Y_{3})\)</span>.</li>
+<li><span class="math inline">\(T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}\)</span>.</li>
+</ul></li>
+<li><p><strong>Exercise 5.2.</strong> Suppose we have data from two groups
+such that <span class="math inline">\(X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)\)</span> and
+<span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)\)</span>. Using
+<span class="math inline">\(n=m=50\)</span> and 500 simulation replications, compute
+<span class="math inline">\(500\)</span> significance thresholds from the one-sided permutation
+test which uses the statistic <span class="math inline">\(T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}\)</span>.
+How, does this compare with the t-statistic threshold of
+approximately <span class="math inline">\(1.64*\sqrt{2/50}\)</span>?</p></li>
+<li><p><strong>Exercise 5.3.</strong> Suppose we have data from two groups
+such that <span class="math inline">\(X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)\)</span> and
+<span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)\)</span>. Using
+<span class="math inline">\(n=m=50\)</span> and 500 simulation replications, compute the power of
+the permutation test which uses the statistic
+<span class="math inline">\(T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}\)</span> to detect this true alternative.
+How, does the power compare with the (two-sided) two-sample t-statistic and
+the (two-sided) Wilcoxon rank sum test?</p></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="the-permutation-test-as-a-conditional-test" class="section level2">
+<h2><span class="header-section-number">5.3</span> The Permutation Test as a Conditional Test</h2>
+<ul>
+<li><p>A permutation test is an example of a <strong>conditional test</strong>.</p></li>
+<li><p>Typically, the p-value is defined as
+<span class="math display">\[\begin{equation}
+\textrm{p-value} = P(T \geq t_{obs}|H_{0})
+\end{equation}\]</span>
+for some test statistic <span class="math inline">\(T\)</span>.</p></li>
+<li><p>In other words, the p-value is the probability
+that a random variable following the null distribution
+exceeds <span class="math inline">\(t_{obs}\)</span>.</p></li>
+<li><p>In many problems however, the null hypothesis <span class="math inline">\(H_{0}\)</span> is
+not determined by a single parameter but contains
+many parameters.</p></li>
+<li><p>For example, the null hypothesis in a t-test is
+really <span class="math inline">\(H_{0}: \mu_{x} = \mu_{y}\)</span> and <span class="math inline">\(\sigma &gt; 0\)</span>.
+That is, the null hypothesis is true for many different values of <span class="math inline">\(\sigma\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>When <span class="math inline">\(H_{0}\)</span> contains many parameter values, one approach for computing
+a p-value is to choose the test statistic <span class="math inline">\(T\)</span> so that its
+distribution is the same for every point in <span class="math inline">\(H_{0}\)</span>.</p></li>
+<li><p>A more general approach is to instead compute a <strong>conditional p-value</strong></p></li>
+<li><p>The conditional p-value is defined as
+<span class="math display">\[\begin{equation}
+\textrm{p-value} = P(T \geq t_{obs}| S=s, H_{0})
+\end{equation}\]</span>
+where <span class="math inline">\(S\)</span> is a sufficient statistic for the unknown terms in <span class="math inline">\(H_{0}\)</span>.</p></li>
+<li><p>A classic example of this is Fisher’s exact test.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>A permutation test computes a conditional p-value where the sufficient
+statistic is the vector of order statistics
+<span class="math inline">\((Z_{(1)}, Z_{(2)}, \ldots,Z_{(N)})\)</span>.</p></li>
+<li><p>Recall that the order statistics are defined as
+<span class="math display">\[\begin{eqnarray}
+Z_{(1)} &amp;=&amp; \textrm{ smallest observation } \\
+Z_{(2)} &amp;=&amp; \textrm{ second smallest observation} \\
+      &amp; \vdots &amp; \\
+Z_{(N)} &amp;=&amp; \textrm{ largest observation}
+\end{eqnarray}\]</span></p></li>
+<li><p>What is the conditional distribution of the observed data
+conditional on the observed order statistics?</p></li>
+<li><p>It is:
+<span class="math display">\[\begin{eqnarray}
+f_{Z_{1}, \ldots, Z_{N}|Z_{(1)}, \ldots, Z_{(N)}}( z_{\pi(1)}, \ldots, z_{\pi(N)} | z_{1}, \ldots, z_{N})
+&amp;=&amp; \frac{f_{Z_{1}, \ldots, Z_{N}}( z_{\pi(1)}, \ldots, z_{\pi(N)}   ) }{ f_{Z_{(1)},\ldots,Z_{(N)}}(z_{1}, \ldots, z_{N}) } \nonumber \\
+&amp;=&amp; \frac{f_{Z_{i}}(z_{\pi(1)}) \cdots f_{Z_{i}}(z_{\pi(N)})}{ N!f_{Z_{i}}(z_{1}) \cdots f_{Z_{i}}(z_{N}) } \nonumber \\
+&amp;=&amp; \frac{1}{N!}
+\end{eqnarray}\]</span>
+(See Chapter 5 of <span class="citation">Casella and Berger (<a href="#ref-casella2002">2002</a>)</span> for a detailed description of the distribution of order statistics)</p></li>
+<li><p>In other words, if we know the value of: <span class="math inline">\(Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{N}\)</span>,
+then any event of the form <span class="math inline">\(\{ Z_{1} = z_{\pi(1)}, \ldots, Z_{N} = z_{\pi(N)} \}\)</span> has an
+equal probability of occurring for any permutation chosen.</p></li>
+<li><p>This equal probability of <span class="math inline">\(1/N!\)</span> is only true under <span class="math inline">\(H_{0}\)</span> where we can regard the data
+as coming from a common distribution.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>If we are conditioning on <span class="math inline">\(Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{N}\)</span>, then the probability
+that <span class="math inline">\(T_{N}(Z_{1}, \ldots, Z_{N}) \geq t\)</span> is just the number of permutations of
+<span class="math inline">\((z_{1}, \ldots, z_{N})\)</span> such that the test statistic is greater than <span class="math inline">\(t\)</span> divided
+by <span class="math inline">\(N!\)</span>.</p></li>
+<li><p>In other words
+<span class="math display">\[\begin{eqnarray}
+&amp; &amp; P\Big\{ T_{N}(Z_{1}, \ldots, Z_{N}) \geq t| Z_{(1)} = z_{1}, \ldots, Z_{(N)} = z_{N} \Big\}
+ \\
+&amp;=&amp; \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(z_{\pi(1)}, \ldots, z_{\pi(N)}) \geq t  \Big)
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Let us consider a concrete example.</p></li>
+<li><p>Suppose we have a two-sample problem with four observations. The
+first two observations come from the first group while the last
+two observations come from the second group.</p></li>
+<li><p>The order statistics that we will condition on are:
+<span class="math display">\[\begin{eqnarray}
+Z_{(1)} &amp;=&amp; z_{1} = -3 \\
+Z_{(2)} &amp;=&amp; z_{2} = -1 \\
+Z_{(3)} &amp;=&amp; z_{3} = 2 \\
+Z_{(4)} &amp;=&amp; z_{4} = 5
+\end{eqnarray}\]</span></p></li>
+<li><p>If <span class="math inline">\(T_{4}\)</span> is the mean difference
+<span class="math display">\[\begin{equation}
+T_{4}(Z_{1}, Z_{2},Z_{3},Z_{4}) = \frac{Z_{1} + Z_{2} - Z_{3} - Z_{4}}{2}
+\end{equation}\]</span>
+what is the probability
+<span class="math display">\[\begin{equation}
+P\Big\{ T_{4}(Z_{1}, Z_{2}, Z_{3}, Z_{4}) \geq 2.5 | Z_{(1)}=z_{1}, Z_{(2)}=z_{2}, Z_{(3)}=z_{3}, Z_{(4)} = z_{4} \Big \}
+\end{equation}\]</span></p></li>
+<li><p>From the below table, we see that the number of times <span class="math inline">\(T_{4} \geq 2.5\)</span> occurs is <span class="math inline">\(8\)</span>.
+Hence,
+<span class="math display">\[\begin{eqnarray}
+&amp; &amp; P\Big\{ T_{4}(Z_{1}, Z_{2}, Z_{3}, Z_{4}) \geq 2.5 | Z_{(1)}=z_{1}, Z_{(2)}=z_{2}, Z_{(3)}=z_{3}, Z_{(4)} = z_{4} \Big \} \nonumber \\
+&amp;=&amp; 8/24 = 1/3. \nonumber
+\end{eqnarray}\]</span></p></li>
+</ul>
+<table border="1">
+<tr>
+<th>
+a1
+</th>
+<th>
+a2
+</th>
+<th>
+a3
+</th>
+<th>
+a4
+</th>
+<th>
+P(Z1 = a1, Z2=a2, Z3=a3, Z4=a4|order stat)
+</th>
+<th>
+T(a1, a2, a3, a4)
+</th>
+<th>
+T(a1, a2, a3, a4) &gt;= 2.5
+</th>
+</tr>
+<tr>
+<td align="center">
+-3
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-5.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-3
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-5.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-3
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-2.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-3
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-2.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-3
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-3
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-1
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-5.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-1
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-5.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-1
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-1
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+-1
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+2.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+-1
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+2.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-2.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-2.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+-0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+5.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+5
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+5.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+0.50
+</td>
+<td align="center">
+0
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+2.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+2.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+5.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+2
+</td>
+<td align="center">
+-1
+</td>
+<td align="center">
+-3
+</td>
+<td align="center">
+1/24
+</td>
+<td align="center">
+5.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+</table>
+</div>
+<div id="a-permutation-test-for-correlation" class="section level2">
+<h2><span class="header-section-number">5.4</span> A Permutation Test for Correlation</h2>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<ul>
+<li><p>Suppose we have <span class="math inline">\(N\)</span> pairs of observations <span class="math inline">\((U_{1}, V_{1}), \ldots, (U_{N}, V_{N})\)</span></p></li>
+<li><p>The correlation between these pairs is defined as
+<span class="math display">\[\begin{equation}
+\rho_{UV} = \frac{\textrm{Cov}(U_{i}, V_{i})}{\sigma_{U}\sigma_{V}}
+\end{equation}\]</span></p></li>
+<li><p>The test statistic of interest here is the sample correlation
+<span class="math display">\[\begin{equation}
+T_{N}(\mathbf{U}, \mathbf{V}) = \frac{\sum_{i=1}^{N}(U_{i} - \bar{U})(V_{i} - \bar{V})}{\sqrt{ \sum_{i=1}^{N}(U_{i} - \bar{U})^{2}\sum_{i=1}^{N}(V_{i} - \bar{V})^{2}} }
+\end{equation}\]</span></p></li>
+<li><p>To find the the permutation distribution, we only need to look
+at <span class="math inline">\(T_{N}(\mathbf{U}_{\pi}, \mathbf{V})\)</span> for different permutations <span class="math inline">\(\pi\)</span>.</p></li>
+<li><p>In other words, we are computing correlation among pairs
+of the form <span class="math inline">\((U_{\pi(1)}, V_{1}), \ldots, (U_{\pi(N)}, V_{N})\)</span>.</p></li>
+<li><p>We only need to look at <span class="math inline">\(\mathbf{U}_{\pi}\)</span> because this achieves the objective
+of randomly “switching observation pairs”.</p></li>
+</ul>
+<hr />
+<ul>
+<li>The two-sided p-value for the permutation test of <span class="math inline">\(H_{0}: \rho_{UV} = 0\)</span> vs. <span class="math inline">\(H_{A}: \rho_{UV} \neq 0\)</span> is
+<span class="math display">\[\begin{equation}
+\textrm{p-value} 
+= \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( \Big| T_{N}(\mathbf{U}_{\pi}, \mathbf{V}) \Big|  \geq |t_{obs}| \Big) \nonumber
+\end{equation}\]</span></li>
+</ul>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">library</span>(rattle.data)</a>
+<a class="sourceLine" id="cb74-2" data-line-number="2"><span class="co">## Computing the permutation distribution for correlation </span></a>
+<a class="sourceLine" id="cb74-3" data-line-number="3"><span class="co">## between flavanoids and phenols</span></a>
+<a class="sourceLine" id="cb74-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb74-5" data-line-number="5">n.obs &lt;-<span class="st"> </span><span class="kw">nrow</span>(wine) <span class="co">## number of observations</span></a>
+<a class="sourceLine" id="cb74-6" data-line-number="6">t.obs.pf &lt;-<span class="st"> </span><span class="kw">cor</span>(wine<span class="op">$</span>Phenols, wine<span class="op">$</span>Flavanoids) <span class="co">## observed correlation</span></a>
+<a class="sourceLine" id="cb74-7" data-line-number="7">nperms &lt;-<span class="st"> </span><span class="dv">2000</span></a>
+<a class="sourceLine" id="cb74-8" data-line-number="8">cor.perm.pf &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, nperms)</a>
+<a class="sourceLine" id="cb74-9" data-line-number="9"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nperms) {</a>
+<a class="sourceLine" id="cb74-10" data-line-number="10">     ss &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>n.obs, <span class="dt">size=</span>n.obs)</a>
+<a class="sourceLine" id="cb74-11" data-line-number="11">     uu.perm &lt;-<span class="st"> </span>wine<span class="op">$</span>Phenols[ss]</a>
+<a class="sourceLine" id="cb74-12" data-line-number="12">     cor.perm.pf[k] &lt;-<span class="st"> </span><span class="kw">cor</span>(uu.perm, wine<span class="op">$</span>Flavanoids)</a>
+<a class="sourceLine" id="cb74-13" data-line-number="13">}</a>
+<a class="sourceLine" id="cb74-14" data-line-number="14"><span class="kw">hist</span>(cor.perm.pf, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Permutation </span></a>
+<a class="sourceLine" id="cb74-15" data-line-number="15"><span class="st">     Distribution of Correlation between Phenols and Flavanoids&quot;</span>, </a>
+<a class="sourceLine" id="cb74-16" data-line-number="16">     <span class="dt">xlab=</span><span class="st">&quot;correlation&quot;</span>)</a>
+<a class="sourceLine" id="cb74-17" data-line-number="17"><span class="kw">abline</span>(<span class="dt">v=</span>t.obs.pf, <span class="dt">lwd=</span><span class="dv">3</span>)</a></code></pre></div>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<ul>
+<li>Now let us compute the p-values for both the
+Phenols/Flavanoids and Phenols/Color association tests.</li>
+</ul>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(cor.perm.pf) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(t.obs.pf)))<span class="op">/</span>(nperms <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb75-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">4</span>)</a></code></pre></div>
+<pre><code>## [1] 5e-04</code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(cor.perm.pc) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(t.obs.pc)))<span class="op">/</span>(nperms <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb77-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">4</span>)</a></code></pre></div>
+<pre><code>## [1] 0.4648</code></pre>
+</div>
+<div id="a-permutation-test-for-variable-importance-in-regression-and-machine-learning" class="section level2">
+<h2><span class="header-section-number">5.5</span> A Permutation Test for Variable Importance in Regression and Machine Learning</h2>
+<ul>
+<li><p>The idea of permutation testing can also be applied in the context of regression.</p></li>
+<li><p>In regression, we have a series of responses <span class="math inline">\(y_{1}, \ldots, y_{N}\)</span>, and
+we have a series of associated covariates vectors <span class="math inline">\(\mathbf{x}_{i}\)</span>.</p></li>
+<li><p>For regression, we are going to perform permutations on the
+vector of responses <span class="math inline">\(\mathbf{y} = (y_{1}, \ldots, y_{N})\)</span>
+and compute some measure for each permutation.</p></li>
+<li><p>For example, we might compute some measure of variable importance
+for each permutation.</p></li>
+<li><p>The idea here is that when permuting <span class="math inline">\(\mathbf{y}\)</span>, the association
+between <span class="math inline">\(\mathbf{y}\)</span> and any “important covariates” should be lost.</p></li>
+<li><p>We want to see what the typical values of our variable importance measures
+will be when we break any association between <span class="math inline">\(\mathbf{y}\)</span> and
+a covariate.</p></li>
+</ul>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<hr />
+<ul>
+<li><p>The approach of permuting the response vector can be useful in the context of difficult-to-interpret
+variable importance measures or variable importance measures which
+are known to have certain biases.</p></li>
+<li><p>This idea has been suggested as an alternative way of
+measuring variable importance for random forests (see e.g., <span class="citation">Altmann et al. (<a href="#ref-altmann2010">2010</a>)</span>
+or <span class="citation">Nembrini (<a href="#ref-nembrini2019">2019</a>)</span>)</p></li>
+<li><p>With these approaches, we permute the response vector <span class="math inline">\(\mathbf{y}\)</span> many times.</p></li>
+<li><p>A permutation p-value for the importance of a particular variable will be the proportion of
+permutations where that variable’s importance score exceeded the importance score from the original data.
+(In this case, a smaller p-value would mean the variable was more important).</p></li>
+<li><p>Specifically, the permutation p-value for the importance of variable <span class="math inline">\(h\)</span> would be given by
+<span class="math display" id="eq:varimp-pvalue">\[\begin{equation}
+\textrm{p-value}_{h} = \sum_{\pi \in \mathcal{S}_{N}} I\Big( s_{h}(\mathbf{y}_{\pi}, \mathbf{X})  \geq s_{h}(\mathbf{y}, \mathbf{X}) \Big)
+\tag{5.1}
+\end{equation}\]</span>
+where <span class="math inline">\(\mathbf{y}\)</span> denotes the vector of responses and <span class="math inline">\(\mathbf{X}\)</span> denotes the design matrix.</p></li>
+<li><p>Here, <span class="math inline">\(s_{h}(\mathbf{y}, \mathbf{X})\)</span> denotes the variable importance score for variable <span class="math inline">\(h\)</span>
+when using reponse vector <span class="math inline">\(\mathbf{y}\)</span> and design matrix <span class="math inline">\(\mathbf{X}\)</span>.</p></li>
+<li><p>Note that the formula <a href="permutation.html#eq:varimp-pvalue">(5.1)</a> could be applied in the context of
+any method that generates a variable importance score
+from <span class="math inline">\(\mathbf{y}\)</span> and <span class="math inline">\(\mathbf{X}\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Let us see an example of that if we look at a random forest model for predicting wine type from
+the <strong>wine</strong> data.</p></li>
+<li><p>First, we will load the data and fit a random forest model.</p></li>
+</ul>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="kw">library</span>(rattle.data)</a>
+<a class="sourceLine" id="cb79-2" data-line-number="2"><span class="kw">library</span>(randomForest)</a></code></pre></div>
+<pre><code>## randomForest 4.6-14</code></pre>
+<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1">wine2 &lt;-<span class="st"> </span><span class="kw">subset</span>(wine, Type<span class="op">==</span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Type<span class="op">==</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb82-2" data-line-number="2">wine2<span class="op">$</span>Type &lt;-<span class="st"> </span><span class="kw">factor</span>(wine2<span class="op">$</span>Type)</a>
+<a class="sourceLine" id="cb82-3" data-line-number="3">X &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(Type <span class="op">~</span><span class="st"> </span>. <span class="dv">-1</span>, <span class="dt">data=</span>wine2)</a>
+<a class="sourceLine" id="cb82-4" data-line-number="4">yy &lt;-<span class="st"> </span>wine2<span class="op">$</span>Type</a>
+<a class="sourceLine" id="cb82-5" data-line-number="5">n &lt;-<span class="st"> </span><span class="kw">length</span>(yy)</a>
+<a class="sourceLine" id="cb82-6" data-line-number="6">nvars &lt;-<span class="st"> </span><span class="kw">ncol</span>(X)</a>
+<a class="sourceLine" id="cb82-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb82-8" data-line-number="8"><span class="co">## Variable importance scores using original data</span></a>
+<a class="sourceLine" id="cb82-9" data-line-number="9">originalRF &lt;-<span class="st"> </span><span class="kw">randomForest</span>(X, <span class="dt">y=</span>yy)</a>
+<a class="sourceLine" id="cb82-10" data-line-number="10">var.imp &lt;-<span class="st"> </span>originalRF<span class="op">$</span>importance</a>
+<a class="sourceLine" id="cb82-11" data-line-number="11">var.imp</a></code></pre></div>
+<pre><code>##                 MeanDecreaseGini
+## Alcohol               16.4477773
+## Malic                  1.6547628
+## Ash                    0.9512346
+## Alcalinity             1.8280983
+## Magnesium              4.2799222
+## Phenols                2.4436762
+## Flavanoids             6.2584880
+## Nonflavanoids          0.5184224
+## Proanthocyanins        0.6201685
+## Color                 10.0968269
+## Hue                    0.5552606
+## Dilution               1.0398252
+## Proline               17.3324599</code></pre>
+<ul>
+<li>Now, let us compare these original variable importance scores with
+the importance scores obtained across 10,000 permuted datasets.</li>
+</ul>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1">nperm &lt;-<span class="st"> </span><span class="dv">10000</span></a>
+<a class="sourceLine" id="cb84-2" data-line-number="2">VarImpMat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow=</span>nperm, <span class="dt">ncol=</span><span class="kw">ncol</span>(X))</a>
+<a class="sourceLine" id="cb84-3" data-line-number="3"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nperm) {</a>
+<a class="sourceLine" id="cb84-4" data-line-number="4">  ytmp &lt;-<span class="st"> </span>yy[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>n,<span class="dt">size=</span>n)]</a>
+<a class="sourceLine" id="cb84-5" data-line-number="5">  rf.fit &lt;-<span class="st"> </span><span class="kw">randomForest</span>(X, <span class="dt">y=</span>ytmp)</a>
+<a class="sourceLine" id="cb84-6" data-line-number="6">  VarImpMat[k,] &lt;-<span class="st"> </span>rf.fit<span class="op">$</span>importance</a>
+<a class="sourceLine" id="cb84-7" data-line-number="7">  <span class="co">## VarImpMat[k,h] contains the importance score of </span></a>
+<a class="sourceLine" id="cb84-8" data-line-number="8">  <span class="co">##  variable h in permutation k</span></a>
+<a class="sourceLine" id="cb84-9" data-line-number="9">}</a>
+<a class="sourceLine" id="cb84-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb84-11" data-line-number="11">perm.pval &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, nvars)</a>
+<a class="sourceLine" id="cb84-12" data-line-number="12"><span class="cf">for</span>(h <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nvars) {</a>
+<a class="sourceLine" id="cb84-13" data-line-number="13">  perm.pval[h] &lt;-<span class="st"> </span><span class="kw">mean</span>(VarImpMat[,h] <span class="op">&gt;=</span><span class="st"> </span>var.imp[h])</a>
+<a class="sourceLine" id="cb84-14" data-line-number="14">}</a></code></pre></div>
+<table border="1">
+<tr>
+<th>
+</th>
+<th>
+Permutation p-val
+</th>
+</tr>
+<tr>
+<td align="center">
+Alcohol
+</td>
+<td align="center">
+0.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Malic
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Ash
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Alcalinity
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Magnesium
+</td>
+<td align="center">
+0.923
+</td>
+</tr>
+<tr>
+<td align="center">
+Phenols
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Flavanoids
+</td>
+<td align="center">
+0.080
+</td>
+</tr>
+<tr>
+<td align="center">
+Nonflavanoids
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Proanthocyanins
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Color
+</td>
+<td align="center">
+0.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Hue
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Dilution
+</td>
+<td align="center">
+1.000
+</td>
+</tr>
+<tr>
+<td align="center">
+Proline
+</td>
+<td align="center">
+0.000
+</td>
+</tr>
+</table>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-altmann2010">
+<p>Altmann, André, Laura Toloşi, Oliver Sander, and Thomas Lengauer. 2010. “Permutation Importance: A Corrected Feature Importance Measure.” <em>Bioinformatics</em> 26 (10). Oxford University Press: 1340–7.</p>
+</div>
+<div id="ref-casella2002">
+<p>Casella, George, and Roger L Berger. 2002. <em>Statistical Inference</em>. Vol. 2. Duxbury Pacific Grove, CA.</p>
+</div>
+<div id="ref-nembrini2019">
+<p>Nembrini, Stefano. 2019. “On What to Permute in Test-Based Approaches for Variable Importance Measures in Random Forests.” <em>Bioinformatics</em> 35 (15). Oxford University Press: 2701–5.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="krusk-wallis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ustat.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["ElementsNonparStat.pdf"],
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

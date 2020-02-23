@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 U-Statistics | Elements of Nonparametric Statistics</title>
+  <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 U-Statistics | Elements of Nonparametric Statistics" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
+  
+  <meta property="og:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
+  <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 U-Statistics | Elements of Nonparametric Statistics" />
+  
+  <meta name="twitter:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
+  
+
+<meta name="author" content="Nicholas Henderson" />
+
+
+<meta name="date" content="2020-02-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="permutation.html"/>
+<link rel="next" href="edf.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Biostat 685/Stat 560</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#sec:whatisnonpar"><i class="fa fa-check"></i><b>1.1</b> What is Nonparametric Statistics?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#sec:course-outline"><i class="fa fa-check"></i><b>1.2</b> Outline of Course</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#sec:example-nonpar-tests"><i class="fa fa-check"></i><b>1.3</b> Example 1: Nonparametric vs. Parametric Two-Sample Testing</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#sec:example-nonpar-estimation"><i class="fa fa-check"></i><b>1.4</b> Example 2: Nonparametric Estimation</a></li>
+<li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#sec:example-nonpar-confint"><i class="fa fa-check"></i><b>1.5</b> Example 3: Confidence Intervals</a></li>
+<li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress1"><i class="fa fa-check"></i><b>1.6</b> Example 4: Nonparametric Regression with a Single Covariate</a></li>
+<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress2"><i class="fa fa-check"></i><b>1.7</b> Example 5: Classification and Regression Trees (CART)</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Working with R</a></li>
+<li class="part"><span><b>I Nonparametric Testing</b></span></li>
+<li class="chapter" data-level="3" data-path="rank-tests.html"><a href="rank-tests.html"><i class="fa fa-check"></i><b>3</b> Rank and Sign Statistics</a><ul>
+<li class="chapter" data-level="3.1" data-path="rank-tests.html"><a href="rank-tests.html#ranks"><i class="fa fa-check"></i><b>3.1</b> Ranks</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="rank-tests.html"><a href="rank-tests.html#definition"><i class="fa fa-check"></i><b>3.1.1</b> Definition</a></li>
+<li class="chapter" data-level="3.1.2" data-path="rank-tests.html"><a href="rank-tests.html#handling-ties"><i class="fa fa-check"></i><b>3.1.2</b> Handling Ties</a></li>
+<li class="chapter" data-level="3.1.3" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-ranks"><i class="fa fa-check"></i><b>3.1.3</b> Properties of Ranks</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test-a-two-sample-test"><i class="fa fa-check"></i><b>3.2</b> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="rank-tests.html"><a href="rank-tests.html#goal-of-the-test"><i class="fa fa-check"></i><b>3.2.1</b> Goal of the Test</a></li>
+<li class="chapter" data-level="3.2.2" data-path="rank-tests.html"><a href="rank-tests.html#definition-of-the-wrs-test-statistic"><i class="fa fa-check"></i><b>3.2.2</b> Definition of the WRS Test Statistic</a></li>
+<li class="chapter" data-level="3.2.3" data-path="rank-tests.html"><a href="rank-tests.html#computing-p-values-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.3</b> Computing p-values for the WRS Test</a></li>
+<li class="chapter" data-level="3.2.4" data-path="rank-tests.html"><a href="rank-tests.html#computing-the-wrs-test-in-r"><i class="fa fa-check"></i><b>3.2.4</b> Computing the WRS test in R</a></li>
+<li class="chapter" data-level="3.2.5" data-path="rank-tests.html"><a href="rank-tests.html#additional-notes-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.5</b> Additional Notes for the WRS test</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.3</b> One Sample Tests</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#sign-test"><i class="fa fa-check"></i><b>3.3.1</b> The Sign Test</a></li>
+<li class="chapter" data-level="3.3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-signed-rank-test"><i class="fa fa-check"></i><b>3.3.2</b> The Wilcoxon Signed Rank Test</a></li>
+<li class="chapter" data-level="3.3.3" data-path="rank-tests.html"><a href="rank-tests.html#using-r-to-perform-the-sign-and-wilcoxon-tests"><i class="fa fa-check"></i><b>3.3.3</b> Using R to Perform the Sign and Wilcoxon Tests</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#power-and-comparisons-with-parametric-tests"><i class="fa fa-check"></i><b>3.4</b> Power and Comparisons with Parametric Tests</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="rank-tests.html"><a href="rank-tests.html#the-power-function-of-a-test"><i class="fa fa-check"></i><b>3.4.1</b> The Power Function of a Test</a></li>
+<li class="chapter" data-level="3.4.2" data-path="rank-tests.html"><a href="rank-tests.html#power-comparisons-and-asymptotic-relative-efficiency"><i class="fa fa-check"></i><b>3.4.2</b> Power Comparisons and Asymptotic Relative Efficiency</a></li>
+<li class="chapter" data-level="3.4.3" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-examples"><i class="fa fa-check"></i><b>3.4.3</b> Efficiency Examples</a></li>
+<li class="chapter" data-level="3.4.4" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-comparisons-for-several-distributions"><i class="fa fa-check"></i><b>3.4.4</b> Efficiency Comparisons for Several Distributions</a></li>
+<li class="chapter" data-level="3.4.5" data-path="rank-tests.html"><a href="rank-tests.html#a-power-contest"><i class="fa fa-check"></i><b>3.4.5</b> A Power “Contest”</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#linear-rank-statistics-in-general"><i class="fa fa-check"></i><b>3.5</b> Linear Rank Statistics in General</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="rank-tests.html"><a href="rank-tests.html#definition-1"><i class="fa fa-check"></i><b>3.5.1</b> Definition</a></li>
+<li class="chapter" data-level="3.5.2" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.2</b> Properties of Linear Rank Statistics</a></li>
+<li class="chapter" data-level="3.5.3" data-path="rank-tests.html"><a href="rank-tests.html#other-examples-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.3</b> Other Examples of Linear Rank Statistics</a></li>
+<li class="chapter" data-level="3.5.4" data-path="rank-tests.html"><a href="rank-tests.html#choosing-the-scores-a_ni"><i class="fa fa-check"></i><b>3.5.4</b> Choosing the scores <span class="math inline">\(a_{N}(i)\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#additional-reading"><i class="fa fa-check"></i><b>3.6</b> Additional Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a><ul>
+<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskal-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskal-Wallis Test</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#definition-2"><i class="fa fa-check"></i><b>4.1.1</b> Definition</a></li>
+<li class="chapter" data-level="4.1.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#asymptotic-distribution-and-connection-to-one-way-anova"><i class="fa fa-check"></i><b>4.1.2</b> Asymptotic Distribution and Connection to One-Way ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#performing-the-kruskal-wallis-test-in-r"><i class="fa fa-check"></i><b>4.2</b> Performing the Kruskal-Wallis Test in R</a></li>
+<li class="chapter" data-level="4.3" data-path="krusk-wallis.html"><a href="krusk-wallis.html#comparison-of-specific-groups"><i class="fa fa-check"></i><b>4.3</b> Comparison of Specific Groups</a></li>
+<li class="chapter" data-level="4.4" data-path="krusk-wallis.html"><a href="krusk-wallis.html#an-additional-example"><i class="fa fa-check"></i><b>4.4</b> An Additional Example</a></li>
+<li class="chapter" data-level="4.5" data-path="krusk-wallis.html"><a href="krusk-wallis.html#additional-reading-1"><i class="fa fa-check"></i><b>4.5</b> Additional Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a><ul>
+<li class="chapter" data-level="5.1" data-path="permutation.html"><a href="permutation.html#notation"><i class="fa fa-check"></i><b>5.1</b> Notation</a></li>
+<li class="chapter" data-level="5.2" data-path="permutation.html"><a href="permutation.html#permutation-tests-for-the-two-sample-problem"><i class="fa fa-check"></i><b>5.2</b> Permutation Tests for the Two-Sample Problem</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="permutation.html"><a href="permutation.html#example-1"><i class="fa fa-check"></i><b>5.2.1</b> Example 1</a></li>
+<li class="chapter" data-level="5.2.2" data-path="permutation.html"><a href="permutation.html#permutation-test-p-values"><i class="fa fa-check"></i><b>5.2.2</b> Permutation Test p-values</a></li>
+<li class="chapter" data-level="5.2.3" data-path="permutation.html"><a href="permutation.html#example-2-ratios-of-means"><i class="fa fa-check"></i><b>5.2.3</b> Example 2: Ratios of Means</a></li>
+<li class="chapter" data-level="5.2.4" data-path="permutation.html"><a href="permutation.html#example-3-differences-in-quantiles"><i class="fa fa-check"></i><b>5.2.4</b> Example 3: Differences in Quantiles</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3</b> The Permutation Test as a Conditional Test</a></li>
+<li class="chapter" data-level="5.4" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-correlation"><i class="fa fa-check"></i><b>5.4</b> A Permutation Test for Correlation</a></li>
+<li class="chapter" data-level="5.5" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-variable-importance-in-regression-and-machine-learning"><i class="fa fa-check"></i><b>5.5</b> A Permutation Test for Variable Importance in Regression and Machine Learning</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
+<li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-3"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
+<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="ustat.html"><a href="ustat.html#example-1-the-sample-mean"><i class="fa fa-check"></i><b>6.2.1</b> Example 1: The Sample Mean</a></li>
+<li class="chapter" data-level="6.2.2" data-path="ustat.html"><a href="ustat.html#example-2-the-sample-variance"><i class="fa fa-check"></i><b>6.2.2</b> Example 2: The Sample Variance</a></li>
+<li class="chapter" data-level="6.2.3" data-path="ustat.html"><a href="ustat.html#example-3-ginis-mean-difference"><i class="fa fa-check"></i><b>6.2.3</b> Example 3: Gini’s Mean Difference</a></li>
+<li class="chapter" data-level="6.2.4" data-path="ustat.html"><a href="ustat.html#example-4-wilcoxon-signed-rank-statistic"><i class="fa fa-check"></i><b>6.2.4</b> Example 4: Wilcoxon Signed Rank Statistic</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#inference-using-u-statistics"><i class="fa fa-check"></i><b>6.3</b> Inference using U-statistics</a></li>
+<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#u-statistics-for-two-sample-problems"><i class="fa fa-check"></i><b>6.4</b> U-statistics for Two-Sample Problems</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="ustat.html"><a href="ustat.html#the-mann-whitney-statistic"><i class="fa fa-check"></i><b>6.4.1</b> The Mann-Whitney Statistic</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.5</b> Measures of Association</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="ustat.html"><a href="ustat.html#spearmans-rank-correlation"><i class="fa fa-check"></i><b>6.5.1</b> Spearman’s Rank Correlation</a></li>
+<li class="chapter" data-level="6.5.2" data-path="ustat.html"><a href="ustat.html#kendalls-tau"><i class="fa fa-check"></i><b>6.5.2</b> Kendall’s tau</a></li>
+<li class="chapter" data-level="6.5.3" data-path="ustat.html"><a href="ustat.html#distance-covariance-and-correlation"><i class="fa fa-check"></i><b>6.5.3</b> Distance Covariance and Correlation</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Nonparametric Estimation</b></span></li>
+<li class="chapter" data-level="7" data-path="edf.html"><a href="edf.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
+<li class="chapter" data-level="7.1" data-path="edf.html"><a href="edf.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1</b> Definition and Basic Properties</a></li>
+<li class="chapter" data-level="7.2" data-path="edf.html"><a href="edf.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.2</b> Confidence intervals for F(t)</a></li>
+<li class="chapter" data-level="7.3" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.3</b> The Empirical Distribution Function in R</a></li>
+<li class="chapter" data-level="7.4" data-path="edf.html"><a href="edf.html#the-kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>7.4</b> The Kolmogorov-Smirnov Test</a></li>
+<li class="chapter" data-level="7.5" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-and-statistical-functionals"><i class="fa fa-check"></i><b>7.5</b> The empirical distribution function and statistical functionals</a></li>
+<li class="chapter" data-level="7.6" data-path="edf.html"><a href="edf.html#additional-reading-2"><i class="fa fa-check"></i><b>7.6</b> Additional Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
+<li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms"><i class="fa fa-check"></i><b>8.2</b> Histograms</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-5"><i class="fa fa-check"></i><b>8.2.1</b> Definition</a></li>
+<li class="chapter" data-level="8.2.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms-in-r"><i class="fa fa-check"></i><b>8.2.2</b> Histograms in R</a></li>
+<li class="chapter" data-level="8.2.3" data-path="density-estimation.html"><a href="density-estimation.html#performance-of-the-histogram-estimate-and-bin-width-selection"><i class="fa fa-check"></i><b>8.2.3</b> Performance of the Histogram Estimate and Bin Width Selection</a></li>
+<li class="chapter" data-level="8.2.4" data-path="density-estimation.html"><a href="density-estimation.html#choosing-the-histogram-bin-width"><i class="fa fa-check"></i><b>8.2.4</b> Choosing the Histogram Bin Width</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="density-estimation.html"><a href="density-estimation.html#a-box-type-density-estimate"><i class="fa fa-check"></i><b>8.3</b> A Box-type Density Estimate</a></li>
+<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-6"><i class="fa fa-check"></i><b>8.4.1</b> Definition</a></li>
+<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-amise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and AMISE of Kernel Density Estimates</a></li>
+<li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection with the Normal Reference Rule</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation-in-practice"><i class="fa fa-check"></i><b>8.5</b> Kernel Density Estimation in Practice</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.5.1</b> Density Estimation in R</a></li>
+<li class="chapter" data-level="8.5.2" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5.2</b> Cross-Validation for Bandwidth Selection</a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="density-estimation.html"><a href="density-estimation.html#additional-reading-3"><i class="fa fa-check"></i><b>8.6</b> Additional Reading</a></li>
+</ul></li>
+<li class="part"><span><b>III Uncertainty Measures</b></span></li>
+<li class="chapter" data-level="9" data-path="sampling.html"><a href="sampling.html"><i class="fa fa-check"></i><b>9</b> The Jackknife</a><ul>
+<li class="chapter" data-level="9.1" data-path="sampling.html"><a href="sampling.html#introduction-1"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> The Bootstrap and Confidence Intervals</a><ul>
+<li class="chapter" data-level="10.1" data-path="ci.html"><a href="ci.html#bootstrapping"><i class="fa fa-check"></i><b>10.1</b> Bootstrapping</a></li>
+</ul></li>
+<li class="part"><span><b>IV Nonparametric Regression: Part I</b></span></li>
+<li class="chapter" data-level="11" data-path="kernel-regression.html"><a href="kernel-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression</a><ul>
+<li class="chapter" data-level="11.1" data-path="kernel-regression.html"><a href="kernel-regression.html#introduction-2"><i class="fa fa-check"></i><b>11.1</b> Introduction</a><ul>
+<li class="chapter" data-level="11.1.1" data-path="kernel-regression.html"><a href="kernel-regression.html#an-example"><i class="fa fa-check"></i><b>11.1.1</b> An Example</a></li>
+<li class="chapter" data-level="11.1.2" data-path="kernel-regression.html"><a href="kernel-regression.html#linear-smoothers-and-naive-nonparametric-estimates"><i class="fa fa-check"></i><b>11.1.2</b> Linear Smoothers and Naive Nonparametric Estimates</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="kernel-regression.html"><a href="kernel-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>11.2</b> The Nadaraya-Watson estimator</a></li>
+<li class="chapter" data-level="11.3" data-path="kernel-regression.html"><a href="kernel-regression.html#local-linear-and-polynomial-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear and Polynomial Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
+<li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a></li>
+<li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#spline-basis-functions"><i class="fa fa-check"></i><b>12.2</b> Spline Basis Functions</a></li>
+<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splinespenalized-regression"><i class="fa fa-check"></i><b>12.3</b> Smoothing Splines/Penalized Regression</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#selection-of-smoothing-parameter"><i class="fa fa-check"></i><b>12.3.1</b> Selection of Smoothing Parameter</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
+<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a></li>
+<li class="chapter" data-level="14" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>14</b> Ensemble Methods for Prediction</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Elements of Nonparametric Statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ustat" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> U-Statistics</h1>
+<div id="definition-3" class="section level2">
+<h2><span class="header-section-number">6.1</span> Definition</h2>
+<ul>
+<li><p>Suppose we have observations <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>.</p></li>
+<li><p>U-statistics are a family of statistics used to estimate quantities
+that can be written as
+<span class="math display" id="eq:ustat-parameter">\[\begin{equation}
+\theta = E\Big\{ h(X_{1}, \ldots, X_{r})  \Big\}
+\tag{6.1}
+\end{equation}\]</span></p></li>
+<li><p>The U-statistic <span class="math inline">\(U\)</span> which estimates <a href="ustat.html#eq:ustat-parameter">(6.1)</a> is given by the following formula:
+<span class="math display" id="eq:ustat-definition">\[\begin{equation}
+U = \frac{1}{{n \choose r}} \sum_{c \in \mathcal{C}_{n,r}} h(X_{c_{1}}, \ldots, X_{c_{r}})
+\tag{6.2}
+\end{equation}\]</span></p></li>
+<li><p>The function <span class="math inline">\(h\)</span> is usually called the <strong>kernel</strong> of the U-statistic.
+We will assume the kernel is symmetric.</p></li>
+<li><p>The integer <span class="math inline">\(r\)</span> is called the <strong>order</strong> of the U-statistic. Typically,
+<span class="math inline">\(r = 2\)</span>, or <span class="math inline">\(r = 3\)</span> at most.</p></li>
+<li><p>In <a href="ustat.html#eq:ustat-definition">(6.2)</a>, <span class="math inline">\(\mathcal{C}_{n,r}\)</span> denotes the set of all <span class="math inline">\({n \choose r}\)</span> combinations of size
+<span class="math inline">\(r\)</span> from the set <span class="math inline">\(\{1, \ldots, n\}\)</span>.</p></li>
+<li><p>For example, if <span class="math inline">\(n = 3\)</span> and <span class="math inline">\(r = 2\)</span> then
+<span class="math display">\[\begin{equation}
+\mathcal{C}_{n, r} = \{ (1,2), (1,3), (2, 3) \} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>For many common U-statistics <span class="math inline">\(r=2\)</span> in which case <a href="ustat.html#eq:ustat-definition">(6.2)</a> can be written as
+<span class="math display">\[\begin{equation}
+U = \frac{2}{n(n-1)} \sum_{i=1}^{n}\sum_{j=i+1}^{n} h(X_{i}, X_{j})
+\end{equation}\]</span></p></li>
+</ul>
+</div>
+<div id="examples" class="section level2">
+<h2><span class="header-section-number">6.2</span> Examples</h2>
+<ul>
+<li>A wide range of well-known statistics can be represented as U-statistics.</li>
+</ul>
+<div id="example-1-the-sample-mean" class="section level3">
+<h3><span class="header-section-number">6.2.1</span> Example 1: The Sample Mean</h3>
+<ul>
+<li><p>The sample mean is actually an example of a U-statistic with <span class="math inline">\(r = 1\)</span>.</p></li>
+<li><p>Choosing <span class="math inline">\(h(x) = x\)</span> means that the corresponding U-statistic is
+<span class="math display">\[\begin{equation}
+U_{m} = \frac{1}{n} \sum_{i=1}^{n} X_{i}
+\end{equation}\]</span></p></li>
+<li><p>Taking the expectation of <span class="math inline">\(h(X_{1})\)</span> gives the parameter that <span class="math inline">\(U_{m}\)</span>
+is estimating
+<span class="math display">\[\begin{equation}
+E\{ h(X_{1}) \} = E\{ X_{1} \} = \mu \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+</div>
+<div id="example-2-the-sample-variance" class="section level3">
+<h3><span class="header-section-number">6.2.2</span> Example 2: The Sample Variance</h3>
+<ul>
+<li><p>The sample variance is actually another example of a U-statistic.
+In this case, <span class="math inline">\(r = 2\)</span>.</p></li>
+<li><p>To show why this is the case, choose the kernel <span class="math inline">\(h(x_{1}, x_{2})\)</span> to be
+<span class="math display">\[\begin{equation}
+h(x_{1}, x_{2}) = \frac{1}{2}(x_{1} - x_{2})^{2}
+\end{equation}\]</span></p></li>
+<li><p>The expectation of this kernel is <span class="math inline">\(\sigma^{2} = E\{ h(X_{1}, X_{2}) \}\)</span> because
+<span class="math display" id="eq:sampvar-ustat">\[\begin{eqnarray}
+E\{ h(X_{1}, X_{2}) \} &amp;=&amp; \frac{1}{2}\Big[ E(X_{1}^{2}) - 2E(X_{1})E(X_{2})  + E(X_{2}^{2}) \Big] \nonumber \\
+&amp;=&amp; \frac{1}{2}\Big[ \sigma^{2} + \mu^{2} - 2\mu^{2}  + \sigma^{2} + \mu^{2} \Big] \nonumber \\
+&amp;=&amp; \sigma^{2}
+\tag{6.3}
+\end{eqnarray}\]</span></p></li>
+<li><p>Also, by using formula <a href="ustat.html#eq:ustat-definition">(6.2)</a>, this choice of kernel generates the sample variance at its U-statistic:
+<span class="math display">\[\begin{eqnarray}
+U_{var} &amp;=&amp; \frac{1}{{n \choose 2}} \sum_{c \in \mathcal{C}_{n,2}} h(X_{c_{1}}, X_{c_{2}})
+= \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=i+1}^{n} \frac{1}{2} (X_{i} - X_{j})^{2}  \nonumber \\
+&amp;=&amp; \frac{2}{n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} \frac{1}{4}(X_{i} - X_{j})^{2} \nonumber \\
+&amp;=&amp; \frac{1}{2n(n-1)}\sum_{i=1}^{n} \sum_{j=1}^{n} \{ (X_{i} - \bar{X})^{2} - 2(X_{i} - \bar{X})(X_{j} - \bar{X}) + (X_{j} - \bar{X})^{2} \} \nonumber \\
+&amp;=&amp; \frac{1}{2n(n-1)}\sum_{i=1}^{n} n(X_{i} - \bar{X})^{2} + \frac{1}{2n(n-1)}\sum_{j=1}^{n} n(X_{j} - \bar{X})^{2}  \nonumber \\
+&amp;=&amp; \frac{1}{n-1}\sum_{i=1}^{n} (X_{i} - \bar{X})^{2}
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Typically, the variance has the interpretation of <span class="math inline">\(\sigma^{2} = E\{ (X_{i} - \mu)^{2} \}\)</span>.
+That is, <span class="math inline">\(\sigma^{2}\)</span> measures the expected squared deviation of <span class="math inline">\(X_{i}\)</span> from its mean.</p></li>
+<li><p>Given the form of the U-statistic <a href="ustat.html#eq:sampvar-ustat">(6.3)</a>, we can also interpret the variance
+in the following way: if we select two observations <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(X_{j}\)</span> at random,
+the expected squared distance between <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(X_{j}\)</span> will be <span class="math inline">\(2\sigma^{2}\)</span>.</p></li>
+<li><p>You can see this through the following computer experiment.</p></li>
+</ul>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="dv">50000</span></a>
+<a class="sourceLine" id="cb85-2" data-line-number="2">xx &lt;-<span class="st"> </span><span class="kw">rlogis</span>(n, <span class="dt">location=</span><span class="dv">2</span>, <span class="dt">scale=</span><span class="fl">0.75</span>)</a>
+<a class="sourceLine" id="cb85-3" data-line-number="3">diff.sq &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">5000</span>)</a>
+<a class="sourceLine" id="cb85-4" data-line-number="4"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5000</span>) {</a>
+<a class="sourceLine" id="cb85-5" data-line-number="5">   idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>n, <span class="dt">size=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb85-6" data-line-number="6">   diff.sq[k] &lt;-<span class="st"> </span>(xx[idx[<span class="dv">1</span>]] <span class="op">-</span><span class="st"> </span>xx[idx[<span class="dv">2</span>]])<span class="op">^</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb85-7" data-line-number="7">}</a>
+<a class="sourceLine" id="cb85-8" data-line-number="8"><span class="kw">round</span>(<span class="kw">var</span>(xx), <span class="dv">3</span>)</a></code></pre></div>
+<pre><code>## [1] 1.874</code></pre>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">mean</span>(diff.sq)<span class="op">/</span><span class="dv">2</span>, <span class="dv">3</span>)</a></code></pre></div>
+<pre><code>## [1] 1.826</code></pre>
+</div>
+<div id="example-3-ginis-mean-difference" class="section level3">
+<h3><span class="header-section-number">6.2.3</span> Example 3: Gini’s Mean Difference</h3>
+<ul>
+<li><p>Gini’s mean difference statistic is defined as
+<span class="math display">\[\begin{equation}
+U_{G} = \frac{1}{{n \choose 2}} \sum_{i=1}^{n}\sum_{j=i+1}^{n} | X_{i} - X_{j} | \nonumber
+\end{equation}\]</span></p></li>
+<li><p>This is a U-statistic with <span class="math inline">\(r=2\)</span> and kernel
+<span class="math display">\[\begin{equation}
+h(X_{1},X_{2}) = | X_{1} - X_{2} |
+\end{equation}\]</span></p></li>
+<li><p>The parameter that we are estimating with Gini’s mean difference statistic is:
+<span class="math display">\[\begin{equation}
+\theta_{G} = E\Big\{ \Big| X_{1} - X_{2} \Big|  \Big\}
+\end{equation}\]</span></p></li>
+<li><p>Gini’s mean difference parameter <span class="math inline">\(\theta_{G}\)</span> can be interpreted in the following way: If we draw
+two observations at random from our population, <span class="math inline">\(\theta_{G}\)</span>
+represents the expected absolute difference between these
+two observations.</p></li>
+<li><p>The Gini coefficient <span class="math inline">\(\theta_{Gc}\)</span> is a popular measure of inequality. It is related
+to the mean difference parameter via
+<span class="math display">\[\begin{equation}
+\theta_{Gc} = \frac{ \theta_{G}}{ 2\mu },
+\end{equation}\]</span>
+where <span class="math inline">\(\mu = E( X_{i} )\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><strong>Exercise 6.1</strong>. Compute the Gini coefficient <span class="math inline">\(\theta_{Gc}\)</span> when it is assumed that
+<ul>
+<li><span class="math inline">\(X_{i} \sim \textrm{Normal}( \mu, \sigma^{2})\)</span>, for <span class="math inline">\(\mu &gt; 0\)</span>.</li>
+<li><span class="math inline">\(X_{i} \sim \textrm{Exponential}(\lambda)\)</span>, (<strong>Hint</strong>: The difference between two independent Exponential random variables has a Laplace distribution).</li>
+</ul></li>
+</ul>
+<hr />
+</div>
+<div id="example-4-wilcoxon-signed-rank-statistic" class="section level3">
+<h3><span class="header-section-number">6.2.4</span> Example 4: Wilcoxon Signed Rank Statistic</h3>
+<ul>
+<li><p>The Wilcoxon signed rank test statistic is related to the following U statistic
+<span class="math display">\[\begin{equation}
+U_{WS} = \frac{2}{n(n-1)}\sum_{i=1}^{n}\sum_{j=i+1}^{n} I\Big( X_{i} + X_{j} \geq 0 \Big)
+\end{equation}\]</span></p></li>
+<li><p><span class="math inline">\(U_{WS}\)</span> is a U-statistic of order <span class="math inline">\(2\)</span> with kernel
+<span class="math display">\[\begin{equation}
+h(x, y) = I\Big( x + y \geq 0\Big)
+\end{equation}\]</span></p></li>
+<li><p>Hence, <span class="math inline">\(U_{WS}\)</span> can be interpreted as an estimate of
+the following parameter
+<span class="math display">\[\begin{equation}
+\theta_{WS} = P\Big( X_{i} + X_{j} \geq 0  \Big) = P\Big( X_{i} \geq -X_{j} \Big)
+\end{equation}\]</span></p></li>
+<li><p>If the distribution of <span class="math inline">\(X_{i}\)</span> is symmetric around <span class="math inline">\(0\)</span>, <span class="math inline">\(\theta_{WS}\)</span> will be equal
+to <span class="math inline">\(1/2\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Recall that the Wilcoxon signed rank test is designed to detect
+distributions which are not symmetric around <span class="math inline">\(0\)</span>.</p></li>
+<li><p>The Wilcoxon signed rank statistic <span class="math inline">\(T_{n}\)</span> that we defined in Chapter 3 had the following formula
+<span class="math display">\[\begin{equation}
+T_{n} = \sum_{i=1}^{n} \textrm{sign}( X_{i}) R_{i}( |\mathbf{X}| )
+\end{equation}\]</span></p></li>
+<li><p>Some extra algebra can show that
+<span class="math display" id="eq:wilcoxsign-equivalence">\[\begin{eqnarray}
+T_{n} &amp;=&amp; n(n-1) U_{WS} + 2\sum_{i=1}^{n} I(X_{i} &gt; 0) - \frac{n(n+1)}{2} \nonumber \\
+&amp;=&amp; n(n-1) U_{WS} + 2 S_{n} - \frac{n(n+1)}{2} 
+\tag{6.4}
+\end{eqnarray}\]</span>
+where <span class="math inline">\(S_{n}\)</span> is the sign test statistic defined in Chapter 3.</p></li>
+<li><p>For large <span class="math inline">\(n\)</span>, <span class="math inline">\(T_{n}\)</span> is largely determined by <span class="math inline">\(U_{WS} - 1/2\)</span>.
+Hence, a “large” value of <span class="math inline">\(U_{WS} - 1/2\)</span> will lead to rejection
+of the one-sample null hypothesis discussed in Section 3.3.</p></li>
+</ul>
+<hr />
+<ul>
+<li>If you want to derive <a href="ustat.html#eq:wilcoxsign-equivalence">(6.4)</a> (though you don’t need to know how), I think it is helpful to note
+the following
+<span class="math display">\[\begin{eqnarray}
+I( X_{(i)} &gt; 0)R_{(i)}(|\mathbf{X}|)
+&amp;=&amp; \sum_{j=1}^{n} I( X_{(i)} &gt; 0)I(|X_{(i)}| \geq |X_{j}|)
+= \sum_{j=1}^{n} I(X_{(i)} \geq |X_{j}|) \nonumber \\
+&amp;=&amp; \sum_{j=1}^{n} I(X_{(i)} \geq |X_{(j)}|) 
+= \sum_{j=1}^{i} I(X_{(i)} \geq -X_{(j)}) \nonumber \\
+&amp;=&amp;  \sum_{j=1}^{i} I(X_{(i)} + X_{(j)} \geq 0) \nonumber
+\end{eqnarray}\]</span></li>
+</ul>
+</div>
+</div>
+<div id="inference-using-u-statistics" class="section level2">
+<h2><span class="header-section-number">6.3</span> Inference using U-statistics</h2>
+<ul>
+<li><p>By using a large-sample approximation, you can construct a confidence interval
+for your U-statistic parameter of interest <span class="math inline">\(\theta\)</span> where
+<span class="math display">\[\begin{equation}
+\theta = E\Big\{ h(X_{1}, \ldots, X_{r})  \Big\}
+\end{equation}\]</span></p></li>
+<li><p>While the U-statistic is a sum of random variables that are not necessarily independent,
+you can state a Central Limit Theorem for <span class="math inline">\(U\)</span>-statistics.</p></li>
+<li><p>Specifically, under appropriate regularity conditions:
+<span class="math display">\[\begin{equation}
+\sqrt{n}(U - \theta) \longrightarrow \textrm{Normal}\Big( 0, r^{2} \varphi \Big) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The formula for <span class="math inline">\(\varphi\)</span> is
+<span class="math display">\[\begin{equation}
+\varphi = \textrm{Cov}\Big( h(X_{1}, X_{2}, \ldots, X_{r}) , h(X_{1}, X_{2}&#39;, \ldots, X_{r}&#39;) \Big),
+\end{equation}\]</span>
+where <span class="math inline">\(X_{1}&#39;, X_{2}&#39;, \ldots, X_{r}&#39;\)</span> are thought of as another i.i.d. sample from
+the same distribution as <span class="math inline">\(X_{1}, \ldots, X_{r}\)</span>.</p></li>
+</ul>
+</div>
+<div id="u-statistics-for-two-sample-problems" class="section level2">
+<h2><span class="header-section-number">6.4</span> U-statistics for Two-Sample Problems</h2>
+<ul>
+<li><p>In two-sample problems, we have data from two groups which
+we label <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> and <span class="math inline">\(Y_{1}, \ldots, Y_{m}\)</span></p></li>
+<li><p>A U-statistic with order <span class="math inline">\((r,s)\)</span> for a two-sample problem is
+<span class="math display">\[\begin{equation}
+U = \frac{1}{{n \choose r}}\frac{1}{{m \choose s}} \sum_{c \in \mathcal{C}_{n,r}} \sum_{q \in \mathcal{C}_{m,s}} h(X_{c_{1}}, \ldots, X_{c_{r}}, Y_{q_{1}}, \ldots, Y_{q_{s}})
+\end{equation}\]</span></p></li>
+</ul>
+<div id="the-mann-whitney-statistic" class="section level3">
+<h3><span class="header-section-number">6.4.1</span> The Mann-Whitney Statistic</h3>
+<ul>
+<li><p>Consider the following U-statistic
+<span class="math display">\[\begin{equation}
+U_{MW} = \frac{1}{mn}\sum_{i=1}^{n}\sum_{j=1}^{m} I( X_{i} \geq Y_{j})
+\end{equation}\]</span></p></li>
+<li><p>This is a U-statistic of order <span class="math inline">\((1,1)\)</span> with kernel <span class="math inline">\(h(x, y) = I(x \geq y)\)</span>.</p></li>
+<li><p>Hence, the U-statistic <span class="math inline">\(U_{MW}\)</span> can be thought of as an estimate of the following
+parameter
+<span class="math display" id="eq:mw-parameter">\[\begin{equation}
+\theta_{MW} = P\Big( X_{i} \geq Y_{j} \Big)
+\tag{6.5}
+\end{equation}\]</span></p></li>
+<li><p>If both <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{j}\)</span> have the same distribution, then
+<span class="math inline">\(\theta_{MW}\)</span> should equal <span class="math inline">\(1/2\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The statistic <span class="math inline">\(mn U_{MW}\)</span> is known as the <strong>Mann-Whitney</strong> statistic.</p></li>
+<li><p>The Mann-Whitney statistic has a close relation to the Wilcoxon
+rank sum statistic <span class="math inline">\(W\)</span> that we defined in Section 3.2:
+<span class="math display" id="eq:wrs-mw-deriv1">\[\begin{eqnarray}
+mn U_{MW} &amp;=&amp; 
+\sum_{i=1}^{n}\sum_{j=1}^{m} I( X_{i} \geq Y_{j}) \nonumber \\
+&amp;=&amp; \sum_{i=1}^{n}\Big[ \sum_{j=1}^{m} I( X_{i} \geq Y_{j}) +
+\sum_{k=1}^{n} I( X_{i} \geq X_{k}) \Big] -
+\sum_{i=1}^{n}\sum_{k=1}^{n} I( X_{i} \geq X_{k}) \nonumber \\
+&amp;=&amp; \sum_{i=1}^{n} R_{i}(\mathbf{Z}) -
+\sum_{i=1}^{n} R_{i}( \mathbf{X} ) \tag{6.6}  \\
+&amp;=&amp; W - \frac{n(n+1)}{2} \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>In other words, the Mann-Whitney statistic is equal to
+the WRS statistic minus a constant term.</p></li>
+<li><p>In <a href="ustat.html#eq:wrs-mw-deriv1">(6.6)</a>, we are defining <span class="math inline">\(\mathbf{Z}\)</span> as
+the pooled-data vector <span class="math inline">\(\mathbf{Z} = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})\)</span>.</p></li>
+<li><p>Also, the above derivation assumes no ties so that
+<span class="math inline">\(\sum_{i=1}^{n} R_{i}( \mathbf{X} ) = n(n+1)/2\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Because <span class="math inline">\(W = n(n+1)/2 + mn U_{MW}\)</span> is a linear function of <span class="math inline">\(U_{MW}\)</span>,
+inference from the Wilcoxon rank sum test (when using large-sample p-values)
+should match inferences made from using <span class="math inline">\(U_{MW}\)</span> to test the hypothesis <span class="math inline">\(H_{0}: \theta_{MW} = 1/2\)</span>.</p></li>
+<li><p>In other words, the two-sided Wilcoxon rank sum test can
+be thought of as a test of <span class="math inline">\(H_{0}: \theta_{MW} = 1/2\)</span> vs. <span class="math inline">\(H_{A}:\theta_{MW} \neq 1/2\)</span>,
+where <span class="math inline">\(\theta_{MW}\)</span> is the parameter defined in <a href="ustat.html#eq:mw-parameter">(6.5)</a>.</p></li>
+</ul>
+</div>
+</div>
+<div id="measures-of-association" class="section level2">
+<h2><span class="header-section-number">6.5</span> Measures of Association</h2>
+<ul>
+<li><p>Many important measures of association are also examples of U-statistics.</p></li>
+<li><p>For measures of association, we have observations on <span class="math inline">\(n\)</span> pairs of variables
+<span class="math display">\[\begin{equation}
+(X_{1}, Y_{1}), \ldots, (X_{n}, Y_{n}), \nonumber 
+\end{equation}\]</span>
+and our goal is to report some measure which quantifies the relationship between these
+two variables.</p></li>
+<li><p>In this context, we will think about U-statistics which have the form
+<span class="math display">\[\begin{equation}
+U = \frac{1}{{n \choose r}} \sum_{c \in \mathcal{C}_{n,r} } h\Bigg( \begin{bmatrix} X_{c_{1}} \\ Y_{c_{1}} \end{bmatrix},
+\ldots, \begin{bmatrix} X_{c_{r}} \\ Y_{c_{r}} \end{bmatrix} \Bigg)
+\end{equation}\]</span></p></li>
+</ul>
+<div id="spearmans-rank-correlation" class="section level3">
+<h3><span class="header-section-number">6.5.1</span> Spearman’s Rank Correlation</h3>
+<ul>
+<li><p>Spearman’s sample rank correlation is defined as
+<span class="math display" id="eq:spearman-simplifiation">\[\begin{eqnarray}
+\hat{\rho}_{R} &amp;=&amp; \frac{\sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}}{ \big[ \sum_{i=1}^{n} \{R_{i}(\mathbf{X}) - \bar{R}(\mathbf{X}) \}^{2} \sum_{i=1}^{n}\{ R_{i}(\mathbf{Y}) - \bar{R}(\mathbf{Y}) \}^{2} \big]^{1/2} } \nonumber \\
+&amp;=&amp; \frac{12}{n(n-1)(n+1)}\sum_{i=1}^{n} R_{i}( \mathbf{X} )R_{i}(\mathbf{Y}) - \frac{3(n+1)}{n-1},
+\tag{6.7}
+\end{eqnarray}\]</span>
+where <span class="math inline">\(\bar{R}(X) = \frac{1}{n}\sum_{i=1}^{n} R_{i}( \mathbf{X} )\)</span> and <span class="math inline">\(\bar{R}( \mathbf{Y} ) = \frac{1}{n} \sum_{i=1}^{n} R_{i}( \mathbf{Y} )\)</span>.</p></li>
+<li><p>Remember that <span class="math inline">\(R_{i}(\mathbf{X})\)</span> denotes the rank of <span class="math inline">\(X_{i}\)</span> when only using the vector <span class="math inline">\(\mathbf{X} = (X_{1}, \ldots, X_{n})\)</span> to compute the rankings. Likewise, <span class="math inline">\(R_{i}(\mathbf{Y})\)</span> denotes the rank of <span class="math inline">\(Y_{i}\)</span> when only using the vector <span class="math inline">\(\mathbf{Y} = (Y_{1}, \ldots, Y_{n})\)</span> to compute the rankings.</p></li>
+<li><p>Notice that <span class="math inline">\(\hat{\rho}_{R}\)</span> comes from applying the usual Pearson’s estimate of correlation to the ranks <span class="math inline">\((R_{i}( \mathbf{X} )\)</span>, <span class="math inline">\(R_{i}(\mathbf{Y}) )\)</span> rather than the original data <span class="math inline">\((X_{i}, Y_{i})\)</span>.</p></li>
+<li><p>As with the usual estimate of correlation, <span class="math inline">\(\hat{\rho}_{R}\)</span> is large (i.e., closer to 1) whenever large values of <span class="math inline">\(X_{i}\)</span> tend to be associated with large values of <span class="math inline">\(Y_{i}\)</span>. Similarly, <span class="math inline">\(\hat{\rho}_{R}\)</span> is small wheneve large values of <span class="math inline">\(X_{i}\)</span> tend to be associated with small values of <span class="math inline">\(Y_{i}\)</span>.</p></li>
+<li><p>Values of <span class="math inline">\(\hat{\rho}_{R}\)</span> near zero indicate that there is little association
+between these two variables.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Due to its use of ranks, <span class="math inline">\(\hat{\rho}_{R}\)</span> is less sensitive to outliers than Pearson’s correlation.</p></li>
+<li><p>Another important feature of <span class="math inline">\(\hat{\rho}_{R}\)</span> is that it is invariant to monotone transformations
+of the data.</p></li>
+<li><p>While Pearson’s correlation is very effective for detecting linear associations between two variables,
+the rank correlation is very effective at detecting any monotone associations between two variables.</p></li>
+<li><p><span class="math inline">\(\hat{\rho}_{R}\)</span> will equal 1 if <span class="math inline">\(Y_{i}\)</span> is a monotone increasing function of <span class="math inline">\(X_{i}\)</span>,
+and <span class="math inline">\(\hat{\rho}_{R}\)</span> will equal -1 if <span class="math inline">\(Y_{i}\)</span> is a monotone decreasing function <span class="math inline">\(X_{i}\)</span>.</p></li>
+</ul>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="kw">pmax</span>(<span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dt">mean=</span><span class="dv">10</span>), <span class="fl">0.01</span>)</a>
+<a class="sourceLine" id="cb89-2" data-line-number="2">yy &lt;-<span class="st"> </span><span class="kw">pmax</span>(xx <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dt">sd=</span>.<span class="dv">5</span>), <span class="fl">0.01</span>)</a>
+<a class="sourceLine" id="cb89-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb89-4" data-line-number="4"><span class="co">## Compare the usual Pearson&#39;s correlation between </span></a>
+<a class="sourceLine" id="cb89-5" data-line-number="5"><span class="co">## (xx, yy) and (xx, yy^2)</span></a>
+<a class="sourceLine" id="cb89-6" data-line-number="6"><span class="kw">round</span>( <span class="kw">c</span>( <span class="kw">cor</span>(xx, yy), <span class="kw">cor</span>(xx, yy<span class="op">^</span><span class="dv">2</span>)), <span class="dv">3</span>)</a></code></pre></div>
+<pre><code>## [1] 0.892 0.889</code></pre>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="co">## Now do the same for Spearman&#39;s rank correlation</span></a>
+<a class="sourceLine" id="cb91-2" data-line-number="2"><span class="kw">round</span>(<span class="kw">c</span>( <span class="kw">cor</span>(xx, yy, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>), </a>
+<a class="sourceLine" id="cb91-3" data-line-number="3">         <span class="kw">cor</span>(xx, yy<span class="op">^</span><span class="dv">2</span>, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>)), <span class="dv">3</span>)</a></code></pre></div>
+<pre><code>## [1] 0.869 0.869</code></pre>
+<hr />
+<ul>
+<li><p><span class="math inline">\(\hat{\rho}_{R}\)</span> can be thought of as an estimate of the following population
+quantity:
+<span class="math display">\[\begin{equation}
+\theta_{R} = 12 P\Big( X_{1} \geq X_{2}, Y_{1} \geq Y_{3} \Big) - 3
+\end{equation}\]</span></p></li>
+<li><p>To justify this, first notice that
+<span class="math display">\[\begin{eqnarray}
+V_{R} &amp;=&amp; \frac{1}{n^{3}}\sum_{i=1}^{n} R_{i}(\mathbf{X})R_{i}(\mathbf{Y})
+= \frac{1}{n^{3}}\sum_{i=1}^{n} \sum_{j=1}^{n} I(X_{i} \geq X_{j}) \sum_{k=1}^{n} I(Y_{i} \geq Y_{k}) \nonumber \\
+&amp;=&amp; \frac{1}{n^{3}}\sum_{i=1}^{n} \sum_{j=1}^{n} \sum_{k=1}^{n} I(X_{i} \geq X_{j}) I(Y_{i} \geq Y_{k})  \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>While <span class="math inline">\(V_{R}\)</span> is not exactly U-statistic, it can be thought of as roughly a “U-statistic” with non-symmetric kernel function
+<span class="math display">\[\begin{equation}
+h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix},
+\begin{bmatrix} X_{3} \\ Y_{3} \end{bmatrix} \Bigg) = I(X_{1} \geq X_{2}) I(Y_{1} \geq Y_{3}) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>So, we should expect <span class="math inline">\(V_{R}\)</span> to converge to <span class="math inline">\(P\{X_{1} \geq X_{2}, Y_{1} \geq Y_{3}\}\)</span> as <span class="math inline">\(n\)</span> gets larger.</p></li>
+<li><p>Using <a href="ustat.html#eq:spearman-simplifiation">(6.7)</a> and our formula for <span class="math inline">\(V_{R}\)</span>, we can write <span class="math inline">\(\hat{\rho}_{R}\)</span> as
+<span class="math display">\[\begin{eqnarray}
+\hat{\rho}_{R} &amp;=&amp; \frac{12}{n(n-1)(n+1)}\sum_{i=1}^{n} R_{i}( \mathbf{X} )R_{i}(\mathbf{Y}) - \frac{3(n+1)}{n-1} \nonumber \\
+&amp;=&amp; 12 V_{R} \Big( \frac{n^{3}}{n(n-1)(n+1)} \Big)  - \frac{3(n+1)}{n-1}. \nonumber
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<p><strong>Exercise 6.2.</strong> Why does <span class="math inline">\(\theta_{R}\)</span> equal zero when <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{i}\)</span> are independent?
+Why is <span class="math inline">\(-1\leq \theta_{R} \leq 1\)</span>?</p>
+<hr />
+</div>
+<div id="kendalls-tau" class="section level3">
+<h3><span class="header-section-number">6.5.2</span> Kendall’s tau</h3>
+<ul>
+<li><p>Ignoring the possibility of ties, Kendall’s <span class="math inline">\(\tau\)</span>-statistic <span class="math inline">\(U_{\tau}\)</span> is given by
+<span class="math display">\[\begin{eqnarray}
+U_{\tau}
+&amp;=&amp; \frac{2}{n(n-1)}\sum_{i=1}^{n}\sum_{j=i+1}^{n} \Bigg[ 2 \times I\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) &gt; 0 \Big\}  - 1 \Bigg]
+\end{eqnarray}\]</span></p></li>
+<li><p>Note that <span class="math inline">\(U_{\tau}\)</span> is a U-statistic of order <span class="math inline">\(2\)</span> with kernel
+<span class="math display">\[\begin{equation}
+h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix},
+\begin{bmatrix} X_{2} \\ Y_{2} \end{bmatrix} \Bigg)
+= 2 \times I\Big\{ (X_{2} - X_{1})(Y_{2} - Y_{1}) &gt; 0 \Big\}  - 1
+\end{equation}\]</span></p></li>
+</ul>
+<!--
+\begin{equation}
+h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix},
+\begin{bmatrix} X_{2} \\ Y_{2} \end{bmatrix} \Bigg)
+= 2 \times I\Big\{ (X_{2} - X_{1})(Y_{2} - Y_{1}) > 0 \Big\}  - 
+I\Big\{ X_{2} \neq X_{1} \Big\}I\Big\{ Y_{2} \neq Y_{1} \Big\}
+\end{equation}
+-->
+<ul>
+<li><p>Assuming the probability of ties is zero, Kendall’s <span class="math inline">\(\tau\)</span> can be thought of as an estimate of the following quantity
+<span class="math display">\[\begin{equation}
+\theta_{\tau} = 2 P\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) &gt; 0 \Big\} - 1
+\end{equation}\]</span></p></li>
+<li><p>Kendall’s <span class="math inline">\(\tau\)</span> must be in between <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span>.</p></li>
+<li><p>If <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{i}\)</span> are idependent, Kendall’s <span class="math inline">\(\tau\)</span> will be equal to zero (why?).</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>In the context of computing <span class="math inline">\(U_{\tau}\)</span>, pairs of observations <span class="math inline">\((X_{i}, Y_{i})\)</span> and <span class="math inline">\((X_{j}, Y_{j})\)</span> are said to be <strong>concordant</strong> if
+the sign of <span class="math inline">\(X_{j} - X_{i}\)</span> agrees with the sign of <span class="math inline">\(Y_{j} - Y_{i}\)</span>.</p></li>
+<li><p>If the sign of <span class="math inline">\(X_{j} - X_{i}\)</span> and <span class="math inline">\(Y_{j} - Y_{i}\)</span> do <strong>not</strong> agree, then the
+pairs <span class="math inline">\((X_{i}, Y_{i})\)</span> and <span class="math inline">\((X_{j}, Y_{j})\)</span> are said to be <strong>discordant</strong>.</p></li>
+<li><p>If either <span class="math inline">\(X_{j}=X_{i}\)</span> or <span class="math inline">\(Y_{j}=Y_{i}\)</span>, then the pairs <span class="math inline">\((X_{i}, Y_{i})\)</span> and <span class="math inline">\((X_{j}, Y_{j})\)</span>
+are neither concordant or discordant.</p></li>
+<li><p>Let us define the following
+<span class="math display">\[\begin{eqnarray}
+n_{c} &amp;=&amp; \textrm{ the number of concordant pairs} \nonumber \\
+n_{d} &amp;=&amp; \textrm{ the number of discordant pairs} \nonumber \\
+n_{n} &amp;=&amp; \textrm{ number of pairs which are neither}  \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>Here, we are counting <span class="math inline">\(n_{c}\)</span> and <span class="math inline">\(n_{d}\)</span> from the number of unique possible pairings. There
+are <span class="math inline">\(n(n-1)/2\)</span> unique pairings, and hence
+<span class="math display">\[\begin{equation}
+n_{c} + n_{d} + n_{n} = {n \choose 2} = \frac{n(n-1)}{2}
+\end{equation}\]</span></p></li>
+<li><p>Notice that <span class="math inline">\(n_{c}\)</span> can be expressed in terms of indicator functions as
+<span class="math display">\[\begin{equation}
+n_{c} = \sum_{i=1}^{n}\sum_{j=i+1}^{n} I\Big\{ (X_{j} - X_{i})(Y_{j} - Y_{i}) &gt; 0 \Big\} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>If we assume that there are no ties (i.e., <span class="math inline">\(n_{n} = 0\)</span>), then <span class="math inline">\(U_{\tau}\)</span>
+can be written as
+<span class="math display">\[\begin{equation}
+U_{\tau} = \frac{4n_{c}}{n(n-1)} - 1
+= \frac{2n_{c} + 2n_{c} - n(n - 1)}{n(n-1)}
+= \frac{2n_{c} - 2n_{d} }{n(n-1)} 
+= \frac{2(n_{c} - n_{d})}{n(n-1)} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Under independence, the number of concordant and discordant pairs should be roughly equal.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>We just need ordinal data to use Kendall’s <span class="math inline">\(\tau\)</span>. Kendall’s <span class="math inline">\(\tau\)</span> can be computed
+as long you can tell if one observation is “larger” than another.</p></li>
+<li><p>Kendall’s <span class="math inline">\(\tau\)</span> is often used in the context of assessing the agreement between
+different ratings.</p></li>
+<li><p>Here, we might have <span class="math inline">\(K\)</span> different judges which are rating <span class="math inline">\(J\)</span> different objects.
+If <span class="math inline">\(r_{jk}\)</span> denotes the object-j rating given by judge <span class="math inline">\(k\)</span>, Kendall’s <span class="math inline">\(\tau\)</span>
+from the <span class="math inline">\(J\)</span> pairs <span class="math inline">\((r_{11}, r_{12}), \ldots, (r_{J1}, r_{J2})\)</span> would give
+a measure of the agreement between judges 1 and 2.</p></li>
+</ul>
+</div>
+<div id="distance-covariance-and-correlation" class="section level3">
+<h3><span class="header-section-number">6.5.3</span> Distance Covariance and Correlation</h3>
+<ul>
+<li><p>A value of the correlation which equals zero does not imply that two random variables
+are independent.</p></li>
+<li><p>For example, if <span class="math inline">\(X \sim \textrm{Normal}(0, 1)\)</span>, then
+<span class="math display">\[\begin{equation}
+\textrm{Corr}(X, X^{2}) = \textrm{Cov}(X, X^{2}) = E( X^{3} ) = 0 \nonumber
+\end{equation}\]</span></p></li>
+<li><p>This is also true Spearman’s rank correlation and Kendall’s <span class="math inline">\(\tau\)</span>. You
+can have situations where <span class="math inline">\(\theta_{R} = 0\)</span> but <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are not independent.
+Similarly, you can have situations where <span class="math inline">\(\theta_{\tau} = 0\)</span>
+while <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are not independent.</p></li>
+<li><p>Note that the association between the two variables in the figures below
+is <strong>non-monotone</strong>.</p></li>
+</ul>
+<p><img src="06-ustatistics_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<div id="definition-4" class="section level4">
+<h4><span class="header-section-number">6.5.3.1</span> Definition</h4>
+<ul>
+<li><p><strong>Distance covariance</strong> and <strong>distance correlation</strong> are two measures of dependence that have been developed
+much more recently (see <span class="citation">Székely et al. (<a href="#ref-szekely2007">2007</a>)</span>).</p></li>
+<li><p>The interesting thing about these two measures is that: if they equal zero then it
+implies that the two random variables are independent.</p></li>
+<li><p>Moreover, the measures have a relatively straightforward formula, and
+they have easily computable estimates.</p></li>
+<li><p>For i.i.d. bivariate random variables <span class="math inline">\((X_{1}, Y_{1}), \ldots, (X_{n}, Y_{n})\)</span>,
+the squared distance covariance parameter is defined as
+<span class="math display">\[\begin{equation}
+\theta_{dCov,XY}^{2} 
+= E\Big\{ |X_{1} - X_{2}| |Y_{1} - Y_{2}|  \Big\} + E\Big\{ |X_{1} - X_{2}| \Big\}E\Big\{ |Y_{1} - Y_{2}| \Big\} - 2E\Big\{ |X_{1} - X_{2}||Y_{1} - Y_{3}| \Big\} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The distance correlation bettween <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{i}\)</span> is then defined as
+<span class="math display">\[\begin{equation}
+\rho_{d, XY} = \frac{ \theta_{dCov,XY} }{\theta_{dCov,XX} \theta_{dCov, YY} } 
+\end{equation}\]</span></p></li>
+<li><p>Notice that we must have <span class="math inline">\(\theta_{dCov, XY} \geq 0\)</span> and <span class="math inline">\(\rho_{d, XY} \geq 0\)</span>.</p></li>
+<li><p>There is no notion of a negative correlation when using distance correlation.</p></li>
+<li><p>The interpretation of <span class="math inline">\(\theta_{dCov,XY}^{2}\)</span> is perhaps not as clear as
+the usual correlation parameter. Nevertheless, <span class="math inline">\(\theta_{dCov,XY} = 0\)</span>
+implies independence, and larger values of <span class="math inline">\(\theta_{dCov,XY}\)</span> imply
+that <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{i}\)</span> have some form of greater association.</p></li>
+</ul>
+<hr />
+<p><strong>Example</strong></p>
+<ul>
+<li><p>Let us consider the example we had before where we compared <span class="math inline">\(X\)</span> and <span class="math inline">\(X^{2}\)</span>.</p></li>
+<li><p>Specifically, suppose we have observed pairs <span class="math inline">\((X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})\)</span>
+where <span class="math inline">\(X_{i} \sim \textrm{Normal}(0, 1)\)</span> and <span class="math inline">\(Y_{i} = X_{i}^{2}\)</span>.</p></li>
+<li><p>In this case, the distance covariance turns out to be
+<span class="math display">\[\begin{eqnarray}
+&amp;&amp;\theta_{dCov,XY}^{2} 
+= E\Big\{ |X_{1} - X_{2}| |Y_{1} - Y_{2}|  \Big\} + E\Big\{ |X_{1} - X_{2}| \Big\}E\Big\{ |Y_{1} - Y_{2}| \Big\} - 2E\Big\{ |X_{1} - X_{2}||Y_{1} - Y_{3}| \Big\} \nonumber \\
+&amp;&amp;= E\Big\{ |X_{1} - X_{2}| |X_{1}^{2} - X_{2}^{2}|  \Big\} + E\Big\{ |X_{1} - X_{2}| \Big\}E\Big\{ |X_{1}^{2} - X_{2}^{2}| \Big\} - 2E\Big\{ |X_{1} - X_{2}||X_{1}^{2} - X_{3}^{2}| \Big\} \nonumber 
+\end{eqnarray}\]</span></p></li>
+<li><p>It could be a lot work to compute the above expectation exactly. However,
+we can estimate it pretty closely using simulation:</p></li>
+</ul>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">4157</span>)</a>
+<a class="sourceLine" id="cb93-2" data-line-number="2">nreps &lt;-<span class="st"> </span><span class="dv">500000</span> <span class="co">## number of simulation replications</span></a>
+<a class="sourceLine" id="cb93-3" data-line-number="3">term1 &lt;-<span class="st"> </span>term2 &lt;-<span class="st"> </span>term3 &lt;-<span class="st"> </span>term4 &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, nreps)</a>
+<a class="sourceLine" id="cb93-4" data-line-number="4"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nreps) {</a>
+<a class="sourceLine" id="cb93-5" data-line-number="5">    xx &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb93-6" data-line-number="6">    term1[k] &lt;-<span class="st"> </span><span class="kw">abs</span>(xx[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>xx[<span class="dv">2</span>])<span class="op">*</span><span class="kw">abs</span>(xx[<span class="dv">1</span>]<span class="op">^</span><span class="dv">2</span> <span class="op">-</span><span class="st"> </span>xx[<span class="dv">2</span>]<span class="op">^</span><span class="dv">2</span>) </a>
+<a class="sourceLine" id="cb93-7" data-line-number="7">    term2[k] &lt;-<span class="st"> </span><span class="kw">abs</span>(xx[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>xx[<span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb93-8" data-line-number="8">    term3[k] &lt;-<span class="st"> </span><span class="kw">abs</span>(xx[<span class="dv">1</span>]<span class="op">^</span><span class="dv">2</span> <span class="op">-</span><span class="st"> </span>xx[<span class="dv">2</span>]<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb93-9" data-line-number="9">    term4[k] &lt;-<span class="st"> </span><span class="kw">abs</span>(xx[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>xx[<span class="dv">2</span>])<span class="op">*</span><span class="kw">abs</span>(xx[<span class="dv">1</span>]<span class="op">^</span><span class="dv">2</span> <span class="op">-</span><span class="st"> </span>xx[<span class="dv">3</span>]<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb93-10" data-line-number="10">}</a>
+<a class="sourceLine" id="cb93-11" data-line-number="11">dcov.sq.est &lt;-<span class="st"> </span><span class="kw">mean</span>(term1) <span class="op">+</span><span class="st"> </span><span class="kw">mean</span>(term2)<span class="op">*</span><span class="kw">mean</span>(term3) <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span><span class="kw">mean</span>(term4)</a>
+<a class="sourceLine" id="cb93-12" data-line-number="12">dcov.sq.est</a></code></pre></div>
+<pre><code>## [1] 0.137895</code></pre>
+<ul>
+<li><p>The squared distance covariance for this example seems to be about <span class="math inline">\(0.14\)</span>.</p></li>
+<li><p>Thus, the distance covariance is positive for this example where
+the two variables are dependent while the usual covariance between
+these two variables is zero.</p></li>
+</ul>
+<hr />
+<ul>
+<li><strong>Exercise 6.2</strong>. For this example, where we have observed pairs <span class="math inline">\((X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})\)</span>
+with <span class="math inline">\(X_{i} \sim \textrm{Normal}(0, 1)\)</span> and <span class="math inline">\(Y_{i} = X_{i}^{2}\)</span>, compute Kendall’s <span class="math inline">\(\tau\)</span> parameter <span class="math inline">\(\theta_{\tau}\)</span>.</li>
+</ul>
+<hr />
+</div>
+<div id="estimation-of-distance-covariance-and-distance-correlation" class="section level4">
+<h4><span class="header-section-number">6.5.3.2</span> Estimation of Distance Covariance and Distance Correlation</h4>
+<ul>
+<li><p>The distance covariance and correlation are estimated by using a bunch of pairwise distances
+between our observations.</p></li>
+<li><p>The pairwise distances <span class="math inline">\(a_{ij}\)</span> and <span class="math inline">\(b_{ij}\)</span> for the <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{i}\)</span> are defined as
+<span class="math display">\[\begin{eqnarray}
+a_{ij} &amp;=&amp; | X_{i} - X_{j}|  \nonumber \\
+b_{ij} &amp;=&amp; | Y_{i} - Y_{j}|  \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>We then construct the <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}\)</span>
+(with elements <span class="math inline">\(A_{ij}\)</span>) and the <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{B}\)</span>
+(with elements <span class="math inline">\(B_{ij}\)</span>) in the following way
+<span class="math display">\[\begin{equation}
+A_{ij} = 
+\begin{cases}
+a_{ij} - \frac{1}{n-2} a_{i.} - \frac{1}{n-2} a_{.j} + \frac{1}{(n-1)(n-2)}a_{..} &amp; \textrm{ if } i \neq j \nonumber \\
+0 &amp; \textrm{ if } i = j \nonumber
+\end{cases}
+\end{equation}\]</span>
+<span class="math display">\[\begin{equation}
+B_{ij} = 
+\begin{cases}
+b_{ij} - \frac{1}{n-2} b_{i.} - \frac{1}{n-2} b_{.j} + \frac{1}{(n-1)(n-2)}b_{..} &amp; \textrm{ if } i \neq j \nonumber \\
+0 &amp; \textrm{ if } i = j \nonumber
+\end{cases}
+\end{equation}\]</span>
+where <span class="math inline">\(a_{i.} = \sum_{k=1}^{n} a_{ik}\)</span>, <span class="math inline">\(a_{.j} = \sum_{k=1}^{n} a_{kj}\)</span>, and <span class="math inline">\(a_{..} = \sum_{k=1}^{n}\sum_{l=1}^{n} a_{ij}\)</span>.</p></li>
+<li><p>In other words, <span class="math inline">\(\mathbf{A}\)</span> is a matrix containing “centered” pairwise distances.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The estimate of the squared distance covariance parameter is then given by
+<span class="math display">\[\begin{equation}
+\hat{\theta}_{dCov,XY}^{2} = \frac{1}{n(n-3)}\sum_{i=1}^{n}\sum_{j=1}^{n} A_{ij}B_{ij}
+\end{equation}\]</span></p></li>
+<li><p>The estimate of the distance correlation is
+<span class="math display">\[\begin{equation}
+\hat{\rho}_{d, XY} = \frac{ \hat{\theta}_{dCov,XY} }{\hat{\theta}_{dCov,XX} \hat{\theta}_{dCov, YY} } 
+\end{equation}\]</span></p></li>
+<li><p>It turns out that <span class="math inline">\(\hat{\theta}_{dCov, XY}^{2}\)</span> is a U-statistic of order <span class="math inline">\(4\)</span> (see <span class="citation">Huo and Székely (<a href="#ref-huo2016">2016</a>)</span> for a justification of this).
+It has kernel function
+<span class="math display">\[\begin{equation}
+h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix},
+\begin{bmatrix} X_{3} \\ Y_{3} \end{bmatrix}, \begin{bmatrix} X_{4} \\ Y_{4}\end{bmatrix} \Bigg) 
+= \frac{1}{4}\sum_{i=1}^{4}\sum_{j=1}^{4} A_{ij}B_{ij}
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li>You can compute distance covariances and distance correlations using the <strong>energy</strong> package in <strong>R</strong>.</li>
+</ul>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1"><span class="kw">library</span>(energy)</a>
+<a class="sourceLine" id="cb95-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb95-3" data-line-number="3">n &lt;-<span class="st"> </span><span class="dv">5000</span></a>
+<a class="sourceLine" id="cb95-4" data-line-number="4"><span class="co">## generate &quot;parabola&quot; data</span></a>
+<a class="sourceLine" id="cb95-5" data-line-number="5">xx1 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd=</span><span class="fl">0.5</span>)  </a>
+<a class="sourceLine" id="cb95-6" data-line-number="6">yy1 &lt;-<span class="st"> </span>xx1<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd=</span><span class="fl">0.05</span>)</a>
+<a class="sourceLine" id="cb95-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb95-8" data-line-number="8"><span class="co">## generate circle data</span></a>
+<a class="sourceLine" id="cb95-9" data-line-number="9">xx2 &lt;-<span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min=</span><span class="op">-</span><span class="dv">1</span>, <span class="dt">max=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb95-10" data-line-number="10">yy2 &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">size=</span>n, <span class="dt">replace=</span><span class="ot">TRUE</span>)<span class="op">*</span><span class="kw">sqrt</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>xx2<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd=</span>.<span class="dv">05</span>)</a>
+<a class="sourceLine" id="cb95-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb95-12" data-line-number="12">d.cor1 &lt;-<span class="st"> </span><span class="kw">dcor</span>(xx1, yy1)</a>
+<a class="sourceLine" id="cb95-13" data-line-number="13">d.cor2 &lt;-<span class="st"> </span><span class="kw">dcor</span>(xx2, yy2)</a>
+<a class="sourceLine" id="cb95-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb95-15" data-line-number="15"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb95-16" data-line-number="16"><span class="kw">plot</span>(xx1, yy1, <span class="dt">xlab=</span><span class="st">&quot;x&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;y&quot;</span>, <span class="dt">main=</span><span class="kw">paste</span>(<span class="st">&quot;Sample Distance Corr. = &quot;</span>, </a>
+<a class="sourceLine" id="cb95-17" data-line-number="17">                                              <span class="kw">round</span>(d.cor1 ,<span class="dv">4</span>)), <span class="dt">las=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb95-18" data-line-number="18"><span class="kw">plot</span>(xx2, yy2, <span class="dt">xlab=</span><span class="st">&quot;x&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;y&quot;</span>, <span class="dt">main=</span><span class="kw">paste</span>(<span class="st">&quot;Sample Distance Corr. = &quot;</span>, </a>
+<a class="sourceLine" id="cb95-19" data-line-number="19">                                              <span class="kw">round</span>(d.cor2, <span class="dv">4</span>)), <span class="dt">las=</span><span class="dv">1</span>)</a></code></pre></div>
+<p><img src="06-ustatistics_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1"><span class="co">## Let&#39;s just compare the values of distance correlation and Pearson&#39;s </span></a>
+<a class="sourceLine" id="cb96-2" data-line-number="2"><span class="co">## for both examples </span></a>
+<a class="sourceLine" id="cb96-3" data-line-number="3">p.cor1 &lt;-<span class="st"> </span><span class="kw">cor</span>(xx1, yy1)</a>
+<a class="sourceLine" id="cb96-4" data-line-number="4">p.cor2 &lt;-<span class="st"> </span><span class="kw">cor</span>(xx2, yy2)</a>
+<a class="sourceLine" id="cb96-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb96-6" data-line-number="6">kend.cor1 &lt;-<span class="st"> </span><span class="kw">cor</span>(xx1, yy1, <span class="dt">method=</span><span class="st">&quot;kendall&quot;</span>) </a>
+<a class="sourceLine" id="cb96-7" data-line-number="7">kend.cor2 &lt;-<span class="st"> </span><span class="kw">cor</span>(xx2, yy2, <span class="dt">method=</span><span class="st">&quot;kendall&quot;</span>)</a>
+<a class="sourceLine" id="cb96-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb96-9" data-line-number="9">spear.cor1 &lt;-<span class="st"> </span><span class="kw">cor</span>(xx1, yy1, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>) </a>
+<a class="sourceLine" id="cb96-10" data-line-number="10">spear.cor2 &lt;-<span class="st"> </span><span class="kw">cor</span>(xx2, yy2, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>)</a>
+<a class="sourceLine" id="cb96-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb96-12" data-line-number="12"><span class="co"># Pearson, Kendall&#39;s-tau, Rank, Distance Correlation</span></a>
+<a class="sourceLine" id="cb96-13" data-line-number="13"><span class="kw">round</span>(<span class="kw">c</span>(p.cor1, kend.cor1, spear.cor1, d.cor1), <span class="dv">4</span>) <span class="co">## parabola</span></a></code></pre></div>
+<pre><code>## [1] -0.0124  0.0077  0.0109  0.5268</code></pre>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(p.cor2, kend.cor2, spear.cor2, d.cor2), <span class="dv">4</span>) <span class="co">## circle</span></a></code></pre></div>
+<pre><code>## [1] 0.0134 0.0041 0.0138 0.1508</code></pre>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-huo2016">
+<p>Huo, Xiaoming, and Gábor J Székely. 2016. “Fast Computing for Distance Covariance.” <em>Technometrics</em> 58 (4): 435–47.</p>
+</div>
+<div id="ref-szekely2007">
+<p>Székely, Gábor J, Maria L Rizzo, Nail K Bakirov, and others. 2007. “Measuring and Testing Dependence by Correlation of Distances.” <em>The Annals of Statistics</em> 35 (6): 2769–94.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="permutation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="edf.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["ElementsNonparStat.pdf"],
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

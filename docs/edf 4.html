@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 The Empirical Distribution Function | Elements of Nonparametric Statistics</title>
+  <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 The Empirical Distribution Function | Elements of Nonparametric Statistics" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
+  
+  <meta property="og:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
+  <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 The Empirical Distribution Function | Elements of Nonparametric Statistics" />
+  
+  <meta name="twitter:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
+  
+
+<meta name="author" content="Nicholas Henderson" />
+
+
+<meta name="date" content="2020-02-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ustat.html"/>
+<link rel="next" href="density-estimation.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Biostat 685/Stat 560</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#sec:whatisnonpar"><i class="fa fa-check"></i><b>1.1</b> What is Nonparametric Statistics?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#sec:course-outline"><i class="fa fa-check"></i><b>1.2</b> Outline of Course</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#sec:example-nonpar-tests"><i class="fa fa-check"></i><b>1.3</b> Example 1: Nonparametric vs. Parametric Two-Sample Testing</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#sec:example-nonpar-estimation"><i class="fa fa-check"></i><b>1.4</b> Example 2: Nonparametric Estimation</a></li>
+<li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#sec:example-nonpar-confint"><i class="fa fa-check"></i><b>1.5</b> Example 3: Confidence Intervals</a></li>
+<li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress1"><i class="fa fa-check"></i><b>1.6</b> Example 4: Nonparametric Regression with a Single Covariate</a></li>
+<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#sec:example-nonpar-regress2"><i class="fa fa-check"></i><b>1.7</b> Example 5: Classification and Regression Trees (CART)</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Working with R</a></li>
+<li class="part"><span><b>I Nonparametric Testing</b></span></li>
+<li class="chapter" data-level="3" data-path="rank-tests.html"><a href="rank-tests.html"><i class="fa fa-check"></i><b>3</b> Rank and Sign Statistics</a><ul>
+<li class="chapter" data-level="3.1" data-path="rank-tests.html"><a href="rank-tests.html#ranks"><i class="fa fa-check"></i><b>3.1</b> Ranks</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="rank-tests.html"><a href="rank-tests.html#definition"><i class="fa fa-check"></i><b>3.1.1</b> Definition</a></li>
+<li class="chapter" data-level="3.1.2" data-path="rank-tests.html"><a href="rank-tests.html#handling-ties"><i class="fa fa-check"></i><b>3.1.2</b> Handling Ties</a></li>
+<li class="chapter" data-level="3.1.3" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-ranks"><i class="fa fa-check"></i><b>3.1.3</b> Properties of Ranks</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test-a-two-sample-test"><i class="fa fa-check"></i><b>3.2</b> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="rank-tests.html"><a href="rank-tests.html#goal-of-the-test"><i class="fa fa-check"></i><b>3.2.1</b> Goal of the Test</a></li>
+<li class="chapter" data-level="3.2.2" data-path="rank-tests.html"><a href="rank-tests.html#definition-of-the-wrs-test-statistic"><i class="fa fa-check"></i><b>3.2.2</b> Definition of the WRS Test Statistic</a></li>
+<li class="chapter" data-level="3.2.3" data-path="rank-tests.html"><a href="rank-tests.html#computing-p-values-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.3</b> Computing p-values for the WRS Test</a></li>
+<li class="chapter" data-level="3.2.4" data-path="rank-tests.html"><a href="rank-tests.html#computing-the-wrs-test-in-r"><i class="fa fa-check"></i><b>3.2.4</b> Computing the WRS test in R</a></li>
+<li class="chapter" data-level="3.2.5" data-path="rank-tests.html"><a href="rank-tests.html#additional-notes-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.5</b> Additional Notes for the WRS test</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.3</b> One Sample Tests</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#sign-test"><i class="fa fa-check"></i><b>3.3.1</b> The Sign Test</a></li>
+<li class="chapter" data-level="3.3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-signed-rank-test"><i class="fa fa-check"></i><b>3.3.2</b> The Wilcoxon Signed Rank Test</a></li>
+<li class="chapter" data-level="3.3.3" data-path="rank-tests.html"><a href="rank-tests.html#using-r-to-perform-the-sign-and-wilcoxon-tests"><i class="fa fa-check"></i><b>3.3.3</b> Using R to Perform the Sign and Wilcoxon Tests</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#power-and-comparisons-with-parametric-tests"><i class="fa fa-check"></i><b>3.4</b> Power and Comparisons with Parametric Tests</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="rank-tests.html"><a href="rank-tests.html#the-power-function-of-a-test"><i class="fa fa-check"></i><b>3.4.1</b> The Power Function of a Test</a></li>
+<li class="chapter" data-level="3.4.2" data-path="rank-tests.html"><a href="rank-tests.html#power-comparisons-and-asymptotic-relative-efficiency"><i class="fa fa-check"></i><b>3.4.2</b> Power Comparisons and Asymptotic Relative Efficiency</a></li>
+<li class="chapter" data-level="3.4.3" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-examples"><i class="fa fa-check"></i><b>3.4.3</b> Efficiency Examples</a></li>
+<li class="chapter" data-level="3.4.4" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-comparisons-for-several-distributions"><i class="fa fa-check"></i><b>3.4.4</b> Efficiency Comparisons for Several Distributions</a></li>
+<li class="chapter" data-level="3.4.5" data-path="rank-tests.html"><a href="rank-tests.html#a-power-contest"><i class="fa fa-check"></i><b>3.4.5</b> A Power “Contest”</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#linear-rank-statistics-in-general"><i class="fa fa-check"></i><b>3.5</b> Linear Rank Statistics in General</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="rank-tests.html"><a href="rank-tests.html#definition-1"><i class="fa fa-check"></i><b>3.5.1</b> Definition</a></li>
+<li class="chapter" data-level="3.5.2" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.2</b> Properties of Linear Rank Statistics</a></li>
+<li class="chapter" data-level="3.5.3" data-path="rank-tests.html"><a href="rank-tests.html#other-examples-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.3</b> Other Examples of Linear Rank Statistics</a></li>
+<li class="chapter" data-level="3.5.4" data-path="rank-tests.html"><a href="rank-tests.html#choosing-the-scores-a_ni"><i class="fa fa-check"></i><b>3.5.4</b> Choosing the scores <span class="math inline">\(a_{N}(i)\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#additional-reading"><i class="fa fa-check"></i><b>3.6</b> Additional Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a><ul>
+<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskal-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskal-Wallis Test</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#definition-2"><i class="fa fa-check"></i><b>4.1.1</b> Definition</a></li>
+<li class="chapter" data-level="4.1.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#asymptotic-distribution-and-connection-to-one-way-anova"><i class="fa fa-check"></i><b>4.1.2</b> Asymptotic Distribution and Connection to One-Way ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#performing-the-kruskal-wallis-test-in-r"><i class="fa fa-check"></i><b>4.2</b> Performing the Kruskal-Wallis Test in R</a></li>
+<li class="chapter" data-level="4.3" data-path="krusk-wallis.html"><a href="krusk-wallis.html#comparison-of-specific-groups"><i class="fa fa-check"></i><b>4.3</b> Comparison of Specific Groups</a></li>
+<li class="chapter" data-level="4.4" data-path="krusk-wallis.html"><a href="krusk-wallis.html#an-additional-example"><i class="fa fa-check"></i><b>4.4</b> An Additional Example</a></li>
+<li class="chapter" data-level="4.5" data-path="krusk-wallis.html"><a href="krusk-wallis.html#additional-reading-1"><i class="fa fa-check"></i><b>4.5</b> Additional Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a><ul>
+<li class="chapter" data-level="5.1" data-path="permutation.html"><a href="permutation.html#notation"><i class="fa fa-check"></i><b>5.1</b> Notation</a></li>
+<li class="chapter" data-level="5.2" data-path="permutation.html"><a href="permutation.html#permutation-tests-for-the-two-sample-problem"><i class="fa fa-check"></i><b>5.2</b> Permutation Tests for the Two-Sample Problem</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="permutation.html"><a href="permutation.html#example-1"><i class="fa fa-check"></i><b>5.2.1</b> Example 1</a></li>
+<li class="chapter" data-level="5.2.2" data-path="permutation.html"><a href="permutation.html#permutation-test-p-values"><i class="fa fa-check"></i><b>5.2.2</b> Permutation Test p-values</a></li>
+<li class="chapter" data-level="5.2.3" data-path="permutation.html"><a href="permutation.html#example-2-ratios-of-means"><i class="fa fa-check"></i><b>5.2.3</b> Example 2: Ratios of Means</a></li>
+<li class="chapter" data-level="5.2.4" data-path="permutation.html"><a href="permutation.html#example-3-differences-in-quantiles"><i class="fa fa-check"></i><b>5.2.4</b> Example 3: Differences in Quantiles</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3</b> The Permutation Test as a Conditional Test</a></li>
+<li class="chapter" data-level="5.4" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-correlation"><i class="fa fa-check"></i><b>5.4</b> A Permutation Test for Correlation</a></li>
+<li class="chapter" data-level="5.5" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-variable-importance-in-regression-and-machine-learning"><i class="fa fa-check"></i><b>5.5</b> A Permutation Test for Variable Importance in Regression and Machine Learning</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
+<li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-3"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
+<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="ustat.html"><a href="ustat.html#example-1-the-sample-mean"><i class="fa fa-check"></i><b>6.2.1</b> Example 1: The Sample Mean</a></li>
+<li class="chapter" data-level="6.2.2" data-path="ustat.html"><a href="ustat.html#example-2-the-sample-variance"><i class="fa fa-check"></i><b>6.2.2</b> Example 2: The Sample Variance</a></li>
+<li class="chapter" data-level="6.2.3" data-path="ustat.html"><a href="ustat.html#example-3-ginis-mean-difference"><i class="fa fa-check"></i><b>6.2.3</b> Example 3: Gini’s Mean Difference</a></li>
+<li class="chapter" data-level="6.2.4" data-path="ustat.html"><a href="ustat.html#example-4-wilcoxon-signed-rank-statistic"><i class="fa fa-check"></i><b>6.2.4</b> Example 4: Wilcoxon Signed Rank Statistic</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#inference-using-u-statistics"><i class="fa fa-check"></i><b>6.3</b> Inference using U-statistics</a></li>
+<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#u-statistics-for-two-sample-problems"><i class="fa fa-check"></i><b>6.4</b> U-statistics for Two-Sample Problems</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="ustat.html"><a href="ustat.html#the-mann-whitney-statistic"><i class="fa fa-check"></i><b>6.4.1</b> The Mann-Whitney Statistic</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.5</b> Measures of Association</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="ustat.html"><a href="ustat.html#spearmans-rank-correlation"><i class="fa fa-check"></i><b>6.5.1</b> Spearman’s Rank Correlation</a></li>
+<li class="chapter" data-level="6.5.2" data-path="ustat.html"><a href="ustat.html#kendalls-tau"><i class="fa fa-check"></i><b>6.5.2</b> Kendall’s tau</a></li>
+<li class="chapter" data-level="6.5.3" data-path="ustat.html"><a href="ustat.html#distance-covariance-and-correlation"><i class="fa fa-check"></i><b>6.5.3</b> Distance Covariance and Correlation</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Nonparametric Estimation</b></span></li>
+<li class="chapter" data-level="7" data-path="edf.html"><a href="edf.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
+<li class="chapter" data-level="7.1" data-path="edf.html"><a href="edf.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1</b> Definition and Basic Properties</a></li>
+<li class="chapter" data-level="7.2" data-path="edf.html"><a href="edf.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.2</b> Confidence intervals for F(t)</a></li>
+<li class="chapter" data-level="7.3" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.3</b> The Empirical Distribution Function in R</a></li>
+<li class="chapter" data-level="7.4" data-path="edf.html"><a href="edf.html#the-kolmogorov-smirnov-test"><i class="fa fa-check"></i><b>7.4</b> The Kolmogorov-Smirnov Test</a></li>
+<li class="chapter" data-level="7.5" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-and-statistical-functionals"><i class="fa fa-check"></i><b>7.5</b> The empirical distribution function and statistical functionals</a></li>
+<li class="chapter" data-level="7.6" data-path="edf.html"><a href="edf.html#additional-reading-2"><i class="fa fa-check"></i><b>7.6</b> Additional Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
+<li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms"><i class="fa fa-check"></i><b>8.2</b> Histograms</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-5"><i class="fa fa-check"></i><b>8.2.1</b> Definition</a></li>
+<li class="chapter" data-level="8.2.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms-in-r"><i class="fa fa-check"></i><b>8.2.2</b> Histograms in R</a></li>
+<li class="chapter" data-level="8.2.3" data-path="density-estimation.html"><a href="density-estimation.html#performance-of-the-histogram-estimate-and-bin-width-selection"><i class="fa fa-check"></i><b>8.2.3</b> Performance of the Histogram Estimate and Bin Width Selection</a></li>
+<li class="chapter" data-level="8.2.4" data-path="density-estimation.html"><a href="density-estimation.html#choosing-the-histogram-bin-width"><i class="fa fa-check"></i><b>8.2.4</b> Choosing the Histogram Bin Width</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="density-estimation.html"><a href="density-estimation.html#a-box-type-density-estimate"><i class="fa fa-check"></i><b>8.3</b> A Box-type Density Estimate</a></li>
+<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-6"><i class="fa fa-check"></i><b>8.4.1</b> Definition</a></li>
+<li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-amise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and AMISE of Kernel Density Estimates</a></li>
+<li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection with the Normal Reference Rule</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation-in-practice"><i class="fa fa-check"></i><b>8.5</b> Kernel Density Estimation in Practice</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.5.1</b> Density Estimation in R</a></li>
+<li class="chapter" data-level="8.5.2" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5.2</b> Cross-Validation for Bandwidth Selection</a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="density-estimation.html"><a href="density-estimation.html#additional-reading-3"><i class="fa fa-check"></i><b>8.6</b> Additional Reading</a></li>
+</ul></li>
+<li class="part"><span><b>III Uncertainty Measures</b></span></li>
+<li class="chapter" data-level="9" data-path="sampling.html"><a href="sampling.html"><i class="fa fa-check"></i><b>9</b> The Jackknife</a><ul>
+<li class="chapter" data-level="9.1" data-path="sampling.html"><a href="sampling.html#introduction-1"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> The Bootstrap and Confidence Intervals</a><ul>
+<li class="chapter" data-level="10.1" data-path="ci.html"><a href="ci.html#bootstrapping"><i class="fa fa-check"></i><b>10.1</b> Bootstrapping</a></li>
+</ul></li>
+<li class="part"><span><b>IV Nonparametric Regression: Part I</b></span></li>
+<li class="chapter" data-level="11" data-path="kernel-regression.html"><a href="kernel-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression</a><ul>
+<li class="chapter" data-level="11.1" data-path="kernel-regression.html"><a href="kernel-regression.html#introduction-2"><i class="fa fa-check"></i><b>11.1</b> Introduction</a><ul>
+<li class="chapter" data-level="11.1.1" data-path="kernel-regression.html"><a href="kernel-regression.html#an-example"><i class="fa fa-check"></i><b>11.1.1</b> An Example</a></li>
+<li class="chapter" data-level="11.1.2" data-path="kernel-regression.html"><a href="kernel-regression.html#linear-smoothers-and-naive-nonparametric-estimates"><i class="fa fa-check"></i><b>11.1.2</b> Linear Smoothers and Naive Nonparametric Estimates</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="kernel-regression.html"><a href="kernel-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>11.2</b> The Nadaraya-Watson estimator</a></li>
+<li class="chapter" data-level="11.3" data-path="kernel-regression.html"><a href="kernel-regression.html#local-linear-and-polynomial-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear and Polynomial Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
+<li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a></li>
+<li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#spline-basis-functions"><i class="fa fa-check"></i><b>12.2</b> Spline Basis Functions</a></li>
+<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splinespenalized-regression"><i class="fa fa-check"></i><b>12.3</b> Smoothing Splines/Penalized Regression</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#selection-of-smoothing-parameter"><i class="fa fa-check"></i><b>12.3.1</b> Selection of Smoothing Parameter</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
+<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a></li>
+<li class="chapter" data-level="14" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>14</b> Ensemble Methods for Prediction</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Elements of Nonparametric Statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="edf" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> The Empirical Distribution Function</h1>
+<div id="definition-and-basic-properties" class="section level2">
+<h2><span class="header-section-number">7.1</span> Definition and Basic Properties</h2>
+<ul>
+<li><p>Every random variable has a cumulative distribution function (cdf).</p></li>
+<li><p>The cdf of a random variable <span class="math inline">\(X\)</span> is defined as
+<span class="math display">\[\begin{equation}
+F(t) = P( X \leq t)
+\end{equation}\]</span></p></li>
+<li><p>The empirical distribution function or empirical cumulative distribution function (ecdf)
+estimates <span class="math inline">\(F(t)\)</span> by computing the proportion of observations which are less than or equal
+to <span class="math inline">\(t\)</span>.</p></li>
+<li><p>For i.i.d. random variables <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> with cdf <span class="math inline">\(F\)</span>, the empirical distribution function
+is defined as
+<span class="math display">\[\begin{equation}
+\hat{F}_{n}(t) = \frac{1}{n}\sum_{i=1}^{n} I( X_{i} \leq t) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Note that the empirical distribution function can be computed for any type
+of data without making any assumptions about the distribution from which
+the data arose.</p></li>
+<li><p>The only assumption we are making is that <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>
+constitute an i.i.d. sample from some common distribution function <span class="math inline">\(F\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li>For example, if we observed <span class="math inline">\(X_{1} = 0.7\)</span>, <span class="math inline">\(X_{2} = 0.2\)</span>, and <span class="math inline">\(X_{3} = 1.3\)</span>,
+the corresponding empirical distribution function would be
+<span class="math display">\[\begin{equation}
+\hat{F}_{3}(t) = 
+\begin{cases}
+0 &amp; \textrm{ for } t &lt; 0.2  \\
+1/3 &amp; \textrm{ for } 0.2 \leq t &lt; 0.7 \\
+2/3 &amp; \textrm{ for } 0.7 \leq t &lt; 1.3 \\
+1   &amp; \textrm{ for } t \geq 1.3
+\end{cases}
+\end{equation}\]</span></li>
+</ul>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>
+<div id="confidence-intervals-for-ft" class="section level2">
+<h2><span class="header-section-number">7.2</span> Confidence intervals for F(t)</h2>
+<ul>
+<li><p>For a fixed value of <span class="math inline">\(t\)</span>, the distribution of <span class="math inline">\(\hat{F}_{n}(t)\)</span> is
+<span class="math display">\[\begin{equation}
+n \hat{F}_{n}(t) \sim \textrm{Binomial}\big( n, F(t) \big)
+\end{equation}\]</span></p></li>
+<li><p>This is because, for a fixed <span class="math inline">\(t\)</span>, <span class="math inline">\(n\hat{F}_{n}(t)\)</span> is the sum of <span class="math inline">\(n\)</span> independent
+Bernoulli random variables <span class="math inline">\(W_{1}^{t}, \ldots, W_{n}^{t}\)</span>
+<span class="math display">\[\begin{equation}
+n \hat{F}_{n}(t) = \sum_{i=1}^{n} W_{i}^{t} = \sum_{i=1}^{n} I( X_{i} \leq t)
+\end{equation}\]</span></p></li>
+<li><p>The probability that <span class="math inline">\(W_{i}^{t} = 1\)</span> is
+<span class="math display">\[\begin{equation}
+P( W_{i}^{t} = 1) = P(X_{i} \leq t) = F(t) \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<p><strong>Pointwise Confidence Intervals</strong></p>
+<ul>
+<li><p>Because <span class="math inline">\(\hat{F}_{n}(t)\)</span> is a mean of independent random variables, we can say that
+<span class="math display">\[\begin{equation}
+\frac{ \sqrt{n}\Big( \hat{F}_{n}(t) - F(t) \Big) }{\sqrt{ \hat{F}_{n}(t)(1 - \hat{F}_{n}(t))}} \longrightarrow \textrm{Normal}\Big(0, 1 \Big)
+\end{equation}\]</span></p></li>
+<li><p>The above asymptotic statement is the basis for constructing <strong>pointwise confidence intervals</strong> for <span class="math inline">\(F(t)\)</span>.</p></li>
+<li><p>For a fixed <span class="math inline">\(t\)</span>, a <span class="math inline">\(100 \times (1-\alpha)\%\)</span> confidence interval for <span class="math inline">\(F(t)\)</span> is the following
+<span class="math display" id="eq:pointwise-cis">\[\begin{eqnarray}
+CI_{\alpha}^{pw}(t) &amp;=&amp; [L_{\alpha}^{pw}(t), U_{\alpha}^{pw}(t)] \nonumber \\
+L_{\alpha}^{pw}(t) &amp;=&amp; \max\Bigg\{\hat{F}_{n}(t) - z_{1 - \alpha/2} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 0 \Bigg\} \nonumber \\
+U_{\alpha}^{pw}(t) &amp;=&amp; \min\Bigg\{ \hat{F}_{n}(t) + z_{1 - \alpha/2} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 1 \Bigg\}
+\tag{7.1}
+\end{eqnarray}\]</span></p></li>
+<li><p>Plotting <span class="math inline">\(CI_{\alpha}^{pw}(t)\)</span> for different values of <span class="math inline">\(t\)</span>, would give pointwise confidence intervals
+for the distribution function. Plotting pointwise confidence
+intervals for <span class="math inline">\(F(t)\)</span> or for survival functions <span class="math inline">\(S(t) = 1 - F(t)\)</span> is fairly common in practice.</p></li>
+<li><p>However, these pointwise confidence intervals only hold for each point separately.</p></li>
+</ul>
+<hr />
+<p><strong>Simultaneous Confidence Bands</strong></p>
+<ul>
+<li><p>Simultaneous confidence bands can be thought of as two functions <span class="math inline">\(L_{\alpha}^{band}(t)\)</span> and <span class="math inline">\(U_{\alpha}^{band}(t)\)</span>
+such that we are “<span class="math inline">\(100 \times (1 - \alpha)\)</span>% confident” that all of <span class="math inline">\(F(t)\)</span> is contained
+within the bands <span class="math inline">\(L_{\alpha}^{band}(t)\)</span> and <span class="math inline">\(U_{\alpha}^{band}(t)\)</span>.</p></li>
+<li><p>Specifically, we want the statement
+<span class="math display">\[\begin{equation}
+L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{ for all } t
+\end{equation}\]</span>
+to hold with at least <span class="math inline">\(1 - \alpha\)</span> probability.</p></li>
+<li><p>In other words, we want less than <span class="math inline">\(\alpha\)</span> probability of any part
+of the path of <span class="math inline">\(F(t)\)</span> going outside of the bands.</p></li>
+<li><p>One choice of <span class="math inline">\(L_{\alpha}^{band}(t)\)</span> and <span class="math inline">\(U_{\alpha}^{band}(t)\)</span> which has this property is the following
+<span class="math display" id="eq:simultaneous-cis">\[\begin{equation}
+L_{\alpha}^{band}(t) = \max\{\hat{F}_{n}(t) - \delta_{\alpha,n}, 0 \} \qquad
+U_{\alpha}^{band}(t) = \min\{\hat{F}_{n}(t) + \delta_{\alpha,n}, 1 \}, 
+\tag{7.2}
+\end{equation}\]</span>
+where <span class="math inline">\(\delta_{\alpha,n}\)</span> is given by
+<span class="math display">\[\begin{equation}
+\delta_{\alpha, n} = \sqrt{\frac{1}{2n} \ln\Big(\frac{2}{\alpha} \Big)} \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The reason this choice of confidence band works is the
+Dvoretzky-Kiefer-Wolfowitz (DKW) inequality.
+The DKW inequality states that
+<span class="math display">\[\begin{equation}
+P\Bigg( \sup_{t} |F(t) - \hat{F}_{n}(t) | &gt; \varepsilon \Bigg) \leq 2 e^{-2n \varepsilon^{2}}
+\end{equation}\]</span></p></li>
+<li><p>Our choice of confidence bands <a href="edf.html#eq:simultaneous-cis">(7.2)</a> then works because
+<span class="math display">\[\begin{equation}
+\sup_{t} | F(t) - \hat{F}_{n}(t)| \leq \delta_{\alpha, n} \nonumber
+\end{equation}\]</span>
+is equivalent to
+<span class="math display">\[\begin{equation}
+L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \qquad \textrm{for all } t
+\end{equation}\]</span></p></li>
+<li><p>Then, from the DKW inequality we have
+<span class="math display">\[\begin{eqnarray}
+P\Bigg( L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{for all } t \Bigg)
+&amp;=&amp; P\Bigg( \sup_{t} | F(t) - \hat{F}_{n}(t)| \leq \delta_{n, \alpha} \Bigg) \nonumber \\
+&amp;\geq&amp; 1 - 2 e^{-2n \delta_{\alpha,n}^{2}} \nonumber \\
+&amp;=&amp; 1 - \alpha.
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Confidence bands will almost always be wider than
+the pointwise confidence intervals.</p></li>
+<li><p>This extra width is due to the fact that we are requiring the coverage probability
+to hold for the entire path of <span class="math inline">\(F(t)\)</span> rather than at
+just a single point.</p></li>
+</ul>
+</div>
+<div id="the-empirical-distribution-function-in-r" class="section level2">
+<h2><span class="header-section-number">7.3</span> The Empirical Distribution Function in R</h2>
+<ul>
+<li><p>We will see how to work with empirical distribution functions in <strong>R</strong> by using data
+from a study on kidney function.</p></li>
+<li><p>This dataset has <span class="math inline">\(157\)</span> observations which has the age of each study participant and
+a measure of overall kidney function. The data can be obtained at <a href="https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" class="uri">https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</a></p></li>
+<li><p>We will only look at the <strong>tot</strong> variable in this chapter.</p></li>
+</ul>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1">kidney &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </a>
+<a class="sourceLine" id="cb100-2" data-line-number="2">                     <span class="dt">header=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb100-3" data-line-number="3"><span class="kw">head</span>(kidney)</a></code></pre></div>
+<pre><code>##   age   tot
+## 1  18  2.44
+## 2  19  3.86
+## 3  19 -1.22
+## 4  20  2.30
+## 5  21  0.98
+## 6  21 -0.50</code></pre>
+<ul>
+<li><p>The <strong>ecdf</strong> function is the main function which computes the empirical distribution function
+in <strong>R</strong></p></li>
+<li><p>The <strong>ecdf</strong> function will create an <strong>ecdf</strong> object. To create an ecdf object
+for the kidney totals, use the following code:</p></li>
+</ul>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1">kidney.Fhat &lt;-<span class="st"> </span><span class="kw">ecdf</span>(kidney<span class="op">$</span>tot)</a></code></pre></div>
+<ul>
+<li>You can plot the ecdf for the kidney totals by just calling <strong>plot(ecdf)</strong></li>
+</ul>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" data-line-number="1"><span class="kw">plot</span>(kidney.Fhat, <span class="dt">main =</span> <span class="st">&quot;Kidney Data: Default plot for ecdf&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>)</a></code></pre></div>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<ul>
+<li>If you don’t like the look of the points in the ecdf plot, you can use add the argument
+<strong>do.points = FALSE</strong> when calling plot. Also, you can add the argument <strong>verticals =TRUE</strong>
+if you want the plot to draw vertical lines whenever there is a jump in the empirical distribution function.</li>
+</ul>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1"><span class="kw">plot</span>(kidney.Fhat, <span class="dt">do.points=</span><span class="ot">FALSE</span>, <span class="dt">verticals=</span><span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">&quot;Kidney Data:  ecdf with </span></a>
+<a class="sourceLine" id="cb104-2" data-line-number="2"><span class="st">     vertical lines and without points&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<hr />
+<ul>
+<li>A nice feature of of the <strong>ecdf</strong> function is that <strong>ecdf</strong> object
+can be treated as a function which computes the empirical distribution function.
+For example,</li>
+</ul>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1">kidney.Fhat &lt;-<span class="st"> </span><span class="kw">ecdf</span>(kidney<span class="op">$</span>tot)</a>
+<a class="sourceLine" id="cb105-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb105-3" data-line-number="3"><span class="kw">kidney.Fhat</span>(<span class="dv">0</span>)</a></code></pre></div>
+<pre><code>## [1] 0.5095541</code></pre>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" data-line-number="1"><span class="kw">kidney.Fhat</span>( <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">4</span>) )</a></code></pre></div>
+<pre><code>## [1] 0.3057325 0.6560510 0.9745223</code></pre>
+<hr />
+<ul>
+<li><p><strong>R</strong> does not plot confidence intervals when plotting the empirical distribution function.</p></li>
+<li><p>We can do this ourselves, by using the pointwise confidence interval formula shown in <a href="edf.html#eq:pointwise-cis">(7.1)</a></p></li>
+</ul>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1"><span class="co">## 1. First, we will compute the standard errors at each of the observed time points</span></a>
+<a class="sourceLine" id="cb109-2" data-line-number="2">tt &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">unique</span>(kidney<span class="op">$</span>tot)) </a>
+<a class="sourceLine" id="cb109-3" data-line-number="3">std.err &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">kidney.Fhat</span>(tt)<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">kidney.Fhat</span>(tt))<span class="op">/</span><span class="st"> </span><span class="kw">length</span>(kidney<span class="op">$</span>tot))</a>
+<a class="sourceLine" id="cb109-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb109-5" data-line-number="5"><span class="co">## 2. Now, compute the confidence intervals at each time point</span></a>
+<a class="sourceLine" id="cb109-6" data-line-number="6">ci.low &lt;-<span class="st"> </span><span class="kw">pmax</span>(<span class="kw">kidney.Fhat</span>(tt) <span class="op">-</span><span class="st"> </span><span class="kw">qnorm</span>(.<span class="dv">975</span>)<span class="op">*</span>std.err, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb109-7" data-line-number="7">ci.upper &lt;-<span class="st"> </span><span class="kw">pmin</span>(<span class="kw">kidney.Fhat</span>(tt) <span class="op">+</span><span class="st"> </span><span class="kw">qnorm</span>(.<span class="dv">975</span>)<span class="op">*</span>std.err, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb109-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb109-9" data-line-number="9"><span class="co">## 3. Now, plot the results. Note that type=&quot;s&quot; in the lines function produces</span></a>
+<a class="sourceLine" id="cb109-10" data-line-number="10"><span class="co">##    &quot;step functions&quot; which pass through the provided points.</span></a>
+<a class="sourceLine" id="cb109-11" data-line-number="11"><span class="kw">plot</span>(kidney.Fhat, <span class="dt">do.points=</span><span class="ot">FALSE</span>, <span class="dt">verticals=</span><span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">&quot;Kidney Data: </span></a>
+<a class="sourceLine" id="cb109-12" data-line-number="12"><span class="st">     95% pointwise confidence intervals&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb109-13" data-line-number="13"><span class="kw">lines</span>(tt, ci.low, <span class="dt">type=</span><span class="st">&quot;s&quot;</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb109-14" data-line-number="14"><span class="kw">lines</span>(tt, ci.upper, <span class="dt">type=</span><span class="st">&quot;s&quot;</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<ul>
+<li>We could plot the confidence bands as well.</li>
+</ul>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="kw">length</span>(kidney<span class="op">$</span>tot)</a>
+<a class="sourceLine" id="cb110-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb110-3" data-line-number="3"><span class="co">## Compute the confidence bands at each time point</span></a>
+<a class="sourceLine" id="cb110-4" data-line-number="4">ci.band.low &lt;-<span class="st"> </span><span class="kw">pmax</span>(<span class="kw">kidney.Fhat</span>(tt) <span class="op">-</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">log</span>(<span class="dv">2</span><span class="op">/</span><span class="fl">0.05</span>)<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>n)), <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb110-5" data-line-number="5">ci.band.upper &lt;-<span class="st"> </span><span class="kw">pmin</span>(<span class="kw">kidney.Fhat</span>(tt) <span class="op">+</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">log</span>(<span class="dv">2</span><span class="op">/</span><span class="fl">0.05</span>)<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>n)), <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb110-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb110-7" data-line-number="7"><span class="kw">plot</span>(kidney.Fhat, <span class="dt">do.points=</span><span class="ot">FALSE</span>, <span class="dt">verticals=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb110-8" data-line-number="8">    <span class="dt">main =</span> <span class="st">&quot;Kidney Data: 95% Confidence Bands&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb110-9" data-line-number="9"><span class="kw">lines</span>(tt, ci.band.low, <span class="dt">type=</span><span class="st">&quot;s&quot;</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb110-10" data-line-number="10"><span class="kw">lines</span>(tt, ci.band.upper, <span class="dt">type=</span><span class="st">&quot;s&quot;</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<ul>
+<li>Comparing the pointwise confidence intervals and the simultaneous confidence bands
+in the same plot shows how much wider our confidence bands are:
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-9-1.png" width="672" /></li>
+</ul>
+</div>
+<div id="the-kolmogorov-smirnov-test" class="section level2">
+<h2><span class="header-section-number">7.4</span> The Kolmogorov-Smirnov Test</h2>
+<ul>
+<li><p>The one-sample Kolmogorov-Smirnov (KS) test is a type of goodness-of-fit test
+that is mainly based on the empirical distribution function.</p></li>
+<li><p>The KS test will test whether or not our data <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> comes
+from a specific distribution of interest <span class="math inline">\(F_{0}\)</span>.</p></li>
+<li><p>Supposing our data <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> are an i.i.d. sample with distribution
+function <span class="math inline">\(F\)</span>, the hypothesis test of interest can be stated as
+<span class="math display">\[\begin{equation}
+H_{0}: F = F_{0} \quad \textrm{ vs. } \quad H_{A}: F \neq F_{0}
+\end{equation}\]</span></p></li>
+<li><p>The one-sample KS test could be used, for example, as a test of normality.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The one-sample Kolmogorov-Smirnov test statistic <span class="math inline">\(KS_{n}^{(1)}\)</span> looks at the maximum distance
+between the empirical distribution function and <span class="math inline">\(F_{0}\)</span>
+<span class="math display">\[\begin{equation}
+KS_{n}^{(1)} = \sup_{t} \big| \hat{F}_{n}(t) - F_{0}(t)  \big|
+\end{equation}\]</span></p></li>
+<li><p>Large values of <span class="math inline">\(KS_{n}^{(1)}\)</span> provide evidence againts the null hypothesis.</p></li>
+<li><p>Under <span class="math inline">\(H_{0}\)</span>, <span class="math inline">\(\sqrt{n}KS_{n}^{(1)}\)</span> converges in distribution to a <strong>Kolmogorov distribution</strong>
+as <span class="math inline">\(n\)</span> goes to infinity.</p></li>
+<li><p>The Kolmogorov distribution has the following cumulative distribution function:
+<span class="math display">\[\begin{equation}
+F_{Kolmo}(t) = 1 - 2\sum_{j=1}^{\infty} (-1)^{(j+1)} e^{-2j^{2}t^{2}} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The one-sample KS test can be performed in <strong>R</strong> using the <strong>ks.test</strong> function.
+For one-sample tests, you have to provide the “name” of the distribution function
+that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
+</ul>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="kw">rt</span>(<span class="dv">100</span>, <span class="dt">df=</span><span class="dv">2</span>) <span class="co">## generate 100 observations from a t-dist with 2 d.f.</span></a>
+<a class="sourceLine" id="cb111-2" data-line-number="2"><span class="kw">ks.test</span>(xx, <span class="dt">y=</span><span class="st">&quot;pnorm&quot;</span>)  <span class="co">## test that these data follow Normal(0, 1)</span></a></code></pre></div>
+<pre><code>## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  xx
+## D = 0.11996, p-value = 0.1124
+## alternative hypothesis: two-sided</code></pre>
+<ul>
+<li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
+by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
+</ul>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" data-line-number="1"><span class="kw">ks.test</span>(xx, <span class="dt">y=</span><span class="st">&quot;pnorm&quot;</span>, <span class="dt">mean=</span><span class="dv">1</span>, <span class="dt">sd=</span><span class="dv">2</span>)  </a></code></pre></div>
+<pre><code>## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  xx
+## D = 0.3585, p-value = 1.373e-11
+## alternative hypothesis: two-sided</code></pre>
+<hr />
+<ul>
+<li><p>Suppose we have data from two groups: <span class="math inline">\(X_{1}, \ldots, X_{n} \sim F_{X}\)</span> and <span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim F_{Y}\)</span>.
+The two-sample KS test performs a test of the following hypothesis
+<span class="math display">\[\begin{equation}
+H_{0}: F_{X} = F_{Y} \quad \textrm{vs.} \quad H_{A}: F_{X} \neq F_{Y}.
+\end{equation}\]</span></p></li>
+<li><p>In this case, we are only testing whether the distributions of the two groups are different.
+We are not testing whether observations from group 1 tend to be larger (or smaller)
+than those from group 2.</p></li>
+<li><p>The two-sample KS test compares the empirical distribution functions from these
+two groups.</p></li>
+<li><p>The two-sample KS test statistic is defined as the maximum distance between the
+two empirical distribution functions:
+<span class="math display">\[\begin{equation}
+KS_{n,m}^{(2)} = \sup_{t} \big| \hat{F}_{n,X}(t) - \hat{F}_{m,Y}(t)  \big|
+\end{equation}\]</span>
+Here, <span class="math inline">\(\hat{F}_{n,X}(t) = \frac{1}{n}\sum_{i=1}^{n} I(X_{i} \leq t)\)</span> and
+<span class="math inline">\(\hat{F}_{m,Y}(t) = \frac{1}{m}\sum_{j=1}^{m} I(Y_{j} \leq t)\)</span> denote
+the empirical distribution functions from the X and Y samples.</p></li>
+<li><p>The two-sample KS test statistic also converges to the same limit as
+the one-sample KS test statistic. In particular, under <span class="math inline">\(H_{0}\)</span>:
+<span class="math display">\[\begin{equation}
+\sqrt{ \frac{nm}{n + m } }KS_{n,m}^{(2)} \longrightarrow \textrm{Kolmogorov}
+\qquad \textrm{ as } n,m \longrightarrow \infty
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li>The <strong>ks.test</strong> function in <strong>R</strong> also performs two-sample KS tests.</li>
+</ul>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb115-2" data-line-number="2">yy &lt;-<span class="st"> </span><span class="kw">rlogis</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb115-3" data-line-number="3"><span class="kw">ks.test</span>(xx, yy)  </a></code></pre></div>
+<pre><code>## 
+##  Two-sample Kolmogorov-Smirnov test
+## 
+## data:  xx and yy
+## D = 0.17, p-value = 0.1111
+## alternative hypothesis: two-sided</code></pre>
+<ul>
+<li>We can compute the KS statistic ourselves and check that this matches the value of the KS statistic
+returned by the <strong>ks.test</strong> function:</li>
+</ul>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1">zz &lt;-<span class="st"> </span><span class="kw">c</span>(xx, yy)</a>
+<a class="sourceLine" id="cb117-2" data-line-number="2">zz.order &lt;-<span class="st"> </span><span class="kw">sort</span>(zz)</a>
+<a class="sourceLine" id="cb117-3" data-line-number="3">F.x &lt;-<span class="st"> </span><span class="kw">ecdf</span>(xx)</a>
+<a class="sourceLine" id="cb117-4" data-line-number="4">F.y &lt;-<span class="st"> </span><span class="kw">ecdf</span>(yy)</a>
+<a class="sourceLine" id="cb117-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb117-6" data-line-number="6">KS.stat &lt;-<span class="st"> </span><span class="kw">max</span>( <span class="kw">abs</span>( <span class="kw">F.x</span>(zz.order) <span class="op">-</span><span class="st"> </span><span class="kw">F.y</span>(zz.order) ) )</a>
+<a class="sourceLine" id="cb117-7" data-line-number="7">KS.stat</a></code></pre></div>
+<pre><code>## [1] 0.17</code></pre>
+<hr />
+<ul>
+<li><strong>Exercise 7.1.</strong> Why does
+<span class="math display">\[\begin{equation}
+KS_{n,m}^{(2)} = \max_{1 \leq i \leq n+m} \big| \hat{F}_{n,X}(Z_{(i)}) -  \hat{F}_{n,Y}(Z_{(i)}) \big|, \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldots, Z_{n+m})\)</span> denotes the pooled sample and <span class="math inline">\(Z_{(1)}, \ldots, Z_{(n+m)}\)</span>
+denote the order statistics from <span class="math inline">\(\mathbf{Z}\)</span>?</li>
+</ul>
+<hr />
+</div>
+<div id="the-empirical-distribution-function-and-statistical-functionals" class="section level2">
+<h2><span class="header-section-number">7.5</span> The empirical distribution function and statistical functionals</h2>
+<ul>
+<li><p>In many areas of mathematics, it is common to refer to a function
+which is a “functions of functions” as a <strong>functional</strong>.</p></li>
+<li><p>For example, <span class="math inline">\(T(f)\)</span> which is defined as
+<span class="math display">\[\begin{equation}
+T(f) = \int_{0}^{1} f^{2}(x) dx
+\end{equation}\]</span>
+is a functional because <span class="math inline">\(T(f)\)</span> takes arguments which are functions
+and outputs real numbers.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Many common parameters that we encounter in statistics can be thought of
+as functionals where the input of the functional is usually a distribution function.</p></li>
+<li><p>For example, the mean is an example of a functional
+<span class="math display">\[\begin{equation}
+\mu(F) = \int x dF(x) = \int x f(x) dx \nonumber 
+\end{equation}\]</span>
+As indicated by the notation <span class="math inline">\(\mu(F)\)</span>, the value of the mean
+depends on the underlying distribution function <span class="math inline">\(F\)</span>.</p></li>
+<li><p>Also, the variance is an example of a functional
+<span class="math display">\[\begin{equation}
+\sigma^{2}(F) = \int (x - \mu(F))^{2} dF(x)
+= \int x^{2} dF(x) - \mu^{2}(F) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The median is an example of a functional
+<span class="math display">\[\begin{equation}
+\textrm{med}(F) = F^{-1}(1/2) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The tail probability <span class="math inline">\(P(X_{i} &gt; c)\)</span> is also a functional
+<span class="math display">\[\begin{equation}
+\theta_{c}(F) = \int I(x &gt; c) dF(x) \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Many common estimators can be thought of as coming
+from “plugging in” the empirical cdf into the appropriate statistical functional.</p></li>
+<li><p>For example, plugging in the empirical cdf into the mean functional gives:
+<span class="math display">\[\begin{equation}
+\mu( \hat{F}_{n} ) = \int x d\hat{F}_{n}(x) = \frac{1}{n}\sum_{i=1}^{n} X_{i} = \bar{X}  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Plugging in the empirical cdf into the tail probability functional gives
+<span class="math display">\[\begin{equation}
+\theta_{c}( \hat{F}_{n} ) = \int I(x &gt; c) d\hat{F}_{n}(x) = \frac{1}{n}\sum_{i=1}^{n}I(X_{i} &gt; c)
+= 1 - \hat{F}_{n}(c) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The sample variance is not quite a plug-in estimate for <span class="math inline">\(\sigma^{2}(F)\)</span> but it is very close
+<span class="math display">\[\begin{eqnarray}
+\sigma^{2}(\hat{F}_{n})
+&amp;=&amp; \int x^{2} d\hat{F}_{n}(x) - \mu^{2}(\hat{F}_{n})
+= \frac{1}{n} \sum_{i=1}^{n} X_{i}^{2} - \bar{X}^{2} \nonumber \\
+&amp;=&amp; \frac{1}{n} \sum_{i=1}^{n} (X_{i} - \bar{X})^{2}
+= \frac{n-1}{n} \hat{\sigma}^{2} \nonumber 
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>This notation for statistical functionals will be useful when we discuss the bootstrap later in
+the course.</p></li>
+<li><p>The notation for statistical functionals is also very useful in the context
+of influence functions and robust statistics, but we will not discuss these
+topics in this course.</p></li>
+</ul>
+</div>
+<div id="additional-reading-2" class="section level2">
+<h2><span class="header-section-number">7.6</span> Additional Reading</h2>
+<ul>
+<li>Additional reading which covers the material discussed in this chapter includes:
+<ul>
+<li>Chapter 2 from <span class="citation">Wasserman (<a href="#ref-wasserman2006">2006</a>)</span></li>
+</ul></li>
+</ul>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-wasserman2006">
+<p>Wasserman, Larry. 2006. <em>All of Nonparametric Statistics</em>. Springer Science &amp; Business Media.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ustat.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="density-estimation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["ElementsNonparStat.pdf"],
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
