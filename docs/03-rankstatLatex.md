@@ -554,7 +554,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.835
+## [1] 0.76
 ```
 
 
