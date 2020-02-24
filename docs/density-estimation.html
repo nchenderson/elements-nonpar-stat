@@ -858,7 +858,7 @@ of the density on the magnitude of bias.</p></li>
 <span class="math display">\[\begin{eqnarray}
 \textrm{Var}\{ \hat{f}_{h_{n}}(x) \}
 &amp;\approx&amp; \frac{f(x)}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) du - \frac{f&#39;(x)}{n}\int_{-\infty}^{\infty} u K^{2}(u) du  +  ... \nonumber \\
-&amp;\approx&amp; \frac{f(x)\kappa_{2}(K) }{n h_{n} } \textrm{ where } \kappa_{2}(K) = \int_{-\infty}^{\infty} K^{2}( u ) du \nonumber \\
+&amp;\approx&amp; \frac{f(x)\kappa_{2}(K) }{n h_{n} } \quad \textrm{ where } \kappa_{2}(K) = \int_{-\infty}^{\infty} K^{2}( u ) du \nonumber \\
 &amp;=&amp; \textrm{AVar}\{ \hat{f}_{h_{n}}(x) \}  \nonumber
 \end{eqnarray}\]</span></p></li>
 </ul>
@@ -875,7 +875,7 @@ for the mean-squared error of <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</
 \tag{8.11}
 \end{eqnarray}\]</span></p></li>
 <li>Notice that if we want the MSE to go to <span class="math inline">\(0\)</span> as <span class="math inline">\(n \longrightarrow \infty\)</span>, we need the
-following two things to happen
+following two things to happen:
 <ul>
 <li><span class="math inline">\(h_{n} \longrightarrow 0\)</span> as <span class="math inline">\(n \longrightarrow \infty\)</span></li>
 <li><span class="math inline">\(n h_{n} \longrightarrow \infty\)</span> as <span class="math inline">\(n \longrightarrow \infty\)</span></li>
@@ -1032,7 +1032,7 @@ The first few observations of the <code>galaxies</code> dataset look like:</li>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <ul>
 <li>The default in <strong>R</strong> is to estimate the density at 512 points. Thus, <code>galax.dens$x</code>
-and <code>galax.dens$y</code> should be have length 512.</li>
+and <code>galax.dens$y</code> should have length 512.</li>
 </ul>
 <hr />
 <ul>

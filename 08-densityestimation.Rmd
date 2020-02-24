@@ -700,7 +700,7 @@ $f(x - uh_{n}) = f(x) - uh_{n}f'(x) + ...$, we have:
 \begin{eqnarray}
 \textrm{Var}\{ \hat{f}_{h_{n}}(x) \}
 &\approx& \frac{f(x)}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) du - \frac{f'(x)}{n}\int_{-\infty}^{\infty} u K^{2}(u) du  +  ... \nonumber \\
-&\approx& \frac{f(x)\kappa_{2}(K) }{n h_{n} } \textrm{ where } \kappa_{2}(K) = \int_{-\infty}^{\infty} K^{2}( u ) du \nonumber \\
+&\approx& \frac{f(x)\kappa_{2}(K) }{n h_{n} } \quad \textrm{ where } \kappa_{2}(K) = \int_{-\infty}^{\infty} K^{2}( u ) du \nonumber \\
 &=& \textrm{AVar}\{ \hat{f}_{h_{n}}(x) \}  \nonumber
 \end{eqnarray}
 
@@ -719,7 +719,7 @@ for the mean-squared error of $\hat{f}_{h_{n}}(x)$ at the point $x$
 \end{eqnarray}
 
 * Notice that if we want the MSE to go to $0$ as $n \longrightarrow \infty$, we need the 
-following two things to happen
+following two things to happen:
     + $h_{n} \longrightarrow 0$ as $n \longrightarrow \infty$
     + $n h_{n} \longrightarrow \infty$ as $n \longrightarrow \infty$
 
@@ -891,7 +891,7 @@ plot(galax.dens$x, galax.dens$y, main="Default Density Estimate for Galaxy Data"
 ```
 
 * The default in **R** is to estimate the density at 512 points. Thus, `galax.dens$x`
-and `galax.dens$y` should be have length 512.
+and `galax.dens$y` should have length 512.
 
 ---
 
