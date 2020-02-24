@@ -439,9 +439,10 @@ intervals.
 "sliding bin" at each point $x$ to calculate the estimate of $f(x)$.
 
 * Specifically, the "box estimate" $\hat{f}_{h_{n}}^{B}(x)$ at the point $x$ is defined as
-\begin{equation}
-\hat{f}_{h_{n}}^{B}(x) = \frac{1}{2nh_{n}} \Big[ \# \text{ of observations falling in the interval } (x - h_{n}, x + h_{n}) \Big] \nonumber
-\end{equation}
+\begin{eqnarray}
+\hat{f}_{h_{n}}^{B}(x) = \frac{1}{2nh_{n}} \Big[ \# \text{ of observations falling in the interval } (x - h_{n}, x + h_{n}) \Big] \nonumber \\
+&=& \frac{1}{2nh_{n}} \sum_{i=1}^{n} I(x - h_{n} < X_{i} < x + h_{n} ) \nonumber
+\end{eqnarray}
 
 * In other words, for each $x$ we are forming a bin of width $2h_{n}$ around $x$, and we are counting
 the number of observations that fall in this bin.
@@ -545,7 +546,7 @@ the choice of kernel function.
 
 * Kernel functions are usually chosen so that 
 \begin{equation}
-K(t) \geq  0 \textrm{ for all } t \nonumber 
+K(t) \geq  0 \quad \textrm{ for all } t \nonumber 
 \end{equation}
 and that they also satisfy the following properties:
 \begin{eqnarray}
@@ -640,7 +641,7 @@ Plugging this approximation into our expression for the bias in \@ref(eq:exact-d
 \textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
 &\approx&  -h_{n}f'(x) \int_{-\infty}^{\infty} u K( u )  du + \frac{h_{n}^{2}f''(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du  \nonumber \\
 &=& \frac{h_{n}^{2}f''(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du \nonumber \\
-&=& \frac{h_{n}^{2}f''(x)\mu_{2}(K)}{2} \nonumber \\
+&=& \frac{h_{n}^{2}f''(x)\mu_{2}(K)}{2} \qquad \textrm{ where } \mu_{2}(K) = \int_{-\infty}^{\infty} u^{2} K( u ) du \nonumber \\
 &=& \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} 
 (\#eq:asymp-bias-density)
 \end{eqnarray}
@@ -670,7 +671,7 @@ $f(x - uh_{n}) = f(x) - uh_{n}f'(x) + ...$, we have:
 \begin{eqnarray}
 \textrm{Var}\{ \hat{f}_{h_{n}}(x) \}
 &\approx& \frac{f(x)}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) du - \frac{f'(x)}{n}\int_{-\infty}^{\infty} u K^{2}(u) du  +  ... \nonumber \\
-&\approx& \frac{f(x)\kappa_{2}(K) }{n h_{n} }  \nonumber \\
+&\approx& \frac{f(x)\kappa_{2}(K) }{n h_{n} } \textrm{ where } \kappa_{2}(K) = \int_{-\infty}^{\infty} K^{2}( u ) du \nonumber \\
 &=& \textrm{AVar}\{ \hat{f}_{h_{n}}(x) \}  \nonumber
 \end{eqnarray}
 
@@ -833,8 +834,8 @@ galaxies[1:5]
 
 ```r
 galax.dens <- density(galaxies)
-plot(galax.dens, main="Default Density Estimate for Galaxy Data", xlab="veclocity in km/sec", 
-     ylab="Density", lwd=2)
+plot(galax.dens, main="Default Density Estimate for Galaxy Data", 
+     xlab="veclocity in km/sec", ylab="Density", lwd=2)
 ```
 
 <img src="08-densityestimation_files/figure-html/unnamed-chunk-17-1.png" width="672" />

@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-02-23" />
+<meta name="date" content="2020-02-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -665,9 +665,10 @@ intervals.</p></li>
 <li><p>A related estimator <span class="math inline">\(\hat{f}_{h_{n}}^{B}\)</span> of the density <span class="math inline">\(f(x)\)</span> uses a
 “sliding bin” at each point <span class="math inline">\(x\)</span> to calculate the estimate of <span class="math inline">\(f(x)\)</span>.</p></li>
 <li><p>Specifically, the “box estimate” <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span> at the point <span class="math inline">\(x\)</span> is defined as
-<span class="math display">\[\begin{equation}
-\hat{f}_{h_{n}}^{B}(x) = \frac{1}{2nh_{n}} \Big[ \# \text{ of observations falling in the interval } (x - h_{n}, x + h_{n}) \Big] \nonumber
-\end{equation}\]</span></p></li>
+<span class="math display">\[\begin{eqnarray}
+\hat{f}_{h_{n}}^{B}(x) = \frac{1}{2nh_{n}} \Big[ \# \text{ of observations falling in the interval } (x - h_{n}, x + h_{n}) \Big] \nonumber \\
+&amp;=&amp; \frac{1}{2nh_{n}} \sum_{i=1}^{n} I(x - h_{n} &lt; X_{i} &lt; x + h_{n} ) \nonumber
+\end{eqnarray}\]</span></p></li>
 <li><p>In other words, for each <span class="math inline">\(x\)</span> we are forming a bin of width <span class="math inline">\(2h_{n}\)</span> around <span class="math inline">\(x\)</span>, and we are counting
 the number of observations that fall in this bin.</p></li>
 <li><p>You can think that each point <span class="math inline">\(x\)</span> as being the center of its own bin.</p></li>
@@ -754,7 +755,7 @@ the choice of kernel function.</p></li>
 <ul>
 <li><p>Kernel functions are usually chosen so that
 <span class="math display">\[\begin{equation}
-K(t) \geq  0 \textrm{ for all } t \nonumber 
+K(t) \geq  0 \quad \textrm{ for all } t \nonumber 
 \end{equation}\]</span>
 and that they also satisfy the following properties:
 <span class="math display">\[\begin{eqnarray}
@@ -836,7 +837,7 @@ Plugging this approximation into our expression for the bias in <a href="density
 \textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
 &amp;\approx&amp;  -h_{n}f&#39;(x) \int_{-\infty}^{\infty} u K( u )  du + \frac{h_{n}^{2}f&#39;&#39;(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du  \nonumber \\
 &amp;=&amp; \frac{h_{n}^{2}f&#39;&#39;(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du \nonumber \\
-&amp;=&amp; \frac{h_{n}^{2}f&#39;&#39;(x)\mu_{2}(K)}{2} \nonumber \\
+&amp;=&amp; \frac{h_{n}^{2}f&#39;&#39;(x)\mu_{2}(K)}{2} \qquad \textrm{ where } \mu_{2}(K) = \int_{-\infty}^{\infty} u^{2} K( u ) du \nonumber \\
 &amp;=&amp; \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} 
 \tag{8.10}
 \end{eqnarray}\]</span>
@@ -862,7 +863,7 @@ of the density on the magnitude of bias.</p></li>
 <span class="math display">\[\begin{eqnarray}
 \textrm{Var}\{ \hat{f}_{h_{n}}(x) \}
 &amp;\approx&amp; \frac{f(x)}{n h_{n} }\int_{-\infty}^{\infty} K^{2}(u) du - \frac{f&#39;(x)}{n}\int_{-\infty}^{\infty} u K^{2}(u) du  +  ... \nonumber \\
-&amp;\approx&amp; \frac{f(x)\kappa_{2}(K) }{n h_{n} }  \nonumber \\
+&amp;\approx&amp; \frac{f(x)\kappa_{2}(K) }{n h_{n} } \textrm{ where } \kappa_{2}(K) = \int_{-\infty}^{\infty} K^{2}( u ) du \nonumber \\
 &amp;=&amp; \textrm{AVar}\{ \hat{f}_{h_{n}}(x) \}  \nonumber
 \end{eqnarray}\]</span></p></li>
 </ul>
@@ -1005,8 +1006,8 @@ The first few observations of the <code>galaxies</code> dataset look like:</li>
 <li>Kernel density estimates can be computed in <strong>R</strong> using the <code>density</code> function</li>
 </ul>
 <div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1">galax.dens &lt;-<span class="st"> </span><span class="kw">density</span>(galaxies)</a>
-<a class="sourceLine" id="cb138-2" data-line-number="2"><span class="kw">plot</span>(galax.dens, <span class="dt">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;veclocity in km/sec&quot;</span>, </a>
-<a class="sourceLine" id="cb138-3" data-line-number="3">     <span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb138-2" data-line-number="2"><span class="kw">plot</span>(galax.dens, <span class="dt">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, </a>
+<a class="sourceLine" id="cb138-3" data-line-number="3">     <span class="dt">xlab=</span><span class="st">&quot;veclocity in km/sec&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 <div id="cross-validation-for-bandwidth-selection" class="section level3">
