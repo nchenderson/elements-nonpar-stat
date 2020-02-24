@@ -661,7 +661,7 @@ intervals.</p></li>
 “sliding bin” at each point <span class="math inline">\(x\)</span> to calculate the estimate of <span class="math inline">\(f(x)\)</span>.</p></li>
 <li><p>Specifically, the “box estimate” <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span> at the point <span class="math inline">\(x\)</span> is defined as
 <span class="math display">\[\begin{eqnarray}
-\hat{f}_{h_{n}}^{B}(x) = \frac{1}{2nh_{n}} \Big[ \# \text{ of observations falling in the interval } (x - h_{n}, x + h_{n}) \Big] \nonumber \\
+\hat{f}_{h_{n}}^{B}(x) &amp;=&amp; \frac{1}{2nh_{n}} \Big[ \# \text{ of observations falling in the interval } (x - h_{n}, x + h_{n}) \Big] \nonumber \\
 &amp;=&amp; \frac{1}{2nh_{n}} \sum_{i=1}^{n} I(x - h_{n} &lt; X_{i} &lt; x + h_{n} ) \nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>In other words, for each <span class="math inline">\(x\)</span> we are forming a bin of width <span class="math inline">\(2h_{n}\)</span> around <span class="math inline">\(x\)</span>, and we are counting

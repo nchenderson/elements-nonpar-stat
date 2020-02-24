@@ -437,7 +437,7 @@ intervals.
 
 * Specifically, the "box estimate" $\hat{f}_{h_{n}}^{B}(x)$ at the point $x$ is defined as
 \begin{eqnarray}
-\hat{f}_{h_{n}}^{B}(x) = \frac{1}{2nh_{n}} \Big[ \# \text{ of observations falling in the interval } (x - h_{n}, x + h_{n}) \Big] \nonumber \\
+\hat{f}_{h_{n}}^{B}(x) &=& \frac{1}{2nh_{n}} \Big[ \# \text{ of observations falling in the interval } (x - h_{n}, x + h_{n}) \Big] \nonumber \\
 &=& \frac{1}{2nh_{n}} \sum_{i=1}^{n} I(x - h_{n} < X_{i} < x + h_{n} ) \nonumber
 \end{eqnarray}
 
