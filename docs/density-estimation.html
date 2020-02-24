@@ -239,11 +239,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-amise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and AMISE of Kernel Density Estimates</a></li>
 <li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule-and-silvermans-rule-of-thumb"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection with the Normal Reference Rule and Silverman’s “Rule of Thumb”</a></li>
 </ul></li>
-<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation-in-practice"><i class="fa fa-check"></i><b>8.5</b> Kernel Density Estimation in Practice</a><ul>
-<li class="chapter" data-level="8.5.1" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.5.1</b> Density Estimation in R</a></li>
-<li class="chapter" data-level="8.5.2" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5.2</b> Cross-Validation for Bandwidth Selection</a></li>
-</ul></li>
-<li class="chapter" data-level="8.6" data-path="density-estimation.html"><a href="density-estimation.html#additional-reading-3"><i class="fa fa-check"></i><b>8.6</b> Additional Reading</a></li>
+<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.5</b> Density Estimation in R</a></li>
+<li class="chapter" data-level="8.6" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.6</b> Cross-Validation for Bandwidth Selection</a></li>
+<li class="chapter" data-level="8.7" data-path="density-estimation.html"><a href="density-estimation.html#additional-reading-3"><i class="fa fa-check"></i><b>8.7</b> Additional Reading</a></li>
 </ul></li>
 <li class="part"><span><b>III Uncertainty Measures</b></span></li>
 <li class="chapter" data-level="9" data-path="sampling.html"><a href="sampling.html"><i class="fa fa-check"></i><b>9</b> The Jackknife</a><ul>
@@ -944,7 +942,12 @@ h_{n}^{opt} = n^{-1/5}(2\sqrt{\pi})^{-1/5}\Big( \frac{3}{8\sqrt{\pi}\sigma^{5}} 
 <ul>
 <li><p>The rule <span class="math inline">\(h_{n}^{opt} = 1.06 \sigma n^{-1/5}\)</span> works pretty well if the true density has a roughly Gaussian shape. For example,
 unimodal, non-heavy tails, not too strong skewness, etc.</p></li>
-<li><p>However, <span class="math inline">\(h_{n} = 1.06 \hat{\sigma} n^{-1/5}\)</span> is typically too large if <span class="math inline">\(f(x)\)</span> is multimodal or
+<li><p>The <strong>Normal reference rule</strong> for the bandwidth is
+<span class="math display">\[\begin{equation}
+h_{n}^{NR} = 1.06 \tilde{\sigma} n^{-1/5}  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Here, <span class="math inline">\(\tilde{\sigma}\)</span> is usually either <span class="math inline">\(\tilde{\sigma} = \hat{\sigma}\)</span> or <span class="math inline">\(\tilde{\sigma} = s\)</span>.</p></li>
+<li><p><span class="math inline">\(h_{n} = 1.06 \hat{\sigma} n^{-1/5}\)</span> is typically too large if <span class="math inline">\(f(x)\)</span> is multimodal or
 if <span class="math inline">\(f(x)\)</span> has substantial skewness.</p></li>
 <li><p>This oversmoothing effect of <span class="math inline">\(h_{n} = 1.06 \hat{\sigma} n^{-1/5}\)</span> can be reduced somewhat by replacing <span class="math inline">\(\hat{\sigma}\)</span> with
 <span class="math display">\[\begin{equation}
@@ -952,17 +955,18 @@ s = \min\Big\{ \hat{\sigma}, \frac{IQR}{1.34} \Big\} \nonumber
 \end{equation}\]</span></p></li>
 <li><p>For multimodal distributions, we typically have <span class="math inline">\(\hat{\sigma} \leq IQR/1.34\)</span> while for strongly skewed
 distributions such as the log-normal distribution we typically have <span class="math inline">\(\hat{\sigma} \geq IQR/1.34\)</span>.</p></li>
-<li><p>These observations lead to the construction of the <strong>Normal reference rule</strong> for the bandwidth
-<span class="math display">\[\begin{equation}
-h_{n}^{NR} = 1.06 s n^{-1/5}  \nonumber
-\end{equation}\]</span></p></li>
+<li><p>For these reasons, <span class="math inline">\(\tilde{\sigma} = s\)</span> is often suggested when using the Normal reference rule.</p></li>
 </ul>
 <hr />
 <ul>
-<li>Silverman’s “rule-of-thumb” for the bandwidth.
+<li><p>Silverman’s “rule-of-thumb” for the bandwidth is
 <span class="math display">\[\begin{equation}
-h_{n}^{SR} = 1.06 s n^{-1/5}  \nonumber
-\end{equation}\]</span></li>
+h_{n}^{SR} = 0.9 s n^{-1/5}  \nonumber
+\end{equation}\]</span>
+(see Chapter 3 of <span class="citation">Silverman (<a href="#ref-silverman2018">2018</a>)</span>).</p></li>
+<li><p>This rule is just an adjustment for the fact that <span class="math inline">\(1.06 s n^{-1/5}\)</span> is still
+too large for many skewed or multimodal distribution and using <span class="math inline">\(0.9\)</span> instead of <span class="math inline">\(1.06\)</span> reduces
+this problem.</p></li>
 </ul>
 <hr />
 <ul>
@@ -981,18 +985,23 @@ we have density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span>
 <hr />
 </div>
 </div>
-<div id="kernel-density-estimation-in-practice" class="section level2">
-<h2><span class="header-section-number">8.5</span> Kernel Density Estimation in Practice</h2>
-<div id="density-estimation-in-r" class="section level3">
-<h3><span class="header-section-number">8.5.1</span> Density Estimation in R</h3>
+<div id="density-estimation-in-r" class="section level2">
+<h2><span class="header-section-number">8.5</span> Density Estimation in R</h2>
 <ul>
 <li>In <strong>R</strong>, kernel density estimates are computed using the <code>density</code> function</li>
 </ul>
 <div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1"><span class="kw">density</span>(x, bw, kernel, n, ...)</a></code></pre></div>
 <ul>
-<li><p><strong>x</strong> the vector containing the data</p></li>
-<li><p><strong>bw</strong> the value of the bandwidth. Be careful, ….</p></li>
-<li><p><strong>kernel</strong> the choice of kernel function. The default is to use a Gaussian kernel.</p></li>
+<li><p><strong>x</strong> - the vector containing the data</p></li>
+<li><strong>bw</strong> - the value of the bandwidth.
+<ul>
+<li><code>bw = nrd0</code> gives the default bandwidth rule. This is Silverman’s rule-of-thumb <span class="math inline">\(h_{n} = 0.9 s n^{-1/5}\)</span></li>
+<li><code>bw = nrd</code> gives the bandwidth <span class="math inline">\(h_{n} = 1.06 \hat{\sigma} n^{-1/5}\)</span></li>
+<li><code>bw = ucv</code> or <code>bw = bcv</code> find the bandwidth using cross-validation</li>
+</ul></li>
+<li><p><strong>kernel</strong> - the choice of kernel function. The default kernel is the Gaussian kernel.</p></li>
+<li><p>Be careful, some of the non-Gaussian kernels used in the <code>density</code> function are scaled differently than the definitions you might often see in textbooks or on-line resources.</p></li>
+<li><p><strong>n</strong> - the number of equally spaced points at which the density is to be estimated. The default is 512</p></li>
 </ul>
 <hr />
 <ul>
@@ -1005,13 +1014,44 @@ The first few observations of the <code>galaxies</code> dataset look like:</li>
 <ul>
 <li>Kernel density estimates can be computed in <strong>R</strong> using the <code>density</code> function</li>
 </ul>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1">galax.dens &lt;-<span class="st"> </span><span class="kw">density</span>(galaxies)</a>
-<a class="sourceLine" id="cb138-2" data-line-number="2"><span class="kw">plot</span>(galax.dens, <span class="dt">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, </a>
-<a class="sourceLine" id="cb138-3" data-line-number="3">     <span class="dt">xlab=</span><span class="st">&quot;veclocity in km/sec&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
-<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1">galax.dens &lt;-<span class="st"> </span><span class="kw">density</span>(galaxies)</a></code></pre></div>
+<ul>
+<li>You can display a density plot just by applying the <code>plot</code> function to our <code>galax.dens</code> object</li>
+</ul>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" data-line-number="1"><span class="kw">plot</span>(galax.dens, <span class="dt">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, </a>
+<a class="sourceLine" id="cb139-2" data-line-number="2">     <span class="dt">xlab=</span><span class="st">&quot;velocity in km/sec&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<hr />
+<ul>
+<li>The density function returns vectors <code>x</code> and <code>y</code> as components
+<ul>
+<li><code>x</code> - the vector of points at which the density was estimated</li>
+<li><code>y</code> - the value of the estimated density at each of the <code>x</code> points</li>
+</ul></li>
+<li>So, just plotting the <code>(x, y)</code> should give you a plot of the density estimate</li>
+</ul>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1"><span class="kw">plot</span>(galax.dens<span class="op">$</span>x, galax.dens<span class="op">$</span>y, <span class="dt">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, </a>
+<a class="sourceLine" id="cb140-2" data-line-number="2">     <span class="dt">xlab=</span><span class="st">&quot;velocity in km/sec&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<ul>
+<li>The default in <strong>R</strong> is to estimate the density at 512 points. Thus, <code>galax.dens$x</code>
+and <code>galax.dens$y</code> should be have length 512.</li>
+</ul>
+<hr />
+<ul>
+<li>The <code>bw</code> component returned by the <code>density</code> function is the bandwidth used to estimate the density.</li>
+</ul>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" data-line-number="1">galax.dens<span class="op">$</span>bw</a></code></pre></div>
+<pre><code>## [1] 1001.839</code></pre>
+<ul>
+<li><p>The default bandwidth selection rule in <strong>R</strong> is Silverman’s rule-of-thumb <span class="math inline">\(h_{n}^{SR} = 0.9 s n^{-1/5}\)</span>.</p></li>
+<li><p>We can check that this is true with the following code:</p></li>
+</ul>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb143-1" data-line-number="1"><span class="fl">0.9</span><span class="op">*</span><span class="kw">min</span>(<span class="kw">sd</span>(galaxies), <span class="kw">IQR</span>(galaxies)<span class="op">/</span><span class="fl">1.34</span>)<span class="op">/</span>(<span class="kw">length</span>(galaxies)<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">5</span>))</a></code></pre></div>
+<pre><code>## [1] 1001.839</code></pre>
 </div>
-<div id="cross-validation-for-bandwidth-selection" class="section level3">
-<h3><span class="header-section-number">8.5.2</span> Cross-Validation for Bandwidth Selection</h3>
+<div id="cross-validation-for-bandwidth-selection" class="section level2">
+<h2><span class="header-section-number">8.6</span> Cross-Validation for Bandwidth Selection</h2>
 <ul>
 <li>The overall goal in bandwidth selection is to choose the bandwidth
 to minimize the criterion
@@ -1029,9 +1069,8 @@ or some related criterion which also measures an expected discrepancy between <s
 \end{equation}\]</span></li>
 </ul>
 </div>
-</div>
 <div id="additional-reading-3" class="section level2">
-<h2><span class="header-section-number">8.6</span> Additional Reading</h2>
+<h2><span class="header-section-number">8.7</span> Additional Reading</h2>
 <ul>
 <li>Additional reading which covers the material discussed in this chapter includes:
 <ul>
@@ -1039,6 +1078,7 @@ or some related criterion which also measures an expected discrepancy between <s
 <li>Chapter 6 from <span class="citation">Wasserman (<a href="#ref-wasserman2006">2006</a>)</span></li>
 <li>Chapters 2-3 from <span class="citation">Härdle et al. (<a href="#ref-hardle2012">2012</a>)</span></li>
 <li>Chapter 4 from <span class="citation">Izenman (<a href="#ref-izenman2008">2008</a>)</span></li>
+<li><span class="citation">Sheather (<a href="#ref-sheather2004">2004</a>)</span></li>
 </ul></li>
 </ul>
 
@@ -1057,6 +1097,9 @@ or some related criterion which also measures an expected discrepancy between <s
 </div>
 <div id="ref-scott1979">
 <p>Scott, David W. 1979. “On Optimal and Data-Based Histograms.” <em>Biometrika</em> 66 (3). Oxford University Press: 605–10.</p>
+</div>
+<div id="ref-sheather2004">
+<p>Sheather, Simon J. 2004. “Density Estimation.” <em>Statistical Science</em>, 588–97.</p>
 </div>
 <div id="ref-silverman2018">
 <p>Silverman, Bernard W. 2018. <em>Density Estimation for Statistics and Data Analysis</em>. Routledge.</p>

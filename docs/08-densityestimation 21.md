@@ -22,12 +22,10 @@ make few assumptions about the particular form of $f(x)$.
 
 ## Histograms
 
-```{r, echo=FALSE, fig.cap="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt"}
-kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
-                     header=TRUE)
-#load("~/Documents/STAT685Notes/Data/nhgh.rda")
-hist(kidney$age, main="Age in the Kidney Function Data", xlab="Age")
-```
+<div class="figure">
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" width="672" />
+<p class="caption">(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</p>
+</div>
 
 ### Definition
 
@@ -87,7 +85,8 @@ E\{ \hat{f}_{h_{n}}^{H}(x) \} &=& \frac{1}{n h_{n}} E\{ n_{k} \} \nonumber \\
 ### Histograms in R
 
 * In **R**, histograms are computed using the `hist` function 
-```{r, eval=FALSE}
+
+```r
 hist(x, breaks, probability, plot, ...)
 ```
 
@@ -115,30 +114,42 @@ This can be changed using the **right** argument of the **hist** function.
 * Let's use the kidney function data again to demonstrate the use of histograms in **R**. This time
 we will focus on the **age** variable.
 
-```{r}
+
+```r
 kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
                      header=TRUE)
 ```
 
 * You can plot a histogram of **age** just by calling the `hist` function.
-```{r }
+
+```r
 kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
 ```
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 
 * Use the `probability = TRUE` argument to plot the density-estimate version of the histogram.
 This histogram should integrate to 1.
-```{r }
+
+```r
 kidney.hist2 <- hist(kidney$age, main="Histogram of Age on Probability Scale", 
                      xlab="Age from Kidney Data", probability=TRUE)
 ```
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 ---
 
 * In addition to generating a histogram plot, the histogram function 
 also returns useful stuff.
-```{r}
+
+```r
 names(kidney.hist)
+```
+
+```
+## [1] "breaks"   "counts"   "density"  "mids"     "xname"    "equidist"
 ```
 
 * **breaks** 
@@ -150,20 +161,52 @@ names(kidney.hist)
 * **mids** 
    + the midpoint of each of the bins
 
-```{r}
-kidney.hist$breaks
-kidney.hist$counts
 
+```r
+kidney.hist$breaks
+```
+
+```
+## [1] 10 20 30 40 50 60 70 80 90
+```
+
+```r
+kidney.hist$counts
+```
+
+```
+## [1]  4 74 35 11 13 12  6  2
+```
+
+```r
 ## The following sum should match the first element of kidney.hist$counts[1]
 sum(kidney.hist$breaks[1] < kidney$age & kidney$age <= kidney.hist$breaks[2]) 
 ```
 
+```
+## [1] 4
+```
+
 * Let's check that the density values returned by `hist` match our definition of the histogram density estimate in \@ref(eq:hist-density).
 
-```{r}
+
+```r
 binwidth <- kidney.hist$breaks[2] - kidney.hist$breaks[1]
 kidney.hist$density
+```
+
+```
+## [1] 0.002547771 0.047133758 0.022292994 0.007006369 0.008280255 0.007643312
+## [7] 0.003821656 0.001273885
+```
+
+```r
 kidney.hist$counts/(length(kidney$age)*binwidth)
+```
+
+```
+## [1] 0.002547771 0.047133758 0.022292994 0.007006369 0.008280255 0.007643312
+## [7] 0.003821656 0.001273885
 ```
 
 
@@ -387,19 +430,7 @@ sensitive to outliers.
 * **Sturges rule**: The bin width is chosen so that we have $1 + log_{2}(n)$ bins. This choice tends to give wide
 intervals. 
 
-```{r, echo=FALSE, fig.height=10}
-
-par(mfrow=c(3,1), mar=c(4.1,4.1, 1, 0.5))
-hist(kidney$age, breaks="Sturges", main="Histograms for Age in the Kidney Data", xlab="Age", col="grey",
-     cex.lab=1.3, cex.main=1.4, cex.axis=1.3)
-legend(x=50,y=60, legend="Sturges Rule", bty='n', cex=1.8)
-hist(kidney$age, breaks="Scott", xlab="Age", main="", col="grey", cex.lab=1.3, cex.axis=1.3)
-legend(x=50,y=60, legend="Scott Rule", bty='n', cex=1.8)
-hist(kidney$age, breaks="FD", xlab="Age", main="", col="grey", cex.lab=1.3, cex.axis=1.3)
-legend(x=50, y=40, legend="FD Rule", bty='n', cex=1.8)
-
-
-```
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 
 ## A Box-type Density Estimate
@@ -436,10 +467,7 @@ the bin edges while the box estimate suffers less from this problem.
 * However, plots of the box estimate will still largely be non-smooth and 
 have a "jagged" appearance. 
 
-```{r, echo=FALSE}
-plot(density(kidney$age, kernel="rectangular"), main="Box Density Estimate for Kidney Function Data",
-     xlab="Age", las=1, ylab="Density", lwd=2)
-```
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 
 ---
@@ -459,12 +487,7 @@ w(t) =
 \end{cases}
 \end{equation}
 
-```{r, echo=FALSE}
-tt <- seq(-2.5, 2.5, length.out=100)
-plot(0,0, type="n", xlim=c(-2.5, 2.5), ylim=c(0, .6), las=1, xlab="t",
-     ylab="w(t)", main="Box Function w(t)")
-lines(tt, (abs(tt) < 1)/2, type="s", lwd=2, lty=2)
-```
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
 * While the estimator $\hat{f}_{h_{n}}^{B}$ does seem reasonable, it always
 results in density estimates which are not "smooth."
@@ -517,14 +540,7 @@ will appear.
 * The appearance and the statistical performance of $\hat{f}_{h_{n}}(x)$ depend much more on the value of $h_{n}$ than 
 the choice of kernel function.
 
-```{r, echo=FALSE}
-kidney.dens1 <- density(kidney$age, bw=1.5)
-kidney.dens2 <- density(kidney$age, bw=9)
-
-par(mfrow=c(1,2), mar=c(4.1, 4.1, 2, 0.5))
-plot(kidney.dens1, lwd=2, las=1, xlab="Age", main="Bandwidth = 1.5")
-plot(kidney.dens2, lwd=2, las=1, xlab="Age", main="Bandwidth = 9")
-```
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 
 ---
 
@@ -552,31 +568,7 @@ which is symmetric around $0$.
 \end{eqnarray}
 
 
-```{r, echo=FALSE, fig.height=9}
-bwfn <- function(x) {
-    tmp <- 15/(16*sqrt(7))
-    tmp2 <- ((1 - (x^2)/7)^2)*(abs(x) < sqrt(7))
-    ans <- tmp*tmp2
-    return(ans)
-}
-epafn <- function(x) {
-    tmp <- 3/(4*sqrt(5))
-    tmp2 <- (1 - (x^2)/5)*(abs(x) < sqrt(5))
-    ans <- tmp*tmp2
-    return(ans)
-}
-tt <- seq(-5, 5, length.out=100)
-par(mfrow=c(3,1), mar=c(4.1, 4.1, 0.5, 0.5))
-plot(0,0, type="n", xlim=c(-5,5), ylim=c(0,.43), xlab="u", ylab="K(u)", las=1, cex.lab=1.4, cex.axis=1.4)
-lines(tt, dnorm(tt), lwd=2)
-legend("topleft", legend="Gaussian Kernel", bty='n', cex=1.6)
-plot(0,0, type="n", xlim=c(-5,5), ylim=c(0,.43), xlab="u", ylab="K(u)", las=1, cex.lab=1.4, cex.axis=1.4)
-lines(tt, epafn(tt), lwd=2)
-legend("topleft", legend="Epanechnikov Kernel", bty='n', cex=1.6)
-plot(0,0, type="n", xlim=c(-5,5), ylim=c(0,.43), xlab="u", ylab="K(u)", las=1, cex.lab=1.4, cex.axis=1.4)
-lines(tt, bwfn(tt), lwd=2)
-legend("topleft", legend="Biweight Kernel", bty='n', cex=1.6)
-```
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
 * When plotting $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$, it should
 look like a "small hill" centered around $X_{i}$.
@@ -586,28 +578,7 @@ becomes more strongly concentrated around $X_{i}$ and has a higher peak.
 
 * The kernel density estimate $\hat{f}_{h_{n}}(x)$ is a sum of all these "small hills".
 
-```{r, echo=FALSE, fig.height=6.5}
-xx <- c(0.3, -2.3, -0.9, -0.3, -1.1, -0.2, 0.9, -0.5)
-tt <- seq(-3.3, 3.3, length.out=500)
-ff <- rep(0, length(tt))
-for(h in 1:500) {
-   ff[h] <- mean(dnorm(tt[h], mean=xx, sd=.4))
-}
-
-plot(tt, dnorm(tt), type="n", ylim=c(0,0.5), las=1, ylab="Density", xlab="x",
-     main="Kernel Density Estimate for 8 Observations")
-for(k in 1:8) {
-  lines(tt, dnorm(tt, mean=xx[k], sd=.4)/8, lty=2, lwd=2)
-}
-lines(tt, ff, lwd=2)
-points(xx, rep(0, 8), pch=16, cex=1.8)
-text(x=-2.7, y=.42, expression(hat(f)[h[n]](x)), cex=1.2)
-arrows(-2.5, .4, -1.2, .28, lwd=2, length=.2)
-arrows(1, .25, .3, .125, lwd=2, length=.2)
-arrows(-2.8, .18, -2.3, 0, lwd=2, length=.2)
-text(1.2, .285, expression(frac(1, n*h[n])*K(frac(x - X[i], h[n]))), cex=1.2)
-text(-2.85, .2, expression(X[i]), cex=1.2)
-```
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 
 ---
 
@@ -835,80 +806,73 @@ that
 
 ---
 
+## Kernel Density Estimation in Practice
 
 
-## Density Estimation in R
+### Density Estimation in R
 
 
 
 * In **R**, kernel density estimates are computed using the `density` function 
-```{r, eval=FALSE}
+
+```r
 density(x, bw, kernel, n, ...)
 ```
 * **x** - the vector containing the data
 
 * **bw** - the value of the bandwidth. 
-    + `bw = nrd0` gives the default bandwidth rule. This is Silverman's rule-of-thumb $h_{n} = 0.9 s n^{-1/5}$
-    + `bw = nrd` gives the bandwidth $h_{n} = 1.06 \hat{\sigma} n^{-1/5}$
-    + `bw = ucv` or `bw = bcv` find the bandwidth using cross-validation
 
 * **kernel** - the choice of kernel function. The default kernel is the Gaussian kernel. 
 
 * Be careful, some of the non-Gaussian kernels used in the `density` function are scaled differently than the definitions you might often see in textbooks or on-line resources.
 
-* **n** - the number of equally spaced points at which the density is to be estimated. The default is 512
-
 ---
 
 * In this section, we will use the `galaxies` dataset in the `MASS` package. 
 The first few observations of the `galaxies` dataset look like:  
-```{r}
+
+```r
 library(MASS)
 galaxies[1:5]
 ```
 
+```
+## [1] 9172 9350 9483 9558 9775
+```
+
 * Kernel density estimates can be computed in **R** using the `density` function
-```{r}
+
+```r
 galax.dens <- density(galaxies)
 ```
 
 * You can display a density plot just by applying the `plot` function to our `galax.dens` object
-```{r}
+
+```r
 plot(galax.dens, main="Default Density Estimate for Galaxy Data", 
      xlab="velocity in km/sec", ylab="Density", lwd=2)
 ```
 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+
 ---
 
-* The density function returns vectors `x` and `y` as components
+* The density function returns vectors `x` and `y` 
     + `x` - the vector of points at which the density was estimated
     + `y` - the value of the estimated density at each of the `x` points
     
 * So, just plotting the `(x, y)` should give you a plot of the density estimate
-```{r}
+
+```r
 plot(galax.dens$x, galax.dens$y, main="Default Density Estimate for Galaxy Data", 
      xlab="velocity in km/sec", ylab="Density", lwd=2)
 ```
 
-* The default in **R** is to estimate the density at 512 points. Thus, `galax.dens$x`
-and `galax.dens$y` should be have length 512.
-
----
-
-* The `bw` component returned by the `density` function is the bandwidth used to estimate the density.
-```{r}
-galax.dens$bw
-```
-
-* The default bandwidth selection rule in **R** is Silverman's rule-of-thumb $h_{n}^{SR} = 0.9 s n^{-1/5}$.
-
-* We can check that this is true with the following code:
-```{r}
-0.9*min(sd(galaxies), IQR(galaxies)/1.34)/(length(galaxies)^(1/5))
-```
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-19-1.png" width="672" />
 
 
-## Cross-Validation for Bandwidth Selection
+
+### Cross-Validation for Bandwidth Selection
 
 * The overall goal in bandwidth selection is to choose the bandwidth
 to minimize the criterion

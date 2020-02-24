@@ -757,7 +757,14 @@ h_{n}^{opt} = n^{-1/5}(2\sqrt{\pi})^{-1/5}\Big( \frac{3}{8\sqrt{\pi}\sigma^{5}} 
 * The rule $h_{n}^{opt} = 1.06 \sigma n^{-1/5}$ works pretty well if the true density has a roughly Gaussian shape. For example,
 unimodal, non-heavy tails, not too strong skewness, etc.
 
-* However, $h_{n} = 1.06 \hat{\sigma} n^{-1/5}$ is typically too large if $f(x)$ is multimodal or
+* The **Normal reference rule** for the bandwidth is
+\begin{equation}
+h_{n}^{NR} = 1.06 \tilde{\sigma} n^{-1/5}  \nonumber
+\end{equation}
+
+* Here, $\tilde{\sigma}$ is usually either $\tilde{\sigma} = \hat{\sigma}$ or $\tilde{\sigma} = s$.
+
+* $h_{n} = 1.06 \hat{\sigma} n^{-1/5}$ is typically too large if $f(x)$ is multimodal or
 if $f(x)$ has substantial skewness.
 
 * This oversmoothing effect of $h_{n} = 1.06 \hat{\sigma} n^{-1/5}$  can be reduced somewhat by replacing $\hat{\sigma}$ with
@@ -768,18 +775,20 @@ s = \min\Big\{ \hat{\sigma}, \frac{IQR}{1.34} \Big\} \nonumber
 * For multimodal distributions, we typically have $\hat{\sigma} \leq IQR/1.34$ while for strongly skewed
 distributions such as the log-normal distribution we typically have $\hat{\sigma} \geq IQR/1.34$.
 
-* These observations lead to the construction of the **Normal reference rule** for the bandwidth
-\begin{equation}
-h_{n}^{NR} = 1.06 s n^{-1/5}  \nonumber
-\end{equation}
+* For these reasons, $\tilde{\sigma} = s$ is often suggested when using the Normal reference rule.
 
 
 ---
 
-* Silverman's "rule-of-thumb" for the bandwidth.
+* Silverman's "rule-of-thumb" for the bandwidth is
 \begin{equation}
-h_{n}^{SR} = 1.06 s n^{-1/5}  \nonumber
+h_{n}^{SR} = 0.9 s n^{-1/5}  \nonumber
 \end{equation}
+(see Chapter 3 of @silverman2018).
+
+* This rule is just an adjustment for the fact that $1.06 s n^{-1/5}$ is still 
+too large for many skewed or multimodal distribution and using $0.9$ instead of $1.06$ reduces
+this problem.
 
 
 ---
@@ -797,10 +806,9 @@ that
 
 ---
 
-## Kernel Density Estimation in Practice
 
 
-### Density Estimation in R
+## Density Estimation in R
 
 
 
@@ -809,12 +817,18 @@ that
 ```r
 density(x, bw, kernel, n, ...)
 ```
-* **x** the vector containing the data
+* **x** - the vector containing the data
 
-* **bw** the value of the bandwidth. Be careful, ....
+* **bw** - the value of the bandwidth. 
+    + `bw = nrd0` gives the default bandwidth rule. This is Silverman's rule-of-thumb $h_{n} = 0.9 s n^{-1/5}$
+    + `bw = nrd` gives the bandwidth $h_{n} = 1.06 \hat{\sigma} n^{-1/5}$
+    + `bw = ucv` or `bw = bcv` find the bandwidth using cross-validation
 
-* **kernel** the choice of kernel function. The default is to use a Gaussian kernel.
+* **kernel** - the choice of kernel function. The default kernel is the Gaussian kernel. 
 
+* Be careful, some of the non-Gaussian kernels used in the `density` function are scaled differently than the definitions you might often see in textbooks or on-line resources.
+
+* **n** - the number of equally spaced points at which the density is to be estimated. The default is 512
 
 ---
 
@@ -834,14 +848,61 @@ galaxies[1:5]
 
 ```r
 galax.dens <- density(galaxies)
-plot(galax.dens, main="Default Density Estimate for Galaxy Data", 
-     xlab="veclocity in km/sec", ylab="Density", lwd=2)
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+* You can display a density plot just by applying the `plot` function to our `galax.dens` object
+
+```r
+plot(galax.dens, main="Default Density Estimate for Galaxy Data", 
+     xlab="velocity in km/sec", ylab="Density", lwd=2)
+```
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+
+---
+
+* The density function returns vectors `x` and `y` as components
+    + `x` - the vector of points at which the density was estimated
+    + `y` - the value of the estimated density at each of the `x` points
+    
+* So, just plotting the `(x, y)` should give you a plot of the density estimate
+
+```r
+plot(galax.dens$x, galax.dens$y, main="Default Density Estimate for Galaxy Data", 
+     xlab="velocity in km/sec", ylab="Density", lwd=2)
+```
+
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+
+* The default in **R** is to estimate the density at 512 points. Thus, `galax.dens$x`
+and `galax.dens$y` should be have length 512.
+
+---
+
+* The `bw` component returned by the `density` function is the bandwidth used to estimate the density.
+
+```r
+galax.dens$bw
+```
+
+```
+## [1] 1001.839
+```
+
+* The default bandwidth selection rule in **R** is Silverman's rule-of-thumb $h_{n}^{SR} = 0.9 s n^{-1/5}$.
+
+* We can check that this is true with the following code:
+
+```r
+0.9*min(sd(galaxies), IQR(galaxies)/1.34)/(length(galaxies)^(1/5))
+```
+
+```
+## [1] 1001.839
+```
 
 
-### Cross-Validation for Bandwidth Selection
+## Cross-Validation for Bandwidth Selection
 
 * The overall goal in bandwidth selection is to choose the bandwidth
 to minimize the criterion
@@ -867,5 +928,6 @@ or some related criterion which also measures an expected discrepancy between $\
     + Chapter 6 from @wasserman2006
     + Chapters 2-3 from @hardle2012
     + Chapter 4 from @izenman2008
+    + @sheather2004
 
 
