@@ -693,7 +693,7 @@ following two things to happen:
 
 ---
 
-* The approximate mean integrated squared error is obtained by integrating
+* The approximate mean integrated squared error (AMISE) is obtained by integrating
 the approximation \@ref(eq:asymp-mse-density) for MSE across $x$
 \begin{eqnarray}
 \textrm{AMISE}\{ \hat{f}_{h_{n}} \} &=& \frac{\kappa_{2} }{n h_{n} }\int_{-\infty}^{\infty} f(x) dx + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber \\
@@ -718,7 +718,7 @@ h_{n}^{opt} = n^{-1/5} \Big( \int_{-\infty}^{\infty} [f''(x)]^{2} dx \Big)^{-1/5
 * For the case of a Gaussian kernel, 
 \begin{eqnarray}
 \kappa_{2}(K) &=& \frac{1}{2\pi}\int_{-\infty}^{\infty} e^{-u^{2}} du = \frac{1}{2\sqrt{\pi}}\int_{-\infty}^{\infty} \frac{\sqrt{2}}{\sqrt{2\pi}} e^{-u^{2}} du = \frac{1}{2\sqrt{\pi}} \nonumber \\
-\mu_{2}(K) &=& \int_{-\infty}^{\infty} u^{2}e^{-u^{2}/2} du = 1
+\mu_{2}(K) &=& \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} u^{2}e^{-u^{2}/2} du = 1
 \end{eqnarray}
 so that, in the case of a Gaussian kernel, the optimal bandwidth is given by
 \begin{equation}
