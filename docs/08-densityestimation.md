@@ -22,7 +22,10 @@ make few assumptions about the particular form of $f(x)$.
 
 ## Histograms
 
-![(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt](08-densityestimation_files/figure-latex/unnamed-chunk-1-1.pdf) 
+<div class="figure">
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" width="672" />
+<p class="caption">(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</p>
+</div>
 
 ### Definition
 
@@ -123,7 +126,7 @@ kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.tx
 kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
 ```
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 
 * Use the `probability = TRUE` argument to plot the density-estimate version of the histogram.
@@ -134,7 +137,7 @@ kidney.hist2 <- hist(kidney$age, main="Histogram of Age on Probability Scale",
                      xlab="Age from Kidney Data", probability=TRUE)
 ```
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 ---
 
@@ -427,7 +430,7 @@ sensitive to outliers.
 * **Sturges rule**: The bin width is chosen so that we have $1 + log_{2}(n)$ bins. This choice tends to give wide
 intervals. 
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 
 ## A Box-type Density Estimate
@@ -464,7 +467,7 @@ the bin edges while the box estimate suffers less from this problem.
 * However, plots of the box estimate will still largely be non-smooth and 
 have a "jagged" appearance. 
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 
 ---
@@ -484,7 +487,7 @@ w(t) =
 \end{cases}
 \end{equation}
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-11-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
 * While the estimator $\hat{f}_{h_{n}}^{B}$ does seem reasonable, it always
 results in density estimates which are not "smooth."
@@ -537,7 +540,7 @@ will appear.
 * The appearance and the statistical performance of $\hat{f}_{h_{n}}(x)$ depend much more on the value of $h_{n}$ than 
 the choice of kernel function.
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-12-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 
 ---
 
@@ -565,7 +568,7 @@ which is symmetric around $0$.
 \end{eqnarray}
 
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-13-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
 * When plotting $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$, it should
 look like a "small hill" centered around $X_{i}$.
@@ -575,7 +578,7 @@ becomes more strongly concentrated around $X_{i}$ and has a higher peak.
 
 * The kernel density estimate $\hat{f}_{h_{n}}(x)$ is a sum of all these "small hills".
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-14-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 
 ---
 
@@ -804,6 +807,107 @@ that
 ---
 
 
+## Cross-Validation for Bandwidth Selection
+
+### Squared-Error Cross-Validation
+
+* The usual goal in bandwidth selection is to choose the bandwidth
+which minimizes the mean integrated squared error (MISE)
+\begin{equation}
+\textrm{MISE}(h) = E\Big[ \int \{ \hat{f}_{h}(x) - f(x)   \}^{2} dx \Big]
+\end{equation}
+or some related criterion which also measures an expected discrepancy between $\hat{f}_{h_{n}}(x)$ and $f(x)$.
+
+* The MISE can be rewritten as
+\begin{equation}
+\textrm{MISE}(h) = E\Big[ \int \hat{f}_{h}^{2}(x) dx \Big]  - 2 \int E\Big[ \hat{f}_{h}(x) \Big] f(x) dx + \int f^{2}(x) dx
+(\#eq:mise-decomposition)
+\end{equation}
+
+* If the goal is to minimize $\textrm{MISE}(h)$, we can ignore the last term since it does not depend on $h$.
+
+---
+
+* Our goal will be find a bandwidth that minimizes an estimate of $\textrm{MISE}(h)$ (an estimate which ignores the last term in \@ref(eq:mise-decomposition)),
+and this estimate will use a technique called leave-one-out **cross-validation**.
+
+* Regarding the first term in \@ref(eq:mise-decomposition), we can just estimate this expectation with
+\begin{equation}
+\int \hat{f}_{h}^{2}(x) dx  \nonumber 
+\end{equation}
+
+* The second term in \@ref(eq:mise-decomposition) is trickier because it has $f(x)$ in it.
+
+* We can simplify this term though 
+\begin{equation}
+\int E\Big[ \hat{f}_{h}(x) \Big] f(x) dx = E\Bigg[ \frac{1}{h} K\Big( \frac{X_{1} - X_{2}}{h} \Big)  \Bigg] \nonumber 
+\end{equation}
+(why is this true?)
+
+---
+
+* We can construct an estimate of \@ref(eq:mise-decomposition) by first defining the 
+following "leave-one-out" estimate
+\begin{equation}
+\hat{f}_{h, -i}(x) = \frac{1}{(n-1)h}\sum_{j \neq i}  K\Big( \frac{x - X_{j}}{h} \Big) 
+\end{equation}
+
+* In other words, $\hat{f}_{h, -i}(x)$ is a density estimate constructed from using 
+bandwidth $h$ and all the data except for the $i^{th}$ observation.
+
+* Then, we are going use the following quantity to estimate
+\begin{equation}
+\frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} ) 
+= \frac{1}{n(n-1)} \sum_{i=1}^{n} \sum_{j \neq i} \frac{1}{h}K\Big( \frac{X_{i} - X_{j}}{ h } \Big) \nonumber 
+\end{equation}
+
+* The term $\frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} )$ is referred to as a leave-one-out cross-validation
+estimate.
+
+* The expectation of this quantity is
+\begin{eqnarray}
+E\Big\{ \frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} )  \Big\}
+&=& \frac{1}{n(n-1)}\sum_{i=1}^{n} \sum_{j \neq i} E\Big\{ \frac{1}{h}  K\Big( \frac{X_{i} - X_{j}}{ h } \Big)  \Big\}  \nonumber \\
+&=& E\Big\{ \frac{1}{h}  K\Big( \frac{X_{1} - X_{2}}{ h } \Big)  \Big\} \nonumber
+\end{eqnarray}
+
+---
+
+* The leave-one-out **cross-validation estimate of the MISE** (ignoring the irrelevant $\int f^{2}(x) dx$) is
+\begin{equation}
+\hat{J}_{MISE}(h) = \int \hat{f}_{h}^{2}(x) dx - \frac{2}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} )  \nonumber
+\end{equation}
+
+* The integrated squared error cross-validation choice  of the bandwidth $h_{n,cv}$ is the value of $h > 0$ which minimizes $\hat{J}_{MISE}(h)$
+\begin{equation}
+h_{n,cv} = \arg\min_{h > 0} \hat{J}_{MISE}(h) \nonumber
+\end{equation}
+
+### Computing the Cross-validation Bandwidth
+
+
+
+### Likelihood Cross-Validation
+
+* Another possible criterion for which to minimize is the KL divergence
+\begin{equation}
+\textrm{KL}(h) = \int \log \Big( \frac{ \hat{f}_{h}(x) }{f(x)} \Big)  f(x) dx
+= \int \log \{ \hat{f}_{h}(x) \}  f(x) dx - \int \log\{ f(x) \}f(x) dx
+\end{equation}
+
+* We only need to get an estimate of $\int \log \{ \hat{f}_{h}(x) \}  f(x) dx$
+because $\int \log\{ f(x) \}f(x) dx$ does not depend on $h$.
+
+* We can use basically the same approach as we did for integrated squared error cross-validation
+to estimate $\int \log \{ \hat{f}_{h}(x) \}  f(x) dx$.
+
+* The leave-one-out **cross-validation estimate of the KL divergence** (ignoring the irrelevant $\int \log\{ f(x) \}f(x) dx$) is
+\begin{equation}
+\hat{J}_{KL}(h) = \frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} )  \nonumber
+\end{equation}
+
+* Choosing the bandwidth which minimizes $\hat{J}_{KL}(h)$ is often referred to as **likelihood cross-validation**.
+
 
 ## Density Estimation in R
 
@@ -854,7 +958,7 @@ plot(galax.dens, main="Default Density Estimate for Galaxy Data",
      xlab="velocity in km/sec", ylab="Density", lwd=2)
 ```
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-18-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-18-1.png" width="672" />
 
 ---
 
@@ -869,7 +973,7 @@ plot(galax.dens$x, galax.dens$y, main="Default Density Estimate for Galaxy Data"
      xlab="velocity in km/sec", ylab="Density", lwd=2)
 ```
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-19-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-19-1.png" width="672" />
 
 * The default in **R** is to estimate the density at 512 points. Thus, `galax.dens$x`
 and `galax.dens$y` should have length 512.
@@ -898,23 +1002,6 @@ galax.dens$bw
 ## [1] 1001.839
 ```
 
-
-## Cross-Validation for Bandwidth Selection
-
-* The overall goal in bandwidth selection is to choose the bandwidth
-to minimize the criterion
-\begin{equation}
-\int E\Big\{ \{ \hat{f}_{h}(x) - f(x)   \}^{2} \Big\} dx
-\end{equation}
-or some related criterion which also measures an expected discrepancy between $\hat{f}_{h_{n}}(x)$ and $f(x)$.
-
----
-
-* Another possible criterion for which to minimize is the KL divergence
-\begin{equation}
-\int \log \Big( \frac{ \hat{f}_{h}(x) }{f(x)} \Big)  f(x) dx
-= \int \log \Big( \hat{f}_{h}(x) \Big)  f(x) dx - \int \log\Big( f(x) \Big)f(x) dx
-\end{equation}
 
 
 

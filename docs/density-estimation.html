@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 Density Estimation | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 Density Estimation | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -236,8 +239,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-amise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and AMISE of Kernel Density Estimates</a></li>
 <li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule-and-silvermans-rule-of-thumb"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection with the Normal Reference Rule and Silverman’s “Rule of Thumb”</a></li>
 </ul></li>
-<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.5</b> Density Estimation in R</a></li>
-<li class="chapter" data-level="8.6" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.6</b> Cross-Validation for Bandwidth Selection</a></li>
+<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5</b> Cross-Validation for Bandwidth Selection</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="density-estimation.html"><a href="density-estimation.html#squared-error-cross-validation"><i class="fa fa-check"></i><b>8.5.1</b> Squared-Error Cross-Validation</a></li>
+<li class="chapter" data-level="8.5.2" data-path="density-estimation.html"><a href="density-estimation.html#computing-the-cross-validation-bandwidth"><i class="fa fa-check"></i><b>8.5.2</b> Computing the Cross-validation Bandwidth</a></li>
+<li class="chapter" data-level="8.5.3" data-path="density-estimation.html"><a href="density-estimation.html#likelihood-cross-validation"><i class="fa fa-check"></i><b>8.5.3</b> Likelihood Cross-Validation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.6</b> Density Estimation in R</a></li>
 <li class="chapter" data-level="8.7" data-path="density-estimation.html"><a href="density-estimation.html#additional-reading-3"><i class="fa fa-check"></i><b>8.7</b> Additional Reading</a></li>
 </ul></li>
 <li class="part"><span><b>III Uncertainty Measures</b></span></li>
@@ -982,8 +989,99 @@ we have density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span>
 <hr />
 </div>
 </div>
+<div id="cross-validation-for-bandwidth-selection" class="section level2">
+<h2><span class="header-section-number">8.5</span> Cross-Validation for Bandwidth Selection</h2>
+<div id="squared-error-cross-validation" class="section level3">
+<h3><span class="header-section-number">8.5.1</span> Squared-Error Cross-Validation</h3>
+<ul>
+<li><p>The usual goal in bandwidth selection is to choose the bandwidth
+which minimizes the mean integrated squared error (MISE)
+<span class="math display">\[\begin{equation}
+\textrm{MISE}(h) = E\Big[ \int \{ \hat{f}_{h}(x) - f(x)   \}^{2} dx \Big]
+\end{equation}\]</span>
+or some related criterion which also measures an expected discrepancy between <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> and <span class="math inline">\(f(x)\)</span>.</p></li>
+<li><p>The MISE can be rewritten as
+<span class="math display" id="eq:mise-decomposition">\[\begin{equation}
+\textrm{MISE}(h) = E\Big[ \int \hat{f}_{h}^{2}(x) dx \Big]  - 2 \int E\Big[ \hat{f}_{h}(x) \Big] f(x) dx + \int f^{2}(x) dx
+\tag{8.13}
+\end{equation}\]</span></p></li>
+<li><p>If the goal is to minimize <span class="math inline">\(\textrm{MISE}(h)\)</span>, we can ignore the last term since it does not depend on <span class="math inline">\(h\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Our goal will be find a bandwidth that minimizes an estimate of <span class="math inline">\(\textrm{MISE}(h)\)</span> (an estimate which ignores the last term in <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a>),
+and this estimate will use a technique called leave-one-out <strong>cross-validation</strong>.</p></li>
+<li><p>Regarding the first term in <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a>, we can just estimate this expectation with
+<span class="math display">\[\begin{equation}
+\int \hat{f}_{h}^{2}(x) dx  \nonumber 
+\end{equation}\]</span></p></li>
+<li><p>The second term in <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a> is trickier because it has <span class="math inline">\(f(x)\)</span> in it.</p></li>
+<li><p>We can simplify this term though
+<span class="math display">\[\begin{equation}
+\int E\Big[ \hat{f}_{h}(x) \Big] f(x) dx = E\Bigg[ \frac{1}{h} K\Big( \frac{X_{1} - X_{2}}{h} \Big)  \Bigg] \nonumber 
+\end{equation}\]</span>
+(why is this true?)</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>We can construct an estimate of <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a> by first defining the
+following “leave-one-out” estimate
+<span class="math display">\[\begin{equation}
+\hat{f}_{h, -i}(x) = \frac{1}{(n-1)h}\sum_{j \neq i}  K\Big( \frac{x - X_{j}}{h} \Big) 
+\end{equation}\]</span></p></li>
+<li><p>In other words, <span class="math inline">\(\hat{f}_{h, -i}(x)\)</span> is a density estimate constructed from using
+bandwidth <span class="math inline">\(h\)</span> and all the data except for the <span class="math inline">\(i^{th}\)</span> observation.</p></li>
+<li><p>Then, we are going use the following quantity to estimate
+<span class="math display">\[\begin{equation}
+\frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} ) 
+= \frac{1}{n(n-1)} \sum_{i=1}^{n} \sum_{j \neq i} \frac{1}{h}K\Big( \frac{X_{i} - X_{j}}{ h } \Big) \nonumber 
+\end{equation}\]</span></p></li>
+<li><p>The term <span class="math inline">\(\frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} )\)</span> is referred to as a leave-one-out cross-validation
+estimate.</p></li>
+<li><p>The expectation of this quantity is
+<span class="math display">\[\begin{eqnarray}
+E\Big\{ \frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} )  \Big\}
+&amp;=&amp; \frac{1}{n(n-1)}\sum_{i=1}^{n} \sum_{j \neq i} E\Big\{ \frac{1}{h}  K\Big( \frac{X_{i} - X_{j}}{ h } \Big)  \Big\}  \nonumber \\
+&amp;=&amp; E\Big\{ \frac{1}{h}  K\Big( \frac{X_{1} - X_{2}}{ h } \Big)  \Big\} \nonumber
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The leave-one-out <strong>cross-validation estimate of the MISE</strong> (ignoring the irrelevant <span class="math inline">\(\int f^{2}(x) dx\)</span>) is
+<span class="math display">\[\begin{equation}
+\hat{J}_{MISE}(h) = \int \hat{f}_{h}^{2}(x) dx - \frac{2}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} )  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The integrated squared error cross-validation choice of the bandwidth <span class="math inline">\(h_{n,cv}\)</span> is the value of <span class="math inline">\(h &gt; 0\)</span> which minimizes <span class="math inline">\(\hat{J}_{MISE}(h)\)</span>
+<span class="math display">\[\begin{equation}
+h_{n,cv} = \arg\min_{h &gt; 0} \hat{J}_{MISE}(h) \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+</div>
+<div id="computing-the-cross-validation-bandwidth" class="section level3">
+<h3><span class="header-section-number">8.5.2</span> Computing the Cross-validation Bandwidth</h3>
+</div>
+<div id="likelihood-cross-validation" class="section level3">
+<h3><span class="header-section-number">8.5.3</span> Likelihood Cross-Validation</h3>
+<ul>
+<li><p>Another possible criterion for which to minimize is the KL divergence
+<span class="math display">\[\begin{equation}
+\textrm{KL}(h) = \int \log \Big( \frac{ \hat{f}_{h}(x) }{f(x)} \Big)  f(x) dx
+= \int \log \{ \hat{f}_{h}(x) \}  f(x) dx - \int \log\{ f(x) \}f(x) dx
+\end{equation}\]</span></p></li>
+<li><p>We only need to get an estimate of <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \} f(x) dx\)</span>
+because <span class="math inline">\(\int \log\{ f(x) \}f(x) dx\)</span> does not depend on <span class="math inline">\(h\)</span>.</p></li>
+<li><p>We can use basically the same approach as we did for integrated squared error cross-validation
+to estimate <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \} f(x) dx\)</span>.</p></li>
+<li><p>The leave-one-out <strong>cross-validation estimate of the KL divergence</strong> (ignoring the irrelevant <span class="math inline">\(\int \log\{ f(x) \}f(x) dx\)</span>) is
+<span class="math display">\[\begin{equation}
+\hat{J}_{KL}(h) = \frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} )  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Choosing the bandwidth which minimizes <span class="math inline">\(\hat{J}_{KL}(h)\)</span> is often referred to as <strong>likelihood cross-validation</strong>.</p></li>
+</ul>
+</div>
+</div>
 <div id="density-estimation-in-r" class="section level2">
-<h2><span class="header-section-number">8.5</span> Density Estimation in R</h2>
+<h2><span class="header-section-number">8.6</span> Density Estimation in R</h2>
 <ul>
 <li>In <strong>R</strong>, kernel density estimates are computed using the <code>density</code> function</li>
 </ul>
@@ -1047,25 +1145,6 @@ and <code>galax.dens$y</code> should have length 512.</li>
 <div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb143-1" data-line-number="1"><span class="fl">0.9</span><span class="op">*</span><span class="kw">min</span>(<span class="kw">sd</span>(galaxies), <span class="kw">IQR</span>(galaxies)<span class="op">/</span><span class="fl">1.34</span>)<span class="op">/</span>(<span class="kw">length</span>(galaxies)<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">5</span>))</a></code></pre></div>
 <pre><code>## [1] 1001.839</code></pre>
 </div>
-<div id="cross-validation-for-bandwidth-selection" class="section level2">
-<h2><span class="header-section-number">8.6</span> Cross-Validation for Bandwidth Selection</h2>
-<ul>
-<li>The overall goal in bandwidth selection is to choose the bandwidth
-to minimize the criterion
-<span class="math display">\[\begin{equation}
-\int E\Big\{ \{ \hat{f}_{h}(x) - f(x)   \}^{2} \Big\} dx
-\end{equation}\]</span>
-or some related criterion which also measures an expected discrepancy between <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> and <span class="math inline">\(f(x)\)</span>.</li>
-</ul>
-<hr />
-<ul>
-<li>Another possible criterion for which to minimize is the KL divergence
-<span class="math display">\[\begin{equation}
-\int \log \Big( \frac{ \hat{f}_{h}(x) }{f(x)} \Big)  f(x) dx
-= \int \log \Big( \hat{f}_{h}(x) \Big)  f(x) dx - \int \log\Big( f(x) \Big)f(x) dx
-\end{equation}\]</span></li>
-</ul>
-</div>
 <div id="additional-reading-3" class="section level2">
 <h2><span class="header-section-number">8.7</span> Additional Reading</h2>
 <ul>
@@ -1116,11 +1195,13 @@ or some related criterion which also measures an expected discrepancy between <s
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -1128,12 +1209,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -1145,6 +1225,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },
