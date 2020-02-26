@@ -22,10 +22,7 @@ make few assumptions about the particular form of $f(x)$.
 
 ## Histograms
 
-<div class="figure">
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" width="672" />
-<p class="caption">(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</p>
-</div>
+![(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt](08-densityestimation_files/figure-latex/unnamed-chunk-1-1.pdf) 
 
 ### Definition
 
@@ -126,7 +123,7 @@ kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.tx
 kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
 
 
 * Use the `probability = TRUE` argument to plot the density-estimate version of the histogram.
@@ -137,7 +134,7 @@ kidney.hist2 <- hist(kidney$age, main="Histogram of Age on Probability Scale",
                      xlab="Age from Kidney Data", probability=TRUE)
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
 
 ---
 
@@ -430,7 +427,7 @@ sensitive to outliers.
 * **Sturges rule**: The bin width is chosen so that we have $1 + log_{2}(n)$ bins. This choice tends to give wide
 intervals. 
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
 
 
 ## A Box-type Density Estimate
@@ -467,7 +464,7 @@ the bin edges while the box estimate suffers less from this problem.
 * However, plots of the box estimate will still largely be non-smooth and 
 have a "jagged" appearance. 
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
 
 
 ---
@@ -487,7 +484,7 @@ w(t) =
 \end{cases}
 \end{equation}
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-11-1.pdf)<!-- --> 
 
 * While the estimator $\hat{f}_{h_{n}}^{B}$ does seem reasonable, it always
 results in density estimates which are not "smooth."
@@ -540,7 +537,7 @@ will appear.
 * The appearance and the statistical performance of $\hat{f}_{h_{n}}(x)$ depend much more on the value of $h_{n}$ than 
 the choice of kernel function.
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-12-1.pdf)<!-- --> 
 
 ---
 
@@ -568,7 +565,7 @@ which is symmetric around $0$.
 \end{eqnarray}
 
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-13-1.pdf)<!-- --> 
 
 * When plotting $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$, it should
 look like a "small hill" centered around $X_{i}$.
@@ -578,7 +575,7 @@ becomes more strongly concentrated around $X_{i}$ and has a higher peak.
 
 * The kernel density estimate $\hat{f}_{h_{n}}(x)$ is a sum of all these "small hills".
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-14-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-14-1.pdf)<!-- --> 
 
 ---
 
@@ -855,7 +852,7 @@ following "leave-one-out" estimate
 * In other words, $\hat{f}_{h, -i}(x)$ is a density estimate constructed from using 
 bandwidth $h$ and all the data except for the $i^{th}$ observation.
 
-* Then, we are going use the following quantity to estimate
+* Then, we are going use the following quantity to estimate $\int E[ \hat{f}_{h}(x) ] f(x) dx$
 \begin{equation}
 \frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} ) 
 = \frac{1}{n(n-1)} \sum_{i=1}^{n} \sum_{j \neq i} \frac{1}{h}K\Big( \frac{X_{i} - X_{j}}{ h } \Big) \nonumber 
@@ -885,28 +882,124 @@ h_{n,cv} = \arg\min_{h > 0} \hat{J}_{MISE}(h) \nonumber
 
 ### Computing the Cross-validation Bandwidth
 
+* **R** does have built-in capabilities for finding the bandwidth through cross-validation, but
+let's do an example ourselves to see how the process works.
+
+* First, we can build a function called `J_mise` that has input and output:
+    + Input: a value of the bandwidth $h$ and a vector of data
+    + Output: the value of $\hat{J}_{MISE}(h)$
+
+
+```r
+J_mise <- function(h, x) {
+    n <- length(x)
+    loo.val <- rep(0, n)
+    for(k in 1:n) {
+        ## compute the leave-one-out density estimate
+        ## only focus on density on interval (18, 90)
+        loo.fhat <- density(x[-k], bw=h, from=18, to=90)
+        loo.fhat.fn <- approxfun(loo.fhat$x, loo.fhat$y)
+        loo.val[k] <- loo.fhat.fn(x[k])
+    }
+    fhat <- density(x, bw=h, from=18, to=90)
+    fhat.sq.fn <- approxfun(fhat$x, fhat$y^2)
+    
+    ans <- integrate(fhat.sq.fn, lower=18, upper=90)$value - 2*mean(loo.val)
+    return(ans)
+}
+```
+
+* Now, we want to use our **R** function to compute $\hat{J}(h_{j})$ over
+a grid of bandwidth values
+\begin{equation}
+h_{min} \leq h_{1} < ... < h_{q} \leq h_{max} \nonumber
+\end{equation}
+
+* The smallest and largest possible bandwidths $h_{min}$ and $h_{max}$ can be chosen
+by looking at plots of the density for different bandwidths. 
+
+* $h_{min}$ should correspond
+to a density estimate which is very nonsmooth while $h_{max}$ should correspond to 
+a density which is oversmoothed.
+
+* For the ages from the kidney data, $h_{min} = 1/2$ and $h_{max} = 5$ seem like reasonable choices. 
+
+* Let us compute $\hat{J}(h)$ for a grid of $100$ bandwidths between $1/2$ and $5$:
+
+```r
+h.grid <- seq(1/2, 5, length.out=100)
+CV.est <- rep(0, 100)
+for(j in 1:100) {
+   CV.est[j] <- J_mise(h=h.grid[j], x=kidney$age)
+}
+```
+
+* Now, if we plot $\hat{J}(h)$ vs. $h$, we can see what the best value of the bandwidth is.
+From the graph, it appears that a bandwidth of roughly $h = 1.8$ minimizes $\hat{J}(h)$
+
+```r
+plot(h.grid, CV.est, xlab="bandwidth", ylab="J_mise(h)", 
+     main = "Cross-Validation Estimates for Age Data")
+```
+
+![](08-densityestimation_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
+
+* The specific value of the bandwidth where $\hat{J}(h_{j})$ reaches its minimum is:
+
+```r
+h.grid[ which.min(CV.est) ]
+```
+
+```
+## [1] 1.772727
+```
 
 
 ### Likelihood Cross-Validation
 
-* Another possible criterion for which to minimize is the KL divergence
+* An alternative criterion to use is the **Kullback-Leibler (KL) divergence**
 \begin{equation}
-\textrm{KL}(h) = \int \log \Big( \frac{ \hat{f}_{h}(x) }{f(x)} \Big)  f(x) dx
-= \int \log \{ \hat{f}_{h}(x) \}  f(x) dx - \int \log\{ f(x) \}f(x) dx
+\textrm{KL}(h) = \int \log \Big( \frac{ f(x) }{ \hat{f}_{h}(x) } \Big)  f(x) dx
+= -\int \log \{ \hat{f}_{h}(x) \}  f(x) dx + \int \log\{ f(x) \}f(x) dx
 \end{equation}
 
 * We only need to get an estimate of $\int \log \{ \hat{f}_{h}(x) \}  f(x) dx$
 because $\int \log\{ f(x) \}f(x) dx$ does not depend on $h$.
 
-* We can use basically the same approach as we did for integrated squared error cross-validation
+* We can use the same approach as we did for integrated squared error cross-validation
 to estimate $\int \log \{ \hat{f}_{h}(x) \}  f(x) dx$.
 
-* The leave-one-out **cross-validation estimate of the KL divergence** (ignoring the irrelevant $\int \log\{ f(x) \}f(x) dx$) is
+* The leave-one-out **cross-validation estimate of the KL divergence** (ignoring the irrelevant $\int \log\{ f(x) \}f(x) dx$ term) is
 \begin{equation}
-\hat{J}_{KL}(h) = \frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} )  \nonumber
+\hat{J}_{KL}(h) = -\frac{1}{n} \sum_{i=1}^{n} \log \{ \hat{f}_{h, -i}( X_{i} ) \}  \nonumber
 \end{equation}
 
 * Choosing the bandwidth which minimizes $\hat{J}_{KL}(h)$ is often referred to as **likelihood cross-validation**.
+
+* An **R** function which can compute $\hat{J}_{KL}(h)$ is given below:
+
+```r
+J_KL <- function(h, x) {
+  n <- length(x)
+  loo.val <- rep(0, n)
+  for(k in 1:n) {
+    ## compute the leave-one-out density estimate
+    ## only focus on density on interval (18, 90)
+    loo.fhat <- density(x[-k], bw=h, from=18, to=90)
+    loo.fhat.fn <- approxfun(loo.fhat$x, loo.fhat$y)
+    loo.val[k] <- (-1)*log(loo.fhat.fn(x[k]))
+  }
+  return(mean(loo.val))
+}
+```
+
+
+---
+
+* **Exercise 8.7** Using the **age** variable from the kidney function data,
+find the best bandwidth using a Gaussian kernel and likelihood cross-validation.
+
+---
 
 
 ## Density Estimation in R
@@ -958,7 +1051,7 @@ plot(galax.dens, main="Default Density Estimate for Galaxy Data",
      xlab="velocity in km/sec", ylab="Density", lwd=2)
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-23-1.pdf)<!-- --> 
 
 ---
 
@@ -973,7 +1066,7 @@ plot(galax.dens$x, galax.dens$y, main="Default Density Estimate for Galaxy Data"
      xlab="velocity in km/sec", ylab="Density", lwd=2)
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+![](08-densityestimation_files/figure-latex/unnamed-chunk-24-1.pdf)<!-- --> 
 
 * The default in **R** is to estimate the density at 512 points. Thus, `galax.dens$x`
 and `galax.dens$y` should have length 512.

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  25 FEB 2020 09:30
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  26 FEB 2020 14:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1534,36 +1534,80 @@ Overfull \hbox (15.32248pt too wide) in alignment at lines 6268--6274
  []
 
 [137] [138] [139] [140]
-File: 08-densityestimation_files/figure-latex/unnamed-chunk-18-1.pdf Graphic fi
+Overfull \hbox (0.92572pt too wide) in paragraph at lines 6507--6508
+[]\TU/lmr/m/n/10 Then, we are going use the following quantity to estimate $[] 
+\OML/lmm/m/it/10 E\OT1/lmr/m/n/10 [[](\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 )]\OML/
+lmm/m/it/10 f\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 )\OML/lmm/m/it/
+10 dx$ 
+ []
+
+
+Underfull \hbox (badness 1062) in paragraph at lines 6513--6516
+[]\TU/lmr/m/n/10 The term $[] [][] []\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 X[]\OT1/
+lmr/m/n/10 )$ \TU/lmr/m/n/10 is referred to as a leave-one-out cross-
+ []
+
+[141] [142]
+File: 08-densityestimation_files/figure-latex/unnamed-chunk-17-1.pdf Graphic fi
 le (type pdf)
-<use 08-densityestimation_files/figure-latex/unnamed-chunk-18-1.pdf>
-[141]
-File: 08-densityestimation_files/figure-latex/unnamed-chunk-19-1.pdf Graphic fi
+<use 08-densityestimation_files/figure-latex/unnamed-chunk-17-1.pdf>
+
+Overfull \hbox (18.9508pt too wide) detected at line 6650
+[][]\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 h\OT1/lmr/m/n/10 ) = [] [] [][][]\OML/lmm
+/m/it/10 f\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 
+dx \OT1/lmr/m/n/10 = \OMS/lmsy/m/n/10 ^^@ [] []f[]\OT1/lmr/m/n/10 (\OML/lmm/m/i
+t/10 x\OT1/lmr/m/n/10 )\OMS/lmsy/m/n/10 g\OML/lmm/m/it/10 f\OT1/lmr/m/n/10 (\OM
+L/lmm/m/it/10 x\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 dx \OT1/lmr/m/n/10 + [] []\OMS
+/lmsy/m/n/10 f\OML/lmm/m/it/10 f\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n
+/10 )\OMS/lmsy/m/n/10 g\OML/lmm/m/it/10 f\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT
+1/lmr/m/n/10 )\OML/lmm/m/it/10 dx
+ []
+
+
+Underfull \vbox (badness 6510) has occurred while \output is active []
+
+[143]
+Underfull \hbox (badness 2057) in paragraph at lines 6652--6655
+[]\TU/lmr/m/n/10 We only need to get an estimate of $[] []\OMS/lmsy/m/n/10 f[]\
+OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 )\OMS/lmsy/m/n/10 g\OML/lmm/m
+/it/10 f\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 dx
+$ \TU/lmr/m/n/10 because
+ []
+
+[144]
+File: 08-densityestimation_files/figure-latex/unnamed-chunk-23-1.pdf Graphic fi
 le (type pdf)
-<use 08-densityestimation_files/figure-latex/unnamed-chunk-19-1.pdf>
+<use 08-densityestimation_files/figure-latex/unnamed-chunk-23-1.pdf>
 
-Underfull \vbox (badness 4391) has occurred while \output is active []
+Underfull \vbox (badness 5970) has occurred while \output is active []
 
-[142] (./ElementsNonparStat.bbl [143] [144
+[145]
+File: 08-densityestimation_files/figure-latex/unnamed-chunk-24-1.pdf Graphic fi
+le (type pdf)
+<use 08-densityestimation_files/figure-latex/unnamed-chunk-24-1.pdf>
 
-] [145])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 6655.
-[146]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 6655.
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[146] [147] (./ElementsNonparStat.bbl [148] [149
+
+])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 6876.
+[150]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 6876.
 (./ElementsNonparStat.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 6655.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 6655.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 6876.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 6876.
 
 Package rerunfilecheck Info: File `ElementsNonparStat.out' has not changed.
-(rerunfilecheck)             Checksum: E58697B94B4B760BE885118731378CE5.
+(rerunfilecheck)             Checksum: CE9CEF5033EAC8BA56C4539E7A267904.
  ) 
 Here is how much of TeX's memory you used:
- 22853 strings out of 492970
- 434812 string characters out of 6133938
- 567894 words of memory out of 5000000
- 26583 multiletter control sequences out of 15000+600000
+ 22860 strings out of 492970
+ 435157 string characters out of 6133938
+ 568163 words of memory out of 5000000
+ 26590 multiletter control sequences out of 15000+600000
  572732 words of font info for 80 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  45i,17n,54p,10459b,454s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on ElementsNonparStat.pdf (146 pages).
+Output written on ElementsNonparStat.pdf (150 pages).

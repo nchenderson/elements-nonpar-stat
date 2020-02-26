@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 Density Estimation | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 Density Estimation | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-02-25" />
+<meta name="date" content="2020-02-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -40,9 +40,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
-
 
 
 
@@ -1031,7 +1028,7 @@ following “leave-one-out” estimate
 \end{equation}\]</span></p></li>
 <li><p>In other words, <span class="math inline">\(\hat{f}_{h, -i}(x)\)</span> is a density estimate constructed from using
 bandwidth <span class="math inline">\(h\)</span> and all the data except for the <span class="math inline">\(i^{th}\)</span> observation.</p></li>
-<li><p>Then, we are going use the following quantity to estimate
+<li><p>Then, we are going use the following quantity to estimate <span class="math inline">\(\int E[ \hat{f}_{h}(x) ] f(x) dx\)</span>
 <span class="math display">\[\begin{equation}
 \frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} ) 
 = \frac{1}{n(n-1)} \sum_{i=1}^{n} \sum_{j \neq i} \frac{1}{h}K\Big( \frac{X_{i} - X_{j}}{ h } \Big) \nonumber 
@@ -1059,25 +1056,100 @@ h_{n,cv} = \arg\min_{h &gt; 0} \hat{J}_{MISE}(h) \nonumber
 </div>
 <div id="computing-the-cross-validation-bandwidth" class="section level3">
 <h3><span class="header-section-number">8.5.2</span> Computing the Cross-validation Bandwidth</h3>
+<ul>
+<li><p><strong>R</strong> does have built-in capabilities for finding the bandwidth through cross-validation, but
+let’s do an example ourselves to see how the process works.</p></li>
+<li>First, we can build a function called <code>J_mise</code> that has input and output:
+<ul>
+<li>Input: a value of the bandwidth <span class="math inline">\(h\)</span> and a vector of data</li>
+<li>Output: the value of <span class="math inline">\(\hat{J}_{MISE}(h)\)</span></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1">J_mise &lt;-<span class="st"> </span><span class="cf">function</span>(h, x) {</a>
+<a class="sourceLine" id="cb135-2" data-line-number="2">    n &lt;-<span class="st"> </span><span class="kw">length</span>(x)</a>
+<a class="sourceLine" id="cb135-3" data-line-number="3">    loo.val &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, n)</a>
+<a class="sourceLine" id="cb135-4" data-line-number="4">    <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
+<a class="sourceLine" id="cb135-5" data-line-number="5">        <span class="co">## compute the leave-one-out density estimate</span></a>
+<a class="sourceLine" id="cb135-6" data-line-number="6">        <span class="co">## only focus on density on interval (18, 90)</span></a>
+<a class="sourceLine" id="cb135-7" data-line-number="7">        loo.fhat &lt;-<span class="st"> </span><span class="kw">density</span>(x[<span class="op">-</span>k], <span class="dt">bw=</span>h, <span class="dt">from=</span><span class="dv">18</span>, <span class="dt">to=</span><span class="dv">90</span>)</a>
+<a class="sourceLine" id="cb135-8" data-line-number="8">        loo.fhat.fn &lt;-<span class="st"> </span><span class="kw">approxfun</span>(loo.fhat<span class="op">$</span>x, loo.fhat<span class="op">$</span>y)</a>
+<a class="sourceLine" id="cb135-9" data-line-number="9">        loo.val[k] &lt;-<span class="st"> </span><span class="kw">loo.fhat.fn</span>(x[k])</a>
+<a class="sourceLine" id="cb135-10" data-line-number="10">    }</a>
+<a class="sourceLine" id="cb135-11" data-line-number="11">    fhat &lt;-<span class="st"> </span><span class="kw">density</span>(x, <span class="dt">bw=</span>h, <span class="dt">from=</span><span class="dv">18</span>, <span class="dt">to=</span><span class="dv">90</span>)</a>
+<a class="sourceLine" id="cb135-12" data-line-number="12">    fhat.sq.fn &lt;-<span class="st"> </span><span class="kw">approxfun</span>(fhat<span class="op">$</span>x, fhat<span class="op">$</span>y<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb135-13" data-line-number="13">    </a>
+<a class="sourceLine" id="cb135-14" data-line-number="14">    ans &lt;-<span class="st"> </span><span class="kw">integrate</span>(fhat.sq.fn, <span class="dt">lower=</span><span class="dv">18</span>, <span class="dt">upper=</span><span class="dv">90</span>)<span class="op">$</span>value <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span><span class="kw">mean</span>(loo.val)</a>
+<a class="sourceLine" id="cb135-15" data-line-number="15">    <span class="kw">return</span>(ans)</a>
+<a class="sourceLine" id="cb135-16" data-line-number="16">}</a></code></pre></div>
+<ul>
+<li><p>Now, we want to use our <strong>R</strong> function to compute <span class="math inline">\(\hat{J}(h_{j})\)</span> over
+a grid of bandwidth values
+<span class="math display">\[\begin{equation}
+h_{min} \leq h_{1} &lt; ... &lt; h_{q} \leq h_{max} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The smallest and largest possible bandwidths <span class="math inline">\(h_{min}\)</span> and <span class="math inline">\(h_{max}\)</span> can be chosen
+by looking at plots of the density for different bandwidths.</p></li>
+<li><p><span class="math inline">\(h_{min}\)</span> should correspond
+to a density estimate which is very nonsmooth while <span class="math inline">\(h_{max}\)</span> should correspond to
+a density which is oversmoothed.</p></li>
+<li><p>For the ages from the kidney data, <span class="math inline">\(h_{min} = 1/2\)</span> and <span class="math inline">\(h_{max} = 5\)</span> seem like reasonable choices.</p></li>
+<li><p>Let us compute <span class="math inline">\(\hat{J}(h)\)</span> for a grid of <span class="math inline">\(100\)</span> bandwidths between <span class="math inline">\(1/2\)</span> and <span class="math inline">\(5\)</span>:</p></li>
+</ul>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1">h.grid &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="dv">5</span>, <span class="dt">length.out=</span><span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb136-2" data-line-number="2">CV.est &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb136-3" data-line-number="3"><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>) {</a>
+<a class="sourceLine" id="cb136-4" data-line-number="4">   CV.est[j] &lt;-<span class="st"> </span><span class="kw">J_mise</span>(<span class="dt">h=</span>h.grid[j], <span class="dt">x=</span>kidney<span class="op">$</span>age)</a>
+<a class="sourceLine" id="cb136-5" data-line-number="5">}</a></code></pre></div>
+<ul>
+<li>Now, if we plot <span class="math inline">\(\hat{J}(h)\)</span> vs. <span class="math inline">\(h\)</span>, we can see what the best value of the bandwidth is.
+From the graph, it appears that a bandwidth of roughly <span class="math inline">\(h = 1.8\)</span> minimizes <span class="math inline">\(\hat{J}(h)\)</span></li>
+</ul>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" data-line-number="1"><span class="kw">plot</span>(h.grid, CV.est, <span class="dt">xlab=</span><span class="st">&quot;bandwidth&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;J_mise(h)&quot;</span>, </a>
+<a class="sourceLine" id="cb137-2" data-line-number="2">     <span class="dt">main =</span> <span class="st">&quot;Cross-Validation Estimates for Age Data&quot;</span>)</a></code></pre></div>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<ul>
+<li>The specific value of the bandwidth where <span class="math inline">\(\hat{J}(h_{j})\)</span> reaches its minimum is:</li>
+</ul>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1">h.grid[ <span class="kw">which.min</span>(CV.est) ]</a></code></pre></div>
+<pre><code>## [1] 1.772727</code></pre>
 </div>
 <div id="likelihood-cross-validation" class="section level3">
 <h3><span class="header-section-number">8.5.3</span> Likelihood Cross-Validation</h3>
 <ul>
-<li><p>Another possible criterion for which to minimize is the KL divergence
+<li><p>An alternative criterion to use is the <strong>Kullback-Leibler (KL) divergence</strong>
 <span class="math display">\[\begin{equation}
-\textrm{KL}(h) = \int \log \Big( \frac{ \hat{f}_{h}(x) }{f(x)} \Big)  f(x) dx
-= \int \log \{ \hat{f}_{h}(x) \}  f(x) dx - \int \log\{ f(x) \}f(x) dx
+\textrm{KL}(h) = \int \log \Big( \frac{ f(x) }{ \hat{f}_{h}(x) } \Big)  f(x) dx
+= -\int \log \{ \hat{f}_{h}(x) \}  f(x) dx + \int \log\{ f(x) \}f(x) dx
 \end{equation}\]</span></p></li>
 <li><p>We only need to get an estimate of <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \} f(x) dx\)</span>
 because <span class="math inline">\(\int \log\{ f(x) \}f(x) dx\)</span> does not depend on <span class="math inline">\(h\)</span>.</p></li>
-<li><p>We can use basically the same approach as we did for integrated squared error cross-validation
+<li><p>We can use the same approach as we did for integrated squared error cross-validation
 to estimate <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \} f(x) dx\)</span>.</p></li>
-<li><p>The leave-one-out <strong>cross-validation estimate of the KL divergence</strong> (ignoring the irrelevant <span class="math inline">\(\int \log\{ f(x) \}f(x) dx\)</span>) is
+<li><p>The leave-one-out <strong>cross-validation estimate of the KL divergence</strong> (ignoring the irrelevant <span class="math inline">\(\int \log\{ f(x) \}f(x) dx\)</span> term) is
 <span class="math display">\[\begin{equation}
-\hat{J}_{KL}(h) = \frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} )  \nonumber
+\hat{J}_{KL}(h) = -\frac{1}{n} \sum_{i=1}^{n} \log \{ \hat{f}_{h, -i}( X_{i} ) \}  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Choosing the bandwidth which minimizes <span class="math inline">\(\hat{J}_{KL}(h)\)</span> is often referred to as <strong>likelihood cross-validation</strong>.</p></li>
+<li><p>An <strong>R</strong> function which can compute <span class="math inline">\(\hat{J}_{KL}(h)\)</span> is given below:</p></li>
 </ul>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1">J_KL &lt;-<span class="st"> </span><span class="cf">function</span>(h, x) {</a>
+<a class="sourceLine" id="cb140-2" data-line-number="2">  n &lt;-<span class="st"> </span><span class="kw">length</span>(x)</a>
+<a class="sourceLine" id="cb140-3" data-line-number="3">  loo.val &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, n)</a>
+<a class="sourceLine" id="cb140-4" data-line-number="4">  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
+<a class="sourceLine" id="cb140-5" data-line-number="5">    <span class="co">## compute the leave-one-out density estimate</span></a>
+<a class="sourceLine" id="cb140-6" data-line-number="6">    <span class="co">## only focus on density on interval (18, 90)</span></a>
+<a class="sourceLine" id="cb140-7" data-line-number="7">    loo.fhat &lt;-<span class="st"> </span><span class="kw">density</span>(x[<span class="op">-</span>k], <span class="dt">bw=</span>h, <span class="dt">from=</span><span class="dv">18</span>, <span class="dt">to=</span><span class="dv">90</span>)</a>
+<a class="sourceLine" id="cb140-8" data-line-number="8">    loo.fhat.fn &lt;-<span class="st"> </span><span class="kw">approxfun</span>(loo.fhat<span class="op">$</span>x, loo.fhat<span class="op">$</span>y)</a>
+<a class="sourceLine" id="cb140-9" data-line-number="9">    loo.val[k] &lt;-<span class="st"> </span>(<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="kw">log</span>(<span class="kw">loo.fhat.fn</span>(x[k]))</a>
+<a class="sourceLine" id="cb140-10" data-line-number="10">  }</a>
+<a class="sourceLine" id="cb140-11" data-line-number="11">  <span class="kw">return</span>(<span class="kw">mean</span>(loo.val))</a>
+<a class="sourceLine" id="cb140-12" data-line-number="12">}</a></code></pre></div>
+<hr />
+<ul>
+<li><strong>Exercise 8.7</strong> Using the <strong>age</strong> variable from the kidney function data,
+find the best bandwidth using a Gaussian kernel and likelihood cross-validation.</li>
+</ul>
+<hr />
 </div>
 </div>
 <div id="density-estimation-in-r" class="section level2">
@@ -1085,7 +1157,7 @@ to estimate <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \} f(x) dx\)
 <ul>
 <li>In <strong>R</strong>, kernel density estimates are computed using the <code>density</code> function</li>
 </ul>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1"><span class="kw">density</span>(x, bw, kernel, n, ...)</a></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" data-line-number="1"><span class="kw">density</span>(x, bw, kernel, n, ...)</a></code></pre></div>
 <ul>
 <li><p><strong>x</strong> - the vector containing the data</p></li>
 <li><strong>bw</strong> - the value of the bandwidth.
@@ -1103,19 +1175,19 @@ to estimate <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \} f(x) dx\)
 <li>In this section, we will use the <code>galaxies</code> dataset in the <code>MASS</code> package.
 The first few observations of the <code>galaxies</code> dataset look like:</li>
 </ul>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1"><span class="kw">library</span>(MASS)</a>
-<a class="sourceLine" id="cb136-2" data-line-number="2">galaxies[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" data-line-number="1"><span class="kw">library</span>(MASS)</a>
+<a class="sourceLine" id="cb142-2" data-line-number="2">galaxies[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
 <pre><code>## [1] 9172 9350 9483 9558 9775</code></pre>
 <ul>
 <li>Kernel density estimates can be computed in <strong>R</strong> using the <code>density</code> function</li>
 </ul>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1">galax.dens &lt;-<span class="st"> </span><span class="kw">density</span>(galaxies)</a></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" data-line-number="1">galax.dens &lt;-<span class="st"> </span><span class="kw">density</span>(galaxies)</a></code></pre></div>
 <ul>
 <li>You can display a density plot just by applying the <code>plot</code> function to our <code>galax.dens</code> object</li>
 </ul>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" data-line-number="1"><span class="kw">plot</span>(galax.dens, <span class="dt">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, </a>
-<a class="sourceLine" id="cb139-2" data-line-number="2">     <span class="dt">xlab=</span><span class="st">&quot;velocity in km/sec&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
-<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" data-line-number="1"><span class="kw">plot</span>(galax.dens, <span class="dt">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, </a>
+<a class="sourceLine" id="cb145-2" data-line-number="2">     <span class="dt">xlab=</span><span class="st">&quot;velocity in km/sec&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <hr />
 <ul>
 <li>The density function returns vectors <code>x</code> and <code>y</code> as components
@@ -1125,9 +1197,9 @@ The first few observations of the <code>galaxies</code> dataset look like:</li>
 </ul></li>
 <li>So, just plotting the <code>(x, y)</code> should give you a plot of the density estimate</li>
 </ul>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1"><span class="kw">plot</span>(galax.dens<span class="op">$</span>x, galax.dens<span class="op">$</span>y, <span class="dt">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, </a>
-<a class="sourceLine" id="cb140-2" data-line-number="2">     <span class="dt">xlab=</span><span class="st">&quot;velocity in km/sec&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
-<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb146-1" data-line-number="1"><span class="kw">plot</span>(galax.dens<span class="op">$</span>x, galax.dens<span class="op">$</span>y, <span class="dt">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, </a>
+<a class="sourceLine" id="cb146-2" data-line-number="2">     <span class="dt">xlab=</span><span class="st">&quot;velocity in km/sec&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="08-densityestimation_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <ul>
 <li>The default in <strong>R</strong> is to estimate the density at 512 points. Thus, <code>galax.dens$x</code>
 and <code>galax.dens$y</code> should have length 512.</li>
@@ -1136,13 +1208,13 @@ and <code>galax.dens$y</code> should have length 512.</li>
 <ul>
 <li>The <code>bw</code> component returned by the <code>density</code> function is the bandwidth used to estimate the density.</li>
 </ul>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" data-line-number="1">galax.dens<span class="op">$</span>bw</a></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb147-1" data-line-number="1">galax.dens<span class="op">$</span>bw</a></code></pre></div>
 <pre><code>## [1] 1001.839</code></pre>
 <ul>
 <li><p>The default bandwidth selection rule in <strong>R</strong> is Silverman’s rule-of-thumb <span class="math inline">\(h_{n}^{SR} = 0.9 s n^{-1/5}\)</span>.</p></li>
 <li><p>We can check that this is true with the following code:</p></li>
 </ul>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb143-1" data-line-number="1"><span class="fl">0.9</span><span class="op">*</span><span class="kw">min</span>(<span class="kw">sd</span>(galaxies), <span class="kw">IQR</span>(galaxies)<span class="op">/</span><span class="fl">1.34</span>)<span class="op">/</span>(<span class="kw">length</span>(galaxies)<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">5</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb149-1" data-line-number="1"><span class="fl">0.9</span><span class="op">*</span><span class="kw">min</span>(<span class="kw">sd</span>(galaxies), <span class="kw">IQR</span>(galaxies)<span class="op">/</span><span class="fl">1.34</span>)<span class="op">/</span>(<span class="kw">length</span>(galaxies)<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">5</span>))</a></code></pre></div>
 <pre><code>## [1] 1001.839</code></pre>
 </div>
 <div id="additional-reading-3" class="section level2">
@@ -1195,13 +1267,11 @@ and <code>galax.dens$y</code> should have length 512.</li>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -1209,11 +1279,12 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
+"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -1225,10 +1296,6 @@ gitbook.start({
 "text": null
 },
 "history": {
-"link": null,
-"text": null
-},
-"view": {
 "link": null,
 "text": null
 },
