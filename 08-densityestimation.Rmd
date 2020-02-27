@@ -728,7 +728,7 @@ following two things to happen:
 * The approximate mean integrated squared error (AMISE) is obtained by integrating
 the approximation \@ref(eq:asymp-mse-density) for MSE across $x$
 \begin{eqnarray}
-\textrm{AMISE}\{ \hat{f}_{h_{n}} \} &=& \frac{\kappa_{2} }{n h_{n} }\int_{-\infty}^{\infty} f(x) dx + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber \\
+\textrm{AMISE}\{ \hat{f}_{h_{n}} \} &=& \frac{\kappa_{2}(K) }{n h_{n} }\int_{-\infty}^{\infty} f(x) dx + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber \\
 &=& \frac{\kappa_{2}(K) }{n h_{n} } + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx
 (\#eq:amise-density)
 \end{eqnarray}
