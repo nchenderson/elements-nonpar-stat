@@ -43,7 +43,7 @@ the corresponding empirical distribution function would be
 \end{cases}
 \end{equation}
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-1-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
 
 
@@ -198,7 +198,7 @@ kidney.Fhat <- ecdf(kidney$tot)
 plot(kidney.Fhat, main = "Kidney Data: Default plot for ecdf", las=1)
 ```
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 * If you don't like the look of the points in the ecdf plot, you can use add the argument
 **do.points = FALSE** when calling plot. Also, you can add the argument **verticals =TRUE**
@@ -210,7 +210,7 @@ plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data:  ecdf wi
      vertical lines and without points", las=1, lwd=2)
 ```
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 ---
 
@@ -260,7 +260,7 @@ lines(tt, ci.low, type="s", lty=2, lwd=2)
 lines(tt, ci.upper, type="s", lty=2, lwd=2)
 ```
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 
 * We could plot the confidence bands as well.
 
@@ -278,11 +278,11 @@ lines(tt, ci.band.low, type="s", lty=2, lwd=2)
 lines(tt, ci.band.upper, type="s", lty=2, lwd=2)
 ```
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 * Comparing the pointwise confidence intervals and the simultaneous confidence bands
 in the same plot shows how much wider our confidence bands are:
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 
 
@@ -334,7 +334,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.084378, p-value = 0.4748
+## D = 0.15423, p-value = 0.01718
 ## alternative hypothesis: two-sided
 ```
 
@@ -350,7 +350,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.37931, p-value = 6.369e-13
+## D = 0.23521, p-value = 3.131e-05
 ## alternative hypothesis: two-sided
 ```
 
@@ -400,7 +400,7 @@ ks.test(xx, yy)
 ## 	Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.19, p-value = 0.0541
+## D = 0.14, p-value = 0.281
 ## alternative hypothesis: two-sided
 ```
 
@@ -419,7 +419,7 @@ KS.stat
 ```
 
 ```
-## [1] 0.19
+## [1] 0.14
 ```
 
 
