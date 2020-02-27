@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  26 FEB 2020 14:33
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  27 FEB 2020 09:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1591,12 +1591,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [146] [147] (./ElementsNonparStat.bbl [148] [149
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 6876.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 6928.
 [150]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 6876.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 6928.
 (./ElementsNonparStat.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 6876.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 6876.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 6928.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 6928.
 
 Package rerunfilecheck Info: File `ElementsNonparStat.out' has not changed.
 (rerunfilecheck)             Checksum: CE9CEF5033EAC8BA56C4539E7A267904.

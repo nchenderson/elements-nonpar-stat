@@ -845,7 +845,7 @@ which minimizes the mean integrated squared error (MISE)
 \begin{equation}
 \textrm{MISE}(h) = E\Big[ \int \{ \hat{f}_{h}(x) - f(x)   \}^{2} dx \Big]
 \end{equation}
-or some related criterion which also measures an expected discrepancy between $\hat{f}_{h_{n}}(x)$ and $f(x)$.
+or some related criterion which also measures an expected discrepancy between $\hat{f}_{h}(x)$ and $f(x)$.
 
 * The MISE can be rewritten as
 \begin{equation}
