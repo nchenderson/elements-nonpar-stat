@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 13 Decision Trees and CART | Elements of Nonparametric Statistics</title>
+  <title>Chapter 9 The Bootstrap | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 13 Decision Trees and CART | Elements of Nonparametric Statistics" />
+  <meta property="og:title" content="Chapter 9 The Bootstrap | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 13 Decision Trees and CART | Elements of Nonparametric Statistics" />
+  <meta name="twitter:title" content="Chapter 9 The Bootstrap | Elements of Nonparametric Statistics" />
   
   <meta name="twitter:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="inference-for-regression.html"/>
-<link rel="next" href="ensemble.html"/>
+<link rel="prev" href="density-estimation.html"/>
+<link rel="next" href="ci.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -297,17 +297,141 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="decision-tree" class="section level1">
-<h1><span class="header-section-number">Chapter 13</span> Decision Trees and CART</h1>
+<div id="bootstrap-main" class="section level1">
+<h1><span class="header-section-number">Chapter 9</span> The Bootstrap</h1>
+<div id="introduction-1" class="section level2">
+<h2><span class="header-section-number">9.1</span> Introduction</h2>
+<ul>
+<li>The jackknife and the bootstrap are nonparametric procedures that are mainly used for finding standard errors
+and constructing confidence intervals.</li>
+</ul>
+<p><strong>Why use the bootstrap?</strong></p>
+<ol style="list-style-type: decimal">
+<li>To find better standard errors and/or confidence intervals when standard approximations do not work very well.</li>
+<li>To find standard errors and/or confidence intervals when you have no idea how to compute reasonable standard errors.</li>
+</ol>
+</div>
+<div id="description-of-the-bootstrap" class="section level2">
+<h2><span class="header-section-number">9.2</span> Description of the Bootstrap</h2>
+<ul>
+<li><p>Suppose we have a statistic <span class="math inline">\(T_{n}\)</span> that is an estimate of some quantity of interest <span class="math inline">\(\theta\)</span>.</p></li>
+<li>For example:
+<ul>
+<li><span class="math inline">\(T_{n}\)</span> - sample mean, <span class="math inline">\(\theta = E(X_{1})\)</span>.</li>
+<li><span class="math inline">\(T_{n}\)</span> - sample correlation, <span class="math inline">\(\theta = \textrm{Corr}(X_{1}, Y_{1})\)</span>.</li>
+<li><span class="math inline">\(T_{n}\)</span> - sample median, <span class="math inline">\(\theta = F^{-1}(1/2)\)</span>; that is, the true median.</li>
+</ul></li>
+<li><p>Typically, <span class="math inline">\(T_{n}\)</span> can be represented as a function of our sample <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>
+<span class="math display">\[\begin{equation}
+T_{n} = h\Big( X_{1}, \ldots, X_{n}   \Big)  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Suppose we want to estimate the standard deviation of <span class="math inline">\(T_{n}\)</span>. The <strong>standard error</strong>
+is the standard deviation of <span class="math inline">\(T_{n}\)</span>.</p></li>
+<li><p>The bootstrap will estimate the variance of <span class="math inline">\(T_{n}\)</span> by repeatedly subsampling from
+the original data and computing the value of the statistic <span class="math inline">\(T_{n}\)</span> on each subsample.</p></li>
+<li><p>More generally, we can use the bootstrap not just to find the variance of <span class="math inline">\(T_{n}\)</span>
+but to characterize the distribution of <span class="math inline">\(T_{n}\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li>In our description of the bootstrap, we will assume that we have the following ingredients:
+<ul>
+<li><span class="math inline">\(\mathbf{X} = (X_{1}, \ldots, X_{n})\)</span> where <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> are i.i.d. observations.</li>
+<li>The statistic <span class="math inline">\(T_{n}\)</span> of interest. <span class="math inline">\(T_{n} = h(X_{1}, \ldots, X_{n})\)</span>.</li>
+<li><span class="math inline">\(T_{n}\)</span> is an estimate of <span class="math inline">\(\theta\)</span>.</li>
+<li><span class="math inline">\(R\)</span> - the number of bootstrap replications.</li>
+</ul></li>
+<li>The bootstrap works in the following way:</li>
+<li>For <span class="math inline">\(r = 1, \ldots, R\)</span>:
+<ul>
+<li>Draw a sample of size <span class="math inline">\(n\)</span> <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> by sampling with replacement from <span class="math inline">\(\mathbf{X}\)</span>.</li>
+<li>Compute <span class="math inline">\(T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})\)</span>.</li>
+</ul></li>
+<li><p>We will refer to each sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> as a <strong>bootstrap sample</strong>.</p></li>
+<li><p>We will refer to <span class="math inline">\(T_{n}^{r}\)</span> as a <strong>bootstrap replication</strong>.</p></li>
+<li><p>The bootstrap estimate for the standard error of <span class="math inline">\(T_{n}\)</span> is
+<span class="math display">\[\begin{equation}
+se_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} \Big)^{2} \Bigg]^{1/2} \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<div id="example-confidence-intervals-for-the-rate-parameter-of-an-exponential-distribution" class="section level3">
+<h3><span class="header-section-number">9.2.1</span> Example: Confidence Intervals for the Rate Parameter of an Exponential Distribution</h3>
+<ul>
+<li><p>Suppose we have i.i.d. data <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> from an Exponential distribution with rate parameter <span class="math inline">\(1/\lambda\)</span>.
+That is, the pdf of <span class="math inline">\(X_{i}\)</span> is
+<span class="math display">\[\begin{equation}
+f(x)
+= \begin{cases}
+\frac{1}{\lambda}e^{-x/\lambda} &amp; \text{  if  }  x &gt; 0 \nonumber \\
+0  &amp; \text{ otherwise }
+\end{cases}
+\end{equation}\]</span></p></li>
+<li><p>This means that
+<span class="math display">\[\begin{equation}
+E( X_{i} )  = \lambda \quad \textrm{ and } \quad \textrm{Var}( X_{i} ) = \lambda^{2} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>If using the usual Normal approximation for constructing a confidence interval for <span class="math inline">\(\lambda\)</span>, you would
+rely on the following asymptotic result:
+<span class="math display">\[\begin{equation}
+\frac{\sqrt{n}(\bar{X} - \lambda)}{ \bar{X} }  \longrightarrow \textrm{Normal}(0, 1) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>In other words, for large <span class="math inline">\(n\)</span>, <span class="math inline">\(\bar{X}\)</span> has an approximately Normal distribution with mean <span class="math inline">\(\lambda\)</span>
+and standard deviation <span class="math inline">\(\bar{X}/\sqrt{n}\)</span>.</p></li>
+<li><p>The standard error in this case is <span class="math inline">\(\bar{X}/\sqrt{n}\)</span>, and a <span class="math inline">\(95\%\)</span> confidence interval for <span class="math inline">\(\lambda\)</span> is
+<span class="math display">\[\begin{equation}
+\Bigg[ \bar{X} - 1.96 \times \frac{\bar{X}}{\sqrt{n}}, \bar{X} + 1.96 \times \frac{\bar{X}}{\sqrt{n}} \Bigg] \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Let’s do a small simulation to see how the Normal approximation confidence interval compares with
+bootstrap-based confidence intervals.</p></li>
+<li><p>We will compare the Normal-approximation confidence interval with both the standard-error-based bootstrap
+confidence interval and the quantile-based bootstrap confidence interval.</p></li>
+</ul>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb155-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">50</span>, <span class="dt">rate=</span><span class="dv">2</span>) <span class="co">## data</span></a>
+<a class="sourceLine" id="cb155-2" data-line-number="2">R &lt;-<span class="st"> </span><span class="dv">500</span>   <span class="co">## number of bootstrap replications</span></a>
+<a class="sourceLine" id="cb155-3" data-line-number="3">boot.mean &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, R)</a>
+<a class="sourceLine" id="cb155-4" data-line-number="4"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R) {</a>
+<a class="sourceLine" id="cb155-5" data-line-number="5">   boot.samp &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>, <span class="dt">size=</span><span class="dv">50</span>, <span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb155-6" data-line-number="6">   xx.boot &lt;-<span class="st"> </span>xx[boot.samp]   <span class="co">## this is the bootstrap sample</span></a>
+<a class="sourceLine" id="cb155-7" data-line-number="7">   boot.mean[k] &lt;-<span class="st"> </span><span class="kw">mean</span>(xx.boot)  <span class="co">## compute mean of bootstrap sample</span></a>
+<a class="sourceLine" id="cb155-8" data-line-number="8">}</a></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb156-1" data-line-number="1">par.ci &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(xx) <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">mean</span>(xx)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">50</span>), <span class="kw">mean</span>(xx) <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">mean</span>(xx)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">50</span>))</a>
+<a class="sourceLine" id="cb156-2" data-line-number="2">boot.ci.sd &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(xx) <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(boot.mean), <span class="kw">mean</span>(xx) <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(boot.mean))</a>
+<a class="sourceLine" id="cb156-3" data-line-number="3">boot.ci.quant &lt;-<span class="st"> </span><span class="kw">quantile</span>(boot.mean, <span class="dt">probs=</span><span class="kw">c</span>(.<span class="dv">025</span>, <span class="fl">.975</span>))</a></code></pre></div>
+<ul>
+<li>The normal-approximation confidence interval is</li>
+</ul>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb157-1" data-line-number="1"><span class="kw">round</span>(par.ci, <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## [1] 0.31 0.54</code></pre>
+<ul>
+<li>The standard-error based boostrap confidence interval is</li>
+</ul>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb159-1" data-line-number="1"><span class="kw">round</span>(boot.ci.sd, <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## [1] 0.32 0.52</code></pre>
+<ul>
+<li>The quantile-based bootstrap confidence interval</li>
+</ul>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb161-1" data-line-number="1"><span class="kw">round</span>(boot.ci.quant, <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>##  2.5% 97.5% 
+##  0.32  0.52</code></pre>
+<p><img src="09-bootstrap_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+</div>
+<div id="why-is-the-bootstrap-procedure-reasonable" class="section level2">
+<h2><span class="header-section-number">9.3</span> Why is the Bootstrap Procedure Reasonable?</h2>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="inference-for-regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="ensemble.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="density-estimation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ci.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

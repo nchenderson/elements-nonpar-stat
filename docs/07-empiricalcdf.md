@@ -43,13 +43,13 @@ the corresponding empirical distribution function would be
 \end{cases}
 \end{equation}
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-1-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
 
 
 ## Confidence intervals for F(t)
 
-* For a fixed value of $t$, the distribution of $\hat{F}_{n}(t)$ is
+* For a fixed value of $t$, the distribution of $n\hat{F}_{n}(t)$ is
 \begin{equation}
 n \hat{F}_{n}(t) \sim \textrm{Binomial}\big( n, F(t) \big)
 \end{equation}
@@ -72,6 +72,7 @@ P( W_{i}^{t} = 1) = P(X_{i} \leq t) = F(t) \nonumber
 * Because $\hat{F}_{n}(t)$ is a mean of independent random variables, we can say that
 \begin{equation}
 \frac{ \sqrt{n}\Big( \hat{F}_{n}(t) - F(t) \Big) }{\sqrt{ \hat{F}_{n}(t)(1 - \hat{F}_{n}(t))}} \longrightarrow \textrm{Normal}\Big(0, 1 \Big)
+\nonumber
 \end{equation}
 
 * The above asymptotic statement is the basis for constructing **pointwise confidence intervals** for $F(t)$.
@@ -105,7 +106,7 @@ L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{ for all 
 \end{equation}
 to hold with at least $1 - \alpha$ probability.
 
-* In other words, we want less than $\alpha$ probability of any part
+* In other words, we want less than $\alpha$ probability for any part
 of the path of $F(t)$ going outside of the bands.
 
 * One choice of $L_{\alpha}^{band}(t)$ and $U_{\alpha}^{band}(t)$ which has this property is the following
@@ -126,6 +127,7 @@ Dvoretzky-Kiefer-Wolfowitz (DKW) inequality.
 The DKW inequality states that
 \begin{equation}
 P\Bigg( \sup_{t} |F(t) - \hat{F}_{n}(t) | > \varepsilon \Bigg) \leq 2 e^{-2n \varepsilon^{2}}
+\nonumber
 \end{equation}
 
 * Our choice of confidence bands \@ref(eq:simultaneous-cis) then works because 
@@ -135,6 +137,7 @@ P\Bigg( \sup_{t} |F(t) - \hat{F}_{n}(t) | > \varepsilon \Bigg) \leq 2 e^{-2n \va
 is equivalent to
 \begin{equation}
 L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \qquad \textrm{for all } t
+\nonumber
 \end{equation}
 
 * Then, from the DKW inequality we have
@@ -142,7 +145,7 @@ L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \qquad \textrm{for all 
 P\Bigg( L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{for all } t \Bigg)
 &=& P\Bigg( \sup_{t} | F(t) - \hat{F}_{n}(t)| \leq \delta_{n, \alpha} \Bigg) \nonumber \\
 &\geq& 1 - 2 e^{-2n \delta_{\alpha,n}^{2}} \nonumber \\
-&=& 1 - \alpha.
+&=& 1 - \alpha. \nonumber
 \end{eqnarray}
 
 
@@ -198,7 +201,7 @@ kidney.Fhat <- ecdf(kidney$tot)
 plot(kidney.Fhat, main = "Kidney Data: Default plot for ecdf", las=1)
 ```
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 * If you don't like the look of the points in the ecdf plot, you can use add the argument
 **do.points = FALSE** when calling plot. Also, you can add the argument **verticals =TRUE**
@@ -206,11 +209,11 @@ if you want the plot to draw vertical lines whenever there is a jump in the empi
 
 
 ```r
-plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data:  ecdf with 
-     vertical lines and without points", las=1, lwd=2)
+plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data: 
+    ecdf with vertical lines and without points", las=1, lwd=2)
 ```
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 ---
 
@@ -244,7 +247,8 @@ kidney.Fhat( c(-1,1,4) )
 
 
 ```r
-## 1. First, we will compute the standard errors at each of the observed time points
+## 1. First, we will compute the standard errors at each of the 
+##    observed time points
 tt <- sort(unique(kidney$tot)) 
 std.err <- sqrt(kidney.Fhat(tt)*(1 - kidney.Fhat(tt))/ length(kidney$tot))
 
@@ -260,7 +264,7 @@ lines(tt, ci.low, type="s", lty=2, lwd=2)
 lines(tt, ci.upper, type="s", lty=2, lwd=2)
 ```
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 
 * We could plot the confidence bands as well.
 
@@ -278,18 +282,19 @@ lines(tt, ci.band.low, type="s", lty=2, lwd=2)
 lines(tt, ci.band.upper, type="s", lty=2, lwd=2)
 ```
 
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 * Comparing the pointwise confidence intervals and the simultaneous confidence bands
-in the same plot shows how much wider our confidence bands are:
-![](07-empiricalcdf_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
+in the same plot shows how much wider the confidence bands are:
+
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 
 
 ## The Kolmogorov-Smirnov Test
 
 * The one-sample Kolmogorov-Smirnov (KS) test is a type of goodness-of-fit test
-that is mainly based on the empirical distribution function.
+that is based on the empirical distribution function.
 
 * The KS test will test whether or not our data $X_{1}, \ldots, X_{n}$ comes
 from a specific distribution of interest $F_{0}$. 
@@ -307,7 +312,7 @@ H_{0}: F = F_{0} \quad \textrm{ vs. } \quad H_{A}: F \neq F_{0}
 * The one-sample Kolmogorov-Smirnov test statistic $KS_{n}^{(1)}$ looks at the maximum distance
 between the empirical distribution function and $F_{0}$
 \begin{equation}
-KS_{n}^{(1)} = \sup_{t} \big| \hat{F}_{n}(t) - F_{0}(t)  \big|
+KS_{n}^{(1)} = \sup_{t} \big| \hat{F}_{n}(t) - F_{0}(t)  \big|  \nonumber
 \end{equation}
 
 * Large values of $KS_{n}^{(1)}$ provide evidence againts the null hypothesis.
@@ -334,7 +339,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.10131, p-value = 0.2562
+## D = 0.10789, p-value = 0.1948
 ## alternative hypothesis: two-sided
 ```
 
@@ -350,7 +355,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.30863, p-value = 1.066e-08
+## D = 0.30953, p-value = 9.531e-09
 ## alternative hypothesis: two-sided
 ```
 
@@ -359,7 +364,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 * Suppose we have data from two groups: $X_{1}, \ldots, X_{n} \sim F_{X}$ and $Y_{1}, \ldots, Y_{m} \sim F_{Y}$.
 The two-sample KS test performs a test of the following hypothesis
 \begin{equation}
-H_{0}: F_{X} = F_{Y} \quad \textrm{vs.} \quad H_{A}: F_{X} \neq F_{Y}.
+H_{0}: F_{X} = F_{Y} \quad \textrm{vs.} \quad H_{A}: F_{X} \neq F_{Y}. \nonumber
 \end{equation}
 
 * In this case, we are only testing whether the distributions of the two groups are different.
@@ -372,7 +377,7 @@ two groups.
 * The two-sample KS test statistic is defined as the maximum distance between the
 two empirical distribution functions:
 \begin{equation}
-KS_{n,m}^{(2)} = \sup_{t} \big| \hat{F}_{n,X}(t) - \hat{F}_{m,Y}(t)  \big|
+KS_{n,m}^{(2)} = \sup_{t} \big| \hat{F}_{n,X}(t) - \hat{F}_{m,Y}(t)  \big|  \nonumber
 \end{equation}
 Here, $\hat{F}_{n,X}(t) = \frac{1}{n}\sum_{i=1}^{n} I(X_{i} \leq t)$ and
 $\hat{F}_{m,Y}(t) = \frac{1}{m}\sum_{j=1}^{m} I(Y_{j} \leq t)$ denote
@@ -382,7 +387,7 @@ the empirical distribution functions from the X and Y samples.
 the one-sample KS test statistic. In particular, under $H_{0}$:
 \begin{equation}
 \sqrt{ \frac{nm}{n + m } }KS_{n,m}^{(2)} \longrightarrow \textrm{Kolmogorov}
-\qquad \textrm{ as } n,m \longrightarrow \infty
+\qquad \textrm{ as } n,m \longrightarrow \infty  \nonumber
 \end{equation}
 
 ---
@@ -400,7 +405,7 @@ ks.test(xx, yy)
 ## 	Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.2, p-value = 0.03663
+## D = 0.24, p-value = 0.006302
 ## alternative hypothesis: two-sided
 ```
 
@@ -419,7 +424,7 @@ KS.stat
 ```
 
 ```
-## [1] 0.2
+## [1] 0.24
 ```
 
 

@@ -22,7 +22,10 @@ make few assumptions about the particular form of $f(x)$.
 
 ## Histograms
 
-![(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt](08-densityestimation_files/figure-latex/unnamed-chunk-1-1.pdf) 
+<div class="figure">
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" width="672" />
+<p class="caption">(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</p>
+</div>
 
 ### Definition
 
@@ -123,7 +126,7 @@ kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.tx
 kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
 ```
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 
 * Use the `probability = TRUE` argument to plot the density-estimate version of the histogram.
@@ -134,7 +137,7 @@ kidney.hist2 <- hist(kidney$age, main="Histogram of Age on Probability Scale",
                      xlab="Age from Kidney Data", probability=TRUE)
 ```
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 ---
 
@@ -427,7 +430,7 @@ sensitive to outliers.
 * **Sturges rule**: The bin width is chosen so that we have $1 + log_{2}(n)$ bins. This choice tends to give wide
 intervals. 
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 
 ## A Box-type Density Estimate
@@ -464,7 +467,7 @@ the bin edges while the box estimate suffers less from this problem.
 * However, plots of the box estimate will still largely be non-smooth and 
 have a "jagged" appearance. 
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-10-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 
 ---
@@ -484,7 +487,7 @@ w(t) =
 \end{cases}
 \end{equation}
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-11-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
 * While the estimator $\hat{f}_{h_{n}}^{B}$ does seem reasonable, it always
 results in density estimates which are not "smooth."
@@ -537,7 +540,7 @@ will appear.
 * The appearance and the statistical performance of $\hat{f}_{h_{n}}(x)$ depend much more on the value of $h_{n}$ than 
 the choice of kernel function.
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-12-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 
 ---
 
@@ -565,7 +568,7 @@ which is symmetric around $0$.
 \end{eqnarray}
 
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-13-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
 * When plotting $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$, it should
 look like a "small hill" centered around $X_{i}$.
@@ -575,7 +578,7 @@ becomes more strongly concentrated around $X_{i}$ and has a higher peak.
 
 * The kernel density estimate $\hat{f}_{h_{n}}(x)$ is a sum of all these "small hills".
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-14-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 
 ---
 
@@ -942,7 +945,7 @@ plot(h.grid, CV.est, xlab="bandwidth", ylab="J_mise(h)",
      main = "Cross-Validation Estimates for Age Data")
 ```
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 * The specific value of the bandwidth where $\hat{J}(h_{j})$ reaches its minimum is:
 
@@ -1051,7 +1054,7 @@ plot(galax.dens, main="Default Density Estimate for Galaxy Data",
      xlab="velocity in km/sec", ylab="Density", lwd=2)
 ```
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-23-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-23-1.png" width="672" />
 
 ---
 
@@ -1066,7 +1069,7 @@ plot(galax.dens$x, galax.dens$y, main="Default Density Estimate for Galaxy Data"
      xlab="velocity in km/sec", ylab="Density", lwd=2)
 ```
 
-![](08-densityestimation_files/figure-latex/unnamed-chunk-24-1.pdf)<!-- --> 
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-24-1.png" width="672" />
 
 * The default in **R** is to estimate the density at 512 points. Thus, `galax.dens$x`
 and `galax.dens$y` should have length 512.
