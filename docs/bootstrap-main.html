@@ -347,11 +347,19 @@ but to characterize the distribution of <span class="math inline">\(T_{n}\)</spa
 <li>Draw a sample of size <span class="math inline">\(n\)</span> <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> by sampling with replacement from <span class="math inline">\(\mathbf{X}\)</span>.</li>
 <li>Compute <span class="math inline">\(T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})\)</span>.</li>
 </ul></li>
+</ul>
+<hr />
+<ul>
 <li><p>We will refer to each sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> as a <strong>bootstrap sample</strong>.</p></li>
 <li><p>We will refer to <span class="math inline">\(T_{n}^{r}\)</span> as a <strong>bootstrap replication</strong>.</p></li>
 <li><p>The bootstrap estimate for the standard error of <span class="math inline">\(T_{n}\)</span> is
 <span class="math display">\[\begin{equation}
 se_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} \Big)^{2} \Bigg]^{1/2} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>We can even use our bootstrap replications to get an approximation <span class="math inline">\(\hat{G}_{n}^{*}(t)\)</span> for the cumulative distribution function
+<span class="math inline">\(G_{n}(t) = P(T_{n} \leq t)\)</span> of <span class="math inline">\(T_{n}\)</span>:
+<span class="math display">\[\begin{equation}
+\hat{G}_{n}^{*}(t) = \frac{1}{R} \sum_{r=1}^{R} I\Big( T_{n,r}^{*} \leq t \Big) \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />

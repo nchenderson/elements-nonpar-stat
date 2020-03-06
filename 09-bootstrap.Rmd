@@ -48,6 +48,8 @@ but to characterize the distribution of $T_{n}$.
     + Draw a sample of size $n$ $(X_{1}^{*}, \ldots, X_{n}^{*})$ by sampling with replacement from $\mathbf{X}$.
     + Compute $T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})$. 
 
+---
+
 * We will refer to each sample $(X_{1}^{*}, \ldots, X_{n}^{*})$ as a **bootstrap sample**.
 
 * We will refer to $T_{n}^{r}$ as a **bootstrap replication**.
@@ -55,6 +57,12 @@ but to characterize the distribution of $T_{n}$.
 * The bootstrap estimate for the standard error of $T_{n}$ is
 \begin{equation}
 se_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} \Big)^{2} \Bigg]^{1/2} \nonumber
+\end{equation}
+
+* We can even use our bootstrap replications to get an approximation $\hat{G}_{n}^{*}(t)$ for the cumulative distribution function 
+$G_{n}(t) = P(T_{n} \leq t)$ of $T_{n}$:
+\begin{equation}
+\hat{G}_{n}^{*}(t) = \frac{1}{R} \sum_{r=1}^{R} I\Big( T_{n,r}^{*} \leq t \Big) \nonumber
 \end{equation}
 
 ---
