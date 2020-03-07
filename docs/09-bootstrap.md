@@ -1,4 +1,4 @@
-# (PART) Uncertainty Measures {-} 
+# (PART) Quantifying Uncertainty {-} 
 
 # The Bootstrap {#bootstrap-main}
 
@@ -11,6 +11,56 @@ and constructing confidence intervals.
 
 1. To find better standard errors and/or confidence intervals when standard approximations do not work very well.
 1. To find standard errors and/or confidence intervals when you have no idea how to compute reasonable standard errors.
+
+
+---
+
+**Example: Inference for $e^{\mu}$**
+
+* Suppose we have i.i.d. data $X_{1}, \ldots, X_{n} \sim \textrm{Logistic}( \mu, s)$,
+meaning that $E(X_{i}) = \mu$ and $\textrm{Var}(X_{i}) = \sigma^{2} = s^{2}\pi^{2}/3$.
+
+* Suppose our goal is to construct a confidence interval for the parameter $\theta = e^{\mu}$.
+
+* The traditional approach to constructing a confidence interval uses the fact that
+\begin{equation}
+\sqrt{n}\Big( e^{\bar{X}} - e^{\mu} \Big) \longrightarrow \textrm{Normal}(0, \sigma^{2}e^{2\mu}) \nonumber
+\end{equation}
+so that we can assume $e^{\bar{X}}$ has a roughly Normal distribution with mean $e^{\mu}$ 
+and standard deviation $\sigma e^{\mu}/\sqrt{n}$.
+
+* Using this Normal approximation for $e^{\bar{X}}$, the $95\%$ confidence interval for
+$e^{\mu}$ would then be
+\begin{equation}
+\Big[ e^{\bar{X}} - 1.96 \times \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}},
+e^{\bar{X}} + 1.96 \times \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}}
+\Big]
+(\#eq:normal-approx-emu)
+\end{equation}
+
+---
+
+* For specific choices of $n$, how good is the Normal approximation for the distribution of $e^{\bar{X}}$?
+
+* The figure below shows a histogram for the simulated distribution of $e^{\bar{X}}$ when $n=50$.
+The density of the Normal approximation is also shown in this figure.
+
+<div class="figure">
+<img src="09-bootstrap_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of simulated values of exp(sample mean) with density of the Normal approximation overlaid. This assumes n=50." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-1)Histogram of simulated values of exp(sample mean) with density of the Normal approximation overlaid. This assumes n=50.</p>
+</div>
+
+* As we can see from the above histogram, the Normal approximation is not terrible. However, 
+it really does not capture the skewness in the distribution of $e^{\bar{X}}$ correctly.
+
+* This could effect the coverage performance of confidence intervals which use
+Normal approximation \@ref(eq:normal-approx-emu).
+
+* The bootstrap offers an alternative approach for constructing confidence
+intervals which does not depend on parametric approximations such as \@ref(eq:normal-approx-emu).
+
+
+---
 
 ## Description of the Bootstrap
 
@@ -52,7 +102,7 @@ but to characterize the distribution of $T_{n}$.
 
 * We will refer to each sample $(X_{1}^{*}, \ldots, X_{n}^{*})$ as a **bootstrap sample**.
 
-* We will refer to $T_{n}^{r}$ as a **bootstrap replication**.
+* We will refer to $T_{n,r}^{*}$ as a **bootstrap replication**.
 
 * The bootstrap estimate for the standard error of $T_{n}$ is
 \begin{equation}
@@ -160,7 +210,7 @@ round(boot.ci.quant, 2)
 ##  0.32  0.52
 ```
 
-<img src="09-bootstrap_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+<img src="09-bootstrap_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 ## Why is the Bootstrap Procedure Reasonable?
 

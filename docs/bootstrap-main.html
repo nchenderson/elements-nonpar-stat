@@ -247,7 +247,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.6" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.6</b> Density Estimation in R</a></li>
 <li class="chapter" data-level="8.7" data-path="density-estimation.html"><a href="density-estimation.html#additional-reading-3"><i class="fa fa-check"></i><b>8.7</b> Additional Reading</a></li>
 </ul></li>
-<li class="part"><span><b>III Uncertainty Measures</b></span></li>
+<li class="part"><span><b>III Quantifying Uncertainty</b></span></li>
 <li class="chapter" data-level="9" data-path="bootstrap-main.html"><a href="bootstrap-main.html"><i class="fa fa-check"></i><b>9</b> The Bootstrap</a><ul>
 <li class="chapter" data-level="9.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#introduction-1"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
 <li class="chapter" data-level="9.2" data-path="bootstrap-main.html"><a href="bootstrap-main.html#description-of-the-bootstrap"><i class="fa fa-check"></i><b>9.2</b> Description of the Bootstrap</a><ul>
@@ -310,6 +310,48 @@ and constructing confidence intervals.</li>
 <li>To find better standard errors and/or confidence intervals when standard approximations do not work very well.</li>
 <li>To find standard errors and/or confidence intervals when you have no idea how to compute reasonable standard errors.</li>
 </ol>
+<hr />
+<p><strong>Example: Inference for <span class="math inline">\(e^{\mu}\)</span></strong></p>
+<ul>
+<li><p>Suppose we have i.i.d. data <span class="math inline">\(X_{1}, \ldots, X_{n} \sim \textrm{Logistic}( \mu, s)\)</span>,
+meaning that <span class="math inline">\(E(X_{i}) = \mu\)</span> and <span class="math inline">\(\textrm{Var}(X_{i}) = \sigma^{2} = s^{2}\pi^{2}/3\)</span>.</p></li>
+<li><p>Suppose our goal is to construct a confidence interval for the parameter <span class="math inline">\(\theta = e^{\mu}\)</span>.</p></li>
+<li><p>The traditional approach to constructing a confidence interval uses the fact that
+<span class="math display">\[\begin{equation}
+\sqrt{n}\Big( e^{\bar{X}} - e^{\mu} \Big) \longrightarrow \textrm{Normal}(0, \sigma^{2}e^{2\mu}) \nonumber
+\end{equation}\]</span>
+so that we can assume <span class="math inline">\(e^{\bar{X}}\)</span> has a roughly Normal distribution with mean <span class="math inline">\(e^{\mu}\)</span>
+and standard deviation <span class="math inline">\(\sigma e^{\mu}/\sqrt{n}\)</span>.</p></li>
+<li><p>Using this Normal approximation for <span class="math inline">\(e^{\bar{X}}\)</span>, the <span class="math inline">\(95\%\)</span> confidence interval for
+<span class="math inline">\(e^{\mu}\)</span> would then be
+<span class="math display" id="eq:normal-approx-emu">\[\begin{equation}
+\Big[ e^{\bar{X}} - 1.96 \times \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}},
+e^{\bar{X}} + 1.96 \times \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}}
+\Big]
+\tag{9.1}
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>For specific choices of <span class="math inline">\(n\)</span>, how good is the Normal approximation for the distribution of <span class="math inline">\(e^{\bar{X}}\)</span>?</p></li>
+<li><p>The figure below shows a histogram for the simulated distribution of <span class="math inline">\(e^{\bar{X}}\)</span> when <span class="math inline">\(n=50\)</span>.
+The density of the Normal approximation is also shown in this figure.</p></li>
+</ul>
+<div class="figure"><span id="fig:unnamed-chunk-1"></span>
+<img src="09-bootstrap_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of simulated values of exp(sample mean) with density of the Normal approximation overlaid. This assumes n=50." width="672" />
+<p class="caption">
+Figure 8.1: Histogram of simulated values of exp(sample mean) with density of the Normal approximation overlaid. This assumes n=50.
+</p>
+</div>
+<ul>
+<li><p>As we can see from the above histogram, the Normal approximation is not terrible. However,
+it really does not capture the skewness in the distribution of <span class="math inline">\(e^{\bar{X}}\)</span> correctly.</p></li>
+<li><p>This could effect the coverage performance of confidence intervals which use
+Normal approximation <a href="bootstrap-main.html#eq:normal-approx-emu">(9.1)</a>.</p></li>
+<li><p>The bootstrap offers an alternative approach for constructing confidence
+intervals which does not depend on parametric approximations such as <a href="bootstrap-main.html#eq:normal-approx-emu">(9.1)</a>.</p></li>
+</ul>
+<hr />
 </div>
 <div id="description-of-the-bootstrap" class="section level2">
 <h2><span class="header-section-number">9.2</span> Description of the Bootstrap</h2>
@@ -351,7 +393,7 @@ but to characterize the distribution of <span class="math inline">\(T_{n}\)</spa
 <hr />
 <ul>
 <li><p>We will refer to each sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> as a <strong>bootstrap sample</strong>.</p></li>
-<li><p>We will refer to <span class="math inline">\(T_{n}^{r}\)</span> as a <strong>bootstrap replication</strong>.</p></li>
+<li><p>We will refer to <span class="math inline">\(T_{n,r}^{*}\)</span> as a <strong>bootstrap replication</strong>.</p></li>
 <li><p>The bootstrap estimate for the standard error of <span class="math inline">\(T_{n}\)</span> is
 <span class="math display">\[\begin{equation}
 se_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} \Big)^{2} \Bigg]^{1/2} \nonumber
@@ -425,7 +467,7 @@ confidence interval and the quantile-based bootstrap confidence interval.</p></l
 <div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb161-1" data-line-number="1"><span class="kw">round</span>(boot.ci.quant, <span class="dv">2</span>)</a></code></pre></div>
 <pre><code>##  2.5% 97.5% 
 ##  0.32  0.52</code></pre>
-<p><img src="09-bootstrap_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="09-bootstrap_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 </div>
 <div id="why-is-the-bootstrap-procedure-reasonable" class="section level2">
