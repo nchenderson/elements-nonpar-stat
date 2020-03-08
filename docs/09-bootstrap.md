@@ -71,9 +71,37 @@ between $X_{i}$ and $Y_{i}$ is defined as
 \hat{\rho} = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X})(Y_{i} - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_{i} - \bar{X})^{2}}\sqrt{\sum_{i=1}^{n}(Y_{i} - \bar{Y})}} \nonumber
 \end{equation}
 
-* Even such a relatively straightforward estimate has a pretty complicated formula for the standard error:
+* Even such a relatively straightforward estimate has a pretty complicated formula for the standard error if 
+you use a multivariate delta method argument:
+\begin{equation}
+\textrm{std.err}_{corr}
+= \Bigg\{ \frac{\hat{\rho}^{2}}{4n}\Bigg[ \frac{\hat{\mu}_{40}}{\hat{\mu}_{20}^{2}} + \frac{\hat{\mu}_{04}}{\hat{\mu}_{02}^{2}} + \frac{2\hat{\mu}_{22}}{\hat{\mu}_{20}\hat{\mu}_{02} } + \frac{4\hat{\mu}_{22}}{\hat{\mu}_{11}^{2}} - \frac{4\hat{\mu}_{31}}{\hat{\mu}_{11}\hat{\mu}_{20} } + - \frac{4\hat{\mu}_{13}}{\hat{\mu}_{11}\hat{\mu}_{02} } \Bigg] \Bigg\}^{1/2}
+(\#eq:rho-stderr)
+\end{equation}
+where
+\begin{equation}
+\hat{\mu}_{hk} = \sum_{i=1}^{n}(X_{i} - \bar{X})^{h}(Y_{i} - \bar{Y})^{k} \nonumber
+\end{equation}
 
-* The bootstrap allows to totally bypass deriving formulas for the standard error of an estimate. 
+* Another popular approach for constructing a confidence interval is to use Fisher's "z-transformation"
+\begin{equation}
+z = \frac{1}{2} \ln\Big( \frac{1 + \hat{\rho}}{1 - \hat{\rho}}  \Big)
+(\#eq:rho-stderr-ztrans)
+\end{equation}
+where it is argued that $z$ has a roughly Normal distribution with mean
+$\tfrac{1}{2}\ln\{ (1 + \rho)/(1 - \rho) \}$ and standard deviation $1/\sqrt{n - 3}$.
+
+---
+
+* The bootstrap allows to totally bypass the need to derive tedious formulas for the standard error such as
+\@ref(eq:rho-stderr) or bypass the need to use clever transformations such as \@ref(eq:rho-stderr-ztrans). 
+
+* For many more complicated estimates deriving formulas such as \@ref(eq:rho-stderr) or transformations such 
+as \@ref(eq:rho-stderr-ztrans) may not even be feasible.
+
+* The bootstrap provides an automatic way of constructing confidence intervals. You only 
+need to be able to compute the estimate of interest.
+
 
 
 ## Description of the Bootstrap

@@ -314,7 +314,7 @@ Why ranks and why nonparametric testing?
 <div id="definition" class="section level3">
 <h3><span class="header-section-number">3.1.1</span> Definition</h3>
 <ul>
-<li>Suppose we have <span class="math inline">\(n\)</span> observations <span class="math inline">\(\mathbf{X} = (X_{1}, \ldots, X_{n})\)</span>. The <strong>rank</strong> of the <span class="math inline">\(i^{th}\)</span> observation <span class="math inline">\(R_{i}\)</span> is defined as
+<li>Suppose we have <span class="math inline">\(n\)</span> observations <span class="math inline">\(\mathbf{X} = (X_{1}, \ldots, X_{n})\)</span>. The <strong>rank</strong> <span class="math inline">\(R_{i}\)</span> of the <span class="math inline">\(i^{th}\)</span> observation is defined as
 <span class="math display" id="eq:rankdef">\[\begin{equation}
 R_{i} = R_{i}(\mathbf{X}) = \sum_{j=1}^{n} I( X_{i} \geq X_{j}) 
 \tag{3.1}
@@ -327,11 +327,11 @@ I(X_{i} \geq X_{j})
 0 &amp; \text{ if } X_{i} &lt; X_{j}
 \end{cases}
 \end{equation}\]</span></li>
-<li>The largest observation has a rank of <span class="math inline">\(n\)</span>.</li>
-<li>The smallest observation has a rank of <span class="math inline">\(1\)</span> (if there are no ties).</li>
-<li><p>I’m using the notation <span class="math inline">\(R_{i}(\mathbf{X})\)</span> to emphasize that the rank
+<li><p>The largest observation has a rank of <span class="math inline">\(n\)</span>.</p></li>
+<li><p>The smallest observation has a rank of <span class="math inline">\(1\)</span> (if there are no ties).</p></li>
+<li><p>I am using the notation <span class="math inline">\(R_{i}(\mathbf{X})\)</span> to emphasize that the rank
 of the <span class="math inline">\(i^{th}\)</span> observations depends on the entire vector of observations
-rather than only the value of <span class="math inline">\(X_{i}\)</span>.</p></li>
+rather than only on the value of <span class="math inline">\(X_{i}\)</span>.</p></li>
 <li><p>You can compute ranks in <strong>R</strong> using the <strong>rank</strong> function:</p></li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">1</span>, <span class="dv">12</span>, <span class="dv">6</span>)  <span class="co">## 5 observations</span></a>
@@ -341,14 +341,14 @@ rather than only the value of <span class="math inline">\(X_{i}\)</span>.</p></l
 <div id="handling-ties" class="section level3">
 <h3><span class="header-section-number">3.1.2</span> Handling Ties</h3>
 <ul>
-<li>In the definition of ranks shown in <a href="rank-tests.html#eq:rankdef">(3.1)</a>, tied observations
-receive their maximum possible rank.</li>
-<li>For example, suppose that <span class="math inline">\((X_{1}, X_{2}, X_{3}, X_{4}) = (0, 1, 1, 2)\)</span>.
+<li><p>In the definition of ranks shown in <a href="rank-tests.html#eq:rankdef">(3.1)</a>, tied observations
+receive their maximum possible rank.</p></li>
+<li><p>For example, suppose that <span class="math inline">\((X_{1}, X_{2}, X_{3}, X_{4}) = (0, 1, 1, 2)\)</span>.
 In this case, one could argue whether both observations 2 and 3 should be ranked
 <span class="math inline">\(2^{nd}\)</span> or <span class="math inline">\(3^{rd}\)</span> while observations <span class="math inline">\(1\)</span> and <span class="math inline">\(4\)</span> should unambiguously receive
-ranks of <span class="math inline">\(1\)</span> and <span class="math inline">\(4\)</span> respectively.</li>
+ranks of <span class="math inline">\(1\)</span> and <span class="math inline">\(4\)</span> respectively.</p></li>
 <li><p>Under definition <a href="rank-tests.html#eq:rankdef">(3.1)</a>, both observations <span class="math inline">\(2\)</span> and <span class="math inline">\(3\)</span> receive a rank of <span class="math inline">\(3\)</span>.</p></li>
-<li><p>In <strong>R</strong>, handling ties that is consistent with definition <a href="rank-tests.html#eq:rankdef">(3.1)</a> is done using the <strong>ties.method = “max”</strong> argument</p></li>
+<li><p>In <strong>R</strong>, handling ties in a way that is consistent with definition <a href="rank-tests.html#eq:rankdef">(3.1)</a> is done using the <strong>ties.method = “max”</strong> argument</p></li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)  </a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">rank</span>(x, <span class="dt">ties.method=</span><span class="st">&quot;max&quot;</span>)</a></code></pre></div>
@@ -359,6 +359,9 @@ ranks of <span class="math inline">\(1\)</span> and <span class="math inline">\(
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)  </a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">rank</span>(x)</a></code></pre></div>
 <pre><code>## [1] 1.0 2.5 2.5 4.0</code></pre>
+<ul>
+<li>As another example of the “average” definition of ranks, consider the following example:</li>
+</ul>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">rank</span>(y, <span class="dt">ties.method=</span><span class="st">&quot;max&quot;</span>)</a></code></pre></div>
 <pre><code>## [1] 3 7 6 6 4 3 1</code></pre>
@@ -366,7 +369,7 @@ ranks of <span class="math inline">\(1\)</span> and <span class="math inline">\(
 <pre><code>## [1] 2.5 7.0 5.5 5.5 4.0 2.5 1.0</code></pre>
 <hr />
 <ul>
-<li><p>When defining ranks using the “average” or “midrank” approach to handling ties, replaces
+<li><p>When defining ranks using the “average” or “midrank” approach to handling ties, we replace
 tied ranks with the average of the two “adjacent” ranks.</p></li>
 <li><p>For example, if we have a vector of ranks <span class="math inline">\((R_{1}, R_{2}, R_{3}, R_{4})\)</span> where <span class="math inline">\(R_{2} = R_{3} =3\)</span> and <span class="math inline">\(R_{1} = 4\)</span> and <span class="math inline">\(R_{4} = 1\)</span>, then the vector of modified ranks using the “average” approach to handling ties
 would be
@@ -418,10 +421,10 @@ for <span class="math inline">\(j = 3, 4, 5, 6, 7\)</span>.</p>
 <ul>
 <li><p>The Wilcoxon Rank Sum (WRS) test (sometimes referred to as the Wilcoxon-Mann-Whitney test) is a popular,
 rank-based two-sample test.</p></li>
-<li><p>The WRS test is used to test whether or not observations from one group tend to be larger (or smaller) than observations
+<li><p>The one-sided WRS test is used to test whether or not observations from one group tend to be larger (or smaller) than observations
 from the other group.</p></li>
 <li><p>Suppose we have observations from two groups: <span class="math inline">\(X_{1}, \ldots, X_{n} \sim F_{X}\)</span> and <span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim F_{Y}\)</span>.</p></li>
-<li><p>Roughly speaking, the WRS tests the following hypothesis
+<li><p>Roughly speaking, the one-sided WRS tests the following hypothesis
 <span class="math display" id="eq:general-wilcoxon-hypothesis">\[\begin{eqnarray}
 H_{0}: &amp;&amp; F_{X} = F_{Y} \quad \textrm{ versus }  \\
 H_{A}: &amp;&amp; \textrm{Observations from } F_{X} \textrm{ tend to be larger than observations from } F_{Y} \nonumber
@@ -461,11 +464,11 @@ relevant alternative is of the form <span class="math inline">\(F_{X}(t) = F_{Y}
 <li><p>However, one could have a scenario where the two groups have equal medians, but
 the WRS test has a very high probability of rejecting <span class="math inline">\(H_{0}\)</span>.</p></li>
 <li><p>In addition, in many applications, it is difficult to justify
-that the “shift alternative” is a reasonable model.</p></li>
+that the “shift alternative” is a reasonable assumption.</p></li>
 <li><p>An alternative is to view the WRS test as performing the following
 hypothesis test:
 <span class="math display" id="eq:mw-formulation">\[\begin{eqnarray}
-H_{0}: &amp;&amp; P(X_{i} &gt; Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2 \quad \textrm{ versus } \\
+H_{0}: &amp;&amp; P(X_{i} &gt; Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2 \quad \textrm{ versus } \nonumber \\
 H_{A}: &amp;&amp; P(X_{i} &gt; Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) &gt; 1/2
 \tag{3.6}
 \end{eqnarray}\]</span>
@@ -477,19 +480,19 @@ about how <span class="math inline">\(F_{X}\)</span> and <span class="math inlin
 answer the question: what is the probability that the outcome
 under treatment 1 is better than the outcome under treatment 2.</p></li>
 <li><p>The justification of hypothesis test <a href="rank-tests.html#eq:mw-formulation">(3.6)</a> comes through
-the close connection between the WRS test statistic <span class="math inline">\(W\)</span> and the Mann-Whitney statistic <span class="math inline">\(U_{MW}\)</span>.
-Specifically, <span class="math inline">\(W = U_{MW} + n(n+1)/2\)</span>. (Although, often <span class="math inline">\(U_{MW}\)</span> is defined as
-<span class="math inline">\(U_{MW} = mn + n(n+1)/2 - W\)</span>).</p></li>
+the close connection between the WRS test statistic <span class="math inline">\(W\)</span> and the Mann-Whitney statistic <span class="math inline">\(M\)</span>.
+Specifically, <span class="math inline">\(W = M + n(n+1)/2\)</span>. (Although, often <span class="math inline">\(M\)</span> is defined as
+<span class="math inline">\(M = mn + n(n+1)/2 - W\)</span>).</p></li>
 <li><p>The Mann-Whitney statistic divided by <span class="math inline">\(mn\)</span> is an estimate of the probability:
 <span class="math display">\[\begin{equation}
-P(X_{i} &gt; Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2.
+P(X_{i} &gt; Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2. \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
 <ul>
 <li><p>The reason for stating <span class="math inline">\(H_{0}\)</span> in <a href="rank-tests.html#eq:mw-formulation">(3.6)</a> as
 <span class="math display">\[\begin{equation}
-H_{0}: P(X_{i} &gt; Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2 \quad \textrm{ versus } \\
+H_{0}: P(X_{i} &gt; Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2  \nonumber \\
 \end{equation}\]</span>
 is to cover the case of either a continuous or discrete distribution.</p></li>
 <li><p>When both <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{j}\)</span> are samples from a continuous distribution
@@ -515,8 +518,7 @@ P(X_{i} &gt; Y_{j}) + \frac{1}{2}P(X_{i} = Y_{j}&amp;)&amp; = P(X_{i}=1, Y_{j}=0
 <ul>
 <li><p>The WRS test statistic is based on computing the sum of ranks (ranks based on the pooled sample)
 in one group.</p></li>
-<li><p>If observations from group 1 tend to be larger than those from group 2, the average rank from group 1 should exceed the
-average rank from group 2.</p></li>
+<li><p>The motivation for the WRS test statistic is the following: if observations from group 1 tend to be larger than those from group 2, the average rank from group 1 should exceed the average rank from group 2.</p></li>
 <li><p>A sufficiently large value of the average rank from group 1 will allow us to reject <span class="math inline">\(H_{0}\)</span>
 in favor of <span class="math inline">\(H_{A}\)</span>.</p></li>
 </ul>
@@ -524,7 +526,7 @@ in favor of <span class="math inline">\(H_{A}\)</span>.</p></li>
 <ul>
 <li><p>We will define the pooled data vector <span class="math inline">\(\mathbf{Z}\)</span> as
 <span class="math display">\[\begin{equation}
-\mathbf{Z} = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})
+\mathbf{Z} = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})  \nonumber
 \end{equation}\]</span>
 This is a vector with length <span class="math inline">\(n + m\)</span>.</p></li>
 <li><p>The Wilcoxon rank-sum test statistic <span class="math inline">\(W\)</span> for testing hypotheses of the form <a href="rank-tests.html#eq:general-wilcoxon-hypothesis">(3.3)</a>
@@ -545,16 +547,16 @@ ranks from group 2.</p></li>
 a common distribution function <span class="math inline">\(F\)</span>.</p></li>
 <li><p>Hence, the expectation of <span class="math inline">\(R_{i}(\mathbf{Z})\)</span> under the null hypothesis is
 <span class="math display">\[\begin{equation}
-E_{H_{0}}\{ R_{i}(\mathbf{Z}) \} = \frac{n + m + 1}{2}
+E_{H_{0}}\{ R_{i}(\mathbf{Z}) \} = \frac{n + m + 1}{2} \nonumber
 \end{equation}\]</span>
 and thus the expectation of <span class="math inline">\(W\)</span> under <span class="math inline">\(H_{0}\)</span>
 <span class="math display">\[\begin{equation}
-E_{H_{0}}( W ) = \sum_{i=1}^{n} E_{H_{0}}\{ R_{i}( \mathbf{Z} ) \}
+E_{H_{0}}( W ) = \sum_{i=1}^{n} E_{H_{0}}\{ R_{i}( \mathbf{Z} ) \} \nonumber
 = \frac{ n(n + m + 1)  }{ 2 }
 \end{equation}\]</span></p></li>
 <li><p>It can be shown that the variance of <span class="math inline">\(W\)</span> under the null hypothesis is
 <span class="math display">\[\begin{equation}
-\textrm{Var}_{H_{0}}( W ) = \frac{mn(m + n + 1)}{12}
+\textrm{Var}_{H_{0}}( W ) = \frac{mn(m + n + 1)}{12}  \nonumber 
 \end{equation}\]</span></p></li>
 </ul>
 </div>
@@ -562,7 +564,7 @@ E_{H_{0}}( W ) = \sum_{i=1}^{n} E_{H_{0}}\{ R_{i}( \mathbf{Z} ) \}
 <h3><span class="header-section-number">3.2.3</span> Computing p-values for the WRS Test</h3>
 <p><strong>Exact Distribution</strong></p>
 <ul>
-<li><p>The p-value is found by computing the probability
+<li><p>The p-value for the WRS test is found by computing the probability
 <span class="math display">\[\begin{equation}
 \textrm{p-value} = P_{H_{0}}( W \geq w_{obs})
 \end{equation}\]</span>
@@ -629,17 +631,17 @@ the presence of ties.</p></li>
 hypothesis tests could either be stated as
 <span class="math display">\[\begin{eqnarray}
 H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
-H_{A}: &amp; &amp; F_{X} \textrm{ is stochastically larger or smaller than } F_{Y} 
+H_{A}: &amp; &amp; F_{X} \textrm{ is stochastically larger or smaller than } F_{Y}  \nonumber
 \end{eqnarray}\]</span>
 or
 <span class="math display">\[\begin{eqnarray}
 H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
-H_{A}: &amp; &amp; F_{X}(t) = F_{Y}(t - \Delta), \Delta \neq 0.
+H_{A}: &amp; &amp; F_{X}(t) = F_{Y}(t - \Delta), \Delta \neq 0. \nonumber
 \end{eqnarray}\]</span>
 or
 <span class="math display">\[\begin{eqnarray}
-H_{0}: &amp;&amp; P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
-H_{A}: &amp;&amp; P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2
+H_{0}: &amp;&amp; P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \nonumber \\
+H_{A}: &amp;&amp; P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2  \nonumber
 \end{eqnarray}\]</span></p></li>
 </ul>
 <hr />
@@ -679,8 +681,8 @@ This dataset is also available from the UCI Machine Learning Repository.</li>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">wine2 &lt;-<span class="st"> </span><span class="kw">subset</span>(wine, Type<span class="op">==</span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Type<span class="op">==</span><span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2">wine2<span class="op">$</span>Type &lt;-<span class="st"> </span><span class="kw">factor</span>(wine2<span class="op">$</span>Type)</a></code></pre></div>
 <ul>
-<li><p>Let’s consider the difference in the level of magnesium across the two types of wine.
-<img src="03-rankstat_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p></li>
+<li><p>Let us consider the difference in the level of magnesium across the two types of wine.
+<img src="03-rankstat_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p></li>
 <li><p>Suppose we are interested in testing whether or not magnesium levels in
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
 This can be done with the following code</p></li>
@@ -693,7 +695,9 @@ This can be done with the following code</p></li>
 ## data:  wine2$Magnesium[wine2$Type == 1] and wine2$Magnesium[wine2$Type == 2]
 ## W = 3381.5, p-value = 8.71e-10
 ## alternative hypothesis: true location shift is greater than 0</code></pre>
-<p>You could also use the following code (just be careful about the ordering of the levels of <strong>Type</strong>)</p>
+<ul>
+<li>You could also use the following code to perform this test (just be careful about the ordering of the levels of <strong>Type</strong>)</li>
+</ul>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">wilcox.test</span>(Magnesium <span class="op">~</span><span class="st"> </span>Type, <span class="dt">data=</span>wine2, <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>)</a></code></pre></div>
 <pre><code>## 
 ##  Wilcoxon rank sum test with continuity correction
@@ -740,7 +744,10 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{j}) +
 <a class="sourceLine" id="cb26-8" data-line-number="8"><span class="st">                   </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">==</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb26-9" data-line-number="9">}</a>
 <a class="sourceLine" id="cb26-10" data-line-number="10"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.795</code></pre>
+<pre><code>## [1] 0.79</code></pre>
+<ul>
+<li>This simulation-based estimate of <span class="math inline">\(P(X_{i} &gt; Y_{j}) + P(X_{i} = Y_{j})/2\)</span> is quite close to the value of the Mann-Whitney statistic divided by <span class="math inline">\(mn\)</span>.</li>
+</ul>
 </div>
 <div id="additional-notes-for-the-wrs-test" class="section level3">
 <h3><span class="header-section-number">3.2.5</span> Additional Notes for the WRS test</h3>
@@ -767,7 +774,9 @@ or “stochastically larger than alternative <a href="rank-tests.html#eq:stochas
 of the WRS test is probably more reasonable than the “shift alternative <a href="rank-tests.html#eq:shift-formulation">(3.5)</a>” interpretation.</p></li>
 <li><p>Note that there will probably be many ties when comparing ordinal data.</p></li>
 </ul>
-<hr />
+</div>
+<div id="the-hodges-lehmann-estimator" class="section level4">
+<h4><span class="header-section-number">3.2.5.2</span> The Hodges-Lehmann Estimator</h4>
 <ul>
 <li><p>The Hodges-Lehmann Estimator <span class="math inline">\(\hat{\Delta}\)</span> is an estimator of <span class="math inline">\(\Delta\)</span> in the location-shift model
 <span class="math display">\[\begin{equation}
@@ -801,7 +810,7 @@ argument in the <strong>wilcox.test</strong> function</p></li>
 <ul>
 <li><p>The <strong>sign test</strong> can be thought of as a test of whether or not
 the median of a distribution is greater than zero (or greater than some other fixed value <span class="math inline">\(\theta_{0}\)</span>).</p></li>
-<li>Frequently, the sign test is explained in the following context:
+<li>Frequently, the sign test is applied in the following context:
 <ul>
 <li>Suppose we have observations <span class="math inline">\(D_{1}, \ldots, D_{n}\)</span> which arise from the model
 <span class="math display" id="eq:general-location">\[\begin{equation}
@@ -810,13 +819,13 @@ D_{i} = \theta + \varepsilon_{i},
 \end{equation}\]</span>
 where <span class="math inline">\(\varepsilon_{i}\)</span> are iid random variables each with distribution function <span class="math inline">\(F_{\epsilon}\)</span>
 that is assumed to have a median of zero. Moreover, we will assume the density function
-<span class="math inline">\(f_{\varepsilon}(t)\)</span> is symmetric around zero.</li>
+<span class="math inline">\(f_{\varepsilon}(t)\)</span> of <span class="math inline">\(\varepsilon_{i}\)</span> is symmetric around zero.</li>
 </ul></li>
 <li><p>The distribution function of <span class="math inline">\(D_{i}\)</span> is then
 <span class="math display">\[\begin{equation}
 F_{D}(t) = P(D_{i} \leq t) = P(\varepsilon_{i} \leq t - \theta) = F_{\epsilon}(t - \theta)
 \end{equation}\]</span></p></li>
-<li><p>Likewise the density function <span class="math inline">\(f_{D}(t)\)</span> of <span class="math inline">\(D_{i}\)</span> is given by
+<li><p>Likewise, the density function <span class="math inline">\(f_{D}(t)\)</span> of <span class="math inline">\(D_{i}\)</span> is given by
 <span class="math display">\[\begin{equation}
 f_{D}(t) = f_{\epsilon}(t - \theta)
 \end{equation}\]</span></p></li>
@@ -906,19 +915,19 @@ S_{n} = \sum_{i=1}^{n} I( D_{i} &gt; 0)
 \end{equation}\]</span></p></li>
 <li><p>If the null hypothesis <span class="math inline">\(H_{0}: \theta = 0\)</span> is true, then we should expect that roughly half
 of the observations will be positive.</p></li>
-<li><p>This suggests that we will reject <span class="math inline">\(H_{0}\)</span> if <span class="math inline">\(S_{n} \geq c\)</span> where <span class="math inline">\(c\)</span> is a
+<li><p>This suggests that we will reject <span class="math inline">\(H_{0}\)</span> if <span class="math inline">\(S_{n} \geq c\)</span>, where <span class="math inline">\(c\)</span> is a
 number that is greater than <span class="math inline">\(n/2\)</span>.</p></li>
 </ul>
 </div>
-<div id="null-distribution-and-p-values" class="section level4">
-<h4><span class="header-section-number">3.3.1.2</span> Null Distribution and p-values</h4>
+<div id="null-distribution-and-p-values-for-the-sign-test" class="section level4">
+<h4><span class="header-section-number">3.3.1.2</span> Null Distribution and p-values for the Sign Test</h4>
 <ul>
 <li><p>Notice that the sign statistic defined in <a href="rank-tests.html#eq:sign-statistic">(3.9)</a> is the sum of independent
 Bernoulli random variable.</p></li>
 <li><p>That is, we can think of <span class="math inline">\(Z_{i} = I(D_{i} &gt; 0)\)</span> as a random variable with success probability
 <span class="math inline">\(p( \theta )\)</span> where the formula for <span class="math inline">\(p( \theta )\)</span> is
 <span class="math display">\[\begin{equation}
-p(\theta) = P(Z_{i} = 1) = P(D_{i} &gt; 0) = 1 - F_{D}(0) = 1 - F_{\epsilon}( -\theta )
+p(\theta) = P(Z_{i} = 1) = P(D_{i} &gt; 0) = 1 - F_{D}(0) = 1 - F_{\epsilon}( -\theta ) \nonumber
 \end{equation}\]</span></p></li>
 <li><p>This implies that <span class="math inline">\(S_{n}\)</span> is a binomial random variable
 with <span class="math inline">\(n\)</span> trials and success probability <span class="math inline">\(p(\theta)\)</span>.
@@ -929,19 +938,19 @@ S_{n} \sim \textrm{Binomial}(n, p(\theta) )
 \end{equation}\]</span></p></li>
 <li><p>Because <span class="math inline">\(p(0) = 1/2\)</span>, <span class="math inline">\(S_{n} \sim \textrm{Binomial}(n, 1/2 )\)</span> under <span class="math inline">\(H_{0}\)</span>.</p></li>
 <li><p>Notice that the “null distribution” of the sign statistic is “distribution free”
-in the sense that the distribution does not depend on the distribution of <span class="math inline">\(D_{i}\)</span>.</p></li>
-<li><p>The p-value for the sign test can be computed by
+in the sense that the null distribution of <span class="math inline">\(S_{n}\)</span> does not depend on the distribution of <span class="math inline">\(D_{i}\)</span>.</p></li>
+<li><p>The p-value for the one-sided sign test can be computed by
 <span class="math display">\[\begin{equation}
 \textrm{p-value} = P_{H_{0}}(S_{n} \geq s_{obs}) = \sum_{j=s_{obs}}^{n} P_{H_{0}}(S_{n} = j)
-= \sum_{j=s_{obs}}^{n} {n \choose j} \frac{1}{2^{n}},
+= \sum_{j=s_{obs}}^{n} {n \choose j} \frac{1}{2^{n}}, \nonumber
 \end{equation}\]</span>
 where <span class="math inline">\(s_{obs}\)</span> is the observed value of the sign statistic.</p></li>
 </ul>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co">### How to compute the p-value for the sign test using R</span></a>
 <a class="sourceLine" id="cb30-2" data-line-number="2">xx &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3">sign.stat &lt;-<span class="st"> </span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3">sign.stat &lt;-<span class="st"> </span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)  <span class="co">## This is the value of the sign statistic</span></a>
 <a class="sourceLine" id="cb30-4" data-line-number="4"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pbinom</span>(sign.stat <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">size=</span><span class="dv">100</span>, <span class="dt">prob=</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) <span class="co">## p-value for sign test</span></a></code></pre></div>
-<pre><code>## [1] 0.4602054</code></pre>
+<pre><code>## [1] 0.3821767</code></pre>
 <ul>
 <li><p>The reason that this is the right expression using <strong>R</strong> is that for any positive integer <span class="math inline">\(w\)</span>
 <span class="math display">\[\begin{equation}
@@ -953,7 +962,7 @@ a binomial random variable with <span class="math inline">\(n\)</span> trials an
 </ul>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">btest &lt;-<span class="st"> </span><span class="kw">binom.test</span>(sign.stat, <span class="dt">n=</span><span class="dv">100</span>, <span class="dt">p=</span><span class="fl">0.5</span>, <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>) </a>
 <a class="sourceLine" id="cb32-2" data-line-number="2">btest<span class="op">$</span>p.value</a></code></pre></div>
-<pre><code>## [1] 0.4602054</code></pre>
+<pre><code>## [1] 0.3821767</code></pre>
 </div>
 <div id="two-sided-sign-test" class="section level4">
 <h4><span class="header-section-number">3.3.1.3</span> Two-sided Sign Test</h4>
@@ -973,22 +982,22 @@ a “more extreme” observation than the one that was actually observed.</p></l
 <li><p>Extreme is defined by thinking about the fact that we would have rejected <span class="math inline">\(H_{0}\)</span>
 if either <span class="math inline">\(S_{n}\)</span> or <span class="math inline">\(n - S_{n}\)</span> were very large.</p></li>
 <li><p>For example, if <span class="math inline">\(n = 12\)</span>, then the expected value of the sign statistic would be <span class="math inline">\(6\)</span>.
-If <span class="math inline">\(s_{obs} = 10\)</span>, then the collection of “more extreme” events then this would be
-<span class="math inline">\(\leq 2\)</span> and <span class="math inline">\(\geq 10\)</span>.</p></li>
+If <span class="math inline">\(s_{obs} = 10\)</span>, then the collection of “more extreme” events would be
+<span class="math inline">\(\leq 2\)</span> or <span class="math inline">\(\geq 10\)</span>.</p></li>
 <li><p>The two-sided p-value is determined by looking at the tail probabilities on both sides
 <span class="math display">\[\begin{equation}
 \textrm{p-value} = 
 \begin{cases}
-P_{H_{0}}(S_{n} \geq s_{obs}) + P_{H_{0}}(S_{n} \leq n - s_{obs}) &amp; \textrm{ if } s_{obs} \geq n/2 \\
-P_{H_{0}}(S_{n} \leq s_{obs}) + P_{H_{0}}(S_{n} \geq n - s_{obs}) &amp; \textrm{ if } s_{obs} &lt; n/2
+P_{H_{0}}(S_{n} \geq s_{obs}) + P_{H_{0}}(S_{n} \leq n - s_{obs}) &amp; \textrm{ if } s_{obs} \geq n/2 \nonumber \\
+P_{H_{0}}(S_{n} \leq s_{obs}) + P_{H_{0}}(S_{n} \geq n - s_{obs}) &amp; \textrm{ if } s_{obs} &lt; n/2 \nonumber
 \end{cases}
 \end{equation}\]</span></p></li>
 <li><p>It actually works out that
 <span class="math display">\[\begin{equation}
 \textrm{p-value} = 
 \begin{cases}
-2 P_{H_{0}}(S_{n} \geq s_{obs})   &amp; \textrm{ if } s_{obs} \geq n/2 \\
-2 P_{H_{0}}(S_{n} \leq s_{obs})   &amp; \textrm{ if } s_{obs} &lt; n/2
+2 P_{H_{0}}(S_{n} \geq s_{obs})   &amp; \textrm{ if } s_{obs} \geq n/2 \nonumber \\
+2 P_{H_{0}}(S_{n} \leq s_{obs})   &amp; \textrm{ if } s_{obs} &lt; n/2  \nonumber
 \end{cases}
 \end{equation}\]</span></p></li>
 <li><p>Also, you can note that this p-value would be the same that you would get from performing the test
@@ -1011,7 +1020,7 @@ of the observations.</p></li>
 signs of <span class="math inline">\(D_{i}\)</span> by the rank of its absolute value.</p></li>
 <li><p>Specifically, the Wilcoxon signed rank statistic is defined as
 <span class="math display">\[\begin{equation}
-T_{n} = \sum_{i=1}^{n} \textrm{sign}( D_{i}) R_{i}( |\mathbf{D}| )
+T_{n} = \sum_{i=1}^{n} \textrm{sign}( D_{i}) R_{i}( |\mathbf{D}| ) \nonumber
 \end{equation}\]</span>
 where the <span class="math inline">\(\textrm{sign}\)</span> function is defined as
 <span class="math display">\[\begin{equation}
@@ -1020,6 +1029,7 @@ where the <span class="math inline">\(\textrm{sign}\)</span> function is defined
 0 &amp; \textrm{if } x = 0 \\
 -1 &amp; \textrm{if } x &lt; 0
 \end{cases}
+\nonumber
 \end{equation}\]</span></p></li>
 <li><p>Here, <span class="math inline">\(R_{i}( |\mathbf{D}| )\)</span> is the rank of the <span class="math inline">\(i^{th}\)</span> element from the vector
 <span class="math inline">\(|\mathbf{D}| = (|D_{1}|, |D_{2}|, \ldots, |D_{n}|)\)</span>.</p></li>
@@ -1048,7 +1058,7 @@ statistic is <span class="math inline">\(0\)</span>.</p>
 <li><p>Similar, to the large-sample approximation we used for the WRS test, we have the following
 asymptotic result for the Wilcoxon signed-rank test
 <span class="math display">\[\begin{equation}
-\frac{T_{n}}{\sqrt{\textrm{Var}_{H_{0}}(T_{n}) }} \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } n \longrightarrow \infty
+\frac{T_{n}}{\sqrt{\textrm{Var}_{H_{0}}(T_{n}) }} \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } n \longrightarrow \infty \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Because the variance of <span class="math inline">\(T\)</span> is dominated by the term <span class="math inline">\(n^{3}/3\)</span> for very large <span class="math inline">\(n\)</span>, we could also say that under <span class="math inline">\(H_{0}\)</span>
 that
@@ -1071,7 +1081,8 @@ Nevertheless, there exists functions in <strong>R</strong> for working with this
 <h3><span class="header-section-number">3.3.3</span> Using R to Perform the Sign and Wilcoxon Tests</h3>
 <ul>
 <li><p>Let’s first look at the <strong>Meat</strong> data from the <strong>PairedData</strong> <strong>R</strong> package.</p></li>
-<li><p>This data set contains 20 observations with measures of fat percentage using different
+<li><p>This data set contains 20 observations with each observation corresponding to a single piece of meat.
+For each observation, we have two measures of fat percentage that were obtained different
 measuring techniques.</p></li>
 </ul>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">library</span>(PairedData, <span class="dt">quietly=</span><span class="ot">TRUE</span>, <span class="dt">warn.conflicts=</span><span class="ot">FALSE</span>) <span class="co">## loading PairedData package</span></a>
@@ -1090,8 +1101,9 @@ We will drop the single observation that equals zero.</li>
 </ul>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">DD &lt;-<span class="st"> </span>Meat[,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>Meat[,<span class="dv">1</span>]</a>
 <a class="sourceLine" id="cb36-2" data-line-number="2">DD &lt;-<span class="st"> </span>DD[DD<span class="op">!=</span><span class="dv">0</span>]</a>
-<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="kw">hist</span>(DD, <span class="dt">main=</span><span class="st">&quot;Meat Data&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Difference in Measured Fat Percentage&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>)</a></code></pre></div>
-<p><img src="03-rankstat_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="kw">hist</span>(DD, <span class="dt">main=</span><span class="st">&quot;Meat Data&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Difference in Measured Fat </span></a>
+<a class="sourceLine" id="cb36-4" data-line-number="4"><span class="st">     Percentage&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>)</a></code></pre></div>
+<p><img src="03-rankstat_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">summary</span>(DD)</a></code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ## -1.60000 -0.25000  0.30000  0.04211  0.40000  1.10000</code></pre>
@@ -1205,7 +1217,7 @@ of <span class="math inline">\(\varepsilon_{i}\)</span> in the model <span class
 values for <span class="math inline">\(p(\delta)\)</span> rather than <span class="math inline">\(\delta\)</span> itself. Plus, <span class="math inline">\(p(\delta)\)</span> has the direct interpretation
 <span class="math inline">\(p(\delta) = P_{\theta=\delta}( D_{i} &gt; 0)\)</span>.</p></li>
 </ul>
-<p><img src="03-rankstat_files/figure-html/unnamed-chunk-21-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
+<p><img src="03-rankstat_files/figure-html/unnamed-chunk-22-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
 <hr />
 <p><strong>Exercise 3.7</strong>: Derive the formula for <span class="math inline">\(c_{\alpha, n}\)</span> shown in <a href="rank-tests.html#eq:critical-value-signstat">(3.12)</a>.</p>
 <hr />
@@ -1295,8 +1307,8 @@ the approximate power in this setting is
 <span class="math display">\[\begin{eqnarray}
 P_{\theta_{A}}\Big( V_{n} \geq c_{\alpha, n} \Big)
 &amp;=&amp; P_{\theta_{A} }\Bigg( \frac{\sqrt{n}(V_{n} - \mu(\theta_{A} ))}{ \sigma(\theta_{A} )}
-\geq \frac{\sqrt{n}(c_{\alpha,n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)
-\approx 1 - \Phi\Bigg( \frac{\sqrt{n}(c_{\alpha,n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)
+\geq \frac{\sqrt{n}(c_{\alpha,n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)  \nonumber \\
+&amp;\approx&amp; 1 - \Phi\Bigg( \frac{\sqrt{n}(c_{\alpha,n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)
 \nonumber \\
 &amp;=&amp; 1 - \Phi\Bigg( \frac{\sqrt{n}(\mu(\theta_{0}) - \mu(\theta_{A}))}{ \sigma(\theta_{A})} + \frac{z_{1-\alpha}\sigma(\theta_{0})}{ \sigma(\theta_{A})}\Bigg)
 \end{eqnarray}\]</span></p></li>
@@ -1348,7 +1360,7 @@ when <span class="math inline">\(\mu(\theta) = p(\theta)\)</span> and <span clas
 where <span class="math inline">\(p(\theta) = 1 - F_{\epsilon}( -\theta )\)</span>.</p></li>
 <li><p>Thus, the efficiency of the sign test for testing <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; 0\)</span> is
 <span class="math display">\[\begin{equation}
-\frac{\mu&#39;(0)}{\sigma(0)} = \frac{p&#39;(0)}{\sqrt{p(0)(1 - p(0))}} = 2f_{\epsilon}(0)
+\frac{\mu&#39;(0)}{\sigma(0)} = \frac{p&#39;(0)}{\sqrt{p(0)(1 - p(0))}} = 2f_{\epsilon}(0)  \nonumber 
 \end{equation}\]</span>
 where <span class="math inline">\(f_{\epsilon}(t) = F_{\epsilon}&#39;(t)\)</span>.</p></li>
 </ul>
@@ -1358,25 +1370,25 @@ where <span class="math inline">\(f_{\epsilon}(t) = F_{\epsilon}&#39;(t)\)</span
 <li><p>Assume that we have data <span class="math inline">\(D_{1}, \ldots, D_{n}\)</span> generated under the same assumption
 as in our discussion of the sign test and the Wilcoxon signed-rank test. That is,
 <span class="math display">\[\begin{equation}
-D_{i} = \theta + \varepsilon_{i},
+D_{i} = \theta + \varepsilon_{i},  \nonumber 
 \end{equation}\]</span>
 where <span class="math inline">\(\varepsilon_{i}\)</span> are assumed to have median <span class="math inline">\(0\)</span> with <span class="math inline">\(\varepsilon_{i}\)</span> having p.d.f. <span class="math inline">\(f_{\varepsilon}\)</span></p></li>
 <li><p>The one-sample t-test will reject <span class="math inline">\(H_{0}: \theta = 0\)</span> whenever
 <span class="math inline">\(V_{n} &gt; c_{\alpha, n}\)</span>, where <span class="math inline">\(V_{n}\)</span> is defined to be
 <span class="math display">\[\begin{equation}
-V_{n} = \frac{\bar{D}}{ \hat{\sigma} }
+V_{n} = \frac{\bar{D}}{ \hat{\sigma} }  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Note that <a href="rank-tests.html#eq:asymptotic-v">(3.15)</a> will apply if we choose
 <span class="math display">\[\begin{eqnarray}
 \mu(\theta) &amp;=&amp; E_{\theta}(D_{i}) = \theta \nonumber \\
-\sigma(\theta) &amp;=&amp; \sqrt{\textrm{Var}_{\theta}(D_{i})} = \sqrt{\textrm{Var}(\varepsilon_{i})} = \sigma_{\epsilon}
+\sigma(\theta) &amp;=&amp; \sqrt{\textrm{Var}_{\theta}(D_{i})} = \sqrt{\textrm{Var}(\varepsilon_{i})} = \sigma_{\epsilon} \nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>These choices of <span class="math inline">\(\mu(\theta)\)</span> and <span class="math inline">\(\sigma(\theta)\)</span> work because
 <span class="math display">\[\begin{eqnarray}
 \frac{\sqrt{n}(V_{n} - \mu(\theta_{n}))}{\sigma(\theta_{n})}
 &amp;=&amp; \frac{\sqrt{n}(\bar{D} - \theta_{n})}{\sigma_{e}} + \sqrt{n}\theta_{n}\Big( \frac{1}{\hat{\sigma}} - \frac{1}{\sigma_{e}}  \Big) \nonumber \\
 &amp;=&amp; \frac{\sqrt{n}(\bar{D} - \theta_{n})}{\sigma_{e}} + \delta\Big( \frac{1}{\hat{\sigma}} - \frac{1}{\sigma_{e}}  \Big)  \nonumber \\
-&amp;\longrightarrow&amp; \textrm{Normal}(0, 1)
+&amp;\longrightarrow&amp; \textrm{Normal}(0, 1)  \nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>So, the efficiency of the one-sample t-test is given by
 <span class="math display">\[\begin{equation}
@@ -1390,7 +1402,7 @@ V_{n} = \frac{\bar{D}}{ \hat{\sigma} }
 the Mann-Whitney statistic, the WRS test can be represented as
 rejecting <span class="math inline">\(H_{0}\)</span> when <span class="math inline">\(V_{N} \geq c_{\alpha, N}\)</span> where <span class="math inline">\(V_{N}\)</span> is
 <span class="math display">\[\begin{equation}
-V_{N} = \frac{1}{mn} \sum_{i=1}^{n}\sum_{j=1}^{m} I(X_{i} \geq Y_{j})
+V_{N} = \frac{1}{mn} \sum_{i=1}^{n}\sum_{j=1}^{m} I(X_{i} \geq Y_{j})  \nonumber
 \end{equation}\]</span>
 and <span class="math inline">\(N = n + m\)</span>.</p></li>
 <li><p>The power of the WRS test is usually analyzed in the context of
@@ -1426,7 +1438,7 @@ require us to find <span class="math inline">\(f_{\epsilon}(0)\)</span> and <spa
 about the residual density <span class="math inline">\(f_{\epsilon}\)</span>.</p></li>
 <li><p>For the Logistic(0,1) distribution, <span class="math inline">\(f_{\epsilon}(0) = 1/4\)</span> and the standard deviation
 is <span class="math inline">\(\pi/\sqrt{3}\)</span>. Hence, the asymptotic relative efficiency of the sign test vs. the one-sample
-t-test would be <span class="math inline">\((\pi/2\sqrt{3})^{2}\)</span>.</p></li>
+t-test is <span class="math inline">\((\pi/2\sqrt{3})^{2} = \pi^{2}/12\)</span>.</p></li>
 <li><p>The relative efficiencies for the sign vs. t-test for other distributions are shown below
 <span class="math display">\[\begin{eqnarray}
 \textrm{Distribution} &amp; &amp; \quad \textrm{Efficiency} \\
@@ -1456,7 +1468,7 @@ for several distributions are shown below.</li>
 <div id="a-power-contest" class="section level3">
 <h3><span class="header-section-number">3.4.5</span> A Power “Contest”</h3>
 <ul>
-<li><p>To compare power across for specific sample sizes, effect sizes, and
+<li><p>To compare power for specific sample sizes, effect sizes, and
 distributional assumptions, a simulation study can be more
 helpful than statements about asymptotic relative efficiency.</p></li>
 <li><p>Below shows the results of a simulation study in <strong>R</strong> which compares
@@ -1466,7 +1478,7 @@ and the one-sample t-test.</p></li>
 <li><p>It is assumed that <span class="math inline">\(n = 200\)</span> and that responses <span class="math inline">\(D_{i}\)</span> are generated from
 the following model:
 <span class="math display">\[\begin{equation}
-D_{i} = 0.2 + \varepsilon_{i}
+D_{i} = 0.2 + \varepsilon_{i}  \nonumber
 \end{equation}\]</span></p></li>
 <li>Three choices for the distribution of <span class="math inline">\(\varepsilon_{i}\)</span> were considered:
 <ul>
@@ -1590,7 +1602,7 @@ Laplace
 <div id="definition-1" class="section level3">
 <h3><span class="header-section-number">3.5.1</span> Definition</h3>
 <ul>
-<li><p>The Wilcoxon rank sum statistic is an example of a statistic from a more general class of rank statistics.</p></li>
+<li><p>The Wilcoxon rank sum statistic is an example of a statistic that belongs to a more general class of rank statistics.</p></li>
 <li><p>This is the class of <strong>linear rank statistics</strong>.</p></li>
 <li><p>Suppose we have observations <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldots, Z_{N})\)</span>.
 A linear rank statistic is a statistic <span class="math inline">\(T_{N}\)</span> that can be expressed as
@@ -1604,7 +1616,7 @@ are fixed numbers and are not random variables.</p></li>
 <li><p>Typically, the scores are generated from a given function <span class="math inline">\(\psi\)</span> in
 the following way
 <span class="math display">\[\begin{equation}
-a_{N}(i) = \psi\Big( \frac{i}{N+1} \Big) 
+a_{N}(i) = \psi\Big( \frac{i}{N+1} \Big)  \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
@@ -1616,7 +1628,7 @@ into two groups.</p></li>
 last <span class="math inline">\(m\)</span> observations were from group 2.</p></li>
 <li><p>The WRS statistic was then defined as
 <span class="math display">\[\begin{equation}
-W = \sum_{i=1}^{n} R_{i}(\mathbf{Z})
+W = \sum_{i=1}^{n} R_{i}(\mathbf{Z}) \nonumber
 \end{equation}\]</span></p></li>
 <li><p>In this case, the WRS statistic can be expressed in the form <a href="rank-tests.html#eq:general-linear-rank">(3.17)</a>
 if we choose the coefficients to be the following
@@ -1625,10 +1637,11 @@ c_{iN} = \begin{cases}
  1 &amp; \textrm{ if } i \leq n \\
  0 &amp; \textrm{ if } i &gt; n 
  \end{cases}
+ \nonumber
 \end{equation}\]</span>
 and we choose the scores to be
 <span class="math display">\[\begin{equation}
-a_{N}(i) = i
+a_{N}(i) = i  \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 </div>
@@ -1648,19 +1661,19 @@ distribution. So,
 E\{ a_{N}( R_{i}(\mathbf{Z} ) \}
 = \sum_{j=1}^{N} a_{N}(j)P\{ R_{i}( \mathbf{Z}) = j \}
 = \sum_{j=1}^{N} \frac{ a_{N}(j) }{N}
-= \bar{a}_{N}
+= \bar{a}_{N} \nonumber
 \end{equation}\]</span>
 Using this, we can then see that
 <span class="math display">\[\begin{equation}
 E( T_{N} ) = \sum_{j=1}^{N} c_{jN} E\{ a_{N}(R_{i}(\mathbf{Z})) \}
-= \sum_{j=1}^{N} c_{jN}\bar{a}_{N} = N\bar{c}_{N}\bar{a}_{N}
+= \sum_{j=1}^{N} c_{jN}\bar{a}_{N} = N\bar{c}_{N}\bar{a}_{N} \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
 <ul>
 <li>A similar argument can show that the variance of <span class="math inline">\(T_{N}\)</span> is
 <span class="math display">\[\begin{equation}
-\textrm{Var}( T_{N} ) = \frac{N^{2}}{n-1} \sigma_{a}^{2}\sigma_{c}^{2},
+\textrm{Var}( T_{N} ) = \frac{N^{2}}{n-1} \sigma_{a}^{2}\sigma_{c}^{2}, \nonumber
 \end{equation}\]</span>
 where <span class="math inline">\(\sigma_{c}^{2} = \frac{1}{N}\sum_{j=1}^{N} (c_{jN} - \bar{c}_{N})^{2}\)</span>
 and <span class="math inline">\(\sigma_{a}^{2} = \frac{1}{N}\sum_{j=1}^{N} (a_{N}(j) - \bar{a}_{N})^{2}\)</span></li>
@@ -1674,7 +1687,7 @@ often be computationally demanding.</p></li>
 <li><p>As long as a few conditions for the coefficients and scores are satisfied,
 one can state the following
 <span class="math display">\[\begin{equation}
-\frac{T_{N} - E( T_{N})}{\sqrt{\textrm{Var}(T_{N})}} \longrightarrow \textrm{Normal}(0, 1),
+\frac{T_{N} - E( T_{N})}{\sqrt{\textrm{Var}(T_{N})}} \longrightarrow \textrm{Normal}(0, 1), \nonumber
 \end{equation}\]</span>
 where, as we showed, both <span class="math inline">\(E(T_{N})\)</span> and <span class="math inline">\(\textrm{Var}(T_{N})\)</span> both have closed-form expressions
 for an arbitrary linear rank statistic.</p></li>
@@ -1690,7 +1703,7 @@ where the first <span class="math inline">\(n\)</span> observations come from gr
 <span class="math inline">\(m\)</span> observations come from group 2.</p></li>
 <li><p>Van der Waerden’s rank statistic <span class="math inline">\(VW_{N}\)</span> is defined as
 <span class="math display">\[\begin{equation}
-VW_{N} = \sum_{j=1}^{n} \Phi^{-1}\Bigg( \frac{\mathbf{R}_{i}( \mathbf{Z})}{N+1} \Bigg)
+VW_{N} = \sum_{j=1}^{n} \Phi^{-1}\Bigg( \frac{\mathbf{R}_{i}( \mathbf{Z})}{N+1} \Bigg) \nonumber
 \end{equation}\]</span></p></li>
 <li><p>The function <span class="math inline">\(\Phi^{-1}\)</span> denotes the inverse of the cumulative distribution
 function of a standard Normal random variable.</p></li>
@@ -1700,10 +1713,11 @@ c_{iN} = \begin{cases}
  1 &amp; \textrm{ if } i \leq n \\
  0 &amp; \textrm{ if } i &gt; n 
  \end{cases}
+ \nonumber
 \end{equation}\]</span>
 and scores determined by
 <span class="math display">\[\begin{equation}
-a_{N}(i) = \Phi^{-1}\Big(  \frac{i}{N+1} \Big)
+a_{N}(i) = \Phi^{-1}\Big(  \frac{i}{N+1} \Big)  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>A test based on van der Waerden’s statistic is often referred to as
 the <strong>normal scores test</strong>.</p></li>
@@ -1722,7 +1736,7 @@ the median test instead looks at how many of the ranks from group <span class="m
 are less than the median rank (which should equal <span class="math inline">\((N+1)/2\)</span>).</p></li>
 <li><p>The test statistic <span class="math inline">\(M_{N}\)</span> for the median test is defined as
 <span class="math display">\[\begin{equation}
-M_{N} = \sum_{i=1}^{n} I\Big( R_{i}(\mathbf{Z}) \leq \frac{N+1}{2} \Big)
+M_{N} = \sum_{i=1}^{n} I\Big( R_{i}(\mathbf{Z}) \leq \frac{N+1}{2} \Big)  \nonumber
 \end{equation}\]</span>
 because <span class="math inline">\((N+1)/2\)</span> will be the median rank.</p></li>
 <li><p>This is a linear rank statistic with coefficients
@@ -1731,6 +1745,7 @@ c_{iN} = \begin{cases}
  1 &amp; \textrm{ if } i \leq n \\
  0 &amp; \textrm{ if } i &gt; n 
  \end{cases}
+\nonumber
 \end{equation}\]</span>
 and scores
 <span class="math display">\[\begin{equation}
@@ -1739,6 +1754,7 @@ a_{N}(i) =
  1 &amp; \textrm{ if } i \leq (N+1)/2 \\
  0 &amp; \textrm{ if } i &gt; (N+1)/2 
  \end{cases}
+ \nonumber
 \end{equation}\]</span></p></li>
 <li><p>The median test could be used to test whether or not observations
 from group 1 tend to be smaller than those from group 2.</p></li>
@@ -1781,30 +1797,30 @@ is unknown unless we are willing to make certain distributional assumptions.</p>
 <p><span class="math display">\[\begin{equation}
 P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)
 \approx P_{\theta_{0}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)
-+ \frac{\theta_{A}}{N!}\sum_{i=1}^{N} c_{iN} E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\}
-\end{equation}\]</span></p>
-<p>where <span class="math inline">\(Z_{(i)}\)</span> denotes the <span class="math inline">\(i^{th}\)</span> order statistic.
++ \frac{\theta_{A}}{N!}\sum_{i=1}^{N} c_{iN} E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\} \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(Z_{(i)}\)</span> denotes the <span class="math inline">\(i^{th}\)</span> order statistic.
 See, for example, Chapter 13 of <span class="citation">Van der Vaart (<a href="#ref-van2000">2000</a>)</span> for more details on the derivation of this approximation.</p>
 <ul>
 <li><p>So, large values of the linear rank statistic <span class="math inline">\(T_{N} = \sum_{i=1}^{N} c_{iN} a_{N}(i)\)</span> will approximately
 correspond to large values of <span class="math inline">\(P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)\)</span>
 if we choose the scores to be
 <span class="math display">\[\begin{equation}
-a_{N}(i) = E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\}
+a_{N}(i) = E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\}  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Linear rank statistics with scores generated this way are usually called
-<strong>locally most powerful</strong> rank test.</p></li>
+<strong>locally most powerful</strong> rank tests.</p></li>
 </ul>
 <hr />
 <ul>
 <li><p>The best choice of the scores will depend on what we assume about the density <span class="math inline">\(f\)</span>.</p></li>
 <li><p>For example, if we assume that <span class="math inline">\(f(z)\)</span> is <span class="math inline">\(\textrm{Normal}(0,1)\)</span>, then
 <span class="math display">\[\begin{equation}
-\frac{\partial \log f(z)}{\partial z} = -z
+\frac{\partial \log f(z)}{\partial z} = -z  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>The approximate expectation of the order statistics from a Normal<span class="math inline">\((0,1)\)</span> distribution are
 <span class="math display">\[\begin{equation}
-E\{ Z_{(i)} \} \approx \Phi^{-1}\Bigg( \frac{i}{N+1} \Bigg)
+E\{ Z_{(i)} \} \approx \Phi^{-1}\Bigg( \frac{i}{N+1} \Bigg)  \nonumber
 \end{equation}\]</span>
 This implies that the van der Waerden’s scores are approximately optimal
 if we assume the distribution of the <span class="math inline">\(Z_{i}\)</span> is Normal.</p></li>

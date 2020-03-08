@@ -17,7 +17,7 @@ Why ranks and why nonparametric testing?
 
 ### Definition
 
-* Suppose we have $n$ observations $\mathbf{X} = (X_{1}, \ldots, X_{n})$. The **rank** of the $i^{th}$ observation $R_{i}$ is defined as
+* Suppose we have $n$ observations $\mathbf{X} = (X_{1}, \ldots, X_{n})$. The **rank** $R_{i}$ of the $i^{th}$ observation is defined as
 \begin{equation}
 R_{i} = R_{i}(\mathbf{X}) = \sum_{j=1}^{n} I( X_{i} \geq X_{j}) 
 (\#eq:rankdef)
@@ -31,10 +31,12 @@ I(X_{i} \geq X_{j})
 \end{cases}
 \end{equation}
 * The largest observation has a rank of $n$.
+
 * The smallest observation has a rank of $1$ (if there are no ties).
-* I'm using the notation $R_{i}(\mathbf{X})$ to emphasize that the rank
+
+* I am using the notation $R_{i}(\mathbf{X})$ to emphasize that the rank
 of the $i^{th}$ observations depends on the entire vector of observations
-rather than only the value of $X_{i}$.
+rather than only on the value of $X_{i}$.
 
 
 * You can compute ranks in **R** using the **rank** function:
@@ -52,13 +54,15 @@ rank(x)
 
 * In the definition of ranks shown in \@ref(eq:rankdef), tied observations
 receive their maximum possible rank. 
+
 * For example, suppose that $(X_{1}, X_{2}, X_{3}, X_{4}) = (0, 1, 1, 2)$. 
 In this case, one could argue whether both observations 2 and 3 should be ranked
 $2^{nd}$ or $3^{rd}$ while observations $1$ and $4$ should unambiguously receive
 ranks of $1$ and $4$ respectively.
+
 * Under definition \@ref(eq:rankdef), both observations $2$ and $3$ receive a rank of $3$.
 
-* In **R**, handling ties that is consistent with definition \@ref(eq:rankdef) is done using the **ties.method = "max"** argument
+* In **R**, handling ties in a way that is consistent with definition \@ref(eq:rankdef) is done using the **ties.method = "max"** argument
 
 ```r
 x <- c(0, 1, 1, 2)  
@@ -79,6 +83,9 @@ rank(x)
 ## [1] 1.0 2.5 2.5 4.0
 ```
 
+* As another example of the "average" definition of ranks, consider the following example:
+
+
 ```r
 y <- c(2, 9, 7, 7, 3, 2, 1)
 rank(y, ties.method="max")
@@ -98,7 +105,7 @@ rank(y)
 
 ---
 
-* When defining ranks using the "average" or "midrank" approach to handling ties, replaces
+* When defining ranks using the "average" or "midrank" approach to handling ties, we replace
 tied ranks with the average of the two "adjacent" ranks. 
 
 * For example, if we have a vector of ranks $(R_{1}, R_{2}, R_{3}, R_{4})$ where $R_{2} = R_{3} =3$ and $R_{1} = 4$ and $R_{4} = 1$, then the vector of modified ranks using the "average" approach to handling ties
@@ -154,12 +161,12 @@ for $j = 3, 4, 5, 6, 7$.
 * The Wilcoxon Rank Sum (WRS) test (sometimes referred to as the Wilcoxon-Mann-Whitney test) is a popular,
 rank-based two-sample test.
 
-* The WRS test is used to test whether or not observations from one group tend to be larger (or smaller) than observations
+* The one-sided WRS test is used to test whether or not observations from one group tend to be larger (or smaller) than observations
 from the other group. 
 
 * Suppose we have observations from two groups: $X_{1}, \ldots, X_{n} \sim F_{X}$ and $Y_{1}, \ldots, Y_{m} \sim F_{Y}$.
 
-* Roughly speaking, the WRS tests the following hypothesis
+* Roughly speaking, the one-sided WRS tests the following hypothesis
 \begin{eqnarray}
 H_{0}: && F_{X} = F_{Y} \quad \textrm{ versus }  \\
 H_{A}: && \textrm{Observations from } F_{X} \textrm{ tend to be larger than observations from } F_{Y} \nonumber
@@ -203,12 +210,12 @@ relevant alternative is of the form $F_{X}(t) = F_{Y}(t - \Delta)$.
 the WRS test has a very high probability of rejecting $H_{0}$.
 
 * In addition, in many applications, it is difficult to justify
-that the "shift alternative" is a reasonable model.
+that the "shift alternative" is a reasonable assumption.
 
 * An alternative is to view the WRS test as performing the following
 hypothesis test:
 \begin{eqnarray}
-H_{0}: && P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2 \quad \textrm{ versus } \\
+H_{0}: && P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2 \quad \textrm{ versus } \nonumber \\
 H_{A}: && P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) > 1/2
 (\#eq:mw-formulation)
 \end{eqnarray}
@@ -223,20 +230,20 @@ answer the question: what is the probability that the outcome
 under treatment 1 is better than the outcome under treatment 2.
 
 * The justification of hypothesis test \@ref(eq:mw-formulation) comes through
-the close connection between the WRS test statistic $W$ and the Mann-Whitney statistic $U_{MW}$.
-Specifically, $W = U_{MW} + n(n+1)/2$. (Although, often $U_{MW}$ is defined as 
-$U_{MW} = mn + n(n+1)/2 - W$).
+the close connection between the WRS test statistic $W$ and the Mann-Whitney statistic $M$.
+Specifically, $W = M + n(n+1)/2$. (Although, often $M$ is defined as 
+$M = mn + n(n+1)/2 - W$).
 
 * The Mann-Whitney statistic divided by $mn$ is an estimate of the probability:
 \begin{equation}
-P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2.
+P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2. \nonumber
 \end{equation}
 
 ---
 
 * The reason for stating $H_{0}$ in \@ref(eq:mw-formulation) as 
 \begin{equation}
-H_{0}: P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2 \quad \textrm{ versus } \\
+H_{0}: P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2  \nonumber \\
 \end{equation}
 is to cover the case of either a continuous or discrete distribution. 
 
@@ -265,8 +272,7 @@ P(X_{i} > Y_{j}) + \frac{1}{2}P(X_{i} = Y_{j}&)& = P(X_{i}=1, Y_{j}=0) + P(X_{i}
 * The WRS test statistic is based on computing the sum of ranks (ranks based on the pooled sample)
 in one group.
 
-* If observations from group 1 tend to be larger than those from group 2, the average rank from group 1 should exceed the
-average rank from group 2. 
+* The motivation for the WRS test statistic is the following: if observations from group 1 tend to be larger than those from group 2, the average rank from group 1 should exceed the average rank from group 2. 
 
 * A sufficiently large value of the average rank from group 1 will allow us to reject $H_{0}$ 
 in favor of $H_{A}$.
@@ -275,7 +281,7 @@ in favor of $H_{A}$.
 
 * We will define the pooled data vector $\mathbf{Z}$ as 
 \begin{equation}
-\mathbf{Z} = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})
+\mathbf{Z} = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})  \nonumber
 \end{equation}
 This is a vector with length $n + m$.
 
@@ -300,24 +306,24 @@ a common distribution function $F$.
 
 * Hence, the expectation of $R_{i}(\mathbf{Z})$ under the null hypothesis is
 \begin{equation}
-E_{H_{0}}\{ R_{i}(\mathbf{Z}) \} = \frac{n + m + 1}{2}
+E_{H_{0}}\{ R_{i}(\mathbf{Z}) \} = \frac{n + m + 1}{2} \nonumber
 \end{equation}
 and thus the expectation of $W$ under $H_{0}$
 \begin{equation}
-E_{H_{0}}( W ) = \sum_{i=1}^{n} E_{H_{0}}\{ R_{i}( \mathbf{Z} ) \}
+E_{H_{0}}( W ) = \sum_{i=1}^{n} E_{H_{0}}\{ R_{i}( \mathbf{Z} ) \} \nonumber
 = \frac{ n(n + m + 1)  }{ 2 }
 \end{equation}
 
 * It can be shown that the variance of $W$ under the null hypothesis is
 \begin{equation}
-\textrm{Var}_{H_{0}}( W ) = \frac{mn(m + n + 1)}{12}
+\textrm{Var}_{H_{0}}( W ) = \frac{mn(m + n + 1)}{12}  \nonumber 
 \end{equation}
 
 ### Computing p-values for the WRS Test
 
 **Exact Distribution**
 
-* The p-value is found by computing the probability
+* The p-value for the WRS test is found by computing the probability
 \begin{equation}
 \textrm{p-value} = P_{H_{0}}( W \geq w_{obs})
 \end{equation}
@@ -396,17 +402,17 @@ the presence of ties.
 hypothesis tests could either be stated as 
 \begin{eqnarray}
 H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
-H_{A}: & & F_{X} \textrm{ is stochastically larger or smaller than } F_{Y} 
+H_{A}: & & F_{X} \textrm{ is stochastically larger or smaller than } F_{Y}  \nonumber
 \end{eqnarray}
 or
 \begin{eqnarray}
 H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
-H_{A}: & & F_{X}(t) = F_{Y}(t - \Delta), \Delta \neq 0.
+H_{A}: & & F_{X}(t) = F_{Y}(t - \Delta), \Delta \neq 0. \nonumber
 \end{eqnarray}
 or
 \begin{eqnarray}
-H_{0}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \\
-H_{A}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2
+H_{0}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ versus } \nonumber \\
+H_{A}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2  \nonumber
 \end{eqnarray}
 
 ---
@@ -423,6 +429,7 @@ with mean zero but different variances. -->
 
 
 ### Computing the WRS test in R
+
 * To illustrate performing the WRS test in **R**, we can use the **wine** dataset from the **rattle.data** package.
 This dataset is also available from the UCI Machine Learning Repository.
 
@@ -455,8 +462,8 @@ wine2 <- subset(wine, Type==1 | Type==2)
 wine2$Type <- factor(wine2$Type)
 ```
 
-* Let's consider the difference in the level of magnesium across the two types of wine.
-<img src="03-rankstat_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-6-2.png" width="672" />
+* Let us consider the difference in the level of magnesium across the two types of wine.
+<img src="03-rankstat_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-7-2.png" width="672" />
 
 * Suppose we are interested in testing whether or not magnesium levels in 
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
@@ -476,7 +483,7 @@ wilcox.test(x=wine2$Magnesium[wine2$Type==1], y=wine2$Magnesium[wine2$Type==2],
 ## alternative hypothesis: true location shift is greater than 0
 ```
 
-You could also use the following code (just be careful about the ordering of the levels of **Type**)
+* You could also use the following code to perform this test (just be careful about the ordering of the levels of **Type**)
 
 ```r
 wilcox.test(Magnesium ~ Type, data=wine2, alternative="greater")
@@ -554,9 +561,10 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.795
+## [1] 0.79
 ```
 
+* This simulation-based estimate of $P(X_{i} > Y_{j}) + P(X_{i} = Y_{j})/2$ is quite close to the value of the Mann-Whitney statistic divided by $mn$.
 
 ### Additional Notes for the WRS test
 
@@ -586,7 +594,7 @@ of the WRS test is probably more reasonable than the "shift alternative \@ref(eq
 
 * Note that there will probably be many ties when comparing ordinal data.
 
----
+#### The Hodges-Lehmann Estimator
 
 * The Hodges-Lehmann Estimator $\hat{\Delta}$ is an estimator of $\Delta$ in the location-shift model
 \begin{equation}
@@ -627,7 +635,7 @@ WC$estimate     ## The Hodges-Lehmann estimate
 * The **sign test** can be thought of as a test of whether or not
 the median of a distribution is greater than zero (or greater than some other fixed value $\theta_{0}$).
 
-* Frequently, the sign test is explained in the following context: 
+* Frequently, the sign test is applied in the following context: 
     + Suppose we have observations $D_{1}, \ldots, D_{n}$ which arise from the model
 \begin{equation}
 D_{i} = \theta + \varepsilon_{i},
@@ -635,14 +643,14 @@ D_{i} = \theta + \varepsilon_{i},
 \end{equation}
 where $\varepsilon_{i}$ are iid random variables each with distribution function $F_{\epsilon}$
 that is assumed to have a median of zero. Moreover, we will assume the density function
-$f_{\varepsilon}(t)$ is symmetric around zero.
+$f_{\varepsilon}(t)$ of $\varepsilon_{i}$ is symmetric around zero.
 
 * The distribution function of $D_{i}$ is then
 \begin{equation}
 F_{D}(t) = P(D_{i} \leq t) = P(\varepsilon_{i} \leq t - \theta) = F_{\epsilon}(t - \theta)
 \end{equation}
 
-* Likewise the density function $f_{D}(t)$ of $D_{i}$ is given by
+* Likewise, the density function $f_{D}(t)$ of $D_{i}$ is given by
 \begin{equation}
 f_{D}(t) = f_{\epsilon}(t - \theta)
 \end{equation}
@@ -687,10 +695,10 @@ S_{n} = \sum_{i=1}^{n} I( D_{i} > 0)
 * If the null hypothesis $H_{0}: \theta = 0$ is true, then we should expect that roughly half
 of the observations will be positive.
 
-* This suggests that we will reject $H_{0}$ if $S_{n} \geq c$ where $c$ is a 
+* This suggests that we will reject $H_{0}$ if $S_{n} \geq c$, where $c$ is a 
 number that is greater than $n/2$.
 
-#### Null Distribution and p-values
+#### Null Distribution and p-values for the Sign Test
 
 * Notice that the sign statistic defined in \@ref(eq:sign-statistic) is the sum of independent
 Bernoulli random variable. 
@@ -698,7 +706,7 @@ Bernoulli random variable.
 * That is, we can think of $Z_{i} = I(D_{i} > 0)$ as a random variable with success probability
 $p( \theta )$ where the formula for $p( \theta )$ is
 \begin{equation}
-p(\theta) = P(Z_{i} = 1) = P(D_{i} > 0) = 1 - F_{D}(0) = 1 - F_{\epsilon}( -\theta )
+p(\theta) = P(Z_{i} = 1) = P(D_{i} > 0) = 1 - F_{D}(0) = 1 - F_{\epsilon}( -\theta ) \nonumber
 \end{equation}
 
 * This implies that $S_{n}$ is a binomial random variable
@@ -712,12 +720,12 @@ S_{n} \sim \textrm{Binomial}(n, p(\theta) )
 * Because $p(0) = 1/2$, $S_{n} \sim \textrm{Binomial}(n, 1/2 )$ under $H_{0}$.
 
 * Notice that the "null distribution" of the sign statistic is "distribution free"
-in the sense that the distribution does not depend on the distribution of $D_{i}$.
+in the sense that the null distribution of $S_{n}$ does not depend on the distribution of $D_{i}$.
 
-* The p-value for the sign test can be computed by
+* The p-value for the one-sided sign test can be computed by
 \begin{equation}
 \textrm{p-value} = P_{H_{0}}(S_{n} \geq s_{obs}) = \sum_{j=s_{obs}}^{n} P_{H_{0}}(S_{n} = j)
-= \sum_{j=s_{obs}}^{n} {n \choose j} \frac{1}{2^{n}},
+= \sum_{j=s_{obs}}^{n} {n \choose j} \frac{1}{2^{n}}, \nonumber
 \end{equation}
 where $s_{obs}$ is the observed value of the sign statistic.
 
@@ -725,12 +733,12 @@ where $s_{obs}$ is the observed value of the sign statistic.
 ```r
 ### How to compute the p-value for the sign test using R
 xx <- rnorm(100)
-sign.stat <- sum(xx > 0)
+sign.stat <- sum(xx > 0)  ## This is the value of the sign statistic
 1 - pbinom(sign.stat - 1, size=100, prob=1/2) ## p-value for sign test
 ```
 
 ```
-## [1] 0.4602054
+## [1] 0.3821767
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -748,7 +756,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.4602054
+## [1] 0.3821767
 ```
 
 #### Two-sided Sign Test
@@ -771,15 +779,15 @@ a "more extreme" observation than the one that was actually observed.
 if either $S_{n}$ or $n - S_{n}$ were very large.
 
 * For example, if $n = 12$, then the expected value of the sign statistic would be $6$.
-If $s_{obs} = 10$, then the collection of "more extreme" events then this would be
-$\leq 2$ and $\geq 10$.
+If $s_{obs} = 10$, then the collection of "more extreme" events would be
+$\leq 2$ or $\geq 10$.
 
 * The two-sided p-value is determined by looking at the tail probabilities on both sides
 \begin{equation}
 \textrm{p-value} = 
 \begin{cases}
-P_{H_{0}}(S_{n} \geq s_{obs}) + P_{H_{0}}(S_{n} \leq n - s_{obs}) & \textrm{ if } s_{obs} \geq n/2 \\
-P_{H_{0}}(S_{n} \leq s_{obs}) + P_{H_{0}}(S_{n} \geq n - s_{obs}) & \textrm{ if } s_{obs} < n/2
+P_{H_{0}}(S_{n} \geq s_{obs}) + P_{H_{0}}(S_{n} \leq n - s_{obs}) & \textrm{ if } s_{obs} \geq n/2 \nonumber \\
+P_{H_{0}}(S_{n} \leq s_{obs}) + P_{H_{0}}(S_{n} \geq n - s_{obs}) & \textrm{ if } s_{obs} < n/2 \nonumber
 \end{cases}
 \end{equation}
 
@@ -787,8 +795,8 @@ P_{H_{0}}(S_{n} \leq s_{obs}) + P_{H_{0}}(S_{n} \geq n - s_{obs}) & \textrm{ if 
 \begin{equation}
 \textrm{p-value} = 
 \begin{cases}
-2 P_{H_{0}}(S_{n} \geq s_{obs})   & \textrm{ if } s_{obs} \geq n/2 \\
-2 P_{H_{0}}(S_{n} \leq s_{obs})   & \textrm{ if } s_{obs} < n/2
+2 P_{H_{0}}(S_{n} \geq s_{obs})   & \textrm{ if } s_{obs} \geq n/2 \nonumber \\
+2 P_{H_{0}}(S_{n} \leq s_{obs})   & \textrm{ if } s_{obs} < n/2  \nonumber
 \end{cases}
 \end{equation}
 
@@ -815,7 +823,7 @@ signs of $D_{i}$ by the rank of its absolute value.
 
 * Specifically, the Wilcoxon signed rank statistic is defined as
 \begin{equation}
-T_{n} = \sum_{i=1}^{n} \textrm{sign}( D_{i}) R_{i}( |\mathbf{D}| )
+T_{n} = \sum_{i=1}^{n} \textrm{sign}( D_{i}) R_{i}( |\mathbf{D}| ) \nonumber
 \end{equation}
 where the $\textrm{sign}$ function is defined as
 \begin{equation}
@@ -824,6 +832,7 @@ where the $\textrm{sign}$ function is defined as
 0 & \textrm{if } x = 0 \\
 -1 & \textrm{if } x < 0
 \end{cases}
+\nonumber
 \end{equation}
 
 * Here, $R_{i}( |\mathbf{D}| )$ is the rank of the $i^{th}$ element from the vector
@@ -861,7 +870,7 @@ statistic is $0$.
 * Similar, to the large-sample approximation we used for the WRS test, we have the following
 asymptotic result for the Wilcoxon signed-rank test
 \begin{equation}
-\frac{T_{n}}{\sqrt{\textrm{Var}_{H_{0}}(T_{n}) }} \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } n \longrightarrow \infty
+\frac{T_{n}}{\sqrt{\textrm{Var}_{H_{0}}(T_{n}) }} \longrightarrow \textrm{Normal}(0,1) \quad \textrm{as } n \longrightarrow \infty \nonumber
 \end{equation}
 
 * Because the variance of $T$ is dominated by the term $n^{3}/3$ for very large $n$, we could also say that under $H_{0}$
@@ -885,7 +894,8 @@ Nevertheless, there exists functions in **R** for working with this exact distri
 
 * Let's first look at the **Meat** data from the **PairedData** **R** package.
 
-* This data set contains 20 observations with measures of fat percentage using different 
+* This data set contains 20 observations with each observation corresponding to a single piece of meat. 
+For each observation, we have two measures of fat percentage that were obtained different 
 measuring techniques.
  
 
@@ -911,10 +921,11 @@ We will drop the single observation that equals zero.
 ```r
 DD <- Meat[,2] - Meat[,1]
 DD <- DD[DD!=0]
-hist(DD, main="Meat Data", xlab="Difference in Measured Fat Percentage", las=1)
+hist(DD, main="Meat Data", xlab="Difference in Measured Fat 
+     Percentage", las=1)
 ```
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+<img src="03-rankstat_files/figure-html/unnamed-chunk-18-1.png" width="672" />
 
 ```r
 summary(DD)
@@ -1076,7 +1087,7 @@ of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
 values for $p(\delta)$ rather than $\delta$ itself. Plus, $p(\delta)$ has the direct interpretation
 $p(\delta) = P_{\theta=\delta}( D_{i} > 0)$.
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-21-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-21-2.png" width="672" />
+<img src="03-rankstat_files/figure-html/unnamed-chunk-22-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-22-2.png" width="672" />
 
 
 ---
@@ -1181,8 +1192,8 @@ the approximate power in this setting is
 \begin{eqnarray}
 P_{\theta_{A}}\Big( V_{n} \geq c_{\alpha, n} \Big)
 &=& P_{\theta_{A} }\Bigg( \frac{\sqrt{n}(V_{n} - \mu(\theta_{A} ))}{ \sigma(\theta_{A} )}
-\geq \frac{\sqrt{n}(c_{\alpha,n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)
-\approx 1 - \Phi\Bigg( \frac{\sqrt{n}(c_{\alpha,n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)
+\geq \frac{\sqrt{n}(c_{\alpha,n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)  \nonumber \\
+&\approx& 1 - \Phi\Bigg( \frac{\sqrt{n}(c_{\alpha,n} - \mu(\theta_{A}))}{ \sigma(\theta_{A})} \Bigg)
 \nonumber \\
 &=& 1 - \Phi\Bigg( \frac{\sqrt{n}(\mu(\theta_{0}) - \mu(\theta_{A}))}{ \sigma(\theta_{A})} + \frac{z_{1-\alpha}\sigma(\theta_{0})}{ \sigma(\theta_{A})}\Bigg)
 \end{eqnarray}
@@ -1243,7 +1254,7 @@ where $p(\theta) = 1 - F_{\epsilon}( -\theta )$.
 
 * Thus, the efficiency of the sign test for testing $H_{0}: \theta = 0$ vs. $H_{A}: \theta > 0$ is
 \begin{equation}
-\frac{\mu'(0)}{\sigma(0)} = \frac{p'(0)}{\sqrt{p(0)(1 - p(0))}} = 2f_{\epsilon}(0)
+\frac{\mu'(0)}{\sigma(0)} = \frac{p'(0)}{\sqrt{p(0)(1 - p(0))}} = 2f_{\epsilon}(0)  \nonumber 
 \end{equation}
 where $f_{\epsilon}(t) = F_{\epsilon}'(t)$.
 
@@ -1254,7 +1265,7 @@ where $f_{\epsilon}(t) = F_{\epsilon}'(t)$.
 * Assume that we have data $D_{1}, \ldots, D_{n}$ generated under the same assumption 
 as in our discussion of the sign test and the Wilcoxon signed-rank test. That is,
 \begin{equation}
-D_{i} = \theta + \varepsilon_{i},
+D_{i} = \theta + \varepsilon_{i},  \nonumber 
 \end{equation}
 where $\varepsilon_{i}$ are assumed to have median $0$ with $\varepsilon_{i}$ having p.d.f. $f_{\varepsilon}$
 
@@ -1262,14 +1273,14 @@ where $\varepsilon_{i}$ are assumed to have median $0$ with $\varepsilon_{i}$ ha
 * The one-sample t-test will reject $H_{0}: \theta = 0$ whenever 
 $V_{n} > c_{\alpha, n}$, where $V_{n}$ is defined to be
 \begin{equation}
-V_{n} = \frac{\bar{D}}{ \hat{\sigma} }
+V_{n} = \frac{\bar{D}}{ \hat{\sigma} }  \nonumber
 \end{equation}
 
 
 * Note that \@ref(eq:asymptotic-v) will apply if we choose 
 \begin{eqnarray}
 \mu(\theta) &=& E_{\theta}(D_{i}) = \theta \nonumber \\
-\sigma(\theta) &=& \sqrt{\textrm{Var}_{\theta}(D_{i})} = \sqrt{\textrm{Var}(\varepsilon_{i})} = \sigma_{\epsilon}
+\sigma(\theta) &=& \sqrt{\textrm{Var}_{\theta}(D_{i})} = \sqrt{\textrm{Var}(\varepsilon_{i})} = \sigma_{\epsilon} \nonumber
 \end{eqnarray}
 
 * These choices of $\mu(\theta)$ and $\sigma(\theta)$ work because
@@ -1277,7 +1288,7 @@ V_{n} = \frac{\bar{D}}{ \hat{\sigma} }
 \frac{\sqrt{n}(V_{n} - \mu(\theta_{n}))}{\sigma(\theta_{n})}
 &=& \frac{\sqrt{n}(\bar{D} - \theta_{n})}{\sigma_{e}} + \sqrt{n}\theta_{n}\Big( \frac{1}{\hat{\sigma}} - \frac{1}{\sigma_{e}}  \Big) \nonumber \\
 &=& \frac{\sqrt{n}(\bar{D} - \theta_{n})}{\sigma_{e}} + \delta\Big( \frac{1}{\hat{\sigma}} - \frac{1}{\sigma_{e}}  \Big)  \nonumber \\
-&\longrightarrow& \textrm{Normal}(0, 1)
+&\longrightarrow& \textrm{Normal}(0, 1)  \nonumber
 \end{eqnarray}
 
 * So, the efficiency of the one-sample t-test is given by
@@ -1293,7 +1304,7 @@ V_{n} = \frac{\bar{D}}{ \hat{\sigma} }
 the Mann-Whitney statistic, the WRS test can be represented as
 rejecting $H_{0}$ when $V_{N} \geq c_{\alpha, N}$ where $V_{N}$ is
 \begin{equation}
-V_{N} = \frac{1}{mn} \sum_{i=1}^{n}\sum_{j=1}^{m} I(X_{i} \geq Y_{j})
+V_{N} = \frac{1}{mn} \sum_{i=1}^{n}\sum_{j=1}^{m} I(X_{i} \geq Y_{j})  \nonumber
 \end{equation}
 and $N = n + m$.
 
@@ -1337,7 +1348,7 @@ about the residual density $f_{\epsilon}$.
 
 * For the Logistic(0,1) distribution, $f_{\epsilon}(0) = 1/4$ and the standard deviation
 is $\pi/\sqrt{3}$. Hence, the asymptotic relative efficiency of the sign test vs. the one-sample
-t-test would be $(\pi/2\sqrt{3})^{2}$.
+t-test is $(\pi/2\sqrt{3})^{2} = \pi^{2}/12$.
 
 
 * The relative efficiencies for the sign vs. t-test for other distributions are shown below
@@ -1369,7 +1380,7 @@ for several distributions are shown below.
 
 ### A Power "Contest"
 
-* To compare power across for specific sample sizes, effect sizes, and
+* To compare power for specific sample sizes, effect sizes, and
 distributional assumptions, a simulation study can be more
 helpful than statements about asymptotic relative efficiency.
 
@@ -1382,7 +1393,7 @@ and the one-sample t-test.
 * It is assumed that $n = 200$ and that responses $D_{i}$ are generated from 
 the following model:
 \begin{equation}
-D_{i} = 0.2 + \varepsilon_{i}
+D_{i} = 0.2 + \varepsilon_{i}  \nonumber
 \end{equation}
 
 * Three choices for the distribution of $\varepsilon_{i}$ were considered:
@@ -1442,7 +1453,7 @@ power.results <- data.frame(Distribution=c("Logistic", "Normal", "Uniform", "Lap
 
 ### Definition
 
-* The Wilcoxon rank sum statistic is an example of a statistic from a more general class of rank statistics.
+* The Wilcoxon rank sum statistic is an example of a statistic that belongs to a more general class of rank statistics.
 
 * This is the class of **linear rank statistics**.
 
@@ -1461,7 +1472,7 @@ are fixed numbers and are not random variables.
 * Typically, the scores are generated from a given function $\psi$ in 
 the following way
 \begin{equation}
-a_{N}(i) = \psi\Big( \frac{i}{N+1} \Big) 
+a_{N}(i) = \psi\Big( \frac{i}{N+1} \Big)  \nonumber
 \end{equation}
 
 ---
@@ -1476,7 +1487,7 @@ last $m$ observations were from group 2.
 
 * The WRS statistic was then defined as
 \begin{equation}
-W = \sum_{i=1}^{n} R_{i}(\mathbf{Z})
+W = \sum_{i=1}^{n} R_{i}(\mathbf{Z}) \nonumber
 \end{equation}
 
 * In this case, the WRS statistic can be expressed in the form \@ref(eq:general-linear-rank)
@@ -1486,10 +1497,11 @@ c_{iN} = \begin{cases}
    1 & \textrm{ if } i \leq n \\
    0 & \textrm{ if } i > n 
  \end{cases}
+ \nonumber
 \end{equation}
 and we choose the scores to be
 \begin{equation}
-a_{N}(i) = i
+a_{N}(i) = i  \nonumber
 \end{equation}
 
 ### Properties of Linear Rank Statistics
@@ -1508,19 +1520,19 @@ distribution. So,
 E\{ a_{N}( R_{i}(\mathbf{Z} ) \}
 = \sum_{j=1}^{N} a_{N}(j)P\{ R_{i}( \mathbf{Z}) = j \}
 = \sum_{j=1}^{N} \frac{ a_{N}(j) }{N}
-= \bar{a}_{N}
+= \bar{a}_{N} \nonumber
 \end{equation}
 Using this, we can then see that
 \begin{equation}
 E( T_{N} ) = \sum_{j=1}^{N} c_{jN} E\{ a_{N}(R_{i}(\mathbf{Z})) \}
-= \sum_{j=1}^{N} c_{jN}\bar{a}_{N} = N\bar{c}_{N}\bar{a}_{N}
+= \sum_{j=1}^{N} c_{jN}\bar{a}_{N} = N\bar{c}_{N}\bar{a}_{N} \nonumber
 \end{equation}
 
 ---
 
 * A similar argument can show that the variance of $T_{N}$ is
 \begin{equation}
-\textrm{Var}( T_{N} ) = \frac{N^{2}}{n-1} \sigma_{a}^{2}\sigma_{c}^{2},
+\textrm{Var}( T_{N} ) = \frac{N^{2}}{n-1} \sigma_{a}^{2}\sigma_{c}^{2}, \nonumber
 \end{equation}
 where $\sigma_{c}^{2} = \frac{1}{N}\sum_{j=1}^{N} (c_{jN} - \bar{c}_{N})^{2}$
 and $\sigma_{a}^{2} = \frac{1}{N}\sum_{j=1}^{N} (a_{N}(j) - \bar{a}_{N})^{2}$
@@ -1536,7 +1548,7 @@ often be computationally demanding.
 * As long as a few conditions for the coefficients and scores are satisfied,
 one can state the following
 \begin{equation}
-\frac{T_{N} - E( T_{N})}{\sqrt{\textrm{Var}(T_{N})}} \longrightarrow \textrm{Normal}(0, 1),
+\frac{T_{N} - E( T_{N})}{\sqrt{\textrm{Var}(T_{N})}} \longrightarrow \textrm{Normal}(0, 1), \nonumber
 \end{equation}
 where, as we showed, both $E(T_{N})$ and $\textrm{Var}(T_{N})$ both have closed-form expressions
 for an arbitrary linear rank statistic.
@@ -1553,7 +1565,7 @@ $m$ observations come from group 2.
 
 * Van der Waerden's rank statistic $VW_{N}$ is defined as
 \begin{equation}
-VW_{N} = \sum_{j=1}^{n} \Phi^{-1}\Bigg( \frac{\mathbf{R}_{i}( \mathbf{Z})}{N+1} \Bigg)
+VW_{N} = \sum_{j=1}^{n} \Phi^{-1}\Bigg( \frac{\mathbf{R}_{i}( \mathbf{Z})}{N+1} \Bigg) \nonumber
 \end{equation}
 
 * The function $\Phi^{-1}$ denotes the inverse of the cumulative distribution
@@ -1565,10 +1577,11 @@ c_{iN} = \begin{cases}
    1 & \textrm{ if } i \leq n \\
    0 & \textrm{ if } i > n 
  \end{cases}
+ \nonumber
 \end{equation}
 and scores determined by
 \begin{equation}
-a_{N}(i) = \Phi^{-1}\Big(  \frac{i}{N+1} \Big)
+a_{N}(i) = \Phi^{-1}\Big(  \frac{i}{N+1} \Big)  \nonumber
 \end{equation}
 
 * A test based on van der Waerden's statistic is often referred to as
@@ -1590,7 +1603,7 @@ are less than the median rank (which should equal $(N+1)/2$).
 
 * The test statistic $M_{N}$ for the median test is defined as
 \begin{equation}
-M_{N} = \sum_{i=1}^{n} I\Big( R_{i}(\mathbf{Z}) \leq \frac{N+1}{2} \Big)
+M_{N} = \sum_{i=1}^{n} I\Big( R_{i}(\mathbf{Z}) \leq \frac{N+1}{2} \Big)  \nonumber
 \end{equation}
 because $(N+1)/2$ will be the median rank.
 
@@ -1600,6 +1613,7 @@ c_{iN} = \begin{cases}
    1 & \textrm{ if } i \leq n \\
    0 & \textrm{ if } i > n 
  \end{cases}
+\nonumber
 \end{equation}
 and scores
 \begin{equation}
@@ -1608,6 +1622,7 @@ a_{N}(i) =
    1 & \textrm{ if } i \leq (N+1)/2 \\
    0 & \textrm{ if } i > (N+1)/2 
  \end{cases}
+ \nonumber
 \end{equation}
 
 * The median test could be used to test whether or not observations
@@ -1653,9 +1668,8 @@ is unknown unless we are willing to make certain distributional assumptions.
 \begin{equation}
 P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)
 \approx P_{\theta_{0}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)
-+ \frac{\theta_{A}}{N!}\sum_{i=1}^{N} c_{iN} E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\}
++ \frac{\theta_{A}}{N!}\sum_{i=1}^{N} c_{iN} E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\} \nonumber
 \end{equation}
-
 where $Z_{(i)}$ denotes the $i^{th}$ order statistic.
 See, for example, Chapter 13 of @van2000 for more details on the derivation of this approximation.
 
@@ -1663,11 +1677,11 @@ See, for example, Chapter 13 of @van2000 for more details on the derivation of t
 correspond to large values of $P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)$
 if we choose the scores to be
 \begin{equation}
-a_{N}(i) = E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\}
+a_{N}(i) = E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\}  \nonumber
 \end{equation}
 
 * Linear rank statistics with scores generated this way are usually called 
-**locally most powerful** rank test.
+**locally most powerful** rank tests.
 
 ---
 
@@ -1675,12 +1689,12 @@ a_{N}(i) = E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\}
 
 * For example, if we assume that $f(z)$ is $\textrm{Normal}(0,1)$, then
 \begin{equation}
-\frac{\partial \log f(z)}{\partial z} = -z
+\frac{\partial \log f(z)}{\partial z} = -z  \nonumber
 \end{equation}
 
 * The approximate expectation of the order statistics from a Normal$(0,1)$ distribution are
 \begin{equation}
-E\{ Z_{(i)} \} \approx \Phi^{-1}\Bigg( \frac{i}{N+1} \Bigg)
+E\{ Z_{(i)} \} \approx \Phi^{-1}\Bigg( \frac{i}{N+1} \Bigg)  \nonumber
 \end{equation}
 This implies that the van der Waerden's scores are approximately optimal
 if we assume the distribution of the $Z_{i}$ is Normal.

@@ -16,7 +16,7 @@ these parameters completely determine the form of $f(x)$.
 * For example, with a Gaussian distribution you only need to find $\mu$ and $\sigma^{2}$ to 
 determine the form of $f(x)$.
 
-* In a nonparametric approach to estimating, we will assume that our observations $X_{1}, \ldots, X_{n}$
+* In a nonparametric approach to estimating a pdf, we will assume that our observations $X_{1}, \ldots, X_{n}$
 are an independent identically distribution sample from a distribution with pdf $f(x)$, but otherwise we will
 make few assumptions about the particular form of $f(x)$.
 
@@ -31,14 +31,13 @@ hist(kidney$age, main="Age in the Kidney Function Data", xlab="Age")
 
 ### Definition
 
-* While histograms are often thought of as maily a visualization tool,
+* While histograms are often thought of as mainly a visualization tool,
 a histogram can also be thought of as an estimate of the density $f(x)$. 
 
 * To construct a histogram, you first need to define a series
 of "bins": $B_{1}, \ldots, B_{D_{n}}$. 
 
-* Each bin is a left-closed interval. The bins are usually
-assumed to have the form $B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n})$:
+* Each bin is a left-closed interval. That is, the bins have the form $B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n})$:
 \begin{eqnarray}
 B_{1} &=& [x_{0}, x_{0} + h_{n}) \nonumber \\
 B_{2} &=& [x_{0} + h_{n}, x_{0} + 2h_{n}) \nonumber \\
@@ -53,13 +52,13 @@ B_{D_{n}} &=& [x_{0} + (D_{n}-1)h_{n}, x_{0} + D_{n}h_{n}) \nonumber
 * Histograms are based on the counts $n_{k}$ of observations that fall into each bin:
 \begin{eqnarray}
 n_{k} &=& \# \text{ of observations falling into the $k^{th}$ bin }  \nonumber \\
-&=& \sum_{i=1}^{n} I( x_{0} + (k-1)h_{n} \leq X_{i} < x_{0} + kh_{n}  )
+&=& \sum_{i=1}^{n} I( x_{0} + (k-1)h_{n} \leq X_{i} < x_{0} + kh_{n}  ) \nonumber
 \end{eqnarray}
 
 * From the counts $n_{k}$, the histogram estimate of the density at a point $x$ in 
 the $k^{th}$ bin (that is if $x_{0} + (k-1)h_{n} \leq x < x_{0} + kh_{n}$), is defined as
 \begin{equation}
-\hat{f}_{h_{n}}^{H}(x) = \frac{n_{k}}{nh_{n}}  
+\hat{f}_{h_{n}}^{H}(x) = \frac{n_{k}}{nh_{n}}   \nonumber
 (\#eq:hist-density)
 \end{equation}
 
@@ -69,7 +68,7 @@ the values of $\hat{f}_{h_{n}}^{H}(x)$.
 ---
 
 * To see the motivation for the histogram estimate, notice that if we choose a 
-relatively small value $h_{n} > 0$ 
+relatively small value of $h_{n} > 0$ 
 \begin{equation}
 P(a < X_{i} < a + h_{n}) = \int_{a}^{a + h_{n}} f(t) dt \approx h_{n}f(c), \nonumber
 \end{equation}
@@ -204,6 +203,7 @@ B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n}) \nonumber
 * For a point $x \in B_{k}$, that "belongs" to the $k^{th}$ bin, the histogram density estimate is
 \begin{equation}
 \hat{f}_{n}^{H}(x) = \frac{n_{k}}{nh_{n}}, \quad \textrm{ where } n_{k} = \textrm{ number of observations falling into bin } B_{k}
+\nonumber
 \end{equation}
 
 * To better examine what happens as $n$ changes, we will define the function $A_{h_{n}, x_{0}}(x)$ as the function 
@@ -239,7 +239,7 @@ n_{A_{h_{n}}(x)} \sim \textrm{Binomial}\{ n, p_{h_{n}, x_{0}}(x) \} \nonumber
 * The success probability $p_{h_{n}, x_{0}}(x)$ is defined as
 \begin{eqnarray}
 p_{h_{n}, x_{0}}(x) &=& P\Big\{ X_{i} \textrm{ falls into bin } B_{A_{h_{n}, x_{0}}}(x) \Big\}   \nonumber \\
-&=& \int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt.
+&=& \int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt. \nonumber
 \end{eqnarray}
 
 ---
@@ -303,15 +303,16 @@ bin $x_{0} + (A_{h_{n}}(x) - 1)h_{n}$ will always be very close to $x$.
 * Note that large bin widths will reduce the variance of $\hat{f}_{h_{n}}^{H}(x)$.
 
 
-#### Pointwise Mean Squared Error
-* Using \@ref(eq:approx-var-hist) and \@ref(eq:approx-bias-hist), the approximate mean-squared error of the histogram density estimate
+#### Pointwise Approximate Mean Squared Error
+* Using \@ref(eq:approx-var-hist) and \@ref(eq:approx-bias-hist), the approximate mean-squared error (AMSE) of the histogram density estimate
 at a particular point $x$ is given by
 \begin{eqnarray}
 \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
 &=& E\Big( \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}  \Big) \nonumber \\
 &=& \Big( \textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} \Big)^{2} + \textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \} \nonumber \\
 &\approx&  \frac{h_{n}^{2}[f'(x)]^{2} }{4} - h_{n}f'(x)[ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ]  \nonumber \\
-&+& [f'(x)]^{2}\Big( x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} \Big)^{2} + \frac{f(x)}{n h_{n} }
+&+& [f'(x)]^{2}\Big( x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} \Big)^{2} + \frac{f(x)}{n h_{n} } \nonumber \\
+&=& \textrm{AMSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
 (\#eq:mse-hist-decomp)
 \end{eqnarray}
 
@@ -321,20 +322,20 @@ $nh_{n} \longrightarrow \infty$.
 * This MSE approximation depends on a particular choice of $x$.
 
 * Difficult to use \@ref(eq:mse-hist-decomp) as a criterion for selecting the bandwidth
-because the best choice of $h_{n}$ will often depend on your choice of $x$.
+because the best choice of $h_{n}$ will usually depend on your choice of $x$.
 
 #### Integrated Mean Squared Error and Optimal Histogram Bin Width
 
-* Using mean integrated squared error (MISE) allows us to find an optimal bin width
+* Using the approximate mean integrated squared error (AMISE) allows us to find an optimal bin width
 that does not depend on a particular choice of $x$.
 
-* The MISE is defined as
+* The AMISE is defined as
 \begin{eqnarray}
-\textrm{MISE}\{ \hat{f}_{h_{n}}^{H} \} 
+\textrm{AMISE}\{ \hat{f}_{h_{n}}^{H} \} 
 &=& E\Big\{ \int_{-\infty}^{\infty} \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}dx   \Big\} \nonumber \\
 &=& \int_{-\infty}^{\infty} \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} dx \nonumber
 \end{eqnarray}
-Using the previously derived approximation \@ref(eq:mse-hist-decomp) for the MSE, it can be shown that
+Using the previously derived approximation \@ref(eq:mse-hist-decomp) for the AMSE, it can be shown that
 \begin{eqnarray}
 \textrm{MISE}\{ \hat{f}_{h_{n}}^{H} \} \approx
 \frac{1}{nh_{n}} + \frac{h_{n}^{2}}{12}\int_{-\infty}^{\infty} [f'(x)]^{2} dx  
@@ -360,19 +361,19 @@ h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f'(x)]^{2} dx}  \Big)^{1
 
 * We will mention three rules for selecting the bin width of a histogram.
    + Scott rule: (based on the optimal bin width formula \@ref(eq:opt-binwidth-hist))
-   + Friedman and Diaconis rule (also based on the optimal bin width formula \@ref(eq:opt-binwidth-hist))
+   + Friedman and Diaconis (FD) rule (also based on the optimal bin width formula \@ref(eq:opt-binwidth-hist))
    + Sturges rule: (based on wanting the histogram to look Gaussian when the data are in fact Gaussian-distributed)
 
 ---
 
-* Both Scott and the FD rule are based on the optimal bin width formula \@ref(eq:opt-binwidth-hist).
+* Both the Scott and the FD rule are based on the optimal bin width formula \@ref(eq:opt-binwidth-hist).
 
 * The main problem with using the formula \@ref(eq:opt-binwidth-hist) is the presence of $\int_{-\infty}^{\infty} [f'(x)]^{2} dx$.
 
 * **Solution:** See what this quantity looks like if we assume that $f(x)$ corresponds 
-to a $N(\mu, \sigma^{2})$ density.
+to a $\textrm{Normal}(\mu, \sigma^{2})$ density.
 
-* With this assumption,
+* With the assumption that $f(x) = \textrm{Normal}(\mu, \sigma^{2})$:
 \begin{equation}
 h_{n}^{opt} = 3.5 \sigma n^{-1/3}  \nonumber
 \end{equation}
@@ -416,7 +417,7 @@ legend(x=50, y=40, legend="FD Rule", bty='n', cex=1.8)
 * In other words, for each $x$ we are forming a bin of width $2h_{n}$ around $x$, and we are counting
 the number of observations that fall in this bin.
 
-* You can think that each point $x$ as being the center of its own bin.
+* You can think of each point $x$ as being the center of its own bin.
 
 * The expectation of the box estimator at the point $x$ is  
 \begin{equation}
@@ -501,7 +502,7 @@ than those that are further away from $x$.
 
 ---
 
-* A kernel density estimator $\hat{f}_{h_{n}}(x)$ is defined as
+* A kernel density estimator $\hat{f}_{h_{n}}(x)$ of the density $f(x)$ is defined as
 \begin{equation}
 \hat{f}_{h_{n}}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) 
 (\#eq:kernel-density-formula)
@@ -514,7 +515,7 @@ than those that are further away from $x$.
 * The value of the bandwidth $h_{n}$ largely determines how "bumpy" the density estimate
 will appear.
 
-* The appearance and the statistical performance of $\hat{f}_{h_{n}}(x)$ depend much more on the value of $h_{n}$ than 
+* The appearance and the statistical performance of $\hat{f}_{h_{n}}(x)$ depend much more on the value of $h_{n}$ than on
 the choice of kernel function.
 
 ```{r, echo=FALSE}
@@ -526,7 +527,6 @@ plot(kidney.dens1, lwd=2, las=1, xlab="Age", main="Bandwidth = 1.5")
 plot(kidney.dens2, lwd=2, las=1, xlab="Age", main="Bandwidth = 9")
 ```
 
----
 
 * Kernel functions are usually chosen so that 
 \begin{equation}
@@ -548,7 +548,7 @@ which is symmetric around $0$.
 \begin{eqnarray}
 \textrm{Gaussian} :&& \quad  K(u) = \exp(-u^{2}/2)/\sqrt{2\pi} \nonumber \\
 \textrm{Epanechnikov} :&& \quad  K(u) = \tfrac{3}{4\sqrt{5}}(1 - \tfrac{1}{5} u^{2}) I(|u| < \sqrt{5}) \nonumber \\
-\textrm{biweight} :&& \quad  K(u) = \tfrac{15}{16\sqrt{7}}(1 - \tfrac{1}{7} u^{2})^{2} I(|u| < \sqrt{7}) \nonumber \\
+\textrm{biweight} :&& \quad  K(u) = \tfrac{15}{16\sqrt{7}}(1 - \tfrac{1}{7} u^{2})^{2} I(|u| < \sqrt{7}) \nonumber 
 \end{eqnarray}
 
 
@@ -725,7 +725,7 @@ following two things to happen:
 
 ---
 
-* The approximate mean integrated squared error (AMISE) is obtained by integrating
+* The approximate mean integrated squared error (AMISE) of the kernel density estimator is obtained by integrating
 the approximation \@ref(eq:asymp-mse-density) for MSE across $x$
 \begin{eqnarray}
 \textrm{AMISE}\{ \hat{f}_{h_{n}} \} &=& \frac{\kappa_{2}(K) }{n h_{n} }\int_{-\infty}^{\infty} f(x) dx + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f''(x)]^{2} dx \nonumber \\
@@ -750,14 +750,14 @@ h_{n}^{opt} = n^{-1/5} \Big( \int_{-\infty}^{\infty} [f''(x)]^{2} dx \Big)^{-1/5
 * For the case of a Gaussian kernel, 
 \begin{eqnarray}
 \kappa_{2}(K) &=& \frac{1}{2\pi}\int_{-\infty}^{\infty} e^{-u^{2}} du = \frac{1}{2\sqrt{\pi}}\int_{-\infty}^{\infty} \frac{\sqrt{2}}{\sqrt{2\pi}} e^{-u^{2}} du = \frac{1}{2\sqrt{\pi}} \nonumber \\
-\mu_{2}(K) &=& \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} u^{2}e^{-u^{2}/2} du = 1
+\mu_{2}(K) &=& \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} u^{2}e^{-u^{2}/2} du = 1  \nonumber
 \end{eqnarray}
 so that, in the case of a Gaussian kernel, the optimal bandwidth is given by
 \begin{equation}
-h_{n}^{opt} = n^{-1/5} (2\sqrt{\pi})^{-1/5} \Big( \int_{-\infty}^{\infty} [f''(x)]^{2} dx \Big)^{-1/5}
+h_{n}^{opt} = n^{-1/5} (2\sqrt{\pi})^{-1/5} \Big( \int_{-\infty}^{\infty} [f''(x)]^{2} dx \Big)^{-1/5} \nonumber
 \end{equation}
 
-* The optimal bandwidth $h_{n}^{opt}$ for a kernel density estimate depends on the unknown quantity
+* However, the optimal bandwidth $h_{n}^{opt}$ for a kernel density estimate depends on the unknown quantity
 \begin{equation}
 \int_{-\infty}^{\infty} [f''(x)]^{2} dx  \nonumber
 \end{equation}
@@ -773,12 +773,12 @@ $f(x)$ is the density of a $\textrm{Normal}(0, \sigma^{2})$ random variable.
 \int_{-\infty}^{\infty} [f''(x)]^{2} dx = \frac{3}{8\sqrt{\pi}\sigma^{5}} \nonumber 
 \end{equation}
 
-* If we use this assumption about $f''(x)$ for the case of a Gaussian kernel, the formula for the optimal bandwidth becomes
+* If we use this assumption about $f''(x)$ and assume a Gaussian kernel, the formula for the optimal bandwidth becomes
 bandwidth is
 \begin{equation}
 h_{n}^{opt} = n^{-1/5}(2\sqrt{\pi})^{-1/5}\Big( \frac{3}{8\sqrt{\pi}\sigma^{5}} \Big)^{-1/5}
 = \sigma n^{-1/5} \sigma \Big( \frac{4}{3} \Big)^{1/5}
-\approx 1.06 \sigma n^{-1/5}
+\approx 1.06 \sigma n^{-1/5}  \nonumber
 \end{equation}
 
 --- 
@@ -857,7 +857,7 @@ or some related criterion which also measures an expected discrepancy between $\
 
 ---
 
-* Our goal will be find a bandwidth that minimizes an estimate of $\textrm{MISE}(h)$ (an estimate which ignores the last term in \@ref(eq:mise-decomposition)),
+* Our goal will be to find a bandwidth that minimizes an estimate of $\textrm{MISE}(h)$ (an estimate which ignores the last term in \@ref(eq:mise-decomposition)),
 and this estimate will use a technique called leave-one-out **cross-validation**.
 
 * Regarding the first term in \@ref(eq:mise-decomposition), we can just estimate this expectation with
@@ -878,7 +878,7 @@ and this estimate will use a technique called leave-one-out **cross-validation**
 * We can construct an estimate of \@ref(eq:mise-decomposition) by first defining the 
 following "leave-one-out" estimate
 \begin{equation}
-\hat{f}_{h, -i}(x) = \frac{1}{(n-1)h}\sum_{j \neq i}  K\Big( \frac{x - X_{j}}{h} \Big) 
+\hat{f}_{h, -i}(x) = \frac{1}{(n-1)h}\sum_{j \neq i}  K\Big( \frac{x - X_{j}}{h} \Big)  \nonumber
 \end{equation}
 
 * In other words, $\hat{f}_{h, -i}(x)$ is a density estimate constructed from using 
@@ -979,11 +979,11 @@ h.grid[ which.min(CV.est) ]
 
 ### Likelihood Cross-Validation
 
-* An alternative criterion to use is the **Kullback-Leibler (KL) divergence**
-\begin{equation}
-\textrm{KL}(h) = \int \log \Big( \frac{ f(x) }{ \hat{f}_{h}(x) } \Big)  f(x) dx
-= -\int \log \{ \hat{f}_{h}(x) \}  f(x) dx + \int \log\{ f(x) \}f(x) dx
-\end{equation}
+* An alternative to MISE is the **Kullback-Leibler (KL) divergence**
+\begin{eqnarray}
+\textrm{KL}(h) &=& \int \log \Big( \frac{ f(x) }{ \hat{f}_{h}(x) } \Big)  f(x) dx  \nonumber \\
+&=& -\int \log \{ \hat{f}_{h}(x) \}  f(x) dx + \int \log\{ f(x) \}f(x) dx  \nonumber
+\end{eqnarray}
 
 * We only need to get an estimate of $\int \log \{ \hat{f}_{h}(x) \}  f(x) dx$
 because $\int \log\{ f(x) \}f(x) dx$ does not depend on $h$.
@@ -1077,7 +1077,7 @@ plot(galax.dens$x, galax.dens$y, main="Default Density Estimate for Galaxy Data"
 ```
 
 * The default in **R** is to estimate the density at 512 points. Thus, `galax.dens$x`
-and `galax.dens$y` should have length 512.
+and `galax.dens$y` should each have length 512.
 
 ---
 
@@ -1119,6 +1119,15 @@ galaxy.fn(33000)
 three rules for finding the bandwidth: (1) `bw = nrd`, (2) `bw=nrd0`, (3) `bw=ucv`. 
 Based on these plots, how many distinct "clusters" or "groups" would you say
 the galaxy observations fall into.
+
+* **Exercise 8.9** Consider a density estimate of the form
+\begin{equation}
+\tilde{f}(x) = \sum_{k=1}^{4} \pi_{k}\frac{1}{\sigma_{k}}K\Big( \frac{x - \mu_{k}}{\sigma_{k}} \Big), \nonumber
+\end{equation}
+where $\sigma_{k} > 0$ and the $\pi_{k}$ represent probabilities, that is, $\pi_{k} \geq 0$ with $\pi_{1} + \pi_{2} + \pi_{3} + \pi_{4} = 1$.
+Can you guess values for $\pi_{k}$, $\mu_{k}$, and $\sigma_{k}$ that fit the galaxy data well?
+Try finding the best values of $(\pi_{k}, \mu_{k}, \sigma_{k})$ by plotting $\tilde{f}(x)$
+next to the kernel density estimate returned by the `density` function in `R`.
 
 ---
 

@@ -360,8 +360,33 @@ between <span class="math inline">\(X_{i}\)</span> and <span class="math inline"
 <span class="math display">\[\begin{equation}
 \hat{\rho} = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X})(Y_{i} - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_{i} - \bar{X})^{2}}\sqrt{\sum_{i=1}^{n}(Y_{i} - \bar{Y})}} \nonumber
 \end{equation}\]</span></p></li>
-<li><p>Even such a relatively straightforward estimate has a pretty complicated formula for the standard error:</p></li>
-<li><p>The bootstrap allows to totally bypass deriving formulas for the standard error of an estimate.</p></li>
+<li><p>Even such a relatively straightforward estimate has a pretty complicated formula for the standard error if
+you use a multivariate delta method argument:
+<span class="math display" id="eq:rho-stderr">\[\begin{equation}
+\textrm{std.err}_{corr}
+= \Bigg\{ \frac{\hat{\rho}^{2}}{4n}\Bigg[ \frac{\hat{\mu}_{40}}{\hat{\mu}_{20}^{2}} + \frac{\hat{\mu}_{04}}{\hat{\mu}_{02}^{2}} + \frac{2\hat{\mu}_{22}}{\hat{\mu}_{20}\hat{\mu}_{02} } + \frac{4\hat{\mu}_{22}}{\hat{\mu}_{11}^{2}} - \frac{4\hat{\mu}_{31}}{\hat{\mu}_{11}\hat{\mu}_{20} } + - \frac{4\hat{\mu}_{13}}{\hat{\mu}_{11}\hat{\mu}_{02} } \Bigg] \Bigg\}^{1/2}
+\tag{9.2}
+\end{equation}\]</span>
+where
+<span class="math display">\[\begin{equation}
+\hat{\mu}_{hk} = \sum_{i=1}^{n}(X_{i} - \bar{X})^{h}(Y_{i} - \bar{Y})^{k} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Another popular approach for constructing a confidence interval is to use Fisher’s “z-transformation”
+<span class="math display" id="eq:rho-stderr-ztrans">\[\begin{equation}
+z = \frac{1}{2} \ln\Big( \frac{1 + \hat{\rho}}{1 - \hat{\rho}}  \Big)
+\tag{9.3}
+\end{equation}\]</span>
+where it is argued that <span class="math inline">\(z\)</span> has a roughly Normal distribution with mean
+<span class="math inline">\(\tfrac{1}{2}\ln\{ (1 + \rho)/(1 - \rho) \}\)</span> and standard deviation <span class="math inline">\(1/\sqrt{n - 3}\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The bootstrap allows to totally bypass the need to derive tedious formulas for the standard error such as
+<a href="bootstrap-main.html#eq:rho-stderr">(9.2)</a> or bypass the need to use clever transformations such as <a href="bootstrap-main.html#eq:rho-stderr-ztrans">(9.3)</a>.</p></li>
+<li><p>For many more complicated estimates deriving formulas such as <a href="bootstrap-main.html#eq:rho-stderr">(9.2)</a> or transformations such
+as <a href="bootstrap-main.html#eq:rho-stderr-ztrans">(9.3)</a> may not even be feasible.</p></li>
+<li><p>The bootstrap provides an automatic way of constructing confidence intervals. You only
+need to be able to compute the estimate of interest.</p></li>
 </ul>
 </div>
 <div id="description-of-the-bootstrap" class="section level2">

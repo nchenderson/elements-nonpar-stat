@@ -312,7 +312,7 @@ and <span class="math inline">\(f(x)\)</span> is related to the cumulative distr
 these parameters completely determine the form of <span class="math inline">\(f(x)\)</span>.</p></li>
 <li><p>For example, with a Gaussian distribution you only need to find <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^{2}\)</span> to
 determine the form of <span class="math inline">\(f(x)\)</span>.</p></li>
-<li><p>In a nonparametric approach to estimating, we will assume that our observations <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>
+<li><p>In a nonparametric approach to estimating a pdf, we will assume that our observations <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>
 are an independent identically distribution sample from a distribution with pdf <span class="math inline">\(f(x)\)</span>, but otherwise we will
 make few assumptions about the particular form of <span class="math inline">\(f(x)\)</span>.</p></li>
 </ul>
@@ -328,12 +328,11 @@ Figure 8.1: Histogram of ages from kidney function data. Data retrieved from: <a
 <div id="definition-5" class="section level3">
 <h3><span class="header-section-number">8.2.1</span> Definition</h3>
 <ul>
-<li><p>While histograms are often thought of as maily a visualization tool,
+<li><p>While histograms are often thought of as mainly a visualization tool,
 a histogram can also be thought of as an estimate of the density <span class="math inline">\(f(x)\)</span>.</p></li>
 <li><p>To construct a histogram, you first need to define a series
 of “bins”: <span class="math inline">\(B_{1}, \ldots, B_{D_{n}}\)</span>.</p></li>
-<li><p>Each bin is a left-closed interval. The bins are usually
-assumed to have the form <span class="math inline">\(B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n})\)</span>:
+<li><p>Each bin is a left-closed interval. That is, the bins have the form <span class="math inline">\(B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n})\)</span>:
 <span class="math display">\[\begin{eqnarray}
 B_{1} &amp;=&amp; [x_{0}, x_{0} + h_{n}) \nonumber \\
 B_{2} &amp;=&amp; [x_{0} + h_{n}, x_{0} + 2h_{n}) \nonumber \\
@@ -346,12 +345,12 @@ B_{D_{n}} &amp;=&amp; [x_{0} + (D_{n}-1)h_{n}, x_{0} + D_{n}h_{n}) \nonumber
 <li><p>Histograms are based on the counts <span class="math inline">\(n_{k}\)</span> of observations that fall into each bin:
 <span class="math display">\[\begin{eqnarray}
 n_{k} &amp;=&amp; \# \text{ of observations falling into the $k^{th}$ bin }  \nonumber \\
-&amp;=&amp; \sum_{i=1}^{n} I( x_{0} + (k-1)h_{n} \leq X_{i} &lt; x_{0} + kh_{n}  )
+&amp;=&amp; \sum_{i=1}^{n} I( x_{0} + (k-1)h_{n} \leq X_{i} &lt; x_{0} + kh_{n}  ) \nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>From the counts <span class="math inline">\(n_{k}\)</span>, the histogram estimate of the density at a point <span class="math inline">\(x\)</span> in
 the <span class="math inline">\(k^{th}\)</span> bin (that is if <span class="math inline">\(x_{0} + (k-1)h_{n} \leq x &lt; x_{0} + kh_{n}\)</span>), is defined as
 <span class="math display" id="eq:hist-density">\[\begin{equation}
-\hat{f}_{h_{n}}^{H}(x) = \frac{n_{k}}{nh_{n}}  
+\hat{f}_{h_{n}}^{H}(x) = \frac{n_{k}}{nh_{n}}   \nonumber
 \tag{8.1}
 \end{equation}\]</span></p></li>
 <li><p><strong>Note:</strong> Histogram plots often show the actual bin counts <span class="math inline">\(n_{k}\)</span> rather than
@@ -360,7 +359,7 @@ the values of <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span>.</p></
 <hr />
 <ul>
 <li><p>To see the motivation for the histogram estimate, notice that if we choose a
-relatively small value <span class="math inline">\(h_{n} &gt; 0\)</span>
+relatively small value of <span class="math inline">\(h_{n} &gt; 0\)</span>
 <span class="math display">\[\begin{equation}
 P(a &lt; X_{i} &lt; a + h_{n}) = \int_{a}^{a + h_{n}} f(t) dt \approx h_{n}f(c), \nonumber
 \end{equation}\]</span>
@@ -496,6 +495,7 @@ B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n}) \nonumber
 <li><p>For a point <span class="math inline">\(x \in B_{k}\)</span>, that “belongs” to the <span class="math inline">\(k^{th}\)</span> bin, the histogram density estimate is
 <span class="math display">\[\begin{equation}
 \hat{f}_{n}^{H}(x) = \frac{n_{k}}{nh_{n}}, \quad \textrm{ where } n_{k} = \textrm{ number of observations falling into bin } B_{k}
+\nonumber
 \end{equation}\]</span></p></li>
 <li><p>To better examine what happens as <span class="math inline">\(n\)</span> changes, we will define the function <span class="math inline">\(A_{h_{n}, x_{0}}(x)\)</span> as the function
 which returns the index of the interval to which <span class="math inline">\(x\)</span> belongs.</p></li>
@@ -525,7 +525,7 @@ n_{A_{h_{n}}(x)} \sim \textrm{Binomial}\{ n, p_{h_{n}, x_{0}}(x) \} \nonumber
 <li><p>The success probability <span class="math inline">\(p_{h_{n}, x_{0}}(x)\)</span> is defined as
 <span class="math display">\[\begin{eqnarray}
 p_{h_{n}, x_{0}}(x) &amp;=&amp; P\Big\{ X_{i} \textrm{ falls into bin } B_{A_{h_{n}, x_{0}}}(x) \Big\}   \nonumber \\
-&amp;=&amp; \int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt.
+&amp;=&amp; \int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt. \nonumber
 \end{eqnarray}\]</span></p></li>
 </ul>
 <hr />
@@ -582,38 +582,39 @@ bin <span class="math inline">\(x_{0} + (A_{h_{n}}(x) - 1)h_{n}\)</span> will al
 <li><p>Note that large bin widths will reduce the variance of <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span>.</p></li>
 </ul>
 </div>
-<div id="pointwise-mean-squared-error" class="section level4">
-<h4><span class="header-section-number">8.2.3.3</span> Pointwise Mean Squared Error</h4>
+<div id="pointwise-approximate-mean-squared-error" class="section level4">
+<h4><span class="header-section-number">8.2.3.3</span> Pointwise Approximate Mean Squared Error</h4>
 <ul>
-<li><p>Using <a href="density-estimation.html#eq:approx-var-hist">(8.3)</a> and <a href="density-estimation.html#eq:approx-bias-hist">(8.2)</a>, the approximate mean-squared error of the histogram density estimate
+<li><p>Using <a href="density-estimation.html#eq:approx-var-hist">(8.3)</a> and <a href="density-estimation.html#eq:approx-bias-hist">(8.2)</a>, the approximate mean-squared error (AMSE) of the histogram density estimate
 at a particular point <span class="math inline">\(x\)</span> is given by
 <span class="math display" id="eq:mse-hist-decomp">\[\begin{eqnarray}
 \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
 &amp;=&amp; E\Big( \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}  \Big) \nonumber \\
 &amp;=&amp; \Big( \textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} \Big)^{2} + \textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \} \nonumber \\
 &amp;\approx&amp;  \frac{h_{n}^{2}[f&#39;(x)]^{2} }{4} - h_{n}f&#39;(x)[ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ]  \nonumber \\
-&amp;+&amp; [f&#39;(x)]^{2}\Big( x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} \Big)^{2} + \frac{f(x)}{n h_{n} }
+&amp;+&amp; [f&#39;(x)]^{2}\Big( x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} \Big)^{2} + \frac{f(x)}{n h_{n} } \nonumber \\
+&amp;=&amp; \textrm{AMSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
 \tag{8.4}
 \end{eqnarray}\]</span></p></li>
 <li><p>For any approach to bin width selection, we should have <span class="math inline">\(h_{n} \longrightarrow 0\)</span> and
 <span class="math inline">\(nh_{n} \longrightarrow \infty\)</span>.</p></li>
 <li><p>This MSE approximation depends on a particular choice of <span class="math inline">\(x\)</span>.</p></li>
 <li><p>Difficult to use <a href="density-estimation.html#eq:mse-hist-decomp">(8.4)</a> as a criterion for selecting the bandwidth
-because the best choice of <span class="math inline">\(h_{n}\)</span> will often depend on your choice of <span class="math inline">\(x\)</span>.</p></li>
+because the best choice of <span class="math inline">\(h_{n}\)</span> will usually depend on your choice of <span class="math inline">\(x\)</span>.</p></li>
 </ul>
 </div>
 <div id="integrated-mean-squared-error-and-optimal-histogram-bin-width" class="section level4">
 <h4><span class="header-section-number">8.2.3.4</span> Integrated Mean Squared Error and Optimal Histogram Bin Width</h4>
 <ul>
-<li><p>Using mean integrated squared error (MISE) allows us to find an optimal bin width
+<li><p>Using the approximate mean integrated squared error (AMISE) allows us to find an optimal bin width
 that does not depend on a particular choice of <span class="math inline">\(x\)</span>.</p></li>
-<li><p>The MISE is defined as
+<li><p>The AMISE is defined as
 <span class="math display">\[\begin{eqnarray}
-\textrm{MISE}\{ \hat{f}_{h_{n}}^{H} \} 
+\textrm{AMISE}\{ \hat{f}_{h_{n}}^{H} \} 
 &amp;=&amp; E\Big\{ \int_{-\infty}^{\infty} \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}dx   \Big\} \nonumber \\
 &amp;=&amp; \int_{-\infty}^{\infty} \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} dx \nonumber
 \end{eqnarray}\]</span>
-Using the previously derived approximation <a href="density-estimation.html#eq:mse-hist-decomp">(8.4)</a> for the MSE, it can be shown that
+Using the previously derived approximation <a href="density-estimation.html#eq:mse-hist-decomp">(8.4)</a> for the AMSE, it can be shown that
 <span class="math display" id="eq:mise-formula">\[\begin{eqnarray}
 \textrm{MISE}\{ \hat{f}_{h_{n}}^{H} \} \approx
 \frac{1}{nh_{n}} + \frac{h_{n}^{2}}{12}\int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx  
@@ -639,17 +640,17 @@ h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx}  \Big
 <li>We will mention three rules for selecting the bin width of a histogram.
 <ul>
 <li>Scott rule: (based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a>)</li>
-<li>Friedman and Diaconis rule (also based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a>)</li>
+<li>Friedman and Diaconis (FD) rule (also based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a>)</li>
 <li>Sturges rule: (based on wanting the histogram to look Gaussian when the data are in fact Gaussian-distributed)</li>
 </ul></li>
 </ul>
 <hr />
 <ul>
-<li><p>Both Scott and the FD rule are based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a>.</p></li>
+<li><p>Both the Scott and the FD rule are based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a>.</p></li>
 <li><p>The main problem with using the formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a> is the presence of <span class="math inline">\(\int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx\)</span>.</p></li>
 <li><p><strong>Solution:</strong> See what this quantity looks like if we assume that <span class="math inline">\(f(x)\)</span> corresponds
-to a <span class="math inline">\(N(\mu, \sigma^{2})\)</span> density.</p></li>
-<li><p>With this assumption,
+to a <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span> density.</p></li>
+<li><p>With the assumption that <span class="math inline">\(f(x) = \textrm{Normal}(\mu, \sigma^{2})\)</span>:
 <span class="math display">\[\begin{equation}
 h_{n}^{opt} = 3.5 \sigma n^{-1/3}  \nonumber
 \end{equation}\]</span></p></li>
@@ -677,7 +678,7 @@ intervals.</p></li>
 \end{eqnarray}\]</span></p></li>
 <li><p>In other words, for each <span class="math inline">\(x\)</span> we are forming a bin of width <span class="math inline">\(2h_{n}\)</span> around <span class="math inline">\(x\)</span>, and we are counting
 the number of observations that fall in this bin.</p></li>
-<li><p>You can think that each point <span class="math inline">\(x\)</span> as being the center of its own bin.</p></li>
+<li><p>You can think of each point <span class="math inline">\(x\)</span> as being the center of its own bin.</p></li>
 <li><p>The expectation of the box estimator at the point <span class="math inline">\(x\)</span> is<br />
 <span class="math display">\[\begin{equation}
 E \{ \hat{f}_{h_{n}}^{B}(x) \}
@@ -744,7 +745,7 @@ than those that are further away from <span class="math inline">\(x\)</span>.</p
 </ul>
 <hr />
 <ul>
-<li><p>A kernel density estimator <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is defined as
+<li><p>A kernel density estimator <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> of the density <span class="math inline">\(f(x)\)</span> is defined as
 <span class="math display" id="eq:kernel-density-formula">\[\begin{equation}
 \hat{f}_{h_{n}}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) 
 \tag{8.8}
@@ -753,11 +754,10 @@ than those that are further away from <span class="math inline">\(x\)</span>.</p
 <li><p>The scalar term <span class="math inline">\(h_{n} &gt; 0\)</span> is called the <strong>bandwidth</strong>.</p></li>
 <li><p>The value of the bandwidth <span class="math inline">\(h_{n}\)</span> largely determines how “bumpy” the density estimate
 will appear.</p></li>
-<li><p>The appearance and the statistical performance of <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> depend much more on the value of <span class="math inline">\(h_{n}\)</span> than
+<li><p>The appearance and the statistical performance of <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> depend much more on the value of <span class="math inline">\(h_{n}\)</span> than on
 the choice of kernel function.</p></li>
 </ul>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<hr />
 <ul>
 <li><p>Kernel functions are usually chosen so that
 <span class="math display">\[\begin{equation}
@@ -777,7 +777,7 @@ which is symmetric around <span class="math inline">\(0\)</span>.</p></li>
 <span class="math display">\[\begin{eqnarray}
 \textrm{Gaussian} :&amp;&amp; \quad  K(u) = \exp(-u^{2}/2)/\sqrt{2\pi} \nonumber \\
 \textrm{Epanechnikov} :&amp;&amp; \quad  K(u) = \tfrac{3}{4\sqrt{5}}(1 - \tfrac{1}{5} u^{2}) I(|u| &lt; \sqrt{5}) \nonumber \\
-\textrm{biweight} :&amp;&amp; \quad  K(u) = \tfrac{15}{16\sqrt{7}}(1 - \tfrac{1}{7} u^{2})^{2} I(|u| &lt; \sqrt{7}) \nonumber \\
+\textrm{biweight} :&amp;&amp; \quad  K(u) = \tfrac{15}{16\sqrt{7}}(1 - \tfrac{1}{7} u^{2})^{2} I(|u| &lt; \sqrt{7}) \nonumber 
 \end{eqnarray}\]</span></p></li>
 </ul>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
@@ -894,7 +894,7 @@ following two things to happen:
 </ul>
 <hr />
 <ul>
-<li>The approximate mean integrated squared error (AMISE) is obtained by integrating
+<li>The approximate mean integrated squared error (AMISE) of the kernel density estimator is obtained by integrating
 the approximation <a href="density-estimation.html#eq:asymp-mse-density">(8.11)</a> for MSE across <span class="math inline">\(x\)</span>
 <span class="math display" id="eq:amise-density">\[\begin{eqnarray}
 \textrm{AMISE}\{ \hat{f}_{h_{n}} \} &amp;=&amp; \frac{\kappa_{2}(K) }{n h_{n} }\int_{-\infty}^{\infty} f(x) dx + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \nonumber \\
@@ -918,13 +918,13 @@ h_{n}^{opt} = n^{-1/5} \Big( \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \Bi
 <li><p>For the case of a Gaussian kernel,
 <span class="math display">\[\begin{eqnarray}
 \kappa_{2}(K) &amp;=&amp; \frac{1}{2\pi}\int_{-\infty}^{\infty} e^{-u^{2}} du = \frac{1}{2\sqrt{\pi}}\int_{-\infty}^{\infty} \frac{\sqrt{2}}{\sqrt{2\pi}} e^{-u^{2}} du = \frac{1}{2\sqrt{\pi}} \nonumber \\
-\mu_{2}(K) &amp;=&amp; \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} u^{2}e^{-u^{2}/2} du = 1
+\mu_{2}(K) &amp;=&amp; \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} u^{2}e^{-u^{2}/2} du = 1  \nonumber
 \end{eqnarray}\]</span>
 so that, in the case of a Gaussian kernel, the optimal bandwidth is given by
 <span class="math display">\[\begin{equation}
-h_{n}^{opt} = n^{-1/5} (2\sqrt{\pi})^{-1/5} \Big( \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \Big)^{-1/5}
+h_{n}^{opt} = n^{-1/5} (2\sqrt{\pi})^{-1/5} \Big( \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \Big)^{-1/5} \nonumber
 \end{equation}\]</span></p></li>
-<li><p>The optimal bandwidth <span class="math inline">\(h_{n}^{opt}\)</span> for a kernel density estimate depends on the unknown quantity
+<li><p>However, the optimal bandwidth <span class="math inline">\(h_{n}^{opt}\)</span> for a kernel density estimate depends on the unknown quantity
 <span class="math display">\[\begin{equation}
 \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx  \nonumber
 \end{equation}\]</span></p></li>
@@ -938,12 +938,12 @@ of a kernel density estimate is to use the value of <span class="math inline">\(
 <span class="math display">\[\begin{equation}
 \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx = \frac{3}{8\sqrt{\pi}\sigma^{5}} \nonumber 
 \end{equation}\]</span></p></li>
-<li><p>If we use this assumption about <span class="math inline">\(f&#39;&#39;(x)\)</span> for the case of a Gaussian kernel, the formula for the optimal bandwidth becomes
+<li><p>If we use this assumption about <span class="math inline">\(f&#39;&#39;(x)\)</span> and assume a Gaussian kernel, the formula for the optimal bandwidth becomes
 bandwidth is
 <span class="math display">\[\begin{equation}
 h_{n}^{opt} = n^{-1/5}(2\sqrt{\pi})^{-1/5}\Big( \frac{3}{8\sqrt{\pi}\sigma^{5}} \Big)^{-1/5}
 = \sigma n^{-1/5} \sigma \Big( \frac{4}{3} \Big)^{1/5}
-\approx 1.06 \sigma n^{-1/5}
+\approx 1.06 \sigma n^{-1/5}  \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
@@ -1013,7 +1013,7 @@ or some related criterion which also measures an expected discrepancy between <s
 </ul>
 <hr />
 <ul>
-<li><p>Our goal will be find a bandwidth that minimizes an estimate of <span class="math inline">\(\textrm{MISE}(h)\)</span> (an estimate which ignores the last term in <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a>),
+<li><p>Our goal will be to find a bandwidth that minimizes an estimate of <span class="math inline">\(\textrm{MISE}(h)\)</span> (an estimate which ignores the last term in <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a>),
 and this estimate will use a technique called leave-one-out <strong>cross-validation</strong>.</p></li>
 <li><p>Regarding the first term in <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a>, we can just estimate this expectation with
 <span class="math display">\[\begin{equation}
@@ -1031,7 +1031,7 @@ and this estimate will use a technique called leave-one-out <strong>cross-valida
 <li><p>We can construct an estimate of <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a> by first defining the
 following “leave-one-out” estimate
 <span class="math display">\[\begin{equation}
-\hat{f}_{h, -i}(x) = \frac{1}{(n-1)h}\sum_{j \neq i}  K\Big( \frac{x - X_{j}}{h} \Big) 
+\hat{f}_{h, -i}(x) = \frac{1}{(n-1)h}\sum_{j \neq i}  K\Big( \frac{x - X_{j}}{h} \Big)  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>In other words, <span class="math inline">\(\hat{f}_{h, -i}(x)\)</span> is a density estimate constructed from using
 bandwidth <span class="math inline">\(h\)</span> and all the data except for the <span class="math inline">\(i^{th}\)</span> observation.</p></li>
@@ -1123,11 +1123,11 @@ From the graph, it appears that a bandwidth of roughly <span class="math inline"
 <div id="likelihood-cross-validation" class="section level3">
 <h3><span class="header-section-number">8.5.3</span> Likelihood Cross-Validation</h3>
 <ul>
-<li><p>An alternative criterion to use is the <strong>Kullback-Leibler (KL) divergence</strong>
-<span class="math display">\[\begin{equation}
-\textrm{KL}(h) = \int \log \Big( \frac{ f(x) }{ \hat{f}_{h}(x) } \Big)  f(x) dx
-= -\int \log \{ \hat{f}_{h}(x) \}  f(x) dx + \int \log\{ f(x) \}f(x) dx
-\end{equation}\]</span></p></li>
+<li><p>An alternative to MISE is the <strong>Kullback-Leibler (KL) divergence</strong>
+<span class="math display">\[\begin{eqnarray}
+\textrm{KL}(h) &amp;=&amp; \int \log \Big( \frac{ f(x) }{ \hat{f}_{h}(x) } \Big)  f(x) dx  \nonumber \\
+&amp;=&amp; -\int \log \{ \hat{f}_{h}(x) \}  f(x) dx + \int \log\{ f(x) \}f(x) dx  \nonumber
+\end{eqnarray}\]</span></p></li>
 <li><p>We only need to get an estimate of <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \} f(x) dx\)</span>
 because <span class="math inline">\(\int \log\{ f(x) \}f(x) dx\)</span> does not depend on <span class="math inline">\(h\)</span>.</p></li>
 <li><p>We can use the same approach as we did for integrated squared error cross-validation
@@ -1209,7 +1209,7 @@ The first few observations of the <code>galaxies</code> dataset look like:</li>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <ul>
 <li>The default in <strong>R</strong> is to estimate the density at 512 points. Thus, <code>galax.dens$x</code>
-and <code>galax.dens$y</code> should have length 512.</li>
+and <code>galax.dens$y</code> should each have length 512.</li>
 </ul>
 <hr />
 <ul>
@@ -1242,10 +1242,18 @@ and <span class="math inline">\(33000\)</span>. This could be done with the foll
 <pre><code>## [1] 1.004542e-05</code></pre>
 <hr />
 <ul>
-<li><strong>Exercise 8.8</strong> Plot the density estimate for the galaxy dataset using the following
+<li><p><strong>Exercise 8.8</strong> Plot the density estimate for the galaxy dataset using the following
 three rules for finding the bandwidth: (1) <code>bw = nrd</code>, (2) <code>bw=nrd0</code>, (3) <code>bw=ucv</code>.
 Based on these plots, how many distinct “clusters” or “groups” would you say
-the galaxy observations fall into.</li>
+the galaxy observations fall into.</p></li>
+<li><p><strong>Exercise 8.9</strong> Consider a density estimate of the form
+<span class="math display">\[\begin{equation}
+\tilde{f}(x) = \sum_{k=1}^{4} \pi_{k}\frac{1}{\sigma_{k}}K\Big( \frac{x - \mu_{k}}{\sigma_{k}} \Big), \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(\sigma_{k} &gt; 0\)</span> and the <span class="math inline">\(\pi_{k}\)</span> represent probabilities, that is, <span class="math inline">\(\pi_{k} \geq 0\)</span> with <span class="math inline">\(\pi_{1} + \pi_{2} + \pi_{3} + \pi_{4} = 1\)</span>.
+Can you guess values for <span class="math inline">\(\pi_{k}\)</span>, <span class="math inline">\(\mu_{k}\)</span>, and <span class="math inline">\(\sigma_{k}\)</span> that fit the galaxy data well?
+Try finding the best values of <span class="math inline">\((\pi_{k}, \mu_{k}, \sigma_{k})\)</span> by plotting <span class="math inline">\(\tilde{f}(x)\)</span>
+next to the kernel density estimate returned by the <code>density</code> function in <code>R</code>.</p></li>
 </ul>
 <hr />
 </div>
