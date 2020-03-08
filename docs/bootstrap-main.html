@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-06" />
+<meta name="date" content="2020-03-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -307,7 +307,7 @@ and constructing confidence intervals.</li>
 </ul>
 <p><strong>Why use the bootstrap?</strong></p>
 <ol style="list-style-type: decimal">
-<li>To find better standard errors and/or confidence intervals when standard approximations do not work very well.</li>
+<li>To find better standard errors and/or confidence intervals when the standard approximations do not work very well.</li>
 <li>To find standard errors and/or confidence intervals when you have no idea how to compute reasonable standard errors.</li>
 </ol>
 <hr />
@@ -321,9 +321,10 @@ meaning that <span class="math inline">\(E(X_{i}) = \mu\)</span> and <span class
 \sqrt{n}\Big( e^{\bar{X}} - e^{\mu} \Big) \longrightarrow \textrm{Normal}(0, \sigma^{2}e^{2\mu}) \nonumber
 \end{equation}\]</span>
 so that we can assume <span class="math inline">\(e^{\bar{X}}\)</span> has a roughly Normal distribution with mean <span class="math inline">\(e^{\mu}\)</span>
-and standard deviation <span class="math inline">\(\sigma e^{\mu}/\sqrt{n}\)</span>.</p></li>
+and standard deviation <span class="math inline">\(\sigma e^{\mu}/\sqrt{n}\)</span>. This approximation is based on
+a Central Limit Theorem and “delta method” argument.</p></li>
 <li><p>Using this Normal approximation for <span class="math inline">\(e^{\bar{X}}\)</span>, the <span class="math inline">\(95\%\)</span> confidence interval for
-<span class="math inline">\(e^{\mu}\)</span> would then be
+<span class="math inline">\(e^{\mu}\)</span> is
 <span class="math display" id="eq:normal-approx-emu">\[\begin{equation}
 \Big[ e^{\bar{X}} - 1.96 \times \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}},
 e^{\bar{X}} + 1.96 \times \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}}
@@ -352,6 +353,16 @@ Normal approximation <a href="bootstrap-main.html#eq:normal-approx-emu">(9.1)</a
 intervals which does not depend on parametric approximations such as <a href="bootstrap-main.html#eq:normal-approx-emu">(9.1)</a>.</p></li>
 </ul>
 <hr />
+<p><strong>Example: Inference for the Correlation</strong></p>
+<ul>
+<li><p>The sample correlation <span class="math inline">\(\hat{\rho}\)</span> which estimates the correlation <span class="math inline">\(\rho = \textrm{Corr}(X_{i}, Y_{i})\)</span>
+between <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{i}\)</span> is defined as
+<span class="math display">\[\begin{equation}
+\hat{\rho} = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X})(Y_{i} - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_{i} - \bar{X})^{2}}\sqrt{\sum_{i=1}^{n}(Y_{i} - \bar{Y})}} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Even such a relatively straightforward estimate has a pretty complicated formula for the standard error:</p></li>
+<li><p>The bootstrap allows to totally bypass deriving formulas for the standard error of an estimate.</p></li>
+</ul>
 </div>
 <div id="description-of-the-bootstrap" class="section level2">
 <h2><span class="header-section-number">9.2</span> Description of the Bootstrap</h2>
@@ -367,14 +378,22 @@ intervals which does not depend on parametric approximations such as <a href="bo
 <span class="math display">\[\begin{equation}
 T_{n} = h\Big( X_{1}, \ldots, X_{n}   \Big)  \nonumber
 \end{equation}\]</span></p></li>
-<li><p>Suppose we want to estimate the standard deviation of <span class="math inline">\(T_{n}\)</span>. The <strong>standard error</strong>
-is the standard deviation of <span class="math inline">\(T_{n}\)</span>.</p></li>
-<li><p>The bootstrap will estimate the variance of <span class="math inline">\(T_{n}\)</span> by repeatedly subsampling from
+<li><p>Suppose we want to estimate the standard deviation of <span class="math inline">\(T_{n}\)</span>.</p></li>
+<li><p>An estimate of the standard deviation of <span class="math inline">\(T_{n}\)</span> is referred to as the <strong>standard error</strong>.</p></li>
+</ul>
+<p>*Confidence intervals are often based on subtracting or adding the standard error,
+e.g.
+<span class="math display">\[\begin{equation}
+CI = T_{n} \pm z_{\alpha/2} \times \textrm{standard error}  \nonumber 
+\end{equation}\]</span></p>
+<ul>
+<li><p>The bootstrap estimates the standard deviation of <span class="math inline">\(T_{n}\)</span> by repeatedly subsampling from
 the original data and computing the value of the statistic <span class="math inline">\(T_{n}\)</span> on each subsample.</p></li>
 <li><p>More generally, we can use the bootstrap not just to find the variance of <span class="math inline">\(T_{n}\)</span>
 but to characterize the distribution of <span class="math inline">\(T_{n}\)</span>.</p></li>
 </ul>
 <hr />
+<p><strong>The Bootstrap Procedure</strong></p>
 <ul>
 <li>In our description of the bootstrap, we will assume that we have the following ingredients:
 <ul>
@@ -405,6 +424,37 @@ se_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} 
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
+<ul>
+<li><p>The <strong>normal bootstrap standard error confidence interval</strong> is defined as
+<span class="math display">\[\begin{equation}
+\Big[ T_{n} - z_{\alpha/2} se_{boot}, T_{n} + z_{\alpha/2}se_{boot} \Big] \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The <strong>bootstrap percentile confidence interval</strong> uses the percentiles of the
+boostrap replications <span class="math inline">\(T_{n,1}^{*}, \ldots, T_{n,R}^{*}\)</span> to form a confidence interval.</p></li>
+<li><p>The bootstrap <span class="math inline">\(100 \times \alpha/2\)</span> and <span class="math inline">\(100 \times (1 - \alpha/2)\)</span> percentiles are roughly defined as
+<span class="math display">\[\begin{eqnarray}
+T_{[\alpha/2]}^{boot} &amp;=&amp; \textrm{the point } t^{*} \textrm{ such that } 100\alpha/2 \textrm{ of the bootstrap replications are less than } t^{*} \nonumber \\
+T_{1 - [\alpha/2]}^{boot} &amp;=&amp; \textrm{the point } t^{*} \textrm{ such that } 100\alpha/2 \textrm{ of the bootstrap replications are less than } t^{*} \nonumber 
+\end{eqnarray}\]</span></p></li>
+<li><p>The level <span class="math inline">\(100 \times (1 - \alpha) \%\)</span> level boostrap percentile confidence interval
+is then
+<span class="math display">\[\begin{equation}
+\Big[ T_{[\alpha/2]}^{boot}, T_{[1 - \alpha/2]}^{boot} \Big]  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>More precisely, the bootstrap percentiles are obtained by looking at the inverse of the estimated cdf of <span class="math inline">\(T_{n}\)</span>
+<span class="math display">\[\begin{equation}
+T_{[\alpha/2]}^{boot} = \hat{G}_{n}^{*, -1}(\alpha/2)  \qquad  T_{[1 - \alpha/2]}^{boot} = \hat{G}_{n}^{*, -1}(1 - \alpha/2) \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The bootstrap approach for computing standard errors and confidence intervals
+is very appealing due to the fact that it is <strong>automatic</strong>.</p></li>
+<li><p>That is, we do not expend any effort deriving formulas for the variance of <span class="math inline">\(T_{n}\)</span>
+and/or making asymptotic arguments for the distribution of <span class="math inline">\(T_{n}\)</span>.</p></li>
+<li><p>We only need to be able to compute <span class="math inline">\(T_{n}\)</span> many times, and the bootstrap procedure
+will automatically produce a confidence interval for us.</p></li>
+</ul>
 <div id="example-confidence-intervals-for-the-rate-parameter-of-an-exponential-distribution" class="section level3">
 <h3><span class="header-section-number">9.2.1</span> Example: Confidence Intervals for the Rate Parameter of an Exponential Distribution</h3>
 <ul>
@@ -437,8 +487,8 @@ and standard deviation <span class="math inline">\(\bar{X}/\sqrt{n}\)</span>.</p
 <ul>
 <li><p>Let’s do a small simulation to see how the Normal approximation confidence interval compares with
 bootstrap-based confidence intervals.</p></li>
-<li><p>We will compare the Normal-approximation confidence interval with both the standard-error-based bootstrap
-confidence interval and the quantile-based bootstrap confidence interval.</p></li>
+<li><p>We will compare the Normal-approximation confidence interval with both the standard error bootstrap
+confidence interval and the percentile bootstrap confidence interval.</p></li>
 </ul>
 <div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb155-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">50</span>, <span class="dt">rate=</span><span class="dv">2</span>) <span class="co">## data</span></a>
 <a class="sourceLine" id="cb155-2" data-line-number="2">R &lt;-<span class="st"> </span><span class="dv">500</span>   <span class="co">## number of bootstrap replications</span></a>
@@ -446,7 +496,7 @@ confidence interval and the quantile-based bootstrap confidence interval.</p></l
 <a class="sourceLine" id="cb155-4" data-line-number="4"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R) {</a>
 <a class="sourceLine" id="cb155-5" data-line-number="5">   boot.samp &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>, <span class="dt">size=</span><span class="dv">50</span>, <span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb155-6" data-line-number="6">   xx.boot &lt;-<span class="st"> </span>xx[boot.samp]   <span class="co">## this is the bootstrap sample</span></a>
-<a class="sourceLine" id="cb155-7" data-line-number="7">   boot.mean[k] &lt;-<span class="st"> </span><span class="kw">mean</span>(xx.boot)  <span class="co">## compute mean of bootstrap sample</span></a>
+<a class="sourceLine" id="cb155-7" data-line-number="7">   boot.mean[k] &lt;-<span class="st"> </span><span class="kw">mean</span>(xx.boot)  <span class="co">## this is the kth bootstrap replication</span></a>
 <a class="sourceLine" id="cb155-8" data-line-number="8">}</a></code></pre></div>
 <div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb156-1" data-line-number="1">par.ci &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(xx) <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">mean</span>(xx)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">50</span>), <span class="kw">mean</span>(xx) <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">mean</span>(xx)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">50</span>))</a>
 <a class="sourceLine" id="cb156-2" data-line-number="2">boot.ci.sd &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(xx) <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(boot.mean), <span class="kw">mean</span>(xx) <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(boot.mean))</a>
@@ -457,12 +507,12 @@ confidence interval and the quantile-based bootstrap confidence interval.</p></l
 <div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb157-1" data-line-number="1"><span class="kw">round</span>(par.ci, <span class="dv">2</span>)</a></code></pre></div>
 <pre><code>## [1] 0.31 0.54</code></pre>
 <ul>
-<li>The standard-error based boostrap confidence interval is</li>
+<li>The standard error boostrap confidence interval is</li>
 </ul>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb159-1" data-line-number="1"><span class="kw">round</span>(boot.ci.sd, <span class="dv">2</span>)</a></code></pre></div>
 <pre><code>## [1] 0.32 0.52</code></pre>
 <ul>
-<li>The quantile-based bootstrap confidence interval</li>
+<li>The percentile bootstrap confidence interval</li>
 </ul>
 <div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb161-1" data-line-number="1"><span class="kw">round</span>(boot.ci.quant, <span class="dv">2</span>)</a></code></pre></div>
 <pre><code>##  2.5% 97.5% 

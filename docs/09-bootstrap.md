@@ -9,7 +9,7 @@ and constructing confidence intervals.
 
 **Why use the bootstrap?**
 
-1. To find better standard errors and/or confidence intervals when standard approximations do not work very well.
+1. To find better standard errors and/or confidence intervals when the standard approximations do not work very well.
 1. To find standard errors and/or confidence intervals when you have no idea how to compute reasonable standard errors.
 
 
@@ -27,10 +27,11 @@ meaning that $E(X_{i}) = \mu$ and $\textrm{Var}(X_{i}) = \sigma^{2} = s^{2}\pi^{
 \sqrt{n}\Big( e^{\bar{X}} - e^{\mu} \Big) \longrightarrow \textrm{Normal}(0, \sigma^{2}e^{2\mu}) \nonumber
 \end{equation}
 so that we can assume $e^{\bar{X}}$ has a roughly Normal distribution with mean $e^{\mu}$ 
-and standard deviation $\sigma e^{\mu}/\sqrt{n}$.
+and standard deviation $\sigma e^{\mu}/\sqrt{n}$. This approximation is based on 
+a Central Limit Theorem and "delta method" argument.
 
 * Using this Normal approximation for $e^{\bar{X}}$, the $95\%$ confidence interval for
-$e^{\mu}$ would then be
+$e^{\mu}$ is
 \begin{equation}
 \Big[ e^{\bar{X}} - 1.96 \times \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}},
 e^{\bar{X}} + 1.96 \times \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}}
@@ -62,6 +63,19 @@ intervals which does not depend on parametric approximations such as \@ref(eq:no
 
 ---
 
+**Example: Inference for the Correlation**
+
+* The sample correlation $\hat{\rho}$ which estimates the correlation $\rho = \textrm{Corr}(X_{i}, Y_{i})$
+between $X_{i}$ and $Y_{i}$ is defined as
+\begin{equation}
+\hat{\rho} = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X})(Y_{i} - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_{i} - \bar{X})^{2}}\sqrt{\sum_{i=1}^{n}(Y_{i} - \bar{Y})}} \nonumber
+\end{equation}
+
+* Even such a relatively straightforward estimate has a pretty complicated formula for the standard error:
+
+* The bootstrap allows to totally bypass deriving formulas for the standard error of an estimate. 
+
+
 ## Description of the Bootstrap
 
 * Suppose we have a statistic $T_{n}$ that is an estimate of some quantity of interest $\theta$.
@@ -76,16 +90,25 @@ intervals which does not depend on parametric approximations such as \@ref(eq:no
 T_{n} = h\Big( X_{1}, \ldots, X_{n}   \Big)  \nonumber
 \end{equation}
 
-* Suppose we want to estimate the standard deviation of $T_{n}$. The **standard error** 
-is the standard deviation of $T_{n}$.
+* Suppose we want to estimate the standard deviation of $T_{n}$. 
 
-* The bootstrap will estimate the variance of $T_{n}$ by repeatedly subsampling from 
+* An estimate of the standard deviation of $T_{n}$ is referred to as the **standard error**. 
+
+*Confidence intervals are often based on subtracting or adding the standard error, 
+e.g.
+\begin{equation}
+CI = T_{n} \pm z_{\alpha/2} \times \textrm{standard error}  \nonumber 
+\end{equation}
+
+* The bootstrap estimates the standard deviation of $T_{n}$ by repeatedly subsampling from 
 the original data and computing the value of the statistic $T_{n}$ on each subsample. 
 
 * More generally, we can use the bootstrap not just to find the variance of $T_{n}$
 but to characterize the distribution of $T_{n}$.
 
 ---
+
+**The Bootstrap Procedure**
 
 * In our description of the bootstrap, we will assume that we have the following ingredients:
     + $\mathbf{X} = (X_{1}, \ldots, X_{n})$ where $X_{1}, \ldots, X_{n}$ are i.i.d. observations.
@@ -117,7 +140,41 @@ $G_{n}(t) = P(T_{n} \leq t)$ of $T_{n}$:
 
 ---
 
+* The **normal bootstrap standard error confidence interval** is defined as 
+\begin{equation}
+\Big[ T_{n} - z_{\alpha/2} se_{boot}, T_{n} + z_{\alpha/2}se_{boot} \Big] \nonumber
+\end{equation}
 
+* The **bootstrap percentile confidence interval** uses the percentiles of the
+boostrap replications $T_{n,1}^{*}, \ldots, T_{n,R}^{*}$ to form a confidence interval.
+
+* The bootstrap $100 \times \alpha/2$ and $100 \times (1 - \alpha/2)$ percentiles are roughly defined as
+\begin{eqnarray}
+T_{[\alpha/2]}^{boot} &=& \textrm{the point } t^{*} \textrm{ such that } 100\alpha/2 \textrm{ of the bootstrap replications are less than } t^{*} \nonumber \\
+T_{1 - [\alpha/2]}^{boot} &=& \textrm{the point } t^{*} \textrm{ such that } 100\alpha/2 \textrm{ of the bootstrap replications are less than } t^{*} \nonumber 
+\end{eqnarray}
+
+* The level $100 \times (1 - \alpha) \%$ level boostrap percentile confidence interval 
+is then
+\begin{equation}
+\Big[ T_{[\alpha/2]}^{boot}, T_{[1 - \alpha/2]}^{boot} \Big]  \nonumber
+\end{equation}
+
+* More precisely, the bootstrap percentiles are obtained by looking at the inverse of the estimated cdf of $T_{n}$
+\begin{equation}
+T_{[\alpha/2]}^{boot} = \hat{G}_{n}^{*, -1}(\alpha/2)  \qquad  T_{[1 - \alpha/2]}^{boot} = \hat{G}_{n}^{*, -1}(1 - \alpha/2) \nonumber
+\end{equation}
+
+---
+
+* The bootstrap approach for computing standard errors and confidence intervals
+is very appealing due to the fact that it is **automatic**.
+
+* That is, we do not expend any effort deriving formulas for the variance of $T_{n}$
+and/or making asymptotic arguments for the distribution of $T_{n}$.
+
+* We only need to be able to compute $T_{n}$ many times, and the bootstrap procedure
+will automatically produce a confidence interval for us.
 
 
 ### Example: Confidence Intervals for the Rate Parameter of an Exponential Distribution
@@ -157,8 +214,8 @@ and standard deviation $\bar{X}/\sqrt{n}$.
 * Let's do a small simulation to see how the Normal approximation confidence interval compares with
 bootstrap-based confidence intervals.
 
-* We will compare the Normal-approximation confidence interval with both the standard-error-based bootstrap
-confidence interval and the quantile-based bootstrap confidence interval. 
+* We will compare the Normal-approximation confidence interval with both the standard error bootstrap
+confidence interval and the percentile bootstrap confidence interval. 
 
 
 
@@ -170,7 +227,7 @@ boot.mean <- rep(0, R)
 for(k in 1:R) {
    boot.samp <- sample(1:50, size=50, replace=TRUE)
    xx.boot <- xx[boot.samp]   ## this is the bootstrap sample
-   boot.mean[k] <- mean(xx.boot)  ## compute mean of bootstrap sample
+   boot.mean[k] <- mean(xx.boot)  ## this is the kth bootstrap replication
 }
 ```
 
@@ -190,7 +247,7 @@ round(par.ci, 2)
 ```
 ## [1] 0.31 0.54
 ```
-* The standard-error based boostrap confidence interval is
+* The standard error boostrap confidence interval is
 
 ```r
 round(boot.ci.sd, 2)
@@ -199,7 +256,7 @@ round(boot.ci.sd, 2)
 ```
 ## [1] 0.32 0.52
 ```
-* The quantile-based bootstrap confidence interval
+* The percentile bootstrap confidence interval
 
 ```r
 round(boot.ci.quant, 2)

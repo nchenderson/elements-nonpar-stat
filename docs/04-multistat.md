@@ -1,7 +1,7 @@
 # Rank Tests for Multiple Groups {#krusk-wallis}
 
 * We can roughly think of the tests discussed in Chapter 3
-as being related to the parametric tests shown in the table below.
+as being related to the well-known parametric tests shown in the table below.
 \begin{eqnarray}
 \textbf{Parametric Test} & & \qquad  \textbf{ Nonparametric Tests } \nonumber \\
       & & \nonumber \\
@@ -12,7 +12,7 @@ as being related to the parametric tests shown in the table below.
 * The **Kruskal-Wallis** test can be though of as the
 nonparametric analogue of one-way analysis of variance (ANOVA).
 
-* For $K \geq 3$ groups, one-way ANOVA considers the analysis of data
+* For $K \geq 3$ groups, one-way ANOVA considers the analysis of observations
 arising from the following model
 \begin{equation}
 Y_{kj} = \mu_{k} + \varepsilon_{kj}, \qquad j=1,\ldots, n_{k}; k=1,\ldots,K  
@@ -26,7 +26,7 @@ where it is often assumed that $\varepsilon_{kj} \sim \textrm{Normal}(0, \sigma^
 H_{0}: \mu_{1} = \mu_{2} = \ldots = \mu_{K}
 (\#eq:homogeneity-hyp)
 \end{equation}
-which is sometimes referred to as the homogeneity hypothesis.
+which is often referred to as the homogeneity hypothesis.
 
 * A test of the hypothesis \@ref(eq:homogeneity-hyp) is based on decomposing the observed variation in
 the responses $Y_{kj}$:
@@ -44,7 +44,7 @@ such that $\mu_{h} \neq \mu_{l}$.
 
 ### Definition
 
-* Instead of assuming \@ref(eq:normal-anova-model) for the responses $Y_{kj}$, nonparametric way of thinking
+* Instead of assuming \@ref(eq:normal-anova-model) for the responses $Y_{kj}$, a nonparametric way of thinking
 about this problem is to instead only assume that
 \begin{equation}
 Y_{kj} \sim F_{k}
@@ -69,16 +69,16 @@ H_{A}: F_{k}(t) = F(t - \Delta_{k}), \quad \textrm{ for } k = 1, \ldots K \quad 
 in the one-way ANOVA setting.
 
 * Rather than comparing the group-specific means $\bar{Y}_{k.}$ with the overall mean $\bar{Y}_{..}$,
-the Kruskal-Wallis test statistic will be comparing the group-specific rank 
+the Kruskal-Wallis test statistic compares the group-specific rank 
 means $\bar{R}_{k.}$ with their overall expectation under the null hypothesis.
 
-* The Kruskal-Wallis test statistic is defined as
+* The **Kruskal-Wallis test statistic** $KW_{N}$ is defined as
 \begin{equation}
 KW_{N} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)^{2}, \quad \textrm{ where } N = \sum_{k=1}^{K} n_{k}
 (\#eq:kw-definition)
 \end{equation}
 
-* In \@ref(eq:kw-definition), $\bar{R}_{k.}$ is the average rank of those $k^{th}$ group
+* In \@ref(eq:kw-definition), $\bar{R}_{k.}$ is the average rank of those in the $k^{th}$ group
 \begin{equation}
 \bar{R}_{k.} = \frac{1}{n_{k}} \sum_{j=1}^{n_{k}} R_{kj}(\mathbf{Z}),
 \end{equation}
@@ -136,10 +136,10 @@ the Kruskal-Wallis test.
   <tr> <td align="center"> Group 3 </td> <td align="center"> 0.60 </td> <td align="center"> 6 </td> </tr>
    </table>
 
-* In this case, $N = 9$, $\bar{R}_{1.} = 11/3$, $\bar{R}_{2.} = 6$, and $\bar{R}_{3.} = 16/3$. The Kruskall-Wallis
+* Consider the data shown in the table. In this case, $N = 9$, $\bar{R}_{1.} = 11/3$, $\bar{R}_{2.} = 6$, and $\bar{R}_{3.} = 16/3$. The Kruskall-Wallis
 statistic is
 \begin{equation}
-KW_{N} = \frac{1}{2}\Big\{ 3(11/3 - 5)^{2} + 3(6 - 5)^{2} + 3(16/3 - 5)^{2}   \Big\} = 13/9
+KW_{N} = \frac{1}{2}\Big\{ 3(11/3 - 5)^{2} + 3(6 - 5)^{2} + 3(16/3 - 5)^{2}   \Big\} = 13/9 \nonumber 
 \end{equation}
 
 ### Asymptotic Distribution and Connection to One-Way ANOVA
@@ -164,7 +164,7 @@ if you applied the one-way ANOVA setup to the ranks of $Y_{kj}$.
 * The one-way ANOVA test is based on the value of SSA where, as in \@ref(eq:anova-decomp),
 SSA is defined as
 \begin{equation}
-SSA = \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}
+SSA = \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} \nonumber 
 \end{equation}
 
 * You then reject $H_{0}$, when $SSA/SSE = SSA/(SST - SSA)$ is sufficiently large.
@@ -173,7 +173,7 @@ SSA = \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}
 rather than the observations $Y_{kj}$, we would get:
 \begin{eqnarray}
 SSA_{r} &=& \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \bar{R}_{..})^{2}  \nonumber \\
-&=& \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \frac{N+1}{2})^{2}  \nonumber \\
+&=& \sum_{k=1}^{K} n_{k} \Big( \bar{R}_{k.} - \frac{N+1}{2} \Big)^{2}  \nonumber \\
 &=& \frac{N(N-1)}{12} KW_{N}  
 (\#eq:ssa-kw)
 \end{eqnarray}
@@ -181,12 +181,12 @@ SSA_{r} &=& \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \bar{R}_{..})^{2}  \nonumber \\
 * If you were applying ANOVA to the ranks of $Y_{kj}$, $SST_{r}$ would be 
 the following fixed constant:
 \begin{equation}
-\textrm{SST}_{r} = \frac{N(N + 1)(N-1)}{12}
+\textrm{SST}_{r} = \frac{N(N + 1)(N-1)}{12} \nonumber
 \end{equation}
 
 
 * So, any test of the homogeneity hypothesis would 
-be based on just the value of  $SSA_{r}$ which as we showed in \@ref(eq:ssa-kw) 
+be based on just the value of  $SSA_{r}$ which, as we showed in \@ref(eq:ssa-kw), 
 is just a constant times the Kruskal-Wallis statistic.
 
 
@@ -230,7 +230,8 @@ for Poisson-distributed data).
 
 
 ```r
-boxplot(sqrt(count) ~ spray, data=InsectSprays,las=1, ylab="square root of insect counts")
+boxplot(sqrt(count) ~ spray, data=InsectSprays,las=1, 
+        ylab="square root of insect counts")
 ```
 
 <img src="04-multistat_files/figure-html/unnamed-chunk-2-1.png" width="672" />
@@ -270,7 +271,7 @@ a$p.value
 
 ---
 
-* Notice that it applying the square root transformation or not does not affect the
+* Notice that applying the square root transformation does not affect the
 value of the Kruskal-Wallis statistic or the Kruskal-Wallis p-value.
 
 
