@@ -1,10 +1,10 @@
 # Permutation Tests {#permutation}
 
-* Permutation tests are a useful tool to avoid having to depend on
+* Permutation tests are a useful tool that allows you to avoid depending on
 specific parametric assumptions.
 
 * Permutation tests are also useful in more complex modern applications where it can be 
-difficult to work out the theoretical null distribution of a certain test statistic.
+difficult to work out the theoretical null distribution of the desired test statistic.
 
 ## Notation
 
@@ -17,7 +17,7 @@ $S = \{1, \ldots, N\}$ for sample size $N$.
 * Each permutation $\pi$ of $S = \{1, \ldots, N\}$ defines a particular ordering of the elements of $S$.
 For this reason, a permutation is often expressed as the following ordered list
 \begin{equation}
-\pi = \big( \pi(1), \pi(2), \ldots, \pi(N)  \big)
+\pi = \big( \pi(1), \pi(2), \ldots, \pi(N)  \big) \nonumber 
 \end{equation}
 
 * In other words, we can think of a permutation of $S$
@@ -28,7 +28,7 @@ as a particular ordering of the elements of $S$.
 defined as $\pi_{1}(1) = 3$, $\pi_{1}(2) = 1$, $\pi_{1}(3) = 2$, then
 this permutation expressed as an ordered list would be
 \begin{equation}
-\pi_{1} = (3, 1, 2)
+\pi_{1} = (3, 1, 2)  \nonumber
 \end{equation}
 
 * There are $5$ other possible permutations of $S$: 
@@ -47,7 +47,7 @@ set $\{1, \ldots, N\}$.
 
 ## Permutation Tests for the Two-Sample Problem
 
-* A permutation test is motivated by the following reasoning.
+* Permutation tests for two-sample problems are motivated by the following reasoning:
     + If there is no real difference between the two groups, 
       there is nothing "special" about the difference in means
       between the two groups.
@@ -62,7 +62,7 @@ set $\{1, \ldots, N\}$.
 * Suppose we have observations from two groups $X_{1}, \ldots, X_{n} \sim F_{X}$
 and $Y_{1}, \ldots, Y_{m} \sim F_{Y}$.
 
-* Let $\mathbf{Z} = (Z_{1}, \ldots, Z_{N})$ denote pooled data
+* Let $\mathbf{Z} = (Z_{1}, \ldots, Z_{N})$ denote the pooled data
 \begin{equation}
 (Z_{1}, \ldots, Z_{N}) = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})
 \end{equation}
@@ -92,7 +92,7 @@ denote the corresponding permuted dataset
   <tr> <td align="center"> mean difference </td> <td align="center"> 0.16 </td> <td align="center"> 0.12 </td> <td align="center"> 0.12 </td> <td align="center"> 0.80 </td> <td align="center"> 0.00 </td> <td align="center"> 0.36 </td> </tr>
    </table>
 
-* The columns in the above table are just permutations of the original data $\mathbf{Z}$.
+* For example, the columns in Table 5.1 are just permutations of the original data $\mathbf{Z}$.
 
 * Suppose we want to base a test on the difference in the means between the two groups
 \begin{equation}
@@ -110,15 +110,16 @@ many other permutations of the data.
 ```r
 z <- c(0.6, -0.8, -0.6, -0.9, 0.3, -1.3, 0.2, 0.7, -1.4, -0.4) ## data
 observed.diff <- mean(z[1:5]) - mean(z[6:10])  ## observed mean difference
-nreps <- 1000
-mean.diff <- rep(NA, nreps)
-for(k in 1:nreps) {
+nperms <- 1000
+mean.diff <- rep(NA, nperms)
+for(k in 1:nperms) {
     ss <- sample(1:10, size=10)  ## draw a random permutation
     z.perm <- z[ss]   ## form the permuted dataset
     mean.diff[k] <- mean(z.perm[1:5]) - mean(z.perm[6:10]) ## compute mean difference
                                                            ## for permuted dataset
 }
-hist(mean.diff, las=1, col="grey", main="Permutation Distribution of Mean Difference")
+hist(mean.diff, las=1, col="grey", main="Permutation Distribution 
+     of Mean Difference")
 abline(v=observed.diff, lwd=3)
 ```
 
@@ -147,15 +148,15 @@ than computing the test statistic for every possible permutation.
 \end{equation}
 where $\pi_{1}, \ldots, \pi_{S}$ are randomly drawn permutations
 
-* The two-sided (Monte Carlo) p-value for the example shown in the above Table is
+* The two-sided (Monte Carlo) p-value for the example shown in Table 5.1 is
 
 ```r
-pval.mc <- (1 + sum(abs(mean.diff) >= abs(observed.diff)))/(nreps + 1)
+pval.mc <- (1 + sum(abs(mean.diff) >= abs(observed.diff)))/(nperms + 1)
 round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.78
+## [1] 0.77
 ```
     
 ### Example 2: Ratios of Means
@@ -168,8 +169,8 @@ the statistic $T_{N}(\mathbf{Z})$ to measure other contrasts of interest.
 T_{N}( \mathbf{Z} ) = \max\Big\{ \bar{X}/\bar{Y} , \bar{Y}/\bar{X}  \Big\}
 \end{equation}
 
-* Let us see how this works for a simulated example where we assume that
-$X_{1}, \ldots, X_{n} \sim \textrm{Exponential}(1)$ and $Y_{1}, \ldots, Y_{m} \sim \textrm{Exponential}(1/2)$
+* Let us see how this works for a simulated example with $n = m = 20$ where we assume that
+$X_{1}, \ldots, X_{n} \sim \textrm{Exponential}(1)$ and $Y_{1}, \ldots, Y_{m} \sim \textrm{Exponential}(1/2)$.
 
 ```r
 set.seed(5127)
@@ -185,8 +186,8 @@ for(k in 1:nperms) {
      mean.ratio[k] <- max(mean(zz.perm[1:20])/mean(zz.perm[21:40]), 
                           mean(zz.perm[21:40])/mean(zz.perm[1:20]))
 }
-hist(mean.ratio, las=1, col="grey", main="Permutation Distribution of Maximum Mean Ratio",
-     xlab="maximum mean ratio")
+hist(mean.ratio, las=1, col="grey", main="Permutation Distribution 
+     of Maximum Mean Ratio", xlab="maximum mean ratio")
 abline(v=t.obs, lwd=3)
 ```
 
@@ -211,11 +212,11 @@ round(pval.mc, 2)
 is difficult, or when certain approximations of the null distributions are hard to justify.
 
 * An example of this occurrs if you want to compare medians, or more generally,
-compare quantiles.
+compare quantiles between two groups.
 
 * The difference-in-quantiles statistic would be defined as
 \begin{equation}
-T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{N})
+T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{N}) \nonumber
 \end{equation}
 where $Q_{p}(X_{1}, \ldots, X_{H})$ denotes the $p^{th}$ quantile from the data $X_{1}, \ldots, X_{H}$.
 
@@ -274,7 +275,7 @@ the (two-sided) Wilcoxon rank sum test?
 for some test statistic $T$.
 
 * In other words, the p-value is the probability 
-that a random variable following the null distribution
+that a random variable which follows the null distribution
 exceeds $t_{obs}$.
 
 * In many problems however, the null hypothesis $H_{0}$ is
@@ -293,9 +294,9 @@ distribution is the same for every point in $H_{0}$.
 
 * A more general approach is to instead compute a **conditional p-value**
 
-* The conditional p-value is defined as 
+* A conditional p-value is defined as 
 \begin{equation}
-\textrm{p-value} = P(T \geq t_{obs}| S=s, H_{0})
+\textrm{p-value} = P(T \geq t_{obs}| S=s, H_{0})  \nonumber
 \end{equation}
 where $S$ is a sufficient statistic for the unknown terms in $H_{0}$.
 
@@ -309,10 +310,10 @@ $(Z_{(1)}, Z_{(2)}, \ldots,Z_{(N)})$.
 
 * Recall that the order statistics are defined as
 \begin{eqnarray}
-Z_{(1)} &=& \textrm{ smallest observation } \\
-Z_{(2)} &=& \textrm{ second smallest observation} \\
-        & \vdots & \\
-Z_{(N)} &=& \textrm{ largest observation}
+Z_{(1)} &=& \textrm{ smallest observation } \nonumber \\
+Z_{(2)} &=& \textrm{ second smallest observation} \nonumber \\
+        & \vdots & \nonumber \\
+Z_{(N)} &=& \textrm{ largest observation} \nonumber
 \end{eqnarray}
 
 * What is the conditional distribution of the observed data
@@ -323,7 +324,7 @@ conditional on the observed order statistics?
 f_{Z_{1}, \ldots, Z_{N}|Z_{(1)}, \ldots, Z_{(N)}}( z_{\pi(1)}, \ldots, z_{\pi(N)} | z_{1}, \ldots, z_{N})
 &=& \frac{f_{Z_{1}, \ldots, Z_{N}}( z_{\pi(1)}, \ldots, z_{\pi(N)}   ) }{ f_{Z_{(1)},\ldots,Z_{(N)}}(z_{1}, \ldots, z_{N}) } \nonumber \\
 &=& \frac{f_{Z_{i}}(z_{\pi(1)}) \cdots f_{Z_{i}}(z_{\pi(N)})}{ N!f_{Z_{i}}(z_{1}) \cdots f_{Z_{i}}(z_{N}) } \nonumber \\
-&=& \frac{1}{N!}
+&=& \frac{1}{N!} \nonumber
 \end{eqnarray}
 (See Chapter 5 of @casella2002 for a detailed description of the distribution of order statistics)
 
@@ -338,7 +339,7 @@ as coming from a common distribution.
 
 * If we are conditioning on $Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{N}$, then the probability
 that $T_{N}(Z_{1}, \ldots, Z_{N}) \geq t$ is just the number of permutations of
-$(z_{1}, \ldots, z_{N})$ such that the test statistic is greater than $t$ divided
+$(z_{1}, \ldots, z_{N})$ where the test statistic is greater than $t$ divided
 by $N!$.
 
 * In other words
@@ -350,7 +351,7 @@ by $N!$.
 
 ---
 
-* Let us consider a concrete example.
+* Let us now consider a concrete example.
 
 * Suppose we have a two-sample problem with four observations. The 
 first two observations come from the first group while the last
@@ -476,6 +477,7 @@ Phenols/Flavanoids and Phenols/Color association tests.
 
 
 ```r
+# p-value for correlation between Phenols/Flavanoids
 pval.mc <- (1 + sum(abs(cor.perm.pf) >= abs(t.obs.pf)))/(nperms + 1)
 round(pval.mc, 4)
 ```
@@ -486,6 +488,7 @@ round(pval.mc, 4)
 
 
 ```r
+# p-value for correlation between Phenols/Color
 pval.mc <- (1 + sum(abs(cor.perm.pc) >= abs(t.obs.pc)))/(nperms + 1)
 round(pval.mc, 4)
 ```
@@ -538,7 +541,7 @@ permutations where that variable's importance score exceeded the importance scor
 
 * Specifically, the permutation p-value for the importance of variable $h$ would be given by
 \begin{equation}
-\textrm{p-value}_{h} = \sum_{\pi \in \mathcal{S}_{N}} I\Big( s_{h}(\mathbf{y}_{\pi}, \mathbf{X})  \geq s_{h}(\mathbf{y}, \mathbf{X}) \Big)
+\textrm{p-value}_{h} = \frac{1}{N!}\sum_{\pi \in \mathcal{S}_{N}} I\Big( s_{h}(\mathbf{y}_{\pi}, \mathbf{X})  \geq s_{h}(\mathbf{y}, \mathbf{X}) \Big)
 (\#eq:varimp-pvalue)
 \end{equation}
 where $\mathbf{y}$ denotes the vector of responses and $\mathbf{X}$ denotes the design matrix.
@@ -619,7 +622,7 @@ for(k in 1:nperm) {
 
 perm.pval <- rep(0, nvars)
 for(h in 1:nvars) {
-  perm.pval[h] <- mean(VarImpMat[,h] >= var.imp[h])
+  perm.pval[h] <- (1 + sum(VarImpMat[,h] >= var.imp[h]))/(nperm + 1)
 }
 ```
 
