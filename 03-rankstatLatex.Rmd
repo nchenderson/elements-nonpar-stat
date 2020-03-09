@@ -76,7 +76,9 @@ rank(y, ties.method="max")
 rank(y)
 ```
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * When defining ranks using the "average" or "midrank" approach to handling ties, we replace
 tied ranks with the average of the two "adjacent" ranks. 
@@ -114,7 +116,9 @@ E( R_{i} ) = \sum_{j=1}^{n} j P(R_{i} = j) = \frac{1}{n}\sum_{j=1}^{n} j = \frac
 the vector $\mathbf{R}_{n} = (R_{1}, \ldots, R_{n})$ is uniformly distributed
 on the set of $n!$ permutations of $(1,2,\ldots,n)$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **Exercise 3.1**: Suppose $X_{1}, X_{2}, X_{3}$ are i.i.d. observations from a continuous
 distribution function $F_{X}$. Compute the covariance matrix of the vector 
@@ -124,7 +128,9 @@ of ranks $\big( R_{1}(\mathbf{X}), R_{2}(\mathbf{X}), R_{3}( \mathbf{X} ) \big)$
 distribution function $F_{X}$. Let $T= R_{1}( \mathbf{X} ) + R_{2}(\mathbf{X})$. Compute $P( T = j )$ 
 for $j = 3, 4, 5, 6, 7$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 
 ## The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test
@@ -146,7 +152,9 @@ H_{A}: && \textrm{Observations from } F_{X} \textrm{ tend to be larger than obse
 (\#eq:general-wilcoxon-hypothesis)
 \end{eqnarray}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * What is meant by "tend to be larger" in the alternative hypothesis?
 
@@ -171,7 +179,9 @@ for at least one value of $t$.
 
 * Why do we need to specify an alternative?
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * It is often stated that the WRS test is a test
 of equal medians.
@@ -212,7 +222,9 @@ $M = mn + n(n+1)/2 - W$).
 P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2. \nonumber
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The reason for stating $H_{0}$ in \@ref(eq:mw-formulation) as 
 \begin{equation}
@@ -250,7 +262,9 @@ in one group.
 * A sufficiently large value of the average rank from group 1 will allow us to reject $H_{0}$ 
 in favor of $H_{A}$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * We will define the pooled data vector $\mathbf{Z}$ as 
 \begin{equation}
@@ -272,7 +286,9 @@ from group 1 (i.e., the group with the $X_{i}$ as observations).
 then we should expect the sum of the ranks in this group to be larger than the sum of the
 ranks from group 2.
 
---- 
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Under $H_{0}$, we can treat both $X_{i}$ and $Y_{i}$ as being observations coming from
 a common distribution function $F$.
@@ -330,7 +346,9 @@ P_{H_{0}}( W = 4 ) &=& 1/6  \nonumber \\
 P_{H_{0}}(W = 3) &=& 1/6. \nonumber 
 \end{eqnarray}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **Large-Sample Approximate Distribution**
 
@@ -364,7 +382,9 @@ where $\Phi(t)$ denotes the cumulative distribution function of a standard Norma
 For example, we would compute the probability $P_{H_{0}}(W \geq w_{obs} - 0.5)$ with the Normal approximation
 rather than $P_{H_{0}}(W \geq w_{obs})$ directly.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Many statistical software packages (including **R**) will not compute p-values using the exact distribution in 
 the presence of ties. 
@@ -388,13 +408,17 @@ H_{0}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) = 1/2 \quad \textrm{ v
 H_{A}: && P(X_{i} > Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2  \nonumber
 \end{eqnarray}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **Exercise 3.3.** Using the exact distribution, what is the smallest
 possible one-sided p-value associated with the WRS test 
 for a fixed value of $n$ and $m$ (assuming the probability of ties is zero)? 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 <!-- * Give exercise, compute p-values for Wilcoxon test where
 we have two populations. both are Normally distributed
@@ -564,7 +588,9 @@ f_{D}(t) = f_{\epsilon}(t - \theta)
 
 * The goal here is to test $H_{0}: \theta = \theta_{0}$ vs. $H_{A}: \theta > \theta_{0}$. (Often, $\theta_{0} = 0$).
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * This sort of test usually comes up in the context of **paired data**.
 Common examples include
@@ -589,7 +615,9 @@ it is not necessarily reasonable to think of $X_{i}$ and $Y_{i}$ as independent.
 * With this setup, a natural question is whether or not the differences $D_{i}$ tend to be 
 greater than zero or not.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The **sign** statistic $S_{n}$ is defined as
 \begin{equation}
@@ -737,9 +765,9 @@ $|\mathbf{D}| = (|D_{1}|, |D_{2}|, \ldots, |D_{n}|)$.
 or not large values of $|D_{i}|$ tend to be associated with positive 
 vs. negative values of $D_{i}$.
 
----
-
-Discuss some of these in class
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **Exercise 3.4.** Suppose we had data $(-2, 1, -1/2, 3/2, 3)$. What would 
 be the value of the Wilcoxon signed rank statistic?
@@ -751,7 +779,9 @@ the density function of $|D_{i}|$ and $-|D_{i}|$?
 assuming that $\theta = 0$, show that the expectation of the Wilcoxon signed-rank
 statistic is $0$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 #### Asymptotic Distribution
 
@@ -884,7 +914,9 @@ of alternative values of $\theta$.
 probability under the assumption that the parameter of interest $\theta$ equals $\delta$.
 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **The Approximate Power Function of the Sign Test**
 
@@ -953,11 +985,15 @@ lines(nd, yy2, lwd=2)
 ```
 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **Exercise 3.7**: Derive the formula for $c_{\alpha, n}$ shown in \@ref(eq:critical-value-signstat).
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 ### Power Comparisons and Asymptotic Relative Efficiency
 
@@ -978,7 +1014,9 @@ true for most "reasonable" tests.
 * Indeed, a test whose power function satisfies
 \@ref(eq:powerfn-consistent) is typically called a **consistent** tests. 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * If nearly all reasonable tests are consistent, then
 how can we compare tests with respect to their power?
@@ -997,7 +1035,9 @@ or even difficult to compute.
 two testing procedures. The efficiency of a test in this context is
 the sample size required to achieve a certain level of power.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * To find the asymptotic relative efficiency, we first need to derive the
 asymptotic power function.
@@ -1023,7 +1063,9 @@ where the test of $H_{0}:\theta = \theta_{0}$ vs. $H_{A}: \theta > \theta_{0}$
 is based on the test statistic $V_{n}$ with rejection of $H_{0}$ occurring whenever $V_{n} \geq c_{\alpha, n}$.
 Statement \@ref(eq:asymptotic-v) asssumes that the distribution of $V_{n}$ is governed by $\theta_{n}$ for each $n$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The ratio $e(\theta_{0}) = \mu'(\theta_{0})/\sigma(\theta_{0})$ is the **asymptotic efficiency** of the 
 test.
@@ -1034,7 +1076,9 @@ the asymptotic relative efficiency of test 1 vs. test 2 is defined as
 ARE_{12}(\theta_{0}) = \Big( \frac{e_{1}(\theta_{0})}{e_{2}(\theta_{0})} \Big)^{2}
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **Interpretation of Asymptotic Efficiency of Tests**
 
@@ -1099,7 +1143,9 @@ where $N_{1}(\theta)$ and $N_{2}(\theta)$ are the sample
 sizes required to have power $\beta$ against alternative $\theta$.
 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 ### Efficiency Examples
 
@@ -1121,7 +1167,9 @@ where $p(\theta) = 1 - F_{\epsilon}( -\theta )$.
 \end{equation}
 where $f_{\epsilon}(t) = F_{\epsilon}'(t)$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **The One-Sample t-test**
 
@@ -1159,7 +1207,9 @@ V_{n} = \frac{\bar{D}}{ \hat{\sigma} }  \nonumber
 \frac{\mu'(0)}{\sigma(0)} = \frac{1}{ \sigma_{e} }  \nonumber 
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **The Wilcoxon Rank Sum Test**
 
@@ -1224,7 +1274,9 @@ t-test is $(\pi/2\sqrt{3})^{2} = \pi^{2}/12$.
 \textrm{t-dist}_{\nu} & & \qquad [4(\nu/(\nu-2))\Gamma^{2}\{ (\nu + 1)/2\}]/[ \Gamma^{2}(\nu/2)\nu \pi ]
 \end{eqnarray}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **WRS Test vs. Two-Sample t-test**
 
@@ -1335,7 +1387,9 @@ the following way
 a_{N}(i) = \psi\Big( \frac{i}{N+1} \Big)  \nonumber
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **Example: WRS statistic **
 
@@ -1388,7 +1442,9 @@ E( T_{N} ) = \sum_{j=1}^{N} c_{jN} E\{ a_{N}(R_{i}(\mathbf{Z})) \}
 = \sum_{j=1}^{N} c_{jN}\bar{a}_{N} = N\bar{c}_{N}\bar{a}_{N} \nonumber
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * A similar argument can show that the variance of $T_{N}$ is
 \begin{equation}
@@ -1397,7 +1453,9 @@ E( T_{N} ) = \sum_{j=1}^{N} c_{jN} E\{ a_{N}(R_{i}(\mathbf{Z})) \}
 where $\sigma_{c}^{2} = \frac{1}{N}\sum_{j=1}^{N} (c_{jN} - \bar{c}_{N})^{2}$
 and $\sigma_{a}^{2} = \frac{1}{N}\sum_{j=1}^{N} (a_{N}(j) - \bar{a}_{N})^{2}$
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * To perform hypothesis testing when using a general linear rank statistics,
 working with the exact distribution or performing permutation tests can 
@@ -1500,7 +1558,9 @@ modifying the base distribution in some way.
 * For example, we often think of the shift alternative $F_{X}(t) = F_{Y}(t - \theta)$
 in the two-sample problem.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * In parametric statistics, when testing $H_{0}:\theta = 0$ the most powerful test 
 of $H_{0}: \theta = \theta_{0}$ vs. $H_{A}:\theta = \theta_{A}$ is based on
@@ -1543,7 +1603,9 @@ a_{N}(i) = E\Bigg\{ \frac{\partial \log f(Z_{(i)})}{ \partial Z}  \Bigg\}  \nonu
 * Linear rank statistics with scores generated this way are usually called 
 **locally most powerful** rank tests.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The best choice of the scores will depend on what we assume about the density $f$.
 

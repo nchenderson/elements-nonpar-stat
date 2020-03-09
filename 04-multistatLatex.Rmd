@@ -63,7 +63,9 @@ H_{0}: F_{1} = F_{2} = \ldots = F_{K}
 H_{A}: F_{k}(t) = F(t - \Delta_{k}), \quad \textrm{ for } k = 1, \ldots K \quad \textrm{ and not all $\Delta_{k}$ equal}
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The **Kruskal-Wallis test statistic** $KW_{N}$ is similar to the SSA term (defined in \@ref(eq:anova-decomp))
 in the one-way ANOVA setting.
@@ -85,7 +87,9 @@ KW_{N} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{
 where $\mathbf{Z}$ denotes the pooled-data vector and $R_{kj}(\mathbf{Z})$ denotes
 the rank of $Y_{kj}$ in the "pooled-data ranking".
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * What is the expectation of $\bar{R}_{k.}$ under the null hypothesis \@ref(eq:nonpar-homogeneity-hyp)?
 
@@ -100,7 +104,9 @@ $\bar{R}_{k.} - \frac{N + 1}{2}$ should be small whenever the homogeneity
 hypothesis \@ref(eq:nonpar-homogeneity-hyp) is true.
 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * When $K=2$, the following relationship between the Kruskal-Wallis statistic
 $KW_{N}$ and the Wilcoxon rank sum test statistic $W$ from Chapter 3 holds.
@@ -115,11 +121,15 @@ WRS test should be the same when $K = 2$.
 * However, you cannot directly perform a one-sided test using 
 the Kruskal-Wallis test.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * **Exercise 4.1** If $K=2$, show that equation \@ref(eq:kw-wrs-equivalence) holds.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **An Example**
 
@@ -153,7 +163,9 @@ the p-value for the Kruskal-Wallis test.
 
 
 
---- 
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The Kruskal-Wallis test can also be thought of as the test you would obtain
 if you applied the one-way ANOVA setup to the ranks of $Y_{kj}$. 
@@ -219,7 +231,9 @@ boxplot(sqrt(count) ~ spray, data=InsectSprays,las=1,
         ylab="square root of insect counts")
 ```
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Let us perform a test of homogeneity using both the one-way ANOVA approach and a Kruskal-Wallis
 test
@@ -235,7 +249,9 @@ a$p.value
 ```
 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Notice that applying the square root transformation does not affect the
 value of the Kruskal-Wallis statistic or the Kruskal-Wallis p-value.
@@ -270,7 +286,9 @@ group C is better than A.
 
 * In **R**, Dunn's test can be performed using the **dunn.test** package.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * In traditional one-way ANOVA one often reports pairwise differences
 in the means and their associated confidence intervals.

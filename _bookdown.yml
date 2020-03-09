@@ -6,7 +6,7 @@ rmd_files:
     html: ["index.Rmd", "01-Introduction.Rmd", "02-getting-started.Rmd", "03-rankstat.Rmd", "04-multistat.Rmd", "05-permutation.Rmd", "06-ustatistics.Rmd",
             "07-empiricalcdf.Rmd", "08-densityestimation.Rmd", "09-bootstrap.Rmd", "10-confidence-intervals.Rmd", "11-kernel-regression.Rmd",
             "12-splines.Rmd","13-cart.Rmd","14-ensemble.Rmd"]
-    latex: ["index.Rmd", "01-IntroductionLatex.Rmd", "02-getting-started.Rmd", "03-rankstatLatex.Rmd", "04-multistatLatex.Rmd",
-            "05-permutationLatex.Rmd", "06-ustatistics.Rmd", "07-empiricalcdf.Rmd", "08-densityestimation.Rmd"]
+    latex: ["index.Rmd", "01-IntroductionLatex.Rmd", "02-getting-started.Rmd", "03-rankstatLatex.Rmd", "04-multistatLatex.Rmd", "05-permutationLatex.Rmd",
+            "06-ustatisticsLatex.Rmd", "07-empiricalcdfLatex.Rmd", "08-densityestimationLatex.Rmd"]
 clean: [packages.bib, bookdown.bbl]
 new_session: yes

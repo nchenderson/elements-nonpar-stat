@@ -162,7 +162,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.77
+## [1] 0.76
 ```
     
 ### Example 2: Ratios of Means
@@ -242,7 +242,9 @@ quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
 
 ![](05-permutationLatex_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * **Exercise 5.1** Suppose we have the following data from two groups 
 $(X_{1}, X_{2}, X_{3}) = (-1, 0, 1)$ and $(Y_{1}, Y_{2}, Y_{3}) = (4, -2, 2)$.
@@ -268,7 +270,9 @@ $T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$ to detect this true alternative.
 How, does the power compare with the (two-sided) two-sample t-statistic and 
 the (two-sided) Wilcoxon rank sum test?
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 ## The Permutation Test as a Conditional Test    
       
@@ -292,7 +296,9 @@ many parameters.
 really $H_{0}: \mu_{x} = \mu_{y}$ and $\sigma > 0$.
 That is, the null hypothesis is true for many different values of $\sigma$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * When $H_{0}$ contains many parameter values, one approach for computing 
 a p-value is to choose the test statistic $T$ so that its
@@ -308,7 +314,9 @@ where $S$ is a sufficient statistic for the unknown terms in $H_{0}$.
 
 * A classic example of this is Fisher's exact test.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * A permutation test computes a conditional p-value where the sufficient
 statistic is the vector of order statistics
@@ -341,7 +349,9 @@ equal probability of occurring for any permutation chosen.
 * This equal probability of $1/N!$ is only true under $H_{0}$ where we can regard the data
 as coming from a common distribution.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * If we are conditioning on $Z_{(1)}=z_{1}, \ldots, Z_{(N)} = z_{N}$, then the probability
 that $T_{N}(Z_{1}, \ldots, Z_{N}) \geq t$ is just the number of permutations of
@@ -355,7 +365,9 @@ by $N!$.
 &=& \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(z_{\pi(1)}, \ldots, z_{\pi(N)}) \geq t  \Big)
 \end{eqnarray}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Let us now consider a concrete example.
 
@@ -449,7 +461,9 @@ of the form $(U_{\pi(1)}, V_{1}), \ldots, (U_{\pi(N)}, V_{N})$.
 * We only need to look at $\mathbf{U}_{\pi}$ because this achieves the objective
 of randomly "switching observation pairs".
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The two-sided p-value for the permutation test of $H_{0}: \rho_{UV} = 0$ vs. $H_{A}: \rho_{UV} \neq 0$ is
 \begin{equation}
@@ -535,7 +549,9 @@ a covariate.
 
 ![](05-permutationLatex_files/figure-latex/unnamed-chunk-13-1.pdf)<!-- --> 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The approach of permuting the response vector can be useful in the context of difficult-to-interpret 
 variable importance measures or variable importance measures which 
@@ -565,7 +581,9 @@ when using reponse vector $\mathbf{y}$ and design matrix $\mathbf{X}$.
 any method that generates a variable importance score 
 from $\mathbf{y}$ and $\mathbf{X}$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Let us see an example of that if we look at a random forest model for predicting wine type from 
 the **wine** data.

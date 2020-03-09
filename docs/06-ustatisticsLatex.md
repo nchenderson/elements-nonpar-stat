@@ -85,7 +85,9 @@ U_{var} &=& \frac{1}{{n \choose 2}} \sum_{c \in \mathcal{C}_{n,2}} h(X_{c_{1}}, 
 &=& \frac{1}{n-1}\sum_{i=1}^{n} (X_{i} - \bar{X})^{2} \nonumber
 \end{eqnarray}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Typically, the variance has the interpretation of $\sigma^{2} = E\{ (X_{i} - \mu)^{2} \}$.
 That is, $\sigma^{2}$ measures the expected squared deviation of $X_{i}$ from its mean.
@@ -108,7 +110,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.849
+## [1] 1.857
 ```
 
 ```r
@@ -116,7 +118,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.838
+## [1] 1.83
 ```
 
 
@@ -149,13 +151,17 @@ to the mean difference parameter via
 \end{equation}
 where $\mu = E( X_{i} )$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * **Exercise 6.1**. Compute the Gini coefficient $\theta_{Gc}$ when it is assumed that
     + $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2})$, for $\mu > 0$. 
     + $X_{i} \sim \textrm{Exponential}(\lambda)$, (**Hint**: The difference between two independent Exponential random variables has a Laplace distribution).
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 ### Example 4: Wilcoxon Signed Rank Statistic
 
@@ -178,7 +184,9 @@ the following parameter
 * If the distribution of $X_{i}$ is symmetric around $0$, $\theta_{WS}$ will be equal 
 to $1/2$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Recall that the Wilcoxon signed rank test is designed to detect
 distributions which are not symmetric around $0$.
@@ -200,7 +208,9 @@ where $S_{n}$ is the sign test statistic defined in Chapter 3.
 Hence, a "large" value of $U_{WS} - 1/2$ will lead to rejection
 of the one-sample null hypothesis discussed in Section 3.3. 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * If you want to derive \@ref(eq:wilcoxsign-equivalence) (though you don't need to know how), I think it is helpful to note
 the following
@@ -267,8 +277,9 @@ parameter
 * If both $X_{i}$ and $Y_{j}$ have the same distribution, then
 $\theta_{MW}$ should equal $1/2$.
 
----
-
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The statistic $mn U_{MW}$ is known as the **Mann-Whitney** statistic.
 
@@ -294,7 +305,9 @@ the pooled-data vector $\mathbf{Z} = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m}
 * Also, the above derivation assumes no ties so that 
 $\sum_{i=1}^{n} R_{i}( \mathbf{X} ) = n(n+1)/2$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Because $W = n(n+1)/2 + mn U_{MW}$ is a linear function of $U_{MW}$, 
 inference from the Wilcoxon rank sum test (when using large-sample p-values)
@@ -342,7 +355,9 @@ where $\bar{R}(X) = \frac{1}{n}\sum_{i=1}^{n} R_{i}( \mathbf{X} )$ and $\bar{R}(
 * Values of $\hat{\rho}_{R}$ near zero indicate that there is little association
 between these two variables.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Due to its use of ranks, $\hat{\rho}_{R}$ is less sensitive to outliers than Pearson's correlation.
 
@@ -366,7 +381,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.877 0.871
+## [1] 0.896 0.900
 ```
 
 ```r
@@ -376,10 +391,12 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.861 0.861
+## [1] 0.881 0.881
 ```
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 
 * $\hat{\rho}_{R}$ can be thought of as an estimate of the following population
@@ -409,13 +426,16 @@ h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y
 &=& 12 V_{R} \Big( \frac{n^{3}}{n(n-1)(n+1)} \Big)  - \frac{3(n+1)}{n-1}. \nonumber
 \end{eqnarray}
 
----
-
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **Exercise 6.2.** Why does $\theta_{R}$ equal zero when $X_{i}$ and $Y_{i}$ are independent?
 Why is $-1\leq \theta_{R} \leq 1$?
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 
 ### Kendall's tau
@@ -452,8 +472,9 @@ I\Big\{ X_{2} \neq X_{1} \Big\}I\Big\{ Y_{2} \neq Y_{1} \Big\}
 
 * If $X_{i}$ and $Y_{i}$ are idependent, Kendall's $\tau$ will be equal to zero (why?).
 
-
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * In the context of computing $U_{\tau}$, pairs of observations $(X_{i}, Y_{i})$ and $(X_{j}, Y_{j})$ are said to be **concordant** if 
 the sign of $X_{j} - X_{i}$ agrees with the sign of $Y_{j} - Y_{i}$.
@@ -493,7 +514,9 @@ U_{\tau} = \frac{4n_{c}}{n(n-1)} - 1
 
 * Under independence, the number of concordant and discordant pairs should be roughly equal.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * We just need ordinal data to use Kendall's $\tau$. Kendall's $\tau$ can be computed
 as long you can tell if one observation is "larger" than another.
@@ -525,7 +548,7 @@ while $X$ and $Y$ are not independent.
 * Note that the association between the two variables in the figures below
 is **non-monotone**.
 
-<img src="06-ustatistics_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+![](06-ustatisticsLatex_files/figure-latex/unnamed-chunk-3-1.pdf)<!-- --> 
 
 #### Definition
 
@@ -560,7 +583,9 @@ the usual correlation parameter. Nevertheless, $\theta_{dCov,XY} = 0$
 implies independence, and larger values of $\theta_{dCov,XY}$ imply
 that $X_{i}$ and $Y_{i}$ have some form of ``greater" association.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **Example**
 
@@ -605,12 +630,16 @@ dcov.sq.est
 the two variables are dependent while the usual covariance between
 these two variables is zero.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * **Exercise 6.2**. For the example where we have observed pairs $(X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})$
     with $X_{i} \sim \textrm{Normal}(0, 1)$ and $Y_{i} = X_{i}^{2}$, compute Kendall's $\tau$ parameter $\theta_{\tau}$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 #### Estimation of Distance Covariance and Distance Correlation
 
@@ -645,7 +674,9 @@ where $a_{i.} = \sum_{k=1}^{n} a_{ik}$, $a_{.j} = \sum_{k=1}^{n} a_{kj}$, and $a
 
 * In other words, $\mathbf{A}$ is a matrix containing "centered" pairwise distances.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The estimate of the squared distance covariance parameter is then given by
 \begin{equation}
@@ -665,7 +696,9 @@ h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y
 = \frac{1}{4}\sum_{i=1}^{4}\sum_{j=1}^{4} A_{ij}B_{ij}
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * You can compute distance covariances and distance correlations using the **energy** package in **R**.
 
@@ -692,7 +725,7 @@ plot(xx2, yy2, xlab="x", ylab="y", main=paste("Sample Distance Corr. = ",
                                               round(d.cor2, 4)), las=1)
 ```
 
-<img src="06-ustatistics_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+![](06-ustatisticsLatex_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
 
 
 ```r

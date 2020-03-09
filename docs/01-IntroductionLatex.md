@@ -1,9 +1,12 @@
 # Introduction {#intro}
 
+\begin{figure}
+\includegraphics[width=0.9\linewidth]{01-IntroductionLatex_files/figure-latex/hello-1} \caption{Hello World!}(\#fig:hello)
+\end{figure}
 
----
-  
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
   
 ## What is Nonparametric Statistics? {#sec:whatisnonpar}
   
@@ -100,23 +103,26 @@ the group-specific sample means and $s_{p}^{2}$ is the pooled estimate of $\sigm
 s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \sum_{i=1}^{m} (Y_{i} - \bar{Y})^{2}   \Big\}
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The t-test is based on the **null distribution** of $T$ - the distribution of $T$ under the null hypothesis.
 
 * Under the assumption of normality, the null distribution of $T$ is a t distribution with $n + m - 2$ degrees of freedom.
                                                                         
-![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-2-1.pdf)<!-- --> 
+![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-1-1.pdf)<!-- --> 
 
-* Notice that the null distribution of $T$ depends on the parametric assumption that both $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
-and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. Appealing to the Central Limit Theorem, one could
+* Notice that the null distribution of $T$ depends on the parametric assumption that both $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$ and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. Appealing to the Central Limit Theorem, one could
 argue that is a quite reasonable assumption.
 
 * In addition to using the assumption that $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$ and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$, we used this parametric assumption (at least implicitly) in the formulation of the hypothesis test itself because we assumed that any difference between $F_{X}$ and $F_{Y}$ would be fully described by difference in $\mu_{x}$ and $\mu_{y}$.
 
 * So, in a sense, you are using the assumption of normality twice in the construction of the two-sample t-test.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **Nonparametric Tests** 
 
@@ -130,7 +136,9 @@ not depend on the form of $F_{X}$ (assuming $F_{X}$ is continuous).
 
 * For example, $H_{A}: F_{X} \neq F_{Y}$ or $H_{A}: F_{X} \geq F_{Y}$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Nonparametric tests usually tradeoff power for greater robustness.
 
@@ -153,7 +161,9 @@ For example,
     + $X_{i} \sim \textrm{Exponential}(\lambda)$
     + $X_{i} \sim \textrm{Beta}(\alpha, \beta)$
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * If we assume that $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2} )$, we only need to estimate 2 parameters to
 fully describe the distribution of $X_{i}$, and the number of parameters will not depend on the sample size. 
@@ -183,7 +193,7 @@ is defined as
 
 * The KDE is a type of smoothing procedure.
 
-![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-3-1.pdf)<!-- --> ![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-3-2.pdf)<!-- --> 
+![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-2-1.pdf)<!-- --> ![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-2-2.pdf)<!-- --> 
 
                                                               
 ## Example 3: Confidence Intervals {#sec:example-nonpar-confint}
@@ -211,8 +221,10 @@ is defined as
     2. $\hat{\theta}_{n} = \textrm{Maximum Likelihood Estimate of } \theta$. 
       
     In this case, asymptotics would justify the approximate distribution $\hat{\theta}_{n} \sim \textrm{Normal}(\theta, \frac{1}{nI(\theta)} )$, where $I(\theta)$ denotes the Fisher information. The standard error in this context is often $se_{n} = \{ n I(\hat{\theta}_{n}) \}^{-1/2}$.
-                                                                          
----
+    
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Confidence intervals using \@ref(eq:normal-approx) rely on a parametric approximation to the
 sampling distribution of the statistic $\hat{\theta}_{n}$.
@@ -220,7 +232,9 @@ sampling distribution of the statistic $\hat{\theta}_{n}$.
 * Moreover, even if one wanted to use something like \@ref(eq:normal-approx), working out 
 standard error formulas can be a great challenge in more complicated situations.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The **bootstrap** is a simulation-based approach for computing standard errors and
 confidence intervals.
@@ -248,7 +262,9 @@ Obs. 1 & 0.20 & 0.20 & 0.80 & 0.20 & 0.30 \\
 \end{tabular}
 \end{table}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * In the above example, we have 4 **boostrap replications** for the statistic $\hat{\theta}$: 
 \begin{eqnarray}
@@ -273,7 +289,7 @@ In practice, the number of bootstrap replications is typically much larger than 
 * It is often better to construct confidence intervals using the percentiles from the bootstrap distribution
 of $\hat{\theta}$ rather than use a confidence interval of the form: $\hat{\theta} \pm 1.96 \times se_{boot}$.
 
-![(\#fig:unnamed-chunk-4)Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dasjed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution.](01-IntroductionLatex_files/figure-latex/unnamed-chunk-4-1.pdf) 
+![(\#fig:unnamed-chunk-3)Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dasjed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution.](01-IntroductionLatex_files/figure-latex/unnamed-chunk-3-1.pdf) 
 
 
 ## Example 4: Nonparametric Regression with a Single Covariate {#sec:example-nonpar-regress1}
@@ -293,9 +309,11 @@ with the assumption $\varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2})$ often 
 * In this model, there are only 3 parameters: $(\beta_{0}, \beta_{1}, \sigma^{2})$,
 and the number of parameters stays fixed for all $n$.
                                                                           
-![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
+![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
                                                                           
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The nonparametric counterpart to linear regression is usually formulated in the following way
 \begin{equation}
@@ -316,7 +334,9 @@ m(x) = \sum_{j=1}^{n} \beta_{j}g_{j}(x)
 \end{equation}
 where $g_{1}, \ldots, g_{n}(x)$ are a collection of spline basis functions.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Because of the large number of parameters in \@ref(eq:smoothspline-model), one should
 estimate the basis function weights $\beta_{j}$ through penalized regression
@@ -337,7 +357,7 @@ that the number of parameters to be estimated will change with the sample size.
 * Allowing the number of basis functions to grow with $n$ is important. For a sufficiently large number of basis functions, one should be able to approximate the 
 true mean function $m(x)$ arbitrarily closely.
 
-![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> 
+![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
 
 
 
@@ -356,14 +376,16 @@ a sequence of "yes or no" questions.
 * When the responses $y_{i}$ are binary, such trees are referred to as classification trees.
 Hence, the name: classification and regression trees (CART).
 
-![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
+![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> 
 
 <!-- If true go left down tree. E.g., if someone is in treatment arm A, they get a prediction of 13.95  -->
 
 
-![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
+![](01-IntroductionLatex_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Classification and regression trees are constructed through **recursive partitioning**.
 
@@ -380,7 +402,9 @@ constructing predictions (as opposed to probability modeling in more
 traditional statistical methods) with a strong emphasis on predictive
 performance as measured through cross-validation.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * While single regression trees have the advantage of being directly interpretable, 
 their prediction performance is often not that great.
@@ -391,5 +415,8 @@ boosting, and Bayesian additive regression trees (BART).
 
 * Methods such as these can perform well on much larger datasets. We will discuss
 additional methods if time allows.
+
+
+
 
 

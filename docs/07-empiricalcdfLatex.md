@@ -28,7 +28,9 @@ the data arose.
 * The only assumption we are making is that $X_{1}, \ldots, X_{n}$
 constitute an i.i.d. sample from some common distribution function $F$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 
 * For example, if we observed $X_{1} = 0.7$, $X_{2} = 0.2$, and $X_{3} = 1.3$,
@@ -43,7 +45,7 @@ the corresponding empirical distribution function would be
 \end{cases}
 \end{equation}
 
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+![](07-empiricalcdfLatex_files/figure-latex/unnamed-chunk-1-1.pdf)<!-- --> 
 
 
 
@@ -65,7 +67,9 @@ n \hat{F}_{n}(t) = \sum_{i=1}^{n} W_{i}^{t} = \sum_{i=1}^{n} I( X_{i} \leq t)
 P( W_{i}^{t} = 1) = P(X_{i} \leq t) = F(t) \nonumber
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **Pointwise Confidence Intervals**
 
@@ -91,8 +95,9 @@ intervals for $F(t)$ or for survival functions $S(t) = 1 - F(t)$ is fairly commo
 
 * However, these pointwise confidence intervals only hold for each point separately.
 
-
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **Simultaneous Confidence Bands**
 
@@ -120,7 +125,9 @@ where $\delta_{\alpha,n}$ is given by
 \delta_{\alpha, n} = \sqrt{\frac{1}{2n} \ln\Big(\frac{2}{\alpha} \Big)} \nonumber
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The reason this choice of confidence band works is the 
 Dvoretzky-Kiefer-Wolfowitz (DKW) inequality.
@@ -149,7 +156,9 @@ P\Bigg( L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{f
 \end{eqnarray}
 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Confidence bands will almost always be wider than 
 the pointwise confidence intervals.
@@ -201,7 +210,7 @@ kidney.Fhat <- ecdf(kidney$tot)
 plot(kidney.Fhat, main = "Kidney Data: Default plot for ecdf", las=1)
 ```
 
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+![](07-empiricalcdfLatex_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
 
 * If you don't like the look of the points in the ecdf plot, you can use add the argument
 **do.points = FALSE** when calling plot. Also, you can add the argument **verticals =TRUE**
@@ -213,9 +222,11 @@ plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data:
     ecdf with vertical lines and without points", las=1, lwd=2)
 ```
 
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+![](07-empiricalcdfLatex_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * A nice feature of of the **ecdf** function is that **ecdf** object
 can be treated as a function which computes the empirical distribution function.
@@ -239,7 +250,9 @@ kidney.Fhat( c(-1,1,4) )
 ## [1] 0.3057325 0.6560510 0.9745223
 ```
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * **R** does not plot confidence intervals when plotting the empirical distribution function.
 
@@ -264,7 +277,7 @@ lines(tt, ci.low, type="s", lty=2, lwd=2)
 lines(tt, ci.upper, type="s", lty=2, lwd=2)
 ```
 
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+![](07-empiricalcdfLatex_files/figure-latex/unnamed-chunk-7-1.pdf)<!-- --> 
 
 * We could plot the confidence bands as well.
 
@@ -282,12 +295,12 @@ lines(tt, ci.band.low, type="s", lty=2, lwd=2)
 lines(tt, ci.band.upper, type="s", lty=2, lwd=2)
 ```
 
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+![](07-empiricalcdfLatex_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
 
 * Comparing the pointwise confidence intervals and the simultaneous confidence bands
 in the same plot shows how much wider the confidence bands are:
 
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+![](07-empiricalcdfLatex_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
 
 
 
@@ -307,7 +320,9 @@ H_{0}: F = F_{0} \quad \textrm{ vs. } \quad H_{A}: F \neq F_{0}
 
 * The one-sample KS test could be used, for example, as a test of normality. 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The one-sample Kolmogorov-Smirnov test statistic $KS_{n}^{(1)}$ looks at the maximum distance
 between the empirical distribution function and $F_{0}$
@@ -339,7 +354,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.085696, p-value = 0.4548
+## D = 0.19459, p-value = 0.001028
 ## alternative hypothesis: two-sided
 ```
 
@@ -355,11 +370,13 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.40376, p-value = 1.388e-14
+## D = 0.21328, p-value = 0.0002239
 ## alternative hypothesis: two-sided
 ```
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Suppose we have data from two groups: $X_{1}, \ldots, X_{n} \sim F_{X}$ and $Y_{1}, \ldots, Y_{m} \sim F_{Y}$.
 The two-sample KS test performs a test of the following hypothesis
@@ -390,7 +407,9 @@ the one-sample KS test statistic. In particular, under $H_{0}$:
 \qquad \textrm{ as } n,m \longrightarrow \infty  \nonumber
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The **ks.test** function in **R** also performs two-sample KS tests.
 
@@ -405,7 +424,7 @@ ks.test(xx, yy)
 ## 	Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.22, p-value = 0.01581
+## D = 0.21, p-value = 0.02431
 ## alternative hypothesis: two-sided
 ```
 
@@ -424,11 +443,12 @@ KS.stat
 ```
 
 ```
-## [1] 0.22
+## [1] 0.21
 ```
 
-
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * **Exercise 7.1.** Why does
 \begin{equation}
@@ -437,7 +457,9 @@ KS_{n,m}^{(2)} = \max_{1 \leq i \leq n+m} \big| \hat{F}_{n,X}(Z_{(i)}) -  \hat{F
 where $\mathbf{Z} = (Z_{1}, \ldots, Z_{n+m})$ denotes the pooled sample and $Z_{(1)}, \ldots, Z_{(n+m)}$
 denote the order statistics from $\mathbf{Z}$?
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 
 ## The empirical distribution function and statistical functionals
@@ -452,7 +474,9 @@ T(f) = \int_{0}^{1} f^{2}(x) dx
 is a functional because $T(f)$ takes arguments which are functions
 and outputs real numbers.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Many common parameters that we encounter in statistics can be thought of
 as functionals where the input of the functional is usually a distribution function.
@@ -480,7 +504,9 @@ depends on the underlying distribution function $F$.
 \theta_{c}(F) = \int I(x > c) dF(x) \nonumber
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Many common estimators can be thought of as coming
 from "plugging in" the empirical cdf into the appropriate statistical functional.
@@ -505,7 +531,9 @@ from "plugging in" the empirical cdf into the appropriate statistical functional
 = \frac{n-1}{n} \hat{\sigma}^{2} \nonumber 
 \end{eqnarray}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * This notation for statistical functionals will be useful when we discuss the bootstrap later in
 the course.
