@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  9 MAR 2020 16:56
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  10 MAR 2020 00:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1400,31 +1400,31 @@ Chapter 9.
 File: 09-bootstrapLatex_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (
 type pdf)
 <use 09-bootstrapLatex_files/figure-latex/unnamed-chunk-1-1.pdf>
-[170] [171] [172]
-Overfull \hbox (67.14703pt too wide) in alignment at lines 7468--7471
+[170] [171] [172] [173]
+Overfull \hbox (67.14703pt too wide) in alignment at lines 7477--7480
  [][][] []
  []
 
-[173] [174]
+[174] [175]
 File: 09-bootstrapLatex_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (
 type pdf)
 <use 09-bootstrapLatex_files/figure-latex/unnamed-chunk-8-1.pdf>
-[175] (./ElementsNonparStat.bbl [176] [177
+(./ElementsNonparStat.bbl [176] [177] [178
 
-])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 7626.
-[178]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 7626.
+] [179])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 7635.
+[180]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 7635.
 (./ElementsNonparStat.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 7626.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 7626.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 7635.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 7635.
 
 Package rerunfilecheck Info: File `ElementsNonparStat.out' has not changed.
 (rerunfilecheck)             Checksum: 55E2A98BCEBFAA0B3DCAD47D50FCA1EA;11486.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 7626.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 7635.
  ) 
 Here is how much of TeX's memory you used:
  17175 strings out of 481765
@@ -1435,4 +1435,4 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  52i,12n,115p,548b,553s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on ElementsNonparStat.pdf (178 pages).
+Output written on ElementsNonparStat.pdf (180 pages).

@@ -31,6 +31,11 @@ so that we can assume $e^{\bar{X}}$ has a roughly Normal distribution with mean 
 and standard deviation $\sigma e^{\mu}/\sqrt{n}$. This approximation is based on 
 a Central Limit Theorem and "delta method" argument.
 
+* The standard error in this case is
+\begin{equation}
+\frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}} \nonumber
+\end{equation}
+
 * Using this Normal approximation for $e^{\bar{X}}$, the $95\%$ confidence interval for
 $e^{\mu}$ is
 \begin{equation}
@@ -49,7 +54,7 @@ e^{\bar{X}} + 1.96 \times \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}}
 * The figure below shows a histogram for the simulated distribution of $e^{\bar{X}}$ when $n=50$.
 The density of the Normal approximation is also shown in this figure.
 
-![(\#fig:unnamed-chunk-1)Histogram of simulated values of exp(sample mean) with density of the Normal approximation overlaid. This assumes n=50.](09-bootstrapLatex_files/figure-latex/unnamed-chunk-1-1.pdf) 
+![(\#fig:unnamed-chunk-1)Histogram of simulated values of exp(sample mean) with density of the Normal approximation overlaid. This assumes n=50 and that the data are from a Logistic distribution with mu = 2 and s = 2.](09-bootstrapLatex_files/figure-latex/unnamed-chunk-1-1.pdf) 
 
 * As we can see from the above histogram, the Normal approximation is not terrible. However, 
 it really does not capture the skewness in the distribution of $e^{\bar{X}}$ correctly.
@@ -76,7 +81,7 @@ between $X_{i}$ and $Y_{i}$ is defined as
 you use a multivariate delta method argument:
 \begin{equation}
 \textrm{std.err}_{corr}
-= \Bigg\{ \frac{\hat{\rho}^{2}}{4n}\Bigg[ \frac{\hat{\mu}_{40}}{\hat{\mu}_{20}^{2}} + \frac{\hat{\mu}_{04}}{\hat{\mu}_{02}^{2}} + \frac{2\hat{\mu}_{22}}{\hat{\mu}_{20}\hat{\mu}_{02} } + \frac{4\hat{\mu}_{22}}{\hat{\mu}_{11}^{2}} - \frac{4\hat{\mu}_{31}}{\hat{\mu}_{11}\hat{\mu}_{20} } + - \frac{4\hat{\mu}_{13}}{\hat{\mu}_{11}\hat{\mu}_{02} } \Bigg] \Bigg\}^{1/2}
+= \Bigg\{ \frac{\hat{\rho}^{2}}{4n}\Bigg[ \frac{\hat{\mu}_{40}}{\hat{\mu}_{20}^{2}} + \frac{\hat{\mu}_{04}}{\hat{\mu}_{02}^{2}} + \frac{2\hat{\mu}_{22}}{\hat{\mu}_{20}\hat{\mu}_{02} } + \frac{4\hat{\mu}_{22}}{\hat{\mu}_{11}^{2}} - \frac{4\hat{\mu}_{31}}{\hat{\mu}_{11}\hat{\mu}_{20} } - \frac{4\hat{\mu}_{13}}{\hat{\mu}_{11}\hat{\mu}_{02} } \Bigg] \Bigg\}^{1/2}
 (\#eq:rho-stderr)
 \end{equation}
 where
@@ -124,16 +129,17 @@ T_{n} = h\Big( X_{1}, \ldots, X_{n}   \Big)  \nonumber
 
 * An estimate of the standard deviation of $T_{n}$ is referred to as the **standard error**. 
 
-*Confidence intervals are often based on subtracting or adding the standard error, 
+* Confidence intervals are often based on subtracting or adding the standard error, 
 e.g.
 \begin{equation}
-CI = T_{n} \pm z_{\alpha/2} \times \textrm{standard error}  \nonumber 
+CI = T_{n} \pm z_{\alpha/2} \times \textrm{standard error},  \nonumber 
 \end{equation}
+where $z_{\alpha/2}$ is the $100 \times (1 - \alpha/2)$ percentile of the $\textrm{Normal}(0,1)$ distribution.
 
 * The bootstrap estimates the standard deviation of $T_{n}$ by repeatedly subsampling from 
 the original data and computing the value of the statistic $T_{n}$ on each subsample. 
 
-* More generally, we can use the bootstrap not just to find the variance of $T_{n}$
+* More generally, we can use the bootstrap not just to find the standard deviation of $T_{n}$
 but to characterize the distribution of $T_{n}$.
 
 \begin{center}
@@ -150,12 +156,18 @@ but to characterize the distribution of $T_{n}$.
 
 * The bootstrap works in the following way:
 * For $r = 1, \ldots, R$:
-    + Draw a sample of size $n$ $(X_{1}^{*}, \ldots, X_{n}^{*})$ by sampling with replacement from $\mathbf{X}$.
+    + Draw a sample of size $n$: $(X_{1}^{*}, \ldots, X_{n}^{*})$ by sampling with replacement from $\mathbf{X}$.
     + Compute $T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})$. 
 
 \begin{center}
 \rule{\textwidth}{.05cm}
 \end{center}
+
+* Each sample is $(X_{1}^{*}, \ldots, X_{n}^{*})$ is drawn through simple random sampling with replacement. 
+That is, $X_{1}^{*}, \ldots, X_{n}^{*}$ are independent with 
+\begin{equation}
+P(X_{i}^{*} = X_{j}) = \frac{1}{n} \quad \textrm{ for } j=1,\ldots,n \nonumber
+\end{equation}
 
 * We will refer to each sample $(X_{1}^{*}, \ldots, X_{n}^{*})$ as a **bootstrap sample**.
 
@@ -254,20 +266,20 @@ and standard deviation $\bar{X}/\sqrt{n}$.
 * Let's do a small simulation to see how the Normal approximation confidence interval compares with
 bootstrap-based confidence intervals.
 
-* We will compare the Normal-approximation confidence interval with both the standard error bootstrap
+* We will compare the Normal-approximation confidence interval with both the normal standard error bootstrap
 confidence interval and the percentile bootstrap confidence interval. 
 
 
 
 
 ```r
-xx <- rexp(50, rate=2) ## data
+xx <- rexp(50, rate=2) ## data, sample of 50 exponential r.v.s with mean 1/2
 R <- 500   ## number of bootstrap replications
 boot.mean <- rep(0, R)
-for(k in 1:R) {
+for(r in 1:R) {
    boot.samp <- sample(1:50, size=50, replace=TRUE)
    xx.boot <- xx[boot.samp]   ## this is the bootstrap sample
-   boot.mean[k] <- mean(xx.boot)  ## this is the kth bootstrap replication
+   boot.mean[r] <- mean(xx.boot)  ## this is the rth bootstrap replication
 }
 ```
 

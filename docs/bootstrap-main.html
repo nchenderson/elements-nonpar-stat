@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-09" />
+<meta name="date" content="2020-03-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -323,6 +323,10 @@ meaning that <span class="math inline">\(E(X_{i}) = \mu\)</span> and <span class
 so that we can assume <span class="math inline">\(e^{\bar{X}}\)</span> has a roughly Normal distribution with mean <span class="math inline">\(e^{\mu}\)</span>
 and standard deviation <span class="math inline">\(\sigma e^{\mu}/\sqrt{n}\)</span>. This approximation is based on
 a Central Limit Theorem and “delta method” argument.</p></li>
+<li><p>The standard error in this case is
+<span class="math display">\[\begin{equation}
+\frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}} \nonumber
+\end{equation}\]</span></p></li>
 <li><p>Using this Normal approximation for <span class="math inline">\(e^{\bar{X}}\)</span>, the <span class="math inline">\(95\%\)</span> confidence interval for
 <span class="math inline">\(e^{\mu}\)</span> is
 <span class="math display" id="eq:normal-approx-emu">\[\begin{equation}
@@ -339,9 +343,9 @@ e^{\bar{X}} + 1.96 \times \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}}
 The density of the Normal approximation is also shown in this figure.</p></li>
 </ul>
 <div class="figure"><span id="fig:unnamed-chunk-1"></span>
-<img src="09-bootstrap_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of simulated values of exp(sample mean) with density of the Normal approximation overlaid. This assumes n=50." width="672" />
+<img src="09-bootstrap_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of simulated values of exp(sample mean) with density of the Normal approximation overlaid. This assumes n=50 and that the data are from a Logistic distribution with mu = 2 and s = 2." width="672" />
 <p class="caption">
-Figure 8.1: Histogram of simulated values of exp(sample mean) with density of the Normal approximation overlaid. This assumes n=50.
+Figure 8.1: Histogram of simulated values of exp(sample mean) with density of the Normal approximation overlaid. This assumes n=50 and that the data are from a Logistic distribution with mu = 2 and s = 2.
 </p>
 </div>
 <ul>
@@ -364,7 +368,7 @@ between <span class="math inline">\(X_{i}\)</span> and <span class="math inline"
 you use a multivariate delta method argument:
 <span class="math display" id="eq:rho-stderr">\[\begin{equation}
 \textrm{std.err}_{corr}
-= \Bigg\{ \frac{\hat{\rho}^{2}}{4n}\Bigg[ \frac{\hat{\mu}_{40}}{\hat{\mu}_{20}^{2}} + \frac{\hat{\mu}_{04}}{\hat{\mu}_{02}^{2}} + \frac{2\hat{\mu}_{22}}{\hat{\mu}_{20}\hat{\mu}_{02} } + \frac{4\hat{\mu}_{22}}{\hat{\mu}_{11}^{2}} - \frac{4\hat{\mu}_{31}}{\hat{\mu}_{11}\hat{\mu}_{20} } + - \frac{4\hat{\mu}_{13}}{\hat{\mu}_{11}\hat{\mu}_{02} } \Bigg] \Bigg\}^{1/2}
+= \Bigg\{ \frac{\hat{\rho}^{2}}{4n}\Bigg[ \frac{\hat{\mu}_{40}}{\hat{\mu}_{20}^{2}} + \frac{\hat{\mu}_{04}}{\hat{\mu}_{02}^{2}} + \frac{2\hat{\mu}_{22}}{\hat{\mu}_{20}\hat{\mu}_{02} } + \frac{4\hat{\mu}_{22}}{\hat{\mu}_{11}^{2}} - \frac{4\hat{\mu}_{31}}{\hat{\mu}_{11}\hat{\mu}_{20} } - \frac{4\hat{\mu}_{13}}{\hat{\mu}_{11}\hat{\mu}_{02} } \Bigg] \Bigg\}^{1/2}
 \tag{9.2}
 \end{equation}\]</span>
 where
@@ -405,16 +409,15 @@ T_{n} = h\Big( X_{1}, \ldots, X_{n}   \Big)  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Suppose we want to estimate the standard deviation of <span class="math inline">\(T_{n}\)</span>.</p></li>
 <li><p>An estimate of the standard deviation of <span class="math inline">\(T_{n}\)</span> is referred to as the <strong>standard error</strong>.</p></li>
-</ul>
-<p>*Confidence intervals are often based on subtracting or adding the standard error,
+<li><p>Confidence intervals are often based on subtracting or adding the standard error,
 e.g.
 <span class="math display">\[\begin{equation}
-CI = T_{n} \pm z_{\alpha/2} \times \textrm{standard error}  \nonumber 
-\end{equation}\]</span></p>
-<ul>
+CI = T_{n} \pm z_{\alpha/2} \times \textrm{standard error},  \nonumber 
+\end{equation}\]</span>
+where <span class="math inline">\(z_{\alpha/2}\)</span> is the <span class="math inline">\(100 \times (1 - \alpha/2)\)</span> percentile of the <span class="math inline">\(\textrm{Normal}(0,1)\)</span> distribution.</p></li>
 <li><p>The bootstrap estimates the standard deviation of <span class="math inline">\(T_{n}\)</span> by repeatedly subsampling from
 the original data and computing the value of the statistic <span class="math inline">\(T_{n}\)</span> on each subsample.</p></li>
-<li><p>More generally, we can use the bootstrap not just to find the variance of <span class="math inline">\(T_{n}\)</span>
+<li><p>More generally, we can use the bootstrap not just to find the standard deviation of <span class="math inline">\(T_{n}\)</span>
 but to characterize the distribution of <span class="math inline">\(T_{n}\)</span>.</p></li>
 </ul>
 <hr />
@@ -430,12 +433,17 @@ but to characterize the distribution of <span class="math inline">\(T_{n}\)</spa
 <li>The bootstrap works in the following way:</li>
 <li>For <span class="math inline">\(r = 1, \ldots, R\)</span>:
 <ul>
-<li>Draw a sample of size <span class="math inline">\(n\)</span> <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> by sampling with replacement from <span class="math inline">\(\mathbf{X}\)</span>.</li>
+<li>Draw a sample of size <span class="math inline">\(n\)</span>: <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> by sampling with replacement from <span class="math inline">\(\mathbf{X}\)</span>.</li>
 <li>Compute <span class="math inline">\(T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})\)</span>.</li>
 </ul></li>
 </ul>
 <hr />
 <ul>
+<li><p>Each sample is <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> is drawn through simple random sampling with replacement.
+That is, <span class="math inline">\(X_{1}^{*}, \ldots, X_{n}^{*}\)</span> are independent with
+<span class="math display">\[\begin{equation}
+P(X_{i}^{*} = X_{j}) = \frac{1}{n} \quad \textrm{ for } j=1,\ldots,n \nonumber
+\end{equation}\]</span></p></li>
 <li><p>We will refer to each sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> as a <strong>bootstrap sample</strong>.</p></li>
 <li><p>We will refer to <span class="math inline">\(T_{n,r}^{*}\)</span> as a <strong>bootstrap replication</strong>.</p></li>
 <li><p>The bootstrap estimate for the standard error of <span class="math inline">\(T_{n}\)</span> is
@@ -512,16 +520,16 @@ and standard deviation <span class="math inline">\(\bar{X}/\sqrt{n}\)</span>.</p
 <ul>
 <li><p>Let’s do a small simulation to see how the Normal approximation confidence interval compares with
 bootstrap-based confidence intervals.</p></li>
-<li><p>We will compare the Normal-approximation confidence interval with both the standard error bootstrap
+<li><p>We will compare the Normal-approximation confidence interval with both the normal standard error bootstrap
 confidence interval and the percentile bootstrap confidence interval.</p></li>
 </ul>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb155-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">50</span>, <span class="dt">rate=</span><span class="dv">2</span>) <span class="co">## data</span></a>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb155-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">50</span>, <span class="dt">rate=</span><span class="dv">2</span>) <span class="co">## data, sample of 50 exponential r.v.s with mean 1/2</span></a>
 <a class="sourceLine" id="cb155-2" data-line-number="2">R &lt;-<span class="st"> </span><span class="dv">500</span>   <span class="co">## number of bootstrap replications</span></a>
 <a class="sourceLine" id="cb155-3" data-line-number="3">boot.mean &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, R)</a>
-<a class="sourceLine" id="cb155-4" data-line-number="4"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R) {</a>
+<a class="sourceLine" id="cb155-4" data-line-number="4"><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R) {</a>
 <a class="sourceLine" id="cb155-5" data-line-number="5">   boot.samp &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>, <span class="dt">size=</span><span class="dv">50</span>, <span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb155-6" data-line-number="6">   xx.boot &lt;-<span class="st"> </span>xx[boot.samp]   <span class="co">## this is the bootstrap sample</span></a>
-<a class="sourceLine" id="cb155-7" data-line-number="7">   boot.mean[k] &lt;-<span class="st"> </span><span class="kw">mean</span>(xx.boot)  <span class="co">## this is the kth bootstrap replication</span></a>
+<a class="sourceLine" id="cb155-7" data-line-number="7">   boot.mean[r] &lt;-<span class="st"> </span><span class="kw">mean</span>(xx.boot)  <span class="co">## this is the rth bootstrap replication</span></a>
 <a class="sourceLine" id="cb155-8" data-line-number="8">}</a></code></pre></div>
 <div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb156-1" data-line-number="1">par.ci &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(xx) <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">mean</span>(xx)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">50</span>), <span class="kw">mean</span>(xx) <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">mean</span>(xx)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">50</span>))</a>
 <a class="sourceLine" id="cb156-2" data-line-number="2">boot.ci.sd &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(xx) <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(boot.mean), <span class="kw">mean</span>(xx) <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(boot.mean))</a>
