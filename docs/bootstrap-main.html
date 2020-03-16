@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-13" />
+<meta name="date" content="2020-03-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -252,7 +252,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9" data-path="bootstrap-main.html"><a href="bootstrap-main.html"><i class="fa fa-check"></i><b>9</b> The Bootstrap</a><ul>
 <li class="chapter" data-level="9.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#introduction-1"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
 <li class="chapter" data-level="9.2" data-path="bootstrap-main.html"><a href="bootstrap-main.html#description-of-the-bootstrap"><i class="fa fa-check"></i><b>9.2</b> Description of the Bootstrap</a><ul>
-<li class="chapter" data-level="9.2.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#example-confidence-intervals-for-the-rate-parameter-of-an-exponential-distribution"><i class="fa fa-check"></i><b>9.2.1</b> Example: Confidence Intervals for the Rate Parameter of an Exponential Distribution</a></li>
+<li class="chapter" data-level="9.2.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#description"><i class="fa fa-check"></i><b>9.2.1</b> Description</a></li>
+<li class="chapter" data-level="9.2.2" data-path="bootstrap-main.html"><a href="bootstrap-main.html#example-confidence-intervals-for-the-rate-parameter-of-an-exponential-distribution"><i class="fa fa-check"></i><b>9.2.2</b> Example: Confidence Intervals for the Rate Parameter of an Exponential Distribution</a></li>
+<li class="chapter" data-level="9.2.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#example-confidence-intervals-for-the-ratio-of-two-quantiles"><i class="fa fa-check"></i><b>9.2.3</b> Example: Confidence Intervals for the Ratio of Two Quantiles</a></li>
 </ul></li>
 <li class="chapter" data-level="9.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#why-is-the-bootstrap-procedure-reasonable"><i class="fa fa-check"></i><b>9.3</b> Why is the Bootstrap Procedure Reasonable?</a></li>
 </ul></li>
@@ -396,6 +398,8 @@ need to be able to compute the estimate of interest.</p></li>
 </div>
 <div id="description-of-the-bootstrap" class="section level2">
 <h2><span class="header-section-number">9.2</span> Description of the Bootstrap</h2>
+<div id="description" class="section level3">
+<h3><span class="header-section-number">9.2.1</span> Description</h3>
 <ul>
 <li><p>Suppose we have a statistic <span class="math inline">\(T_{n}\)</span> that is an estimate of some quantity of interest <span class="math inline">\(\theta\)</span>.</p></li>
 <li>For example:
@@ -489,8 +493,9 @@ and/or making asymptotic arguments for the distribution of <span class="math inl
 <li><p>We only need to be able to compute <span class="math inline">\(T_{n}\)</span> many times, and the bootstrap procedure
 will automatically produce a confidence interval for us.</p></li>
 </ul>
+</div>
 <div id="example-confidence-intervals-for-the-rate-parameter-of-an-exponential-distribution" class="section level3">
-<h3><span class="header-section-number">9.2.1</span> Example: Confidence Intervals for the Rate Parameter of an Exponential Distribution</h3>
+<h3><span class="header-section-number">9.2.2</span> Example: Confidence Intervals for the Rate Parameter of an Exponential Distribution</h3>
 <ul>
 <li><p>Suppose we have i.i.d. data <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> from an Exponential distribution with rate parameter <span class="math inline">\(1/\lambda\)</span>.
 That is, the pdf of <span class="math inline">\(X_{i}\)</span> is
@@ -552,6 +557,120 @@ confidence interval and the percentile bootstrap confidence interval.</p></li>
 <pre><code>##  2.5% 97.5% 
 ##  0.32  0.52</code></pre>
 <p><img src="09-bootstrap_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="example-confidence-intervals-for-the-ratio-of-two-quantiles" class="section level3">
+<h3><span class="header-section-number">9.2.3</span> Example: Confidence Intervals for the Ratio of Two Quantiles</h3>
+<ul>
+<li><p>Suppose we have data from two groups
+<span class="math display">\[\begin{eqnarray}
+&amp;&amp; \textrm{Group 1: }  X_{1}, \ldots, X_{n} \sim F_{X}  \nonumber \\
+&amp;&amp; \textrm{Group 2: }  Y_{1}, \ldots, Y_{n} \sim F_{Y} \nonumber 
+\end{eqnarray}\]</span></p></li>
+<li><p>The pth quantile for group 1 is defined as <span class="math inline">\(\theta_{p1} = F_{X}^{-1}(p)\)</span>.
+In other words, if <span class="math inline">\(F_{X}\)</span> is continuous then
+<span class="math display">\[\begin{equation}
+P(X_{i} \leq \theta_{p1}) = F_{X}(F_{X}^{-1}(p)) = p  \nonumber 
+\end{equation}\]</span></p></li>
+<li><p>Likewise, the pth quantile for group 2 is defined as <span class="math inline">\(\theta_{p2} = F_{Y}^{-1}(p)\)</span></p></li>
+<li><p>Suppose we are interested in estimating and constructing a confidence for the following parameter
+<span class="math display">\[\begin{equation}
+\eta = \frac{ \theta_{p1}}{ \theta_{p2} } \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>We will let <span class="math inline">\(\hat{\theta}_{p1}\)</span> denote the
+pth sample quantile from <span class="math inline">\((X_{1}, \ldots, X_{n})\)</span> and let
+<span class="math inline">\(\hat{\theta}_{p2}\)</span> denote the pth sample quantile from <span class="math inline">\((Y_{1}, \ldots, Y_{n})\)</span>.</p></li>
+<li><p>We will estimate <span class="math inline">\(\eta\)</span> with the ratio of the sample quantiles
+<span class="math display">\[\begin{equation}
+\hat{\eta} = \frac{  \hat{\theta}_{p1}  }{ \hat{\theta}_{p2} }  \nonumber 
+\end{equation}\]</span></p></li>
+<li><p>It can be shown that
+<span class="math display">\[\begin{equation}
+\hat{\theta}_{p1} \textrm{ has an approximate } \textrm{Normal}\Bigg( \theta_{p1}, \frac{p(1-p)}{n f_{X}^{2}(\theta_{p1})} \Bigg) \textrm{ distribution},  \nonumber 
+\end{equation}\]</span>
+where <span class="math inline">\(f_{X}(t) = F_{X}&#39;(t)\)</span> is the probability density function of <span class="math inline">\(X_{i}\)</span>.</p></li>
+<li><p>Using a multivariate delta method argument, you can show that
+<span class="math display" id="eq:quantile-ratio-approx">\[\begin{equation}
+\hat{\eta} \textrm{ has an approximate } \textrm{Normal}\Bigg( \eta, \frac{p(1-p)}{n f_{X}^{2}(\theta_{p1})\theta_{p2}^{2} } + \frac{p(1-p)\theta_{p1}^{2} }{n f_{Y}^{2}(\theta_{p2})\theta_{p2}^{4} } \Bigg) \textrm{ distribution} 
+\tag{9.4}
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Let’s do a small simulation study to see how the confidence interval based on the large-sample approximation <a href="bootstrap-main.html#eq:quantile-ratio-approx">(9.4)</a>
+compares with bootstrap-based confidence intervals.</p></li>
+<li><p>We will simulate <span class="math inline">\(X_{i} \sim \textrm{Gamma}(2, 1.5)\)</span> and <span class="math inline">\(Y_{i} \sim \textrm{Gamma}(2, 2)\)</span> with <span class="math inline">\(n = 100\)</span> and <span class="math inline">\(m = 100\)</span>.</p></li>
+</ul>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb163-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb163-2" data-line-number="2">m &lt;-<span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb163-3" data-line-number="3">xx &lt;-<span class="st"> </span><span class="kw">rgamma</span>(n, <span class="dt">shape=</span><span class="dv">2</span>, <span class="dt">rate=</span><span class="fl">1.5</span>) <span class="co">## data, sample of 50 exponential r.v.s with mean 1/2</span></a>
+<a class="sourceLine" id="cb163-4" data-line-number="4">yy &lt;-<span class="st"> </span><span class="kw">rgamma</span>(m, <span class="dt">shape=</span><span class="dv">2</span>, <span class="dt">rate=</span><span class="fl">1.5</span>)</a></code></pre></div>
+<ul>
+<li><p>We will focus on estimating the pth quantile ratio for <span class="math inline">\(p = 0.9\)</span>. In this case, the
+true value of <span class="math inline">\(\eta\)</span> is <span class="math inline">\(\eta = 4/3\)</span>.</p></li>
+<li><p>The estimate <span class="math inline">\(\hat{\eta}\)</span> and the standard error using the large-sample approximation <a href="bootstrap-main.html#eq:quantile-ratio-approx">(9.4)</a> is</p></li>
+</ul>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" data-line-number="1">theta.hat1 &lt;-<span class="st"> </span><span class="kw">quantile</span>(xx, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
+<a class="sourceLine" id="cb164-2" data-line-number="2">theta.hat2 &lt;-<span class="st"> </span><span class="kw">quantile</span>(yy, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
+<a class="sourceLine" id="cb164-3" data-line-number="3">eta.hat &lt;-<span class="st"> </span>theta.hat1<span class="op">/</span>theta.hat2    <span class="co">## estimate of quantile ratio</span></a>
+<a class="sourceLine" id="cb164-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb164-5" data-line-number="5">xdensity &lt;-<span class="st"> </span><span class="kw">density</span>(xx)</a>
+<a class="sourceLine" id="cb164-6" data-line-number="6">ydensity &lt;-<span class="st"> </span><span class="kw">density</span>(yy)</a>
+<a class="sourceLine" id="cb164-7" data-line-number="7">fx &lt;-<span class="st"> </span><span class="kw">approxfun</span>(xdensity<span class="op">$</span>x, xdensity<span class="op">$</span>y)(theta.hat1)</a>
+<a class="sourceLine" id="cb164-8" data-line-number="8">fy &lt;-<span class="st"> </span><span class="kw">approxfun</span>(ydensity<span class="op">$</span>x, ydensity<span class="op">$</span>y)(theta.hat2)</a>
+<a class="sourceLine" id="cb164-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb164-10" data-line-number="10">q1.se.sq &lt;-<span class="st"> </span>(.<span class="dv">9</span><span class="op">*</span>.<span class="dv">1</span>)<span class="op">/</span>(n<span class="op">*</span>(fx<span class="op">*</span>theta.hat2)<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb164-11" data-line-number="11">q2.se.sq &lt;-<span class="st"> </span>(.<span class="dv">9</span><span class="op">*</span>.<span class="dv">1</span><span class="op">*</span>theta.hat1<span class="op">*</span>theta.hat1)<span class="op">/</span>(n<span class="op">*</span>fy<span class="op">*</span>fy<span class="op">*</span>((theta.hat2)<span class="op">^</span><span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb164-12" data-line-number="12">std.err &lt;-<span class="st"> </span><span class="kw">sqrt</span>(q1.se.sq <span class="op">+</span><span class="st"> </span>q2.se.sq)</a></code></pre></div>
+<ul>
+<li>The confidence interval using the large-sample approximation <a href="bootstrap-main.html#eq:quantile-ratio-approx">(9.4)</a> is</li>
+</ul>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb165-1" data-line-number="1">CI &lt;-<span class="st"> </span><span class="kw">c</span>(eta.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>std.err, eta.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>std.err)</a>
+<a class="sourceLine" id="cb165-2" data-line-number="2"><span class="kw">round</span>(CI, <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>##  90%  90% 
+## 0.71 1.18</code></pre>
+<hr />
+<ul>
+<li>Now, using the same simulated data, let’s compute <span class="math inline">\(500\)</span> bootstrap replications of the statistic <span class="math inline">\(\hat{\eta}\)</span></li>
+</ul>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb167-1" data-line-number="1">R &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb167-2" data-line-number="2">eta.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
+<a class="sourceLine" id="cb167-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb167-4" data-line-number="4"><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R)</a>
+<a class="sourceLine" id="cb167-5" data-line-number="5">{</a>
+<a class="sourceLine" id="cb167-6" data-line-number="6">  boot.xx &lt;-<span class="st"> </span><span class="kw">sample</span>(xx, <span class="dt">size=</span>n, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb167-7" data-line-number="7">  boot.yy &lt;-<span class="st"> </span><span class="kw">sample</span>(yy, <span class="dt">size=</span>m, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb167-8" data-line-number="8">  thetahat.p1 &lt;-<span class="st"> </span><span class="kw">quantile</span>(boot.xx, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
+<a class="sourceLine" id="cb167-9" data-line-number="9">  thetahat.p2 &lt;-<span class="st"> </span><span class="kw">quantile</span>(boot.yy, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
+<a class="sourceLine" id="cb167-10" data-line-number="10">  eta.boot[r] &lt;-<span class="st"> </span>thetahat.p1<span class="op">/</span>thetahat.p2</a>
+<a class="sourceLine" id="cb167-11" data-line-number="11">}</a></code></pre></div>
+<ul>
+<li><p>Because this is a two-sample setting, we draw bootstrap samples <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> and <span class="math inline">\((Y_{1}^{*}, \ldots, Y_{m}^{*})\)</span> for each group separately to generate each bootstrap replications.</p></li>
+<li><p>The standard error boostrap confidence interval is</p></li>
+</ul>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb168-1" data-line-number="1">boot.ci.sd &lt;-<span class="st"> </span><span class="kw">c</span>(eta.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot), eta.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot))</a>
+<a class="sourceLine" id="cb168-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb168-3" data-line-number="3"><span class="kw">round</span>(boot.ci.sd, <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## [1] 0.57 1.32</code></pre>
+<ul>
+<li>The percentile bootstrap confidence interval is</li>
+</ul>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb170-1" data-line-number="1">boot.ci.quant &lt;-<span class="st"> </span><span class="kw">quantile</span>(eta.boot, <span class="dt">probs=</span><span class="kw">c</span>(.<span class="dv">025</span>, <span class="fl">.975</span>))</a>
+<a class="sourceLine" id="cb170-2" data-line-number="2"><span class="kw">round</span>(boot.ci.quant, <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>##  2.5% 97.5% 
+##  0.70  1.46</code></pre>
+<ul>
+<li>A histogram of the bootstrap replications of <span class="math inline">\(\hat{\eta}\)</span> is shown in the below figure. Note that the true
+value of <span class="math inline">\(\eta\)</span> is <span class="math inline">\(\eta = 4/3\)</span>.</li>
+</ul>
+<div class="figure"><span id="fig:unnamed-chunk-17"></span>
+<img src="09-bootstrap_files/figure-html/unnamed-chunk-17-1.png" alt="Bootstrap Distribution of the 0.9-Quantile Ratio. Vertical Lines are the Upper and Lower Bounds from the Percentile Bootstrap Confidence Interval." width="672" />
+<p class="caption">
+Figure 9.1: Bootstrap Distribution of the 0.9-Quantile Ratio. Vertical Lines are the Upper and Lower Bounds from the Percentile Bootstrap Confidence Interval.
+</p>
+</div>
 </div>
 </div>
 <div id="why-is-the-bootstrap-procedure-reasonable" class="section level2">

@@ -113,6 +113,8 @@ need to be able to compute the estimate of interest.
 
 ## Description of the Bootstrap
 
+### Description
+
 * Suppose we have a statistic $T_{n}$ that is an estimate of some quantity of interest $\theta$.
 
 * For example:
@@ -320,6 +322,162 @@ round(boot.ci.quant, 2)
 ```
 
 ![](09-bootstrapLatex_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
+
+### Example: Confidence Intervals for the Ratio of Two Quantiles
+
+* Suppose we have data from two groups
+\begin{eqnarray}
+&& \textrm{Group 1: }  X_{1}, \ldots, X_{n} \sim F_{X}  \nonumber \\
+&& \textrm{Group 2: }  Y_{1}, \ldots, Y_{n} \sim F_{Y} \nonumber 
+\end{eqnarray}
+
+* The pth quantile for group 1 is defined as $\theta_{p1} = F_{X}^{-1}(p)$.
+In other words, if $F_{X}$ is continuous then
+\begin{equation}
+P(X_{i} \leq \theta_{p1}) = F_{X}(F_{X}^{-1}(p)) = p  \nonumber 
+\end{equation}
+
+* Likewise, the pth quantile for group 2 is defined as $\theta_{p2} = F_{Y}^{-1}(p)$
+
+* Suppose we are interested in estimating and constructing a confidence for the following parameter
+\begin{equation}
+\eta = \frac{ \theta_{p1}}{ \theta_{p2} } \nonumber
+\end{equation}
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* We will let $\hat{\theta}_{p1}$ denote the
+pth sample quantile from $(X_{1}, \ldots, X_{n})$ and let
+$\hat{\theta}_{p2}$ denote the pth sample quantile from $(Y_{1}, \ldots, Y_{n})$.
+
+* We will estimate $\eta$ with the ratio of the sample quantiles
+\begin{equation}
+\hat{\eta} = \frac{  \hat{\theta}_{p1}  }{ \hat{\theta}_{p2} }  \nonumber 
+\end{equation}
+
+* It can be shown that
+\begin{equation}
+\hat{\theta}_{p1} \textrm{ has an approximate } \textrm{Normal}\Bigg( \theta_{p1}, \frac{p(1-p)}{n f_{X}^{2}(\theta_{p1})} \Bigg) \textrm{ distribution},  \nonumber 
+\end{equation}
+where $f_{X}(t) = F_{X}'(t)$ is the probability density function of $X_{i}$.
+
+* Using a multivariate delta method argument, you can show that
+\begin{equation}
+\hat{\eta} \textrm{ has an approximate } \textrm{Normal}\Bigg( \eta, \frac{p(1-p)}{n f_{X}^{2}(\theta_{p1})\theta_{p2}^{2} } + \frac{p(1-p)\theta_{p1}^{2} }{n f_{Y}^{2}(\theta_{p2})\theta_{p2}^{4} } \Bigg) \textrm{ distribution} 
+(\#eq:quantile-ratio-approx)
+\end{equation}
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* Let's do a small simulation study to see how the confidence interval based on the large-sample approximation \@ref(eq:quantile-ratio-approx) 
+compares with bootstrap-based confidence intervals.
+
+
+
+
+* We will simulate $X_{i} \sim \textrm{Gamma}(2, 1.5)$ and $Y_{i} \sim \textrm{Gamma}(2, 2)$ with $n = 100$ and $m = 100$. 
+
+```r
+n <- 100
+m <- 100
+xx <- rgamma(n, shape=2, rate=1.5) ## data, sample of 50 exponential r.v.s with mean 1/2
+yy <- rgamma(m, shape=2, rate=1.5)
+```
+
+* We will focus on estimating the pth quantile ratio for $p = 0.9$. In this case, the
+true value of $\eta$ is $\eta = 4/3$.
+
+* The estimate $\hat{\eta}$ and the standard error using the large-sample approximation \@ref(eq:quantile-ratio-approx) is
+
+```r
+theta.hat1 <- quantile(xx, probs=0.9)
+theta.hat2 <- quantile(yy, probs=0.9)
+eta.hat <- theta.hat1/theta.hat2    ## estimate of quantile ratio
+
+xdensity <- density(xx)
+ydensity <- density(yy)
+fx <- approxfun(xdensity$x, xdensity$y)(theta.hat1)
+fy <- approxfun(ydensity$x, ydensity$y)(theta.hat2)
+
+q1.se.sq <- (.9*.1)/(n*(fx*theta.hat2)^2)
+q2.se.sq <- (.9*.1*theta.hat1*theta.hat1)/(n*fy*fy*((theta.hat2)^4))
+std.err <- sqrt(q1.se.sq + q2.se.sq)
+```
+
+* The confidence interval using the large-sample approximation \@ref(eq:quantile-ratio-approx) is
+
+```r
+CI <- c(eta.hat - 1.96*std.err, eta.hat + 1.96*std.err)
+round(CI, 2)
+```
+
+```
+##  90%  90% 
+## 0.71 1.18
+```
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* Now, using the same simulated data, let's compute $500$ bootstrap replications of the statistic $\hat{\eta}$
+
+```r
+R <- 500
+eta.boot <- numeric(R)
+
+for(r in 1:R)
+{
+  boot.xx <- sample(xx, size=n, replace = TRUE)
+  boot.yy <- sample(yy, size=m, replace = TRUE)
+  thetahat.p1 <- quantile(boot.xx, probs=0.9)
+  thetahat.p2 <- quantile(boot.yy, probs=0.9)
+  eta.boot[r] <- thetahat.p1/thetahat.p2
+}
+```
+
+
+```r
+eta.boot <- drop(eta.boot)
+```
+
+
+
+* Because this is a two-sample setting, we draw bootstrap samples $(X_{1}^{*}, \ldots, X_{n}^{*})$ and $(Y_{1}^{*}, \ldots, Y_{m}^{*})$ for each group separately to generate each bootstrap replications.
+
+
+* The standard error boostrap confidence interval is
+
+```r
+boot.ci.sd <- c(eta.hat - 1.96*sd(eta.boot), eta.hat + 1.96*sd(eta.boot))
+
+round(boot.ci.sd, 2)
+```
+
+```
+## [1] 0.57 1.32
+```
+
+* The percentile bootstrap confidence interval is
+
+```r
+boot.ci.quant <- quantile(eta.boot, probs=c(.025, .975))
+round(boot.ci.quant, 2)
+```
+
+```
+##  2.5% 97.5% 
+##  0.70  1.46
+```
+
+* A histogram of the bootstrap replications of $\hat{\eta}$ is shown in the below figure. Note that the true
+value of $\eta$ is $\eta = 4/3$.
+
+![(\#fig:unnamed-chunk-18)Bootstrap Distribution of the 0.9-Quantile Ratio. Vertical Lines are the Upper and Lower Bounds from the Percentile Bootstrap Confidence Interval.](09-bootstrapLatex_files/figure-latex/unnamed-chunk-18-1.pdf) 
 
 ## Why is the Bootstrap Procedure Reasonable?
 

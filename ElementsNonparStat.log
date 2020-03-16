@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  13 MAR 2020 21:26
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  16 MAR 2020 00:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1406,7 +1406,7 @@ File: 09-bootstrapLatex_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (
 type pdf)
 <use 09-bootstrapLatex_files/figure-latex/unnamed-chunk-1-1.pdf>
 [168] [169] [170] [171]
-Overfull \hbox (67.14703pt too wide) in alignment at lines 7458--7461
+Overfull \hbox (67.14703pt too wide) in alignment at lines 7461--7464
  [][][] []
  []
 
@@ -1414,30 +1414,44 @@ Overfull \hbox (67.14703pt too wide) in alignment at lines 7458--7461
 File: 09-bootstrapLatex_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (
 type pdf)
 <use 09-bootstrapLatex_files/figure-latex/unnamed-chunk-8-1.pdf>
-(./ElementsNonparStat.bbl [174] [175] [176
+[174]
+Overfull \hbox (9.38481pt too wide) detected at line 7664
+[][][][][][][] [] [] [][][]
+ []
 
-] [177])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 7616.
-[178]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 7616.
+[175] [176]
+Underfull \hbox (badness 1371) in paragraph at lines 7765--7767
+[]\TU/lmr/m/n/10 Because this is a two-sample setting, we draw bootstrap sample
+s
+ []
+
+File: 09-bootstrapLatex_files/figure-latex/unnamed-chunk-18-1.pdf Graphic file 
+(type pdf)
+<use 09-bootstrapLatex_files/figure-latex/unnamed-chunk-18-1.pdf>
+(./ElementsNonparStat.bbl [177] [178] [179
+
+])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 7818.
+[180]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 7818.
 (./ElementsNonparStat.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 7616.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 7616.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 7818.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 7818.
 
 Package rerunfilecheck Info: File `ElementsNonparStat.out' has not changed.
 (rerunfilecheck)             Checksum: 64F00B324F445A0F7786B6EC4B0AE6B9;11586.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 7616.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 7818.
  ) 
 Here is how much of TeX's memory you used:
- 17176 strings out of 481765
- 321335 string characters out of 5935194
+ 17185 strings out of 481765
+ 321784 string characters out of 5935194
  752757 words of memory out of 5000000
- 33911 multiletter control sequences out of 15000+600000
+ 33920 multiletter control sequences out of 15000+600000
  538877 words of font info for 88 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  52i,12n,115p,548b,553s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on ElementsNonparStat.pdf (178 pages).
+Output written on ElementsNonparStat.pdf (180 pages).
