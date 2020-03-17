@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-16" />
+<meta name="date" content="2020-03-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -595,6 +595,11 @@ where <span class="math inline">\(f_{X}(t) = F_{X}&#39;(t)\)</span> is the proba
 <span class="math display" id="eq:quantile-ratio-approx">\[\begin{equation}
 \hat{\eta} \textrm{ has an approximate } \textrm{Normal}\Bigg( \eta, \frac{p(1-p)}{n f_{X}^{2}(\theta_{p1})\theta_{p2}^{2} } + \frac{p(1-p)\theta_{p1}^{2} }{n f_{Y}^{2}(\theta_{p2})\theta_{p2}^{4} } \Bigg) \textrm{ distribution} 
 \tag{9.4}
+\end{equation}\]</span></p></li>
+<li><p>Using the above large-sample approximation, the standard error that can be used to construct a confidence interval for <span class="math inline">\(\eta\)</span>
+is
+<span class="math display">\[\begin{equation}
+\sqrt{\frac{p(1-p)}{n \hat{f}_{X}^{2}(\hat{\theta}_{p1})\hat{\theta}_{p2}^{2} } + \frac{p(1-p)\hat{\theta}_{p1}^{2} }{n \hat{f}_{Y}^{2}(\hat{\theta}_{p2})\hat{\theta}_{p2}^{4} } }  \nonumber 
 \end{equation}\]</span></p></li>
 </ul>
 <hr />

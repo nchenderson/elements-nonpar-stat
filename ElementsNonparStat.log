@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  16 MAR 2020 00:32
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  17 MAR 2020 01:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1420,7 +1420,7 @@ Overfull \hbox (9.38481pt too wide) detected at line 7664
  []
 
 [175] [176]
-Underfull \hbox (badness 1371) in paragraph at lines 7765--7767
+Underfull \hbox (badness 1371) in paragraph at lines 7771--7773
 []\TU/lmr/m/n/10 Because this is a two-sample setting, we draw bootstrap sample
 s
  []
@@ -1431,24 +1431,24 @@ File: 09-bootstrapLatex_files/figure-latex/unnamed-chunk-18-1.pdf Graphic file
 (./ElementsNonparStat.bbl [177] [178] [179
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 7818.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 7824.
 [180]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 7818.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 7824.
 (./ElementsNonparStat.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 7818.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 7818.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 7824.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 7824.
 
 Package rerunfilecheck Info: File `ElementsNonparStat.out' has not changed.
 (rerunfilecheck)             Checksum: 64F00B324F445A0F7786B6EC4B0AE6B9;11586.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 7818.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 7824.
  ) 
 Here is how much of TeX's memory you used:
  17185 strings out of 481765
  321784 string characters out of 5935194
- 752757 words of memory out of 5000000
+ 753757 words of memory out of 5000000
  33920 multiletter control sequences out of 15000+600000
  538877 words of font info for 88 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191

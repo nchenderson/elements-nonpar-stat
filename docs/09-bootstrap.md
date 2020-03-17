@@ -356,6 +356,11 @@ where $f_{X}(t) = F_{X}'(t)$ is the probability density function of $X_{i}$.
 (\#eq:quantile-ratio-approx)
 \end{equation}
 
+* Using the above large-sample approximation, the standard error that can be used to construct a confidence interval for $\eta$
+is
+\begin{equation}
+\sqrt{\frac{p(1-p)}{n \hat{f}_{X}^{2}(\hat{\theta}_{p1})\hat{\theta}_{p2}^{2} } + \frac{p(1-p)\hat{\theta}_{p1}^{2} }{n \hat{f}_{Y}^{2}(\hat{\theta}_{p2})\hat{\theta}_{p2}^{4} } }  \nonumber 
+\end{equation}
 
 ---
 
