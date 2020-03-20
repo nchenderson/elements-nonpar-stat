@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-17" />
+<meta name="date" content="2020-03-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -610,11 +610,11 @@ compares with bootstrap-based confidence intervals.</p></li>
 </ul>
 <div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb163-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="dv">100</span></a>
 <a class="sourceLine" id="cb163-2" data-line-number="2">m &lt;-<span class="st"> </span><span class="dv">100</span></a>
-<a class="sourceLine" id="cb163-3" data-line-number="3">xx &lt;-<span class="st"> </span><span class="kw">rgamma</span>(n, <span class="dt">shape=</span><span class="dv">2</span>, <span class="dt">rate=</span><span class="fl">1.5</span>) <span class="co">## data, sample of 50 exponential r.v.s with mean 1/2</span></a>
-<a class="sourceLine" id="cb163-4" data-line-number="4">yy &lt;-<span class="st"> </span><span class="kw">rgamma</span>(m, <span class="dt">shape=</span><span class="dv">2</span>, <span class="dt">rate=</span><span class="fl">1.5</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb163-3" data-line-number="3">xx &lt;-<span class="st"> </span><span class="kw">rgamma</span>(n, <span class="dt">shape=</span><span class="dv">2</span>, <span class="dt">rate=</span><span class="fl">1.5</span>) </a>
+<a class="sourceLine" id="cb163-4" data-line-number="4">yy &lt;-<span class="st"> </span><span class="kw">rgamma</span>(m, <span class="dt">shape=</span><span class="dv">2</span>, <span class="dt">rate=</span><span class="dv">2</span>)</a></code></pre></div>
 <ul>
 <li><p>We will focus on estimating the pth quantile ratio for <span class="math inline">\(p = 0.9\)</span>. In this case, the
-true value of <span class="math inline">\(\eta\)</span> is <span class="math inline">\(\eta = 4/3\)</span>.</p></li>
+true value of <span class="math inline">\(\eta\)</span> is <span class="math inline">\(\eta \approx 4/3\)</span>.</p></li>
 <li><p>The estimate <span class="math inline">\(\hat{\eta}\)</span> and the standard error using the large-sample approximation <a href="bootstrap-main.html#eq:quantile-ratio-approx">(9.4)</a> is</p></li>
 </ul>
 <div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" data-line-number="1">theta.hat1 &lt;-<span class="st"> </span><span class="kw">quantile</span>(xx, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
@@ -635,7 +635,7 @@ true value of <span class="math inline">\(\eta\)</span> is <span class="math inl
 <div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb165-1" data-line-number="1">CI &lt;-<span class="st"> </span><span class="kw">c</span>(eta.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>std.err, eta.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>std.err)</a>
 <a class="sourceLine" id="cb165-2" data-line-number="2"><span class="kw">round</span>(CI, <span class="dv">2</span>)</a></code></pre></div>
 <pre><code>##  90%  90% 
-## 0.71 1.18</code></pre>
+## 0.94 1.57</code></pre>
 <hr />
 <ul>
 <li>Now, using the same simulated data, let’s compute <span class="math inline">\(500\)</span> bootstrap replications of the statistic <span class="math inline">\(\hat{\eta}\)</span></li>
@@ -658,14 +658,14 @@ true value of <span class="math inline">\(\eta\)</span> is <span class="math inl
 <div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb168-1" data-line-number="1">boot.ci.sd &lt;-<span class="st"> </span><span class="kw">c</span>(eta.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot), eta.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot))</a>
 <a class="sourceLine" id="cb168-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb168-3" data-line-number="3"><span class="kw">round</span>(boot.ci.sd, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.57 1.32</code></pre>
+<pre><code>## [1] 0.75 1.76</code></pre>
 <ul>
 <li>The percentile bootstrap confidence interval is</li>
 </ul>
 <div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb170-1" data-line-number="1">boot.ci.quant &lt;-<span class="st"> </span><span class="kw">quantile</span>(eta.boot, <span class="dt">probs=</span><span class="kw">c</span>(.<span class="dv">025</span>, <span class="fl">.975</span>))</a>
 <a class="sourceLine" id="cb170-2" data-line-number="2"><span class="kw">round</span>(boot.ci.quant, <span class="dv">2</span>)</a></code></pre></div>
 <pre><code>##  2.5% 97.5% 
-##  0.70  1.46</code></pre>
+##  0.93  1.94</code></pre>
 <ul>
 <li>A histogram of the bootstrap replications of <span class="math inline">\(\hat{\eta}\)</span> is shown in the below figure. Note that the true
 value of <span class="math inline">\(\eta\)</span> is <span class="math inline">\(\eta = 4/3\)</span>.</li>
@@ -675,6 +675,103 @@ value of <span class="math inline">\(\eta\)</span> is <span class="math inline">
 <p class="caption">
 Figure 9.1: Bootstrap Distribution of the 0.9-Quantile Ratio. Vertical Lines are the Upper and Lower Bounds from the Percentile Bootstrap Confidence Interval.
 </p>
+</div>
+<div id="comparing-the-performance-of-the-bootstrap-and-large-sample-confidence-intervals" class="section level4">
+<h4><span class="header-section-number">9.2.3.1</span> Comparing the Performance of the Bootstrap and Large-Sample Confidence Intervals</h4>
+<ul>
+<li><p>We just saw that the bootstrap and the large-sample confidence intervals gave different answers.</p></li>
+<li><p>For this problem, is the best approach for constructing confidence intervals?</p></li>
+<li><p>We can compare the performance of different confidence intervals by
+looking at their <strong>coverage probability</strong>.</p></li>
+<li>For a vector of data <span class="math inline">\(\mathbf{X} = (X_{1}, \ldots, X_{n})\)</span>, we can represent
+a confidence interval for a parameter of interest <span class="math inline">\(\theta\)</span> as
+<span class="math display">\[\begin{equation}
+\Big[ L_{\alpha}(\mathbf{X}), U_{\alpha}(\mathbf{X}) \Big]
+\end{equation}\]</span>
+<ul>
+<li><span class="math inline">\(L_{\alpha}(\mathbf{X})\)</span> is the lower confidence bound.</li>
+<li><span class="math inline">\(U_{\alpha}( \mathbf{X} )\)</span> is the upper confidence bound.</li>
+</ul></li>
+<li><p>The coverage probability of a confidence interval <span class="math inline">\([ L_{\alpha}(\mathbf{X}), U_{\alpha}(\mathbf{X})]\)</span> is
+<span class="math display">\[\begin{equation}
+P\Big(  L_{\alpha}(\mathbf{X}) \leq \theta \leq U_{\alpha}(\mathbf{X}) \Big) \nonumber
+\end{equation}\]</span>
+where we usually construct <span class="math inline">\(L_{\alpha}(\mathbf{X})\)</span> and <span class="math inline">\(U_{\alpha}(\mathbf{X})\)</span> so
+that the coverage probability is exactly equal or close to <span class="math inline">\(1 - \alpha\)</span>.</p></li>
+<li>We can estimate this probability in simulations by looking at the following coverage proportion
+<span class="math display">\[\begin{equation}
+\textrm{CoverProp}_{n_{rep}}(\theta) = \frac{1}{n_{rep}}\sum_{k=1}^{n_{rep}} I\Big( L_{\alpha}(\mathbf{X}^{(k)})  &lt; \theta &lt;  U_{\alpha}(\mathbf{X}^{(k)})  \Big) \nonumber
+\end{equation}\]</span>
+<ul>
+<li><span class="math inline">\(n_{rep}\)</span> is the number of simulation replications</li>
+<li><span class="math inline">\(X^{(k)}\)</span> is the dataset from the <span class="math inline">\(k^{th}\)</span> simulation replication</li>
+<li>Each dataset <span class="math inline">\(X^{(k)}\)</span> is generated under the assumption that <span class="math inline">\(\theta\)</span> is the true value of the parameter of interest.</li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li><p>We will compare the coverage proportions using the same setup we had for this quantile ratio example.</p></li>
+<li><p>That is, <span class="math inline">\(p = 0.9\)</span> and <span class="math inline">\(X_{i} \sim \textrm{Gamma}(2, 1.5)\)</span> and <span class="math inline">\(Y_{i} \sim \textrm{Gamma}(2, 2)\)</span> with <span class="math inline">\(n = 100\)</span> and <span class="math inline">\(m = 100\)</span>.</p></li>
+<li><p>Below shows code for a simulation study which uses 1000 replications.</p></li>
+</ul>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb172-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1354</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb173-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb173-2" data-line-number="2">m &lt;-<span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb173-3" data-line-number="3">R &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb173-4" data-line-number="4">eta.true &lt;-<span class="st"> </span><span class="dv">4</span><span class="op">/</span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb173-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb173-6" data-line-number="6">nreps &lt;-<span class="st"> </span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb173-7" data-line-number="7">Cover.par.ci &lt;-<span class="st"> </span><span class="kw">numeric</span>(nreps)</a>
+<a class="sourceLine" id="cb173-8" data-line-number="8">Cover.bootsd.ci &lt;-<span class="st"> </span><span class="kw">numeric</span>(nreps)</a>
+<a class="sourceLine" id="cb173-9" data-line-number="9">Cover.bootquant.ci &lt;-<span class="st"> </span><span class="kw">numeric</span>(nreps)</a>
+<a class="sourceLine" id="cb173-10" data-line-number="10"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nreps)  {</a>
+<a class="sourceLine" id="cb173-11" data-line-number="11">    <span class="co">## Step 1: Generate the Data from Two Groups</span></a>
+<a class="sourceLine" id="cb173-12" data-line-number="12">    xx &lt;-<span class="st"> </span><span class="kw">rgamma</span>(n, <span class="dt">shape=</span><span class="dv">2</span>, <span class="dt">rate=</span><span class="fl">1.5</span>) </a>
+<a class="sourceLine" id="cb173-13" data-line-number="13">    yy &lt;-<span class="st"> </span><span class="kw">rgamma</span>(m, <span class="dt">shape=</span><span class="dv">2</span>, <span class="dt">rate=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb173-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb173-15" data-line-number="15">    <span class="co">## Step 2: Estimate eta from this data</span></a>
+<a class="sourceLine" id="cb173-16" data-line-number="16">    theta.hat1 &lt;-<span class="st"> </span><span class="kw">quantile</span>(xx, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
+<a class="sourceLine" id="cb173-17" data-line-number="17">    theta.hat2 &lt;-<span class="st"> </span><span class="kw">quantile</span>(yy, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
+<a class="sourceLine" id="cb173-18" data-line-number="18">    eta.hat &lt;-<span class="st"> </span>theta.hat1<span class="op">/</span>theta.hat2    </a>
+<a class="sourceLine" id="cb173-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb173-20" data-line-number="20">    <span class="co">## Step 3: Find confidence interval using large-sample Normal approximation</span></a>
+<a class="sourceLine" id="cb173-21" data-line-number="21">    xdensity &lt;-<span class="st"> </span><span class="kw">density</span>(xx)</a>
+<a class="sourceLine" id="cb173-22" data-line-number="22">    ydensity &lt;-<span class="st"> </span><span class="kw">density</span>(yy)</a>
+<a class="sourceLine" id="cb173-23" data-line-number="23">    fx &lt;-<span class="st"> </span><span class="kw">approxfun</span>(xdensity<span class="op">$</span>x, xdensity<span class="op">$</span>y)(theta.hat1)</a>
+<a class="sourceLine" id="cb173-24" data-line-number="24">    fy &lt;-<span class="st"> </span><span class="kw">approxfun</span>(ydensity<span class="op">$</span>x, ydensity<span class="op">$</span>y)(theta.hat2)</a>
+<a class="sourceLine" id="cb173-25" data-line-number="25">    q1.se.sq &lt;-<span class="st"> </span>(.<span class="dv">9</span><span class="op">*</span>.<span class="dv">1</span>)<span class="op">/</span>(n<span class="op">*</span>(fx<span class="op">*</span>theta.hat2)<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb173-26" data-line-number="26">    q2.se.sq &lt;-<span class="st"> </span>(.<span class="dv">9</span><span class="op">*</span>.<span class="dv">1</span><span class="op">*</span>theta.hat1<span class="op">*</span>theta.hat1)<span class="op">/</span>(n<span class="op">*</span>fy<span class="op">*</span>fy<span class="op">*</span>((theta.hat2)<span class="op">^</span><span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb173-27" data-line-number="27">    std.err &lt;-<span class="st"> </span><span class="kw">sqrt</span>(q1.se.sq <span class="op">+</span><span class="st"> </span>q2.se.sq)</a>
+<a class="sourceLine" id="cb173-28" data-line-number="28">    par.ci &lt;-<span class="st"> </span><span class="kw">c</span>(eta.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>std.err, eta.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>std.err)</a>
+<a class="sourceLine" id="cb173-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb173-30" data-line-number="30">    <span class="co">## Step 4: Find bootstrap confidence intervals using R bootstrap replications</span></a>
+<a class="sourceLine" id="cb173-31" data-line-number="31">    eta.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
+<a class="sourceLine" id="cb173-32" data-line-number="32">    <span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R)   {</a>
+<a class="sourceLine" id="cb173-33" data-line-number="33">        boot.xx &lt;-<span class="st"> </span><span class="kw">sample</span>(xx, <span class="dt">size=</span>n, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb173-34" data-line-number="34">        boot.yy &lt;-<span class="st"> </span><span class="kw">sample</span>(yy, <span class="dt">size=</span>m, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb173-35" data-line-number="35">        thetahat.p1 &lt;-<span class="st"> </span><span class="kw">quantile</span>(boot.xx, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
+<a class="sourceLine" id="cb173-36" data-line-number="36">        thetahat.p2 &lt;-<span class="st"> </span><span class="kw">quantile</span>(boot.yy, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
+<a class="sourceLine" id="cb173-37" data-line-number="37">        eta.boot[r] &lt;-<span class="st"> </span>thetahat.p1<span class="op">/</span>thetahat.p2</a>
+<a class="sourceLine" id="cb173-38" data-line-number="38">    }</a>
+<a class="sourceLine" id="cb173-39" data-line-number="39">    boot.ci.sd &lt;-<span class="st"> </span><span class="kw">c</span>(eta.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot), eta.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot))</a>
+<a class="sourceLine" id="cb173-40" data-line-number="40">    boot.ci.quant &lt;-<span class="st"> </span><span class="kw">quantile</span>(eta.boot, <span class="dt">probs=</span><span class="kw">c</span>(.<span class="dv">025</span>, <span class="fl">.975</span>))</a>
+<a class="sourceLine" id="cb173-41" data-line-number="41">    </a>
+<a class="sourceLine" id="cb173-42" data-line-number="42">    <span class="co">## Step 5: Record if the true parameter is covered or not:</span></a>
+<a class="sourceLine" id="cb173-43" data-line-number="43">    Cover.par.ci[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(par.ci[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>eta.true <span class="op">&amp;</span><span class="st"> </span>par.ci[<span class="dv">2</span>] <span class="op">&gt;=</span><span class="st"> </span>eta.true, <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb173-44" data-line-number="44">    Cover.bootsd.ci[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(boot.ci.sd[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>eta.true <span class="op">&amp;</span><span class="st"> </span>boot.ci.sd[<span class="dv">2</span>] <span class="op">&gt;=</span><span class="st"> </span>eta.true, </a>
+<a class="sourceLine" id="cb173-45" data-line-number="45">                                 <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb173-46" data-line-number="46">    Cover.bootquant.ci[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(boot.ci.quant[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>eta.true <span class="op">&amp;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb173-47" data-line-number="47"><span class="st">                                        </span>boot.ci.quant[<span class="dv">2</span>] <span class="op">&gt;=</span><span class="st"> </span>eta.true, <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb173-48" data-line-number="48">}</a></code></pre></div>
+<ul>
+<li>The coverage proportions for each method are:</li>
+</ul>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb174-1" data-line-number="1"><span class="kw">mean</span>(Cover.par.ci)</a></code></pre></div>
+<pre><code>## [1] 0.921</code></pre>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb176-1" data-line-number="1"><span class="kw">mean</span>(Cover.bootsd.ci)</a></code></pre></div>
+<pre><code>## [1] 0.949</code></pre>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb178-1" data-line-number="1"><span class="kw">mean</span>(Cover.bootquant.ci)</a></code></pre></div>
+<pre><code>## [1] 0.959</code></pre>
 </div>
 </div>
 </div>

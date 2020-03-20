@@ -375,12 +375,12 @@ compares with bootstrap-based confidence intervals.
 ```r
 n <- 100
 m <- 100
-xx <- rgamma(n, shape=2, rate=1.5) ## data, sample of 50 exponential r.v.s with mean 1/2
-yy <- rgamma(m, shape=2, rate=1.5)
+xx <- rgamma(n, shape=2, rate=1.5) 
+yy <- rgamma(m, shape=2, rate=2)
 ```
 
 * We will focus on estimating the pth quantile ratio for $p = 0.9$. In this case, the
-true value of $\eta$ is $\eta = 4/3$.
+true value of $\eta$ is $\eta \approx 4/3$.
 
 * The estimate $\hat{\eta}$ and the standard error using the large-sample approximation \@ref(eq:quantile-ratio-approx) is
 
@@ -408,7 +408,7 @@ round(CI, 2)
 
 ```
 ##  90%  90% 
-## 0.71 1.18
+## 0.94 1.57
 ```
 
 ---
@@ -443,7 +443,7 @@ round(boot.ci.sd, 2)
 ```
 
 ```
-## [1] 0.57 1.32
+## [1] 0.75 1.76
 ```
 
 * The percentile bootstrap confidence interval is
@@ -455,7 +455,7 @@ round(boot.ci.quant, 2)
 
 ```
 ##  2.5% 97.5% 
-##  0.70  1.46
+##  0.93  1.94
 ```
 
 * A histogram of the bootstrap replications of $\hat{\eta}$ is shown in the below figure. Note that the true
@@ -465,6 +465,131 @@ value of $\eta$ is $\eta = 4/3$.
 <img src="09-bootstrap_files/figure-html/unnamed-chunk-17-1.png" alt="Bootstrap Distribution of the 0.9-Quantile Ratio. Vertical Lines are the Upper and Lower Bounds from the Percentile Bootstrap Confidence Interval." width="672" />
 <p class="caption">(\#fig:unnamed-chunk-17)Bootstrap Distribution of the 0.9-Quantile Ratio. Vertical Lines are the Upper and Lower Bounds from the Percentile Bootstrap Confidence Interval.</p>
 </div>
+
+#### Comparing the Performance of the Bootstrap and Large-Sample Confidence Intervals
+
+* We just saw that the bootstrap and the large-sample confidence intervals gave different answers.
+
+* For this problem, is the best approach for constructing confidence intervals?
+
+* We can compare the performance of different confidence intervals by
+looking at their **coverage probability**.
+
+* For a vector of data $\mathbf{X} = (X_{1}, \ldots, X_{n})$, we can represent
+a confidence interval for a parameter of interest $\theta$ as
+\begin{equation}
+\Big[ L_{\alpha}(\mathbf{X}), U_{\alpha}(\mathbf{X}) \Big]
+\end{equation}
+    + $L_{\alpha}(\mathbf{X})$ is the lower confidence bound.
+    + $U_{\alpha}( \mathbf{X} )$ is the upper confidence bound.
+
+
+* The coverage probability of a confidence interval $[ L_{\alpha}(\mathbf{X}), U_{\alpha}(\mathbf{X})]$ is
+\begin{equation}
+P\Big(  L_{\alpha}(\mathbf{X}) \leq \theta \leq U_{\alpha}(\mathbf{X}) \Big) \nonumber
+\end{equation}
+where we usually construct $L_{\alpha}(\mathbf{X})$ and $U_{\alpha}(\mathbf{X})$ so
+that the coverage probability is exactly equal or close to $1 - \alpha$.
+
+
+* We can estimate this probability in simulations by looking at the following coverage proportion
+\begin{equation}
+\textrm{CoverProp}_{n_{rep}}(\theta) = \frac{1}{n_{rep}}\sum_{k=1}^{n_{rep}} I\Big( L_{\alpha}(\mathbf{X}^{(k)})  < \theta <  U_{\alpha}(\mathbf{X}^{(k)})  \Big) \nonumber
+\end{equation}
+    + $n_{rep}$ is the number of simulation replications
+    + $X^{(k)}$ is the dataset from the $k^{th}$ simulation replication
+    + Each dataset $X^{(k)}$ is generated under the assumption that $\theta$ is the true value of the parameter of interest.
+
+---
+
+* We will compare the coverage proportions using the same setup we had for this quantile ratio example. 
+
+* That is, $p = 0.9$ and $X_{i} \sim \textrm{Gamma}(2, 1.5)$ and $Y_{i} \sim \textrm{Gamma}(2, 2)$ with $n = 100$ and $m = 100$.
+
+* Below shows code for a simulation study which uses 1000 replications.
+
+
+```r
+set.seed(1354)
+```
+
+
+```r
+n <- 100
+m <- 100
+R <- 500
+eta.true <- 4/3
+
+nreps <- 1000
+Cover.par.ci <- numeric(nreps)
+Cover.bootsd.ci <- numeric(nreps)
+Cover.bootquant.ci <- numeric(nreps)
+for(k in 1:nreps)  {
+    ## Step 1: Generate the Data from Two Groups
+    xx <- rgamma(n, shape=2, rate=1.5) 
+    yy <- rgamma(m, shape=2, rate=2)
+
+    ## Step 2: Estimate eta from this data
+    theta.hat1 <- quantile(xx, probs=0.9)
+    theta.hat2 <- quantile(yy, probs=0.9)
+    eta.hat <- theta.hat1/theta.hat2    
+
+    ## Step 3: Find confidence interval using large-sample Normal approximation
+    xdensity <- density(xx)
+    ydensity <- density(yy)
+    fx <- approxfun(xdensity$x, xdensity$y)(theta.hat1)
+    fy <- approxfun(ydensity$x, ydensity$y)(theta.hat2)
+    q1.se.sq <- (.9*.1)/(n*(fx*theta.hat2)^2)
+    q2.se.sq <- (.9*.1*theta.hat1*theta.hat1)/(n*fy*fy*((theta.hat2)^4))
+    std.err <- sqrt(q1.se.sq + q2.se.sq)
+    par.ci <- c(eta.hat - 1.96*std.err, eta.hat + 1.96*std.err)
+
+    ## Step 4: Find bootstrap confidence intervals using R bootstrap replications
+    eta.boot <- numeric(R)
+    for(r in 1:R)   {
+        boot.xx <- sample(xx, size=n, replace = TRUE)
+        boot.yy <- sample(yy, size=m, replace = TRUE)
+        thetahat.p1 <- quantile(boot.xx, probs=0.9)
+        thetahat.p2 <- quantile(boot.yy, probs=0.9)
+        eta.boot[r] <- thetahat.p1/thetahat.p2
+    }
+    boot.ci.sd <- c(eta.hat - 1.96*sd(eta.boot), eta.hat + 1.96*sd(eta.boot))
+    boot.ci.quant <- quantile(eta.boot, probs=c(.025, .975))
+    
+    ## Step 5: Record if the true parameter is covered or not:
+    Cover.par.ci[k] <- ifelse(par.ci[1] < eta.true & par.ci[2] >= eta.true, 1, 0)
+    Cover.bootsd.ci[k] <- ifelse(boot.ci.sd[1] < eta.true & boot.ci.sd[2] >= eta.true, 
+                                 1, 0)
+    Cover.bootquant.ci[k] <- ifelse(boot.ci.quant[1] < eta.true & 
+                                        boot.ci.quant[2] >= eta.true, 1, 0)
+}
+```
+
+* The coverage proportions for each method are:
+
+```r
+mean(Cover.par.ci)
+```
+
+```
+## [1] 0.921
+```
+
+```r
+mean(Cover.bootsd.ci)
+```
+
+```
+## [1] 0.949
+```
+
+```r
+mean(Cover.bootquant.ci)
+```
+
+```
+## [1] 0.959
+```
 
 ## Why is the Bootstrap Procedure Reasonable?
 

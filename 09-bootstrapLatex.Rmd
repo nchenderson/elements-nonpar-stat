@@ -398,7 +398,7 @@ set.seed(5618)
 n <- 100
 m <- 100
 xx <- rgamma(n, shape=2, rate=1.5) ## data, sample of 50 exponential r.v.s with mean 1/2
-yy <- rgamma(m, shape=2, rate=1.5)
+yy <- rgamma(m, shape=2, rate=2)
 ```
 
 * We will focus on estimating the pth quantile ratio for $p = 0.9$. In this case, the
