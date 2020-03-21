@@ -509,9 +509,6 @@ that the coverage probability is exactly equal or close to $1 - \alpha$.
 * Below shows code for a simulation study which uses 1000 replications.
 
 
-```r
-set.seed(1354)
-```
 
 
 ```r
@@ -591,7 +588,54 @@ mean(Cover.bootquant.ci)
 ## [1] 0.959
 ```
 
+
+```r
+A <- matrix(0, 3, 3)
+A[1,] <- c(mean(Cover.par.ci) - 1.96*sd(Cover.par.ci)/sqrt(1000), mean(Cover.par.ci), mean(Cover.par.ci) + 1.96*sd(Cover.par.ci)/sqrt(1000))
+A[2,] <- c(mean(Cover.bootsd.ci) - 1.96*sd(Cover.bootsd.ci)/sqrt(1000), mean(Cover.bootsd.ci), mean(Cover.bootsd.ci) + 1.96*sd(Cover.bootsd.ci)/sqrt(1000))
+A[3,] <- c(mean(Cover.bootquant.ci) - 1.96*sd(Cover.bootquant.ci)/sqrt(1000), mean(Cover.bootquant.ci), mean(Cover.bootquant.ci) + 1.96*sd(Cover.bootquant.ci)/sqrt(1000))
+round(A, 3)
+```
+
+```
+##       [,1]  [,2]  [,3]
+## [1,] 0.904 0.921 0.938
+## [2,] 0.935 0.949 0.963
+## [3,] 0.947 0.959 0.971
+```
+
+
 ## Why is the Bootstrap Procedure Reasonable?
+
+* As mentioned before, our original motivation for the bootstrap was to find an estimate of 
+$\textrm{Var}(T_{n})$ where 
+
+* The statistic $T_{n}$ can be thought of as a function of our sample 
+\begin{equation}
+T_{n} = h(X_{1}, \ldots, X_{n}) \nonumber 
+\end{equation}
+where $X_{1}, \ldots, X_{n}$ is an i.i.d. sample with cumulative distribution function $F$.
+
+* If we had a way of simulating data $X_{i}^{(k)}$ from $F$, we could estimate $\textrm{Var}(T_{n})$
+with the following quantity
+\begin{eqnarray}
+\widehat{\textrm{Var}( T_{n} )} &=& \sum_{k=1}^{K}\Big( h(X_{1}^{(k)}, \ldots, X_{n}^{(k)}) - \frac{1}{K}\sum_{k=1}^{K} h(X_{1}^{(k)}, \ldots, X_{n}^{(k)})  \Big)^{2} \nonumber \\
+&=& \sum_{k=1}^{K}\Big( T_{n}^{(k)} - \frac{1}{K}\sum_{k=1}^{K} T_{n}^{(k)}  \Big)^{2}  \nonumber 
+\end{eqnarray}
+    + $X_{1}^{(k)}, \ldots, X_{n}^{(k)}$ is an i.i.d. sample from $F$. 
+    + $T_{n}^{(k)} = h(X_{1}^{(k)}, \ldots, X_{n}^{(k)})$ is the value of out statistic of interest from the $k^{th}$ simulated dataset.
+
+---
+
+* In practice, $F$ is unknown, and we cannot simulate data from $F$.
+
+* The main idea behind the bootstrap is that the empirical distribution function
+$\hat{F}_{n}$ is a very good estimate of $F$. 
+
+* How to simulate data from $\hat{F}_{n}$ rather than $F$?
+
+
+
 
 
 
