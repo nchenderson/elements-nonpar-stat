@@ -30,7 +30,7 @@ so that we can assume $e^{\bar{X}}$ has a roughly Normal distribution with mean 
 and standard deviation $\sigma e^{\mu}/\sqrt{n}$. This approximation is based on 
 a Central Limit Theorem and "delta method" argument.
 
-* The standard error in this case is
+* The estimated standard error in this case is
 \begin{equation}
 \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}} \nonumber
 \end{equation}
@@ -76,7 +76,7 @@ between $X_{i}$ and $Y_{i}$ is defined as
 \hat{\rho} = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X})(Y_{i} - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_{i} - \bar{X})^{2}}\sqrt{\sum_{i=1}^{n}(Y_{i} - \bar{Y})}} \nonumber
 \end{equation}
 
-* Even such a relatively straightforward estimate has a pretty complicated formula for the standard error if 
+* Even such a relatively straightforward estimate has a pretty complicated formula for the estimated standard error if 
 you use a multivariate delta method argument:
 \begin{equation}
 \textrm{std.err}_{corr}
@@ -98,7 +98,7 @@ $\tfrac{1}{2}\ln\{ (1 + \rho)/(1 - \rho) \}$ and standard deviation $1/\sqrt{n -
 
 ---
 
-* The bootstrap allows to totally bypass the need to derive tedious formulas for the standard error such as
+* The bootstrap allows us to totally bypass the need to derive tedious formulas for the standard error such as
 \@ref(eq:rho-stderr) or bypass the need to use clever transformations such as \@ref(eq:rho-stderr-ztrans). 
 
 * For many more complicated estimates deriving formulas such as \@ref(eq:rho-stderr) or transformations such 
@@ -127,12 +127,12 @@ T_{n} = h\Big( X_{1}, \ldots, X_{n}   \Big)  \nonumber
 
 * Suppose we want to estimate the standard deviation of $T_{n}$. 
 
-* An estimate of the standard deviation of $T_{n}$ is referred to as the **standard error**. 
+* The true standard deviation of $T_{n}$ is referred to as the **standard error**. 
 
-* Confidence intervals are often based on subtracting or adding the standard error, 
+* Confidence intervals are often based on subtracting or adding an estimate of the standard error, 
 e.g.
 \begin{equation}
-CI = T_{n} \pm z_{\alpha/2} \times \textrm{standard error},  \nonumber 
+CI = T_{n} \pm z_{\alpha/2} \times \widehat{\textrm{standard error}},  \nonumber 
 \end{equation}
 where $z_{\alpha/2}$ is the $100 \times (1 - \alpha/2)$ percentile of the $\textrm{Normal}(0,1)$ distribution.
 
@@ -209,10 +209,10 @@ T_{[\alpha/2]}^{boot} = \hat{G}_{n}^{*, -1}(\alpha/2)  \qquad  T_{[1 - \alpha/2]
 
 ---
 
-* The bootstrap approach for computing standard errors and confidence intervals
+* The bootstrap approach for computing estimated standard errors and confidence intervals
 is very appealing due to the fact that it is **automatic**.
 
-* That is, we do not expend any effort deriving formulas for the variance of $T_{n}$
+* That is, we do not need to expend any effort deriving formulas for the variance of $T_{n}$
 and/or making asymptotic arguments for the distribution of $T_{n}$.
 
 * We only need to be able to compute $T_{n}$ many times, and the bootstrap procedure
@@ -246,7 +246,7 @@ rely on the following asymptotic result:
 and standard deviation $\bar{X}/\sqrt{n}$.
 
 
-* The standard error in this case is $\bar{X}/\sqrt{n}$, and a $95\%$ confidence interval for $\lambda$ is 
+* The estimated standard error in this case is $\bar{X}/\sqrt{n}$, and a $95\%$ confidence interval for $\lambda$ is 
 \begin{equation}
 \Bigg[ \bar{X} - 1.96 \times \frac{\bar{X}}{\sqrt{n}}, \bar{X} + 1.96 \times \frac{\bar{X}}{\sqrt{n}} \Bigg] \nonumber
 \end{equation}
@@ -356,8 +356,8 @@ where $f_{X}(t) = F_{X}'(t)$ is the probability density function of $X_{i}$.
 (\#eq:quantile-ratio-approx)
 \end{equation}
 
-* Using the above large-sample approximation, the standard error that can be used to construct a confidence interval for $\eta$
-is
+* Using the above large-sample approximation, the estimated standard error that can be used to construct 
+a confidence interval for $\eta$ is
 \begin{equation}
 \sqrt{\frac{p(1-p)}{n \hat{f}_{X}^{2}(\hat{\theta}_{p1})\hat{\theta}_{p2}^{2} } + \frac{p(1-p)\hat{\theta}_{p1}^{2} }{n \hat{f}_{Y}^{2}(\hat{\theta}_{p2})\hat{\theta}_{p2}^{4} } }  \nonumber 
 \end{equation}
@@ -366,7 +366,6 @@ is
 
 * Let's do a small simulation study to see how the confidence interval based on the large-sample approximation \@ref(eq:quantile-ratio-approx) 
 compares with bootstrap-based confidence intervals.
-
 
 
 
@@ -382,7 +381,7 @@ yy <- rgamma(m, shape=2, rate=2)
 * We will focus on estimating the pth quantile ratio for $p = 0.9$. In this case, the
 true value of $\eta$ is $\eta \approx 4/3$.
 
-* The estimate $\hat{\eta}$ and the standard error using the large-sample approximation \@ref(eq:quantile-ratio-approx) is
+* The estimate $\hat{\eta}$ and the estimated standard error using the large-sample approximation \@ref(eq:quantile-ratio-approx) is
 
 ```r
 theta.hat1 <- quantile(xx, probs=0.9)
@@ -470,7 +469,7 @@ value of $\eta$ is $\eta = 4/3$.
 
 * We just saw that the bootstrap and the large-sample confidence intervals gave different answers.
 
-* For this problem, is the best approach for constructing confidence intervals?
+* For this problem, what is the best approach for constructing confidence intervals?
 
 * We can compare the performance of different confidence intervals by
 looking at their **coverage probability**.
@@ -486,13 +485,13 @@ a confidence interval for a parameter of interest $\theta$ as
 
 * The coverage probability of a confidence interval $[ L_{\alpha}(\mathbf{X}), U_{\alpha}(\mathbf{X})]$ is
 \begin{equation}
-P\Big(  L_{\alpha}(\mathbf{X}) \leq \theta \leq U_{\alpha}(\mathbf{X}) \Big) \nonumber
+P\Big(  L_{\alpha}(\mathbf{X}) \leq \theta \leq U_{\alpha}(\mathbf{X}) \Big), \nonumber
 \end{equation}
 where we usually construct $L_{\alpha}(\mathbf{X})$ and $U_{\alpha}(\mathbf{X})$ so
 that the coverage probability is exactly equal or close to $1 - \alpha$.
 
 
-* We can estimate this probability in simulations by looking at the following coverage proportion
+* We can estimate this probability via simulation by looking at the following coverage proportion
 \begin{equation}
 \textrm{CoverProp}_{n_{rep}}(\theta) = \frac{1}{n_{rep}}\sum_{k=1}^{n_{rep}} I\Big( L_{\alpha}(\mathbf{X}^{(k)})  < \theta <  U_{\alpha}(\mathbf{X}^{(k)})  \Big) \nonumber
 \end{equation}
@@ -502,11 +501,12 @@ that the coverage probability is exactly equal or close to $1 - \alpha$.
 
 ---
 
-* We will compare the coverage proportions using the same setup we had for this quantile ratio example. 
+* We will compare coverage proportions using the same simulation design we used before for this quantile ratio example. 
 
 * That is, $p = 0.9$ and $X_{i} \sim \textrm{Gamma}(2, 1.5)$ and $Y_{i} \sim \textrm{Gamma}(2, 2)$ with $n = 100$ and $m = 100$.
 
-* Below shows code for a simulation study which uses 1000 replications.
+* Below shows code for a simulation study which uses 1000 simulation replications. It compares the large-sample
+confidence interval which uses \@ref(eq:quantile-ratio-approx) with two bootstrap confidence intervals.
 
 
 
@@ -562,7 +562,7 @@ for(k in 1:nreps)  {
 }
 ```
 
-* The coverage proportions for each method are:
+* The coverage proportions for each of the methods are:
 
 ```r
 mean(Cover.par.ci)
@@ -588,21 +588,15 @@ mean(Cover.bootquant.ci)
 ## [1] 0.959
 ```
 
+* Using these simulated outcomes, we can also construct $95\%$ confidence intervals for the coverage probabilities:
 
-```r
-A <- matrix(0, 3, 3)
-A[1,] <- c(mean(Cover.par.ci) - 1.96*sd(Cover.par.ci)/sqrt(1000), mean(Cover.par.ci), mean(Cover.par.ci) + 1.96*sd(Cover.par.ci)/sqrt(1000))
-A[2,] <- c(mean(Cover.bootsd.ci) - 1.96*sd(Cover.bootsd.ci)/sqrt(1000), mean(Cover.bootsd.ci), mean(Cover.bootsd.ci) + 1.96*sd(Cover.bootsd.ci)/sqrt(1000))
-A[3,] <- c(mean(Cover.bootquant.ci) - 1.96*sd(Cover.bootquant.ci)/sqrt(1000), mean(Cover.bootquant.ci), mean(Cover.bootquant.ci) + 1.96*sd(Cover.bootquant.ci)/sqrt(1000))
-round(A, 3)
-```
-
-```
-##       [,1]  [,2]  [,3]
-## [1,] 0.904 0.921 0.938
-## [2,] 0.935 0.949 0.963
-## [3,] 0.947 0.959 0.971
-```
+<table border=1>
+<caption align="bottom"> Estimates and Confidence Intervals for the Coverage Probabilities of Different Methods. </caption>
+<tr> <th>  </th> <th> Lower CI </th> <th> Estimate </th> <th> Upper CI </th>  </tr>
+  <tr> <td align="center"> Large-Sample Approximation </td> <td align="center"> 0.904 </td> <td align="center"> 0.921 </td> <td align="center"> 0.938 </td> </tr>
+  <tr> <td align="center"> Bootstrap Std. Err. </td> <td align="center"> 0.935 </td> <td align="center"> 0.949 </td> <td align="center"> 0.963 </td> </tr>
+  <tr> <td align="center"> Bootstrap Percentile </td> <td align="center"> 0.947 </td> <td align="center"> 0.959 </td> <td align="center"> 0.971 </td> </tr>
+   </table>
 
 
 ## Why is the Bootstrap Procedure Reasonable?

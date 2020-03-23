@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-21" />
+<meta name="date" content="2020-03-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -326,7 +326,7 @@ meaning that <span class="math inline">\(E(X_{i}) = \mu\)</span> and <span class
 so that we can assume <span class="math inline">\(e^{\bar{X}}\)</span> has a roughly Normal distribution with mean <span class="math inline">\(e^{\mu}\)</span>
 and standard deviation <span class="math inline">\(\sigma e^{\mu}/\sqrt{n}\)</span>. This approximation is based on
 a Central Limit Theorem and “delta method” argument.</p></li>
-<li><p>The standard error in this case is
+<li><p>The estimated standard error in this case is
 <span class="math display">\[\begin{equation}
 \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}} \nonumber
 \end{equation}\]</span></p></li>
@@ -367,7 +367,7 @@ between <span class="math inline">\(X_{i}\)</span> and <span class="math inline"
 <span class="math display">\[\begin{equation}
 \hat{\rho} = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X})(Y_{i} - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_{i} - \bar{X})^{2}}\sqrt{\sum_{i=1}^{n}(Y_{i} - \bar{Y})}} \nonumber
 \end{equation}\]</span></p></li>
-<li><p>Even such a relatively straightforward estimate has a pretty complicated formula for the standard error if
+<li><p>Even such a relatively straightforward estimate has a pretty complicated formula for the estimated standard error if
 you use a multivariate delta method argument:
 <span class="math display" id="eq:rho-stderr">\[\begin{equation}
 \textrm{std.err}_{corr}
@@ -388,7 +388,7 @@ where it is argued that <span class="math inline">\(z\)</span> has a roughly Nor
 </ul>
 <hr />
 <ul>
-<li><p>The bootstrap allows to totally bypass the need to derive tedious formulas for the standard error such as
+<li><p>The bootstrap allows us to totally bypass the need to derive tedious formulas for the standard error such as
 <a href="bootstrap-main.html#eq:rho-stderr">(9.2)</a> or bypass the need to use clever transformations such as <a href="bootstrap-main.html#eq:rho-stderr-ztrans">(9.3)</a>.</p></li>
 <li><p>For many more complicated estimates deriving formulas such as <a href="bootstrap-main.html#eq:rho-stderr">(9.2)</a> or transformations such
 as <a href="bootstrap-main.html#eq:rho-stderr-ztrans">(9.3)</a> may not even be feasible.</p></li>
@@ -413,11 +413,11 @@ need to be able to compute the estimate of interest.</p></li>
 T_{n} = h\Big( X_{1}, \ldots, X_{n}   \Big)  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Suppose we want to estimate the standard deviation of <span class="math inline">\(T_{n}\)</span>.</p></li>
-<li><p>An estimate of the standard deviation of <span class="math inline">\(T_{n}\)</span> is referred to as the <strong>standard error</strong>.</p></li>
-<li><p>Confidence intervals are often based on subtracting or adding the standard error,
+<li><p>The true standard deviation of <span class="math inline">\(T_{n}\)</span> is referred to as the <strong>standard error</strong>.</p></li>
+<li><p>Confidence intervals are often based on subtracting or adding an estimate of the standard error,
 e.g.
 <span class="math display">\[\begin{equation}
-CI = T_{n} \pm z_{\alpha/2} \times \textrm{standard error},  \nonumber 
+CI = T_{n} \pm z_{\alpha/2} \times \widehat{\textrm{standard error}},  \nonumber 
 \end{equation}\]</span>
 where <span class="math inline">\(z_{\alpha/2}\)</span> is the <span class="math inline">\(100 \times (1 - \alpha/2)\)</span> percentile of the <span class="math inline">\(\textrm{Normal}(0,1)\)</span> distribution.</p></li>
 <li><p>The bootstrap estimates the standard deviation of <span class="math inline">\(T_{n}\)</span> by repeatedly subsampling from
@@ -486,9 +486,9 @@ T_{[\alpha/2]}^{boot} = \hat{G}_{n}^{*, -1}(\alpha/2)  \qquad  T_{[1 - \alpha/2]
 </ul>
 <hr />
 <ul>
-<li><p>The bootstrap approach for computing standard errors and confidence intervals
+<li><p>The bootstrap approach for computing estimated standard errors and confidence intervals
 is very appealing due to the fact that it is <strong>automatic</strong>.</p></li>
-<li><p>That is, we do not expend any effort deriving formulas for the variance of <span class="math inline">\(T_{n}\)</span>
+<li><p>That is, we do not need to expend any effort deriving formulas for the variance of <span class="math inline">\(T_{n}\)</span>
 and/or making asymptotic arguments for the distribution of <span class="math inline">\(T_{n}\)</span>.</p></li>
 <li><p>We only need to be able to compute <span class="math inline">\(T_{n}\)</span> many times, and the bootstrap procedure
 will automatically produce a confidence interval for us.</p></li>
@@ -517,7 +517,7 @@ rely on the following asymptotic result:
 \end{equation}\]</span></p></li>
 <li><p>In other words, for large <span class="math inline">\(n\)</span>, <span class="math inline">\(\bar{X}\)</span> has an approximately Normal distribution with mean <span class="math inline">\(\lambda\)</span>
 and standard deviation <span class="math inline">\(\bar{X}/\sqrt{n}\)</span>.</p></li>
-<li><p>The standard error in this case is <span class="math inline">\(\bar{X}/\sqrt{n}\)</span>, and a <span class="math inline">\(95\%\)</span> confidence interval for <span class="math inline">\(\lambda\)</span> is
+<li><p>The estimated standard error in this case is <span class="math inline">\(\bar{X}/\sqrt{n}\)</span>, and a <span class="math inline">\(95\%\)</span> confidence interval for <span class="math inline">\(\lambda\)</span> is
 <span class="math display">\[\begin{equation}
 \Bigg[ \bar{X} - 1.96 \times \frac{\bar{X}}{\sqrt{n}}, \bar{X} + 1.96 \times \frac{\bar{X}}{\sqrt{n}} \Bigg] \nonumber
 \end{equation}\]</span></p></li>
@@ -596,8 +596,8 @@ where <span class="math inline">\(f_{X}(t) = F_{X}&#39;(t)\)</span> is the proba
 \hat{\eta} \textrm{ has an approximate } \textrm{Normal}\Bigg( \eta, \frac{p(1-p)}{n f_{X}^{2}(\theta_{p1})\theta_{p2}^{2} } + \frac{p(1-p)\theta_{p1}^{2} }{n f_{Y}^{2}(\theta_{p2})\theta_{p2}^{4} } \Bigg) \textrm{ distribution} 
 \tag{9.4}
 \end{equation}\]</span></p></li>
-<li><p>Using the above large-sample approximation, the standard error that can be used to construct a confidence interval for <span class="math inline">\(\eta\)</span>
-is
+<li><p>Using the above large-sample approximation, the estimated standard error that can be used to construct
+a confidence interval for <span class="math inline">\(\eta\)</span> is
 <span class="math display">\[\begin{equation}
 \sqrt{\frac{p(1-p)}{n \hat{f}_{X}^{2}(\hat{\theta}_{p1})\hat{\theta}_{p2}^{2} } + \frac{p(1-p)\hat{\theta}_{p1}^{2} }{n \hat{f}_{Y}^{2}(\hat{\theta}_{p2})\hat{\theta}_{p2}^{4} } }  \nonumber 
 \end{equation}\]</span></p></li>
@@ -615,7 +615,7 @@ compares with bootstrap-based confidence intervals.</p></li>
 <ul>
 <li><p>We will focus on estimating the pth quantile ratio for <span class="math inline">\(p = 0.9\)</span>. In this case, the
 true value of <span class="math inline">\(\eta\)</span> is <span class="math inline">\(\eta \approx 4/3\)</span>.</p></li>
-<li><p>The estimate <span class="math inline">\(\hat{\eta}\)</span> and the standard error using the large-sample approximation <a href="bootstrap-main.html#eq:quantile-ratio-approx">(9.4)</a> is</p></li>
+<li><p>The estimate <span class="math inline">\(\hat{\eta}\)</span> and the estimated standard error using the large-sample approximation <a href="bootstrap-main.html#eq:quantile-ratio-approx">(9.4)</a> is</p></li>
 </ul>
 <div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" data-line-number="1">theta.hat1 &lt;-<span class="st"> </span><span class="kw">quantile</span>(xx, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
 <a class="sourceLine" id="cb164-2" data-line-number="2">theta.hat2 &lt;-<span class="st"> </span><span class="kw">quantile</span>(yy, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
@@ -680,7 +680,7 @@ Figure 9.1: Bootstrap Distribution of the 0.9-Quantile Ratio. Vertical Lines are
 <h4><span class="header-section-number">9.2.3.1</span> Comparing the Performance of the Bootstrap and Large-Sample Confidence Intervals</h4>
 <ul>
 <li><p>We just saw that the bootstrap and the large-sample confidence intervals gave different answers.</p></li>
-<li><p>For this problem, is the best approach for constructing confidence intervals?</p></li>
+<li><p>For this problem, what is the best approach for constructing confidence intervals?</p></li>
 <li><p>We can compare the performance of different confidence intervals by
 looking at their <strong>coverage probability</strong>.</p></li>
 <li>For a vector of data <span class="math inline">\(\mathbf{X} = (X_{1}, \ldots, X_{n})\)</span>, we can represent
@@ -694,11 +694,11 @@ a confidence interval for a parameter of interest <span class="math inline">\(\t
 </ul></li>
 <li><p>The coverage probability of a confidence interval <span class="math inline">\([ L_{\alpha}(\mathbf{X}), U_{\alpha}(\mathbf{X})]\)</span> is
 <span class="math display">\[\begin{equation}
-P\Big(  L_{\alpha}(\mathbf{X}) \leq \theta \leq U_{\alpha}(\mathbf{X}) \Big) \nonumber
+P\Big(  L_{\alpha}(\mathbf{X}) \leq \theta \leq U_{\alpha}(\mathbf{X}) \Big), \nonumber
 \end{equation}\]</span>
 where we usually construct <span class="math inline">\(L_{\alpha}(\mathbf{X})\)</span> and <span class="math inline">\(U_{\alpha}(\mathbf{X})\)</span> so
 that the coverage probability is exactly equal or close to <span class="math inline">\(1 - \alpha\)</span>.</p></li>
-<li>We can estimate this probability in simulations by looking at the following coverage proportion
+<li>We can estimate this probability via simulation by looking at the following coverage proportion
 <span class="math display">\[\begin{equation}
 \textrm{CoverProp}_{n_{rep}}(\theta) = \frac{1}{n_{rep}}\sum_{k=1}^{n_{rep}} I\Big( L_{\alpha}(\mathbf{X}^{(k)})  &lt; \theta &lt;  U_{\alpha}(\mathbf{X}^{(k)})  \Big) \nonumber
 \end{equation}\]</span>
@@ -710,9 +710,10 @@ that the coverage probability is exactly equal or close to <span class="math inl
 </ul>
 <hr />
 <ul>
-<li><p>We will compare the coverage proportions using the same setup we had for this quantile ratio example.</p></li>
+<li><p>We will compare coverage proportions using the same simulation design we used before for this quantile ratio example.</p></li>
 <li><p>That is, <span class="math inline">\(p = 0.9\)</span> and <span class="math inline">\(X_{i} \sim \textrm{Gamma}(2, 1.5)\)</span> and <span class="math inline">\(Y_{i} \sim \textrm{Gamma}(2, 2)\)</span> with <span class="math inline">\(n = 100\)</span> and <span class="math inline">\(m = 100\)</span>.</p></li>
-<li><p>Below shows code for a simulation study which uses 1000 replications.</p></li>
+<li><p>Below shows code for a simulation study which uses 1000 simulation replications. It compares the large-sample
+confidence interval which uses <a href="bootstrap-main.html#eq:quantile-ratio-approx">(9.4)</a> with two bootstrap confidence intervals.</p></li>
 </ul>
 <div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb172-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="dv">100</span></a>
 <a class="sourceLine" id="cb172-2" data-line-number="2">m &lt;-<span class="st"> </span><span class="dv">100</span></a>
@@ -763,7 +764,7 @@ that the coverage probability is exactly equal or close to <span class="math inl
 <a class="sourceLine" id="cb172-47" data-line-number="47"><span class="st">                                        </span>boot.ci.quant[<span class="dv">2</span>] <span class="op">&gt;=</span><span class="st"> </span>eta.true, <span class="dv">1</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb172-48" data-line-number="48">}</a></code></pre></div>
 <ul>
-<li>The coverage proportions for each method are:</li>
+<li>The coverage proportions for each of the methods are:</li>
 </ul>
 <div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb173-1" data-line-number="1"><span class="kw">mean</span>(Cover.par.ci)</a></code></pre></div>
 <pre><code>## [1] 0.921</code></pre>
@@ -771,15 +772,69 @@ that the coverage probability is exactly equal or close to <span class="math inl
 <pre><code>## [1] 0.949</code></pre>
 <div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb177-1" data-line-number="1"><span class="kw">mean</span>(Cover.bootquant.ci)</a></code></pre></div>
 <pre><code>## [1] 0.959</code></pre>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb179-1" data-line-number="1">A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb179-2" data-line-number="2">A[<span class="dv">1</span>,] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(Cover.par.ci) <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(Cover.par.ci)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">1000</span>), <span class="kw">mean</span>(Cover.par.ci), <span class="kw">mean</span>(Cover.par.ci) <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(Cover.par.ci)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">1000</span>))</a>
-<a class="sourceLine" id="cb179-3" data-line-number="3">A[<span class="dv">2</span>,] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(Cover.bootsd.ci) <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(Cover.bootsd.ci)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">1000</span>), <span class="kw">mean</span>(Cover.bootsd.ci), <span class="kw">mean</span>(Cover.bootsd.ci) <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(Cover.bootsd.ci)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">1000</span>))</a>
-<a class="sourceLine" id="cb179-4" data-line-number="4">A[<span class="dv">3</span>,] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(Cover.bootquant.ci) <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(Cover.bootquant.ci)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">1000</span>), <span class="kw">mean</span>(Cover.bootquant.ci), <span class="kw">mean</span>(Cover.bootquant.ci) <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(Cover.bootquant.ci)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">1000</span>))</a>
-<a class="sourceLine" id="cb179-5" data-line-number="5"><span class="kw">round</span>(A, <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>##       [,1]  [,2]  [,3]
-## [1,] 0.904 0.921 0.938
-## [2,] 0.935 0.949 0.963
-## [3,] 0.947 0.959 0.971</code></pre>
+<ul>
+<li>Using these simulated outcomes, we can also construct <span class="math inline">\(95\%\)</span> confidence intervals for the coverage probabilities:</li>
+</ul>
+<table border="1">
+<caption align="bottom">
+Estimates and Confidence Intervals for the Coverage Probabilities of Different Methods.
+</caption>
+<tr>
+<th>
+</th>
+<th>
+Lower CI
+</th>
+<th>
+Estimate
+</th>
+<th>
+Upper CI
+</th>
+</tr>
+<tr>
+<td align="center">
+Large-Sample Approximation
+</td>
+<td align="center">
+0.904
+</td>
+<td align="center">
+0.921
+</td>
+<td align="center">
+0.938
+</td>
+</tr>
+<tr>
+<td align="center">
+Bootstrap Std. Err.
+</td>
+<td align="center">
+0.935
+</td>
+<td align="center">
+0.949
+</td>
+<td align="center">
+0.963
+</td>
+</tr>
+<tr>
+<td align="center">
+Bootstrap Percentile
+</td>
+<td align="center">
+0.947
+</td>
+<td align="center">
+0.959
+</td>
+<td align="center">
+0.971
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
