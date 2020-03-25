@@ -590,7 +590,8 @@ where $X_{1}, \ldots, X_{n}$ is an i.i.d. sample with cumulative distribution fu
 with the following quantity
 \begin{eqnarray}
 \widehat{\textrm{Var}( T_{n} )} &=& \sum_{k=1}^{K}\Big( h(X_{1}^{(k)}, \ldots, X_{n}^{(k)}) - \frac{1}{K}\sum_{k=1}^{K} h(X_{1}^{(k)}, \ldots, X_{n}^{(k)})  \Big)^{2} \nonumber \\
-&=& \sum_{k=1}^{K}\Big( T_{n}^{(k)} - \frac{1}{K}\sum_{k=1}^{K} T_{n}^{(k)}  \Big)^{2}  \nonumber 
+&=& \sum_{k=1}^{K}\Big( T_{n}^{(k)} - \frac{1}{K}\sum_{k=1}^{K} T_{n}^{(k)}  \Big)^{2} 
+(\#eq:boostrap-approx-knownF)
 \end{eqnarray}
     + $X_{1}^{(k)}, \ldots, X_{n}^{(k)}$ is an i.i.d. sample from $F$. 
     + $T_{n}^{(k)} = h(X_{1}^{(k)}, \ldots, X_{n}^{(k)})$ is the value of out statistic of interest from the $k^{th}$ simulated dataset.
@@ -602,7 +603,81 @@ with the following quantity
 * The main idea behind the bootstrap is that the empirical distribution function
 $\hat{F}_{n}$ is a very good estimate of $F$. 
 
-* How to simulate data from $\hat{F}_{n}$ rather than $F$?
+* Hence, if we sample $X_{1}^{(k)}, \ldots, X_{n}^{(k)}$ from $\hat{F}_{n}$ instead of $F$
+and use the formula \@ref(eq:boostrap-approx-knownF), this should give us a good estimate of the variance of $T_{n}$.
+
+---
+
+* How can we simulate data from $\hat{F}_{n}$?
+
+* Recall that $\hat{F}_{n}$ is a discrete distribution that has mass $1/n$ at each of the observed data points $\mathbf{X} = (X_{1}, \ldots, X_{n})$.
+
+* So, if we say $X_{i}^{*} \sim \hat{F}_{n}$, then
+\begin{equation}
+P( X_{i}^{*} = X_{j}) = 1/n  \qquad \textrm{ for } j=1,\ldots,n,
+\end{equation}
+where $(X_{1}, \ldots, X_{n})$ can be thought of as fixed numbers.
+
+* To simulate a random variable $X_{i}^{*} \sim \hat{F}_{n}$, we just need to 
+draw one of the observations $X_{j}$ from $\mathbf{X}$ at random 
+and set $X_{i}^{*} = X_{j}$. 
+
+* Then, to simulate an i.i.d. sample $X_{1}^{*}, \ldots, X_{n}^{*}$ from $\hat{F}_{n}$, we just to
+sample the $X_{i}^{*}$ from $\mathbf{X}$ with replacement. In other words, we just need to use
+the same procedure we discussed earlier for generating bootstrap samples.
+
+* Each bootstrap sample $(X_{1}^{*}, \ldots, X_{n}^{*})$  can be thought of as an i.i.d. sample from $\hat{F}_{n}$.
+
+---
+
+* Smoothness of variance functional.
+
+
+## The Parametric Bootstrap
+
+* With the bootstrap, we generate each bootstrap sample $(X_{1}^{*}, \ldots, X_{n}^{*})$ by 
+sampling with replacement from the empirical distribution function $\hat{F}_{n}$.
+
+* For this reason, it can be referred to as the **nonparametric bootstrap**.
+
+* With the **parametric bootstrap**, we sample from a parametric estimate of $F$
+instead of sampling from $\hat{F}_{n}$.
+
+* For example, 
+
+---
+
+**When Might the Parametric Bootstrap be Useful?**
+
+* In cases with smaller sample sizes. 
+    + For small sample sizes, $F_{\hat{\varphi}}$ is often a better estimate than $\hat{F}_{n}$. 
+
+* When you are only interested in constructing a confidence interval for the parameter of a parametric
+model that you think fits the data well.
+
+* For cases with non-i.i.d. data, a parametric bootstrap can be easier to work with. 
+
+
+## Additional Reading
+
+* Additional reading which covers the material discussed in this chapter includes:
+    + Chapter 3 from @wasserman2006
+
+## Exercises
+
+* **Exercise 9.?** With the bootstrap we generate bootstrap samples
+by sampling from $\hat{F}_{n}$. An alternative approach is to
+sample from a smoother estimate of $F$ instead of the non-smooth estimate $\hat{F}_{n}$.
+Consider the following estimate of $F$ which is just the indefinite integral of a 
+kernel density estimate
+\begin{equation}
+\hat{F}_{h}^{KD}(x) = \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{x} \frac{1}{h} K\Big( \frac{t - X_{i}}{h} \Big) dt  \nonumber 
+\end{equation}
+    + What is $\hat{F}_{h}^{KD}$ when $K( \cdot )$ is the Gaussian kernel?
+    + For the case of a Gaussian kernel, how do you generate an i.i.d. sample $(X_{1}^{*}, \ldots, X_{n}^{*})$ from $\hat{F}_{h}^{KD}$?
+    + As $h$ gets closer to $0$, does $\hat{F}_{h}^{KD}$ get closer to $\hat{F}_{n}$ or move further away?
+    
+
 
 
 

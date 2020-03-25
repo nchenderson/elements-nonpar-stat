@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-23" />
+<meta name="date" content="2020-03-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -257,9 +257,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.2.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#example-confidence-intervals-for-the-ratio-of-two-quantiles"><i class="fa fa-check"></i><b>9.2.3</b> Example: Confidence Intervals for the Ratio of Two Quantiles</a></li>
 </ul></li>
 <li class="chapter" data-level="9.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#why-is-the-bootstrap-procedure-reasonable"><i class="fa fa-check"></i><b>9.3</b> Why is the Bootstrap Procedure Reasonable?</a></li>
+<li class="chapter" data-level="9.4" data-path="bootstrap-main.html"><a href="bootstrap-main.html#the-parametric-bootstrap"><i class="fa fa-check"></i><b>9.4</b> The Parametric Bootstrap</a></li>
+<li class="chapter" data-level="9.5" data-path="bootstrap-main.html"><a href="bootstrap-main.html#additional-reading-4"><i class="fa fa-check"></i><b>9.5</b> Additional Reading</a></li>
+<li class="chapter" data-level="9.6" data-path="bootstrap-main.html"><a href="bootstrap-main.html#exercises-1"><i class="fa fa-check"></i><b>9.6</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> The Bootstrap and Confidence Intervals</a><ul>
-<li class="chapter" data-level="10.1" data-path="ci.html"><a href="ci.html#bootstrapping"><i class="fa fa-check"></i><b>10.1</b> Bootstrapping</a></li>
+<li class="chapter" data-level="10.0.1" data-path="ci.html"><a href="ci.html#using-the-bootstrap-in-regression"><i class="fa fa-check"></i><b>10.0.1</b> Using the Bootstrap in Regression</a></li>
 </ul></li>
 <li class="part"><span><b>IV Nonparametric Regression: Part I</b></span></li>
 <li class="chapter" data-level="11" data-path="kernel-regression.html"><a href="kernel-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression</a><ul>
@@ -302,9 +305,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="ci" class="section level1">
 <h1><span class="header-section-number">Chapter 10</span> The Bootstrap and Confidence Intervals</h1>
-<hr />
-<div id="bootstrapping" class="section level2">
-<h2><span class="header-section-number">10.1</span> Bootstrapping</h2>
+<div id="using-the-bootstrap-in-regression" class="section level3">
+<h3><span class="header-section-number">10.0.1</span> Using the Bootstrap in Regression</h3>
+<ul>
+<li>In linear regression with a single, univariate covariate, we work with the following model
+<span class="math display">\[\begin{equation}
+Y_{i} = \beta_{0} + \beta_{1}x_{i} + \varepsilon_{i}, \qquad i = 1, \ldots, n.  \nonumber 
+\end{equation}\]</span>
+<ul>
+<li><span class="math inline">\(Y_{i}\)</span> - the responses</li>
+<li><span class="math inline">\(x_{i}\)</span> - the covariates</li>
+<li><span class="math inline">\(\beta_{0}, \beta_{1}\)</span> - the regression coefficients</li>
+<li><span class="math inline">\(\varepsilon_{i}\)</span> - the residuals</li>
+</ul></li>
+<li>Typically, confidence intervals for the regression coefficients <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span>
+are constructed under the assumption that <span class="math inline">\(\varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2})\)</span>.</li>
+</ul>
 
 </div>
 </div>

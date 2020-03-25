@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-23" />
+<meta name="date" content="2020-03-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -257,9 +257,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.2.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#example-confidence-intervals-for-the-ratio-of-two-quantiles"><i class="fa fa-check"></i><b>9.2.3</b> Example: Confidence Intervals for the Ratio of Two Quantiles</a></li>
 </ul></li>
 <li class="chapter" data-level="9.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#why-is-the-bootstrap-procedure-reasonable"><i class="fa fa-check"></i><b>9.3</b> Why is the Bootstrap Procedure Reasonable?</a></li>
+<li class="chapter" data-level="9.4" data-path="bootstrap-main.html"><a href="bootstrap-main.html#the-parametric-bootstrap"><i class="fa fa-check"></i><b>9.4</b> The Parametric Bootstrap</a></li>
+<li class="chapter" data-level="9.5" data-path="bootstrap-main.html"><a href="bootstrap-main.html#additional-reading-4"><i class="fa fa-check"></i><b>9.5</b> Additional Reading</a></li>
+<li class="chapter" data-level="9.6" data-path="bootstrap-main.html"><a href="bootstrap-main.html#exercises-1"><i class="fa fa-check"></i><b>9.6</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> The Bootstrap and Confidence Intervals</a><ul>
-<li class="chapter" data-level="10.1" data-path="ci.html"><a href="ci.html#bootstrapping"><i class="fa fa-check"></i><b>10.1</b> Bootstrapping</a></li>
+<li class="chapter" data-level="10.0.1" data-path="ci.html"><a href="ci.html#using-the-bootstrap-in-regression"><i class="fa fa-check"></i><b>10.0.1</b> Using the Bootstrap in Regression</a></li>
 </ul></li>
 <li class="part"><span><b>IV Nonparametric Regression: Part I</b></span></li>
 <li class="chapter" data-level="11" data-path="kernel-regression.html"><a href="kernel-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression</a><ul>
@@ -850,9 +853,10 @@ T_{n} = h(X_{1}, \ldots, X_{n}) \nonumber
 where <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> is an i.i.d. sample with cumulative distribution function <span class="math inline">\(F\)</span>.</p></li>
 <li>If we had a way of simulating data <span class="math inline">\(X_{i}^{(k)}\)</span> from <span class="math inline">\(F\)</span>, we could estimate <span class="math inline">\(\textrm{Var}(T_{n})\)</span>
 with the following quantity
-<span class="math display">\[\begin{eqnarray}
+<span class="math display" id="eq:boostrap-approx-knownF">\[\begin{eqnarray}
 \widehat{\textrm{Var}( T_{n} )} &amp;=&amp; \sum_{k=1}^{K}\Big( h(X_{1}^{(k)}, \ldots, X_{n}^{(k)}) - \frac{1}{K}\sum_{k=1}^{K} h(X_{1}^{(k)}, \ldots, X_{n}^{(k)})  \Big)^{2} \nonumber \\
-&amp;=&amp; \sum_{k=1}^{K}\Big( T_{n}^{(k)} - \frac{1}{K}\sum_{k=1}^{K} T_{n}^{(k)}  \Big)^{2}  \nonumber 
+&amp;=&amp; \sum_{k=1}^{K}\Big( T_{n}^{(k)} - \frac{1}{K}\sum_{k=1}^{K} T_{n}^{(k)}  \Big)^{2} 
+\tag{9.5}
 \end{eqnarray}\]</span>
 <ul>
 <li><span class="math inline">\(X_{1}^{(k)}, \ldots, X_{n}^{(k)}\)</span> is an i.i.d. sample from <span class="math inline">\(F\)</span>.</li>
@@ -864,9 +868,86 @@ with the following quantity
 <li><p>In practice, <span class="math inline">\(F\)</span> is unknown, and we cannot simulate data from <span class="math inline">\(F\)</span>.</p></li>
 <li><p>The main idea behind the bootstrap is that the empirical distribution function
 <span class="math inline">\(\hat{F}_{n}\)</span> is a very good estimate of <span class="math inline">\(F\)</span>.</p></li>
-<li><p>How to simulate data from <span class="math inline">\(\hat{F}_{n}\)</span> rather than <span class="math inline">\(F\)</span>?</p></li>
+<li><p>Hence, if we sample <span class="math inline">\(X_{1}^{(k)}, \ldots, X_{n}^{(k)}\)</span> from <span class="math inline">\(\hat{F}_{n}\)</span> instead of <span class="math inline">\(F\)</span>
+and use the formula <a href="bootstrap-main.html#eq:boostrap-approx-knownF">(9.5)</a>, this should give us a good estimate of the variance of <span class="math inline">\(T_{n}\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>How can we simulate data from <span class="math inline">\(\hat{F}_{n}\)</span>?</p></li>
+<li><p>Recall that <span class="math inline">\(\hat{F}_{n}\)</span> is a discrete distribution that has mass <span class="math inline">\(1/n\)</span> at each of the observed data points <span class="math inline">\(\mathbf{X} = (X_{1}, \ldots, X_{n})\)</span>.</p></li>
+<li><p>So, if we say <span class="math inline">\(X_{i}^{*} \sim \hat{F}_{n}\)</span>, then
+<span class="math display">\[\begin{equation}
+P( X_{i}^{*} = X_{j}) = 1/n  \qquad \textrm{ for } j=1,\ldots,n,
+\end{equation}\]</span>
+where <span class="math inline">\((X_{1}, \ldots, X_{n})\)</span> can be thought of as fixed numbers.</p></li>
+<li><p>To simulate a random variable <span class="math inline">\(X_{i}^{*} \sim \hat{F}_{n}\)</span>, we just need to
+draw one of the observations <span class="math inline">\(X_{j}\)</span> from <span class="math inline">\(\mathbf{X}\)</span> at random
+and set <span class="math inline">\(X_{i}^{*} = X_{j}\)</span>.</p></li>
+<li><p>Then, to simulate an i.i.d. sample <span class="math inline">\(X_{1}^{*}, \ldots, X_{n}^{*}\)</span> from <span class="math inline">\(\hat{F}_{n}\)</span>, we just to
+sample the <span class="math inline">\(X_{i}^{*}\)</span> from <span class="math inline">\(\mathbf{X}\)</span> with replacement. In other words, we just need to use
+the same procedure we discussed earlier for generating bootstrap samples.</p></li>
+<li><p>Each bootstrap sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> can be thought of as an i.i.d. sample from <span class="math inline">\(\hat{F}_{n}\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li>Smoothness of variance functional.</li>
+</ul>
+</div>
+<div id="the-parametric-bootstrap" class="section level2">
+<h2><span class="header-section-number">9.4</span> The Parametric Bootstrap</h2>
+<ul>
+<li><p>With the bootstrap, we generate each bootstrap sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> by
+sampling with replacement from the empirical distribution function <span class="math inline">\(\hat{F}_{n}\)</span>.</p></li>
+<li><p>For this reason, it can be referred to as the <strong>nonparametric bootstrap</strong>.</p></li>
+<li><p>With the <strong>parametric bootstrap</strong>, we sample from a parametric estimate of <span class="math inline">\(F\)</span>
+instead of sampling from <span class="math inline">\(\hat{F}_{n}\)</span>.</p></li>
+<li><p>For example,</p></li>
+</ul>
+<hr />
+<p><strong>When Might the Parametric Bootstrap be Useful?</strong></p>
+<ul>
+<li>In cases with smaller sample sizes.
+<ul>
+<li>For small sample sizes, <span class="math inline">\(F_{\hat{\varphi}}\)</span> is often a better estimate than <span class="math inline">\(\hat{F}_{n}\)</span>.</li>
+</ul></li>
+<li><p>When you are only interested in constructing a confidence interval for the parameter of a parametric
+model that you think fits the data well.</p></li>
+<li><p>For cases with non-i.i.d. data, a parametric bootstrap can be easier to work with.</p></li>
+</ul>
+</div>
+<div id="additional-reading-4" class="section level2">
+<h2><span class="header-section-number">9.5</span> Additional Reading</h2>
+<ul>
+<li>Additional reading which covers the material discussed in this chapter includes:
+<ul>
+<li>Chapter 3 from <span class="citation">Wasserman (<a href="#ref-wasserman2006">2006</a>)</span></li>
+</ul></li>
+</ul>
+</div>
+<div id="exercises-1" class="section level2">
+<h2><span class="header-section-number">9.6</span> Exercises</h2>
+<ul>
+<li><strong>Exercise 9.?</strong> With the bootstrap we generate bootstrap samples
+by sampling from <span class="math inline">\(\hat{F}_{n}\)</span>. An alternative approach is to
+sample from a smoother estimate of <span class="math inline">\(F\)</span> instead of the non-smooth estimate <span class="math inline">\(\hat{F}_{n}\)</span>.
+Consider the following estimate of <span class="math inline">\(F\)</span> which is just the indefinite integral of a
+kernel density estimate
+<span class="math display">\[\begin{equation}
+\hat{F}_{h}^{KD}(x) = \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{x} \frac{1}{h} K\Big( \frac{t - X_{i}}{h} \Big) dt  \nonumber 
+\end{equation}\]</span>
+<ul>
+<li>What is <span class="math inline">\(\hat{F}_{h}^{KD}\)</span> when <span class="math inline">\(K( \cdot )\)</span> is the Gaussian kernel?</li>
+<li>For the case of a Gaussian kernel, how do you generate an i.i.d. sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> from <span class="math inline">\(\hat{F}_{h}^{KD}\)</span>?</li>
+<li>As <span class="math inline">\(h\)</span> gets closer to <span class="math inline">\(0\)</span>, does <span class="math inline">\(\hat{F}_{h}^{KD}\)</span> get closer to <span class="math inline">\(\hat{F}_{n}\)</span> or move further away?</li>
+</ul></li>
 </ul>
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-wasserman2006">
+<p>Wasserman, Larry. 2006. <em>All of Nonparametric Statistics</em>. Springer Science &amp; Business Media.</p>
 </div>
 </div>
             </section>
