@@ -704,7 +704,7 @@ where we usually construct <span class="math inline">\(L_{\alpha}(\mathbf{X})\)<
 that the coverage probability is exactly equal or close to <span class="math inline">\(1 - \alpha\)</span>.</p></li>
 <li>We can estimate this probability via simulation by looking at the following coverage proportion
 <span class="math display">\[\begin{equation}
-\textrm{CoverProp}_{n_{rep}}(\theta) = \frac{1}{n_{rep}}\sum_{k=1}^{n_{rep}} I\Big( L_{\alpha}(\mathbf{X}^{(k)})  &lt; \theta &lt;  U_{\alpha}(\mathbf{X}^{(k)})  \Big) \nonumber
+\textrm{CoverProp}_{n_{rep}}(\theta) = \frac{1}{n_{rep}}\sum_{k=1}^{n_{rep}} I\Big( L_{\alpha}(\mathbf{X}^{(k)})  \leq \theta \leq  U_{\alpha}(\mathbf{X}^{(k)})  \Big) \nonumber
 \end{equation}\]</span>
 <ul>
 <li><span class="math inline">\(n_{rep}\)</span> is the number of simulation replications</li>
@@ -855,8 +855,8 @@ where <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> is an i.i.d. sam
 <li>If we had a way of simulating data <span class="math inline">\(X_{i}^{(k)}\)</span> from <span class="math inline">\(F\)</span>, we could estimate <span class="math inline">\(\textrm{Var}(T_{n})\)</span>
 with the following quantity
 <span class="math display" id="eq:boostrap-approx-knownF">\[\begin{eqnarray}
-\widehat{\textrm{Var}( T_{n} )} &amp;=&amp; \sum_{k=1}^{K}\Big( h(X_{1}^{(k)}, \ldots, X_{n}^{(k)}) - \frac{1}{K}\sum_{k=1}^{K} h(X_{1}^{(k)}, \ldots, X_{n}^{(k)})  \Big)^{2} \nonumber \\
-&amp;=&amp; \sum_{k=1}^{K}\Big( T_{n}^{(k)} - \frac{1}{K}\sum_{k=1}^{K} T_{n}^{(k)}  \Big)^{2} 
+\widehat{\textrm{Var}( T_{n} )} &amp;=&amp; \frac{1}{K-1}\sum_{k=1}^{K}\Big( h(X_{1}^{(k)}, \ldots, X_{n}^{(k)}) - \frac{1}{K}\sum_{k=1}^{K} h(X_{1}^{(k)}, \ldots, X_{n}^{(k)})  \Big)^{2} \nonumber \\
+&amp;=&amp; \frac{1}{K-1}\sum_{k=1}^{K}\Big( T_{n}^{(k)} - \frac{1}{K}\sum_{k=1}^{K} T_{n}^{(k)}  \Big)^{2} 
 \tag{9.5}
 \end{eqnarray}\]</span>
 <ul>
@@ -931,9 +931,9 @@ W_{n}(\mathbf{X}, \theta) = \bar{X} - \theta
 is a pivot. The distribution of <span class="math inline">\(W_{n}(\mathbf{X}, \theta)\)</span> is <span class="math inline">\(\textrm{Normal}(0, \sigma^{2})\)</span>.</p></li>
 <li><p>Using the pivot allows us to construct a confidence interval because
 <span class="math display">\[\begin{eqnarray}
-1 - \alpha &amp;=&amp; P\Big( -\sigma z_{1 - \alpha/2} \leq W_{n}(\mathbf{X}, \theta) \leq \sigma z_{1 - \alpha/2}) \nonumber \\
-&amp;=&amp; P\Big(-\sigma z_{1 - \alpha/2} \leq \bar{X} - \theta \leq \sigma z_{1 - \alpha/2})  \nonumber \\
-&amp;=&amp; P\Big(\bar{X} -\sigma z_{1 - \alpha/2} \leq \theta \leq \sigma z_{1 - \alpha/2})  \nonumber 
+1 - \alpha &amp;=&amp; P\Big( -\sigma z_{1 - \alpha/2} \leq W_{n}(\mathbf{X}, \theta) \leq \sigma z_{1 - \alpha/2} \Big) \nonumber \\
+&amp;=&amp; P\Big(-\sigma z_{1 - \alpha/2} \leq \bar{X} - \theta \leq \sigma z_{1 - \alpha/2} \Big)  \nonumber \\
+&amp;=&amp; P\Big(\bar{X} - \sigma z_{1 - \alpha/2} \leq \theta \leq \bar{X} + \sigma z_{1 - \alpha/2} \Big)  \nonumber 
 \end{eqnarray}\]</span></p></li>
 <li><p>Another common pivot (if we did not assume <span class="math inline">\(\sigma^{2}\)</span> was known) would be
 <span class="math display">\[\begin{equation}
@@ -975,9 +975,9 @@ where <span class="math inline">\(se_{boot}\)</span> denotes the bootstrap estim
 <li><p>We will let <span class="math inline">\(K(t)\)</span> denote the cdf of <span class="math inline">\(\mathbf{Z}_{n}( \mathbf{X}, \theta)\)</span>.</p></li>
 <li><p>Using the same reasoning as before,
 <span class="math display">\[\begin{eqnarray}
-1 - \alpha &amp;=&amp; P\Big( K^{-1}(\alpha/2) \leq T_{n} - \theta \leq K^{-1}(1 - \alpha/2) \Big)  \nonumber \\
-&amp;=&amp; P\Big(  - se_{boot} \times K^{-1}(1 - \alpha/2)\leq \theta - T_{n} \leq -se_{boot} \times K^{-1}(\alpha/2) \Big)  \nonumber \\
-&amp;=&amp; P\Big(T_{n} - se_{boot} \times K^{-1}(1 - \alpha/2), T_{n} - se_{boot} \times K^{-1}(\alpha/2) \Big)  \nonumber
+1 - \alpha &amp;=&amp; P\Big( K^{-1}(\alpha/2) \leq \frac{T_{n} - \theta}{se_{boot}} \leq K^{-1}(1 - \alpha/2) \Big)  \nonumber \\
+&amp;=&amp; P\Big(  - se_{boot} \times K^{-1}(1 - \alpha/2) \leq \theta - T_{n} \leq -se_{boot} \times K^{-1}(\alpha/2) \Big)  \nonumber \\
+&amp;=&amp; P\Big(T_{n} - se_{boot} \times K^{-1}(1 - \alpha/2) \leq \theta \leq T_{n} - se_{boot} \times K^{-1}(\alpha/2) \Big)  \nonumber
 \end{eqnarray}\]</span>
 and hence a confidence interval for <span class="math inline">\(\theta\)</span> would be
 <span class="math display">\[\begin{equation}

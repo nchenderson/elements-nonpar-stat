@@ -483,7 +483,7 @@ that the coverage probability is exactly equal or close to $1 - \alpha$.
 
 * We can estimate this probability via simulation by looking at the following coverage proportion
 \begin{equation}
-\textrm{CoverProp}_{n_{rep}}(\theta) = \frac{1}{n_{rep}}\sum_{k=1}^{n_{rep}} I\Big( L_{\alpha}(\mathbf{X}^{(k)})  < \theta <  U_{\alpha}(\mathbf{X}^{(k)})  \Big) \nonumber
+\textrm{CoverProp}_{n_{rep}}(\theta) = \frac{1}{n_{rep}}\sum_{k=1}^{n_{rep}} I\Big( L_{\alpha}(\mathbf{X}^{(k)})  \leq \theta \leq  U_{\alpha}(\mathbf{X}^{(k)})  \Big) \nonumber
 \end{equation}
     + $n_{rep}$ is the number of simulation replications
     + $X^{(k)}$ is the dataset from the $k^{th}$ simulation replication
@@ -589,8 +589,8 @@ where $X_{1}, \ldots, X_{n}$ is an i.i.d. sample with cumulative distribution fu
 * If we had a way of simulating data $X_{i}^{(k)}$ from $F$, we could estimate $\textrm{Var}(T_{n})$
 with the following quantity
 \begin{eqnarray}
-\widehat{\textrm{Var}( T_{n} )} &=& \sum_{k=1}^{K}\Big( h(X_{1}^{(k)}, \ldots, X_{n}^{(k)}) - \frac{1}{K}\sum_{k=1}^{K} h(X_{1}^{(k)}, \ldots, X_{n}^{(k)})  \Big)^{2} \nonumber \\
-&=& \sum_{k=1}^{K}\Big( T_{n}^{(k)} - \frac{1}{K}\sum_{k=1}^{K} T_{n}^{(k)}  \Big)^{2} 
+\widehat{\textrm{Var}( T_{n} )} &=& \frac{1}{K-1}\sum_{k=1}^{K}\Big( h(X_{1}^{(k)}, \ldots, X_{n}^{(k)}) - \frac{1}{K}\sum_{k=1}^{K} h(X_{1}^{(k)}, \ldots, X_{n}^{(k)})  \Big)^{2} \nonumber \\
+&=& \frac{1}{K-1}\sum_{k=1}^{K}\Big( T_{n}^{(k)} - \frac{1}{K}\sum_{k=1}^{K} T_{n}^{(k)}  \Big)^{2} 
 (\#eq:boostrap-approx-knownF)
 \end{eqnarray}
     + $X_{1}^{(k)}, \ldots, X_{n}^{(k)}$ is an i.i.d. sample from $F$. 
@@ -678,9 +678,9 @@ is a pivot. The distribution of $W_{n}(\mathbf{X}, \theta)$ is $\textrm{Normal}(
 
 * Using the pivot allows us to construct a confidence interval because
 \begin{eqnarray}
-1 - \alpha &=& P\Big( -\sigma z_{1 - \alpha/2} \leq W_{n}(\mathbf{X}, \theta) \leq \sigma z_{1 - \alpha/2}) \nonumber \\
-&=& P\Big(-\sigma z_{1 - \alpha/2} \leq \bar{X} - \theta \leq \sigma z_{1 - \alpha/2})  \nonumber \\
-&=& P\Big(\bar{X} -\sigma z_{1 - \alpha/2} \leq \theta \leq \sigma z_{1 - \alpha/2})  \nonumber 
+1 - \alpha &=& P\Big( -\sigma z_{1 - \alpha/2} \leq W_{n}(\mathbf{X}, \theta) \leq \sigma z_{1 - \alpha/2} \Big) \nonumber \\
+&=& P\Big(-\sigma z_{1 - \alpha/2} \leq \bar{X} - \theta \leq \sigma z_{1 - \alpha/2} \Big)  \nonumber \\
+&=& P\Big(\bar{X} - \sigma z_{1 - \alpha/2} \leq \theta \leq \bar{X} + \sigma z_{1 - \alpha/2} \Big)  \nonumber 
 \end{eqnarray}
 
 * Another common pivot (if we did not assume $\sigma^{2}$ was known) would be 
@@ -733,9 +733,9 @@ where $se_{boot}$ denotes the bootstrap estimate of standard error.
 
 * Using the same reasoning as before,
 \begin{eqnarray}
-1 - \alpha &=& P\Big( K^{-1}(\alpha/2) \leq T_{n} - \theta \leq K^{-1}(1 - \alpha/2) \Big)  \nonumber \\
-&=& P\Big(  - se_{boot} \times K^{-1}(1 - \alpha/2)\leq \theta - T_{n} \leq -se_{boot} \times K^{-1}(\alpha/2) \Big)  \nonumber \\
-&=& P\Big(T_{n} - se_{boot} \times K^{-1}(1 - \alpha/2), T_{n} - se_{boot} \times K^{-1}(\alpha/2) \Big)  \nonumber
+1 - \alpha &=& P\Big( K^{-1}(\alpha/2) \leq \frac{T_{n} - \theta}{se_{boot}} \leq K^{-1}(1 - \alpha/2) \Big)  \nonumber \\
+&=& P\Big(  - se_{boot} \times K^{-1}(1 - \alpha/2) \leq \theta - T_{n} \leq -se_{boot} \times K^{-1}(\alpha/2) \Big)  \nonumber \\
+&=& P\Big(T_{n} - se_{boot} \times K^{-1}(1 - \alpha/2) \leq \theta \leq T_{n} - se_{boot} \times K^{-1}(\alpha/2) \Big)  \nonumber
 \end{eqnarray}
 and hence a confidence interval for $\theta$ would be
 \begin{equation}

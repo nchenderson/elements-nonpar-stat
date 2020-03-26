@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  26 MAR 2020 03:33
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  26 MAR 2020 12:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1429,7 +1429,7 @@ File: 09-bootstrapLatex_files/figure-latex/unnamed-chunk-17-1.pdf Graphic file
 (type pdf)
 <use 09-bootstrapLatex_files/figure-latex/unnamed-chunk-17-1.pdf>
 [177] [178] [179] [180] [181] [182] [183]
-Overfull \hbox (2.97899pt too wide) in alignment at lines 8183--8187
+Overfull \hbox (6.48099pt too wide) in alignment at lines 8183--8187
  [][][] []
  []
 
