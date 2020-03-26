@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-25" />
+<meta name="date" content="2020-03-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -257,9 +257,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.2.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#example-confidence-intervals-for-the-ratio-of-two-quantiles"><i class="fa fa-check"></i><b>9.2.3</b> Example: Confidence Intervals for the Ratio of Two Quantiles</a></li>
 </ul></li>
 <li class="chapter" data-level="9.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#why-is-the-bootstrap-procedure-reasonable"><i class="fa fa-check"></i><b>9.3</b> Why is the Bootstrap Procedure Reasonable?</a></li>
-<li class="chapter" data-level="9.4" data-path="bootstrap-main.html"><a href="bootstrap-main.html#the-parametric-bootstrap"><i class="fa fa-check"></i><b>9.4</b> The Parametric Bootstrap</a></li>
-<li class="chapter" data-level="9.5" data-path="bootstrap-main.html"><a href="bootstrap-main.html#additional-reading-4"><i class="fa fa-check"></i><b>9.5</b> Additional Reading</a></li>
-<li class="chapter" data-level="9.6" data-path="bootstrap-main.html"><a href="bootstrap-main.html#exercises-1"><i class="fa fa-check"></i><b>9.6</b> Exercises</a></li>
+<li class="chapter" data-level="9.4" data-path="bootstrap-main.html"><a href="bootstrap-main.html#pivotal-bootstrap-confidence-intervals"><i class="fa fa-check"></i><b>9.4</b> Pivotal Bootstrap Confidence Intervals</a></li>
+<li class="chapter" data-level="9.5" data-path="bootstrap-main.html"><a href="bootstrap-main.html#the-parametric-bootstrap"><i class="fa fa-check"></i><b>9.5</b> The Parametric Bootstrap</a></li>
+<li class="chapter" data-level="9.6" data-path="bootstrap-main.html"><a href="bootstrap-main.html#additional-reading-4"><i class="fa fa-check"></i><b>9.6</b> Additional Reading</a></li>
+<li class="chapter" data-level="9.7" data-path="bootstrap-main.html"><a href="bootstrap-main.html#exercises-1"><i class="fa fa-check"></i><b>9.7</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> The Bootstrap and Confidence Intervals</a><ul>
 <li class="chapter" data-level="10.0.1" data-path="ci.html"><a href="ci.html#using-the-bootstrap-in-regression"><i class="fa fa-check"></i><b>10.0.1</b> Using the Bootstrap in Regression</a></li>
@@ -890,11 +891,95 @@ the same procedure we discussed earlier for generating bootstrap samples.</p></l
 </ul>
 <hr />
 <ul>
-<li>Smoothness of variance functional.</li>
+<li><p>Smoothness of variance functional.</p></li>
+<li><p>What is the bootstrap estimate for the sample mean?</p></li>
+</ul>
+</div>
+<div id="pivotal-bootstrap-confidence-intervals" class="section level2">
+<h2><span class="header-section-number">9.4</span> Pivotal Bootstrap Confidence Intervals</h2>
+<ul>
+<li><p>Confidence intervals are often based on what is referred to as a <strong>pivot</strong>.</p></li>
+<li><p>The quantity <span class="math inline">\(W_{n}( \mathbf{X}, \theta)\)</span> is a pivot if the distribution of <span class="math inline">\(W_{n}(\mathbf{X}, \theta)\)</span>
+does not depend on <span class="math inline">\(\theta\)</span>.</p></li>
+<li><p>A common example of this is for the <span class="math inline">\(\textrm{Normal}(\theta, \sigma^{2})\)</span> distribution.
+In this case,
+<span class="math display">\[\begin{equation}
+W_{n}(\mathbf{X}, \theta) = \bar{X} - \theta
+\end{equation}\]</span>
+is a pivot. The distribution of <span class="math inline">\(W_{n}(\mathbf{X}, \theta)\)</span> is <span class="math inline">\(\textrm{Normal}(0, \sigma^{2})\)</span>.</p></li>
+<li><p>Using the pivot allows us to construct a confidence interval because
+<span class="math display">\[\begin{eqnarray}
+1 - \alpha &amp;=&amp; P\Big( -\sigma z_{1 - \alpha/2} \leq W_{n}(\mathbf{X}, \theta) \leq \sigma z_{1 - \alpha/2}) \nonumber \\
+&amp;=&amp; P\Big(-\sigma z_{1 - \alpha/2} \leq \bar{X} - \theta \leq \sigma z_{1 - \alpha/2})  \nonumber \\
+&amp;=&amp; P\Big(\bar{X} -\sigma z_{1 - \alpha/2} \leq \theta \leq \sigma z_{1 - \alpha/2})  \nonumber 
+\end{eqnarray}\]</span></p></li>
+<li><p>Another common pivot (if we did not assume <span class="math inline">\(\sigma^{2}\)</span> was known) would be
+<span class="math display">\[\begin{equation}
+W_{n}(\mathbf{X}, \theta) = \frac{\sqrt{n}(\bar{X} - \theta)}{\hat{\sigma}}, \nonumber
+\end{equation}\]</span>
+which would have a <span class="math inline">\(t\)</span> distribution.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>We can use a similar idea to construct a bootstrap confidence interval for <span class="math inline">\(\theta = E( T_{n} )\)</span>.</p></li>
+<li><p>Assume that <span class="math inline">\(W_{n}(\mathbf{X}, \theta) = T_{n} - \theta\)</span> is a pivot and suppose that <span class="math inline">\(H(t)\)</span> is the cdf of this pivot</p></li>
+<li><p>Then, if we choose <span class="math inline">\(b &gt; a\)</span> such that <span class="math inline">\(H(b) - H(a) = 1 - \alpha\)</span>,
+<span class="math display">\[\begin{eqnarray}
+1 - \alpha &amp;=&amp; P\Big( a \leq T_{n} - \theta \leq b)
+= P\Big( -b \leq \theta - T_{n} \leq -a \Big)  \nonumber \\
+&amp;=&amp; P\Big(T_{n} -b \leq \theta \leq T_{n} -a \Big)  \nonumber
+\end{eqnarray}\]</span>
+For example, <span class="math inline">\(b = H^{-1}(1 - \alpha/2)\)</span> and <span class="math inline">\(a = H^{-1}(\alpha/2)\)</span> would work.</p></li>
+<li><p>This would suggest that <span class="math inline">\([T_{n} - b, T_{n} - a]\)</span> should be a good confidence interval for <span class="math inline">\(\theta\)</span>.</p></li>
+<li><p>The only problem is that <span class="math inline">\(H(t)\)</span> is not known. So, how do we find <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> if we don’t assume normality of <span class="math inline">\(T_{n}\)</span> and a known <span class="math inline">\(\sigma^{2}\)</span>?</p></li>
+<li><p> Look at the distribution of <span class="math inline">\(T_{n,r}^{*} - T_{n}\)</span> as a substitute for <span class="math inline">\(T_{n}\)</span> and use the empirical distribution
+function of <span class="math inline">\(T_{n,r}^{*} - T_{n}\)</span> to estimate <span class="math inline">\(H(t)\)</span>
+<span class="math display">\[\begin{equation}
+\hat{H}_{R}(t) = \frac{1}{R}\sum_{r=1}^{R} I\Big(T_{n,r}^{*} - T_{n} \leq t \Big)
+\end{equation}\]</span></p></li>
+<li><p>Using this approximation for <span class="math inline">\(H(t)\)</span>, we could use the following confidence interval
+<span class="math display">\[\begin{equation}
+\Big[ T_{n} - \hat{H}_{R}^{-1}(1 - \alpha/2), T_{n} - \hat{H}_{R}^{-1}(\alpha/2)   \Big]  \nonumber 
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<p><strong>Studentized Bootstrap Confidence Intervals</strong></p>
+<ul>
+<li><p>Now, suppose we instead use the pivot
+<span class="math display">\[\begin{equation}
+\mathbf{Z}_{n}(\mathbf{X}, \theta) = \frac{T_{n} - \theta}{se_{boot}}, \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(se_{boot}\)</span> denotes the bootstrap estimate of standard error.</p></li>
+<li><p>We will let <span class="math inline">\(K(t)\)</span> denote the cdf of <span class="math inline">\(\mathbf{Z}_{n}( \mathbf{X}, \theta)\)</span>.</p></li>
+<li><p>Using the same reasoning as before,
+<span class="math display">\[\begin{eqnarray}
+1 - \alpha &amp;=&amp; P\Big( K^{-1}(\alpha/2) \leq T_{n} - \theta \leq K^{-1}(1 - \alpha/2) \Big)  \nonumber \\
+&amp;=&amp; P\Big(  - se_{boot} \times K^{-1}(1 - \alpha/2)\leq \theta - T_{n} \leq -se_{boot} \times K^{-1}(\alpha/2) \Big)  \nonumber \\
+&amp;=&amp; P\Big(T_{n} - se_{boot} \times K^{-1}(1 - \alpha/2), T_{n} - se_{boot} \times K^{-1}(\alpha/2) \Big)  \nonumber
+\end{eqnarray}\]</span>
+and hence a confidence interval for <span class="math inline">\(\theta\)</span> would be
+<span class="math display">\[\begin{equation}
+\Big[ T_{n} - se_{boot} \times K^{-1}(1 - \alpha/2), T_{n} - se_{boot} \times K^{-1}(\alpha/2) \Big] \nonumber
+\end{equation}\]</span></p></li>
+<li><p>To estimate <span class="math inline">\(K(t)\)</span>, we are going to use <span class="math inline">\(Z_{n,r}^{*} = (T_{n,r}^{*} - T_{n})/\hat{se}_{r}\)</span> as a substitute for <span class="math inline">\((T_{n} - \theta)/se_{boot}\)</span>.</p></li>
+<li><p>The estimate <span class="math inline">\(\hat{se}_{r}\)</span> is an estimate of the standard error of <span class="math inline">\(T_{n,r}^{*}\)</span>. This could be estimated via
+<span class="math display">\[\begin{equation}
+\hat{se}_{r} = \Bigg[ \frac{1}{J-1} \sum_{j=1}^{J} \Big( T_{n,r,j}^{**} - \frac{1}{J} \sum_{j=1}^{J} T_{n,r,j}^{**} \Big)^{2} \Bigg]^{1/2}, \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(T_{n,r,j}^{**}\)</span> is the value of our test statistic computed from the <span class="math inline">\(j^{th}\)</span> bootstrap sample of the bootstrap sample that was used to produce <span class="math inline">\(T_{n,r}^{*}\)</span>.</p></li>
+<li><p>So, to find <span class="math inline">\(\hat{se}_{r}\)</span>, we need <span class="math inline">\(J\)</span> bootstrap samples within each of the <span class="math inline">\(R\)</span> bootstrap samples that were used to generated <span class="math inline">\(T_{n,1}^{*}, \ldots, T_{n,R}^{*}\)</span>. For this reason, this is often referred to as the double bootstrap.</p></li>
+<li><p>Then, the estimate of <span class="math inline">\(K(t)\)</span> is defined as
+<span class="math display">\[\begin{equation}
+\hat{K}_{R}(t) = \frac{1}{R} \sum_{r=1}^{R} I\Big( Z_{n,r}^{*} \leq t \Big)  \nonumber 
+\end{equation}\]</span></p></li>
+<li><p>The <strong>studentized</strong> bootstrap confidence interval (or the <strong>bootstrap-t</strong> confidence interval) is then defined as
+<span class="math display">\[\begin{equation}
+\Big[ T_{n} - se_{boot} \times \hat{K}_{R}^{-1}(1 - \alpha/2), T_{n} - se_{boot} \times \hat{K}_{R}^{-1}(\alpha/2) \Big] \nonumber
+\end{equation}\]</span></p></li>
 </ul>
 </div>
 <div id="the-parametric-bootstrap" class="section level2">
-<h2><span class="header-section-number">9.4</span> The Parametric Bootstrap</h2>
+<h2><span class="header-section-number">9.5</span> The Parametric Bootstrap</h2>
 <ul>
 <li><p>With the bootstrap, we generate each bootstrap sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> by
 sampling with replacement from the empirical distribution function <span class="math inline">\(\hat{F}_{n}\)</span>.</p></li>
@@ -916,7 +1001,7 @@ model that you think fits the data well.</p></li>
 </ul>
 </div>
 <div id="additional-reading-4" class="section level2">
-<h2><span class="header-section-number">9.5</span> Additional Reading</h2>
+<h2><span class="header-section-number">9.6</span> Additional Reading</h2>
 <ul>
 <li>Additional reading which covers the material discussed in this chapter includes:
 <ul>
@@ -925,22 +1010,7 @@ model that you think fits the data well.</p></li>
 </ul>
 </div>
 <div id="exercises-1" class="section level2">
-<h2><span class="header-section-number">9.6</span> Exercises</h2>
-<ul>
-<li><strong>Exercise 9.?</strong> With the bootstrap we generate bootstrap samples
-by sampling from <span class="math inline">\(\hat{F}_{n}\)</span>. An alternative approach is to
-sample from a smoother estimate of <span class="math inline">\(F\)</span> instead of the non-smooth estimate <span class="math inline">\(\hat{F}_{n}\)</span>.
-Consider the following estimate of <span class="math inline">\(F\)</span> which is just the indefinite integral of a
-kernel density estimate
-<span class="math display">\[\begin{equation}
-\hat{F}_{h}^{KD}(x) = \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{x} \frac{1}{h} K\Big( \frac{t - X_{i}}{h} \Big) dt  \nonumber 
-\end{equation}\]</span>
-<ul>
-<li>What is <span class="math inline">\(\hat{F}_{h}^{KD}\)</span> when <span class="math inline">\(K( \cdot )\)</span> is the Gaussian kernel?</li>
-<li>For the case of a Gaussian kernel, how do you generate an i.i.d. sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> from <span class="math inline">\(\hat{F}_{h}^{KD}\)</span>?</li>
-<li>As <span class="math inline">\(h\)</span> gets closer to <span class="math inline">\(0\)</span>, does <span class="math inline">\(\hat{F}_{h}^{KD}\)</span> get closer to <span class="math inline">\(\hat{F}_{n}\)</span> or move further away?</li>
-</ul></li>
-</ul>
+<h2><span class="header-section-number">9.7</span> Exercises</h2>
 
 </div>
 </div>

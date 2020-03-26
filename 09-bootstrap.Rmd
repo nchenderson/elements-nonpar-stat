@@ -632,6 +632,110 @@ the same procedure we discussed earlier for generating bootstrap samples.
 
 * Smoothness of variance functional.
 
+* What is the bootstrap estimate for the sample mean?
+
+## Pivotal Bootstrap Confidence Intervals
+
+* Confidence intervals are often based on what is referred to as a **pivot**.
+
+* The quantity $W_{n}( \mathbf{X}, \theta)$ is a pivot if the distribution of $W_{n}(\mathbf{X}, \theta)$
+does not depend on $\theta$.
+
+* A common example of this is for the $\textrm{Normal}(\theta, \sigma^{2})$ distribution. 
+In this case, 
+\begin{equation}
+W_{n}(\mathbf{X}, \theta) = \bar{X} - \theta
+\end{equation}
+is a pivot. The distribution of $W_{n}(\mathbf{X}, \theta)$ is $\textrm{Normal}(0, \sigma^{2})$.
+
+* Using the pivot allows us to construct a confidence interval because
+\begin{eqnarray}
+1 - \alpha &=& P\Big( -\sigma z_{1 - \alpha/2} \leq W_{n}(\mathbf{X}, \theta) \leq \sigma z_{1 - \alpha/2}) \nonumber \\
+&=& P\Big(-\sigma z_{1 - \alpha/2} \leq \bar{X} - \theta \leq \sigma z_{1 - \alpha/2})  \nonumber \\
+&=& P\Big(\bar{X} -\sigma z_{1 - \alpha/2} \leq \theta \leq \sigma z_{1 - \alpha/2})  \nonumber 
+\end{eqnarray}
+
+* Another common pivot (if we did not assume $\sigma^{2}$ was known) would be 
+\begin{equation}
+W_{n}(\mathbf{X}, \theta) = \frac{\sqrt{n}(\bar{X} - \theta)}{\hat{\sigma}}, \nonumber
+\end{equation}
+which would have a $t$ distribution.
+
+
+---
+
+* We can use a similar idea to construct a bootstrap confidence interval for $\theta = E( T_{n} )$. 
+
+* Assume that $W_{n}(\mathbf{X}, \theta) = T_{n} - \theta$ is a pivot and suppose that $H(t)$ is the cdf of this pivot
+
+* Then, if we choose $b > a$ such that $H(b) - H(a) = 1 - \alpha$,
+\begin{eqnarray}
+1 - \alpha &=& P\Big( a \leq T_{n} - \theta \leq b)
+= P\Big( -b \leq \theta - T_{n} \leq -a \Big)  \nonumber \\
+&=& P\Big(T_{n} -b \leq \theta \leq T_{n} -a \Big)  \nonumber
+\end{eqnarray}
+For example, $b = H^{-1}(1 - \alpha/2)$ and $a = H^{-1}(\alpha/2)$ would work. 
+
+* This would suggest that $[T_{n} - b, T_{n} - a]$ should be a good confidence interval for $\theta$. 
+
+* The only problem is that $H(t)$ is not known. So, how do we find $a$ and $b$ if we don't assume normality of $T_{n}$ and a known $\sigma^{2}$?
+
+* \textbf{Idea:} Look at the distribution of $T_{n,r}^{*} - T_{n}$ as a substitute for $T_{n}$ and use the empirical distribution
+function of $T_{n,r}^{*} - T_{n}$ to estimate $H(t)$
+\begin{equation}
+\hat{H}_{R}(t) = \frac{1}{R}\sum_{r=1}^{R} I\Big(T_{n,r}^{*} - T_{n} \leq t \Big)
+\end{equation}
+
+* Using this approximation for $H(t)$, we could use the following confidence interval
+\begin{equation}
+\Big[ T_{n} - \hat{H}_{R}^{-1}(1 - \alpha/2), T_{n} - \hat{H}_{R}^{-1}(\alpha/2)   \Big]  \nonumber 
+\end{equation}
+
+---
+
+**Studentized Bootstrap Confidence Intervals**
+
+* Now, suppose we instead use the pivot 
+\begin{equation}
+\mathbf{Z}_{n}(\mathbf{X}, \theta) = \frac{T_{n} - \theta}{se_{boot}}, \nonumber
+\end{equation}
+where $se_{boot}$ denotes the bootstrap estimate of standard error.
+
+* We will let $K(t)$ denote the cdf of $\mathbf{Z}_{n}( \mathbf{X}, \theta)$. 
+
+* Using the same reasoning as before,
+\begin{eqnarray}
+1 - \alpha &=& P\Big( K^{-1}(\alpha/2) \leq T_{n} - \theta \leq K^{-1}(1 - \alpha/2) \Big)  \nonumber \\
+&=& P\Big(  - se_{boot} \times K^{-1}(1 - \alpha/2)\leq \theta - T_{n} \leq -se_{boot} \times K^{-1}(\alpha/2) \Big)  \nonumber \\
+&=& P\Big(T_{n} - se_{boot} \times K^{-1}(1 - \alpha/2), T_{n} - se_{boot} \times K^{-1}(\alpha/2) \Big)  \nonumber
+\end{eqnarray}
+and hence a confidence interval for $\theta$ would be
+\begin{equation}
+\Big[ T_{n} - se_{boot} \times K^{-1}(1 - \alpha/2), T_{n} - se_{boot} \times K^{-1}(\alpha/2) \Big] \nonumber
+\end{equation}
+
+* To estimate $K(t)$, we are going to use $Z_{n,r}^{*} = (T_{n,r}^{*} - T_{n})/\hat{se}_{r}$ as a substitute for $(T_{n} - \theta)/se_{boot}$.
+
+* The estimate $\hat{se}_{r}$ is an estimate of the standard error of $T_{n,r}^{*}$. This could be estimated via
+\begin{equation}
+\hat{se}_{r} = \Bigg[ \frac{1}{J-1} \sum_{j=1}^{J} \Big( T_{n,r,j}^{**} - \frac{1}{J} \sum_{j=1}^{J} T_{n,r,j}^{**} \Big)^{2} \Bigg]^{1/2}, \nonumber
+\end{equation}
+where $T_{n,r,j}^{**}$ is the value of our test statistic computed from the $j^{th}$ bootstrap sample of the bootstrap sample that was used to produce $T_{n,r}^{*}$. 
+
+* So, to find $\hat{se}_{r}$, we need $J$ bootstrap samples within each of the $R$ bootstrap samples that were used to generated $T_{n,1}^{*}, \ldots, T_{n,R}^{*}$. For this reason, this is often referred to as the double bootstrap.
+
+
+* Then, the estimate of $K(t)$ is defined as
+\begin{equation}
+\hat{K}_{R}(t) = \frac{1}{R} \sum_{r=1}^{R} I\Big( Z_{n,r}^{*} \leq t \Big)  \nonumber 
+\end{equation}
+
+* The **studentized** bootstrap confidence interval (or the **bootstrap-t** confidence interval) is then defined as
+\begin{equation}
+\Big[ T_{n} - se_{boot} \times \hat{K}_{R}^{-1}(1 - \alpha/2), T_{n} - se_{boot} \times \hat{K}_{R}^{-1}(\alpha/2) \Big] \nonumber
+\end{equation}
+
+
 
 ## The Parametric Bootstrap
 
@@ -665,18 +769,7 @@ model that you think fits the data well.
 
 ## Exercises
 
-* **Exercise 9.?** With the bootstrap we generate bootstrap samples
-by sampling from $\hat{F}_{n}$. An alternative approach is to
-sample from a smoother estimate of $F$ instead of the non-smooth estimate $\hat{F}_{n}$.
-Consider the following estimate of $F$ which is just the indefinite integral of a 
-kernel density estimate
-\begin{equation}
-\hat{F}_{h}^{KD}(x) = \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{x} \frac{1}{h} K\Big( \frac{t - X_{i}}{h} \Big) dt  \nonumber 
-\end{equation}
-    + What is $\hat{F}_{h}^{KD}$ when $K( \cdot )$ is the Gaussian kernel?
-    + For the case of a Gaussian kernel, how do you generate an i.i.d. sample $(X_{1}^{*}, \ldots, X_{n}^{*})$ from $\hat{F}_{h}^{KD}$?
-    + As $h$ gets closer to $0$, does $\hat{F}_{h}^{KD}$ get closer to $\hat{F}_{n}$ or move further away?
-    
+
 
 
 
