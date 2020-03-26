@@ -891,8 +891,30 @@ the same procedure we discussed earlier for generating bootstrap samples.</p></l
 </ul>
 <hr />
 <ul>
-<li><p>Smoothness of variance functional.</p></li>
-<li><p>What is the bootstrap estimate for the sample mean?</p></li>
+<li><p>The variance of <span class="math inline">\(T_{n}\)</span> can be written as
+<span class="math display">\[\begin{equation}
+V_{T_{n}}(F) = \int \cdots \int h^{2}(x_{1}, \ldots, x_{n})  dF(x_{1})\cdots dF(x_{n}) - E_{T_{n}}^{2}(F), \nonumber
+\end{equation}\]</span>
+where
+<span class="math display">\[\begin{equation}
+E_{T_{n}}(F) = \int \cdots \int h(x_{1}, \ldots, x_{n})  dF(x_{1})\cdots dF(x_{n}), \nonumber
+\end{equation}\]</span></p></li>
+<li><p>What we are trying to compute with the bootstrap is the following variance estimate
+<span class="math display" id="eq:idealized-bootstrap-var">\[\begin{equation}
+V_{T_{n}}(\hat{F}_{n}) = \int \cdots \int h^{2}(x_{1}, \ldots, x_{n})  d\hat{F}_{n}(x_{1})\cdots d\hat{F}_{n}(x_{n}) - E_{T_{n}}^{2}(\hat{F}_{n})
+\tag{9.6}
+\end{equation}\]</span></p></li>
+<li><p>It is too difficult to compute <a href="bootstrap-main.html#eq:idealized-bootstrap-var">(9.6)</a> in most cases. Instead, with the bootstrap, we are approximating <a href="bootstrap-main.html#eq:idealized-bootstrap-var">(9.6)</a> via simulation by drawing many i.i.d. samples from <span class="math inline">\(\hat{F}_{n}\)</span>.</p></li>
+<li><p>You can think of the bootstrap as using Monte Carlo integration to approximate <a href="bootstrap-main.html#eq:idealized-bootstrap-var">(9.6)</a>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>There are cases where the bootstrap does not really work well.</p></li>
+<li><p>The main requirement for the bootstrap to work is that the functional <span class="math inline">\(E_{T_{n}}(F)\)</span> is “smooth” as <span class="math inline">\(F\)</span> varies.</p></li>
+<li><p>That is, if <span class="math inline">\(F_{1}\)</span> and <span class="math inline">\(F_{2}\)</span> are “close”, then <span class="math inline">\(E_{T_{n}}(F_{1})\)</span> and <span class="math inline">\(E_{T_{n}}(F_{2})\)</span> should also be close.</p></li>
+<li><p>More specifically, if the functional <span class="math inline">\(E_{T_{n}}(F)\)</span> is differentiable in an appropriate sense, then
+confidence intervals from the bootstrap estimate of the variance of <span class="math inline">\(T_{n}\)</span> will be “valid” in an
+asymptotic sense (see, for example, Chapter 5 of <span class="citation">Shao (<a href="#ref-shao2003">2003</a>)</span> for a somewhat more rigorous discussion of this).</p></li>
 </ul>
 </div>
 <div id="pivotal-bootstrap-confidence-intervals" class="section level2">
@@ -986,18 +1008,27 @@ sampling with replacement from the empirical distribution function <span class="
 <li><p>For this reason, it can be referred to as the <strong>nonparametric bootstrap</strong>.</p></li>
 <li><p>With the <strong>parametric bootstrap</strong>, we sample from a parametric estimate of <span class="math inline">\(F\)</span>
 instead of sampling from <span class="math inline">\(\hat{F}_{n}\)</span>.</p></li>
-<li><p>For example,</p></li>
+<li><p>For example, suppose we have data <span class="math inline">\((X_{1}, \ldots, X_{n})\)</span> that we assume are normally distributed
+and we estimate <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^{2}\)</span> with
+<span class="math display">\[\begin{equation}
+\hat{\mu} = \bar{X} \qquad \qquad \hat{\sigma}^{2} = \frac{1}{n-1}\sum_{i=1}^{n} (X_{i} - \bar{X})^{2}
+\end{equation}\]</span></p></li>
+<li><p>If we are interested in getting a confidence interval for <span class="math inline">\(\theta\)</span> where <span class="math inline">\(T_{n} = h(X_{1}, \ldots, X_{n})\)</span> is
+an estimate of <span class="math inline">\(\theta\)</span>, the parametric bootstrap would use the following procedure:</p></li>
+<li>For <span class="math inline">\(r = 1, \ldots, R\)</span>:
+<ul>
+<li>Draw an i.i.d. sample: <span class="math inline">\(X_{1}^{*}, \ldots, X_{n}^{*} \sim \textrm{Normal}(\hat{\mu}, \hat{\sigma}^{2})\)</span>.</li>
+<li>Compute <span class="math inline">\(T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})\)</span>.</li>
+</ul></li>
+<li><p>Then, form a confidence interval for <span class="math inline">\(\theta\)</span> using the parametric bootstrap replications <span class="math inline">\(T_{n,1}^{*}, \ldots, T_{n,R}^{*}\)</span></p></li>
 </ul>
 <hr />
 <p><strong>When Might the Parametric Bootstrap be Useful?</strong></p>
 <ul>
-<li>In cases with smaller sample sizes.
-<ul>
-<li>For small sample sizes, <span class="math inline">\(F_{\hat{\varphi}}\)</span> is often a better estimate than <span class="math inline">\(\hat{F}_{n}\)</span>.</li>
-</ul></li>
+<li><p>In cases with smaller sample sizes. For small sample sizes, <span class="math inline">\(F_{\hat{\varphi}}\)</span> is often a better estimate than <span class="math inline">\(\hat{F}_{n}\)</span>.</p></li>
 <li><p>When you are only interested in constructing a confidence interval for the parameter of a parametric
 model that you think fits the data well.</p></li>
-<li><p>For cases with non-i.i.d. data, a parametric bootstrap can be easier to work with.</p></li>
+<li><p>For non-i.i.d. data or other complex examples, a parametric bootstrap can be easier to work with.</p></li>
 </ul>
 </div>
 <div id="additional-reading-4" class="section level2">
@@ -1016,6 +1047,9 @@ model that you think fits the data well.</p></li>
 </div>
 <h3>References</h3>
 <div id="refs" class="references">
+<div id="ref-shao2003">
+<p>Shao, Jun. 2003. <em>Mathematical Statistics</em>. 2nd ed. Springer-Verlag New York Inc.</p>
+</div>
 <div id="ref-wasserman2006">
 <p>Wasserman, Larry. 2006. <em>All of Nonparametric Statistics</em>. Springer Science &amp; Business Media.</p>
 </div>

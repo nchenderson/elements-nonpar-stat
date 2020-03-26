@@ -630,9 +630,37 @@ the same procedure we discussed earlier for generating bootstrap samples.
 
 ---
 
-* Smoothness of variance functional.
+* The variance of $T_{n}$ can be written as
+\begin{equation}
+V_{T_{n}}(F) = \int \cdots \int h^{2}(x_{1}, \ldots, x_{n})  dF(x_{1})\cdots dF(x_{n}) - E_{T_{n}}^{2}(F), \nonumber
+\end{equation}
+where 
+\begin{equation}
+E_{T_{n}}(F) = \int \cdots \int h(x_{1}, \ldots, x_{n})  dF(x_{1})\cdots dF(x_{n}), \nonumber
+\end{equation}
 
-* What is the bootstrap estimate for the sample mean?
+* What we are trying to compute with the bootstrap is the following variance estimate
+\begin{equation}
+V_{T_{n}}(\hat{F}_{n}) = \int \cdots \int h^{2}(x_{1}, \ldots, x_{n})  d\hat{F}_{n}(x_{1})\cdots d\hat{F}_{n}(x_{n}) - E_{T_{n}}^{2}(\hat{F}_{n})
+(\#eq:idealized-bootstrap-var)
+\end{equation}
+
+* It is too difficult to compute \@ref(eq:idealized-bootstrap-var) in most cases. Instead, with the bootstrap, we are approximating \@ref(eq:idealized-bootstrap-var) via simulation by drawing many i.i.d. samples from $\hat{F}_{n}$.
+
+* You can think of the bootstrap as using Monte Carlo integration to approximate \@ref(eq:idealized-bootstrap-var).
+
+---
+
+* There are cases where the bootstrap does not really work well. 
+
+* The main requirement for the bootstrap to work is that the functional $E_{T_{n}}(F)$ is "smooth" as $F$ varies. 
+
+* That is, if $F_{1}$ and $F_{2}$ are "close", then $E_{T_{n}}(F_{1})$ and $E_{T_{n}}(F_{2})$ should also be close.
+
+* More specifically, if the functional $E_{T_{n}}(F)$ is differentiable in an appropriate sense, then
+confidence intervals from the bootstrap estimate of the variance of $T_{n}$ will be "valid" in an 
+asymptotic sense (see, for example, Chapter 5 of @shao2003 for a somewhat more rigorous discussion of this).
+
 
 ## Pivotal Bootstrap Confidence Intervals
 
@@ -747,20 +775,31 @@ sampling with replacement from the empirical distribution function $\hat{F}_{n}$
 * With the **parametric bootstrap**, we sample from a parametric estimate of $F$
 instead of sampling from $\hat{F}_{n}$.
 
-* For example, 
+* For example, suppose we have data $(X_{1}, \ldots, X_{n})$ that we assume are normally distributed
+and we estimate $\mu$ and $\sigma^{2}$ with 
+\begin{equation}
+\hat{\mu} = \bar{X} \qquad \qquad \hat{\sigma}^{2} = \frac{1}{n-1}\sum_{i=1}^{n} (X_{i} - \bar{X})^{2}
+\end{equation}
+
+* If we are interested in getting a confidence interval for $\theta$ where $T_{n} = h(X_{1}, \ldots, X_{n})$ is
+an estimate of $\theta$, the parametric bootstrap would use the following procedure:
+
+* For $r = 1, \ldots, R$:
+    + Draw an i.i.d. sample: $X_{1}^{*}, \ldots, X_{n}^{*} \sim \textrm{Normal}(\hat{\mu}, \hat{\sigma}^{2})$.
+    + Compute $T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})$. 
+
+* Then, form a confidence interval for $\theta$ using the parametric bootstrap replications $T_{n,1}^{*}, \ldots, T_{n,R}^{*}$
 
 ---
 
 **When Might the Parametric Bootstrap be Useful?**
 
-* In cases with smaller sample sizes. 
-    + For small sample sizes, $F_{\hat{\varphi}}$ is often a better estimate than $\hat{F}_{n}$. 
+* In cases with smaller sample sizes. For small sample sizes, $F_{\hat{\varphi}}$ is often a better estimate than $\hat{F}_{n}$. 
 
 * When you are only interested in constructing a confidence interval for the parameter of a parametric
 model that you think fits the data well.
 
-* For cases with non-i.i.d. data, a parametric bootstrap can be easier to work with. 
-
+* For non-i.i.d. data or other complex examples, a parametric bootstrap can be easier to work with. 
 
 ## Additional Reading
 
