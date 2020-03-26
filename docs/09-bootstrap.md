@@ -602,7 +602,7 @@ mean(Cover.bootquant.ci)
 ## Why is the Bootstrap Procedure Reasonable?
 
 * As mentioned before, our original motivation for the bootstrap was to find an estimate of 
-$\textrm{Var}(T_{n})$ where 
+$\textrm{Var}(T_{n})$ where $T_{n}$ is a statistic that can be thought of as an estimate of $\theta$.
 
 * The statistic $T_{n}$ can be thought of as a function of our sample 
 \begin{equation}
@@ -824,6 +824,94 @@ an estimate of $\theta$, the parametric bootstrap would use the following proced
 model that you think fits the data well.
 
 * For non-i.i.d. data or other complex examples, a parametric bootstrap can be easier to work with. 
+
+### Parametric Bootstrap for the Median Age from the Kidney Data
+
+* Let us consider the ages from the kidney data.
+
+* One somewhat reasonable model for the ages $X_{i}$ from the kidney data is that
+\begin{equation}
+X_{i} - 17 \sim \textrm{Gamma}(\alpha, \beta) \nonumber
+\end{equation}
+
+* We can find the maximum likelihood estimates $(\hat{\alpha}, \hat{\beta})$ for this model
+using the following `R` code
+
+```r
+kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
+                     header=TRUE)
+
+LogProfLik <- function(alpha, x) {
+    ans <- alpha*log(alpha/mean(x)) - lgamma(alpha) + (alpha - 1)*mean(log(x)) - alpha
+    return(ans)
+}
+
+best.alpha <- optimize(LogProfLik, interval=c(0,10), x=kidney$age - 17, 
+                       maximum=TRUE)$maximum
+best.beta <- best.alpha/mean(kidney$age - 17)
+```
+
+* We can plot this estimated Gamma density overlaid on the histogram of the ages to see how they compare
+
+```r
+tt <- seq(17, 90, length.out=500)
+hist(kidney$age, breaks="FD", probability=TRUE, las=1, xlab="Age", 
+     main="Estimate Gamma Density for the Kidney Age Data", col="grey")
+lines(tt, dgamma(tt - 17, shape=best.alpha, rate=best.beta), lwd=2)
+```
+
+<img src="09-bootstrap_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+
+---
+
+* Suppose we are interested in constructing a confidence interval for the median age.
+
+* To use the parametric boostrap with the parametric model $X_{i} - 17 \sim \textrm{Gamma}(\alpha, \beta)$
+and using our estimates $\hat{\alpha}$ and $\hat{\beta}$ computed above, we would
+use the following steps.
+
+* For $r = 1, \ldots, R$:
+    + Draw an i.i.d. sample: $X_{1}^{*}, \ldots, X_{n}^{*} \sim 17 + \textrm{Gamma}(\hat{\alpha}, \hat{\beta})$.
+    + Compute $T_{n,r}^{*} = \textrm{median}(X_{1}^{*}, \ldots, X_{n}^{*})$. 
+
+* The code for implementing this parametric bootstrap is given below
+
+```r
+R <- 500
+med.boot.par <- rep(0, R)
+med.boot.np <- rep(0, R)
+for(r in 1:R) {
+    xx.boot.par <- 17 + rgamma(157, shape=best.alpha, rate=best.beta)
+    xx.boot.np <- sample(kidney$age, size=157, replace=TRUE)
+    
+    med.boot.par[r] <- median(xx.boot.par)  ## rth par. bootstrap replication
+    med.boot.np[r] <- median(xx.boot.np)  ## rth par. bootstrap replication
+}
+```
+
+* The percentile bootstrap confidence interval using the parametric bootstrap is
+
+```r
+quantile(med.boot.par, probs=c(.025, .975))
+```
+
+```
+##     2.5%    97.5% 
+## 30.44789 35.41417
+```
+
+* The percentile bootstrap confidence interval using the nonparametric bootstrap is
+
+```r
+quantile(med.boot.np, probs=c(.025, .975))
+```
+
+```
+##  2.5% 97.5% 
+##    28    32
+```
+
+
 
 ## Additional Reading
 

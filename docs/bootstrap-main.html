@@ -258,7 +258,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="9.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#why-is-the-bootstrap-procedure-reasonable"><i class="fa fa-check"></i><b>9.3</b> Why is the Bootstrap Procedure Reasonable?</a></li>
 <li class="chapter" data-level="9.4" data-path="bootstrap-main.html"><a href="bootstrap-main.html#pivotal-bootstrap-confidence-intervals"><i class="fa fa-check"></i><b>9.4</b> Pivotal Bootstrap Confidence Intervals</a></li>
-<li class="chapter" data-level="9.5" data-path="bootstrap-main.html"><a href="bootstrap-main.html#the-parametric-bootstrap"><i class="fa fa-check"></i><b>9.5</b> The Parametric Bootstrap</a></li>
+<li class="chapter" data-level="9.5" data-path="bootstrap-main.html"><a href="bootstrap-main.html#the-parametric-bootstrap"><i class="fa fa-check"></i><b>9.5</b> The Parametric Bootstrap</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#parametric-bootstrap-for-the-median-age-from-the-kidney-data"><i class="fa fa-check"></i><b>9.5.1</b> Parametric Bootstrap for the Median Age from the Kidney Data</a></li>
+</ul></li>
 <li class="chapter" data-level="9.6" data-path="bootstrap-main.html"><a href="bootstrap-main.html#additional-reading-4"><i class="fa fa-check"></i><b>9.6</b> Additional Reading</a></li>
 <li class="chapter" data-level="9.7" data-path="bootstrap-main.html"><a href="bootstrap-main.html#exercises-1"><i class="fa fa-check"></i><b>9.7</b> Exercises</a></li>
 </ul></li>
@@ -846,7 +848,7 @@ Bootstrap Percentile
 <h2><span class="header-section-number">9.3</span> Why is the Bootstrap Procedure Reasonable?</h2>
 <ul>
 <li><p>As mentioned before, our original motivation for the bootstrap was to find an estimate of
-<span class="math inline">\(\textrm{Var}(T_{n})\)</span> where</p></li>
+<span class="math inline">\(\textrm{Var}(T_{n})\)</span> where <span class="math inline">\(T_{n}\)</span> is a statistic that can be thought of as an estimate of <span class="math inline">\(\theta\)</span>.</p></li>
 <li><p>The statistic <span class="math inline">\(T_{n}\)</span> can be thought of as a function of our sample
 <span class="math display">\[\begin{equation}
 T_{n} = h(X_{1}, \ldots, X_{n}) \nonumber 
@@ -1030,6 +1032,72 @@ an estimate of <span class="math inline">\(\theta\)</span>, the parametric boots
 model that you think fits the data well.</p></li>
 <li><p>For non-i.i.d. data or other complex examples, a parametric bootstrap can be easier to work with.</p></li>
 </ul>
+<div id="parametric-bootstrap-for-the-median-age-from-the-kidney-data" class="section level3">
+<h3><span class="header-section-number">9.5.1</span> Parametric Bootstrap for the Median Age from the Kidney Data</h3>
+<ul>
+<li><p>Let us consider the ages from the kidney data.</p></li>
+<li><p>One somewhat reasonable model for the ages <span class="math inline">\(X_{i}\)</span> from the kidney data is that
+<span class="math display">\[\begin{equation}
+X_{i} - 17 \sim \textrm{Gamma}(\alpha, \beta) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>We can find the maximum likelihood estimates <span class="math inline">\((\hat{\alpha}, \hat{\beta})\)</span> for this model
+using the following <code>R</code> code</p></li>
+</ul>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb179-1" data-line-number="1">kidney &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </a>
+<a class="sourceLine" id="cb179-2" data-line-number="2">                     <span class="dt">header=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb179-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb179-4" data-line-number="4">LogProfLik &lt;-<span class="st"> </span><span class="cf">function</span>(alpha, x) {</a>
+<a class="sourceLine" id="cb179-5" data-line-number="5">    ans &lt;-<span class="st"> </span>alpha<span class="op">*</span><span class="kw">log</span>(alpha<span class="op">/</span><span class="kw">mean</span>(x)) <span class="op">-</span><span class="st"> </span><span class="kw">lgamma</span>(alpha) <span class="op">+</span><span class="st"> </span>(alpha <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)<span class="op">*</span><span class="kw">mean</span>(<span class="kw">log</span>(x)) <span class="op">-</span><span class="st"> </span>alpha</a>
+<a class="sourceLine" id="cb179-6" data-line-number="6">    <span class="kw">return</span>(ans)</a>
+<a class="sourceLine" id="cb179-7" data-line-number="7">}</a>
+<a class="sourceLine" id="cb179-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb179-9" data-line-number="9">best.alpha &lt;-<span class="st"> </span><span class="kw">optimize</span>(LogProfLik, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">10</span>), <span class="dt">x=</span>kidney<span class="op">$</span>age <span class="op">-</span><span class="st"> </span><span class="dv">17</span>, </a>
+<a class="sourceLine" id="cb179-10" data-line-number="10">                       <span class="dt">maximum=</span><span class="ot">TRUE</span>)<span class="op">$</span>maximum</a>
+<a class="sourceLine" id="cb179-11" data-line-number="11">best.beta &lt;-<span class="st"> </span>best.alpha<span class="op">/</span><span class="kw">mean</span>(kidney<span class="op">$</span>age <span class="op">-</span><span class="st"> </span><span class="dv">17</span>)</a></code></pre></div>
+<ul>
+<li>We can plot this estimated Gamma density overlaid on the histogram of the ages to see how they compare</li>
+</ul>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb180-1" data-line-number="1">tt &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">17</span>, <span class="dv">90</span>, <span class="dt">length.out=</span><span class="dv">500</span>)</a>
+<a class="sourceLine" id="cb180-2" data-line-number="2"><span class="kw">hist</span>(kidney<span class="op">$</span>age, <span class="dt">breaks=</span><span class="st">&quot;FD&quot;</span>, <span class="dt">probability=</span><span class="ot">TRUE</span>, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">xlab=</span><span class="st">&quot;Age&quot;</span>, </a>
+<a class="sourceLine" id="cb180-3" data-line-number="3">     <span class="dt">main=</span><span class="st">&quot;Estimate Gamma Density for the Kidney Age Data&quot;</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>)</a>
+<a class="sourceLine" id="cb180-4" data-line-number="4"><span class="kw">lines</span>(tt, <span class="kw">dgamma</span>(tt <span class="op">-</span><span class="st"> </span><span class="dv">17</span>, <span class="dt">shape=</span>best.alpha, <span class="dt">rate=</span>best.beta), <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="09-bootstrap_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<hr />
+<ul>
+<li><p>Suppose we are interested in constructing a confidence interval for the median age.</p></li>
+<li><p>To use the parametric boostrap with the parametric model <span class="math inline">\(X_{i} - 17 \sim \textrm{Gamma}(\alpha, \beta)\)</span>
+and using our estimates <span class="math inline">\(\hat{\alpha}\)</span> and <span class="math inline">\(\hat{\beta}\)</span> computed above, we would
+use the following steps.</p></li>
+<li>For <span class="math inline">\(r = 1, \ldots, R\)</span>:
+<ul>
+<li>Draw an i.i.d. sample: <span class="math inline">\(X_{1}^{*}, \ldots, X_{n}^{*} \sim 17 + \textrm{Gamma}(\hat{\alpha}, \hat{\beta})\)</span>.</li>
+<li>Compute <span class="math inline">\(T_{n,r}^{*} = \textrm{median}(X_{1}^{*}, \ldots, X_{n}^{*})\)</span>.</li>
+</ul></li>
+<li><p>The code for implementing this parametric bootstrap is given below</p></li>
+</ul>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb181-1" data-line-number="1">R &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb181-2" data-line-number="2">med.boot.par &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, R)</a>
+<a class="sourceLine" id="cb181-3" data-line-number="3">med.boot.np &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, R)</a>
+<a class="sourceLine" id="cb181-4" data-line-number="4"><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R) {</a>
+<a class="sourceLine" id="cb181-5" data-line-number="5">    xx.boot.par &lt;-<span class="st"> </span><span class="dv">17</span> <span class="op">+</span><span class="st"> </span><span class="kw">rgamma</span>(<span class="dv">157</span>, <span class="dt">shape=</span>best.alpha, <span class="dt">rate=</span>best.beta)</a>
+<a class="sourceLine" id="cb181-6" data-line-number="6">    xx.boot.np &lt;-<span class="st"> </span><span class="kw">sample</span>(kidney<span class="op">$</span>age, <span class="dt">size=</span><span class="dv">157</span>, <span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb181-7" data-line-number="7">    </a>
+<a class="sourceLine" id="cb181-8" data-line-number="8">    med.boot.par[r] &lt;-<span class="st"> </span><span class="kw">median</span>(xx.boot.par)  <span class="co">## rth par. bootstrap replication</span></a>
+<a class="sourceLine" id="cb181-9" data-line-number="9">    med.boot.np[r] &lt;-<span class="st"> </span><span class="kw">median</span>(xx.boot.np)  <span class="co">## rth par. bootstrap replication</span></a>
+<a class="sourceLine" id="cb181-10" data-line-number="10">}</a></code></pre></div>
+<ul>
+<li>The percentile bootstrap confidence interval using the parametric bootstrap is</li>
+</ul>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb182-1" data-line-number="1"><span class="kw">quantile</span>(med.boot.par, <span class="dt">probs=</span><span class="kw">c</span>(.<span class="dv">025</span>, <span class="fl">.975</span>))</a></code></pre></div>
+<pre><code>##     2.5%    97.5% 
+## 30.44789 35.41417</code></pre>
+<ul>
+<li>The percentile bootstrap confidence interval using the nonparametric bootstrap is</li>
+</ul>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb184-1" data-line-number="1"><span class="kw">quantile</span>(med.boot.np, <span class="dt">probs=</span><span class="kw">c</span>(.<span class="dv">025</span>, <span class="fl">.975</span>))</a></code></pre></div>
+<pre><code>##  2.5% 97.5% 
+##    28    32</code></pre>
+</div>
 </div>
 <div id="additional-reading-4" class="section level2">
 <h2><span class="header-section-number">9.6</span> Additional Reading</h2>
