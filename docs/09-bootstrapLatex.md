@@ -628,7 +628,7 @@ Large-Sample Approximation & 0.904 & 0.921 & 0.938 \\
 ## Why is the Bootstrap Procedure Reasonable?
 
 * As mentioned before, our original motivation for the bootstrap was to find an estimate of 
-$\textrm{Var}(T_{n})$ where 
+$\textrm{Var}(T_{n})$ where $T_{n}$ is a statistic that can be thought of as an estimate of $\theta$.
 
 * The statistic $T_{n}$ can be thought of as a function of our sample 
 \begin{equation}

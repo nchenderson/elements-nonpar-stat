@@ -799,7 +799,21 @@ an estimate of $\theta$, the parametric bootstrap would use the following proced
 * When you are only interested in constructing a confidence interval for the parameter of a parametric
 model that you think fits the data well.
 
-* For non-i.i.d. data or other complex examples, a parametric bootstrap can be easier to work with. 
+* For non-i.i.d. data or other complicated distributions, a parametric bootstrap can sometimes be easier to work with. 
+
+---
+
+* For non-i.i.d. data, where our observations $(X_{1}, \ldots, X_{n})$ our dependent, a parametric bootstrap can 
+often be straightforward to implement.
+
+* Suppose $G_{\varphi}$ is a parametric model that describes the joint distribution of $(X_{1}, \ldots, X_{n})$
+and that it is easy to simulate observations from $G_{\varphi}$.
+
+* Then, if you have an estimate $\hat{\varphi}$ of $\varphi$, you can use the following procedure to generate bootstrap replications for your statistic of interest.
+
+* For $r = 1, \ldots, R$:
+    + Draw a sample $(X_{1}^{*}, \ldots, X_{n}^{*}) \sim G_{\hat{\varphi}}$.
+    + Compute $T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})$.
 
 ### Parametric Bootstrap for the Median Age from the Kidney Data
 
@@ -860,16 +874,15 @@ for(r in 1:R) {
 }
 ```
 
-* The percentile bootstrap confidence interval using the parametric bootstrap is
+* The normal standard error confidence interval using the parametric bootstrap is
 ```{r}
-quantile(med.boot.par, probs=c(.025, .975))
+c(median(kidney$age) - 1.96*sd(med.boot.par), median(kidney$age) + 1.96*sd(med.boot.par))
 ```
 
-* The percentile bootstrap confidence interval using the nonparametric bootstrap is
+* The normal standard error confidence interval using the nonparametric bootstrap is
 ```{r}
-quantile(med.boot.np, probs=c(.025, .975))
+c(median(kidney$age) - 1.96*sd(med.boot.np), median(kidney$age) + 1.96*sd(med.boot.np))
 ```
-
 
 
 ## Additional Reading

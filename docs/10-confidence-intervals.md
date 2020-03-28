@@ -1,7 +1,16 @@
 # The Bootstrap and Confidence Intervals {#ci}
  
 
+```r
+x <- rnorm(100)
+tmp <- ar(x, aic=FALSE, order.max = 1)
+tmp$asy.var.coef  ## asymptotic variance of alpha.hat
+```
 
+```
+##            [,1]
+## [1,] 0.01001363
+```
 
 
 ### Using the Bootstrap in Regression

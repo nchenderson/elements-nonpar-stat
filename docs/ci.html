@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-26" />
+<meta name="date" content="2020-03-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -308,6 +308,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="ci" class="section level1">
 <h1><span class="header-section-number">Chapter 10</span> The Bootstrap and Confidence Intervals</h1>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb186-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb186-2" data-line-number="2">tmp &lt;-<span class="st"> </span><span class="kw">ar</span>(x, <span class="dt">aic=</span><span class="ot">FALSE</span>, <span class="dt">order.max =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb186-3" data-line-number="3">tmp<span class="op">$</span>asy.var.coef  <span class="co">## asymptotic variance of alpha.hat</span></a></code></pre></div>
+<pre><code>##            [,1]
+## [1,] 0.01001363</code></pre>
 <div id="using-the-bootstrap-in-regression" class="section level3">
 <h3><span class="header-section-number">10.0.1</span> Using the Bootstrap in Regression</h3>
 <ul>
