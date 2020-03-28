@@ -1,13 +1,80 @@
-# The Bootstrap and Confidence Intervals {#ci}
+# Bootstrap Examples and the Jackknife {#ci}
  
+
+## The Parametric Bootstrap for an AR(1) model
+
+* Consider the time series $X_{1}, X_{2}, \ldots, X_{m}$. Here,
+$X_{t}$ denotes an observation made at time $t$.
+
+* An autoregressive model of order 1 (AR(1)) for this time series is
+\begin{eqnarray}
+X_{1} &=& \frac{c_{0}}{1 - \alpha} + \varepsilon_{1} \nonumber \\
+X_{t} &=& c_{0} + \alpha X_{t-1} + \varepsilon_{t}, \qquad t=2,\ldots,m. \nonumber
+\end{eqnarray}
+
+* It is usually assumed that $|\alpha| < 1$.
+
+* In the AR(1) model, it is assumed that 
+    + $E(\varepsilon_{t}) = 0$
+    + $\textrm{Var}(\varepsilon_{t}) = \sigma^{2}$,
+    + $\varepsilon_{2}, \ldots, \varepsilon_{m}$ are i.i.d.
+    + $\varepsilon_{t}$ and $X_{t-1}$ are independent.
+
+* In addition to these assumptions, we will assume that
+\begin{equation}
+\varepsilon_{t} \sim \textrm{Normal}(0, \sigma^{2})  \nonumber 
+\end{equation}
+
+* The AR(1) model implies that 
+\begin{equation}
+\textrm{Corr}(X_{t}, X_{t-1}) = \alpha  \nonumber 
+\end{equation}
+and, more generally, that
+\begin{equation}
+\textrm{Corr}(X_{t}, X_{t-p}) = \alpha^{p}  \nonumber
+\end{equation}
+
+
+---
+
+* For known values of $c_{0}, \alpha$, and $\sigma^{2}$, we can simulate
+an AR(1) time series with the following `R` code:
 ```{r}
-x <- rnorm(100)
-tmp <- ar(x, aic=FALSE, order.max = 1)
-tmp$asy.var.coef  ## asymptotic variance of alpha.hat
+SimulateParAR1 <- function(m, c0, alpha, sig.sq) {
+     xx <- numeric(m)
+     xx[1] <- c0/(1 - alpha) + rnorm(1, sd=sqrt(sig.sq))
+     for(t in 2:m) { 
+         xx[t] <- c0 + alpha*xx[t-1] + rnorm(1, sd=sqrt(sig.sq))
+     }
+     return(xx)
+}
 ```
 
 
-### Using the Bootstrap in Regression
+```{r, echo=FALSE, fig.height=6}
+x <- SimulateParAR1(100, 1, 0.8, sig.sq=.25)
+par(mfrow=c(1,1))
+plot(1:100, x, las=1, ylab=expression(X[t]), xlab="Time",
+     main="Simulated AR(1) process: c0 = 1, alpha=0.8, sigma=0.5")
+lines(1:100, x, lwd=2, las=1)
+```
+ 
+---
+
+* Suppose we want to construct confidence intervals for $\alpha$ and $\sigma$ using a bootstrap method.
+
+* With the parametric bootstrap, we only have to use the following steps to generate bootstrap replications
+$\hat{\alpha}_{r}^{*}$ and $\hat{\sigma}_{r}^{*}$ of estimates of $\alpha$ and $\sigma$.
+ 
+```{r}
+x <- SimulateParAR1(100, 0, 0.2, sig.sq=1)
+tmp <- ar(x, aic=FALSE, order.max = 1)
+tmp$asy.var.coef  ## asymptotic variance of alpha.hat
+tmp$ar
+```
+
+
+## Using the Bootstrap in Regression
 
 * In linear regression with a single, univariate covariate, we work with the following model
 \begin{equation}

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 10 The Bootstrap and Confidence Intervals | Elements of Nonparametric Statistics</title>
+  <title>Chapter 10 Bootstrap Examples and the Jackknife | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 10 The Bootstrap and Confidence Intervals | Elements of Nonparametric Statistics" />
+  <meta property="og:title" content="Chapter 10 Bootstrap Examples and the Jackknife | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 10 The Bootstrap and Confidence Intervals | Elements of Nonparametric Statistics" />
+  <meta name="twitter:title" content="Chapter 10 Bootstrap Examples and the Jackknife | Elements of Nonparametric Statistics" />
   
   <meta name="twitter:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-27" />
+<meta name="date" content="2020-03-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -264,8 +264,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.6" data-path="bootstrap-main.html"><a href="bootstrap-main.html#additional-reading-4"><i class="fa fa-check"></i><b>9.6</b> Additional Reading</a></li>
 <li class="chapter" data-level="9.7" data-path="bootstrap-main.html"><a href="bootstrap-main.html#exercises-1"><i class="fa fa-check"></i><b>9.7</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> The Bootstrap and Confidence Intervals</a><ul>
-<li class="chapter" data-level="10.0.1" data-path="ci.html"><a href="ci.html#using-the-bootstrap-in-regression"><i class="fa fa-check"></i><b>10.0.1</b> Using the Bootstrap in Regression</a></li>
+<li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> Bootstrap Examples and the Jackknife</a><ul>
+<li class="chapter" data-level="10.1" data-path="ci.html"><a href="ci.html#the-parametric-bootstrap-for-an-ar1-model"><i class="fa fa-check"></i><b>10.1</b> The Parametric Bootstrap for an AR(1) model</a></li>
+<li class="chapter" data-level="10.2" data-path="ci.html"><a href="ci.html#using-the-bootstrap-in-regression"><i class="fa fa-check"></i><b>10.2</b> Using the Bootstrap in Regression</a></li>
 </ul></li>
 <li class="part"><span><b>IV Nonparametric Regression: Part I</b></span></li>
 <li class="chapter" data-level="11" data-path="kernel-regression.html"><a href="kernel-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression</a><ul>
@@ -307,14 +308,68 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="ci" class="section level1">
-<h1><span class="header-section-number">Chapter 10</span> The Bootstrap and Confidence Intervals</h1>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb186-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb186-2" data-line-number="2">tmp &lt;-<span class="st"> </span><span class="kw">ar</span>(x, <span class="dt">aic=</span><span class="ot">FALSE</span>, <span class="dt">order.max =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb186-3" data-line-number="3">tmp<span class="op">$</span>asy.var.coef  <span class="co">## asymptotic variance of alpha.hat</span></a></code></pre></div>
-<pre><code>##            [,1]
-## [1,] 0.01001363</code></pre>
-<div id="using-the-bootstrap-in-regression" class="section level3">
-<h3><span class="header-section-number">10.0.1</span> Using the Bootstrap in Regression</h3>
+<h1><span class="header-section-number">Chapter 10</span> Bootstrap Examples and the Jackknife</h1>
+<div id="the-parametric-bootstrap-for-an-ar1-model" class="section level2">
+<h2><span class="header-section-number">10.1</span> The Parametric Bootstrap for an AR(1) model</h2>
+<ul>
+<li><p>Consider the time series <span class="math inline">\(X_{1}, X_{2}, \ldots, X_{m}\)</span>. Here,
+<span class="math inline">\(X_{t}\)</span> denotes an observation made at time <span class="math inline">\(t\)</span>.</p></li>
+<li><p>An autoregressive model of order 1 (AR(1)) for this time series is
+<span class="math display">\[\begin{eqnarray}
+X_{1} &amp;=&amp; \frac{c_{0}}{1 - \alpha} + \varepsilon_{1} \nonumber \\
+X_{t} &amp;=&amp; c_{0} + \alpha X_{t-1} + \varepsilon_{t}, \qquad t=2,\ldots,m. \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>It is usually assumed that <span class="math inline">\(|\alpha| &lt; 1\)</span>.</p></li>
+<li>In the AR(1) model, it is assumed that
+<ul>
+<li><span class="math inline">\(E(\varepsilon_{t}) = 0\)</span></li>
+<li><span class="math inline">\(\textrm{Var}(\varepsilon_{t}) = \sigma^{2}\)</span>,</li>
+<li><span class="math inline">\(\varepsilon_{2}, \ldots, \varepsilon_{m}\)</span> are i.i.d.</li>
+<li><span class="math inline">\(\varepsilon_{t}\)</span> and <span class="math inline">\(X_{t-1}\)</span> are independent.</li>
+</ul></li>
+<li><p>In addition to these assumptions, we will assume that
+<span class="math display">\[\begin{equation}
+\varepsilon_{t} \sim \textrm{Normal}(0, \sigma^{2})  \nonumber 
+\end{equation}\]</span></p></li>
+<li><p>The AR(1) model implies that
+<span class="math display">\[\begin{equation}
+\textrm{Corr}(X_{t}, X_{t-1}) = \alpha  \nonumber 
+\end{equation}\]</span>
+and, more generally, that
+<span class="math display">\[\begin{equation}
+\textrm{Corr}(X_{t}, X_{t-p}) = \alpha^{p}  \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li>For known values of <span class="math inline">\(c_{0}, \alpha\)</span>, and <span class="math inline">\(\sigma^{2}\)</span>, we can simulate
+an AR(1) time series with the following <code>R</code> code:</li>
+</ul>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb186-1" data-line-number="1">SimulateParAR1 &lt;-<span class="st"> </span><span class="cf">function</span>(m, c0, alpha, sig.sq) {</a>
+<a class="sourceLine" id="cb186-2" data-line-number="2">     xx &lt;-<span class="st"> </span><span class="kw">numeric</span>(m)</a>
+<a class="sourceLine" id="cb186-3" data-line-number="3">     xx[<span class="dv">1</span>] &lt;-<span class="st"> </span>c0<span class="op">/</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha) <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1</span>, <span class="dt">sd=</span><span class="kw">sqrt</span>(sig.sq))</a>
+<a class="sourceLine" id="cb186-4" data-line-number="4">     <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>m) { </a>
+<a class="sourceLine" id="cb186-5" data-line-number="5">         xx[t] &lt;-<span class="st"> </span>c0 <span class="op">+</span><span class="st"> </span>alpha<span class="op">*</span>xx[t<span class="dv">-1</span>] <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1</span>, <span class="dt">sd=</span><span class="kw">sqrt</span>(sig.sq))</a>
+<a class="sourceLine" id="cb186-6" data-line-number="6">     }</a>
+<a class="sourceLine" id="cb186-7" data-line-number="7">     <span class="kw">return</span>(xx)</a>
+<a class="sourceLine" id="cb186-8" data-line-number="8">}</a></code></pre></div>
+<p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<hr />
+<ul>
+<li><p>Suppose we want to construct confidence intervals for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma\)</span> using a bootstrap method.</p></li>
+<li><p>With the parametric bootstrap, we only have to use the following steps to generate bootstrap replications
+<span class="math inline">\(\hat{\alpha}_{r}^{*}\)</span> and <span class="math inline">\(\hat{\sigma}_{r}^{*}\)</span> of estimates of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma\)</span>.</p></li>
+</ul>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb187-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">SimulateParAR1</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="fl">0.2</span>, <span class="dt">sig.sq=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb187-2" data-line-number="2">tmp &lt;-<span class="st"> </span><span class="kw">ar</span>(x, <span class="dt">aic=</span><span class="ot">FALSE</span>, <span class="dt">order.max =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb187-3" data-line-number="3">tmp<span class="op">$</span>asy.var.coef  <span class="co">## asymptotic variance of alpha.hat</span></a></code></pre></div>
+<pre><code>##             [,1]
+## [1,] 0.009510496</code></pre>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb189-1" data-line-number="1">tmp<span class="op">$</span>ar</a></code></pre></div>
+<pre><code>## [1] 0.2607133</code></pre>
+</div>
+<div id="using-the-bootstrap-in-regression" class="section level2">
+<h2><span class="header-section-number">10.2</span> Using the Bootstrap in Regression</h2>
 <ul>
 <li>In linear regression with a single, univariate covariate, we work with the following model
 <span class="math display">\[\begin{equation}
