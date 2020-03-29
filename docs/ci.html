@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-28" />
+<meta name="date" content="2020-03-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -314,7 +314,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><p>Consider the time series <span class="math inline">\(X_{1}, X_{2}, \ldots, X_{m}\)</span>. Here,
 <span class="math inline">\(X_{t}\)</span> denotes an observation made at time <span class="math inline">\(t\)</span>.</p></li>
-<li><p>An autoregressive model of order 1 (AR(1)) for this time series is
+<li><p>An autoregressive model of order 1 (usually called an AR(1) model) for this time series is
 <span class="math display">\[\begin{eqnarray}
 X_{1} &amp;=&amp; \frac{c_{0}}{1 - \alpha} + \varepsilon_{1} \nonumber \\
 X_{t} &amp;=&amp; c_{0} + \alpha X_{t-1} + \varepsilon_{t}, \qquad t=2,\ldots,m. \nonumber
@@ -354,19 +354,77 @@ an AR(1) time series with the following <code>R</code> code:</li>
 <a class="sourceLine" id="cb186-7" data-line-number="7">     <span class="kw">return</span>(xx)</a>
 <a class="sourceLine" id="cb186-8" data-line-number="8">}</a></code></pre></div>
 <p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<ul>
+<li>In <code>R</code>, estimates of <span class="math inline">\(c_{0}, \alpha,\)</span> and <span class="math inline">\(\sigma^{2}\)</span> can be found by using the <code>ar</code> function. For example,</li>
+</ul>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb187-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">SimulateParAR1</span>(<span class="dv">1000</span>, <span class="dv">1</span>, <span class="fl">0.8</span>, <span class="dt">sig.sq=</span>.<span class="dv">25</span>)</a>
+<a class="sourceLine" id="cb187-2" data-line-number="2">ar1.fit &lt;-<span class="st"> </span><span class="kw">ar</span>(x, <span class="dt">aic=</span><span class="ot">FALSE</span>, <span class="dt">order.max =</span> <span class="dv">1</span>, <span class="dt">method=</span><span class="st">&quot;mle&quot;</span>)</a>
+<a class="sourceLine" id="cb187-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb187-4" data-line-number="4">c0.est &lt;-<span class="st"> </span>ar1.fit<span class="op">$</span>x.mean<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>ar1.fit<span class="op">$</span>ar)</a>
+<a class="sourceLine" id="cb187-5" data-line-number="5">alpha.est &lt;-<span class="st"> </span>ar1.fit<span class="op">$</span>ar</a>
+<a class="sourceLine" id="cb187-6" data-line-number="6">sigsq.est &lt;-<span class="st"> </span>ar1.fit<span class="op">$</span>var.pred</a></code></pre></div>
 <hr />
 <ul>
 <li><p>Suppose we want to construct confidence intervals for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma\)</span> using a bootstrap method.</p></li>
+<li><p>Using the direct, nonparametric bootstrap described in the previous chapter will not work
+because our observations are not independent. There are “block bootstraps” that
+are designed to work for time series, but we will not discuss those here (see e.g., <span class="citation">Bühlmann (<a href="#ref-buhlmann2002">2002</a>)</span> or Chapter 8 of <span class="citation">Davison and Hinkley (<a href="#ref-davison1997">1997</a>)</span> for
+more details).</p></li>
 <li><p>With the parametric bootstrap, we only have to use the following steps to generate bootstrap replications
-<span class="math inline">\(\hat{\alpha}_{r}^{*}\)</span> and <span class="math inline">\(\hat{\sigma}_{r}^{*}\)</span> of estimates of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma\)</span>.</p></li>
+<span class="math inline">\(\hat{\alpha}_{r}^{*}\)</span> and <span class="math inline">\(\hat{\sigma}_{r}^{2,*}\)</span> for estimates of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\hat{\sigma}^{2}\)</span>.</p></li>
+<li>For <span class="math inline">\(r = 1, \ldots, R\)</span>:
+<ul>
+<li>Simulate a time series <span class="math inline">\(X_{1}^{*}, \ldots, X_{m}^{*}\)</span> from an AR(1) model with parameters <span class="math inline">\((\hat{c}_{0}, \hat{\alpha}, \hat{\sigma}^{2})\)</span>.</li>
+<li>Compute <span class="math inline">\(\hat{\alpha}_{r}^{*} = \hat{\alpha}(X_{1}^{*}, \ldots, X_{m}^{*})\)</span>.</li>
+<li>Compute <span class="math inline">\(\hat{\sigma}_{r}^{2,*} = \hat{\sigma}^{2}(X_{1}^{*}, \ldots, X_{m}^{*})\)</span></li>
+</ul></li>
 </ul>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb187-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">SimulateParAR1</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="fl">0.2</span>, <span class="dt">sig.sq=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb187-2" data-line-number="2">tmp &lt;-<span class="st"> </span><span class="kw">ar</span>(x, <span class="dt">aic=</span><span class="ot">FALSE</span>, <span class="dt">order.max =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb187-3" data-line-number="3">tmp<span class="op">$</span>asy.var.coef  <span class="co">## asymptotic variance of alpha.hat</span></a></code></pre></div>
-<pre><code>##             [,1]
-## [1,] 0.009510496</code></pre>
-<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb189-1" data-line-number="1">tmp<span class="op">$</span>ar</a></code></pre></div>
-<pre><code>## [1] 0.2607133</code></pre>
+<hr />
+<ul>
+<li>To see how this parametric bootstrap works, we will use the <code>nhtemp</code> dataset that is available in <code>R</code>.</li>
+</ul>
+<p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<ul>
+<li>The <code>nhtemp</code> dataset contains the mean annual temperature in New Haven, Connecticut from the years 1912-1971</li>
+</ul>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb188-1" data-line-number="1"><span class="kw">head</span>(nhtemp)</a></code></pre></div>
+<pre><code>## [1] 49.9 52.3 49.4 51.1 49.4 47.9</code></pre>
+<ul>
+<li>The estimated autocorrelation parameter <span class="math inline">\(\alpha\)</span> is about ? for this data</li>
+</ul>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb190-1" data-line-number="1">ar1.temp &lt;-<span class="st"> </span><span class="kw">ar</span>(nhtemp, <span class="dt">aic=</span><span class="ot">FALSE</span>, <span class="dt">order.max =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb190-2" data-line-number="2">c0.hat &lt;-<span class="st"> </span>ar1.temp<span class="op">$</span>x.mean<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>ar1.temp<span class="op">$</span>ar)</a>
+<a class="sourceLine" id="cb190-3" data-line-number="3">alpha.hat &lt;-<span class="st"> </span>ar1.temp<span class="op">$</span>ar</a>
+<a class="sourceLine" id="cb190-4" data-line-number="4">sigsq.hat &lt;-<span class="st"> </span>ar1.temp<span class="op">$</span>var.pred</a>
+<a class="sourceLine" id="cb190-5" data-line-number="5">alpha.hat</a></code></pre></div>
+<pre><code>## [1] 0.3148269</code></pre>
+<ul>
+<li>Now, that we have estimated all the parameter of the AR(1) model, we can run our parametric bootstrap for <span class="math inline">\(\hat{\alpha}\)</span> and <span class="math inline">\(\hat{\sigma}\)</span>:</li>
+</ul>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb192-1" data-line-number="1">R &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb192-2" data-line-number="2">alpha.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
+<a class="sourceLine" id="cb192-3" data-line-number="3">sigsq.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
+<a class="sourceLine" id="cb192-4" data-line-number="4"><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R) {</a>
+<a class="sourceLine" id="cb192-5" data-line-number="5">  x &lt;-<span class="st"> </span><span class="kw">SimulateParAR1</span>(<span class="dv">60</span>, <span class="dt">c0=</span>c0.hat, <span class="dt">alpha=</span>alpha.hat, <span class="dt">sig.sq=</span>sigsq.hat)</a>
+<a class="sourceLine" id="cb192-6" data-line-number="6">  ar1.fit &lt;-<span class="st"> </span><span class="kw">ar</span>(x, <span class="dt">aic=</span><span class="ot">FALSE</span>, <span class="dt">order.max =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb192-7" data-line-number="7">  </a>
+<a class="sourceLine" id="cb192-8" data-line-number="8">  alpha.boot[r] &lt;-<span class="st"> </span>ar1.fit<span class="op">$</span>ar</a>
+<a class="sourceLine" id="cb192-9" data-line-number="9">  sigsq.boot[r] &lt;-<span class="st"> </span>ar1.fit<span class="op">$</span>var.pred</a>
+<a class="sourceLine" id="cb192-10" data-line-number="10">}</a></code></pre></div>
+<ul>
+<li>Normal bootstrap standard error confidence intervals for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma^{2}\)</span> are</li>
+</ul>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb193-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(alpha.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot), alpha.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot)), <span class="dv">3</span>)</a></code></pre></div>
+<pre><code>## [1] 0.075 0.555</code></pre>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb195-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(sigsq.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot), sigsq.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot)), <span class="dv">3</span>)</a></code></pre></div>
+<pre><code>## [1] 0.959 1.977</code></pre>
+<ul>
+<li>We can compare our confidence interval for <span class="math inline">\(\alpha\)</span> with the confidence interval
+obtained from using a large-sample approximation:</li>
+</ul>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb197-1" data-line-number="1">asymp.se &lt;-<span class="st"> </span><span class="kw">sqrt</span>(ar1.temp<span class="op">$</span>asy.var.coef)</a>
+<a class="sourceLine" id="cb197-2" data-line-number="2"><span class="kw">round</span>(<span class="kw">c</span>(alpha.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>asymp.se, alpha.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>asymp.se), <span class="dv">3</span>)</a></code></pre></div>
+<pre><code>## [1] 0.071 0.559</code></pre>
 </div>
 <div id="using-the-bootstrap-in-regression" class="section level2">
 <h2><span class="header-section-number">10.2</span> Using the Bootstrap in Regression</h2>
@@ -381,15 +439,51 @@ Y_{i} = \beta_{0} + \beta_{1}x_{i} + \varepsilon_{i}, \qquad i = 1, \ldots, n.  
 <li><span class="math inline">\(\beta_{0}, \beta_{1}\)</span> - the regression coefficients</li>
 <li><span class="math inline">\(\varepsilon_{i}\)</span> - the residuals</li>
 </ul></li>
-<li>Typically, confidence intervals for the regression coefficients <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span>
-are constructed under the assumption that <span class="math inline">\(\varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2})\)</span>.</li>
+<li><p>Typically, confidence intervals for the regression coefficients <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span>
+are constructed under the assumption that <span class="math inline">\(\varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2})\)</span>.</p></li>
+<li><p>The bootstrap allows us to compute confidence intervals for <span class="math inline">\((\beta_{0}, \beta_{1})\)</span> without
+relying on this normality assumption.</p></li>
+<li><p>How to compute bootstrap confidence intervals for <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span>?</p></li>
 </ul>
+<hr />
+<ul>
+<li><p>The least-squares estimates of <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span> are
+<span class="math display">\[\begin{equation}
+\hat{\beta}_{0} = \bar{y} - \hat{\beta}_{1}\bar{x} \qquad \qquad \hat{\beta}_{1} = \frac{\sum_{i=1}^{n}(x_{i} - \bar{x})(y_{i} - \bar{y})}{S_{xx}}  \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(S_{xx} = \sum_{i=1}^{n}( x_{i} - \bar{x})^{2}\)</span>.</p></li>
+<li><p>Assuming the covariates are fixed design points, the variance of <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> are
+<span class="math display">\[\begin{equation}
+\textrm{Var}(\hat{\beta}_{0}) = \sigma^{2}\Big(\frac{1}{n} + \frac{\bar{x}}{S_{xx}} \Big) \qquad \textrm{Var}(\hat{\beta}_{1}) = \frac{\sigma^{2}}{S_{xx}} \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li>With a parametric bootstrap, we simulate outcomes <span class="math inline">\(Y_{i}\)</span> from the model
+<span class="math display">\[\begin{equation}
+Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \varepsilon_{i}, \qquad \textrm{Normal}(0, \hat{\sigma}^{2}) \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> are the least-squares estimates
+and <span class="math inline">\(\hat{\sigma}^{2} = \tfrac{1}{n-2}\sum_{i=1}^{n} (Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1})^{2}\)</span>.</li>
+</ul>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb199-1" data-line-number="1">kidney &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </a>
+<a class="sourceLine" id="cb199-2" data-line-number="2">                     <span class="dt">header=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 
 </div>
 </div>
 
 
 
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-buhlmann2002">
+<p>Bühlmann, Peter. 2002. “Bootstraps for Time Series.” <em>Statistical Science</em>, 52–72.</p>
+</div>
+<div id="ref-davison1997">
+<p>Davison, Anthony Christopher, and David Victor Hinkley. 1997. <em>Bootstrap Methods and Their Application</em>. Vol. 1. Cambridge university press.</p>
+</div>
+</div>
             </section>
 
           </div>

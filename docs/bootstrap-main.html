@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-28" />
+<meta name="date" content="2020-03-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1009,7 +1009,7 @@ where <span class="math inline">\(T_{n,r,j}^{**}\)</span> is the value of our te
 <li><p>With the bootstrap, we generate each bootstrap sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> by
 sampling with replacement from the empirical distribution function <span class="math inline">\(\hat{F}_{n}\)</span>.</p></li>
 <li><p>For this reason, it can be referred to as the <strong>nonparametric bootstrap</strong>.</p></li>
-<li><p>With the <strong>parametric bootstrap</strong>, we sample from a parametric estimate of <span class="math inline">\(F\)</span>
+<li><p>With the <strong>parametric bootstrap</strong>, we sample from a parametric estimate <span class="math inline">\(F_{\hat{\varphi}}\)</span> of the cumulative distribution function
 instead of sampling from <span class="math inline">\(\hat{F}_{n}\)</span>.</p></li>
 <li><p>For example, suppose we have data <span class="math inline">\((X_{1}, \ldots, X_{n})\)</span> that we assume are normally distributed
 and we estimate <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^{2}\)</span> with
@@ -1117,6 +1117,7 @@ use the following steps.</p></li>
 <li>Additional reading which covers the material discussed in this chapter includes:
 <ul>
 <li>Chapter 3 from <span class="citation">Wasserman (<a href="#ref-wasserman2006">2006</a>)</span></li>
+<li>Chapter 2 from <span class="citation">Davison and Hinkley (<a href="#ref-davison1997">1997</a>)</span></li>
 </ul></li>
 </ul>
 </div>
@@ -1127,6 +1128,9 @@ use the following steps.</p></li>
 </div>
 <h3>References</h3>
 <div id="refs" class="references">
+<div id="ref-davison1997">
+<p>Davison, Anthony Christopher, and David Victor Hinkley. 1997. <em>Bootstrap Methods and Their Application</em>. Vol. 1. Cambridge university press.</p>
+</div>
 <div id="ref-shao2003">
 <p>Shao, Jun. 2003. <em>Mathematical Statistics</em>. 2nd ed. Springer-Verlag New York Inc.</p>
 </div>

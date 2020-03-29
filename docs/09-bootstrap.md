@@ -796,7 +796,7 @@ sampling with replacement from the empirical distribution function $\hat{F}_{n}$
 
 * For this reason, it can be referred to as the **nonparametric bootstrap**.
 
-* With the **parametric bootstrap**, we sample from a parametric estimate of $F$
+* With the **parametric bootstrap**, we sample from a parametric estimate $F_{\hat{\varphi}}$ of the cumulative distribution function
 instead of sampling from $\hat{F}_{n}$.
 
 * For example, suppose we have data $(X_{1}, \ldots, X_{n})$ that we assume are normally distributed
@@ -928,6 +928,7 @@ c(median(kidney$age) - 1.96*sd(med.boot.np), median(kidney$age) + 1.96*sd(med.bo
 
 * Additional reading which covers the material discussed in this chapter includes:
     + Chapter 3 from @wasserman2006
+    + Chapter 2 from @davison1997
 
 ## Exercises
 

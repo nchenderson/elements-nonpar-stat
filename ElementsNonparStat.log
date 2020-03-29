@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  27 MAR 2020 18:16
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  29 MAR 2020 01:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1433,30 +1433,34 @@ Overfull \hbox (6.48099pt too wide) in alignment at lines 8183--8187
  [][][] []
  []
 
-[184] [185] (./ElementsNonparStat.bbl [186] [187
+[184] [185] [186]
+File: 09-bootstrapLatex_files/figure-latex/unnamed-chunk-22-1.pdf Graphic file 
+(type pdf)
+<use 09-bootstrapLatex_files/figure-latex/unnamed-chunk-22-1.pdf>
+[187] (./ElementsNonparStat.bbl [188] [189] [190
 
-])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 8285.
-[188]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 8285.
+] [191])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 8433.
+[192]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 8433.
 (./ElementsNonparStat.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 8285.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 8285.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 8433.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 8433.
 
 Package rerunfilecheck Info: File `ElementsNonparStat.out' has not changed.
 (rerunfilecheck)             Checksum: FFB0CA3F65E8B09A1756F9C56DD3CDDB;12269.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 8285.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 8433.
  ) 
 Here is how much of TeX's memory you used:
- 17195 strings out of 481765
- 322070 string characters out of 5935194
+ 17204 strings out of 481765
+ 322516 string characters out of 5935194
  756757 words of memory out of 5000000
- 33930 multiletter control sequences out of 15000+600000
+ 33939 multiletter control sequences out of 15000+600000
  538877 words of font info for 88 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  52i,12n,115p,548b,553s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on ElementsNonparStat.pdf (188 pages).
+Output written on ElementsNonparStat.pdf (192 pages).

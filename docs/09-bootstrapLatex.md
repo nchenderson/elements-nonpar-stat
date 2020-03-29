@@ -827,7 +827,6 @@ where $T_{n,r,j}^{**}$ is the value of our test statistic computed from the $j^{
 \end{equation}
 
 
-
 ## The Parametric Bootstrap
 
 * With the bootstrap, we generate each bootstrap sample $(X_{1}^{*}, \ldots, X_{n}^{*})$ by 
@@ -835,7 +834,7 @@ sampling with replacement from the empirical distribution function $\hat{F}_{n}$
 
 * For this reason, it can be referred to as the **nonparametric bootstrap**.
 
-* With the **parametric bootstrap**, we sample from a parametric estimate of $F$
+* With the **parametric bootstrap**, we sample from a parametric estimate $F_{\hat{\varphi}}$ of the cumulative distribution function
 instead of sampling from $\hat{F}_{n}$.
 
 * For example, suppose we have data $(X_{1}, \ldots, X_{n})$ that we assume are normally distributed
@@ -864,12 +863,115 @@ an estimate of $\theta$, the parametric bootstrap would use the following proced
 * When you are only interested in constructing a confidence interval for the parameter of a parametric
 model that you think fits the data well.
 
-* For non-i.i.d. data or other complex examples, a parametric bootstrap can be easier to work with. 
+* For non-i.i.d. data or other complicated distributions, a parametric bootstrap can sometimes be easier to work with. 
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* For non-i.i.d. data, where our observations $(X_{1}, \ldots, X_{n})$ our dependent, a parametric bootstrap can 
+often be straightforward to implement.
+
+* Suppose $G_{\varphi}$ is a parametric model that describes the joint distribution of $(X_{1}, \ldots, X_{n})$
+and that it is easy to simulate observations from $G_{\varphi}$.
+
+* Then, if you have an estimate $\hat{\varphi}$ of $\varphi$, you can use the following procedure to generate bootstrap replications for your statistic of interest.
+
+* For $r = 1, \ldots, R$:
+    + Draw a sample $(X_{1}^{*}, \ldots, X_{n}^{*}) \sim G_{\hat{\varphi}}$.
+    + Compute $T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})$.
+
+### Parametric Bootstrap for the Median Age from the Kidney Data
+
+* Let us consider the ages from the kidney data.
+
+* One somewhat reasonable model for the ages $X_{i}$ from the kidney data is that
+\begin{equation}
+X_{i} - 17 \sim \textrm{Gamma}(\alpha, \beta) \nonumber
+\end{equation}
+
+* We can find the maximum likelihood estimates $(\hat{\alpha}, \hat{\beta})$ for this model
+using the following `R` code
+
+```r
+kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
+                     header=TRUE)
+
+LogProfLik <- function(alpha, x) {
+    ans <- alpha*log(alpha/mean(x)) - lgamma(alpha) + (alpha - 1)*mean(log(x)) - alpha
+    return(ans)
+}
+
+best.alpha <- optimize(LogProfLik, interval=c(0,10), x=kidney$age - 17, 
+                       maximum=TRUE)$maximum
+best.beta <- best.alpha/mean(kidney$age - 17)
+```
+
+* We can plot this estimated Gamma density overlaid on the histogram of the ages to see how they compare
+
+```r
+tt <- seq(17, 90, length.out=500)
+hist(kidney$age, breaks="FD", probability=TRUE, las=1, xlab="Age", 
+     main="Estimate Gamma Density for the Kidney Age Data", col="grey")
+lines(tt, dgamma(tt - 17, shape=best.alpha, rate=best.beta), lwd=2)
+```
+
+![](09-bootstrapLatex_files/figure-latex/unnamed-chunk-22-1.pdf)<!-- --> 
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* Suppose we are interested in constructing a confidence interval for the median age.
+
+* To use the parametric boostrap with the parametric model $X_{i} - 17 \sim \textrm{Gamma}(\alpha, \beta)$
+and using our estimates $\hat{\alpha}$ and $\hat{\beta}$ computed above, we would
+use the following steps.
+
+* For $r = 1, \ldots, R$:
+    + Draw an i.i.d. sample: $X_{1}^{*}, \ldots, X_{n}^{*} \sim 17 + \textrm{Gamma}(\hat{\alpha}, \hat{\beta})$.
+    + Compute $T_{n,r}^{*} = \textrm{median}(X_{1}^{*}, \ldots, X_{n}^{*})$. 
+
+* The code for implementing this parametric bootstrap is given below
+
+```r
+R <- 500
+med.boot.par <- rep(0, R)
+med.boot.np <- rep(0, R)
+for(r in 1:R) {
+    xx.boot.par <- 17 + rgamma(157, shape=best.alpha, rate=best.beta)
+    xx.boot.np <- sample(kidney$age, size=157, replace=TRUE)
+    
+    med.boot.par[r] <- median(xx.boot.par)  ## rth par. bootstrap replication
+    med.boot.np[r] <- median(xx.boot.np)  ## rth par. bootstrap replication
+}
+```
+
+* The normal standard error confidence interval using the parametric bootstrap is
+
+```r
+c(median(kidney$age) - 1.96*sd(med.boot.par), median(kidney$age) + 1.96*sd(med.boot.par))
+```
+
+```
+## [1] 28.39858 33.60142
+```
+
+* The normal standard error confidence interval using the nonparametric bootstrap is
+
+```r
+c(median(kidney$age) - 1.96*sd(med.boot.np), median(kidney$age) + 1.96*sd(med.boot.np))
+```
+
+```
+## [1] 28.64083 33.35917
+```
 
 ## Additional Reading
 
 * Additional reading which covers the material discussed in this chapter includes:
     + Chapter 3 from @wasserman2006
+    + Chapter 2 from @davison1997
 
 ## Exercises
 
