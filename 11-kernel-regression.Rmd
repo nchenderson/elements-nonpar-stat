@@ -1,19 +1,114 @@
 # (PART) Nonparametric Regression: Part I {-}
 
-# Kernel Regression
+# Kernel Regression and Local Regression
  
-
-
 ## Introduction
 
-### An Example
+* In regression we are interested in characterizing, in some way, the relationship
+between a collection of responses $Y_{1},\ldots,Y_{n}$ and covariate vectors
+$(\mathbf{x}_{1}, \ldots, \mathbf{x}_{n})$.
 
-### Linear Smoothers and Naive Nonparametric Estimates
+* Linear regression is one way of approaching this problem. This assumes
+the expectation of $Y_{i}$ can be expressed as a linear combination
+of the covariates:
+\begin{equation}
+E(Y_{i}| \mathbf{x}_{i}) = \beta_{0} + \sum_{j=1}^{p} x_{ij}\beta_{j}  \nonumber
+\end{equation}
 
-## The Nadaraya-Watson estimator
-
-## Local Linear and Polynomial Regression
+* More generally, we can consider the following model
+\begin{equation}
+Y_{i} = m( \mathbf{x}_{i} ) + \varepsilon_{i}  \nonumber
+\end{equation}
+    + $m(\mathbf{x}_{i})$ - the "mean function" or "regression function"
+    + $\mathbf{x}_{i} = (x_{i1}, \ldots, x_{ip})$ - the $i^{th}$ covariate vector
+    
+* The residuals $\varepsilon_{1}, \ldots, \varepsilon_{n}$ are assumed to 
+be i.i.d. and have mean zero. 
 
 ---
 
+* In a nonparametric approach, we will try to estimate $m(\mathbf{x})$ without
+making any strong assumptions about the form of $m( \mathbf{x} )$. 
 
+* The regression function $m(\mathbf{x})$ can be thought of as the function which returns 
+the expectation of $Y_{i}$ given that $\mathbf{x}_{i} = \mathbf{x}$
+\begin{equation}
+m(\mathbf{x} ) = E(Y_{i}|\mathbf{x}_{i}=\mathbf{x}) 
+\end{equation}
+
+* Let
+    + $f_{Y|X}(y|\mathbf{x})$ denote the conditional density of $Y_{i}$ given $\mathbf{x}_{i}$.
+    + $f_{Y,X}(y, \mathbf{x})$ denote the joint density of $(Y_{i}, \mathbf{x}_{i})$
+    + $f_{X}(\mathbf{x})$ denote the density of $\mathbf{x}_{i}$
+    
+* We can express the regression function as
+\begin{equation}
+m(\mathbf{x}) = \int_{-\infty}^{\infty} y f_{Y|X}(y|\mathbf{x}) dy = \frac{\int y f_{Y,X}(y, \mathbf{x}) dy}{ f_{X}(\mathbf{x})  }  \nonumber
+\end{equation}
+
+## Kernel Regression
+
+* In this section, we will assume that the covariates are univariate. 
+That is, $p=1$ and $\mathbf{x}_{i} = x_{i}$ where $x_{i}$ is a real number.
+
+### The Regressogram
+
+* The regressogram is an estimate of the mean function $m(x)$ which is 
+has many similarities in its construction to the histogram.
+
+* Similar to how we constructed histogram, let us think about an estimate $m(x)$
+that will be constant within each of a series of bins $B_{1}, \ldots, B_{D_{n}}$
+\begin{eqnarray}
+B_{1} &=& [ x_{0}, x_{0} + h_{n})  \nonumber \\
+B_{2} &=& [x_{0} + h_{n}, x_{0} + 2h_{n})  \nonumber \\
+&\vdots&  \nonumber \\
+B_{D_{n}} &=& [x_{0} + (D_{n} - 1)h_{n}, x_{0} + D_{n}h_{n})  \nonumber
+\end{eqnarray}
+
+* Suppose we want to estimate $m(x)$, where $x$ belongs to the $k^{th}$ bin.
+A direct estimate of this is the average of the $Y_{i}'s$ among those
+$x_{i}'s$ which fall into the $k^{th}$ bin.
+
+* Specifically, if $x \in B_{k}$, then we estimate $m(x)$ with
+\begin{equation}
+\hat{m}^{R}(x) =  \frac{ \sum_{i=1}^{n} Y_{i} I\Big( x_{i} \in B_{k} \Big) }{ \sum_{i=1}^{n} I\Big( x_{i} \in B_{k} \Big) } \nonumber
+\end{equation}
+
+---
+
+* The estimate $\hat{m}^{R}(x)$ of the regression function is called the **regressogram**.
+
+* The intuition for this estimate is: if $x \in B_{k}$,
+then taking an average of the reponses for $x_{i}$ in a small bin containing $x$ 
+should give us a reasonable approximation for the expectation of $Y_{i}$ given that $x_{i} = x$.
+
+* Another way of looking at the regressogram is to note that for $x \in B_{k}$
+\begin{eqnarray}
+E\Big\{ \frac{1}{n} \sum_{i=1}^{n} Y_{i} I\Big( x_{i} \in B_{k} \Big) \Big\}
+&=& E\Big\{  Y_{1} I\Big( x_{1} \in B_{k} \Big) \Big\}  \nonumber \\
+&=& \int_{-\infty}^{\infty} \int_{x_{0} + (k-1)h_{n}}^{x_{0} + kh_{n}} y f_{Y,X}(y, t) dt dy  \nonumber \\
+&\approx& h_{n} \int_{-\infty}^{\infty} y f_{Y,X}(y, x) dy
+(\#eq:regressogram-numerator)
+\end{eqnarray}
+and, similarly, 
+\begin{eqnarray}
+E\Big\{ \frac{1}{n} \sum_{i=1}^{n}  I\Big( x_{i} \in B_{k} \Big) \Big\}
+&=& E\Big\{  I\Big( x_{1} \in B_{k} \Big) \Big\}  \nonumber \\
+&=& \int_{x_{0} + (k-1)h_{n}}^{x_{0} + kh_{n}}  f_{X}(t) dt  \nonumber \\
+&\approx& h_{n} f_{X}(x) 
+(\#eq:regressogram-denominator)
+\end{eqnarray}
+
+* Equations \@ref(eq:regressogram-numerator) and \@ref(eq:regressogram-denominator) suggest that $\hat{m}^{R}(x)$
+should be a reasonable estimate of the ratio $\int_{-\infty}^{\infty} y f_{Y,X}(y, x) dy/f_{X}(x)$.
+
+---
+
+### The Local Average Estimator
+
+
+## Additional Reading
+
+* Additional reading which covers the material discussed in this chapter includes:
+    + Chapter 4 from @hardle2012
+    + Chapter 5 from @wasserman2006
