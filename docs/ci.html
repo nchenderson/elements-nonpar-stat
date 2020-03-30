@@ -415,9 +415,9 @@ more details).</p></li>
 <li>Normal bootstrap standard error confidence intervals for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma^{2}\)</span> are</li>
 </ul>
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb193-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(alpha.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot), alpha.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.069 0.561</code></pre>
+<pre><code>## [1] 0.068 0.562</code></pre>
 <div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb195-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(sigsq.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot), sigsq.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.940 1.996</code></pre>
+<pre><code>## [1] 0.952 1.984</code></pre>
 <ul>
 <li>We can compare our confidence interval for <span class="math inline">\(\alpha\)</span> with the confidence interval
 obtained from using a large-sample approximation:</li>
@@ -454,17 +454,20 @@ relying on this normality assumption.</p></li>
 where <span class="math inline">\(S_{xx} = \sum_{i=1}^{n}( x_{i} - \bar{x})^{2}\)</span>.</p></li>
 <li><p>Assuming the covariates are fixed design points, the variance of <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> are
 <span class="math display">\[\begin{equation}
-\textrm{Var}(\hat{\beta}_{0}) = \sigma^{2}\Big(\frac{1}{n} + \frac{\bar{x}}{S_{xx}} \Big) \qquad \textrm{Var}(\hat{\beta}_{1}) = \frac{\sigma^{2}}{S_{xx}} \nonumber
+\textrm{Var}(\hat{\beta}_{0}) = \sigma^{2}\Big(\frac{\tfrac{1}{n}x_{i}^{2}}{S_{xx}} \Big) \qquad \textrm{Var}(\hat{\beta}_{1}) = \frac{\sigma^{2}}{S_{xx}} \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
 <p><strong>Parametric Bootstrap for Regression</strong></p>
 <ul>
-<li><p>With a parametric bootstrap, we will simulate outcomes <span class="math inline">\(Y_{i}\)</span> from the model
+<li>With a parametric bootstrap, we will simulate outcomes <span class="math inline">\(Y_{i}\)</span> from the model
 <span class="math display">\[\begin{equation}
 Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \varepsilon_{i},  \nonumber
 \end{equation}\]</span>
-where <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> are the least-squares estimates of <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span>.</p></li>
+<ul>
+<li><span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> are the least-squares estimates of <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span>,</li>
+<li><span class="math inline">\(\varepsilon_{1}, \ldots, \varepsilon_{n}\)</span> are i.i.d. random variables with mean zero and variance <span class="math inline">\(\hat{\sigma}^{2}\)</span>.</li>
+</ul></li>
 <li><p>It is most common to assume that <span class="math inline">\(\varepsilon_{i} \sim \textrm{Normal}(0, \hat{\sigma}^{2})\)</span>,
 where <span class="math inline">\(\hat{\sigma}^{2}\)</span> is an estimate of the residual variance.</p></li>
 <li><p>However, we could easily use an alternative parametric model for <span class="math inline">\(\varepsilon_{i}\)</span> if we thought
@@ -474,14 +477,14 @@ it was appropriate.</p></li>
 <ul>
 <li><p>A t-distribution with a small number of degrees of freedom can be useful
 when the residuals are thought to follow a distribution with “heavier tails”.</p></li>
-<li><p>If we assume <span class="math inline">\(\varepsilon_{i} \sim \sigma t_{3}\)</span>, then <span class="math inline">\(\textrm{Var}(\varepsilon_{i}) = 3\sigma^{2}\)</span>.</p></li>
+<li><p>If we assume <span class="math inline">\(\varepsilon_{i} \sim \sigma \times t_{3}\)</span>, then <span class="math inline">\(\textrm{Var}(\varepsilon_{i}) = 3\sigma^{2}\)</span>.</p></li>
 <li><p>So, with a <span class="math inline">\(t_{3}\)</span> residual distribution we want to simulate from the model
 <span class="math display">\[\begin{equation}
-Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \frac{\hat{\sigma}}{\sqrt{3}}u_{i},  \qquad u_{i} \sim t_{3},
+Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \frac{\hat{\sigma}}{\sqrt{3}}u_{i},  \qquad u_{i} \sim t_{3}, \nonumber
 \end{equation}\]</span>
 where <span class="math inline">\(\hat{\sigma}^{2}\)</span> is the following estimate of the residual variance:
 <span class="math display">\[\begin{equation}
-\hat{\sigma}^{2} = \tfrac{1}{n-2}\sum_{i=1}^{n} (Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1})^{2}
+\hat{\sigma}^{2} = \frac{1}{n-2}\sum_{i=1}^{n} (Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1})^{2} \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
@@ -509,13 +512,64 @@ be computed using the following <code>R</code> code:</li>
 <a class="sourceLine" id="cb200-9" data-line-number="9">R &lt;-<span class="st"> </span><span class="dv">500</span></a>
 <a class="sourceLine" id="cb200-10" data-line-number="10">beta0.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
 <a class="sourceLine" id="cb200-11" data-line-number="11">beta1.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
-<a class="sourceLine" id="cb200-12" data-line-number="12"><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R) {</a>
-<a class="sourceLine" id="cb200-13" data-line-number="13">  ysim &lt;-<span class="st"> </span>beta0.hat <span class="op">+</span><span class="st"> </span>beta1.hat<span class="op">*</span>kidney<span class="op">$</span>age <span class="op">+</span><span class="st"> </span><span class="kw">sqrt</span>(sigsq.hat<span class="op">/</span><span class="dv">3</span>)<span class="op">*</span><span class="kw">rt</span>(<span class="dv">157</span>, <span class="dt">df=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb200-14" data-line-number="14">  lm.boot &lt;-<span class="st"> </span><span class="kw">lm</span>(ysim <span class="op">~</span><span class="st"> </span>kidney<span class="op">$</span>age)</a>
-<a class="sourceLine" id="cb200-15" data-line-number="15">  </a>
-<a class="sourceLine" id="cb200-16" data-line-number="16">  beta0.boot[r] &lt;-<span class="st"> </span>lm.boot<span class="op">$</span>coef[<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb200-17" data-line-number="17">  beta1.boot[r] &lt;-<span class="st"> </span>lm.boot<span class="op">$</span>coef[<span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb200-18" data-line-number="18">}</a></code></pre></div>
+<a class="sourceLine" id="cb200-12" data-line-number="12">se.beta0.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
+<a class="sourceLine" id="cb200-13" data-line-number="13">se.beta1.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
+<a class="sourceLine" id="cb200-14" data-line-number="14"><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R) {</a>
+<a class="sourceLine" id="cb200-15" data-line-number="15">  ysim &lt;-<span class="st"> </span>beta0.hat <span class="op">+</span><span class="st"> </span>beta1.hat<span class="op">*</span>kidney<span class="op">$</span>age <span class="op">+</span><span class="st"> </span><span class="kw">sqrt</span>(sigsq.hat<span class="op">/</span><span class="dv">3</span>)<span class="op">*</span><span class="kw">rt</span>(<span class="dv">157</span>, <span class="dt">df=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb200-16" data-line-number="16">  lm.boot &lt;-<span class="st"> </span><span class="kw">lm</span>(ysim <span class="op">~</span><span class="st"> </span>kidney<span class="op">$</span>age)</a>
+<a class="sourceLine" id="cb200-17" data-line-number="17">  </a>
+<a class="sourceLine" id="cb200-18" data-line-number="18">  beta0.boot[r] &lt;-<span class="st"> </span>lm.boot<span class="op">$</span>coef[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb200-19" data-line-number="19">  beta1.boot[r] &lt;-<span class="st"> </span>lm.boot<span class="op">$</span>coef[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb200-20" data-line-number="20">  </a>
+<a class="sourceLine" id="cb200-21" data-line-number="21">  <span class="co">## This code can be used to find the standard errors from this bootstrap sample</span></a>
+<a class="sourceLine" id="cb200-22" data-line-number="22">  sig.hatr &lt;-<span class="st"> </span><span class="kw">summary</span>(lm.boot)<span class="op">$</span>sigma</a>
+<a class="sourceLine" id="cb200-23" data-line-number="23">  se.beta0.boot[r] &lt;-<span class="st"> </span>sig.hatr<span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">summary</span>(lm.boot)<span class="op">$</span>cov.unscaled[<span class="dv">1</span>,<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb200-24" data-line-number="24">  se.beta1.boot[r] &lt;-<span class="st"> </span>sig.hatr<span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">summary</span>(lm.boot)<span class="op">$</span>cov.unscaled[<span class="dv">2</span>,<span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb200-25" data-line-number="25">}</a></code></pre></div>
+<hr />
+<ul>
+<li><p>Because we have the formulas for the standard errors of <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span>,
+we can use studentized bootstrap confidence intervals without using the double bootstrap approach.</p></li>
+<li><p>Estimates of the standard error for the <span class="math inline">\(r^{th}\)</span> bootstrap replication are
+<span class="math display">\[\begin{eqnarray}
+\hat{se}_{r}(\beta_{0}) &amp;=&amp; \hat{\sigma}_{r}\sqrt{\frac{1}{n} + \frac{\bar{x}^{r}}{S_{xx}^{r}}} \nonumber \\
+\hat{se}_{r}(\beta_{1}) &amp;=&amp; \hat{\sigma}_{r}/\sqrt{S_{xx}^{r}}
+\end{eqnarray}\]</span></p></li>
+<li><p>These standard error estimates can be found by applying the above formulas () and () to the <span class="math inline">\(r^{th}\)</span> bootstrap sample.</p></li>
+<li><p>Recall from Chapter 9 that the studentized confidence intervals are found by using the following formula.
+<span class="math display">\[\begin{equation}
+\Big[ T_{n} - se_{boot} \times \hat{K}_{R}^{-1}(1 - \alpha/2), T_{n} - se_{boot} \times \hat{K}_{R}^{-1}(\alpha/2) \Big] \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><code>R</code> code to compute the studentized confidence is given below:</li>
+</ul>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb201-1" data-line-number="1"><span class="co">## First get estimates of the standard error of our estimates</span></a>
+<a class="sourceLine" id="cb201-2" data-line-number="2"><span class="co">## I use the formulas for the regression standard errors, but</span></a>
+<a class="sourceLine" id="cb201-3" data-line-number="3"><span class="co">## we could have used a bootstrap estimate.</span></a>
+<a class="sourceLine" id="cb201-4" data-line-number="4">se.est0 &lt;-<span class="st"> </span><span class="kw">summary</span>(lm.kidney)<span class="op">$</span>sigma<span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">summary</span>(lm.boot)<span class="op">$</span>cov.unscaled[<span class="dv">1</span>,<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb201-5" data-line-number="5">se.est1 &lt;-<span class="st"> </span><span class="kw">summary</span>(lm.kidney)<span class="op">$</span>sigma<span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">summary</span>(lm.boot)<span class="op">$</span>cov.unscaled[<span class="dv">2</span>,<span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb201-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb201-7" data-line-number="7">stu.quants0 &lt;-<span class="st"> </span><span class="kw">quantile</span>( (beta0.boot <span class="op">-</span><span class="st"> </span>beta0.hat)<span class="op">/</span>se.beta0.boot, <span class="dt">probs=</span><span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</a>
+<a class="sourceLine" id="cb201-8" data-line-number="8">stu.quants1 &lt;-<span class="st"> </span><span class="kw">quantile</span>( (beta1.boot <span class="op">-</span><span class="st"> </span>beta1.hat)<span class="op">/</span>se.beta1.boot, <span class="dt">probs=</span><span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</a>
+<a class="sourceLine" id="cb201-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb201-10" data-line-number="10"><span class="co">## Confidence interval for beta0</span></a>
+<a class="sourceLine" id="cb201-11" data-line-number="11"><span class="kw">c</span>(beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0[<span class="dv">2</span>]<span class="op">*</span>se.est0, beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0[<span class="dv">1</span>]<span class="op">*</span>se.est0)</a></code></pre></div>
+<pre><code>## (Intercept) (Intercept) 
+##        2.13        3.58</code></pre>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb203-1" data-line-number="1"><span class="co">## Confidence interval for beta1</span></a>
+<a class="sourceLine" id="cb203-2" data-line-number="2"><span class="kw">c</span>(beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1[<span class="dv">2</span>]<span class="op">*</span>se.est1, beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1[<span class="dv">1</span>]<span class="op">*</span>se.est1)</a></code></pre></div>
+<pre><code>##     age     age 
+## -0.0953 -0.0602</code></pre>
+<ul>
+<li>Compare these studentized bootstrap confidence intervals with the confidence
+intervals computed under the normality assumption for the residuals:</li>
+</ul>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb205-1" data-line-number="1"><span class="kw">confint</span>(lm.kidney)</a></code></pre></div>
+<pre><code>##               2.5 %  97.5 %
+## (Intercept)  2.1497  3.5703
+## age         -0.0965 -0.0607</code></pre>
 
 </div>
 </div>

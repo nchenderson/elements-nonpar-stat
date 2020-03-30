@@ -102,7 +102,7 @@ E\Big\{ \frac{1}{n} \sum_{i=1}^{n}  I\big( x_{i} \in B_{k} \big) \Big\}
 * Equations \@ref(eq:regressogram-numerator) and \@ref(eq:regressogram-denominator) suggest that $\hat{m}_{h_{n}}^{R}(x)$
 should be a reasonable estimate of the ratio 
 \begin{equation}
-\int_{-\infty}^{\infty} y f_{Y,X}(y, x) dy/f_{X}(x) \nonumber 
+\int_{-\infty}^{\infty} y f_{Y,X}(y, x) dy \big/ f_{X}(x) \nonumber 
 \end{equation}
 
 ---

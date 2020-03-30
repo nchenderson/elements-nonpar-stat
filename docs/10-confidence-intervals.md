@@ -134,7 +134,7 @@ round(c(alpha.hat - 1.96*sd(alpha.boot), alpha.hat + 1.96*sd(alpha.boot)), 3)
 ```
 
 ```
-## [1] 0.069 0.561
+## [1] 0.068 0.562
 ```
 
 ```r
@@ -142,7 +142,7 @@ round(c(sigsq.hat - 1.96*sd(sigsq.boot), sigsq.hat + 1.96*sd(sigsq.boot)), 3)
 ```
 
 ```
-## [1] 0.940 1.996
+## [1] 0.952 1.984
 ```
 
 * We can compare our confidence interval for $\alpha$ with the confidence interval
@@ -187,7 +187,7 @@ where $S_{xx} = \sum_{i=1}^{n}( x_{i} - \bar{x})^{2}$.
 
 * Assuming the covariates are fixed design points, the variance of $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ are
 \begin{equation}
-\textrm{Var}(\hat{\beta}_{0}) = \sigma^{2}\Big(\frac{1}{n} + \frac{\bar{x}}{S_{xx}} \Big) \qquad \textrm{Var}(\hat{\beta}_{1}) = \frac{\sigma^{2}}{S_{xx}} \nonumber
+\textrm{Var}(\hat{\beta}_{0}) = \sigma^{2}\Big(\frac{\tfrac{1}{n}x_{i}^{2}}{S_{xx}} \Big) \qquad \textrm{Var}(\hat{\beta}_{1}) = \frac{\sigma^{2}}{S_{xx}} \nonumber
 \end{equation}
 
 
@@ -199,7 +199,8 @@ where $S_{xx} = \sum_{i=1}^{n}( x_{i} - \bar{x})^{2}$.
 \begin{equation}
 Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \varepsilon_{i},  \nonumber
 \end{equation}
-where $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ are the least-squares estimates of $\beta_{0}$ and $\beta_{1}$.
+     + $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ are the least-squares estimates of $\beta_{0}$ and $\beta_{1}$,
+     + $\varepsilon_{1}, \ldots, \varepsilon_{n}$ are i.i.d. random variables with mean zero and variance $\hat{\sigma}^{2}$.
 
 * It is most common to assume that $\varepsilon_{i} \sim \textrm{Normal}(0, \hat{\sigma}^{2})$, 
 where $\hat{\sigma}^{2}$ is an estimate of the residual variance.
@@ -212,15 +213,15 @@ it was appropriate.
 * A t-distribution with a small number of degrees of freedom can be useful
 when the residuals are thought to follow a distribution with "heavier tails".
 
-* If we assume $\varepsilon_{i} \sim \sigma t_{3}$, then $\textrm{Var}(\varepsilon_{i}) = 3\sigma^{2}$.
+* If we assume $\varepsilon_{i} \sim \sigma \times t_{3}$, then $\textrm{Var}(\varepsilon_{i}) = 3\sigma^{2}$.
 
 * So, with a $t_{3}$ residual distribution we want to simulate from the model
 \begin{equation}
-Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \frac{\hat{\sigma}}{\sqrt{3}}u_{i},  \qquad u_{i} \sim t_{3},
+Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \frac{\hat{\sigma}}{\sqrt{3}}u_{i},  \qquad u_{i} \sim t_{3}, \nonumber
 \end{equation}
 where $\hat{\sigma}^{2}$ is the following estimate of the residual variance:
 \begin{equation}
-\hat{\sigma}^{2} = \tfrac{1}{n-2}\sum_{i=1}^{n} (Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1})^{2}
+\hat{\sigma}^{2} = \frac{1}{n-2}\sum_{i=1}^{n} (Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1})^{2} \nonumber
 \end{equation}
 
 
@@ -255,15 +256,87 @@ sigsq.hat <- sum(lm.kidney$residuals^2)/(157 - 2)
 R <- 500
 beta0.boot <- numeric(R)
 beta1.boot <- numeric(R)
+se.beta0.boot <- numeric(R)
+se.beta1.boot <- numeric(R)
 for(r in 1:R) {
   ysim <- beta0.hat + beta1.hat*kidney$age + sqrt(sigsq.hat/3)*rt(157, df=3)
   lm.boot <- lm(ysim ~ kidney$age)
   
   beta0.boot[r] <- lm.boot$coef[1]
   beta1.boot[r] <- lm.boot$coef[2]
+  
+  ## This code can be used to find the standard errors from this bootstrap sample
+  sig.hatr <- summary(lm.boot)$sigma
+  se.beta0.boot[r] <- sig.hatr*sqrt(summary(lm.boot)$cov.unscaled[1,1])
+  se.beta1.boot[r] <- sig.hatr*sqrt(summary(lm.boot)$cov.unscaled[2,2])
 }
 ```
 
+---
+
+* Because we have the formulas for the standard errors of $\beta_{0}$ and $\beta_{1}$,
+we can use studentized bootstrap confidence intervals without using the double bootstrap approach.
+
+* Estimates of the standard error for the $r^{th}$ bootstrap replication are
+\begin{eqnarray}
+\hat{se}_{r}(\beta_{0}) &=& \hat{\sigma}_{r}\sqrt{\frac{1}{n} + \frac{\bar{x}^{r}}{S_{xx}^{r}}} \nonumber \\
+\hat{se}_{r}(\beta_{1}) &=& \hat{\sigma}_{r}/\sqrt{S_{xx}^{r}}
+\end{eqnarray}
+
+* These standard error estimates can be found by applying the above formulas () and () to the $r^{th}$ bootstrap sample.
+
+* Recall from Chapter 9 that the studentized confidence intervals are found by using the following formula.
+\begin{equation}
+\Big[ T_{n} - se_{boot} \times \hat{K}_{R}^{-1}(1 - \alpha/2), T_{n} - se_{boot} \times \hat{K}_{R}^{-1}(\alpha/2) \Big] \nonumber
+\end{equation}
+
+---
+
+
+
+* `R` code to compute the studentized confidence is given below:
+
+```r
+## First get estimates of the standard error of our estimates
+## I use the formulas for the regression standard errors, but
+## we could have used a bootstrap estimate.
+se.est0 <- summary(lm.kidney)$sigma*sqrt(summary(lm.boot)$cov.unscaled[1,1])
+se.est1 <- summary(lm.kidney)$sigma*sqrt(summary(lm.boot)$cov.unscaled[2,2])
+
+stu.quants0 <- quantile( (beta0.boot - beta0.hat)/se.beta0.boot, probs=c(0.025, 0.975))
+stu.quants1 <- quantile( (beta1.boot - beta1.hat)/se.beta1.boot, probs=c(0.025, 0.975))
+
+## Confidence interval for beta0
+c(beta0.hat - stu.quants0[2]*se.est0, beta0.hat - stu.quants0[1]*se.est0)
+```
+
+```
+## (Intercept) (Intercept) 
+##        2.13        3.58
+```
+
+```r
+## Confidence interval for beta1
+c(beta1.hat - stu.quants1[2]*se.est1, beta1.hat - stu.quants1[1]*se.est1)
+```
+
+```
+##     age     age 
+## -0.0953 -0.0602
+```
+
+* Compare these studentized bootstrap confidence intervals with the confidence 
+intervals computed under the normality assumption for the residuals:
+
+```r
+confint(lm.kidney)
+```
+
+```
+##               2.5 %  97.5 %
+## (Intercept)  2.1497  3.5703
+## age         -0.0965 -0.0607
+```
 
 
   
