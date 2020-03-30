@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-29" />
+<meta name="date" content="2020-03-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -390,7 +390,7 @@ more details).</p></li>
 <div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb188-1" data-line-number="1"><span class="kw">head</span>(nhtemp)</a></code></pre></div>
 <pre><code>## [1] 49.9 52.3 49.4 51.1 49.4 47.9</code></pre>
 <ul>
-<li>The estimated autocorrelation parameter <span class="math inline">\(\alpha\)</span> is about ? for this data</li>
+<li>The estimated autocorrelation parameter <span class="math inline">\(\alpha\)</span> is about <span class="math inline">\(0.31\)</span> for this data</li>
 </ul>
 <div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb190-1" data-line-number="1">ar1.temp &lt;-<span class="st"> </span><span class="kw">ar</span>(nhtemp, <span class="dt">aic=</span><span class="ot">FALSE</span>, <span class="dt">order.max =</span> <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb190-2" data-line-number="2">c0.hat &lt;-<span class="st"> </span>ar1.temp<span class="op">$</span>x.mean<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>ar1.temp<span class="op">$</span>ar)</a>
@@ -415,9 +415,9 @@ more details).</p></li>
 <li>Normal bootstrap standard error confidence intervals for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma^{2}\)</span> are</li>
 </ul>
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb193-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(alpha.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot), alpha.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.073 0.557</code></pre>
+<pre><code>## [1] 0.069 0.561</code></pre>
 <div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb195-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(sigsq.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot), sigsq.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.933 2.003</code></pre>
+<pre><code>## [1] 0.940 1.996</code></pre>
 <ul>
 <li>We can compare our confidence interval for <span class="math inline">\(\alpha\)</span> with the confidence interval
 obtained from using a large-sample approximation:</li>
@@ -458,17 +458,64 @@ where <span class="math inline">\(S_{xx} = \sum_{i=1}^{n}( x_{i} - \bar{x})^{2}\
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
+<p><strong>Parametric Bootstrap for Regression</strong></p>
 <ul>
-<li>With a parametric bootstrap, we simulate outcomes <span class="math inline">\(Y_{i}\)</span> from the model
+<li><p>With a parametric bootstrap, we will simulate outcomes <span class="math inline">\(Y_{i}\)</span> from the model
 <span class="math display">\[\begin{equation}
-Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \varepsilon_{i}, \qquad \textrm{Normal}(0, \hat{\sigma}^{2}) \nonumber
+Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \varepsilon_{i},  \nonumber
 \end{equation}\]</span>
-where <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> are the least-squares estimates
-and <span class="math inline">\(\hat{\sigma}^{2} = \tfrac{1}{n-2}\sum_{i=1}^{n} (Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1})^{2}\)</span>.</li>
+where <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> are the least-squares estimates of <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span>.</p></li>
+<li><p>It is most common to assume that <span class="math inline">\(\varepsilon_{i} \sim \textrm{Normal}(0, \hat{\sigma}^{2})\)</span>,
+where <span class="math inline">\(\hat{\sigma}^{2}\)</span> is an estimate of the residual variance.</p></li>
+<li><p>However, we could easily use an alternative parametric model for <span class="math inline">\(\varepsilon_{i}\)</span> if we thought
+it was appropriate.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>A t-distribution with a small number of degrees of freedom can be useful
+when the residuals are thought to follow a distribution with “heavier tails”.</p></li>
+<li><p>If we assume <span class="math inline">\(\varepsilon_{i} \sim \sigma t_{3}\)</span>, then <span class="math inline">\(\textrm{Var}(\varepsilon_{i}) = 3\sigma^{2}\)</span>.</p></li>
+<li><p>So, with a <span class="math inline">\(t_{3}\)</span> residual distribution we want to simulate from the model
+<span class="math display">\[\begin{equation}
+Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \frac{\hat{\sigma}}{\sqrt{3}}u_{i},  \qquad u_{i} \sim t_{3},
+\end{equation}\]</span>
+where <span class="math inline">\(\hat{\sigma}^{2}\)</span> is the following estimate of the residual variance:
+<span class="math display">\[\begin{equation}
+\hat{\sigma}^{2} = \tfrac{1}{n-2}\sum_{i=1}^{n} (Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1})^{2}
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>To show how this parametric-t bootstrap works in practice we will look
+at the kidney function data.</p></li>
+<li><p>We will look at a linear regression where the measure of kidney function is
+the outcome and age is the covariate.</p></li>
 </ul>
 <div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb199-1" data-line-number="1">kidney &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </a>
 <a class="sourceLine" id="cb199-2" data-line-number="2">                     <span class="dt">header=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<ul>
+<li>Bootstrap replications of <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> can
+be computed using the following <code>R</code> code:</li>
+</ul>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb200-1" data-line-number="1"><span class="co">## First find the parameter estimates</span></a>
+<a class="sourceLine" id="cb200-2" data-line-number="2">lm.kidney &lt;-<span class="st"> </span><span class="kw">lm</span>(tot <span class="op">~</span><span class="st"> </span>age, <span class="dt">data=</span>kidney)</a>
+<a class="sourceLine" id="cb200-3" data-line-number="3">beta0.hat &lt;-<span class="st"> </span>lm.kidney<span class="op">$</span>coef[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb200-4" data-line-number="4">beta1.hat &lt;-<span class="st"> </span>lm.kidney<span class="op">$</span>coef[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb200-5" data-line-number="5">sigsq.hat &lt;-<span class="st"> </span><span class="kw">sum</span>(lm.kidney<span class="op">$</span>residuals<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>(<span class="dv">157</span> <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb200-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb200-7" data-line-number="7"><span class="co">## Using these estimates, run a parametric bootstrap to generate</span></a>
+<a class="sourceLine" id="cb200-8" data-line-number="8"><span class="co">## bootstrap replications of beta0.hat and beta1.hat</span></a>
+<a class="sourceLine" id="cb200-9" data-line-number="9">R &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb200-10" data-line-number="10">beta0.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
+<a class="sourceLine" id="cb200-11" data-line-number="11">beta1.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
+<a class="sourceLine" id="cb200-12" data-line-number="12"><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R) {</a>
+<a class="sourceLine" id="cb200-13" data-line-number="13">  ysim &lt;-<span class="st"> </span>beta0.hat <span class="op">+</span><span class="st"> </span>beta1.hat<span class="op">*</span>kidney<span class="op">$</span>age <span class="op">+</span><span class="st"> </span><span class="kw">sqrt</span>(sigsq.hat<span class="op">/</span><span class="dv">3</span>)<span class="op">*</span><span class="kw">rt</span>(<span class="dv">157</span>, <span class="dt">df=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb200-14" data-line-number="14">  lm.boot &lt;-<span class="st"> </span><span class="kw">lm</span>(ysim <span class="op">~</span><span class="st"> </span>kidney<span class="op">$</span>age)</a>
+<a class="sourceLine" id="cb200-15" data-line-number="15">  </a>
+<a class="sourceLine" id="cb200-16" data-line-number="16">  beta0.boot[r] &lt;-<span class="st"> </span>lm.boot<span class="op">$</span>coef[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb200-17" data-line-number="17">  beta1.boot[r] &lt;-<span class="st"> </span>lm.boot<span class="op">$</span>coef[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb200-18" data-line-number="18">}</a></code></pre></div>
 
 </div>
 </div>

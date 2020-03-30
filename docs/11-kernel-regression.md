@@ -71,12 +71,12 @@ $x_{i}'s$ which fall into the $k^{th}$ bin.
 
 * Specifically, if $x \in B_{k}$, then we estimate $m(x)$ with
 \begin{equation}
-\hat{m}^{R}(x) =  \frac{ \sum_{i=1}^{n} Y_{i} I\Big( x_{i} \in B_{k} \Big) }{ \sum_{i=1}^{n} I\Big( x_{i} \in B_{k} \Big) } \nonumber
+\hat{m}_{h_{n}}^{R}(x) =  \frac{ \sum_{i=1}^{n} Y_{i} I\big( x_{i} \in B_{k} \big) }{ \sum_{i=1}^{n} I\big( x_{i} \in B_{k} \big) } \nonumber
 \end{equation}
 
 ---
 
-* The estimate $\hat{m}^{R}(x)$ of the regression function is called the **regressogram**.
+* The estimate $\hat{m}_{h_{n}}^{R}(x)$ of the regression function is called the **regressogram**.
 
 * The intuition for this estimate is: if $x \in B_{k}$,
 then taking an average of the reponses for $x_{i}$ in a small bin containing $x$ 
@@ -84,23 +84,26 @@ should give us a reasonable approximation for the expectation of $Y_{i}$ given t
 
 * Another way of looking at the regressogram is to note that for $x \in B_{k}$
 \begin{eqnarray}
-E\Big\{ \frac{1}{n} \sum_{i=1}^{n} Y_{i} I\Big( x_{i} \in B_{k} \Big) \Big\}
-&=& E\Big\{  Y_{1} I\Big( x_{1} \in B_{k} \Big) \Big\}  \nonumber \\
+E\Big\{ \frac{1}{n} \sum_{i=1}^{n} Y_{i} I\big( x_{i} \in B_{k} \big) \Big\}
+&=& E\Big\{  Y_{1} I\big( x_{1} \in B_{k} \big) \Big\}  \nonumber \\
 &=& \int_{-\infty}^{\infty} \int_{x_{0} + (k-1)h_{n}}^{x_{0} + kh_{n}} y f_{Y,X}(y, t) dt dy  \nonumber \\
 &\approx& h_{n} \int_{-\infty}^{\infty} y f_{Y,X}(y, x) dy
 (\#eq:regressogram-numerator)
 \end{eqnarray}
 and, similarly, 
 \begin{eqnarray}
-E\Big\{ \frac{1}{n} \sum_{i=1}^{n}  I\Big( x_{i} \in B_{k} \Big) \Big\}
-&=& E\Big\{  I\Big( x_{1} \in B_{k} \Big) \Big\}  \nonumber \\
+E\Big\{ \frac{1}{n} \sum_{i=1}^{n}  I\big( x_{i} \in B_{k} \big) \Big\}
+&=& E\Big\{  I\big( x_{1} \in B_{k} \big) \Big\}  \nonumber \\
 &=& \int_{x_{0} + (k-1)h_{n}}^{x_{0} + kh_{n}}  f_{X}(t) dt  \nonumber \\
 &\approx& h_{n} f_{X}(x) 
 (\#eq:regressogram-denominator)
 \end{eqnarray}
 
-* Equations \@ref(eq:regressogram-numerator) and \@ref(eq:regressogram-denominator) suggest that $\hat{m}^{R}(x)$
-should be a reasonable estimate of the ratio $\int_{-\infty}^{\infty} y f_{Y,X}(y, x) dy/f_{X}(x)$.
+* Equations \@ref(eq:regressogram-numerator) and \@ref(eq:regressogram-denominator) suggest that $\hat{m}_{h_{n}}^{R}(x)$
+should be a reasonable estimate of the ratio 
+\begin{equation}
+\int_{-\infty}^{\infty} y f_{Y,X}(y, x) dy/f_{X}(x) \nonumber 
+\end{equation}
 
 ---
 

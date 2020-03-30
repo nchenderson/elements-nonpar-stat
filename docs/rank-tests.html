@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-29" />
+<meta name="date" content="2020-03-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -741,7 +741,7 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{j}) +
 <a class="sourceLine" id="cb26-8" data-line-number="8"><span class="st">                   </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">==</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb26-9" data-line-number="9">}</a>
 <a class="sourceLine" id="cb26-10" data-line-number="10"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.805</code></pre>
+<pre><code>## [1] 0.795</code></pre>
 <ul>
 <li>This simulation-based estimate of <span class="math inline">\(P(X_{i} &gt; Y_{j}) + P(X_{i} = Y_{j})/2\)</span> is quite close to the value of the Mann-Whitney statistic divided by <span class="math inline">\(mn\)</span>.</li>
 </ul>
@@ -947,7 +947,7 @@ where <span class="math inline">\(s_{obs}\)</span> is the observed value of the 
 <a class="sourceLine" id="cb30-2" data-line-number="2">xx &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb30-3" data-line-number="3">sign.stat &lt;-<span class="st"> </span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)  <span class="co">## This is the value of the sign statistic</span></a>
 <a class="sourceLine" id="cb30-4" data-line-number="4"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pbinom</span>(sign.stat <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">size=</span><span class="dv">100</span>, <span class="dt">prob=</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) <span class="co">## p-value for sign test</span></a></code></pre></div>
-<pre><code>## [1] 0.06660531</code></pre>
+<pre><code>## [1] 0.3086497</code></pre>
 <ul>
 <li><p>The reason that this is the right expression using <strong>R</strong> is that for any positive integer <span class="math inline">\(w\)</span>
 <span class="math display">\[\begin{equation}
@@ -959,7 +959,7 @@ a binomial random variable with <span class="math inline">\(n\)</span> trials an
 </ul>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">btest &lt;-<span class="st"> </span><span class="kw">binom.test</span>(sign.stat, <span class="dt">n=</span><span class="dv">100</span>, <span class="dt">p=</span><span class="fl">0.5</span>, <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>) </a>
 <a class="sourceLine" id="cb32-2" data-line-number="2">btest<span class="op">$</span>p.value</a></code></pre></div>
-<pre><code>## [1] 0.06660531</code></pre>
+<pre><code>## [1] 0.3086497</code></pre>
 </div>
 <div id="two-sided-sign-test" class="section level4">
 <h4><span class="header-section-number">3.3.1.3</span> Two-sided Sign Test</h4>

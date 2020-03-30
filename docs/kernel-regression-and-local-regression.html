@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-29" />
+<meta name="date" content="2020-03-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -377,33 +377,36 @@ A direct estimate of this is the average of the <span class="math inline">\(Y_{i
 <span class="math inline">\(x_{i}&#39;s\)</span> which fall into the <span class="math inline">\(k^{th}\)</span> bin.</p></li>
 <li><p>Specifically, if <span class="math inline">\(x \in B_{k}\)</span>, then we estimate <span class="math inline">\(m(x)\)</span> with
 <span class="math display">\[\begin{equation}
-\hat{m}^{R}(x) =  \frac{ \sum_{i=1}^{n} Y_{i} I\Big( x_{i} \in B_{k} \Big) }{ \sum_{i=1}^{n} I\Big( x_{i} \in B_{k} \Big) } \nonumber
+\hat{m}_{h_{n}}^{R}(x) =  \frac{ \sum_{i=1}^{n} Y_{i} I\big( x_{i} \in B_{k} \big) }{ \sum_{i=1}^{n} I\big( x_{i} \in B_{k} \big) } \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
 <ul>
-<li><p>The estimate <span class="math inline">\(\hat{m}^{R}(x)\)</span> of the regression function is called the <strong>regressogram</strong>.</p></li>
+<li><p>The estimate <span class="math inline">\(\hat{m}_{h_{n}}^{R}(x)\)</span> of the regression function is called the <strong>regressogram</strong>.</p></li>
 <li><p>The intuition for this estimate is: if <span class="math inline">\(x \in B_{k}\)</span>,
 then taking an average of the reponses for <span class="math inline">\(x_{i}\)</span> in a small bin containing <span class="math inline">\(x\)</span>
 should give us a reasonable approximation for the expectation of <span class="math inline">\(Y_{i}\)</span> given that <span class="math inline">\(x_{i} = x\)</span>.</p></li>
 <li><p>Another way of looking at the regressogram is to note that for <span class="math inline">\(x \in B_{k}\)</span>
 <span class="math display" id="eq:regressogram-numerator">\[\begin{eqnarray}
-E\Big\{ \frac{1}{n} \sum_{i=1}^{n} Y_{i} I\Big( x_{i} \in B_{k} \Big) \Big\}
-&amp;=&amp; E\Big\{  Y_{1} I\Big( x_{1} \in B_{k} \Big) \Big\}  \nonumber \\
+E\Big\{ \frac{1}{n} \sum_{i=1}^{n} Y_{i} I\big( x_{i} \in B_{k} \big) \Big\}
+&amp;=&amp; E\Big\{  Y_{1} I\big( x_{1} \in B_{k} \big) \Big\}  \nonumber \\
 &amp;=&amp; \int_{-\infty}^{\infty} \int_{x_{0} + (k-1)h_{n}}^{x_{0} + kh_{n}} y f_{Y,X}(y, t) dt dy  \nonumber \\
 &amp;\approx&amp; h_{n} \int_{-\infty}^{\infty} y f_{Y,X}(y, x) dy
 \tag{11.1}
 \end{eqnarray}\]</span>
 and, similarly,
 <span class="math display" id="eq:regressogram-denominator">\[\begin{eqnarray}
-E\Big\{ \frac{1}{n} \sum_{i=1}^{n}  I\Big( x_{i} \in B_{k} \Big) \Big\}
-&amp;=&amp; E\Big\{  I\Big( x_{1} \in B_{k} \Big) \Big\}  \nonumber \\
+E\Big\{ \frac{1}{n} \sum_{i=1}^{n}  I\big( x_{i} \in B_{k} \big) \Big\}
+&amp;=&amp; E\Big\{  I\big( x_{1} \in B_{k} \big) \Big\}  \nonumber \\
 &amp;=&amp; \int_{x_{0} + (k-1)h_{n}}^{x_{0} + kh_{n}}  f_{X}(t) dt  \nonumber \\
 &amp;\approx&amp; h_{n} f_{X}(x) 
 \tag{11.2}
 \end{eqnarray}\]</span></p></li>
-<li><p>Equations <a href="kernel-regression-and-local-regression.html#eq:regressogram-numerator">(11.1)</a> and <a href="kernel-regression-and-local-regression.html#eq:regressogram-denominator">(11.2)</a> suggest that <span class="math inline">\(\hat{m}^{R}(x)\)</span>
-should be a reasonable estimate of the ratio <span class="math inline">\(\int_{-\infty}^{\infty} y f_{Y,X}(y, x) dy/f_{X}(x)\)</span>.</p></li>
+<li><p>Equations <a href="kernel-regression-and-local-regression.html#eq:regressogram-numerator">(11.1)</a> and <a href="kernel-regression-and-local-regression.html#eq:regressogram-denominator">(11.2)</a> suggest that <span class="math inline">\(\hat{m}_{h_{n}}^{R}(x)\)</span>
+should be a reasonable estimate of the ratio
+<span class="math display">\[\begin{equation}
+\int_{-\infty}^{\infty} y f_{Y,X}(y, x) dy/f_{X}(x) \nonumber 
+\end{equation}\]</span></p></li>
 </ul>
 <hr />
 </div>

@@ -98,7 +98,7 @@ head(nhtemp)
 ## [1] 49.9 52.3 49.4 51.1 49.4 47.9
 ```
 
-* The estimated autocorrelation parameter $\alpha$ is about ? for this data
+* The estimated autocorrelation parameter $\alpha$ is about $0.31$ for this data
 
 ```r
 ar1.temp <- ar(nhtemp, aic=FALSE, order.max = 1)
@@ -134,7 +134,7 @@ round(c(alpha.hat - 1.96*sd(alpha.boot), alpha.hat + 1.96*sd(alpha.boot)), 3)
 ```
 
 ```
-## [1] 0.073 0.557
+## [1] 0.069 0.561
 ```
 
 ```r
@@ -142,7 +142,7 @@ round(c(sigsq.hat - 1.96*sd(sigsq.boot), sigsq.hat + 1.96*sd(sigsq.boot)), 3)
 ```
 
 ```
-## [1] 0.933 2.003
+## [1] 0.940 1.996
 ```
 
 * We can compare our confidence interval for $\alpha$ with the confidence interval
@@ -193,14 +193,44 @@ where $S_{xx} = \sum_{i=1}^{n}( x_{i} - \bar{x})^{2}$.
 
 ---
 
-* With a parametric bootstrap, we simulate outcomes $Y_{i}$ from the model
+**Parametric Bootstrap for Regression**
+
+* With a parametric bootstrap, we will simulate outcomes $Y_{i}$ from the model
 \begin{equation}
-Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \varepsilon_{i}, \qquad \textrm{Normal}(0, \hat{\sigma}^{2}) \nonumber
+Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \varepsilon_{i},  \nonumber
 \end{equation}
-where $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ are the least-squares estimates 
-and $\hat{\sigma}^{2} = \tfrac{1}{n-2}\sum_{i=1}^{n} (Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1})^{2}$. 
+where $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ are the least-squares estimates of $\beta_{0}$ and $\beta_{1}$.
+
+* It is most common to assume that $\varepsilon_{i} \sim \textrm{Normal}(0, \hat{\sigma}^{2})$, 
+where $\hat{\sigma}^{2}$ is an estimate of the residual variance.
+
+* However, we could easily use an alternative parametric model for $\varepsilon_{i}$ if we thought
+it was appropriate.
+
+---
+
+* A t-distribution with a small number of degrees of freedom can be useful
+when the residuals are thought to follow a distribution with "heavier tails".
+
+* If we assume $\varepsilon_{i} \sim \sigma t_{3}$, then $\textrm{Var}(\varepsilon_{i}) = 3\sigma^{2}$.
+
+* So, with a $t_{3}$ residual distribution we want to simulate from the model
+\begin{equation}
+Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \frac{\hat{\sigma}}{\sqrt{3}}u_{i},  \qquad u_{i} \sim t_{3},
+\end{equation}
+where $\hat{\sigma}^{2}$ is the following estimate of the residual variance:
+\begin{equation}
+\hat{\sigma}^{2} = \tfrac{1}{n-2}\sum_{i=1}^{n} (Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1})^{2}
+\end{equation}
 
 
+---
+
+* To show how this parametric-t bootstrap works in practice we will look
+at the kidney function data. 
+
+* We will look at a linear regression where the measure of kidney function is 
+the outcome and age is the covariate.
 
 
 ```r
@@ -210,6 +240,29 @@ kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.tx
 
 <img src="10-confidence-intervals_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
+* Bootstrap replications of $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ can
+be computed using the following `R` code:
+
+```r
+## First find the parameter estimates
+lm.kidney <- lm(tot ~ age, data=kidney)
+beta0.hat <- lm.kidney$coef[1]
+beta1.hat <- lm.kidney$coef[2]
+sigsq.hat <- sum(lm.kidney$residuals^2)/(157 - 2)
+
+## Using these estimates, run a parametric bootstrap to generate
+## bootstrap replications of beta0.hat and beta1.hat
+R <- 500
+beta0.boot <- numeric(R)
+beta1.boot <- numeric(R)
+for(r in 1:R) {
+  ysim <- beta0.hat + beta1.hat*kidney$age + sqrt(sigsq.hat/3)*rt(157, df=3)
+  lm.boot <- lm(ysim ~ kidney$age)
+  
+  beta0.boot[r] <- lm.boot$coef[1]
+  beta1.boot[r] <- lm.boot$coef[2]
+}
+```
 
 
 
