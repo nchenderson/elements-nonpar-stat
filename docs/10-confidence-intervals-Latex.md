@@ -1,0 +1,542 @@
+# Bootstrap Examples and the Jackknife {#ci}
+ 
+
+## The Parametric Bootstrap for an AR(1) model
+
+* Consider the time series $X_{1}, X_{2}, \ldots, X_{m}$. Here,
+$X_{t}$ denotes an observation made at time $t$.
+
+* An autoregressive model of order 1 (usually called an AR(1) model) for this time series is
+\begin{eqnarray}
+X_{1} &=& \frac{c_{0}}{1 - \alpha} + \varepsilon_{1} \nonumber \\
+X_{t} &=& c_{0} + \alpha X_{t-1} + \varepsilon_{t}, \qquad t=2,\ldots,m. \nonumber
+\end{eqnarray}
+
+* It is usually assumed that $|\alpha| < 1$.
+
+* In the AR(1) model, it is assumed that 
+    + $E(\varepsilon_{t}) = 0$
+    + $\textrm{Var}(\varepsilon_{t}) = \sigma^{2}$,
+    + $\varepsilon_{2}, \ldots, \varepsilon_{m}$ are i.i.d.
+    + $\varepsilon_{t}$ and $X_{t-1}$ are independent.
+
+* In addition to these assumptions, we will assume that
+\begin{equation}
+\varepsilon_{t} \sim \textrm{Normal}(0, \sigma^{2})  \nonumber 
+\end{equation}
+
+* The AR(1) model implies that 
+\begin{equation}
+\textrm{Corr}(X_{t}, X_{t-1}) = \alpha  \nonumber 
+\end{equation}
+and, more generally, that
+\begin{equation}
+\textrm{Corr}(X_{t}, X_{t-p}) = \alpha^{p}  \nonumber
+\end{equation}
+
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* For known values of $c_{0}, \alpha$, and $\sigma^{2}$, we can simulate
+an AR(1) time series with the following `R` code:
+
+```r
+SimulateParAR1 <- function(m, c0, alpha, sig.sq) {
+     xx <- numeric(m)
+     xx[1] <- c0/(1 - alpha) + rnorm(1, sd=sqrt(sig.sq))
+     for(t in 2:m) { 
+         xx[t] <- c0 + alpha*xx[t-1] + rnorm(1, sd=sqrt(sig.sq))
+     }
+     return(xx)
+}
+```
+
+
+![](10-confidence-intervals-Latex_files/figure-latex/unnamed-chunk-2-1.pdf)<!-- --> 
+ 
+* In `R`, estimates of $c_{0}, \alpha,$ and $\sigma^{2}$ can be found by using the `ar` function. For example,
+
+```r
+x <- SimulateParAR1(1000, 1, 0.8, sig.sq=.25)
+ar1.fit <- ar(x, aic=FALSE, order.max = 1, method="mle")
+
+c0.est <- ar1.fit$x.mean*(1 - ar1.fit$ar)
+alpha.est <- ar1.fit$ar
+sigsq.est <- ar1.fit$var.pred
+```
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* Suppose we want to construct confidence intervals for $\alpha$ and $\sigma$ using a bootstrap method.
+
+* Using the direct, nonparametric bootstrap described in the previous chapter will not work
+because our observations are not independent. There are "block bootstraps" that
+are designed to work for time series, but we will not discuss those here (see e.g., @buhlmann2002 or Chapter 8 of @davison1997 for 
+more details).
+
+* With the parametric bootstrap, we only have to use the following steps to generate bootstrap replications
+$\hat{\alpha}_{r}^{*}$ and $\hat{\sigma}_{r}^{2,*}$ for estimates of $\alpha$ and $\hat{\sigma}^{2}$.
+ 
+* For $r = 1, \ldots, R$:
+    + Simulate a time series $X_{1}^{*}, \ldots, X_{m}^{*}$ from an AR(1) model with parameters $(\hat{c}_{0}, \hat{\alpha}, \hat{\sigma}^{2})$.
+    + Compute $\hat{\alpha}_{r}^{*} = \hat{\alpha}(X_{1}^{*}, \ldots, X_{m}^{*})$.
+    + Compute $\hat{\sigma}_{r}^{2,*} = \hat{\sigma}^{2}(X_{1}^{*}, \ldots, X_{m}^{*})$
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* To see how this parametric bootstrap works, we will use the `nhtemp` dataset that is available in `R`.
+
+![](10-confidence-intervals-Latex_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
+
+* The `nhtemp` dataset contains the mean annual temperature in New Haven, Connecticut from the years 1912-1971
+
+```r
+head(nhtemp)
+```
+
+```
+## [1] 49.9 52.3 49.4 51.1 49.4 47.9
+```
+
+* The estimated autocorrelation parameter $\alpha$ is about $0.31$ for this data
+
+```r
+ar1.temp <- ar(nhtemp, aic=FALSE, order.max = 1)
+c0.hat <- ar1.temp$x.mean*(1 - ar1.temp$ar)
+alpha.hat <- ar1.temp$ar
+sigsq.hat <- ar1.temp$var.pred
+alpha.hat
+```
+
+```
+## [1] 0.3148269
+```
+
+* Now, that we have estimated all the parameter of the AR(1) model, we can run our parametric bootstrap for $\hat{\alpha}$ and $\hat{\sigma}$:
+
+```r
+R <- 500
+alpha.boot <- numeric(R)
+sigsq.boot <- numeric(R)
+for(r in 1:R) {
+  x <- SimulateParAR1(60, c0=c0.hat, alpha=alpha.hat, sig.sq=sigsq.hat)
+  ar1.fit <- ar(x, aic=FALSE, order.max = 1)
+  
+  alpha.boot[r] <- ar1.fit$ar
+  sigsq.boot[r] <- ar1.fit$var.pred
+}
+```
+
+* Normal bootstrap standard error confidence intervals for $\alpha$ and $\sigma^{2}$ are
+
+```r
+round(c(alpha.hat - 1.96*sd(alpha.boot), alpha.hat + 1.96*sd(alpha.boot)), 3)
+```
+
+```
+## [1] 0.067 0.563
+```
+
+```r
+round(c(sigsq.hat - 1.96*sd(sigsq.boot), sigsq.hat + 1.96*sd(sigsq.boot)), 3)
+```
+
+```
+## [1] 0.930 2.006
+```
+
+* We can compare our confidence interval for $\alpha$ with the confidence interval
+obtained from using a large-sample approximation:
+
+```r
+asymp.se <- sqrt(ar1.temp$asy.var.coef)
+round(c(alpha.hat - 1.96*asymp.se, alpha.hat + 1.96*asymp.se), 3)
+```
+
+```
+## [1] 0.071 0.559
+```
+
+
+## Using the Bootstrap in Regression
+
+* In linear regression with a single, univariate covariate, we work with the following model
+\begin{equation}
+Y_{i} = \beta_{0} + \beta_{1}x_{i} + \varepsilon_{i}, \qquad i = 1, \ldots, n.  \nonumber 
+\end{equation}
+    + $Y_{i}$ - the responses
+    + $x_{i}$ - the covariates
+    + $\beta_{0}, \beta_{1}$ - the regression coefficients
+    + $\varepsilon_{i}$ - the residuals
+    
+* Typically, confidence intervals for the regression coefficients $\beta_{0}$ and $\beta_{1}$
+are constructed under the assumption that $\varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2})$.
+
+* The bootstrap allows us to compute confidence intervals for $(\beta_{0}, \beta_{1})$ without
+relying on this normality assumption.
+
+* How to compute bootstrap confidence intervals for $\beta_{0}$ and $\beta_{1}$?
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* The least-squares estimates of $\beta_{0}$ and $\beta_{1}$ are
+\begin{equation}
+\hat{\beta}_{0} = \bar{y} - \hat{\beta}_{1}\bar{x} \qquad \qquad \hat{\beta}_{1} = \frac{\sum_{i=1}^{n}(x_{i} - \bar{x})(y_{i} - \bar{y})}{S_{xx}}  \nonumber
+\end{equation}
+where $S_{xx} = \sum_{i=1}^{n}( x_{i} - \bar{x})^{2}$.
+
+* Assuming the covariates are fixed design points, the variance of $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ are
+\begin{equation}
+\textrm{Var}(\hat{\beta}_{0}) = \sigma^{2}\Big(\frac{\tfrac{1}{n}\sum_{i=1}^{n} x_{i}^{2}}{S_{xx}} \Big) \qquad \textrm{Var}(\hat{\beta}_{1}) = \frac{\sigma^{2}}{S_{xx}} \nonumber
+\end{equation}
+
+
+### Parametric Bootstrap for Regression
+
+* With a parametric bootstrap, we will simulate outcomes $Y_{i}$ from the model
+\begin{equation}
+Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \varepsilon_{i},  \nonumber
+\end{equation}
+     + $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ are the least-squares estimates of $\beta_{0}$ and $\beta_{1}$,
+     + $\varepsilon_{1}, \ldots, \varepsilon_{n}$ are i.i.d. random variables with mean zero and variance $\hat{\sigma}^{2}$.
+
+* It is most common to assume that $\varepsilon_{i} \sim \textrm{Normal}(0, \hat{\sigma}^{2})$, 
+where $\hat{\sigma}^{2}$ is an estimate of the residual variance.
+
+* However, we could easily use an alternative parametric model for $\varepsilon_{i}$ if we thought
+it was appropriate.
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* A t-distribution with a small number of degrees of freedom can be useful
+when the residuals are thought to follow a distribution with "heavier tails".
+
+* If we assume $\varepsilon_{i} \sim \sigma \times t_{3}$, then $\textrm{Var}(\varepsilon_{i}) = 3\sigma^{2}$.
+
+* So, with a $t_{3}$ residual distribution we want to simulate from the model
+\begin{equation}
+Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \frac{\hat{\sigma}}{\sqrt{3}}u_{i},  \qquad u_{i} \sim t_{3}, \nonumber
+\end{equation}
+where $\hat{\sigma}^{2}$ is the following estimate of the residual variance:
+\begin{equation}
+\hat{\sigma}^{2} = \frac{1}{n-2}\sum_{i=1}^{n} (Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1})^{2} \nonumber
+\end{equation}
+
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* To show how this parametric-t bootstrap works in practice we will look
+at the kidney function data. 
+
+* We will look at a linear regression where the measure of kidney function is 
+the outcome and age is the covariate.
+
+
+```r
+kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
+                     header=TRUE)
+```
+
+![](10-confidence-intervals-Latex_files/figure-latex/unnamed-chunk-11-1.pdf)<!-- --> 
+
+* Bootstrap replications of $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ can
+be computed using the following `R` code:
+
+```r
+## First find the parameter estimates
+lm.kidney <- lm(tot ~ age, data=kidney)
+beta0.hat <- lm.kidney$coef[1]
+beta1.hat <- lm.kidney$coef[2]
+sigsq.hat <- sum(lm.kidney$residuals^2)/(157 - 2)
+
+## Using these estimates, run a parametric bootstrap to generate
+## bootstrap replications of beta0.hat and beta1.hat
+R <- 500
+beta0.boot <- numeric(R)
+beta1.boot <- numeric(R)
+se.beta0.boot <- numeric(R)
+se.beta1.boot <- numeric(R)
+for(r in 1:R) {
+  ysim <- beta0.hat + beta1.hat*kidney$age + sqrt(sigsq.hat/3)*rt(157, df=3)
+  lm.boot <- lm(ysim ~ kidney$age)
+  
+  beta0.boot[r] <- lm.boot$coef[1]
+  beta1.boot[r] <- lm.boot$coef[2]
+  
+  ## This code can be used to find the standard errors from this bootstrap sample
+  sig.hatr <- summary(lm.boot)$sigma
+  se.beta0.boot[r] <- sig.hatr*sqrt(summary(lm.boot)$cov.unscaled[1,1])
+  se.beta1.boot[r] <- sig.hatr*sqrt(summary(lm.boot)$cov.unscaled[2,2])
+}
+```
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* Because we have the formulas for the standard errors of $\beta_{0}$ and $\beta_{1}$,
+we can use studentized bootstrap confidence intervals without using the double bootstrap approach.
+
+* Estimates of the standard error for the $r^{th}$ bootstrap replication are
+\begin{eqnarray}
+\hat{se}_{r}(\beta_{0}) &=& \hat{\sigma}_{r}\sqrt{\frac{\tfrac{1}{n}\sum_{i=1}^{n} x_{i}^{2}}{S_{xx}^{r}}} \nonumber \\
+\hat{se}_{r}(\beta_{1}) &=& \hat{\sigma}_{r}/\sqrt{S_{xx}^{r}}
+\end{eqnarray}
+
+* These standard error estimates can be found by applying the above formulas () and () to the $r^{th}$ bootstrap sample.
+
+* Recall from Chapter 9 that the studentized confidence intervals are found by using the following formula.
+\begin{equation}
+\Big[ T_{n} - se_{boot} \times \hat{K}_{R}^{-1}(1 - \alpha/2), T_{n} - se_{boot} \times \hat{K}_{R}^{-1}(\alpha/2) \Big] \nonumber
+\end{equation}
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+
+
+* `R` code to compute the studentized confidence intervals is given below:
+
+```r
+## First get estimates of the standard error of our estimates
+## I use the formulas for the regression standard errors, but
+## we could have used a bootstrap estimate.
+se.est0 <- summary(lm.kidney)$sigma*sqrt(summary(lm.boot)$cov.unscaled[1,1])
+se.est1 <- summary(lm.kidney)$sigma*sqrt(summary(lm.boot)$cov.unscaled[2,2])
+
+stu.quants0 <- quantile( (beta0.boot - beta0.hat)/se.beta0.boot, probs=c(0.025, 0.975))
+stu.quants1 <- quantile( (beta1.boot - beta1.hat)/se.beta1.boot, probs=c(0.025, 0.975))
+```
+
+
+* The studentized bootstrap confidence intervals are then
+
+```r
+## Confidence interval for beta0
+c(beta0.hat - stu.quants0[2]*se.est0, beta0.hat - stu.quants0[1]*se.est0)
+```
+
+```
+## (Intercept) (Intercept) 
+##        2.14        3.60
+```
+
+```r
+## Confidence interval for beta1
+c(beta1.hat - stu.quants1[2]*se.est1, beta1.hat - stu.quants1[1]*se.est1)
+```
+
+```
+##     age     age 
+## -0.0985 -0.0596
+```
+
+* Compare these studentized bootstrap confidence intervals with the confidence 
+intervals computed under the normality assumption for the residuals:
+
+```r
+confint(lm.kidney)
+```
+
+```
+##               2.5 %  97.5 %
+## (Intercept)  2.1497  3.5703
+## age         -0.0965 -0.0607
+```
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* **Exercise 10.1** Using the parametric bootstrap, compute studentized bootstrap confidence for $\beta_{0}$ and $\beta_{1}$ 
+in the kidney data example. This time, assume that $\varepsilon_{i} \sim \textrm{Normal}(0, \hat{\sigma}^{2})$.
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+### Nonparametric Bootstrap for Regression
+  
+* If we think of the $x_{i}$ as fixed values, the $Y_{i}$ in a linear regression are not i.i.d.
+because the means are not the same.
+
+* This suggests that we cannot use the usual nonparametric bootstrap to construct confidence 
+intervals for $\beta_{0}$ and $\beta_{1}$.
+
+* However, if we also view the $x_{i}$ as random, we can view the **pairs** of
+observations $(Y_{1}, x_{1}), \ldots, (Y_{n}, x_{n})$ as i.i.d. observations
+from a bivariate distribution.
+
+* In this case, you can also think of $\hat{\beta}_{1}$ as an 
+estimate of the following quantity
+\begin{equation}
+\rho_{YX}\frac{\sigma_{y}}{\sigma_{x}} \nonumber
+\end{equation}
+where $\rho_{YX} = \textrm{Corr}(Y_{i}, x_{i})$.
+
+* In the case when $(Y_{i}, x_{i})$ are bivariate normal, the conditional expectation
+of $Y_{i}$ given $x_{i}$ has the linear regression structure:
+\begin{equation}
+E(Y_{i}| x_{i}) = \beta_{0} + \beta_{1}x_{i}, \nonumber
+\end{equation}
+where $\beta_{0} = \mu_{y} - \rho_{YX}\frac{\sigma_{y}\mu_{x}}{\sigma_{x}}$
+and $\beta_{1} = \rho_{YX}\frac{\sigma_{y}}{\sigma_{x}}$.
+
+* So, even if the linear model is not exactly true, our estimate and 
+confidence interval still has a clear interpretation.
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* If we are thinking of the observations $(Y_{1}, x_{1}), \ldots, (Y_{n}, x_{n})$ 
+as i.i.d. pairs, we can use the nonparametric bootstrap by just subsampling pairs
+of observations.
+
+* So, to generate bootstrap replications $\hat{\beta}_{0,r}^{*}$, $\hat{\beta}_{1, r}^{*}$ for $\hat{\beta}_{0}$
+and $\hat{\beta}_{1}$, we just use the following procedure
+* For $r = 1, \ldots, R$:
+    + Draw a sample of size $n$: $\big((Y_{1}^{*}, x_{1}^{*}), \ldots, (Y_{n}^{*}, x_{n}^{*}) \big)$ by sampling with replacement from the original data.
+    + Compute $\hat{\beta}_{0,r}^{*}$ and $\hat{\beta}_{1,r}^{*}$ from this bootstrap sample.
+
+* `R` code for generating these bootstrap replications for the `kidney` data is below:
+
+```r
+R <- 500
+beta0.boot.np <- numeric(R)
+beta1.boot.np <- numeric(R)
+se.beta0.boot.np <- numeric(R)
+se.beta1.boot.np <- numeric(R)
+for(r in 1:R) {
+  subsamp.ind <- sample(1:157, size=157, replace=TRUE)
+  kidney.tmp <- kidney[subsamp.ind,]
+  lm.boot <- lm(tot ~ age, data=kidney.tmp)
+  
+  beta0.boot.np[r] <- lm.boot$coef[1]
+  beta1.boot.np[r] <- lm.boot$coef[2]
+  
+  ## This code can be used to find the standard errors from this bootstrap sample
+  sig.hatr <- summary(lm.boot)$sigma
+  se.beta0.boot.np[r] <- sig.hatr*sqrt(summary(lm.boot)$cov.unscaled[1,1])
+  se.beta1.boot.np[r] <- sig.hatr*sqrt(summary(lm.boot)$cov.unscaled[2,2])
+}
+```
+
+* To find the studentized confidence intervals for this nonparametric bootstrap, we can use the following code:
+
+```r
+se.est0 <- summary(lm.kidney)$sigma*sqrt(summary(lm.boot)$cov.unscaled[1,1])
+se.est1 <- summary(lm.kidney)$sigma*sqrt(summary(lm.boot)$cov.unscaled[2,2])
+
+stu.quants0.np <- quantile( (beta0.boot.np - beta0.hat)/se.beta0.boot.np, 
+                            probs=c(0.025, 0.975))
+stu.quants1.np <- quantile( (beta1.boot.np - beta1.hat)/se.beta1.boot.np, 
+                            probs=c(0.025, 0.975))
+```
+
+
+* The studentized bootstrap confidence intervals for $\beta_{0}$ and $\beta_{1}$ are then
+
+```r
+## Confidence interval for beta0
+c(beta0.hat - stu.quants0.np[2]*se.est0, beta0.hat - stu.quants0.np[1]*se.est0)
+```
+
+```
+## (Intercept) (Intercept) 
+##        2.19        3.60
+```
+
+```r
+## Confidence interval for beta1
+c(beta1.hat - stu.quants1.np[2]*se.est1, beta1.hat - stu.quants1.np[1]*se.est1)
+```
+
+```
+##     age     age 
+## -0.0971 -0.0608
+```
+  
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+ 
+* **Exercise 10.2** Another way of using the bootstrap in a regression context
+is to resample the residuals from the fitted regression model. Speficially,
+we first fit the linear regression model and compute residuals $\hat{e}_{1}, \ldots, \hat{e}_{n}$
+via
+\begin{equation}
+\hat{e}_{i} = Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1}x_{i} \nonumber
+\end{equation}
+One then generates a bootstrap sample 
+by first subsampling $(\hat{e}_{1}^{*}, \ldots, \hat{e}_{n}^{*})$ from the 
+vector of "original" residuals $(\hat{e}_{1}, \ldots, \hat{e}_{n})$ and then
+setting $Y_{i}^{*} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \hat{e}_{i}^{*}$.
+You then compute the bootstrap replications $\hat{\beta}_{0,r}^{*}$ and $\hat{\beta}_{1,r}^{*}$
+by fitting a linear regression with data: $(Y_{1}^{*}, x_{1}), \ldots, (Y_{n}^{*}, x_{n})$. 
+
+Using the kidney data, try using this procedure to construct $95\%$ bootstrap confidence intervals
+for $\beta_{0}$ and $\beta_{1}$.
+  
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+**Regression with more than 1 covariate**
+
+* If we have more than one covariate in our model, for example,
+\begin{equation}
+Y_{i} = \beta_{0} + \beta_{1}x_{i1} + \ldots + \beta_{p}x_{ip} + \varepsilon_{i}, \nonumber
+\end{equation}
+the bootstrap works essentially the same as for the case with a single covariate.
+
+* For the parametric bootstrap with a Normal residual distribution, you would just simulate
+$Y_{i}^{*} \sim \textrm{Normal}(\hat{\beta}_{0} + \hat{\beta}_{1}x_{i1} + \ldots + \hat{\beta}_{p}x_{ip}, \hat{\sigma}^{2})$.
+
+* For the nonparametric bootstrap, you would subsample pairs $(Y_{1}^{*}, x_{1}^{*}), \ldots, (Y_{n}^{*}, x_{n}^{*})$ as described before,
+and compute your regression coefficients $\hat{\beta}_{0,r}^{*}, \hat{\beta}_{1,r}^{*}, \ldots, \hat{\beta}_{p,r}^{*}$ from this
+bootstrap sample.
+
+
+##  When can the Bootstrap Fail?
+
+**Shifted Exponential Distribution**
+
+* Let us consider observations $X_{1}, \ldots, X_{n}$ that follow the shifted exponential distribution whose 
+density function is 
+\begin{equation}
+f(x)
+= \begin{cases}
+\lambda e^{-\lambda(x - \eta)} & \textrm{ if } x > \eta \nonumber \\
+0 & \textrm{otherwise}  \nonumber
+\end{cases}
+\end{equation}
+where $\lambda > 0$ and $\eta > 0$.
+
+* The maximum likelihood estimates of $\lambda$ and $\eta$ are
+\begin{equation}
+\hat{\lambda} = \frac{1}{\bar{X}} - X_{(1)} \qquad \hat{\eta} = X_{(1)}  \nonumber
+\end{equation}
+where $X_{(1)} = \min\{ X_{1}, \ldots, X_{n} \}$ is the smallest observation. 
+
+* Suppose we use the bootstrap to construct confidence intervals for $\lambda$ and $\eta$.
+What will happen?
+
+
+
+
+
+
