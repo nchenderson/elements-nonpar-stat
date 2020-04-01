@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-03-31" />
+<meta name="date" content="2020-04-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -270,7 +270,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.2.1" data-path="ci.html"><a href="ci.html#parametric-bootstrap-for-regression"><i class="fa fa-check"></i><b>10.2.1</b> Parametric Bootstrap for Regression</a></li>
 <li class="chapter" data-level="10.2.2" data-path="ci.html"><a href="ci.html#nonparametric-bootstrap-for-regression"><i class="fa fa-check"></i><b>10.2.2</b> Nonparametric Bootstrap for Regression</a></li>
 </ul></li>
-<li class="chapter" data-level="10.3" data-path="ci.html"><a href="ci.html#when-can-the-bootstrap-fail"><i class="fa fa-check"></i><b>10.3</b> When can the Bootstrap Fail?</a></li>
+<li class="chapter" data-level="10.3" data-path="ci.html"><a href="ci.html#when-can-the-bootstrap-fail"><i class="fa fa-check"></i><b>10.3</b> When can the Bootstrap Fail?</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="ci.html"><a href="ci.html#example-the-shifted-exponential-distribution"><i class="fa fa-check"></i><b>10.3.1</b> Example: The Shifted Exponential Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="ci.html"><a href="ci.html#the-jackknife"><i class="fa fa-check"></i><b>10.4</b> The Jackknife</a></li>
 </ul></li>
 <li class="part"><span><b>IV Nonparametric Regression: Part I</b></span></li>
 <li class="chapter" data-level="11" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression and Local Regression</a><ul>
@@ -407,9 +410,9 @@ the expected squared distance between <span class="math inline">\(X_{i}\)</span>
 <a class="sourceLine" id="cb85-6" data-line-number="6">   diff.sq[k] &lt;-<span class="st"> </span>(xx[idx[<span class="dv">1</span>]] <span class="op">-</span><span class="st"> </span>xx[idx[<span class="dv">2</span>]])<span class="op">^</span><span class="dv">2</span></a>
 <a class="sourceLine" id="cb85-7" data-line-number="7">}</a>
 <a class="sourceLine" id="cb85-8" data-line-number="8"><span class="kw">round</span>(<span class="kw">var</span>(xx), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 1.871</code></pre>
+<pre><code>## [1] 1.828</code></pre>
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">mean</span>(diff.sq)<span class="op">/</span><span class="dv">2</span>, <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 1.906</code></pre>
+<pre><code>## [1] 1.799</code></pre>
 </div>
 <div id="example-3-ginis-mean-difference" class="section level3">
 <h3><span class="header-section-number">6.2.3</span> Example 3: Gini’s Mean Difference</h3>
@@ -630,11 +633,11 @@ and <span class="math inline">\(\hat{\rho}_{R}\)</span> will equal -1 if <span c
 <a class="sourceLine" id="cb89-4" data-line-number="4"><span class="co">## Compare the usual Pearson&#39;s correlation between </span></a>
 <a class="sourceLine" id="cb89-5" data-line-number="5"><span class="co">## (xx, yy) and (xx, yy^2)</span></a>
 <a class="sourceLine" id="cb89-6" data-line-number="6"><span class="kw">round</span>( <span class="kw">c</span>( <span class="kw">cor</span>(xx, yy), <span class="kw">cor</span>(xx, yy<span class="op">^</span><span class="dv">2</span>)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.913 0.903</code></pre>
+<pre><code>## [1] 0.901 0.900</code></pre>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="co">## Now do the same for Spearman&#39;s rank correlation</span></a>
 <a class="sourceLine" id="cb91-2" data-line-number="2"><span class="kw">round</span>(<span class="kw">c</span>( <span class="kw">cor</span>(xx, yy, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>), </a>
 <a class="sourceLine" id="cb91-3" data-line-number="3">         <span class="kw">cor</span>(xx, yy<span class="op">^</span><span class="dv">2</span>, <span class="dt">method=</span><span class="st">&quot;spearman&quot;</span>)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.912 0.912</code></pre>
+<pre><code>## [1] 0.892 0.892</code></pre>
 <hr />
 <ul>
 <li><p><span class="math inline">\(\hat{\rho}_{R}\)</span> can be thought of as an estimate of the following population

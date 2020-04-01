@@ -134,7 +134,7 @@ round(c(alpha.hat - 1.96*sd(alpha.boot), alpha.hat + 1.96*sd(alpha.boot)), 3)
 ```
 
 ```
-## [1] 0.083 0.546
+## [1] 0.067 0.563
 ```
 
 ```r
@@ -142,7 +142,7 @@ round(c(sigsq.hat - 1.96*sd(sigsq.boot), sigsq.hat + 1.96*sd(sigsq.boot)), 3)
 ```
 
 ```
-## [1] 0.930 2.006
+## [1] 0.939 1.997
 ```
 
 * We can compare our confidence interval for $\alpha$ with the confidence interval
@@ -187,7 +187,8 @@ where $S_{xx} = \sum_{i=1}^{n}( x_{i} - \bar{x})^{2}$.
 
 * Assuming the covariates are fixed design points, the variance of $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ are
 \begin{equation}
-\textrm{Var}(\hat{\beta}_{0}) = \sigma^{2}\Big(\frac{\tfrac{1}{n}\sum_{i=1}^{n} x_{i}^{2}}{S_{xx}} \Big) \qquad \textrm{Var}(\hat{\beta}_{1}) = \frac{\sigma^{2}}{S_{xx}} \nonumber
+\textrm{Var}(\hat{\beta}_{0}) = \sigma^{2}\Big(\frac{\tfrac{1}{n}\sum_{i=1}^{n} x_{i}^{2}}{S_{xx}} \Big) \qquad \textrm{Var}(\hat{\beta}_{1}) = \frac{\sigma^{2}}{S_{xx}} 
+(\#eq:stderr-regression-formulas)
 \end{equation}
 
 
@@ -277,11 +278,11 @@ we can use studentized bootstrap confidence intervals without using the double b
 
 * Estimates of the standard error for the $r^{th}$ bootstrap replication are
 \begin{eqnarray}
-\hat{se}_{r}(\beta_{0}) &=& \hat{\sigma}_{r}\sqrt{\frac{\tfrac{1}{n}\sum_{i=1}^{n} x_{i}^{2}}{S_{xx}^{r}}} \nonumber \\
-\hat{se}_{r}(\beta_{1}) &=& \hat{\sigma}_{r}/\sqrt{S_{xx}^{r}}
+\hat{se}_{r}(\beta_{0}) &=& \hat{\sigma}_{r}\sqrt{\frac{\tfrac{1}{n}\sum_{i=1}^{n} x_{i}^{2}}{S_{xx}}} \nonumber \\
+\hat{se}_{r}(\beta_{1}) &=& \hat{\sigma}_{r}/\sqrt{S_{xx}}
 \end{eqnarray}
 
-* These standard error estimates can be found by applying the above formulas () and () to the $r^{th}$ bootstrap sample.
+* These standard error estimates come from applying the formulas in \@ref(eq:stderr-regression-formulas) to the $r^{th}$ bootstrap sample.
 
 * Recall from Chapter 9 that the studentized confidence intervals are found by using the following formula.
 \begin{equation}
@@ -315,7 +316,7 @@ c(beta0.hat - stu.quants0[2]*se.est0, beta0.hat - stu.quants0[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.16        3.55
+##        2.21        3.55
 ```
 
 ```r
@@ -325,7 +326,7 @@ c(beta1.hat - stu.quants1[2]*se.est1, beta1.hat - stu.quants1[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.0944 -0.0597
+## -0.0973 -0.0623
 ```
 
 * Compare these studentized bootstrap confidence intervals with the confidence 
@@ -435,7 +436,7 @@ c(beta0.hat - stu.quants0.np[2]*se.est0, beta0.hat - stu.quants0.np[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.22        3.57
+##        2.09        3.63
 ```
 
 ```r
@@ -445,7 +446,7 @@ c(beta1.hat - stu.quants1.np[2]*se.est1, beta1.hat - stu.quants1.np[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.0961 -0.0609
+## -0.0983 -0.0588
 ```
   
 ---  
@@ -487,14 +488,25 @@ bootstrap sample.
 
 ##  When can the Bootstrap Fail?
 
-**Shifted Exponential Distribution**
+* While the bootstrap is very automatic and could be used to construct confidence intervals
+in nearly any situation, these bootstrap confidence intervals may fail to give
+the correct coverage in some situations.
+
+* A few situations in which the bootstrap can fail include:
+    + If we are interested in estimating a parameter $\theta$ and the support $\{ x: f_{\theta}(x) > 0\}$ of the density function depends on $\theta$.
+    + If there are parameter constraints and the true value of the parameter lies on the boundary of the parameter space. For example, we estimate $\theta$ subject to the constraint that $\theta \geq 0$, and the true value of $\theta$ is zero. 
+    + If $T_{n} = g(\bar{X})$ and $g'(\mu) = 0$ where $\mu = E(X_{1})$.
+    + No finite mean. If $E(|X_{1}|)$ is not finite, then the bootstrap may not work well.
+
+
+### Example: The Shifted Exponential Distribution
 
 * Let us consider observations $X_{1}, \ldots, X_{n}$ that follow the shifted exponential distribution whose 
 density function is 
 \begin{equation}
 f(x)
 = \begin{cases}
-\lambda e^{-\lambda(x - \eta)} & \textrm{ if } x > \eta \nonumber \\
+\lambda e^{-\lambda(x - \eta)} & \textrm{ if } x \geq \eta \nonumber \\
 0 & \textrm{otherwise}  \nonumber
 \end{cases}
 \end{equation}
@@ -506,10 +518,94 @@ where $\lambda > 0$ and $\eta > 0$.
 \end{equation}
 where $X_{(1)} = \min\{ X_{1}, \ldots, X_{n} \}$ is the smallest observation. 
 
+* Notice that this is an example where the support of the density function depends 
+on the parameter $\eta$. 
+
 * Suppose we use the bootstrap to construct confidence intervals for $\lambda$ and $\eta$.
 What will happen?
 
 ---
+
+* Let us consider an example where we have i.i.d. data $X_{1}, \ldots, X_{n}$ that follow
+a shifted Exponential distribution with $\lambda = 1/3$ and $\eta = 2$.
+
+* The following code can estimate the coverage proportion of a bootstrap 
+confidence interval for $\eta$:
+
+```r
+n <- 200
+R <- 500
+eta.true <- 2
+
+nreps <- 500
+Cover.bootsd.ci <- numeric(nreps)
+for(k in 1:nreps)  {
+  ## Step 1: Generate the Data and compute the estimate of eta
+  xx <- 2 + rexp(n, rate=1/3) 
+  eta.hat <- min(xx)
+  
+  ## Step 2: Find bootstrap confidence intervals using R bootstrap replications
+  eta.boot <- numeric(R)
+  for(r in 1:R)   {
+    boot.xx <- sample(xx, size=n, replace = TRUE)
+    eta.boot[r] <- min(boot.xx)
+  }
+  boot.ci.sd <- c(eta.hat - 1.96*sd(eta.boot), eta.hat + 1.96*sd(eta.boot))
+  
+  ## Step 3: Record if the true parameter is covered or not:
+  Cover.bootsd.ci[k] <- ifelse(boot.ci.sd[1] < eta.true & boot.ci.sd[2] >= eta.true, 
+                               1, 0)
+}
+```
+
+* The estimated coverage for this bootstrap confidence interval is
+
+```r
+mean(Cover.bootsd.ci)
+```
+
+```
+## [1] 0.83
+```
+
+<img src="10-confidence-intervals_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+
+
+## The Jackknife
+
+* The jackknife is also a nonparametric method for estimating standard errors.
+
+* Like the bootstrap, the jackknife also uses the idea of looking at
+multiple subsets of the data.
+
+* While the jackknife was actually developed before the bootstrap, it is
+probably used much less than the bootstrap is in applications - at least 
+in the context of finding confidence intervals.
+
+---
+
+* We will define $\mathbf{X}_{-i}$ to be the vector of observations
+that has the $i^{th}$ observation deleted:
+\begin{equation}
+\mathbf{X}_{(-i)} = (X_{1}, \ldots, X_{i-1}, X_{i+1}, \ldots, X_{n})  \nonumber
+\end{equation}
+
+* Define $T_{n,(-i)}$ to be the value of the statistic $T_{n}$ when using 
+data which has the $i^{th}$ observation removed
+\begin{equation}
+T_{n, (-i)} = h(X_{1}, \ldots, X_{i-1}, X_{i+1}, \ldots, X_{n})  \nonumber
+\end{equation}
+
+* The jackknife estimate of the standard error of $T_{n}$ is
+\begin{equation}
+\hat{se}_{jack} = \Big[ \frac{1}{n(n-1)} \sum_{i=1}^{n} ( T_{n, (-i)} - \bar{T}_{n, jack} )^{2}  \Big]^{1/2}, \nonumber 
+\end{equation}
+where $\bar{T}_{n,jack} = \tfrac{1}{n} \sum_{i=1}^{n} T_{n, (-i)}$. 
+
+---
+
+* 
+
 
 
 
