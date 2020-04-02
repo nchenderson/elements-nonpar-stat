@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  31 MAR 2020 01:58
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  2 APR 2020 12:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1457,40 +1457,60 @@ File: 10-confidence-intervals-Latex_files/figure-latex/unnamed-chunk-11-1.pdf G
 raphic file (type pdf)
 <use 10-confidence-intervals-Latex_files/figure-latex/unnamed-chunk-11-1.pdf>
 [197] [198] [199] [200] [201]
-Underfull \hbox (badness 7963) in paragraph at lines 9101--9104
+Underfull \hbox (badness 7963) in paragraph at lines 9106--9109
 []\TU/lmr/m/n/10 For the nonparametric bootstrap, you would subsample pairs
  []
 
 
-Underfull \hbox (badness 1117) in paragraph at lines 9101--9104
+Underfull \hbox (badness 1117) in paragraph at lines 9106--9109
 [][][][] [][][][] [] [] [][][][] [][][]$ \TU/lmr/m/n/10 as described before, an
 d compute your regres-
  []
 
-[202] (./ElementsNonparStat.bbl [203] [204
+[202]
+Overfull \hbox (12.161pt too wide) in paragraph at lines 9137--9139
+[]\TU/lmr/m/n/10 This suggests that a standard error estimate for $[][][][]$ is
+ $[]$
+ []
 
-] [205])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 9136.
-[206]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 9136.
+
+Overfull \hbox (24.64343pt too wide) has occurred while \output is active
+\TU/lmr/m/sl/10 10.3.  POINTWISE CONFIDENCE INTERVALS FOR A DENSITY FUNCTION \T
+U/lmr/m/n/10 203
+ []
+
+[203]
+File: 10-confidence-intervals-Latex_files/figure-latex/unnamed-chunk-21-1.pdf G
+raphic file (type pdf)
+<use 10-confidence-intervals-Latex_files/figure-latex/unnamed-chunk-21-1.pdf>
+[204] [205] [206]
+File: 10-confidence-intervals-Latex_files/figure-latex/unnamed-chunk-24-1.pdf G
+raphic file (type pdf)
+<use 10-confidence-intervals-Latex_files/figure-latex/unnamed-chunk-24-1.pdf>
+[207] (./ElementsNonparStat.bbl [208] [209
+
+])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 9381.
+[210]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 9381.
 (./ElementsNonparStat.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 9136.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 9136.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 9381.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 9381.
 
 Package rerunfilecheck Info: File `ElementsNonparStat.out' has not changed.
-(rerunfilecheck)             Checksum: 8484A068CE400E30D3A468343B60BF8C;13251.
+(rerunfilecheck)             Checksum: 6D6D9BA997667FDD8E8F9A2530631ECB;13716.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 9136.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 9381.
  ) 
 Here is how much of TeX's memory you used:
- 17230 strings out of 481765
- 323976 string characters out of 5935194
- 757757 words of memory out of 5000000
- 33964 multiletter control sequences out of 15000+600000
+ 17252 strings out of 481765
+ 325069 string characters out of 5935194
+ 758757 words of memory out of 5000000
+ 33985 multiletter control sequences out of 15000+600000
  538877 words of font info for 88 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  52i,12n,115p,548b,553s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on ElementsNonparStat.pdf (206 pages).
+Output written on ElementsNonparStat.pdf (210 pages).

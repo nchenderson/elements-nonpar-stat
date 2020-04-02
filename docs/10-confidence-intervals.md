@@ -142,7 +142,7 @@ round(c(sigsq.hat - 1.96*sd(sigsq.boot), sigsq.hat + 1.96*sd(sigsq.boot)), 3)
 ```
 
 ```
-## [1] 0.939 1.997
+## [1] 0.923 2.013
 ```
 
 * We can compare our confidence interval for $\alpha$ with the confidence interval
@@ -316,7 +316,7 @@ c(beta0.hat - stu.quants0[2]*se.est0, beta0.hat - stu.quants0[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.21        3.55
+##        2.17        3.55
 ```
 
 ```r
@@ -326,7 +326,7 @@ c(beta1.hat - stu.quants1[2]*se.est1, beta1.hat - stu.quants1[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.0973 -0.0623
+## -0.0952 -0.0618
 ```
 
 * Compare these studentized bootstrap confidence intervals with the confidence 
@@ -378,6 +378,10 @@ and $\beta_{1} = \rho_{YX}\frac{\sigma_{y}}{\sigma_{x}}$.
 
 * So, even if the linear model is not exactly true, our estimate and 
 confidence interval still has a clear interpretation.
+
+* If the linear model assumption is true, the true standard error of $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$
+will be slightly different than the formulas shown in \@ref(eq:stderr-regression-formulas). Nevertheless, 
+\@ref(eq:stderr-regression-formulas) can be thought of as consistent estimates of the true standard error.
 
 ---
 
@@ -436,7 +440,7 @@ c(beta0.hat - stu.quants0.np[2]*se.est0, beta0.hat - stu.quants0.np[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.09        3.63
+##        2.13        3.59
 ```
 
 ```r
@@ -446,7 +450,7 @@ c(beta1.hat - stu.quants1.np[2]*se.est1, beta1.hat - stu.quants1.np[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.0983 -0.0588
+## -0.0954 -0.0598
 ```
   
 ---  
@@ -484,6 +488,77 @@ $Y_{i}^{*} \sim \textrm{Normal}(\hat{\beta}_{0} + \hat{\beta}_{1}x_{i1} + \ldots
 * For the nonparametric bootstrap, you would subsample pairs $(Y_{1}^{*}, x_{1}^{*}), \ldots, (Y_{n}^{*}, x_{n}^{*})$ as described before,
 and compute your regression coefficients $\hat{\beta}_{0,r}^{*}, \hat{\beta}_{1,r}^{*}, \ldots, \hat{\beta}_{p,r}^{*}$ from this
 bootstrap sample.
+
+
+## Pointwise Confidence Intervals for a Density Function
+
+* Recall that a kernel density estimate of an unknown probability density $f(x)$ has
+the form
+\begin{equation}
+\hat{f}_{h_{n}}(x) = \frac{1}{n h_{n}}\sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) \nonumber
+\end{equation}
+
+* We cannot naively apply the Central Limit Theorem, because $h_{n}$ is changing as $n \longrightarrow \infty$.
+
+* Nevertheless, you can show (see, e.g., @tsybakov2008) that 
+\begin{equation}
+\sqrt{nh_{n}}\Big( \hat{f}_{h_{n}}(x) - E\{ \hat{f}_{h_{n}}(x) \} \Big) \longrightarrow \textrm{Normal}\big( 0, \kappa_{2}(K) f(x) \big) \nonumber
+\end{equation}
+provided that $h_{n} \longrightarrow 0$ and $nh_{n} \longrightarrow \infty$. Here, $\kappa_{2}(K) = \int_{-\infty}^{\infty} K^{2}(u) du$.
+
+---
+
+* This suggests that a standard error estimate for $\hat{f}_{h_{n}}(x)$ is $\sqrt{\kappa_{2}(K)\hat{f}_{h_{n}}(x)/nh_{n}}$
+and a $95\%$ confidence interval for $E\{ \hat{f}_{h_{n}}(x) \}$ is
+\begin{equation}
+\Bigg[ \hat{f}_{h_{n}}(x) - 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x) }{nh_{n}}},
+\hat{f}_{h_{n}}(x) + 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x)}{nh_{n}}} \Bigg] \nonumber
+\end{equation}
+
+* Notice that this is a confidence interval for $E\{ \hat{f}_{h_{n}}(x) \}$ rather than $f(x)$.
+
+* So, you can roughly think of this as a confidence interval for a smoothed version of $f(x)$ at $x$:
+\begin{equation}
+E\{ \hat{f}_{h_{n}}(x) \} = \frac{1}{h_{n}}\int_{-\infty}^{\infty} K\Big( \frac{x - t}{h_{n}} \Big) f(t) dt \nonumber
+\end{equation}
+
+* Notice also that this is a pointwise confidence interval. It is not a confidence band.
+
+* Methods for computing "bias-corrected" confidence intervals for $f(x)$ are 
+discussed, for example, in @chen2017tutorial.
+
+---
+
+* To get a bootstrap estimate of the standard deviation of $\hat{f}_{h_{n}}(x)$, we can use the usual steps. 
+
+* For $r=1, \ldots, R$:
+    + Draw a sample of size $n$: $(X_{1}^{*}, \ldots, X_{n}^{*})$ by sampling with replacement from $\mathbf{X}$.
+    + Compute $T_{n,r}^{*} = \tfrac{1}{nh_{n}}\sum_{i=1}^{n} K(\tfrac{x - X_{i}^{*}}{ h_{n} } )$. 
+
+Then, compute the estimated standard error:
+\begin{equation}
+\hat{se}_{boot} = \Big[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} )^{2} \Big]^{1/2}
+\end{equation}
+
+* `R` code to compute these standard error estimates for the `sysBP` variable from the `framingham` dataset is given below
+
+```r
+framingham <- read.csv("~/Documents/STAT685Notes/Data/framingham.csv")
+R <- 500
+BootMat <- matrix(0, nrow=R, ncol=4)
+for(r in 1:R) {
+    xx.boot <- sample(framingham$sysBP, size=length(framingham$sysBP), replace=TRUE)
+    kk.boot <- density(xx.boot)
+    tmp <- approxfun(kk.boot$x, kk.boot$y)
+    BootMat[r,] <- c(tmp(100), tmp(125), tmp(150), tmp(175))
+}
+bb <- apply(BootMat, 2, sd)
+```
+
+<div class="figure">
+<img src="10-confidence-intervals_files/figure-html/unnamed-chunk-21-1.png" alt="Bootstrap confidence intervals for the density function at the points x=100, 125, 150, 175" width="672" />
+<p class="caption">(\#fig:unnamed-chunk-21)Bootstrap confidence intervals for the density function at the points x=100, 125, 150, 175</p>
+</div>
 
 
 ##  When can the Bootstrap Fail?
@@ -565,10 +640,10 @@ mean(Cover.bootsd.ci)
 ```
 
 ```
-## [1] 0.83
+## [1] 0.79
 ```
 
-<img src="10-confidence-intervals_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+<img src="10-confidence-intervals_files/figure-html/unnamed-chunk-24-1.png" width="672" />
 
 
 ## The Jackknife
@@ -578,8 +653,12 @@ mean(Cover.bootsd.ci)
 * Like the bootstrap, the jackknife also uses the idea of looking at
 multiple subsets of the data.
 
+* Also like the bootstrap, the jackknife is completely automatic in the sense
+that we only need to be able to compute our statistic of interest, and
+we do not need to do any formal calculations to find the standard error.
+
 * While the jackknife was actually developed before the bootstrap, it is
-probably used much less than the bootstrap is in applications - at least 
+used much less than the bootstrap is in applications - at least 
 in the context of finding confidence intervals.
 
 ---
@@ -598,13 +677,21 @@ T_{n, (-i)} = h(X_{1}, \ldots, X_{i-1}, X_{i+1}, \ldots, X_{n})  \nonumber
 
 * The jackknife estimate of the standard error of $T_{n}$ is
 \begin{equation}
-\hat{se}_{jack} = \Big[ \frac{1}{n(n-1)} \sum_{i=1}^{n} ( T_{n, (-i)} - \bar{T}_{n, jack} )^{2}  \Big]^{1/2}, \nonumber 
+\hat{se}_{jack} = \Big[ \frac{n-1}{n} \sum_{i=1}^{n} ( T_{n, (-i)} - \bar{T}_{n, jack} )^{2}  \Big]^{1/2}, \nonumber 
 \end{equation}
 where $\bar{T}_{n,jack} = \tfrac{1}{n} \sum_{i=1}^{n} T_{n, (-i)}$. 
 
 ---
 
-* 
+* An advantage of the jackknife is that, like the bootstrap, it does not
+make any particular parametric assumptions about the distribution of the data.
+
+* However, the jackknife is more dependent on a smoothness assumption (that is smoothness
+across slightly perturbed datasets) than the bootstrap. An example of this is the 
+sample median where, if we delete one observation, the sample median has
+a different definition due to the sample size being even vs. odd.
+
+
 
 
 

@@ -342,6 +342,10 @@ and $\beta_{1} = \rho_{YX}\frac{\sigma_{y}}{\sigma_{x}}$.
 * So, even if the linear model is not exactly true, our estimate and 
 confidence interval still has a clear interpretation.
 
+* If the linear model assumption is true, the true standard error of $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$
+will be slightly different than the formulas shown in \@ref(eq:stderr-regression-formulas). Nevertheless, 
+\@ref(eq:stderr-regression-formulas) can be thought of as consistent estimates of the true standard error.
+
 ---
 
 * If we are thinking of the observations $(Y_{1}, x_{1}), \ldots, (Y_{n}, x_{n})$ 
@@ -434,6 +438,83 @@ and compute your regression coefficients $\hat{\beta}_{0,r}^{*}, \hat{\beta}_{1,
 bootstrap sample.
 
 
+## Pointwise Confidence Intervals for a Density Function
+
+* Recall that a kernel density estimate of an unknown probability density $f(x)$ has
+the form
+\begin{equation}
+\hat{f}_{h_{n}}(x) = \frac{1}{n h_{n}}\sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) \nonumber
+\end{equation}
+
+* We cannot naively apply the Central Limit Theorem, because $h_{n}$ is changing as $n \longrightarrow \infty$.
+
+* Nevertheless, you can show (see, e.g., @tsybakov2008) that 
+\begin{equation}
+\sqrt{nh_{n}}\Big( \hat{f}_{h_{n}}(x) - E\{ \hat{f}_{h_{n}}(x) \} \Big) \longrightarrow \textrm{Normal}\big( 0, \kappa_{2}(K) f(x) \big) \nonumber
+\end{equation}
+provided that $h_{n} \longrightarrow 0$ and $nh_{n} \longrightarrow \infty$. Here, $\kappa_{2}(K) = \int_{-\infty}^{\infty} K^{2}(u) du$.
+
+---
+
+* This suggests that a standard error estimate for $\hat{f}_{h_{n}}(x)$ is $\sqrt{\kappa_{2}(K)\hat{f}_{h_{n}}(x)/nh_{n}}$
+and a $95\%$ confidence interval for $E\{ \hat{f}_{h_{n}}(x) \}$ is
+\begin{equation}
+\Bigg[ \hat{f}_{h_{n}}(x) - 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x) }{nh_{n}}},
+\hat{f}_{h_{n}}(x) + 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x)}{nh_{n}}} \Bigg] \nonumber
+\end{equation}
+
+* Notice that this is a confidence interval for $E\{ \hat{f}_{h_{n}}(x) \}$ rather than $f(x)$.
+
+* So, you can roughly think of this as a confidence interval for a smoothed version of $f(x)$ at $x$:
+\begin{equation}
+E\{ \hat{f}_{h_{n}}(x) \} = \frac{1}{h_{n}}\int_{-\infty}^{\infty} K\Big( \frac{x - t}{h_{n}} \Big) f(t) dt \nonumber
+\end{equation}
+
+* Notice also that this is a pointwise confidence interval. It is not a confidence band.
+
+* Methods for computing "bias-corrected" confidence intervals for $f(x)$ are 
+discussed, for example, in @chen2017tutorial.
+
+---
+
+* To get a bootstrap estimate of the standard deviation of $\hat{f}_{h_{n}}(x)$, we can use the usual steps. 
+
+* For $r=1, \ldots, R$:
+    + Draw a sample of size $n$: $(X_{1}^{*}, \ldots, X_{n}^{*})$ by sampling with replacement from $\mathbf{X}$.
+    + Compute $T_{n,r}^{*} = \tfrac{1}{nh_{n}}\sum_{i=1}^{n} K(\tfrac{x - X_{i}^{*}}{ h_{n} } )$. 
+
+Then, compute the estimated standard error:
+\begin{equation}
+\hat{se}_{boot} = \Big[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} )^{2} \Big]^{1/2}
+\end{equation}
+
+* `R` code to compute these standard error estimates for the `sysBP` variable from the `framingham` dataset is given below
+```{r}
+framingham <- read.csv("~/Documents/STAT685Notes/Data/framingham.csv")
+R <- 500
+BootMat <- matrix(0, nrow=R, ncol=4)
+for(r in 1:R) {
+    xx.boot <- sample(framingham$sysBP, size=length(framingham$sysBP), replace=TRUE)
+    kk.boot <- density(xx.boot)
+    tmp <- approxfun(kk.boot$x, kk.boot$y)
+    BootMat[r,] <- c(tmp(100), tmp(125), tmp(150), tmp(175))
+}
+bb <- apply(BootMat, 2, sd)
+```
+
+```{r, echo=FALSE, fig.height=5.5, fig.cap="Bootstrap confidence intervals for the density function at the points x=100, 125, 150, 175"}
+kk <- density(framingham$sysBP)
+tmp <- approxfun(kk$x, kk$y)
+fhat <- c(tmp(100), tmp(125), tmp(150), tmp(175))
+plot(kk, lwd=2, las=1, xlab="Sys BP", ylab="Density", ylim=c(0,.024),
+     main="Bootstrap Confidence Intervals for Systolic Blood Pressure", xlim=c(75,275))
+lines(c(100, 100), c(fhat[1] - 1.96*bb[1], fhat[1] + 1.96*bb[1]), lwd=3, col="red")
+lines(c(125, 125), c(fhat[2] - 1.96*bb[2], fhat[2] + 1.96*bb[2]), lwd=3, col="red")
+lines(c(150, 150), c(fhat[3] - 1.96*bb[3], fhat[3] + 1.96*bb[3]), lwd=3, col="red")
+lines(c(175, 175), c(fhat[4] - 1.96*bb[4], fhat[4] + 1.96*bb[4]), lwd=3, col="red")
+```
+
+
 ##  When can the Bootstrap Fail?
 
 * While the bootstrap is very automatic and could be used to construct confidence intervals
@@ -511,7 +592,7 @@ mean(Cover.bootsd.ci)
 ```
 
 ```{r, echo=FALSE, fig.height=5.5}
-hist(eta.boot, breaks="FD", col="grey", xlab=expression(hat(eta)), main=expression(paste("Bootstrap replications of ", hat(eta)," for the shifted Exponential distribution")))
+hist(eta.boot, col="grey", las =1, xlab=expression(hat(eta)), main=expression(paste("Bootstrap replications of ", hat(eta)," for the shifted Exponential distribution")))
 ```
 
 
@@ -522,8 +603,12 @@ hist(eta.boot, breaks="FD", col="grey", xlab=expression(hat(eta)), main=expressi
 * Like the bootstrap, the jackknife also uses the idea of looking at
 multiple subsets of the data.
 
+* Also like the bootstrap, the jackknife is completely automatic in the sense
+that we only need to be able to compute our statistic of interest, and
+we do not need to do any formal calculations to find the standard error.
+
 * While the jackknife was actually developed before the bootstrap, it is
-probably used much less than the bootstrap is in applications - at least 
+used much less than the bootstrap is in applications - at least 
 in the context of finding confidence intervals.
 
 ---
@@ -542,13 +627,21 @@ T_{n, (-i)} = h(X_{1}, \ldots, X_{i-1}, X_{i+1}, \ldots, X_{n})  \nonumber
 
 * The jackknife estimate of the standard error of $T_{n}$ is
 \begin{equation}
-\hat{se}_{jack} = \Big[ \frac{1}{n(n-1)} \sum_{i=1}^{n} ( T_{n, (-i)} - \bar{T}_{n, jack} )^{2}  \Big]^{1/2}, \nonumber 
+\hat{se}_{jack} = \Big[ \frac{n-1}{n} \sum_{i=1}^{n} ( T_{n, (-i)} - \bar{T}_{n, jack} )^{2}  \Big]^{1/2}, \nonumber 
 \end{equation}
 where $\bar{T}_{n,jack} = \tfrac{1}{n} \sum_{i=1}^{n} T_{n, (-i)}$. 
 
 ---
 
-* 
+* An advantage of the jackknife is that, like the bootstrap, it does not
+make any particular parametric assumptions about the distribution of the data.
+
+* However, the jackknife is more dependent on a smoothness assumption (that is smoothness
+across slightly perturbed datasets) than the bootstrap. An example of this is the 
+sample median where, if we delete one observation, the sample median has
+a different definition due to the sample size being even vs. odd.
+
+
 
 
 

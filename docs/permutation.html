@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-01" />
+<meta name="date" content="2020-04-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -270,10 +270,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.2.1" data-path="ci.html"><a href="ci.html#parametric-bootstrap-for-regression"><i class="fa fa-check"></i><b>10.2.1</b> Parametric Bootstrap for Regression</a></li>
 <li class="chapter" data-level="10.2.2" data-path="ci.html"><a href="ci.html#nonparametric-bootstrap-for-regression"><i class="fa fa-check"></i><b>10.2.2</b> Nonparametric Bootstrap for Regression</a></li>
 </ul></li>
-<li class="chapter" data-level="10.3" data-path="ci.html"><a href="ci.html#when-can-the-bootstrap-fail"><i class="fa fa-check"></i><b>10.3</b> When can the Bootstrap Fail?</a><ul>
-<li class="chapter" data-level="10.3.1" data-path="ci.html"><a href="ci.html#example-the-shifted-exponential-distribution"><i class="fa fa-check"></i><b>10.3.1</b> Example: The Shifted Exponential Distribution</a></li>
+<li class="chapter" data-level="10.3" data-path="ci.html"><a href="ci.html#pointwise-confidence-intervals-for-a-density-function"><i class="fa fa-check"></i><b>10.3</b> Pointwise Confidence Intervals for a Density Function</a></li>
+<li class="chapter" data-level="10.4" data-path="ci.html"><a href="ci.html#when-can-the-bootstrap-fail"><i class="fa fa-check"></i><b>10.4</b> When can the Bootstrap Fail?</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="ci.html"><a href="ci.html#example-the-shifted-exponential-distribution"><i class="fa fa-check"></i><b>10.4.1</b> Example: The Shifted Exponential Distribution</a></li>
 </ul></li>
-<li class="chapter" data-level="10.4" data-path="ci.html"><a href="ci.html#the-jackknife"><i class="fa fa-check"></i><b>10.4</b> The Jackknife</a></li>
+<li class="chapter" data-level="10.5" data-path="ci.html"><a href="ci.html#the-jackknife"><i class="fa fa-check"></i><b>10.5</b> The Jackknife</a></li>
 </ul></li>
 <li class="part"><span><b>IV Nonparametric Regression: Part I</b></span></li>
 <li class="chapter" data-level="11" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression and Local Regression</a><ul>
@@ -718,7 +719,7 @@ where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly
 </ul>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(mean.diff) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(observed.diff)))<span class="op">/</span>(nperms <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.77</code></pre>
+<pre><code>## [1] 0.76</code></pre>
 </div>
 <div id="example-2-ratios-of-means" class="section level3">
 <h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means</h3>
