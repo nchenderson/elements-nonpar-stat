@@ -444,7 +444,7 @@ the form
 
 * We cannot naively apply the Central Limit Theorem, because $h_{n}$ is changing as $n \longrightarrow \infty$.
 
-* Nevertheless, you can show (see, e.g., ) that 
+* Nevertheless, you can show (see, e.g., @tsybakov2008) that 
 \begin{equation}
 \sqrt{nh_{n}}\Big( \hat{f}_{h_{n}}(x) - E\{ \hat{f}_{h_{n}}(x) \} \Big) \longrightarrow \textrm{Normal}\big( 0, \kappa_{2}(K) f(x) \big) \nonumber
 \end{equation}
@@ -455,8 +455,8 @@ provided that $h_{n} \longrightarrow 0$ and $nh_{n} \longrightarrow \infty$. Her
 * This suggests that a standard error estimate for $\hat{f}_{h_{n}}(x)$ is $\sqrt{\mu_{K}\hat{f}_{h_{n}}(x)/nh_{n}}$
 and a $95\%$ confidence interval for $E\{ \hat{f}_{h_{n}}(x) \}$ is
 \begin{equation}
-\Big[ \hat{f}_{h_{n}}(x) - 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x) }{nh_{n}}},
-\hat{f}_{h_{n}}(x) + 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x)}{nh_{n}}} \Big]
+\Bigg[ \hat{f}_{h_{n}}(x) - 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x) }{nh_{n}}},
+\hat{f}_{h_{n}}(x) + 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x)}{nh_{n}}} \Bigg]
 \end{equation}
 
 * Notice that this is a confidence interval for $E\{ \hat{f}_{h_{n}}(x) \}$ rather than $f(x)$.
@@ -480,6 +480,31 @@ and then compute the estimated standard error:
 \hat{se}_{boot} = \Big[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} )^{2} \Big]^{1/2}
 \end{equation}
 
+* `R` code to compute these standard error estimates for the `sysBP` variable from the `framingham` dataset is given below
+```{r}
+framingham <- read.csv("~/Documents/STAT685Notes/Data/framingham.csv")
+R <- 500
+BootMat <- matrix(0, nrow=R, ncol=4)
+for(r in 1:R) {
+    xx.boot <- sample(framingham$sysBP, size=length(framingham$sysBP), replace=TRUE)
+    kk.boot <- density(xx.boot)
+    tmp <- approxfun(kk.boot$x, kk.boot$y)
+    BootMat[r,] <- c(tmp(100), tmp(125), tmp(150), tmp(175))
+}
+bb <- apply(BootMat, 2, sd)
+```
+
+```{r, echo=FALSE, fig.height=5.5, fig.cap="Bootstrap confidence intervals for the density function at the points x=100, 125, 150, 175"}
+kk <- density(framingham$sysBP)
+tmp <- approxfun(kk$x, kk$y)
+fhat <- c(tmp(100), tmp(125), tmp(150), tmp(175))
+plot(kk, lwd=2, las=1, xlab="Sys BP", ylab="Density", ylim=c(0,.024),
+     main="Bootstrap Confidence Intervals for Systolic Blood Pressure", xlim=c(75,275))
+lines(c(100, 100), c(fhat[1] - 1.96*bb[1], fhat[1] + 1.96*bb[1]), lwd=3, col="red")
+lines(c(125, 125), c(fhat[2] - 1.96*bb[2], fhat[2] + 1.96*bb[2]), lwd=3, col="red")
+lines(c(150, 150), c(fhat[3] - 1.96*bb[3], fhat[3] + 1.96*bb[3]), lwd=3, col="red")
+lines(c(175, 175), c(fhat[4] - 1.96*bb[4], fhat[4] + 1.96*bb[4]), lwd=3, col="red")
+```
 
 
 ##  When can the Bootstrap Fail?
@@ -570,8 +595,12 @@ hist(eta.boot, col="grey", las =1, xlab=expression(hat(eta)), main=expression(pa
 * Like the bootstrap, the jackknife also uses the idea of looking at
 multiple subsets of the data.
 
+* Also like the bootstrap, the jackknife is completely automatic in the sense
+that we only need to be able to compute our statistic of interest, and
+we do not need to do any formal calculations to find the standard error.
+
 * While the jackknife was actually developed before the bootstrap, it is
-probably used much less than the bootstrap is in applications - at least 
+used much less than the bootstrap is in applications - at least 
 in the context of finding confidence intervals.
 
 ---
@@ -590,13 +619,21 @@ T_{n, (-i)} = h(X_{1}, \ldots, X_{i-1}, X_{i+1}, \ldots, X_{n})  \nonumber
 
 * The jackknife estimate of the standard error of $T_{n}$ is
 \begin{equation}
-\hat{se}_{jack} = \Big[ \frac{1}{n(n-1)} \sum_{i=1}^{n} ( T_{n, (-i)} - \bar{T}_{n, jack} )^{2}  \Big]^{1/2}, \nonumber 
+\hat{se}_{jack} = \Big[ \frac{n-1}{n} \sum_{i=1}^{n} ( T_{n, (-i)} - \bar{T}_{n, jack} )^{2}  \Big]^{1/2}, \nonumber 
 \end{equation}
 where $\bar{T}_{n,jack} = \tfrac{1}{n} \sum_{i=1}^{n} T_{n, (-i)}$. 
 
 ---
 
-* 
+* An advantage of the jackknife is that, like the bootstrap, it does not
+make any particular parametric assumptions about the distribution of the data.
+
+* However, the jackknife is more dependent on a smoothness assumption (that is smoothness
+across slightly perturbed datasets) than the bootstrap. An example of this is the 
+sample median where, if we delete one observation, the sample median has
+a different definition due to the sample size being even vs. odd.
+
+
 
 
 

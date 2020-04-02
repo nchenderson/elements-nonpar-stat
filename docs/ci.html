@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-01" />
+<meta name="date" content="2020-04-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -423,9 +423,9 @@ more details).</p></li>
 <li>Normal bootstrap standard error confidence intervals for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma^{2}\)</span> are</li>
 </ul>
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb193-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(alpha.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot), alpha.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.063 0.567</code></pre>
+<pre><code>## [1] 0.093 0.537</code></pre>
 <div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb195-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(sigsq.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot), sigsq.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.953 1.983</code></pre>
+<pre><code>## [1] 0.944 1.991</code></pre>
 <ul>
 <li>We can compare our confidence interval for <span class="math inline">\(\alpha\)</span> with the confidence interval
 obtained from using a large-sample approximation:</li>
@@ -568,11 +568,11 @@ we can use studentized bootstrap confidence intervals without using the double b
 <div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb202-1" data-line-number="1"><span class="co">## Confidence interval for beta0</span></a>
 <a class="sourceLine" id="cb202-2" data-line-number="2"><span class="kw">c</span>(beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0[<span class="dv">2</span>]<span class="op">*</span>se.est0, beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0[<span class="dv">1</span>]<span class="op">*</span>se.est0)</a></code></pre></div>
 <pre><code>## (Intercept) (Intercept) 
-##        2.15        3.59</code></pre>
+##        2.08        3.52</code></pre>
 <div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb204-1" data-line-number="1"><span class="co">## Confidence interval for beta1</span></a>
 <a class="sourceLine" id="cb204-2" data-line-number="2"><span class="kw">c</span>(beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1[<span class="dv">2</span>]<span class="op">*</span>se.est1, beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1[<span class="dv">1</span>]<span class="op">*</span>se.est1)</a></code></pre></div>
 <pre><code>##     age     age 
-## -0.0962 -0.0614</code></pre>
+## -0.0955 -0.0593</code></pre>
 <ul>
 <li>Compare these studentized bootstrap confidence intervals with the confidence
 intervals computed under the normality assumption for the residuals:</li>
@@ -662,11 +662,11 @@ and <span class="math inline">\(\hat{\beta}_{1}\)</span>, we just use the follow
 <div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb210-1" data-line-number="1"><span class="co">## Confidence interval for beta0</span></a>
 <a class="sourceLine" id="cb210-2" data-line-number="2"><span class="kw">c</span>(beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0.np[<span class="dv">2</span>]<span class="op">*</span>se.est0, beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0.np[<span class="dv">1</span>]<span class="op">*</span>se.est0)</a></code></pre></div>
 <pre><code>## (Intercept) (Intercept) 
-##        2.12        3.63</code></pre>
+##        2.10        3.62</code></pre>
 <div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb212-1" data-line-number="1"><span class="co">## Confidence interval for beta1</span></a>
 <a class="sourceLine" id="cb212-2" data-line-number="2"><span class="kw">c</span>(beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1.np[<span class="dv">2</span>]<span class="op">*</span>se.est1, beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1.np[<span class="dv">1</span>]<span class="op">*</span>se.est1)</a></code></pre></div>
 <pre><code>##     age     age 
-## -0.0967 -0.0589</code></pre>
+## -0.0997 -0.0575</code></pre>
 <hr />
 <ul>
 <li><strong>Exercise 10.2</strong> Another way of using the bootstrap in a regression context
@@ -710,7 +710,7 @@ the form
 \hat{f}_{h_{n}}(x) = \frac{1}{n h_{n}}\sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) \nonumber
 \end{equation}\]</span></p></li>
 <li><p>We cannot naively apply the Central Limit Theorem, because <span class="math inline">\(h_{n}\)</span> is changing as <span class="math inline">\(n \longrightarrow \infty\)</span>.</p></li>
-<li><p>Nevertheless, you can show (see, e.g., ) that
+<li><p>Nevertheless, you can show (see, e.g., <span class="citation">Tsybakov (<a href="#ref-tsybakov2008">2008</a>)</span>) that
 <span class="math display">\[\begin{equation}
 \sqrt{nh_{n}}\Big( \hat{f}_{h_{n}}(x) - E\{ \hat{f}_{h_{n}}(x) \} \Big) \longrightarrow \textrm{Normal}\big( 0, \kappa_{2}(K) f(x) \big) \nonumber
 \end{equation}\]</span>
@@ -721,8 +721,8 @@ provided that <span class="math inline">\(h_{n} \longrightarrow 0\)</span> and <
 <li><p>This suggests that a standard error estimate for <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is <span class="math inline">\(\sqrt{\mu_{K}\hat{f}_{h_{n}}(x)/nh_{n}}\)</span>
 and a <span class="math inline">\(95\%\)</span> confidence interval for <span class="math inline">\(E\{ \hat{f}_{h_{n}}(x) \}\)</span> is
 <span class="math display">\[\begin{equation}
-\Big[ \hat{f}_{h_{n}}(x) - 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x) }{nh_{n}}},
-\hat{f}_{h_{n}}(x) + 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x)}{nh_{n}}} \Big]
+\Bigg[ \hat{f}_{h_{n}}(x) - 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x) }{nh_{n}}},
+\hat{f}_{h_{n}}(x) + 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x)}{nh_{n}}} \Bigg]
 \end{equation}\]</span></p></li>
 <li><p>Notice that this is a confidence interval for <span class="math inline">\(E\{ \hat{f}_{h_{n}}(x) \}\)</span> rather than <span class="math inline">\(f(x)\)</span>.</p></li>
 <li><p>So, you can roughly think of this as a confidence interval for a smoothed version of <span class="math inline">\(f(x)\)</span> at <span class="math inline">\(x\)</span>:
@@ -743,7 +743,24 @@ and then compute the estimated standard error:
 \hat{se}_{boot} = \Big[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} )^{2} \Big]^{1/2}
 \end{equation}\]</span></li>
 </ul></li>
+<li><p><code>R</code> code to compute these standard error estimates for the <code>sysBP</code> variable from the <code>framingham</code> dataset is given below</p></li>
 </ul>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb214-1" data-line-number="1">framingham &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;~/Documents/STAT685Notes/Data/framingham.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb214-2" data-line-number="2">R &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb214-3" data-line-number="3">BootMat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow=</span>R, <span class="dt">ncol=</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb214-4" data-line-number="4"><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R) {</a>
+<a class="sourceLine" id="cb214-5" data-line-number="5">    xx.boot &lt;-<span class="st"> </span><span class="kw">sample</span>(framingham<span class="op">$</span>sysBP, <span class="dt">size=</span><span class="kw">length</span>(framingham<span class="op">$</span>sysBP), <span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb214-6" data-line-number="6">    kk.boot &lt;-<span class="st"> </span><span class="kw">density</span>(xx.boot)</a>
+<a class="sourceLine" id="cb214-7" data-line-number="7">    tmp &lt;-<span class="st"> </span><span class="kw">approxfun</span>(kk.boot<span class="op">$</span>x, kk.boot<span class="op">$</span>y)</a>
+<a class="sourceLine" id="cb214-8" data-line-number="8">    BootMat[r,] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">tmp</span>(<span class="dv">100</span>), <span class="kw">tmp</span>(<span class="dv">125</span>), <span class="kw">tmp</span>(<span class="dv">150</span>), <span class="kw">tmp</span>(<span class="dv">175</span>))</a>
+<a class="sourceLine" id="cb214-9" data-line-number="9">}</a>
+<a class="sourceLine" id="cb214-10" data-line-number="10">bb &lt;-<span class="st"> </span><span class="kw">apply</span>(BootMat, <span class="dv">2</span>, sd)</a></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-21"></span>
+<img src="10-confidence-intervals_files/figure-html/unnamed-chunk-21-1.png" alt="Bootstrap confidence intervals for the density function at the points x=100, 125, 150, 175" width="672" />
+<p class="caption">
+Figure 10.1: Bootstrap confidence intervals for the density function at the points x=100, 125, 150, 175
+</p>
+</div>
 </div>
 <div id="when-can-the-bootstrap-fail" class="section level2">
 <h2><span class="header-section-number">10.4</span> When can the Bootstrap Fail?</h2>
@@ -789,35 +806,35 @@ a shifted Exponential distribution with <span class="math inline">\(\lambda = 1/
 <li><p>The following code can estimate the coverage proportion of a bootstrap
 confidence interval for <span class="math inline">\(\eta\)</span>:</p></li>
 </ul>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb214-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="dv">200</span></a>
-<a class="sourceLine" id="cb214-2" data-line-number="2">R &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb214-3" data-line-number="3">eta.true &lt;-<span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb214-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb214-5" data-line-number="5">nreps &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb214-6" data-line-number="6">Cover.bootsd.ci &lt;-<span class="st"> </span><span class="kw">numeric</span>(nreps)</a>
-<a class="sourceLine" id="cb214-7" data-line-number="7"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nreps)  {</a>
-<a class="sourceLine" id="cb214-8" data-line-number="8">  <span class="co">## Step 1: Generate the Data and compute the estimate of eta</span></a>
-<a class="sourceLine" id="cb214-9" data-line-number="9">  xx &lt;-<span class="st"> </span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="kw">rexp</span>(n, <span class="dt">rate=</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>) </a>
-<a class="sourceLine" id="cb214-10" data-line-number="10">  eta.hat &lt;-<span class="st"> </span><span class="kw">min</span>(xx)</a>
-<a class="sourceLine" id="cb214-11" data-line-number="11">  </a>
-<a class="sourceLine" id="cb214-12" data-line-number="12">  <span class="co">## Step 2: Find bootstrap confidence intervals using R bootstrap replications</span></a>
-<a class="sourceLine" id="cb214-13" data-line-number="13">  eta.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
-<a class="sourceLine" id="cb214-14" data-line-number="14">  <span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R)   {</a>
-<a class="sourceLine" id="cb214-15" data-line-number="15">    boot.xx &lt;-<span class="st"> </span><span class="kw">sample</span>(xx, <span class="dt">size=</span>n, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb214-16" data-line-number="16">    eta.boot[r] &lt;-<span class="st"> </span><span class="kw">min</span>(boot.xx)</a>
-<a class="sourceLine" id="cb214-17" data-line-number="17">  }</a>
-<a class="sourceLine" id="cb214-18" data-line-number="18">  boot.ci.sd &lt;-<span class="st"> </span><span class="kw">c</span>(eta.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot), eta.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot))</a>
-<a class="sourceLine" id="cb214-19" data-line-number="19">  </a>
-<a class="sourceLine" id="cb214-20" data-line-number="20">  <span class="co">## Step 3: Record if the true parameter is covered or not:</span></a>
-<a class="sourceLine" id="cb214-21" data-line-number="21">  Cover.bootsd.ci[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(boot.ci.sd[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>eta.true <span class="op">&amp;</span><span class="st"> </span>boot.ci.sd[<span class="dv">2</span>] <span class="op">&gt;=</span><span class="st"> </span>eta.true, </a>
-<a class="sourceLine" id="cb214-22" data-line-number="22">                               <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb214-23" data-line-number="23">}</a></code></pre></div>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb215-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="dv">200</span></a>
+<a class="sourceLine" id="cb215-2" data-line-number="2">R &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb215-3" data-line-number="3">eta.true &lt;-<span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb215-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb215-5" data-line-number="5">nreps &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb215-6" data-line-number="6">Cover.bootsd.ci &lt;-<span class="st"> </span><span class="kw">numeric</span>(nreps)</a>
+<a class="sourceLine" id="cb215-7" data-line-number="7"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nreps)  {</a>
+<a class="sourceLine" id="cb215-8" data-line-number="8">  <span class="co">## Step 1: Generate the Data and compute the estimate of eta</span></a>
+<a class="sourceLine" id="cb215-9" data-line-number="9">  xx &lt;-<span class="st"> </span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="kw">rexp</span>(n, <span class="dt">rate=</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>) </a>
+<a class="sourceLine" id="cb215-10" data-line-number="10">  eta.hat &lt;-<span class="st"> </span><span class="kw">min</span>(xx)</a>
+<a class="sourceLine" id="cb215-11" data-line-number="11">  </a>
+<a class="sourceLine" id="cb215-12" data-line-number="12">  <span class="co">## Step 2: Find bootstrap confidence intervals using R bootstrap replications</span></a>
+<a class="sourceLine" id="cb215-13" data-line-number="13">  eta.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
+<a class="sourceLine" id="cb215-14" data-line-number="14">  <span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R)   {</a>
+<a class="sourceLine" id="cb215-15" data-line-number="15">    boot.xx &lt;-<span class="st"> </span><span class="kw">sample</span>(xx, <span class="dt">size=</span>n, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb215-16" data-line-number="16">    eta.boot[r] &lt;-<span class="st"> </span><span class="kw">min</span>(boot.xx)</a>
+<a class="sourceLine" id="cb215-17" data-line-number="17">  }</a>
+<a class="sourceLine" id="cb215-18" data-line-number="18">  boot.ci.sd &lt;-<span class="st"> </span><span class="kw">c</span>(eta.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot), eta.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot))</a>
+<a class="sourceLine" id="cb215-19" data-line-number="19">  </a>
+<a class="sourceLine" id="cb215-20" data-line-number="20">  <span class="co">## Step 3: Record if the true parameter is covered or not:</span></a>
+<a class="sourceLine" id="cb215-21" data-line-number="21">  Cover.bootsd.ci[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(boot.ci.sd[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>eta.true <span class="op">&amp;</span><span class="st"> </span>boot.ci.sd[<span class="dv">2</span>] <span class="op">&gt;=</span><span class="st"> </span>eta.true, </a>
+<a class="sourceLine" id="cb215-22" data-line-number="22">                               <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb215-23" data-line-number="23">}</a></code></pre></div>
 <ul>
 <li>The estimated coverage for this bootstrap confidence interval is</li>
 </ul>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb215-1" data-line-number="1"><span class="kw">mean</span>(Cover.bootsd.ci)</a></code></pre></div>
-<pre><code>## [1] 0.75</code></pre>
-<p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb216-1" data-line-number="1"><span class="kw">mean</span>(Cover.bootsd.ci)</a></code></pre></div>
+<pre><code>## [1] 0.808</code></pre>
+<p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 </div>
 <div id="the-jackknife" class="section level2">
@@ -826,8 +843,11 @@ confidence interval for <span class="math inline">\(\eta\)</span>:</p></li>
 <li><p>The jackknife is also a nonparametric method for estimating standard errors.</p></li>
 <li><p>Like the bootstrap, the jackknife also uses the idea of looking at
 multiple subsets of the data.</p></li>
+<li><p>Also like the bootstrap, the jackknife is completely automatic in the sense
+that we only need to be able to compute our statistic of interest, and
+we do not need to do any formal calculations to find the standard error.</p></li>
 <li><p>While the jackknife was actually developed before the bootstrap, it is
-probably used much less than the bootstrap is in applications - at least
+used much less than the bootstrap is in applications - at least
 in the context of finding confidence intervals.</p></li>
 </ul>
 <hr />
@@ -844,13 +864,18 @@ T_{n, (-i)} = h(X_{1}, \ldots, X_{i-1}, X_{i+1}, \ldots, X_{n})  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>The jackknife estimate of the standard error of <span class="math inline">\(T_{n}\)</span> is
 <span class="math display">\[\begin{equation}
-\hat{se}_{jack} = \Big[ \frac{1}{n(n-1)} \sum_{i=1}^{n} ( T_{n, (-i)} - \bar{T}_{n, jack} )^{2}  \Big]^{1/2}, \nonumber 
+\hat{se}_{jack} = \Big[ \frac{n-1}{n} \sum_{i=1}^{n} ( T_{n, (-i)} - \bar{T}_{n, jack} )^{2}  \Big]^{1/2}, \nonumber 
 \end{equation}\]</span>
 where <span class="math inline">\(\bar{T}_{n,jack} = \tfrac{1}{n} \sum_{i=1}^{n} T_{n, (-i)}\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
-<li></li>
+<li><p>An advantage of the jackknife is that, like the bootstrap, it does not
+make any particular parametric assumptions about the distribution of the data.</p></li>
+<li><p>However, the jackknife is more dependent on a smoothness assumption (that is smoothness
+across slightly perturbed datasets) than the bootstrap. An example of this is the
+sample median where, if we delete one observation, the sample median has
+a different definition due to the sample size being even vs. odd.</p></li>
 </ul>
 
 </div>
@@ -865,6 +890,9 @@ where <span class="math inline">\(\bar{T}_{n,jack} = \tfrac{1}{n} \sum_{i=1}^{n}
 </div>
 <div id="ref-davison1997">
 <p>Davison, Anthony Christopher, and David Victor Hinkley. 1997. <em>Bootstrap Methods and Their Application</em>. Vol. 1. Cambridge university press.</p>
+</div>
+<div id="ref-tsybakov2008">
+<p>Tsybakov, Alexandre B. 2008. <em>Introduction to Nonparametric Estimation</em>. Springer Science &amp; Business Media.</p>
 </div>
 </div>
             </section>
