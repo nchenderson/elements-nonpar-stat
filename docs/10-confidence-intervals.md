@@ -134,7 +134,7 @@ round(c(alpha.hat - 1.96*sd(alpha.boot), alpha.hat + 1.96*sd(alpha.boot)), 3)
 ```
 
 ```
-## [1] 0.093 0.537
+## [1] 0.072 0.558
 ```
 
 ```r
@@ -142,7 +142,7 @@ round(c(sigsq.hat - 1.96*sd(sigsq.boot), sigsq.hat + 1.96*sd(sigsq.boot)), 3)
 ```
 
 ```
-## [1] 0.944 1.991
+## [1] 0.902 2.033
 ```
 
 * We can compare our confidence interval for $\alpha$ with the confidence interval
@@ -316,7 +316,7 @@ c(beta0.hat - stu.quants0[2]*se.est0, beta0.hat - stu.quants0[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.08        3.52
+##        2.21        3.59
 ```
 
 ```r
@@ -326,7 +326,7 @@ c(beta1.hat - stu.quants1[2]*se.est1, beta1.hat - stu.quants1[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.0955 -0.0593
+## -0.0972 -0.0608
 ```
 
 * Compare these studentized bootstrap confidence intervals with the confidence 
@@ -378,6 +378,10 @@ and $\beta_{1} = \rho_{YX}\frac{\sigma_{y}}{\sigma_{x}}$.
 
 * So, even if the linear model is not exactly true, our estimate and 
 confidence interval still has a clear interpretation.
+
+* If the linear model assumption is true, the true standard error of $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$
+will be slightly different than the formulas shown in \@ref(eq:stderr-regression-formulas). Nevertheless, 
+\@ref(eq:stderr-regression-formulas) can be thought of as consistent estimates of the true standard error.
 
 ---
 
@@ -436,7 +440,7 @@ c(beta0.hat - stu.quants0.np[2]*se.est0, beta0.hat - stu.quants0.np[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.10        3.62
+##        2.09        3.63
 ```
 
 ```r
@@ -446,7 +450,7 @@ c(beta1.hat - stu.quants1.np[2]*se.est1, beta1.hat - stu.quants1.np[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.0997 -0.0575
+## -0.0999 -0.0583
 ```
   
 ---  
@@ -508,7 +512,7 @@ provided that $h_{n} \longrightarrow 0$ and $nh_{n} \longrightarrow \infty$. Her
 and a $95\%$ confidence interval for $E\{ \hat{f}_{h_{n}}(x) \}$ is
 \begin{equation}
 \Bigg[ \hat{f}_{h_{n}}(x) - 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x) }{nh_{n}}},
-\hat{f}_{h_{n}}(x) + 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x)}{nh_{n}}} \Bigg]
+\hat{f}_{h_{n}}(x) + 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x)}{nh_{n}}} \Bigg] \nonumber
 \end{equation}
 
 * Notice that this is a confidence interval for $E\{ \hat{f}_{h_{n}}(x) \}$ rather than $f(x)$.
@@ -520,6 +524,9 @@ E\{ \hat{f}_{h_{n}}(x) \} = \frac{1}{h_{n}}\int_{-\infty}^{\infty} K\Big( \frac{
 
 * Notice also that this is a pointwise confidence interval. It is not a confidence band.
 
+* Methods for computing "bias-corrected" confidence intervals for $f(x)$ are 
+discussed, for example, in @chen2017tutorial.
+
 ---
 
 * To get a bootstrap estimate of the standard deviation of $\hat{f}_{h_{n}}(x)$, we can use the usual steps. 
@@ -527,7 +534,8 @@ E\{ \hat{f}_{h_{n}}(x) \} = \frac{1}{h_{n}}\int_{-\infty}^{\infty} K\Big( \frac{
 * For $r=1, \ldots, R$:
     + Draw a sample of size $n$: $(X_{1}^{*}, \ldots, X_{n}^{*})$ by sampling with replacement from $\mathbf{X}$.
     + Compute $T_{n,r}^{*} = \tfrac{1}{nh_{n}}\sum_{i=1}^{n} K(\tfrac{x - X_{i}^{*}}{ h_{n} } )$. 
-and then compute the estimated standard error:
+
+Then, compute the estimated standard error:
 \begin{equation}
 \hat{se}_{boot} = \Big[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} )^{2} \Big]^{1/2}
 \end{equation}
@@ -632,7 +640,7 @@ mean(Cover.bootsd.ci)
 ```
 
 ```
-## [1] 0.808
+## [1] 0.82
 ```
 
 <img src="10-confidence-intervals_files/figure-html/unnamed-chunk-24-1.png" width="672" />

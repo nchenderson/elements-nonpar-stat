@@ -423,9 +423,9 @@ more details).</p></li>
 <li>Normal bootstrap standard error confidence intervals for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma^{2}\)</span> are</li>
 </ul>
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb193-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(alpha.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot), alpha.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.093 0.537</code></pre>
+<pre><code>## [1] 0.072 0.558</code></pre>
 <div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb195-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(sigsq.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot), sigsq.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.944 1.991</code></pre>
+<pre><code>## [1] 0.902 2.033</code></pre>
 <ul>
 <li>We can compare our confidence interval for <span class="math inline">\(\alpha\)</span> with the confidence interval
 obtained from using a large-sample approximation:</li>
@@ -568,11 +568,11 @@ we can use studentized bootstrap confidence intervals without using the double b
 <div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb202-1" data-line-number="1"><span class="co">## Confidence interval for beta0</span></a>
 <a class="sourceLine" id="cb202-2" data-line-number="2"><span class="kw">c</span>(beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0[<span class="dv">2</span>]<span class="op">*</span>se.est0, beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0[<span class="dv">1</span>]<span class="op">*</span>se.est0)</a></code></pre></div>
 <pre><code>## (Intercept) (Intercept) 
-##        2.08        3.52</code></pre>
+##        2.21        3.59</code></pre>
 <div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb204-1" data-line-number="1"><span class="co">## Confidence interval for beta1</span></a>
 <a class="sourceLine" id="cb204-2" data-line-number="2"><span class="kw">c</span>(beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1[<span class="dv">2</span>]<span class="op">*</span>se.est1, beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1[<span class="dv">1</span>]<span class="op">*</span>se.est1)</a></code></pre></div>
 <pre><code>##     age     age 
-## -0.0955 -0.0593</code></pre>
+## -0.0972 -0.0608</code></pre>
 <ul>
 <li>Compare these studentized bootstrap confidence intervals with the confidence
 intervals computed under the normality assumption for the residuals:</li>
@@ -613,6 +613,9 @@ where <span class="math inline">\(\beta_{0} = \mu_{y} - \rho_{YX}\frac{\sigma_{y
 and <span class="math inline">\(\beta_{1} = \rho_{YX}\frac{\sigma_{y}}{\sigma_{x}}\)</span>.</p></li>
 <li><p>So, even if the linear model is not exactly true, our estimate and
 confidence interval still has a clear interpretation.</p></li>
+<li><p>If the linear model assumption is true, the true standard error of <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span>
+will be slightly different than the formulas shown in <a href="ci.html#eq:stderr-regression-formulas">(10.1)</a>. Nevertheless,
+<a href="ci.html#eq:stderr-regression-formulas">(10.1)</a> can be thought of as consistent estimates of the true standard error.</p></li>
 </ul>
 <hr />
 <ul>
@@ -662,11 +665,11 @@ and <span class="math inline">\(\hat{\beta}_{1}\)</span>, we just use the follow
 <div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb210-1" data-line-number="1"><span class="co">## Confidence interval for beta0</span></a>
 <a class="sourceLine" id="cb210-2" data-line-number="2"><span class="kw">c</span>(beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0.np[<span class="dv">2</span>]<span class="op">*</span>se.est0, beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0.np[<span class="dv">1</span>]<span class="op">*</span>se.est0)</a></code></pre></div>
 <pre><code>## (Intercept) (Intercept) 
-##        2.10        3.62</code></pre>
+##        2.09        3.63</code></pre>
 <div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb212-1" data-line-number="1"><span class="co">## Confidence interval for beta1</span></a>
 <a class="sourceLine" id="cb212-2" data-line-number="2"><span class="kw">c</span>(beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1.np[<span class="dv">2</span>]<span class="op">*</span>se.est1, beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1.np[<span class="dv">1</span>]<span class="op">*</span>se.est1)</a></code></pre></div>
 <pre><code>##     age     age 
-## -0.0997 -0.0575</code></pre>
+## -0.0999 -0.0583</code></pre>
 <hr />
 <ul>
 <li><strong>Exercise 10.2</strong> Another way of using the bootstrap in a regression context
@@ -722,7 +725,7 @@ provided that <span class="math inline">\(h_{n} \longrightarrow 0\)</span> and <
 and a <span class="math inline">\(95\%\)</span> confidence interval for <span class="math inline">\(E\{ \hat{f}_{h_{n}}(x) \}\)</span> is
 <span class="math display">\[\begin{equation}
 \Bigg[ \hat{f}_{h_{n}}(x) - 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x) }{nh_{n}}},
-\hat{f}_{h_{n}}(x) + 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x)}{nh_{n}}} \Bigg]
+\hat{f}_{h_{n}}(x) + 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x)}{nh_{n}}} \Bigg] \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Notice that this is a confidence interval for <span class="math inline">\(E\{ \hat{f}_{h_{n}}(x) \}\)</span> rather than <span class="math inline">\(f(x)\)</span>.</p></li>
 <li><p>So, you can roughly think of this as a confidence interval for a smoothed version of <span class="math inline">\(f(x)\)</span> at <span class="math inline">\(x\)</span>:
@@ -730,6 +733,8 @@ and a <span class="math inline">\(95\%\)</span> confidence interval for <span cl
 E\{ \hat{f}_{h_{n}}(x) \} = \frac{1}{h_{n}}\int_{-\infty}^{\infty} K\Big( \frac{x - t}{h_{n}} \Big) dt \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Notice also that this is a pointwise confidence interval. It is not a confidence band.</p></li>
+<li><p>Methods for computing “bias-corrected” confidence intervals for <span class="math inline">\(f(x)\)</span> are
+discussed, for example, in <span class="citation">Chen (<a href="#ref-chen2017tutorial">2017</a>)</span>.</p></li>
 </ul>
 <hr />
 <ul>
@@ -737,13 +742,15 @@ E\{ \hat{f}_{h_{n}}(x) \} = \frac{1}{h_{n}}\int_{-\infty}^{\infty} K\Big( \frac{
 <li>For <span class="math inline">\(r=1, \ldots, R\)</span>:
 <ul>
 <li>Draw a sample of size <span class="math inline">\(n\)</span>: <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> by sampling with replacement from <span class="math inline">\(\mathbf{X}\)</span>.</li>
-<li>Compute <span class="math inline">\(T_{n,r}^{*} = \tfrac{1}{nh_{n}}\sum_{i=1}^{n} K(\tfrac{x - X_{i}^{*}}{ h_{n} } )\)</span>.
-and then compute the estimated standard error:
+<li>Compute <span class="math inline">\(T_{n,r}^{*} = \tfrac{1}{nh_{n}}\sum_{i=1}^{n} K(\tfrac{x - X_{i}^{*}}{ h_{n} } )\)</span>.</li>
+</ul></li>
+</ul>
+<p>Then, compute the estimated standard error:
 <span class="math display">\[\begin{equation}
 \hat{se}_{boot} = \Big[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} )^{2} \Big]^{1/2}
-\end{equation}\]</span></li>
-</ul></li>
-<li><p><code>R</code> code to compute these standard error estimates for the <code>sysBP</code> variable from the <code>framingham</code> dataset is given below</p></li>
+\end{equation}\]</span></p>
+<ul>
+<li><code>R</code> code to compute these standard error estimates for the <code>sysBP</code> variable from the <code>framingham</code> dataset is given below</li>
 </ul>
 <div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb214-1" data-line-number="1">framingham &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;~/Documents/STAT685Notes/Data/framingham.csv&quot;</span>)</a>
 <a class="sourceLine" id="cb214-2" data-line-number="2">R &lt;-<span class="st"> </span><span class="dv">500</span></a>
@@ -833,7 +840,7 @@ confidence interval for <span class="math inline">\(\eta\)</span>:</p></li>
 <li>The estimated coverage for this bootstrap confidence interval is</li>
 </ul>
 <div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb216-1" data-line-number="1"><span class="kw">mean</span>(Cover.bootsd.ci)</a></code></pre></div>
-<pre><code>## [1] 0.808</code></pre>
+<pre><code>## [1] 0.82</code></pre>
 <p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 </div>
@@ -887,6 +894,9 @@ a different definition due to the sample size being even vs. odd.</p></li>
 <div id="refs" class="references">
 <div id="ref-buhlmann2002">
 <p>Bühlmann, Peter. 2002. “Bootstraps for Time Series.” <em>Statistical Science</em>, 52–72.</p>
+</div>
+<div id="ref-chen2017tutorial">
+<p>Chen, Yen-Chi. 2017. “A Tutorial on Kernel Density Estimation and Recent Advances.” <em>Biostatistics &amp; Epidemiology</em> 1 (1). Taylor &amp; Francis: 161–87.</p>
 </div>
 <div id="ref-davison1997">
 <p>Davison, Anthony Christopher, and David Victor Hinkley. 1997. <em>Bootstrap Methods and Their Application</em>. Vol. 1. Cambridge university press.</p>
