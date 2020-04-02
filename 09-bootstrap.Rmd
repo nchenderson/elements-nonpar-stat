@@ -502,7 +502,7 @@ confidence interval which uses \@ref(eq:quantile-ratio-approx) with two bootstra
 set.seed(1354)
 ```
 
-```{r}
+```{r, cache=TRUE}
 n <- 100
 m <- 100
 R <- 500

@@ -134,7 +134,7 @@ round(c(alpha.hat - 1.96*sd(alpha.boot), alpha.hat + 1.96*sd(alpha.boot)), 3)
 ```
 
 ```
-## [1] 0.067 0.563
+## [1] 0.063 0.567
 ```
 
 ```r
@@ -142,7 +142,7 @@ round(c(sigsq.hat - 1.96*sd(sigsq.boot), sigsq.hat + 1.96*sd(sigsq.boot)), 3)
 ```
 
 ```
-## [1] 0.939 1.997
+## [1] 0.953 1.983
 ```
 
 * We can compare our confidence interval for $\alpha$ with the confidence interval
@@ -316,7 +316,7 @@ c(beta0.hat - stu.quants0[2]*se.est0, beta0.hat - stu.quants0[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.21        3.55
+##        2.15        3.59
 ```
 
 ```r
@@ -326,7 +326,7 @@ c(beta1.hat - stu.quants1[2]*se.est1, beta1.hat - stu.quants1[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.0973 -0.0623
+## -0.0962 -0.0614
 ```
 
 * Compare these studentized bootstrap confidence intervals with the confidence 
@@ -436,7 +436,7 @@ c(beta0.hat - stu.quants0.np[2]*se.est0, beta0.hat - stu.quants0.np[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.09        3.63
+##        2.12        3.63
 ```
 
 ```r
@@ -446,7 +446,7 @@ c(beta1.hat - stu.quants1.np[2]*se.est1, beta1.hat - stu.quants1.np[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.0983 -0.0588
+## -0.0967 -0.0589
 ```
   
 ---  
@@ -484,6 +484,54 @@ $Y_{i}^{*} \sim \textrm{Normal}(\hat{\beta}_{0} + \hat{\beta}_{1}x_{i1} + \ldots
 * For the nonparametric bootstrap, you would subsample pairs $(Y_{1}^{*}, x_{1}^{*}), \ldots, (Y_{n}^{*}, x_{n}^{*})$ as described before,
 and compute your regression coefficients $\hat{\beta}_{0,r}^{*}, \hat{\beta}_{1,r}^{*}, \ldots, \hat{\beta}_{p,r}^{*}$ from this
 bootstrap sample.
+
+
+## Pointwise Confidence Intervals for a Density Function
+
+* Recall that a kernel density estimate of an unknown probability density $f(x)$ has
+the form
+\begin{equation}
+\hat{f}_{h_{n}}(x) = \frac{1}{n h_{n}}\sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) \nonumber
+\end{equation}
+
+* We cannot naively apply the Central Limit Theorem, because $h_{n}$ is changing as $n \longrightarrow \infty$.
+
+* Nevertheless, you can show (see, e.g., ) that 
+\begin{equation}
+\sqrt{nh_{n}}\Big( \hat{f}_{h_{n}}(x) - E\{ \hat{f}_{h_{n}}(x) \} \Big) \longrightarrow \textrm{Normal}\big( 0, \kappa_{2}(K) f(x) \big) \nonumber
+\end{equation}
+provided that $h_{n} \longrightarrow 0$ and $nh_{n} \longrightarrow \infty$. Here, $\kappa_{2}(K) = \int_{-\infty}^{\infty} K^{2}(u) du$.
+
+---
+
+* This suggests that a standard error estimate for $\hat{f}_{h_{n}}(x)$ is $\sqrt{\mu_{K}\hat{f}_{h_{n}}(x)/nh_{n}}$
+and a $95\%$ confidence interval for $E\{ \hat{f}_{h_{n}}(x) \}$ is
+\begin{equation}
+\Big[ \hat{f}_{h_{n}}(x) - 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x) }{nh_{n}}},
+\hat{f}_{h_{n}}(x) + 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x)}{nh_{n}}} \Big]
+\end{equation}
+
+* Notice that this is a confidence interval for $E\{ \hat{f}_{h_{n}}(x) \}$ rather than $f(x)$.
+
+* So, you can roughly think of this as a confidence interval for a smoothed version of $f(x)$ at $x$:
+\begin{equation}
+E\{ \hat{f}_{h_{n}}(x) \} = \frac{1}{h_{n}}\int_{-\infty}^{\infty} K\Big( \frac{x - t}{h_{n}} \Big) dt \nonumber
+\end{equation}
+
+* Notice also that this is a pointwise confidence interval. It is not a confidence band.
+
+---
+
+* To get a bootstrap estimate of the standard deviation of $\hat{f}_{h_{n}}(x)$, we can use the usual steps. 
+
+* For $r=1, \ldots, R$:
+    + Draw a sample of size $n$: $(X_{1}^{*}, \ldots, X_{n}^{*})$ by sampling with replacement from $\mathbf{X}$.
+    + Compute $T_{n,r}^{*} = \tfrac{1}{nh_{n}}\sum_{i=1}^{n} K(\tfrac{x - X_{i}^{*}}{ h_{n} } )$. 
+and then compute the estimated standard error:
+\begin{equation}
+\hat{se}_{boot} = \Big[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} )^{2} \Big]^{1/2}
+\end{equation}
+
 
 
 ##  When can the Bootstrap Fail?
@@ -565,7 +613,7 @@ mean(Cover.bootsd.ci)
 ```
 
 ```
-## [1] 0.83
+## [1] 0.75
 ```
 
 <img src="10-confidence-intervals_files/figure-html/unnamed-chunk-22-1.png" width="672" />

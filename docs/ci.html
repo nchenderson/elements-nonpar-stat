@@ -270,10 +270,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.2.1" data-path="ci.html"><a href="ci.html#parametric-bootstrap-for-regression"><i class="fa fa-check"></i><b>10.2.1</b> Parametric Bootstrap for Regression</a></li>
 <li class="chapter" data-level="10.2.2" data-path="ci.html"><a href="ci.html#nonparametric-bootstrap-for-regression"><i class="fa fa-check"></i><b>10.2.2</b> Nonparametric Bootstrap for Regression</a></li>
 </ul></li>
-<li class="chapter" data-level="10.3" data-path="ci.html"><a href="ci.html#when-can-the-bootstrap-fail"><i class="fa fa-check"></i><b>10.3</b> When can the Bootstrap Fail?</a><ul>
-<li class="chapter" data-level="10.3.1" data-path="ci.html"><a href="ci.html#example-the-shifted-exponential-distribution"><i class="fa fa-check"></i><b>10.3.1</b> Example: The Shifted Exponential Distribution</a></li>
+<li class="chapter" data-level="10.3" data-path="ci.html"><a href="ci.html#pointwise-confidence-intervals-for-a-density-function"><i class="fa fa-check"></i><b>10.3</b> Pointwise Confidence Intervals for a Density Function</a></li>
+<li class="chapter" data-level="10.4" data-path="ci.html"><a href="ci.html#when-can-the-bootstrap-fail"><i class="fa fa-check"></i><b>10.4</b> When can the Bootstrap Fail?</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="ci.html"><a href="ci.html#example-the-shifted-exponential-distribution"><i class="fa fa-check"></i><b>10.4.1</b> Example: The Shifted Exponential Distribution</a></li>
 </ul></li>
-<li class="chapter" data-level="10.4" data-path="ci.html"><a href="ci.html#the-jackknife"><i class="fa fa-check"></i><b>10.4</b> The Jackknife</a></li>
+<li class="chapter" data-level="10.5" data-path="ci.html"><a href="ci.html#the-jackknife"><i class="fa fa-check"></i><b>10.5</b> The Jackknife</a></li>
 </ul></li>
 <li class="part"><span><b>IV Nonparametric Regression: Part I</b></span></li>
 <li class="chapter" data-level="11" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression and Local Regression</a><ul>
@@ -422,9 +423,9 @@ more details).</p></li>
 <li>Normal bootstrap standard error confidence intervals for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma^{2}\)</span> are</li>
 </ul>
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb193-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(alpha.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot), alpha.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.067 0.563</code></pre>
+<pre><code>## [1] 0.063 0.567</code></pre>
 <div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb195-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(sigsq.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot), sigsq.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.939 1.997</code></pre>
+<pre><code>## [1] 0.953 1.983</code></pre>
 <ul>
 <li>We can compare our confidence interval for <span class="math inline">\(\alpha\)</span> with the confidence interval
 obtained from using a large-sample approximation:</li>
@@ -567,11 +568,11 @@ we can use studentized bootstrap confidence intervals without using the double b
 <div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb202-1" data-line-number="1"><span class="co">## Confidence interval for beta0</span></a>
 <a class="sourceLine" id="cb202-2" data-line-number="2"><span class="kw">c</span>(beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0[<span class="dv">2</span>]<span class="op">*</span>se.est0, beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0[<span class="dv">1</span>]<span class="op">*</span>se.est0)</a></code></pre></div>
 <pre><code>## (Intercept) (Intercept) 
-##        2.21        3.55</code></pre>
+##        2.15        3.59</code></pre>
 <div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb204-1" data-line-number="1"><span class="co">## Confidence interval for beta1</span></a>
 <a class="sourceLine" id="cb204-2" data-line-number="2"><span class="kw">c</span>(beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1[<span class="dv">2</span>]<span class="op">*</span>se.est1, beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1[<span class="dv">1</span>]<span class="op">*</span>se.est1)</a></code></pre></div>
 <pre><code>##     age     age 
-## -0.0973 -0.0623</code></pre>
+## -0.0962 -0.0614</code></pre>
 <ul>
 <li>Compare these studentized bootstrap confidence intervals with the confidence
 intervals computed under the normality assumption for the residuals:</li>
@@ -661,11 +662,11 @@ and <span class="math inline">\(\hat{\beta}_{1}\)</span>, we just use the follow
 <div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb210-1" data-line-number="1"><span class="co">## Confidence interval for beta0</span></a>
 <a class="sourceLine" id="cb210-2" data-line-number="2"><span class="kw">c</span>(beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0.np[<span class="dv">2</span>]<span class="op">*</span>se.est0, beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0.np[<span class="dv">1</span>]<span class="op">*</span>se.est0)</a></code></pre></div>
 <pre><code>## (Intercept) (Intercept) 
-##        2.09        3.63</code></pre>
+##        2.12        3.63</code></pre>
 <div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb212-1" data-line-number="1"><span class="co">## Confidence interval for beta1</span></a>
 <a class="sourceLine" id="cb212-2" data-line-number="2"><span class="kw">c</span>(beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1.np[<span class="dv">2</span>]<span class="op">*</span>se.est1, beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1.np[<span class="dv">1</span>]<span class="op">*</span>se.est1)</a></code></pre></div>
 <pre><code>##     age     age 
-## -0.0983 -0.0588</code></pre>
+## -0.0967 -0.0589</code></pre>
 <hr />
 <ul>
 <li><strong>Exercise 10.2</strong> Another way of using the bootstrap in a regression context
@@ -700,8 +701,52 @@ bootstrap sample.</p></li>
 </ul>
 </div>
 </div>
+<div id="pointwise-confidence-intervals-for-a-density-function" class="section level2">
+<h2><span class="header-section-number">10.3</span> Pointwise Confidence Intervals for a Density Function</h2>
+<ul>
+<li><p>Recall that a kernel density estimate of an unknown probability density <span class="math inline">\(f(x)\)</span> has
+the form
+<span class="math display">\[\begin{equation}
+\hat{f}_{h_{n}}(x) = \frac{1}{n h_{n}}\sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>We cannot naively apply the Central Limit Theorem, because <span class="math inline">\(h_{n}\)</span> is changing as <span class="math inline">\(n \longrightarrow \infty\)</span>.</p></li>
+<li><p>Nevertheless, you can show (see, e.g., ) that
+<span class="math display">\[\begin{equation}
+\sqrt{nh_{n}}\Big( \hat{f}_{h_{n}}(x) - E\{ \hat{f}_{h_{n}}(x) \} \Big) \longrightarrow \textrm{Normal}\big( 0, \kappa_{2}(K) f(x) \big) \nonumber
+\end{equation}\]</span>
+provided that <span class="math inline">\(h_{n} \longrightarrow 0\)</span> and <span class="math inline">\(nh_{n} \longrightarrow \infty\)</span>. Here, <span class="math inline">\(\kappa_{2}(K) = \int_{-\infty}^{\infty} K^{2}(u) du\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>This suggests that a standard error estimate for <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is <span class="math inline">\(\sqrt{\mu_{K}\hat{f}_{h_{n}}(x)/nh_{n}}\)</span>
+and a <span class="math inline">\(95\%\)</span> confidence interval for <span class="math inline">\(E\{ \hat{f}_{h_{n}}(x) \}\)</span> is
+<span class="math display">\[\begin{equation}
+\Big[ \hat{f}_{h_{n}}(x) - 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x) }{nh_{n}}},
+\hat{f}_{h_{n}}(x) + 1.96 \times \sqrt{\frac{\kappa_{2}(K) \hat{f}_{h_{n}}(x)}{nh_{n}}} \Big]
+\end{equation}\]</span></p></li>
+<li><p>Notice that this is a confidence interval for <span class="math inline">\(E\{ \hat{f}_{h_{n}}(x) \}\)</span> rather than <span class="math inline">\(f(x)\)</span>.</p></li>
+<li><p>So, you can roughly think of this as a confidence interval for a smoothed version of <span class="math inline">\(f(x)\)</span> at <span class="math inline">\(x\)</span>:
+<span class="math display">\[\begin{equation}
+E\{ \hat{f}_{h_{n}}(x) \} = \frac{1}{h_{n}}\int_{-\infty}^{\infty} K\Big( \frac{x - t}{h_{n}} \Big) dt \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Notice also that this is a pointwise confidence interval. It is not a confidence band.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>To get a bootstrap estimate of the standard deviation of <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span>, we can use the usual steps.</p></li>
+<li>For <span class="math inline">\(r=1, \ldots, R\)</span>:
+<ul>
+<li>Draw a sample of size <span class="math inline">\(n\)</span>: <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> by sampling with replacement from <span class="math inline">\(\mathbf{X}\)</span>.</li>
+<li>Compute <span class="math inline">\(T_{n,r}^{*} = \tfrac{1}{nh_{n}}\sum_{i=1}^{n} K(\tfrac{x - X_{i}^{*}}{ h_{n} } )\)</span>.
+and then compute the estimated standard error:
+<span class="math display">\[\begin{equation}
+\hat{se}_{boot} = \Big[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} )^{2} \Big]^{1/2}
+\end{equation}\]</span></li>
+</ul></li>
+</ul>
+</div>
 <div id="when-can-the-bootstrap-fail" class="section level2">
-<h2><span class="header-section-number">10.3</span> When can the Bootstrap Fail?</h2>
+<h2><span class="header-section-number">10.4</span> When can the Bootstrap Fail?</h2>
 <ul>
 <li><p>While the bootstrap is very automatic and could be used to construct confidence intervals
 in nearly any situation, these bootstrap confidence intervals may fail to give
@@ -715,7 +760,7 @@ the correct coverage in some situations.</p></li>
 </ul></li>
 </ul>
 <div id="example-the-shifted-exponential-distribution" class="section level3">
-<h3><span class="header-section-number">10.3.1</span> Example: The Shifted Exponential Distribution</h3>
+<h3><span class="header-section-number">10.4.1</span> Example: The Shifted Exponential Distribution</h3>
 <ul>
 <li><p>Let us consider observations <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> that follow the shifted exponential distribution whose
 density function is
@@ -771,12 +816,12 @@ confidence interval for <span class="math inline">\(\eta\)</span>:</p></li>
 <li>The estimated coverage for this bootstrap confidence interval is</li>
 </ul>
 <div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb215-1" data-line-number="1"><span class="kw">mean</span>(Cover.bootsd.ci)</a></code></pre></div>
-<pre><code>## [1] 0.83</code></pre>
+<pre><code>## [1] 0.75</code></pre>
 <p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 </div>
 <div id="the-jackknife" class="section level2">
-<h2><span class="header-section-number">10.4</span> The Jackknife</h2>
+<h2><span class="header-section-number">10.5</span> The Jackknife</h2>
 <ul>
 <li><p>The jackknife is also a nonparametric method for estimating standard errors.</p></li>
 <li><p>Like the bootstrap, the jackknife also uses the idea of looking at
