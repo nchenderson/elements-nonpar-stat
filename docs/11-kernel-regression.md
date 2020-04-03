@@ -114,6 +114,8 @@ should be a reasonable estimate of the ratio
 <p class="caption">(\#fig:unnamed-chunk-1)Framingham Data. Regressogram estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years.</p>
 </div>
 
+<img src="11-kernel-regression_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+
 ---
 
 * **Exercise 11.1** Let $\hat{\mathbf{Y}} = (\hat{Y}_{1}, \ldots, \hat{Y}_{n})$ denote
@@ -138,6 +140,71 @@ What is the value of $\textrm{tr}(\mathbf{A})$?
 
 * The local average estimator can be thought of as a regression analogue of the
 "box-type" density estimator that we described in Chapter 8.
+
+---
+
+* For each point $x$, we are going to use a regression function estimate which
+has a bin "centered" at $x$.
+
+* Specifically, for each $x$, we will form a bin of width $2h_{n}$ around
+$x$ and compute the mean of the $Y_{i}$ among those observations where the $x_{i}$ fall
+into this bin. 
+
+* In other words, we are computing an average of the $Y_{i}$ in a small region
+around $x$. 
+
+* The local average estimator $\hat{m}_{h_{n}}^{loc}(x)$ at $x$ is defined as:
+\begin{eqnarray}
+\hat{m}_{h_{n}}^{loc}(x) &=&
+\frac{ \sum_{i}^{n} Y_{i}I\big( x - h_{n} < x_{i} < x + h_{n} \big) }{ \sum_{i}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big) } \nonumber \\
+&=& \frac{1}{n_{h_{n}}(x)} \sum_{i}^{n} Y_{i}I\big( x - h_{n} < x_{i} < x + h_{n} \big) \nonumber 
+\end{eqnarray}
+where $n_{h_{n}}(x) = \sum_{i}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big)$.
+
+* The local average estimator does not need to have a 
+constant value within each of a few pre-specified bins.
+
+---
+
+* We can also express the local average estimator in the following way:
+\begin{equation}
+\hat{m}_{h_{n}}^{loc}(x)
+= \frac{\sum_{i=1}^{n} Y_{i} w\Big( \frac{x - X_{i}}{h_{n}} \Big)}{\sum_{i=1}^{n} w\Big( \frac{x - X_{i}}{h_{n}} \Big)}, \nonumber
+\end{equation}
+where $w(t)$ is the "box" function defined as
+\begin{equation}
+w(t) = 
+\begin{cases}
+\frac{1}{2} & \textrm{ if } |t| < 1 \nonumber \\
+0 & \textrm{ otherwise}  \nonumber
+\end{cases}
+\end{equation}
+
+* While a local average estimate will not be a "step function" like the regressogram, the local average
+estimate will typically be non-smooth and have a jagged appearance.
+
+---
+
+* `R` code for computing a local average estimate $\hat{m}_{2}^{loc}(x)$ at the 
+points $x = 31, 32, 33, ...., 71$ is given below
+
+```r
+xseq <- seq(31, 71, by=1)
+hn <- 2
+nx <- length(xseq)
+m.hat.loc <- numeric(hn)
+for(k in 1:nx) {
+    in.bin <- framingham$age > xseq[k] - hn & framingham$age < xseq[k] + hn
+    m.hat.loc[k] <- mean(framingham$diaBP[in.bin])
+}
+
+plot(framingham$age, framingham$diaBP, las=1, ylab="Diastolic Blood Pressure", 
+     xlab="Age", main="Local Average Estimate with hn=2", type="n")
+points(framingham$age, framingham$diaBP, pch=16, cex=0.7)
+lines(xseq, m.hat.loc, lwd=3, col="red")
+```
+
+<img src="11-kernel-regression_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 
 ## Additional Reading

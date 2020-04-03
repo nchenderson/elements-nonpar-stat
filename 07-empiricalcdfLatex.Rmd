@@ -1,4 +1,3 @@
-# (PART) Nonparametric Estimation {-} 
 
 # The Empirical Distribution Function {#edf}
 

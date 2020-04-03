@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-02" />
+<meta name="date" content="2020-04-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -199,6 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.4" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-correlation"><i class="fa fa-check"></i><b>5.4</b> A Permutation Test for Correlation</a></li>
 <li class="chapter" data-level="5.5" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-variable-importance-in-regression-and-machine-learning"><i class="fa fa-check"></i><b>5.5</b> A Permutation Test for Variable Importance in Regression and Machine Learning</a></li>
 </ul></li>
+<li class="part"><span><b>II Nonparametric Estimation</b></span></li>
 <li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
 <li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-3"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
 <li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a><ul>
@@ -217,7 +218,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.5.3" data-path="ustat.html"><a href="ustat.html#distance-covariance-and-correlation"><i class="fa fa-check"></i><b>6.5.3</b> Distance Covariance and Correlation</a></li>
 </ul></li>
 </ul></li>
-<li class="part"><span><b>II Nonparametric Estimation</b></span></li>
 <li class="chapter" data-level="7" data-path="edf.html"><a href="edf.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
 <li class="chapter" data-level="7.1" data-path="edf.html"><a href="edf.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1</b> Definition and Basic Properties</a></li>
 <li class="chapter" data-level="7.2" data-path="edf.html"><a href="edf.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.2</b> Confidence intervals for F(t)</a></li>
@@ -425,6 +425,7 @@ should be a reasonable estimate of the ratio
 Figure 8.1: Framingham Data. Regressogram estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years.
 </p>
 </div>
+<p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <hr />
 <ul>
 <li><strong>Exercise 11.1</strong> Let <span class="math inline">\(\hat{\mathbf{Y}} = (\hat{Y}_{1}, \ldots, \hat{Y}_{n})\)</span> denote
@@ -449,6 +450,62 @@ What is the value of <span class="math inline">\(\textrm{tr}(\mathbf{A})\)</span
 <li><p>The local average estimator can be thought of as a regression analogue of the
 “box-type” density estimator that we described in Chapter 8.</p></li>
 </ul>
+<hr />
+<ul>
+<li><p>For each point <span class="math inline">\(x\)</span>, we are going to use a regression function estimate which
+has a bin “centered” at <span class="math inline">\(x\)</span>.</p></li>
+<li><p>Specifically, for each <span class="math inline">\(x\)</span>, we will form a bin of width <span class="math inline">\(2h_{n}\)</span> around
+<span class="math inline">\(x\)</span> and compute the mean of the <span class="math inline">\(Y_{i}\)</span> among those observations where the <span class="math inline">\(x_{i}\)</span> fall
+into this bin.</p></li>
+<li><p>In other words, we are computing an average of the <span class="math inline">\(Y_{i}\)</span> in a small region
+around <span class="math inline">\(x\)</span>.</p></li>
+<li><p>The local average estimator <span class="math inline">\(\hat{m}_{h_{n}}^{loc}(x)\)</span> at <span class="math inline">\(x\)</span> is defined as:
+<span class="math display">\[\begin{eqnarray}
+\hat{m}_{h_{n}}^{loc}(x) &amp;=&amp;
+\frac{ \sum_{i}^{n} Y_{i}I\big( x - h_{n} &lt; x_{i} &lt; x + h_{n} \big) }{ \sum_{i}^{n} I\big( x - h_{n} &lt; x_{i} &lt; x + h_{n} \big) } \nonumber \\
+&amp;=&amp; \frac{1}{n_{h_{n}}(x)} \sum_{i}^{n} Y_{i}I\big( x - h_{n} &lt; x_{i} &lt; x + h_{n} \big) \nonumber 
+\end{eqnarray}\]</span>
+where <span class="math inline">\(n_{h_{n}}(x) = \sum_{i}^{n} I\big( x - h_{n} &lt; x_{i} &lt; x + h_{n} \big)\)</span>.</p></li>
+<li><p>The local average estimator does not need to have a
+constant value within each of a few pre-specified bins.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>We can also express the local average estimator in the following way:
+<span class="math display">\[\begin{equation}
+\hat{m}_{h_{n}}^{loc}(x)
+= \frac{\sum_{i=1}^{n} Y_{i} w\Big( \frac{x - X_{i}}{h_{n}} \Big)}{\sum_{i=1}^{n} w\Big( \frac{x - X_{i}}{h_{n}} \Big)}, \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(w(t)\)</span> is the “box” function defined as
+<span class="math display">\[\begin{equation}
+w(t) = 
+\begin{cases}
+\frac{1}{2} &amp; \textrm{ if } |t| &lt; 1 \nonumber \\
+0 &amp; \textrm{ otherwise}  \nonumber
+\end{cases}
+\end{equation}\]</span></p></li>
+<li><p>While a local average estimate will not be a “step function” like the regressogram, the local average
+estimate will typically be non-smooth and have a jagged appearance.</p></li>
+</ul>
+<hr />
+<ul>
+<li><code>R</code> code for computing a local average estimate <span class="math inline">\(\hat{m}_{2}^{loc}(x)\)</span> at the
+points <span class="math inline">\(x = 31, 32, 33, ...., 71\)</span> is given below</li>
+</ul>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb218-1" data-line-number="1">xseq &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">31</span>, <span class="dv">71</span>, <span class="dt">by=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb218-2" data-line-number="2">hn &lt;-<span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb218-3" data-line-number="3">nx &lt;-<span class="st"> </span><span class="kw">length</span>(xseq)</a>
+<a class="sourceLine" id="cb218-4" data-line-number="4">m.hat.loc &lt;-<span class="st"> </span><span class="kw">numeric</span>(hn)</a>
+<a class="sourceLine" id="cb218-5" data-line-number="5"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nx) {</a>
+<a class="sourceLine" id="cb218-6" data-line-number="6">    in.bin &lt;-<span class="st"> </span>framingham<span class="op">$</span>age <span class="op">&gt;</span><span class="st"> </span>xseq[k] <span class="op">-</span><span class="st"> </span>hn <span class="op">&amp;</span><span class="st"> </span>framingham<span class="op">$</span>age <span class="op">&lt;</span><span class="st"> </span>xseq[k] <span class="op">+</span><span class="st"> </span>hn</a>
+<a class="sourceLine" id="cb218-7" data-line-number="7">    m.hat.loc[k] &lt;-<span class="st"> </span><span class="kw">mean</span>(framingham<span class="op">$</span>diaBP[in.bin])</a>
+<a class="sourceLine" id="cb218-8" data-line-number="8">}</a>
+<a class="sourceLine" id="cb218-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb218-10" data-line-number="10"><span class="kw">plot</span>(framingham<span class="op">$</span>age, framingham<span class="op">$</span>diaBP, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">ylab=</span><span class="st">&quot;Diastolic Blood Pressure&quot;</span>, </a>
+<a class="sourceLine" id="cb218-11" data-line-number="11">     <span class="dt">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Local Average Estimate with hn=2&quot;</span>, <span class="dt">type=</span><span class="st">&quot;n&quot;</span>)</a>
+<a class="sourceLine" id="cb218-12" data-line-number="12"><span class="kw">points</span>(framingham<span class="op">$</span>age, framingham<span class="op">$</span>diaBP, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">cex=</span><span class="fl">0.7</span>)</a>
+<a class="sourceLine" id="cb218-13" data-line-number="13"><span class="kw">lines</span>(xseq, m.hat.loc, <span class="dt">lwd=</span><span class="dv">3</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
+<p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
 </div>
 <div id="additional-reading-5" class="section level2">
