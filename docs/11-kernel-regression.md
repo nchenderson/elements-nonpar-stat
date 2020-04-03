@@ -192,7 +192,7 @@ points $x = 31, 32, 33, ...., 71$ is given below
 xseq <- seq(31, 71, by=1)
 hn <- 2
 nx <- length(xseq)
-m.hat.loc <- numeric(hn)
+m.hat.loc <- numeric(nx)
 for(k in 1:nx) {
     in.bin <- framingham$age > xseq[k] - hn & framingham$age < xseq[k] + hn
     m.hat.loc[k] <- mean(framingham$diaBP[in.bin])
@@ -205,6 +205,30 @@ lines(xseq, m.hat.loc, lwd=3, col="red")
 ```
 
 <img src="11-kernel-regression_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+
+### k-Nearest Neighbor (k-NN) Regression
+
+* k-nearest neighbor regression is fairly similar to the local average estimator
+of the regression function.
+
+* With k-NN, we still estimate the regression function at a particular point
+by taking a type of local average around this point.
+
+* However, k-NN takes the average over the k "nearest observation" to $x$
+rather than taking an average over all the observations which fall into
+a bin centered at $x$.
+
+---
+
+* The k-NN estimator of the regression function $\hat{m}_{k}^{kNN}(x)$ is defined as
+\begin{equation}
+\hat{m}_{k}^{kNN}(x) = \frac{1}{k}\sum_{i=1}^{n} y_{i} I\big( x \in N_{k}(x) \big) \nonumber
+\end{equation}
+
+* Here, $N_{k}(x)$ is defined as the set of the k $x_{i}'s$ which are
+closest to $x$. That is, $N_{k}(x)$ is the set of the k "nearest neighbors"
+to $x$. 
+
 
 
 ## Additional Reading
