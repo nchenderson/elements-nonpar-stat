@@ -372,7 +372,7 @@ That is, <span class="math inline">\(p=1\)</span> and <span class="math inline">
 <ul>
 <li><p>The regressogram is an estimate of the mean function <span class="math inline">\(m(x)\)</span> which is
 has many similarities in its construction to the histogram.</p></li>
-<li><p>Similar to how we constructed histogram, let us think about an estimate <span class="math inline">\(m(x)\)</span>
+<li><p>Similar to how we constructed the histogram, let us think about an estimate <span class="math inline">\(m(x)\)</span>
 that will be constant within each of a series of bins <span class="math inline">\(B_{1}, \ldots, B_{D_{n}}\)</span>
 <span class="math display">\[\begin{eqnarray}
 B_{1} &amp;=&amp; [ x_{0}, x_{0} + h_{n})  \nonumber \\
@@ -385,8 +385,10 @@ A direct estimate of this is the average of the <span class="math inline">\(Y_{i
 <span class="math inline">\(x_{i}&#39;s\)</span> which fall into the <span class="math inline">\(k^{th}\)</span> bin.</p></li>
 <li><p>Specifically, if <span class="math inline">\(x \in B_{k}\)</span>, then we estimate <span class="math inline">\(m(x)\)</span> with
 <span class="math display">\[\begin{equation}
-\hat{m}_{h_{n}}^{R}(x) =  \frac{ \sum_{i=1}^{n} Y_{i} I\big( x_{i} \in B_{k} \big) }{ \sum_{i=1}^{n} I\big( x_{i} \in B_{k} \big) } \nonumber
-\end{equation}\]</span></p></li>
+\hat{m}_{h_{n}}^{R}(x) =  \frac{ \sum_{i=1}^{n} Y_{i} I\big( x_{i} \in B_{k} \big) }{ \sum_{i=1}^{n} I\big( x_{i} \in B_{k} \big) } 
+= \frac{1}{n_{k,h_{n}}} \sum_{i=1}^{n} Y_{i} I\big( x_{i} \in B_{k} \big), \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(n_{k,h_{n}}\)</span> is the number of <span class="math inline">\(x_{i}\)</span> that fall into the <span class="math inline">\(k^{th}\)</span> bin when using bin width <span class="math inline">\(h_{n}\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
@@ -417,9 +419,36 @@ should be a reasonable estimate of the ratio
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
+<div class="figure"><span id="fig:unnamed-chunk-1"></span>
+<img src="11-kernel-regression_files/figure-html/unnamed-chunk-1-1.png" alt="Framingham Data. Regressogram estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years." width="672" />
+<p class="caption">
+Figure 8.1: Framingham Data. Regressogram estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years.
+</p>
+</div>
+<hr />
+<ul>
+<li><strong>Exercise 11.1</strong> Let <span class="math inline">\(\hat{\mathbf{Y}} = (\hat{Y}_{1}, \ldots, \hat{Y}_{n})\)</span> denote
+the vector of “fitted values” from a regressogram estimate that has <span class="math inline">\(D_{n}\)</span> bins.
+That is, <span class="math inline">\(\hat{Y}_{i}\)</span> is defined as
+<span class="math display">\[\begin{equation}
+\hat{Y}_{i} = \hat{m}_{h_{n}}^{R}(x_{i}) \nonumber
+\end{equation}\]</span>
+If <span class="math inline">\(\mathbf{Y} = (Y_{1}, \ldots, Y_{n})\)</span>, show that you can express <span class="math inline">\(\hat{\mathbf{Y}}\)</span> as
+<span class="math display">\[\begin{equation}
+\hat{\mathbf{Y}} = \mathbf{A}\mathbf{Y}, \nonumber
+\end{equation}\]</span>
+for an appropriately chosen <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}\)</span>.
+What is the value of <span class="math inline">\(\textrm{tr}(\mathbf{A})\)</span>?</li>
+</ul>
+<hr />
 </div>
 <div id="the-local-average-estimator" class="section level3">
 <h3><span class="header-section-number">11.2.2</span> The Local Average Estimator</h3>
+<ul>
+<li><p>The regressogram can be thought of as a regression analogue of the histogram.</p></li>
+<li><p>The local average estimator can be thought of as a regression analogue of the
+“box-type” density estimator that we described in Chapter 8.</p></li>
+</ul>
 </div>
 </div>
 <div id="additional-reading-5" class="section level2">

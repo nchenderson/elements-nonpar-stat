@@ -56,7 +56,7 @@ That is, $p=1$ and $\mathbf{x}_{i} = x_{i}$ where $x_{i}$ is a real number.
 * The regressogram is an estimate of the mean function $m(x)$ which is 
 has many similarities in its construction to the histogram.
 
-* Similar to how we constructed histogram, let us think about an estimate $m(x)$
+* Similar to how we constructed the histogram, let us think about an estimate $m(x)$
 that will be constant within each of a series of bins $B_{1}, \ldots, B_{D_{n}}$
 \begin{eqnarray}
 B_{1} &=& [ x_{0}, x_{0} + h_{n})  \nonumber \\
@@ -71,8 +71,10 @@ $x_{i}'s$ which fall into the $k^{th}$ bin.
 
 * Specifically, if $x \in B_{k}$, then we estimate $m(x)$ with
 \begin{equation}
-\hat{m}_{h_{n}}^{R}(x) =  \frac{ \sum_{i=1}^{n} Y_{i} I\big( x_{i} \in B_{k} \big) }{ \sum_{i=1}^{n} I\big( x_{i} \in B_{k} \big) } \nonumber
+\hat{m}_{h_{n}}^{R}(x) =  \frac{ \sum_{i=1}^{n} Y_{i} I\big( x_{i} \in B_{k} \big) }{ \sum_{i=1}^{n} I\big( x_{i} \in B_{k} \big) } 
+= \frac{1}{n_{k,h_{n}}} \sum_{i=1}^{n} Y_{i} I\big( x_{i} \in B_{k} \big), \nonumber
 \end{equation}
+where $n_{k,h_{n}}$ is the number of $x_{i}$ that fall into the $k^{th}$ bin when using bin width $h_{n}$.
 
 ---
 
@@ -107,7 +109,35 @@ should be a reasonable estimate of the ratio
 
 ---
 
+<div class="figure">
+<img src="11-kernel-regression_files/figure-html/unnamed-chunk-1-1.png" alt="Framingham Data. Regressogram estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-1)Framingham Data. Regressogram estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years.</p>
+</div>
+
+---
+
+* **Exercise 11.1** Let $\hat{\mathbf{Y}} = (\hat{Y}_{1}, \ldots, \hat{Y}_{n})$ denote
+the vector of "fitted values" from a regressogram estimate that has $D_{n}$ bins. 
+That is, $\hat{Y}_{i}$ is defined as
+\begin{equation}
+\hat{Y}_{i} = \hat{m}_{h_{n}}^{R}(x_{i}) \nonumber
+\end{equation}
+If $\mathbf{Y} = (Y_{1}, \ldots, Y_{n})$, show that you can express $\hat{\mathbf{Y}}$ as 
+\begin{equation}
+\hat{\mathbf{Y}} = \mathbf{A}\mathbf{Y}, \nonumber
+\end{equation}
+for an appropriately chosen $n \times n$ matrix $\mathbf{A}$.
+What is the value of $\textrm{tr}(\mathbf{A})$?
+
+---
+
+
 ### The Local Average Estimator
+
+* The regressogram can be thought of as a regression analogue of the histogram.
+
+* The local average estimator can be thought of as a regression analogue of the
+"box-type" density estimator that we described in Chapter 8.
 
 
 ## Additional Reading
