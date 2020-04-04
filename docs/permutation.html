@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-03" />
+<meta name="date" content="2020-04-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -283,6 +283,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.2.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-regressogram"><i class="fa fa-check"></i><b>11.2.1</b> The Regressogram</a></li>
 <li class="chapter" data-level="11.2.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-local-average-estimator"><i class="fa fa-check"></i><b>11.2.2</b> The Local Average Estimator</a></li>
 <li class="chapter" data-level="11.2.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#k-nearest-neighbor-k-nn-regression"><i class="fa fa-check"></i><b>11.2.3</b> k-Nearest Neighbor (k-NN) Regression</a></li>
+<li class="chapter" data-level="11.2.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>11.2.4</b> The Nadaraya-Watson Estimator</a></li>
 </ul></li>
 <li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.3</b> Additional Reading</a></li>
 </ul></li>
@@ -720,7 +721,7 @@ where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly
 </ul>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(mean.diff) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(observed.diff)))<span class="op">/</span>(nperms <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.77</code></pre>
+<pre><code>## [1] 0.76</code></pre>
 </div>
 <div id="example-2-ratios-of-means" class="section level3">
 <h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means</h3>

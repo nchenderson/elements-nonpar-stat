@@ -194,7 +194,8 @@ constant value within each of a few pre-specified bins.
 * We can also express the local average estimator in the following way:
 \begin{equation}
 \hat{m}_{h_{n}}^{loc}(x)
-= \frac{\sum_{i=1}^{n} Y_{i} w\Big( \frac{x - X_{i}}{h_{n}} \Big)}{\sum_{i=1}^{n} w\Big( \frac{x - X_{i}}{h_{n}} \Big)}, \nonumber
+= \frac{\sum_{i=1}^{n} Y_{i} w\Big( \frac{x - X_{i}}{h_{n}} \Big)}{\sum_{i=1}^{n} w\Big( \frac{x - X_{i}}{h_{n}} \Big)}, 
+(\#eq:local-average-estimator)
 \end{equation}
 where $w(t)$ is the "box" function defined as
 \begin{equation}
@@ -207,6 +208,21 @@ w(t) =
 
 * While a local average estimate will not be a "step function" like the regressogram, the local average
 estimate will typically be non-smooth and have a jagged appearance.
+
+---
+
+* Like kernel density estimation, there is a bias/variance tradeoff to the choice of $h_{n}$.
+
+* Smaller values of $h_{n}$ usually imply higher variance because you will be taking an
+average over a relatively small number of observations.
+
+* Larger values of $h_{n}$ usually imply higher bias because 
+you will be esitmating $m(x)$ by averaging over a wide range
+of $x_{i}$ values, and $m(x)$ could vary substantially over this range of $x_{i}$ values.
+
+* Our experience in Chapter 8 suggests that we can get a smoother estimate of 
+the regression if we simply replace the "box function" $w(t)$ in \@ref(eq:local-average-estimator) with a
+smoother kernel function $K(t)$.
 
 ---
 
@@ -251,6 +267,33 @@ a bin centered at $x$.
 closest to $x$. That is, $N_{k}(x)$ is the set of the k "nearest neighbors"
 to $x$. 
 
+* Mathematically, if we define 
+\begin{equation}
+d_{i}(x) = |x_{i} - x| \nonumber
+\end{equation}
+and order them so that $d_{(1)}(x) \leq d_{(2)}(x) \leq \ldots \leq d_{(n)}(x)$.
+Then, the k nearest neighbors of $x$ would be those 
+observations which correspond to the $d_{(1)}(x)$ through $d_{(k)}(x)$.
+
+---
+
+* Like the local average estimator, increasing the value of $k$
+will increase the bias of the k-NN regression function estimate while 
+decreasing the value of $k$ will increase the variance of the k-NN regression function estimate.
+
+---
+
+* **Exercise 8.2** Suppose $n=6$ and that we have the following covariate values and responses
+\begin{eqnarray}
+(x_{1}, x_{2}, x_{3}, x_{4}, x_{5}, x_{6}) &=& (1/7, 2/7, 3/7, 4/7, 5/7, 6/7)  \nonumber \\
+(Y_{1}, Y_{2}, Y_{3}, Y_{4}, Y_{5}, Y_{6}) &=& (1.4, 0.7, 1.1, 1.3, 0.9, 1.7)  \nonumber
+\end{eqnarray}
+    + Compute the local average estimate of the regression function at $x = 0.25$ and $x=0.75$ assuming that $h_{n} = 1/2$. 
+    + Compute the k nearest neighbors estimate of the regression function at $x = 0.25$ and $x = 0.75$ assuming that $k = 2$.
+    
+---
+
+### The Nadaraya-Watson Estimator
 
 
 ## Additional Reading

@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-03" />
+<meta name="date" content="2020-04-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -283,6 +283,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.2.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-regressogram"><i class="fa fa-check"></i><b>11.2.1</b> The Regressogram</a></li>
 <li class="chapter" data-level="11.2.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-local-average-estimator"><i class="fa fa-check"></i><b>11.2.2</b> The Local Average Estimator</a></li>
 <li class="chapter" data-level="11.2.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#k-nearest-neighbor-k-nn-regression"><i class="fa fa-check"></i><b>11.2.3</b> k-Nearest Neighbor (k-NN) Regression</a></li>
+<li class="chapter" data-level="11.2.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>11.2.4</b> The Nadaraya-Watson Estimator</a></li>
 </ul></li>
 <li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.3</b> Additional Reading</a></li>
 </ul></li>
@@ -473,9 +474,10 @@ constant value within each of a few pre-specified bins.</p></li>
 <hr />
 <ul>
 <li><p>We can also express the local average estimator in the following way:
-<span class="math display">\[\begin{equation}
+<span class="math display" id="eq:local-average-estimator">\[\begin{equation}
 \hat{m}_{h_{n}}^{loc}(x)
-= \frac{\sum_{i=1}^{n} Y_{i} w\Big( \frac{x - X_{i}}{h_{n}} \Big)}{\sum_{i=1}^{n} w\Big( \frac{x - X_{i}}{h_{n}} \Big)}, \nonumber
+= \frac{\sum_{i=1}^{n} Y_{i} w\Big( \frac{x - X_{i}}{h_{n}} \Big)}{\sum_{i=1}^{n} w\Big( \frac{x - X_{i}}{h_{n}} \Big)}, 
+\tag{11.3}
 \end{equation}\]</span>
 where <span class="math inline">\(w(t)\)</span> is the “box” function defined as
 <span class="math display">\[\begin{equation}
@@ -487,6 +489,18 @@ w(t) =
 \end{equation}\]</span></p></li>
 <li><p>While a local average estimate will not be a “step function” like the regressogram, the local average
 estimate will typically be non-smooth and have a jagged appearance.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Like kernel density estimation, there is a bias/variance tradeoff to the choice of <span class="math inline">\(h_{n}\)</span>.</p></li>
+<li><p>Smaller values of <span class="math inline">\(h_{n}\)</span> usually imply higher variance because you will be taking an
+average over a relatively small number of observations.</p></li>
+<li><p>Larger values of <span class="math inline">\(h_{n}\)</span> usually imply higher bias because
+you will be esitmating <span class="math inline">\(m(x)\)</span> by averaging over a wide range
+of <span class="math inline">\(x_{i}\)</span> values, and <span class="math inline">\(m(x)\)</span> could vary substantially over this range of <span class="math inline">\(x_{i}\)</span> values.</p></li>
+<li><p>Our experience in Chapter 8 suggests that we can get a smoother estimate of
+the regression if we simply replace the “box function” <span class="math inline">\(w(t)\)</span> in <a href="kernel-regression-and-local-regression.html#eq:local-average-estimator">(11.3)</a> with a
+smoother kernel function <span class="math inline">\(K(t)\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
@@ -528,7 +542,36 @@ a bin centered at <span class="math inline">\(x\)</span>.</p></li>
 <li><p>Here, <span class="math inline">\(N_{k}(x)\)</span> is defined as the set of the k <span class="math inline">\(x_{i}&#39;s\)</span> which are
 closest to <span class="math inline">\(x\)</span>. That is, <span class="math inline">\(N_{k}(x)\)</span> is the set of the k “nearest neighbors”
 to <span class="math inline">\(x\)</span>.</p></li>
+<li><p>Mathematically, if we define
+<span class="math display">\[\begin{equation}
+d_{i}(x) = |x_{i} - x| \nonumber
+\end{equation}\]</span>
+and order them so that <span class="math inline">\(d_{(1)}(x) \leq d_{(2)}(x) \leq \ldots \leq d_{(n)}(x)\)</span>.
+Then, the k nearest neighbors of <span class="math inline">\(x\)</span> would be those
+observations which correspond to the <span class="math inline">\(d_{(1)}(x)\)</span> through <span class="math inline">\(d_{(k)}(x)\)</span>.</p></li>
 </ul>
+<hr />
+<ul>
+<li>Like the local average estimator, increasing the value of <span class="math inline">\(k\)</span>
+will increase the bias of the k-NN regression function estimate while
+decreasing the value of <span class="math inline">\(k\)</span> will increase the variance of the k-NN regression function estimate.</li>
+</ul>
+<hr />
+<ul>
+<li><strong>Exercise 8.2</strong> Suppose <span class="math inline">\(n=6\)</span> and that we have the following covariate values and responses
+<span class="math display">\[\begin{eqnarray}
+(x_{1}, x_{2}, x_{3}, x_{4}, x_{5}, x_{6}) &amp;=&amp; (1/7, 2/7, 3/7, 4/7, 5/7, 6/7)  \nonumber \\
+(Y_{1}, Y_{2}, Y_{3}, Y_{4}, Y_{5}, Y_{6}) &amp;=&amp; (1.4, 0.7, 1.1, 1.3, 0.9, 1.7)  \nonumber
+\end{eqnarray}\]</span>
+<ul>
+<li>Compute the local average estimate of the regression function at <span class="math inline">\(x = 0.25\)</span> and <span class="math inline">\(x=0.75\)</span> assuming that <span class="math inline">\(h_{n} = 1/2\)</span>.</li>
+<li>Compute the k nearest neighbors estimate of the regression function at <span class="math inline">\(x = 0.25\)</span> and <span class="math inline">\(x = 0.75\)</span> assuming that <span class="math inline">\(k = 2\)</span>.</li>
+</ul></li>
+</ul>
+<hr />
+</div>
+<div id="the-nadaraya-watson-estimator" class="section level3">
+<h3><span class="header-section-number">11.2.4</span> The Nadaraya-Watson Estimator</h3>
 </div>
 </div>
 <div id="additional-reading-5" class="section level2">
