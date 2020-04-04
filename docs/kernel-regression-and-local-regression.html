@@ -285,7 +285,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.2.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#k-nearest-neighbor-k-nn-regression"><i class="fa fa-check"></i><b>11.2.3</b> k-Nearest Neighbor (k-NN) Regression</a></li>
 <li class="chapter" data-level="11.2.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>11.2.4</b> The Nadaraya-Watson Estimator</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.3</b> Additional Reading</a></li>
+<li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear Regression</a></li>
+<li class="chapter" data-level="11.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>11.4</b> Selecting the Bandwidth/Smoothing Parameter</a></li>
+<li class="chapter" data-level="11.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.5</b> Additional Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
 <li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a></li>
@@ -430,15 +432,14 @@ Figure 8.1: Framingham Data. Regressogram estimate for a regression model with d
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <hr />
 <ul>
-<li><strong>Exercise 11.1</strong> Let <span class="math inline">\(\hat{\mathbf{Y}} = (\hat{Y}_{1}, \ldots, \hat{Y}_{n})\)</span> denote
-the vector of “fitted values” from a regressogram estimate that has <span class="math inline">\(D_{n}\)</span> bins.
-That is, <span class="math inline">\(\hat{Y}_{i}\)</span> is defined as
+<li><strong>Exercise 11.1</strong> Let
 <span class="math display">\[\begin{equation}
-\hat{Y}_{i} = \hat{m}_{h_{n}}^{R}(x_{i}) \nonumber
+\hat{\mathbf{m}} = \big( \hat{m}_{h_{n}}^{R}(x_{1}), \ldots, \hat{m}_{h_{n}}^{R}(x_{n}) \big)  \nonumber
 \end{equation}\]</span>
-If <span class="math inline">\(\mathbf{Y} = (Y_{1}, \ldots, Y_{n})\)</span>, show that you can express <span class="math inline">\(\hat{\mathbf{Y}}\)</span> as
+denote the vector of “fitted values” from a regressogram estimate that has <span class="math inline">\(D_{n}\)</span> bins.
+If <span class="math inline">\(\mathbf{Y} = (Y_{1}, \ldots, Y_{n})\)</span>, show that you can express <span class="math inline">\(\hat{\mathbf{m}}\)</span> as
 <span class="math display">\[\begin{equation}
-\hat{\mathbf{Y}} = \mathbf{A}\mathbf{Y}, \nonumber
+\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y}, \nonumber
 \end{equation}\]</span>
 for an appropriately chosen <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}\)</span>.
 What is the value of <span class="math inline">\(\textrm{tr}(\mathbf{A})\)</span>?</li>
@@ -521,6 +522,35 @@ points <span class="math inline">\(x = 31, 32, 33, ...., 71\)</span> is given be
 <a class="sourceLine" id="cb218-12" data-line-number="12"><span class="kw">points</span>(framingham<span class="op">$</span>age, framingham<span class="op">$</span>diaBP, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">cex=</span><span class="fl">0.7</span>)</a>
 <a class="sourceLine" id="cb218-13" data-line-number="13"><span class="kw">lines</span>(xseq, m.hat.loc, <span class="dt">lwd=</span><span class="dv">3</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<hr />
+<ul>
+<li><p>Let’s also look at a local average estimate of the regression function for the bone mineral density dataset.</p></li>
+<li><p>The responses in this dataset are relative changes in the bone mineral density of adolescents.</p></li>
+<li><p>Specifically, reponses <span class="math inline">\(Y_{i}\)</span> and covariates <span class="math inline">\(x_{i}\)</span> are defined as
+<span class="math display">\[\begin{eqnarray}
+Y_{i} &amp;=&amp; \frac{\textrm{Mineral Density at Visit 2}_{i} - \textrm{Mineral Density at Visit 1}_{i}}{\tfrac{1}{2}(\textrm{Mineral Density at Visit 2}_{i} + \textrm{Mineral Density at Visit 1}_{i})}  \nonumber \\
+x_{i} &amp;=&amp; \frac{1}{2}(\textrm{Age at Visit 2}_{i} + \textrm{Age at Visit 1}_{i})  \nonumber
+\end{eqnarray}\]</span></p></li>
+</ul>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb219-1" data-line-number="1">tmp &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/ElemStatLearn/datasets/bone.data&quot;</span>, </a>
+<a class="sourceLine" id="cb219-2" data-line-number="2">                  <span class="dt">header=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb219-3" data-line-number="3">bonedat &lt;-<span class="st"> </span>tmp[<span class="op">!</span><span class="kw">duplicated</span>(tmp<span class="op">$</span>idnum),]  <span class="co">## only keep the first observation of a person</span></a></code></pre></div>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb220-1" data-line-number="1">xseq &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">9.4</span>, <span class="fl">25.2</span>, <span class="dt">by=</span>.<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb220-2" data-line-number="2">hn &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb220-3" data-line-number="3">nx &lt;-<span class="st"> </span><span class="kw">length</span>(xseq)</a>
+<a class="sourceLine" id="cb220-4" data-line-number="4">m.hat.loc &lt;-<span class="st"> </span><span class="kw">numeric</span>(nx)</a>
+<a class="sourceLine" id="cb220-5" data-line-number="5"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nx) {</a>
+<a class="sourceLine" id="cb220-6" data-line-number="6">    in.bin &lt;-<span class="st"> </span>bonedat<span class="op">$</span>age <span class="op">&gt;</span><span class="st"> </span>xseq[k] <span class="op">-</span><span class="st"> </span>hn <span class="op">&amp;</span><span class="st"> </span>bonedat<span class="op">$</span>age <span class="op">&lt;</span><span class="st"> </span>xseq[k] <span class="op">+</span><span class="st"> </span>hn</a>
+<a class="sourceLine" id="cb220-7" data-line-number="7">    m.hat.loc[k] &lt;-<span class="st"> </span><span class="kw">mean</span>(bonedat<span class="op">$</span>spnbmd[in.bin])</a>
+<a class="sourceLine" id="cb220-8" data-line-number="8">}</a>
+<a class="sourceLine" id="cb220-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb220-10" data-line-number="10"><span class="kw">plot</span>(bonedat<span class="op">$</span>age, bonedat<span class="op">$</span>spnbmd, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </a>
+<a class="sourceLine" id="cb220-11" data-line-number="11">     <span class="dt">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Bone Data: Local Average Estimate with hn=1&quot;</span>, <span class="dt">type=</span><span class="st">&quot;n&quot;</span>)</a>
+<a class="sourceLine" id="cb220-12" data-line-number="12"><span class="kw">points</span>(bonedat<span class="op">$</span>age, bonedat<span class="op">$</span>spnbmd, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">cex=</span><span class="fl">0.7</span>)</a>
+<a class="sourceLine" id="cb220-13" data-line-number="13"><span class="kw">lines</span>(xseq, m.hat.loc, <span class="dt">lwd=</span><span class="dv">3</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</a>
+<a class="sourceLine" id="cb220-14" data-line-number="14"><span class="kw">abline</span>(<span class="dv">0</span>, <span class="dv">0</span>)</a></code></pre></div>
+<p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div id="k-nearest-neighbor-k-nn-regression" class="section level3">
 <h3><span class="header-section-number">11.2.3</span> k-Nearest Neighbor (k-NN) Regression</h3>
@@ -584,6 +614,8 @@ That is,
 <span class="math display">\[\begin{equation}
 \hat{m}_{h_{n}}^{NW}(x) = \sum_{i=1}^{n} a_{i}(x) Y_{i} \nonumber
 \end{equation}\]</span></p></li>
+<li><p>The bandwidth <span class="math inline">\(h_{n}\)</span> can also be referred to as the “smoothing parameter” since its value affects how smooth
+the fitted regression curve appears.</p></li>
 <li><p>The weights <span class="math inline">\(a_{1}(x), \ldots, a_{n}(x)\)</span>, in this case, are defined as
 <span class="math display">\[\begin{equation}
 a_{i}(x) = \frac{ K(\tfrac{x - x_{i}}{h_{n}})}{ \sum_{i=1}^{n} K(\tfrac{x - x_{i}}{ h_{n}}) } \nonumber
@@ -599,8 +631,84 @@ E\Big[ \frac{1}{n}\sum_{i=1}^{n} \{ \hat{m}_{h_{n}}^{NW}(x_{i}) - m(x_{i}) \}^{2
 </ul>
 </div>
 </div>
+<div id="local-linear-regression" class="section level2">
+<h2><span class="header-section-number">11.3</span> Local Linear Regression</h2>
+</div>
+<div id="selecting-the-bandwidthsmoothing-parameter" class="section level2">
+<h2><span class="header-section-number">11.4</span> Selecting the Bandwidth/Smoothing Parameter</h2>
+<ul>
+<li><p>Let <span class="math inline">\(\mathbf{Y} = (Y_{1}, \ldots, Y_{n})\)</span> and let <span class="math inline">\(\hat{\mathbf{m}} = (\hat{m}(x_{1}), \ldots, \hat{m}(x_{n}))\)</span> denote
+the vector of “fitted values” from a vector of estimates of the regression function at <span class="math inline">\(x_{1}, \ldots, x_{n}\)</span>.</p></li>
+<li><p>You can represent the fitted values for each of the nonparametric estimators discussed thus far as
+<span class="math display">\[\begin{equation}
+\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y} \nonumber
+\end{equation}\]</span>
+for an appropriately chosen <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>For the local average estimator, we have <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y}\)</span> where <span class="math inline">\(\mathbf{A}\)</span> is defined
+as
+<span class="math display">\[\begin{equation}
+\mathbf{A}
+= \begin{bmatrix} \frac{1}{n_{h_{n}}(x_{1})}I(x_{1} - h_{n} &lt; x_{1} &lt; x_{1} + h_{n}) &amp; \ldots &amp;  \frac{1}{n_{h_{n}}(x_{1})}I(x_{1} - h_{n} &lt; x_{n} &lt; x_{1} + h_{n}) \\
+\frac{1}{n_{h_{n}}(x_{2})}I(x_{2} - h_{n} &lt; x_{1} &lt; x_{2} + h_{n}) &amp; \ldots &amp;  \frac{1}{n_{h_{n}}(x_{2})}I(x_{2} - h_{n} &lt; x_{n} &lt; x_{2} + h_{n}) \\
+\vdots &amp; \ddots &amp; \vdots \\
+\frac{1}{n_{h_{n}}(x_{n})}I(x_{n} - h_{n} &lt; x_{1} &lt; x_{n} + h_{n}) &amp; \ldots &amp;  \frac{1}{n_{h_{n}}(x_{n})}I(x_{n} - h_{n} &lt; x_{n} &lt; x_{n} + h_{n})
+\end{bmatrix}
+\end{equation}\]</span>
+where <span class="math inline">\(n_{h_{n}}(x) = \sum_{i=1}^{n}I(x - h_{n} &lt; x_{i} &lt; x + h_{n})\)</span>.</p></li>
+<li><p>In other words, the <span class="math inline">\((i,j)\)</span> element of <span class="math inline">\(\mathbf{A}\)</span> is <span class="math inline">\(a_{i}(x_{j})\)</span> where
+<span class="math display">\[\begin{equation}
+a_{i}(x_{j}) = \frac{1}{n_{h_{n}}(x_{i})}I(x_{i} - h_{n} &lt; x_{j} &lt; x_{i} + h_{n})  \nonumber 
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li>For the Nadaraya-Watson estimator, the <span class="math inline">\(\mathbf{A}\)</span> matrix is
+<span class="math display">\[\begin{equation}
+\mathbf{A}
+= \begin{bmatrix} \frac{1}{K_{h_{n}}(x_{1}, \cdot)  }K(0) &amp;  \frac{1}{K_{h_{n}}(x_{1}, \cdot)  }K(\tfrac{x_{2} - x_{1}}{h_{n}}) &amp; \ldots &amp;  \frac{1}{K_{h_{n}}(x_{1}, \cdot)  }K(\tfrac{x_{n} - x_{1}}{h_{n}}) \\
+\frac{1}{K_{h_{n}}(x_{2}, \cdot)  }K(\tfrac{x_{1} - x_{2}}{h_{n}}) &amp;  \frac{1}{K_{h_{n}}(x_{2}, \cdot)  }K(0) &amp; \ldots &amp;  \frac{1}{K_{h_{n}}(x_{2}, \cdot)  }K(\tfrac{x_{n} - x_{2}}{h_{n}}) \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\frac{1}{K_{h_{n}}(x_{n}, \cdot)  }K(\tfrac{x_{1}-x_{n}}{h_{n}}) &amp;  \frac{1}{K_{h_{n}}(x_{n}, \cdot)  }K(\tfrac{x_{2} - x_{n}}{h_{n}}) &amp; \ldots &amp;  \frac{1}{K_{h_{n}}(x_{n}, \cdot)  }K(0)
+\end{bmatrix} \nonumber
+\end{equation}\]</span>
+where
+<span class="math display">\[\begin{equation}
+K_{h_{n}}(x_{i}, \cdot) = \sum_{j=1}^{n}K\Big( \frac{x_{i} - x_{j}}{h_{n}}  \Big) \nonumber
+\end{equation}\]</span></li>
+</ul>
+<hr />
+<ul>
+<li>For the local linear regression estimator,</li>
+</ul>
+<hr />
+<ul>
+<li><p><strong>Theorem:</strong> If a random vector <span class="math inline">\(\mathbf{Z}\)</span> has mean vector <span class="math inline">\(\mathbf{\mu}\)</span> and covariance matrix <span class="math inline">\(\mathbf{\Sigma}\)</span>,
+then
+<span class="math display">\[\begin{equation}
+E\{ \mathbf{Z}^{T}\mathbf{Z} \} = E\{ \sum_{i=1}^{n} Z_{i}^{2} \} = \mathbf{\mu}^{T}\mathbf{\mu} + \textrm{tr}( \mathbf{\Sigma} ) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Notice that the vector <span class="math inline">\(\mathbf{m} - \mathbf{A}\mathbf{Y}\)</span> has
+<span class="math display">\[\begin{equation}
+E( \mathbf{m} - \mathbf{A}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}\mathbf{Y}) = \sigma^{2}\mathbf{A}\mathbf{A}^{T}
+\end{equation}\]</span></p></li>
+<li><p>Also, the vector <span class="math inline">\(\mathbf{Y} - \mathbf{A}\mathbf{Y} = (\mathbf{I} - \mathbf{A})\mathbf{Y}\)</span> has
+<span class="math display">\[\begin{equation}
+E\{ (\mathbf{I} - \mathbf{A})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A})\mathbf{m}  \qquad \qquad \textrm{Var}\{ (\mathbf{I} - \mathbf{A})\mathbf{Y}) = \sigma^{2} (\mathbf{I} - \mathbf{A})(\mathbf{I} - \mathbf{A})^{T}\nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li>So, if we apply the above Theorem to these vectors, we can notice that
+<span class="math display">\[\begin{equation}
+E\{ ( \mathbf{m} - \mathbf{A}\mathbf{Y} )^{T}(\mathbf{m} - \mathbf{A}\mathbf{Y}) \} = [ (\mathbf{I} - \mathbf{A})\mathbf{m}]^{T}[(\mathbf{I} - \mathbf{A})\mathbf{m}] + \sigma^{2}\textrm{tr}(\mathbf{A}\mathbf{A}^{T})  \nonumber
+\end{equation}\]</span></li>
+</ul>
+</div>
 <div id="additional-reading-5" class="section level2">
-<h2><span class="header-section-number">11.3</span> Additional Reading</h2>
+<h2><span class="header-section-number">11.5</span> Additional Reading</h2>
 <ul>
 <li>Additional reading which covers the material discussed in this chapter includes:
 <ul>

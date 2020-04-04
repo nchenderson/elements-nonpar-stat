@@ -118,15 +118,14 @@ should be a reasonable estimate of the ratio
 
 ---
 
-* **Exercise 11.1** Let $\hat{\mathbf{Y}} = (\hat{Y}_{1}, \ldots, \hat{Y}_{n})$ denote
-the vector of "fitted values" from a regressogram estimate that has $D_{n}$ bins. 
-That is, $\hat{Y}_{i}$ is defined as
+* **Exercise 11.1** Let 
 \begin{equation}
-\hat{Y}_{i} = \hat{m}_{h_{n}}^{R}(x_{i}) \nonumber
+\hat{\mathbf{m}} = \big( \hat{m}_{h_{n}}^{R}(x_{1}), \ldots, \hat{m}_{h_{n}}^{R}(x_{n}) \big)  \nonumber
 \end{equation}
-If $\mathbf{Y} = (Y_{1}, \ldots, Y_{n})$, show that you can express $\hat{\mathbf{Y}}$ as 
+denote the vector of "fitted values" from a regressogram estimate that has $D_{n}$ bins. 
+If $\mathbf{Y} = (Y_{1}, \ldots, Y_{n})$, show that you can express $\hat{\mathbf{m}}$ as 
 \begin{equation}
-\hat{\mathbf{Y}} = \mathbf{A}\mathbf{Y}, \nonumber
+\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y}, \nonumber
 \end{equation}
 for an appropriately chosen $n \times n$ matrix $\mathbf{A}$.
 What is the value of $\textrm{tr}(\mathbf{A})$?
@@ -222,6 +221,47 @@ lines(xseq, m.hat.loc, lwd=3, col="red")
 
 <img src="11-kernel-regression_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
+---
+
+* Let's also look at a local average estimate of the regression function for the bone mineral density dataset.
+
+* The responses in this dataset are relative changes in the bone mineral density of adolescents.
+
+* Specifically, reponses $Y_{i}$ and covariates $x_{i}$ are defined as
+\begin{eqnarray}
+Y_{i} &=& \frac{\textrm{Mineral Density at Visit 2}_{i} - \textrm{Mineral Density at Visit 1}_{i}}{\tfrac{1}{2}(\textrm{Mineral Density at Visit 2}_{i} + \textrm{Mineral Density at Visit 1}_{i})}  \nonumber \\
+x_{i} &=& \frac{1}{2}(\textrm{Age at Visit 2}_{i} + \textrm{Age at Visit 1}_{i})  \nonumber
+\end{eqnarray}
+
+
+```r
+tmp <- read.table("https://web.stanford.edu/~hastie/ElemStatLearn/datasets/bone.data", 
+                  header=TRUE)
+bonedat <- tmp[!duplicated(tmp$idnum),]  ## only keep the first observation of a person
+```
+
+
+```r
+xseq <- seq(9.4, 25.2, by=.1)
+hn <- 1
+nx <- length(xseq)
+m.hat.loc <- numeric(nx)
+for(k in 1:nx) {
+    in.bin <- bonedat$age > xseq[k] - hn & bonedat$age < xseq[k] + hn
+    m.hat.loc[k] <- mean(bonedat$spnbmd[in.bin])
+}
+
+plot(bonedat$age, bonedat$spnbmd, las=1, ylab="Relative Change in Bone MD", 
+     xlab="Age", main="Bone Data: Local Average Estimate with hn=1", type="n")
+points(bonedat$age, bonedat$spnbmd, pch=16, cex=0.7)
+lines(xseq, m.hat.loc, lwd=3, col="red")
+abline(0, 0)
+```
+
+<img src="11-kernel-regression_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+
+<img src="11-kernel-regression_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+
 ### k-Nearest Neighbor (k-NN) Regression
 
 * k-nearest neighbor regression is fairly similar to the local average estimator
@@ -287,6 +327,9 @@ That is,
 \hat{m}_{h_{n}}^{NW}(x) = \sum_{i=1}^{n} a_{i}(x) Y_{i} \nonumber
 \end{equation}
 
+* The bandwidth $h_{n}$ can also be referred to as the "smoothing parameter" since its value affects how smooth
+the fitted regression curve appears.
+
 * The weights $a_{1}(x), \ldots, a_{n}(x)$, in this case, are defined as 
 \begin{equation}
 a_{i}(x) = \frac{ K(\tfrac{x - x_{i}}{h_{n}})}{ \sum_{i=1}^{n} K(\tfrac{x - x_{i}}{ h_{n}}) } \nonumber
@@ -299,6 +342,87 @@ So, we are using weights which are larger the closer you are to $x$.
 \begin{equation}
 E\Big[ \frac{1}{n}\sum_{i=1}^{n} \{ \hat{m}_{h_{n}}^{NW}(x_{i}) - m(x_{i}) \}^{2}     \Big] \nonumber
 \end{equation}
+
+## Local Linear Regression
+
+## Selecting the Bandwidth/Smoothing Parameter
+
+* Let $\mathbf{Y} = (Y_{1}, \ldots, Y_{n})$ and let $\hat{\mathbf{m}} = (\hat{m}(x_{1}), \ldots, \hat{m}(x_{n}))$ denote
+the vector of "fitted values" from a vector of estimates of the regression function at $x_{1}, \ldots, x_{n}$.
+
+* You can represent the fitted values for each of the nonparametric estimators discussed thus far as
+\begin{equation}
+\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y} \nonumber
+\end{equation}
+for an appropriately chosen $n \times n$ matrix $\mathbf{A}$.
+
+
+---
+
+* For the local average estimator, we have $\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y}$ where $\mathbf{A}$ is defined 
+as
+\begin{equation}
+\mathbf{A}
+= \begin{bmatrix} \frac{1}{n_{h_{n}}(x_{1})}I(x_{1} - h_{n} < x_{1} < x_{1} + h_{n}) & \ldots &  \frac{1}{n_{h_{n}}(x_{1})}I(x_{1} - h_{n} < x_{n} < x_{1} + h_{n}) \\
+\frac{1}{n_{h_{n}}(x_{2})}I(x_{2} - h_{n} < x_{1} < x_{2} + h_{n}) & \ldots &  \frac{1}{n_{h_{n}}(x_{2})}I(x_{2} - h_{n} < x_{n} < x_{2} + h_{n}) \\
+\vdots & \ddots & \vdots \\
+\frac{1}{n_{h_{n}}(x_{n})}I(x_{n} - h_{n} < x_{1} < x_{n} + h_{n}) & \ldots &  \frac{1}{n_{h_{n}}(x_{n})}I(x_{n} - h_{n} < x_{n} < x_{n} + h_{n})
+\end{bmatrix}
+\end{equation}
+where $n_{h_{n}}(x) = \sum_{i=1}^{n}I(x - h_{n} < x_{i} < x + h_{n})$.
+
+* In other words, the $(i,j)$ element of $\mathbf{A}$ is $a_{i}(x_{j})$ where
+\begin{equation}
+a_{i}(x_{j}) = \frac{1}{n_{h_{n}}(x_{i})}I(x_{i} - h_{n} < x_{j} < x_{i} + h_{n})  \nonumber 
+\end{equation}
+
+
+---
+
+* For the Nadaraya-Watson estimator, the $\mathbf{A}$ matrix is
+\begin{equation}
+\mathbf{A}
+= \begin{bmatrix} \frac{1}{K_{h_{n}}(x_{1}, \cdot)  }K(0) &  \frac{1}{K_{h_{n}}(x_{1}, \cdot)  }K(\tfrac{x_{2} - x_{1}}{h_{n}}) & \ldots &  \frac{1}{K_{h_{n}}(x_{1}, \cdot)  }K(\tfrac{x_{n} - x_{1}}{h_{n}}) \\
+\frac{1}{K_{h_{n}}(x_{2}, \cdot)  }K(\tfrac{x_{1} - x_{2}}{h_{n}}) &  \frac{1}{K_{h_{n}}(x_{2}, \cdot)  }K(0) & \ldots &  \frac{1}{K_{h_{n}}(x_{2}, \cdot)  }K(\tfrac{x_{n} - x_{2}}{h_{n}}) \\
+\vdots & \vdots & \ddots & \vdots \\
+\frac{1}{K_{h_{n}}(x_{n}, \cdot)  }K(\tfrac{x_{1}-x_{n}}{h_{n}}) &  \frac{1}{K_{h_{n}}(x_{n}, \cdot)  }K(\tfrac{x_{2} - x_{n}}{h_{n}}) & \ldots &  \frac{1}{K_{h_{n}}(x_{n}, \cdot)  }K(0)
+\end{bmatrix} \nonumber
+\end{equation}
+where 
+\begin{equation}
+K_{h_{n}}(x_{i}, \cdot) = \sum_{j=1}^{n}K\Big( \frac{x_{i} - x_{j}}{h_{n}}  \Big) \nonumber
+\end{equation}
+
+---
+
+* For the local linear regression estimator, 
+
+
+---
+
+* **Theorem:** If a random vector $\mathbf{Z}$ has mean vector $\mathbf{\mu}$ and covariance matrix $\mathbf{\Sigma}$,
+then
+\begin{equation}
+E\{ \mathbf{Z}^{T}\mathbf{Z} \} = E\{ \sum_{i=1}^{n} Z_{i}^{2} \} = \mathbf{\mu}^{T}\mathbf{\mu} + \textrm{tr}( \mathbf{\Sigma} ) \nonumber
+\end{equation}
+
+* Notice that the vector $\mathbf{m} - \mathbf{A}\mathbf{Y}$ has 
+\begin{equation}
+E( \mathbf{m} - \mathbf{A}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}\mathbf{Y}) = \sigma^{2}\mathbf{A}\mathbf{A}^{T}
+\end{equation}
+
+* Also, the vector $\mathbf{Y} - \mathbf{A}\mathbf{Y} = (\mathbf{I} - \mathbf{A})\mathbf{Y}$ has
+\begin{equation}
+E\{ (\mathbf{I} - \mathbf{A})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A})\mathbf{m}  \qquad \qquad \textrm{Var}\{ (\mathbf{I} - \mathbf{A})\mathbf{Y}) = \sigma^{2} (\mathbf{I} - \mathbf{A})(\mathbf{I} - \mathbf{A})^{T}\nonumber
+\end{equation}
+
+---
+
+* So, if we apply the above Theorem to these vectors, we can notice that
+\begin{equation}
+E\{ ( \mathbf{m} - \mathbf{A}\mathbf{Y} )^{T}(\mathbf{m} - \mathbf{A}\mathbf{Y}) \} = [ (\mathbf{I} - \mathbf{A})\mathbf{m}]^{T}[(\mathbf{I} - \mathbf{A})\mathbf{m}] + \sigma^{2}\textrm{tr}(\mathbf{A}\mathbf{A}^{T})  \nonumber
+\end{equation}
+
 
 
 ## Additional Reading
