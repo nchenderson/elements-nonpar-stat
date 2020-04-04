@@ -295,6 +295,33 @@ decreasing the value of $k$ will increase the variance of the k-NN regression fu
 
 ### The Nadaraya-Watson Estimator
 
+* The Nadaraya-Watson estimator $\hat{m}_{h_{n}}^{NW}$ of the regression function with bandwidth $h_{n}$ is defined as
+\begin{equation}
+\hat{m}_{h_{n}}^{NW}(x) = \frac{ \sum_{i=1}^{n} Y_{i}K\Big( \frac{x - x_{i}}{ h_{n} }\Big) }{ \sum_{i=1}^{n} K\Big( \frac{x - x_{i}}{ h_{n} }\Big)  } \nonumber
+\end{equation}
+
+* The Nadaraya-Watson estimator has the same basic form as the local average estimator. We have just replaced the "box" function
+$w(t)$ with the kernel function $K(t)$.
+
+* You can think of $\hat{m}_{h_{n}}^{NW}(x)$ as a weighted average of the $Y_{i}$. 
+That is, 
+\begin{equation}
+\hat{m}_{h_{n}}^{NW}(x) = \sum_{i=1}^{n} a_{i}(x) Y_{i} \nonumber
+\end{equation}
+
+* The weights $a_{1}(x), \ldots, a_{n}(x)$, in this case, are defined as 
+\begin{equation}
+a_{i}(x) = \frac{ K(\tfrac{x - x_{i}}{h_{n}})}{ \sum_{i=1}^{n} K(\tfrac{x - x_{i}}{ h_{n}}) } \nonumber
+\end{equation}
+So, we are using weights which are larger the closer you are to $x$. 
+
+---
+
+* For the Nadaraya-Watson estimator
+\begin{equation}
+E\Big[ \frac{1}{n}\sum_{i=1}^{n} \{ \hat{m}_{h_{n}}^{NW}(x_{i}) - m(x_{i}) \}^{2}     \Big] \nonumber
+\end{equation}
+
 
 ## Additional Reading
 

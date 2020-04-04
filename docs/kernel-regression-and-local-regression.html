@@ -572,6 +572,31 @@ decreasing the value of <span class="math inline">\(k\)</span> will increase the
 </div>
 <div id="the-nadaraya-watson-estimator" class="section level3">
 <h3><span class="header-section-number">11.2.4</span> The Nadaraya-Watson Estimator</h3>
+<ul>
+<li><p>The Nadaraya-Watson estimator <span class="math inline">\(\hat{m}_{h_{n}}^{NW}\)</span> of the regression function with bandwidth <span class="math inline">\(h_{n}\)</span> is defined as
+<span class="math display">\[\begin{equation}
+\hat{m}_{h_{n}}^{NW}(x) = \frac{ \sum_{i=1}^{n} Y_{i}K\Big( \frac{x - x_{i}}{ h_{n} }\Big) }{ \sum_{i=1}^{n} K\Big( \frac{x - x_{i}}{ h_{n} }\Big)  } \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The Nadaraya-Watson estimator has the same basic form as the local average estimator. We have just replaced the “box” function
+<span class="math inline">\(w(t)\)</span> with the kernel function <span class="math inline">\(K(t)\)</span>.</p></li>
+<li><p>You can think of <span class="math inline">\(\hat{m}_{h_{n}}^{NW}(x)\)</span> as a weighted average of the <span class="math inline">\(Y_{i}\)</span>.
+That is,
+<span class="math display">\[\begin{equation}
+\hat{m}_{h_{n}}^{NW}(x) = \sum_{i=1}^{n} a_{i}(x) Y_{i} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The weights <span class="math inline">\(a_{1}(x), \ldots, a_{n}(x)\)</span>, in this case, are defined as
+<span class="math display">\[\begin{equation}
+a_{i}(x) = \frac{ K(\tfrac{x - x_{i}}{h_{n}})}{ \sum_{i=1}^{n} K(\tfrac{x - x_{i}}{ h_{n}}) } \nonumber
+\end{equation}\]</span>
+So, we are using weights which are larger the closer you are to <span class="math inline">\(x\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li>For the Nadaraya-Watson estimator
+<span class="math display">\[\begin{equation}
+E\Big[ \frac{1}{n}\sum_{i=1}^{n} \{ \hat{m}_{h_{n}}^{NW}(x_{i}) - m(x_{i}) \}^{2}     \Big] \nonumber
+\end{equation}\]</span></li>
+</ul>
 </div>
 </div>
 <div id="additional-reading-5" class="section level2">
