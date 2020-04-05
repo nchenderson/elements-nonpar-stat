@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-04" />
+<meta name="date" content="2020-04-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -286,7 +286,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.2.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>11.2.4</b> The Nadaraya-Watson Estimator</a></li>
 </ul></li>
 <li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear Regression</a></li>
-<li class="chapter" data-level="11.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>11.4</b> Selecting the Bandwidth/Smoothing Parameter</a></li>
+<li class="chapter" data-level="11.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>11.4</b> Selecting the Bandwidth/Smoothing Parameter</a><ul>
+<li class="chapter" data-level="11.4.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#representing-in-linear-form"><i class="fa fa-check"></i><b>11.4.1</b> Representing in Linear Form</a></li>
+<li class="chapter" data-level="11.4.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-cp-statistic"><i class="fa fa-check"></i><b>11.4.2</b> The Cp Statistic</a></li>
+</ul></li>
 <li class="chapter" data-level="11.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.5</b> Additional Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
@@ -636,21 +639,23 @@ E\Big[ \frac{1}{n}\sum_{i=1}^{n} \{ \hat{m}_{h_{n}}^{NW}(x_{i}) - m(x_{i}) \}^{2
 </div>
 <div id="selecting-the-bandwidthsmoothing-parameter" class="section level2">
 <h2><span class="header-section-number">11.4</span> Selecting the Bandwidth/Smoothing Parameter</h2>
+<div id="representing-in-linear-form" class="section level3">
+<h3><span class="header-section-number">11.4.1</span> Representing in Linear Form</h3>
 <ul>
 <li><p>Let <span class="math inline">\(\mathbf{Y} = (Y_{1}, \ldots, Y_{n})\)</span> and let <span class="math inline">\(\hat{\mathbf{m}} = (\hat{m}(x_{1}), \ldots, \hat{m}(x_{n}))\)</span> denote
 the vector of “fitted values” from a vector of estimates of the regression function at <span class="math inline">\(x_{1}, \ldots, x_{n}\)</span>.</p></li>
-<li><p>You can represent the fitted values for each of the nonparametric estimators discussed thus far as
+<li><p>You can represent the fitted values all of the nonparametric estimators discussed thus far as
 <span class="math display">\[\begin{equation}
-\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y} \nonumber
+\hat{\mathbf{m}} = \mathbf{A}_{h_{n}}\mathbf{Y} \nonumber
 \end{equation}\]</span>
-for an appropriately chosen <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}\)</span>.</p></li>
+for an appropriately chosen <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}_{h_{n}}\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
-<li><p>For the local average estimator, we have <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y}\)</span> where <span class="math inline">\(\mathbf{A}\)</span> is defined
-as
+<li><p>For the local average estimator, we have <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{A}_{h_{n}}\mathbf{Y}\)</span> where <span class="math inline">\(\mathbf{A}_{h_{n}}\)</span> is
+defined as
 <span class="math display">\[\begin{equation}
-\mathbf{A}
+\mathbf{A}_{h_{n}}
 = \begin{bmatrix} \frac{1}{n_{h_{n}}(x_{1})}I(x_{1} - h_{n} &lt; x_{1} &lt; x_{1} + h_{n}) &amp; \ldots &amp;  \frac{1}{n_{h_{n}}(x_{1})}I(x_{1} - h_{n} &lt; x_{n} &lt; x_{1} + h_{n}) \\
 \frac{1}{n_{h_{n}}(x_{2})}I(x_{2} - h_{n} &lt; x_{1} &lt; x_{2} + h_{n}) &amp; \ldots &amp;  \frac{1}{n_{h_{n}}(x_{2})}I(x_{2} - h_{n} &lt; x_{n} &lt; x_{2} + h_{n}) \\
 \vdots &amp; \ddots &amp; \vdots \\
@@ -658,16 +663,16 @@ as
 \end{bmatrix}
 \end{equation}\]</span>
 where <span class="math inline">\(n_{h_{n}}(x) = \sum_{i=1}^{n}I(x - h_{n} &lt; x_{i} &lt; x + h_{n})\)</span>.</p></li>
-<li><p>In other words, the <span class="math inline">\((i,j)\)</span> element of <span class="math inline">\(\mathbf{A}\)</span> is <span class="math inline">\(a_{i}(x_{j})\)</span> where
+<li><p>In other words, the <span class="math inline">\((i,j)\)</span> element of <span class="math inline">\(\mathbf{A}_{h_{n}}\)</span> is <span class="math inline">\(a_{i}(x_{j})\)</span> where
 <span class="math display">\[\begin{equation}
 a_{i}(x_{j}) = \frac{1}{n_{h_{n}}(x_{i})}I(x_{i} - h_{n} &lt; x_{j} &lt; x_{i} + h_{n})  \nonumber 
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
 <ul>
-<li>For the Nadaraya-Watson estimator, the <span class="math inline">\(\mathbf{A}\)</span> matrix is
+<li>For the Nadaraya-Watson estimator, the <span class="math inline">\(\mathbf{A}_{h_{n}}\)</span> matrix is
 <span class="math display">\[\begin{equation}
-\mathbf{A}
+\mathbf{A}_{h_{n}}
 = \begin{bmatrix} \frac{1}{K_{h_{n}}(x_{1}, \cdot)  }K(0) &amp;  \frac{1}{K_{h_{n}}(x_{1}, \cdot)  }K(\tfrac{x_{2} - x_{1}}{h_{n}}) &amp; \ldots &amp;  \frac{1}{K_{h_{n}}(x_{1}, \cdot)  }K(\tfrac{x_{n} - x_{1}}{h_{n}}) \\
 \frac{1}{K_{h_{n}}(x_{2}, \cdot)  }K(\tfrac{x_{1} - x_{2}}{h_{n}}) &amp;  \frac{1}{K_{h_{n}}(x_{2}, \cdot)  }K(0) &amp; \ldots &amp;  \frac{1}{K_{h_{n}}(x_{2}, \cdot)  }K(\tfrac{x_{n} - x_{2}}{h_{n}}) \\
 \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
@@ -683,29 +688,49 @@ K_{h_{n}}(x_{i}, \cdot) = \sum_{j=1}^{n}K\Big( \frac{x_{i} - x_{j}}{h_{n}}  \Big
 <ul>
 <li>For the local linear regression estimator,</li>
 </ul>
-<hr />
+</div>
+<div id="the-cp-statistic" class="section level3">
+<h3><span class="header-section-number">11.4.2</span> The Cp Statistic</h3>
 <ul>
 <li><p><strong>Theorem:</strong> If a random vector <span class="math inline">\(\mathbf{Z}\)</span> has mean vector <span class="math inline">\(\mathbf{\mu}\)</span> and covariance matrix <span class="math inline">\(\mathbf{\Sigma}\)</span>,
 then
 <span class="math display">\[\begin{equation}
 E\{ \mathbf{Z}^{T}\mathbf{Z} \} = E\{ \sum_{i=1}^{n} Z_{i}^{2} \} = \mathbf{\mu}^{T}\mathbf{\mu} + \textrm{tr}( \mathbf{\Sigma} ) \nonumber
 \end{equation}\]</span></p></li>
-<li><p>Notice that the vector <span class="math inline">\(\mathbf{m} - \mathbf{A}\mathbf{Y}\)</span> has
+<li><p>Notice that the vector <span class="math inline">\(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}\)</span> has
 <span class="math display">\[\begin{equation}
-E( \mathbf{m} - \mathbf{A}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}\mathbf{Y}) = \sigma^{2}\mathbf{A}\mathbf{A}^{T}
+E( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) = \sigma^{2}\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}
 \end{equation}\]</span></p></li>
-<li><p>Also, the vector <span class="math inline">\(\mathbf{Y} - \mathbf{A}\mathbf{Y} = (\mathbf{I} - \mathbf{A})\mathbf{Y}\)</span> has
+<li><p>Also, the vector <span class="math inline">\(\mathbf{Y} - \mathbf{A}_{h_{n}}\mathbf{Y} = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}\)</span> has
 <span class="math display">\[\begin{equation}
-E\{ (\mathbf{I} - \mathbf{A})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A})\mathbf{m}  \qquad \qquad \textrm{Var}\{ (\mathbf{I} - \mathbf{A})\mathbf{Y}) = \sigma^{2} (\mathbf{I} - \mathbf{A})(\mathbf{I} - \mathbf{A})^{T}\nonumber
+E\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}  \qquad \qquad \textrm{Var}\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}) = \sigma^{2} (\mathbf{I} - \mathbf{A}_{h_{n}})(\mathbf{I} - \mathbf{A}_{h_{n}})^{T} \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
 <ul>
-<li>So, if we apply the above Theorem to these vectors, we can notice that
+<li><p>Ideally, we would like to minimize the following average mean-squared error
 <span class="math display">\[\begin{equation}
-E\{ ( \mathbf{m} - \mathbf{A}\mathbf{Y} )^{T}(\mathbf{m} - \mathbf{A}\mathbf{Y}) \} = [ (\mathbf{I} - \mathbf{A})\mathbf{m}]^{T}[(\mathbf{I} - \mathbf{A})\mathbf{m}] + \sigma^{2}\textrm{tr}(\mathbf{A}\mathbf{A}^{T})  \nonumber
-\end{equation}\]</span></li>
+R(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} E\Big[ \{ m(x_{i}) - \hat{m}(x_{i}) \}^{2} \Big]
+= E\{ \frac{1}{n}[\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}]^{T}[\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}] \}
+\end{equation}\]</span></p></li>
+<li><p>If we apply the above Theorem to the vector <span class="math inline">\(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}\)</span>, we can notice that
+<span class="math display">\[\begin{eqnarray}
+R( h_{n} ) &amp;=&amp; E\{ \frac{1}{n}( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} )^{T}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) \}  \nonumber \\
+&amp;=&amp; \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}] + \frac{\sigma^{2}}{n}\textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T})
+\end{eqnarray}\]</span></p></li>
+<li><p>Now, using the mean and covariance matrix for <span class="math inline">\((\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}\)</span>, we also have that
+<span class="math display">\[\begin{eqnarray}
+&amp;&amp; E\{\frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] \} \nonumber \\
+&amp;=&amp; \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}] + \frac{\sigma^{2}}{n}\textrm{tr}\{ (\mathbf{I} - \mathbf{A}_{h_{n}})(\mathbf{I} - \mathbf{A}_{h_{n}})^{T} \} \nonumber \\
+&amp;=&amp; R(h_{n}) + \sigma^{2} - \frac{2\sigma^{2}}{n}\textrm{tr}( A_{h_{n}})
+\end{eqnarray}\]</span></p></li>
+<li><p>So, if <span class="math inline">\(\sigma^{2}\)</span> is known, then <span class="math inline">\(\hat{R}( h_{n} )\)</span> is an unbiased estimate of <span class="math inline">\(R( h_{n} )\)</span>
+<span class="math display">\[\begin{eqnarray}
+\hat{R}( h_{n} ) &amp;=&amp; \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( A_{h_{n}}) \nonumber \\
+&amp;=&amp; \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}(x_{i}) \}^{2} - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( A_{h_{n}})
+\end{eqnarray}\]</span></p></li>
 </ul>
+</div>
 </div>
 <div id="additional-reading-5" class="section level2">
 <h2><span class="header-section-number">11.5</span> Additional Reading</h2>

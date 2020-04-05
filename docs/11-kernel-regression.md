@@ -347,22 +347,23 @@ E\Big[ \frac{1}{n}\sum_{i=1}^{n} \{ \hat{m}_{h_{n}}^{NW}(x_{i}) - m(x_{i}) \}^{2
 
 ## Selecting the Bandwidth/Smoothing Parameter
 
+### Representing in Linear Form
+
 * Let $\mathbf{Y} = (Y_{1}, \ldots, Y_{n})$ and let $\hat{\mathbf{m}} = (\hat{m}(x_{1}), \ldots, \hat{m}(x_{n}))$ denote
 the vector of "fitted values" from a vector of estimates of the regression function at $x_{1}, \ldots, x_{n}$.
 
-* You can represent the fitted values for each of the nonparametric estimators discussed thus far as
+* You can represent the fitted values all of the nonparametric estimators discussed thus far as
 \begin{equation}
-\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y} \nonumber
+\hat{\mathbf{m}} = \mathbf{A}_{h_{n}}\mathbf{Y} \nonumber
 \end{equation}
-for an appropriately chosen $n \times n$ matrix $\mathbf{A}$.
-
+for an appropriately chosen $n \times n$ matrix $\mathbf{A}_{h_{n}}$.
 
 ---
 
-* For the local average estimator, we have $\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y}$ where $\mathbf{A}$ is defined 
-as
+* For the local average estimator, we have $\hat{\mathbf{m}} = \mathbf{A}_{h_{n}}\mathbf{Y}$ where $\mathbf{A}_{h_{n}}$ is 
+defined as
 \begin{equation}
-\mathbf{A}
+\mathbf{A}_{h_{n}}
 = \begin{bmatrix} \frac{1}{n_{h_{n}}(x_{1})}I(x_{1} - h_{n} < x_{1} < x_{1} + h_{n}) & \ldots &  \frac{1}{n_{h_{n}}(x_{1})}I(x_{1} - h_{n} < x_{n} < x_{1} + h_{n}) \\
 \frac{1}{n_{h_{n}}(x_{2})}I(x_{2} - h_{n} < x_{1} < x_{2} + h_{n}) & \ldots &  \frac{1}{n_{h_{n}}(x_{2})}I(x_{2} - h_{n} < x_{n} < x_{2} + h_{n}) \\
 \vdots & \ddots & \vdots \\
@@ -371,7 +372,7 @@ as
 \end{equation}
 where $n_{h_{n}}(x) = \sum_{i=1}^{n}I(x - h_{n} < x_{i} < x + h_{n})$.
 
-* In other words, the $(i,j)$ element of $\mathbf{A}$ is $a_{i}(x_{j})$ where
+* In other words, the $(i,j)$ element of $\mathbf{A}_{h_{n}}$ is $a_{i}(x_{j})$ where
 \begin{equation}
 a_{i}(x_{j}) = \frac{1}{n_{h_{n}}(x_{i})}I(x_{i} - h_{n} < x_{j} < x_{i} + h_{n})  \nonumber 
 \end{equation}
@@ -379,9 +380,9 @@ a_{i}(x_{j}) = \frac{1}{n_{h_{n}}(x_{i})}I(x_{i} - h_{n} < x_{j} < x_{i} + h_{n}
 
 ---
 
-* For the Nadaraya-Watson estimator, the $\mathbf{A}$ matrix is
+* For the Nadaraya-Watson estimator, the $\mathbf{A}_{h_{n}}$ matrix is
 \begin{equation}
-\mathbf{A}
+\mathbf{A}_{h_{n}}
 = \begin{bmatrix} \frac{1}{K_{h_{n}}(x_{1}, \cdot)  }K(0) &  \frac{1}{K_{h_{n}}(x_{1}, \cdot)  }K(\tfrac{x_{2} - x_{1}}{h_{n}}) & \ldots &  \frac{1}{K_{h_{n}}(x_{1}, \cdot)  }K(\tfrac{x_{n} - x_{1}}{h_{n}}) \\
 \frac{1}{K_{h_{n}}(x_{2}, \cdot)  }K(\tfrac{x_{1} - x_{2}}{h_{n}}) &  \frac{1}{K_{h_{n}}(x_{2}, \cdot)  }K(0) & \ldots &  \frac{1}{K_{h_{n}}(x_{2}, \cdot)  }K(\tfrac{x_{n} - x_{2}}{h_{n}}) \\
 \vdots & \vdots & \ddots & \vdots \\
@@ -398,7 +399,7 @@ K_{h_{n}}(x_{i}, \cdot) = \sum_{j=1}^{n}K\Big( \frac{x_{i} - x_{j}}{h_{n}}  \Big
 * For the local linear regression estimator, 
 
 
----
+### The Cp Statistic
 
 * **Theorem:** If a random vector $\mathbf{Z}$ has mean vector $\mathbf{\mu}$ and covariance matrix $\mathbf{\Sigma}$,
 then
@@ -406,22 +407,43 @@ then
 E\{ \mathbf{Z}^{T}\mathbf{Z} \} = E\{ \sum_{i=1}^{n} Z_{i}^{2} \} = \mathbf{\mu}^{T}\mathbf{\mu} + \textrm{tr}( \mathbf{\Sigma} ) \nonumber
 \end{equation}
 
-* Notice that the vector $\mathbf{m} - \mathbf{A}\mathbf{Y}$ has 
+* Notice that the vector $\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}$ has 
 \begin{equation}
-E( \mathbf{m} - \mathbf{A}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}\mathbf{Y}) = \sigma^{2}\mathbf{A}\mathbf{A}^{T}
+E( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) = \sigma^{2}\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}
 \end{equation}
 
-* Also, the vector $\mathbf{Y} - \mathbf{A}\mathbf{Y} = (\mathbf{I} - \mathbf{A})\mathbf{Y}$ has
+* Also, the vector $\mathbf{Y} - \mathbf{A}_{h_{n}}\mathbf{Y} = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}$ has
 \begin{equation}
-E\{ (\mathbf{I} - \mathbf{A})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A})\mathbf{m}  \qquad \qquad \textrm{Var}\{ (\mathbf{I} - \mathbf{A})\mathbf{Y}) = \sigma^{2} (\mathbf{I} - \mathbf{A})(\mathbf{I} - \mathbf{A})^{T}\nonumber
+E\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}  \qquad \qquad \textrm{Var}\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}) = \sigma^{2} (\mathbf{I} - \mathbf{A}_{h_{n}})(\mathbf{I} - \mathbf{A}_{h_{n}})^{T} \nonumber
 \end{equation}
 
 ---
 
-* So, if we apply the above Theorem to these vectors, we can notice that
+* Ideally, we would like to minimize the following average mean-squared error
 \begin{equation}
-E\{ ( \mathbf{m} - \mathbf{A}\mathbf{Y} )^{T}(\mathbf{m} - \mathbf{A}\mathbf{Y}) \} = [ (\mathbf{I} - \mathbf{A})\mathbf{m}]^{T}[(\mathbf{I} - \mathbf{A})\mathbf{m}] + \sigma^{2}\textrm{tr}(\mathbf{A}\mathbf{A}^{T})  \nonumber
+R(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} E\Big[ \{ m(x_{i}) - \hat{m}(x_{i}) \}^{2} \Big]
+= E\{ \frac{1}{n}[\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}]^{T}[\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}] \}
 \end{equation}
+
+* If we apply the above Theorem to the vector $\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}$, we can notice that
+\begin{eqnarray}
+R( h_{n} ) &=& E\{ \frac{1}{n}( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} )^{T}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) \}  \nonumber \\
+&=& \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}] + \frac{\sigma^{2}}{n}\textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T})
+\end{eqnarray}
+
+* Now, using the mean and covariance matrix for $(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}$, we also have that
+\begin{eqnarray}
+&& E\{\frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] \} \nonumber \\
+&=& \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}] + \frac{\sigma^{2}}{n}\textrm{tr}\{ (\mathbf{I} - \mathbf{A}_{h_{n}})(\mathbf{I} - \mathbf{A}_{h_{n}})^{T} \} \nonumber \\
+&=& R(h_{n}) + \sigma^{2} - \frac{2\sigma^{2}}{n}\textrm{tr}( A_{h_{n}})
+\end{eqnarray}
+
+* So, if $\sigma^{2}$ is known, then $\hat{R}( h_{n} )$ is an unbiased estimate of $R( h_{n} )$
+\begin{eqnarray}
+\hat{R}( h_{n} ) &=& \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( A_{h_{n}}) \nonumber \\
+&=& \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}(x_{i}) \}^{2} - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( A_{h_{n}})
+\end{eqnarray}
+
 
 
 
