@@ -376,7 +376,67 @@ So, we are using weights which are larger the closer you are to $x$.
 E\Big[ \frac{1}{n}\sum_{i=1}^{n} \{ \hat{m}_{h_{n}}^{NW}(x_{i}) - m(x_{i}) \}^{2}     \Big] \nonumber
 \end{equation}
 
+---
+
+**The Nadaraya-Watson estimator in R** 
+
+* The Nadaraya-Watson estimator can be computed in `R` with the `ksmooth` function.
+```{r, eval=FALSE}
+ksmooth(x, y, kernel, bandwidth, x.points, ...)
+```
+
+*
+    + `x` - vector of covariate values
+    + `y` - vector of responses
+    + `kernel` - choice of kernel function; default is `box`; use `normal` if you want a Gaussian kernel
+    + `bandwidth` - value of the bandwidth; default is $0.05$
+    + `x.points` - points at which to estimate the regression function; default is to use $n$ equally spaced points.
+
+* The `x` vector from the fitted `ksmooth` object will be the vector of points at which the regression function
+is estimated. The `y` vector from the fitted `ksmooth` object will be a vector containing the estimated values of the regression function.
+
+* Note that the bandwidth used by this function for the Gaussian kernel is approximately $2.7$ times smaller than the bandwith in our definition of the Gaussian kernel.
+
+---
+
+* If you wanted to write your own function that computed the Nadaraya-Watson estimate
+at a vector of desired points $x.points = (t_{1}, \ldots, t_{q})$, you could use 
+something like
+```{r}
+MyNWEst <- function(x, y, bandwidth, x.points) {
+    q <- length(x.points) 
+    nw.est <- numeric(q)
+    for(k in 1:q) {
+        ww <- dnorm(x.points[k], mean=x, sd=bandwidth) 
+        nw.est[k] <- sum(ww*y)/sum(ww)
+    }    
+    return(nw.est)
+}
+```
+
+--- 
+
+* To compute the Nadraya-Watson estimate at a set of equally spaced of points from $10$ to $25$
+using bandwidth $0.5$ and plot the result, you could use the following code:
+```{r, fig.height=5.0}
+tt <- seq(10, 25, by=.1)
+bone.nwest <- ksmooth(x=bonedat$age, y=bonedat$spnbmd, kernel="normal", bandwidth=2.7*0.5, 
+                      x.points=tt)
+
+plot(bonedat$age, bonedat$spnbmd, las=1, ylab="Relative Change in Bone MD", 
+     xlab="Age", main="Bone Data: Nadaraya-Watson Estimate with hn=0.5 and 
+     Gaussian Kernel", type="n")
+points(bonedat$age, bonedat$spnbmd, pch=16, cex=0.7)
+lines(bone.nwest$x, bone.nwest$y, lwd=3, col="red")
+## Note that bone.nwest$x should equal tt
+```
+
+
+
 ## Local Linear Regression
+
+
+
 
 ## Selecting the Bandwidth/Smoothing Parameter
 
@@ -431,6 +491,24 @@ K_{h_{n}}(x_{i}, \cdot) = \sum_{j=1}^{n}K\Big( \frac{x_{i} - x_{j}}{h_{n}}  \Big
 
 * For the local linear regression estimator, 
 
+---
+
+* In "classic" linear regression where you would try to fit the straight line model 
+$Y_{i} = \beta_{0} + \beta_{1}x_{i} + \varepsilon_{i}$, the vector of fitted values would be
+\begin{equation}
+\hat{\mathbf{m}} = (\hat{m}(x_{1}), \ldots, \hat{m}(x_{n}))
+= (\hat{\beta}_{0} + \hat{\beta}_{1}x_{1}, \ldots, \hat{\beta}_{0} + \hat{\beta}_{1}x_{n})  \nonumber
+\end{equation}
+
+* In this case, you can represent $\hat{\mathbf{m}}$ as
+\begin{equation}
+\hat{\mathbf{m}} = \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}\mathbf{Y}  \nonumber
+\end{equation}
+where $\mathbf{X}$ is the following $n \times 2$ "design" matrix
+\begin{equation}
+\mathbf{X} = \begin{bmatrix} 1 & x_{1} \\ 1 & x_{2} \\ \vdots & \vdots \\ 1 & x_{n} \end{bmatrix} \nonumber
+\end{equation}
+
 
 ### The Cp Statistic
 
@@ -468,17 +546,18 @@ R( h_{n} ) &=& E\{ \frac{1}{n}( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} )^{T}(
 \begin{eqnarray}
 && E\{\frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] \} \nonumber \\
 &=& \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}] + \frac{\sigma^{2}}{n}\textrm{tr}\{ (\mathbf{I} - \mathbf{A}_{h_{n}})(\mathbf{I} - \mathbf{A}_{h_{n}})^{T} \} \nonumber \\
-&=& R(h_{n}) + \sigma^{2} - \frac{2\sigma^{2}}{n}\textrm{tr}( A_{h_{n}})
+&=& R(h_{n}) + \sigma^{2} - \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}})
 \end{eqnarray}
 
 * So, if $\sigma^{2}$ is known, then $\hat{R}( h_{n} )$ is an unbiased estimate of $R( h_{n} )$
 \begin{eqnarray}
-\hat{R}( h_{n} ) &=& \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( A_{h_{n}}) \nonumber \\
-&=& \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}(x_{i}) \}^{2} - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( A_{h_{n}})
+\hat{R}( h_{n} ) &=& \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber \\
+&=& \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}(x_{i}) \}^{2} - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}})
 \end{eqnarray}
 
+---
 
-
+* Cp Definition.
 
 ## Additional Reading
 

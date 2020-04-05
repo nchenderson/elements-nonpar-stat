@@ -632,6 +632,55 @@ So, we are using weights which are larger the closer you are to <span class="mat
 E\Big[ \frac{1}{n}\sum_{i=1}^{n} \{ \hat{m}_{h_{n}}^{NW}(x_{i}) - m(x_{i}) \}^{2}     \Big] \nonumber
 \end{equation}\]</span></li>
 </ul>
+<hr />
+<p><strong>The Nadaraya-Watson estimator in R</strong></p>
+<ul>
+<li>The Nadaraya-Watson estimator can be computed in <code>R</code> with the <code>ksmooth</code> function.</li>
+</ul>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb221-1" data-line-number="1"><span class="kw">ksmooth</span>(x, y, kernel, bandwidth, x.points, ...)</a></code></pre></div>
+<ul>
+<li><ul>
+<li><code>x</code> - vector of covariate values</li>
+<li><code>y</code> - vector of responses</li>
+<li><code>kernel</code> - choice of kernel function; default is <code>box</code>; use <code>normal</code> if you want a Gaussian kernel</li>
+<li><code>bandwidth</code> - value of the bandwidth; default is <span class="math inline">\(0.05\)</span></li>
+<li><code>x.points</code> - points at which to estimate the regression function; default is to use <span class="math inline">\(n\)</span> equally spaced points.</li>
+</ul></li>
+<li><p>The <code>x</code> vector from the fitted <code>ksmooth</code> object will be the vector of points at which the regression function
+is estimated. The <code>y</code> vector from the fitted <code>ksmooth</code> object will be a vector containing the estimated values of the regression function.</p></li>
+<li><p>Note that the bandwidth used by this function for the Gaussian kernel is approximately <span class="math inline">\(2.7\)</span> times smaller than the bandwith in our definition of the Gaussian kernel.</p></li>
+</ul>
+<hr />
+<ul>
+<li>If you wanted to write your own function that computed the Nadaraya-Watson estimate
+at a vector of desired points <span class="math inline">\(x.points = (t_{1}, \ldots, t_{q})\)</span>, you could use
+something like</li>
+</ul>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb222-1" data-line-number="1">MyNWEst &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, bandwidth, x.points) {</a>
+<a class="sourceLine" id="cb222-2" data-line-number="2">    q &lt;-<span class="st"> </span><span class="kw">length</span>(x.points) </a>
+<a class="sourceLine" id="cb222-3" data-line-number="3">    nw.est &lt;-<span class="st"> </span><span class="kw">numeric</span>(q)</a>
+<a class="sourceLine" id="cb222-4" data-line-number="4">    <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>q) {</a>
+<a class="sourceLine" id="cb222-5" data-line-number="5">        ww &lt;-<span class="st"> </span><span class="kw">dnorm</span>(x.points[k], <span class="dt">mean=</span>x, <span class="dt">sd=</span>bandwidth) </a>
+<a class="sourceLine" id="cb222-6" data-line-number="6">        nw.est[k] &lt;-<span class="st"> </span><span class="kw">sum</span>(ww<span class="op">*</span>y)<span class="op">/</span><span class="kw">sum</span>(ww)</a>
+<a class="sourceLine" id="cb222-7" data-line-number="7">    }    </a>
+<a class="sourceLine" id="cb222-8" data-line-number="8">    <span class="kw">return</span>(nw.est)</a>
+<a class="sourceLine" id="cb222-9" data-line-number="9">}</a></code></pre></div>
+<hr />
+<ul>
+<li>To compute the Nadraya-Watson estimate at a set of equally spaced of points from <span class="math inline">\(10\)</span> to <span class="math inline">\(25\)</span>
+using bandwidth <span class="math inline">\(0.5\)</span> and plot the result, you could use the following code:</li>
+</ul>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb223-1" data-line-number="1">tt &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">10</span>, <span class="dv">25</span>, <span class="dt">by=</span>.<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb223-2" data-line-number="2">bone.nwest &lt;-<span class="st"> </span><span class="kw">ksmooth</span>(<span class="dt">x=</span>bonedat<span class="op">$</span>age, <span class="dt">y=</span>bonedat<span class="op">$</span>spnbmd, <span class="dt">kernel=</span><span class="st">&quot;normal&quot;</span>, <span class="dt">bandwidth=</span><span class="fl">2.7</span><span class="op">*</span><span class="fl">0.5</span>, </a>
+<a class="sourceLine" id="cb223-3" data-line-number="3">                      <span class="dt">x.points=</span>tt)</a>
+<a class="sourceLine" id="cb223-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb223-5" data-line-number="5"><span class="kw">plot</span>(bonedat<span class="op">$</span>age, bonedat<span class="op">$</span>spnbmd, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </a>
+<a class="sourceLine" id="cb223-6" data-line-number="6">     <span class="dt">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Bone Data: Nadaraya-Watson Estimate with hn=0.5 and </span></a>
+<a class="sourceLine" id="cb223-7" data-line-number="7"><span class="st">     Gaussian Kernel&quot;</span>, <span class="dt">type=</span><span class="st">&quot;n&quot;</span>)</a>
+<a class="sourceLine" id="cb223-8" data-line-number="8"><span class="kw">points</span>(bonedat<span class="op">$</span>age, bonedat<span class="op">$</span>spnbmd, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">cex=</span><span class="fl">0.7</span>)</a>
+<a class="sourceLine" id="cb223-9" data-line-number="9"><span class="kw">lines</span>(bone.nwest<span class="op">$</span>x, bone.nwest<span class="op">$</span>y, <span class="dt">lwd=</span><span class="dv">3</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
+<p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb224-1" data-line-number="1"><span class="co">## Note that bone.nwest$x should equal tt</span></a></code></pre></div>
 </div>
 </div>
 <div id="local-linear-regression" class="section level2">
@@ -688,6 +737,23 @@ K_{h_{n}}(x_{i}, \cdot) = \sum_{j=1}^{n}K\Big( \frac{x_{i} - x_{j}}{h_{n}}  \Big
 <ul>
 <li>For the local linear regression estimator,</li>
 </ul>
+<hr />
+<ul>
+<li><p>In “classic” linear regression where you would try to fit the straight line model
+<span class="math inline">\(Y_{i} = \beta_{0} + \beta_{1}x_{i} + \varepsilon_{i}\)</span>, the vector of fitted values would be
+<span class="math display">\[\begin{equation}
+\hat{\mathbf{m}} = (\hat{m}(x_{1}), \ldots, \hat{m}(x_{n}))
+= (\hat{\beta}_{0} + \hat{\beta}_{1}x_{1}, \ldots, \hat{\beta}_{0} + \hat{\beta}_{1}x_{n})  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>In this case, you can represent <span class="math inline">\(\hat{\mathbf{m}}\)</span> as
+<span class="math display">\[\begin{equation}
+\hat{\mathbf{m}} = \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}\mathbf{Y}  \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(\mathbf{X}\)</span> is the following <span class="math inline">\(n \times 2\)</span> “design” matrix
+<span class="math display">\[\begin{equation}
+\mathbf{X} = \begin{bmatrix} 1 &amp; x_{1} \\ 1 &amp; x_{2} \\ \vdots &amp; \vdots \\ 1 &amp; x_{n} \end{bmatrix} \nonumber
+\end{equation}\]</span></p></li>
+</ul>
 </div>
 <div id="the-cp-statistic" class="section level3">
 <h3><span class="header-section-number">11.4.2</span> The Cp Statistic</h3>
@@ -722,13 +788,17 @@ R( h_{n} ) &amp;=&amp; E\{ \frac{1}{n}( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y
 <span class="math display">\[\begin{eqnarray}
 &amp;&amp; E\{\frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] \} \nonumber \\
 &amp;=&amp; \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}] + \frac{\sigma^{2}}{n}\textrm{tr}\{ (\mathbf{I} - \mathbf{A}_{h_{n}})(\mathbf{I} - \mathbf{A}_{h_{n}})^{T} \} \nonumber \\
-&amp;=&amp; R(h_{n}) + \sigma^{2} - \frac{2\sigma^{2}}{n}\textrm{tr}( A_{h_{n}})
+&amp;=&amp; R(h_{n}) + \sigma^{2} - \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}})
 \end{eqnarray}\]</span></p></li>
 <li><p>So, if <span class="math inline">\(\sigma^{2}\)</span> is known, then <span class="math inline">\(\hat{R}( h_{n} )\)</span> is an unbiased estimate of <span class="math inline">\(R( h_{n} )\)</span>
 <span class="math display">\[\begin{eqnarray}
-\hat{R}( h_{n} ) &amp;=&amp; \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( A_{h_{n}}) \nonumber \\
-&amp;=&amp; \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}(x_{i}) \}^{2} - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( A_{h_{n}})
+\hat{R}( h_{n} ) &amp;=&amp; \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber \\
+&amp;=&amp; \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}(x_{i}) \}^{2} - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}})
 \end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li>Cp Definition.</li>
 </ul>
 </div>
 </div>
