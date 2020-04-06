@@ -84,7 +84,7 @@ where $n_{k,h_{n}}$ is the number of $x_{i}$ that fall into the $k^{th}$ bin whe
 then taking an average of the reponses for $x_{i}$ in a small bin containing $x$ 
 should give us a reasonable approximation for the expectation of $Y_{i}$ given that $x_{i} = x$.
 
-* Another way of looking at the regressogram is to note that for $x \in B_{k}$
+* Another way of looking at the regressogram is to note that if we think of the $x_{i}$ as random variables, then for $x \in B_{k}$
 \begin{eqnarray}
 E\Big\{ \frac{1}{n} \sum_{i=1}^{n} Y_{i} I\big( x_{i} \in B_{k} \big) \Big\}
 &=& E\Big\{  Y_{1} I\big( x_{1} \in B_{k} \big) \Big\}  \nonumber \\
@@ -180,8 +180,8 @@ around $x$.
 * The local average estimator $\hat{m}_{h_{n}}^{loc}(x)$ at $x$ is defined as:
 \begin{eqnarray}
 \hat{m}_{h_{n}}^{loc}(x) &=&
-\frac{ \sum_{i}^{n} Y_{i}I\big( x - h_{n} < x_{i} < x + h_{n} \big) }{ \sum_{i}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big) } \nonumber \\
-&=& \frac{1}{n_{h_{n}}(x)} \sum_{i}^{n} Y_{i}I\big( x - h_{n} < x_{i} < x + h_{n} \big) \nonumber 
+\frac{ \sum_{i=1}^{n} Y_{i}I\big( x - h_{n} < x_{i} < x + h_{n} \big) }{ \sum_{i=1}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big) } \nonumber \\
+&=& \frac{1}{n_{h_{n}}(x)} \sum_{i=1}^{n} Y_{i}I\big( x - h_{n} < x_{i} < x + h_{n} \big) \nonumber 
 \end{eqnarray}
 where $n_{h_{n}}(x) = \sum_{i}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big)$.
 
@@ -303,7 +303,7 @@ of the regression function.
 * With k-NN, we still estimate the regression function at a particular point
 by taking a type of local average around this point.
 
-* However, k-NN takes the average over the k "nearest observation" to $x$
+* However, k-NN takes the average over the k "nearest observations" to $x$
 rather than taking an average over all the observations which fall into
 a bin centered at $x$.
 
