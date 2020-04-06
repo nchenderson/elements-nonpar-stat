@@ -627,10 +627,26 @@ So, we are using weights which are larger the closer you are to <span class="mat
 </ul>
 <hr />
 <ul>
-<li>For the Nadaraya-Watson estimator
-<span class="math display">\[\begin{equation}
-E\Big[ \frac{1}{n}\sum_{i=1}^{n} \{ \hat{m}_{h_{n}}^{NW}(x_{i}) - m(x_{i}) \}^{2}     \Big] \nonumber
-\end{equation}\]</span></li>
+<li><p>The Nadaraya-Watson estimator suffers from two main drawbacks. These are
+<strong>design bias</strong> and <strong>boundary bias</strong>.</p></li>
+<li><p>Design bias refers to the effect of the spacing of the <span class="math inline">\(x_{i}\)</span> on the performance
+of the Nadaraya-Watson estimator.</p></li>
+<li><p>Boundary bias refers to the performance of the Nadaraya-Watson estimator
+near the smallest and largest <span class="math inline">\(x_{i}\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>If we assume that the <span class="math inline">\(x_{i}\)</span> are random and have probability density <span class="math inline">\(f_{X}(x)\)</span>, then it can be shown
+that the mean-squared error of the Nadaraya-Watson estimator at a particular point <span class="math inline">\(x\)</span> has
+the following approximation
+<span class="math display">\[\begin{eqnarray}
+\textrm{MSE}(x) &amp;=&amp; E\Big[ \{ m(x) - \hat{m}_{h_{n}}^{NW}(x) \}^{2} \Big] \nonumber \\
+&amp;\approx&amp; \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4}\Bigg\{ m&#39;&#39;(x) + \frac{2m&#39;(x)f_{X}&#39;(x)}{f_{X}(x)} \Bigg\}^{2} + \frac{\sigma^{2}}{n h_{n} f_{X}(x) }, \nonumber
+\end{eqnarray}\]</span>
+where <span class="math inline">\(\mu_{2}(K) = \int_{-\infty}^{\infty} u^{2} K(u) du\)</span> and <span class="math inline">\(\kappa_{2}(K) = \int_{-\infty}^{\infty} K^{2}(u) du\)</span>.</p></li>
+<li><p>The term <span class="math inline">\(2m&#39;(x)f_{X}&#39;(x)/f_{X}(x)\)</span> is referred to as the design bias. Notice that this should be zero if
+the <span class="math inline">\(x_{i}\)</span> are drawn from a Uniform distribution. In other words, if the <span class="math inline">\(x_{i}\)</span> are roughly equally spaced, then
+the design bias should be small.</p></li>
 </ul>
 <hr />
 <p><strong>The Nadaraya-Watson estimator in R</strong></p>
@@ -701,8 +717,8 @@ for an appropriately chosen <span class="math inline">\(n \times n\)</span> matr
 </ul>
 <hr />
 <ul>
-<li><p>For the local average estimator, we have <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{A}_{h_{n}}\mathbf{Y}\)</span> where <span class="math inline">\(\mathbf{A}_{h_{n}}\)</span> is
-defined as
+<li><p>For the local average estimator, we have <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{A}_{h_{n}}\mathbf{Y}\)</span> where
+<span class="math inline">\(\mathbf{A}_{h_{n}}\)</span> is defined as
 <span class="math display">\[\begin{equation}
 \mathbf{A}_{h_{n}}
 = \begin{bmatrix} \frac{1}{n_{h_{n}}(x_{1})}I(x_{1} - h_{n} &lt; x_{1} &lt; x_{1} + h_{n}) &amp; \ldots &amp;  \frac{1}{n_{h_{n}}(x_{1})}I(x_{1} - h_{n} &lt; x_{n} &lt; x_{1} + h_{n}) \\
@@ -761,7 +777,7 @@ where <span class="math inline">\(\mathbf{X}\)</span> is the following <span cla
 <li><p><strong>Theorem:</strong> If a random vector <span class="math inline">\(\mathbf{Z}\)</span> has mean vector <span class="math inline">\(\mathbf{\mu}\)</span> and covariance matrix <span class="math inline">\(\mathbf{\Sigma}\)</span>,
 then
 <span class="math display">\[\begin{equation}
-E\{ \mathbf{Z}^{T}\mathbf{Z} \} = E\{ \sum_{i=1}^{n} Z_{i}^{2} \} = \mathbf{\mu}^{T}\mathbf{\mu} + \textrm{tr}( \mathbf{\Sigma} ) \nonumber
+E\{ \mathbf{Z}^{T}\mathbf{Z} \} = E\Big\{ \sum_{i=1}^{n} Z_{i}^{2} \Big\} = \mathbf{\mu}^{T}\mathbf{\mu} + \textrm{tr}( \mathbf{\Sigma} ) \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Notice that the vector <span class="math inline">\(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}\)</span> has
 <span class="math display">\[\begin{equation}
@@ -774,25 +790,25 @@ E\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A}_{h
 </ul>
 <hr />
 <ul>
-<li><p>Ideally, we would like to minimize the following average mean-squared error
-<span class="math display">\[\begin{equation}
-R(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} E\Big[ \{ m(x_{i}) - \hat{m}(x_{i}) \}^{2} \Big]
-= E\{ \frac{1}{n}[\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}]^{T}[\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}] \}
-\end{equation}\]</span></p></li>
+<li><p>Ideally, we would like to choose the smoothing parameter <span class="math inline">\(h_{n}\)</span> to minimize the following mean averaged squared error
+<span class="math display">\[\begin{eqnarray}
+\textrm{MASE}(h_{n}) &amp;=&amp; \frac{1}{n}\sum_{i=1}^{n} E\Big[ \{ m(x_{i}) - \hat{m}(x_{i}) \}^{2} \Big]  \nonumber \\
+&amp;=&amp; E\{ \frac{1}{n}[\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}]^{T}[\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}] \} \nonumber
+\end{eqnarray}\]</span></p></li>
 <li><p>If we apply the above Theorem to the vector <span class="math inline">\(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}\)</span>, we can notice that
 <span class="math display">\[\begin{eqnarray}
-R( h_{n} ) &amp;=&amp; E\{ \frac{1}{n}( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} )^{T}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) \}  \nonumber \\
+\textrm{MASE}( h_{n} ) &amp;=&amp; E\{ \frac{1}{n}( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} )^{T}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) \}  \nonumber \\
 &amp;=&amp; \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}] + \frac{\sigma^{2}}{n}\textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T})
 \end{eqnarray}\]</span></p></li>
 <li><p>Now, using the mean and covariance matrix for <span class="math inline">\((\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}\)</span>, we also have that
 <span class="math display">\[\begin{eqnarray}
 &amp;&amp; E\{\frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] \} \nonumber \\
 &amp;=&amp; \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}] + \frac{\sigma^{2}}{n}\textrm{tr}\{ (\mathbf{I} - \mathbf{A}_{h_{n}})(\mathbf{I} - \mathbf{A}_{h_{n}})^{T} \} \nonumber \\
-&amp;=&amp; R(h_{n}) + \sigma^{2} - \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}})
+&amp;=&amp; \textrm{MASE}(h_{n}) + \sigma^{2} - \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}})
 \end{eqnarray}\]</span></p></li>
-<li><p>So, if <span class="math inline">\(\sigma^{2}\)</span> is known, then <span class="math inline">\(\hat{R}( h_{n} )\)</span> is an unbiased estimate of <span class="math inline">\(R( h_{n} )\)</span>
+<li><p>So, if <span class="math inline">\(\sigma^{2}\)</span> is known, then <span class="math inline">\(\widehat{\textrm{MASE}}( h_{n} )\)</span> is an unbiased estimate of <span class="math inline">\(\textrm{MASE}( h_{n} )\)</span>
 <span class="math display">\[\begin{eqnarray}
-\hat{R}( h_{n} ) &amp;=&amp; \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber \\
+\widehat{\textrm{MASE}}( h_{n} ) &amp;=&amp; \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber \\
 &amp;=&amp; \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}(x_{i}) \}^{2} - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}})
 \end{eqnarray}\]</span></p></li>
 </ul>
