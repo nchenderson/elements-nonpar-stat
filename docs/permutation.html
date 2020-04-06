@@ -285,10 +285,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.2.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#k-nearest-neighbor-k-nn-regression"><i class="fa fa-check"></i><b>11.2.3</b> k-Nearest Neighbor (k-NN) Regression</a></li>
 <li class="chapter" data-level="11.2.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>11.2.4</b> The Nadaraya-Watson Estimator</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear Regression</a></li>
+<li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear Regression</a><ul>
+<li class="chapter" data-level="11.3.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#definition-7"><i class="fa fa-check"></i><b>11.3.1</b> Definition</a></li>
+<li class="chapter" data-level="11.3.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#advantages"><i class="fa fa-check"></i><b>11.3.2</b> Advantages</a></li>
+<li class="chapter" data-level="11.3.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-polynomial-regression"><i class="fa fa-check"></i><b>11.3.3</b> Local Polynomial Regression</a></li>
+</ul></li>
 <li class="chapter" data-level="11.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>11.4</b> Selecting the Bandwidth/Smoothing Parameter</a><ul>
 <li class="chapter" data-level="11.4.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#representing-in-linear-form"><i class="fa fa-check"></i><b>11.4.1</b> Representing in Linear Form</a></li>
 <li class="chapter" data-level="11.4.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-cp-statistic"><i class="fa fa-check"></i><b>11.4.2</b> The Cp Statistic</a></li>
+<li class="chapter" data-level="11.4.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>11.4.3</b> Leave-one-out Cross Validation</a></li>
 </ul></li>
 <li class="chapter" data-level="11.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.5</b> Additional Reading</a></li>
 </ul></li>
@@ -726,7 +731,7 @@ where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly
 </ul>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">pval.mc &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(mean.diff) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">abs</span>(observed.diff)))<span class="op">/</span>(nperms <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb67-2" data-line-number="2"><span class="kw">round</span>(pval.mc, <span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.76</code></pre>
+<pre><code>## [1] 0.77</code></pre>
 </div>
 <div id="example-2-ratios-of-means" class="section level3">
 <h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means</h3>

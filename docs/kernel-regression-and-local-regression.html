@@ -285,10 +285,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.2.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#k-nearest-neighbor-k-nn-regression"><i class="fa fa-check"></i><b>11.2.3</b> k-Nearest Neighbor (k-NN) Regression</a></li>
 <li class="chapter" data-level="11.2.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>11.2.4</b> The Nadaraya-Watson Estimator</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear Regression</a></li>
+<li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear Regression</a><ul>
+<li class="chapter" data-level="11.3.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#definition-7"><i class="fa fa-check"></i><b>11.3.1</b> Definition</a></li>
+<li class="chapter" data-level="11.3.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#advantages"><i class="fa fa-check"></i><b>11.3.2</b> Advantages</a></li>
+<li class="chapter" data-level="11.3.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-polynomial-regression"><i class="fa fa-check"></i><b>11.3.3</b> Local Polynomial Regression</a></li>
+</ul></li>
 <li class="chapter" data-level="11.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>11.4</b> Selecting the Bandwidth/Smoothing Parameter</a><ul>
 <li class="chapter" data-level="11.4.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#representing-in-linear-form"><i class="fa fa-check"></i><b>11.4.1</b> Representing in Linear Form</a></li>
 <li class="chapter" data-level="11.4.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-cp-statistic"><i class="fa fa-check"></i><b>11.4.2</b> The Cp Statistic</a></li>
+<li class="chapter" data-level="11.4.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>11.4.3</b> Leave-one-out Cross Validation</a></li>
 </ul></li>
 <li class="chapter" data-level="11.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.5</b> Additional Reading</a></li>
 </ul></li>
@@ -701,6 +706,63 @@ using bandwidth <span class="math inline">\(0.5\)</span> and plot the result, yo
 </div>
 <div id="local-linear-regression" class="section level2">
 <h2><span class="header-section-number">11.3</span> Local Linear Regression</h2>
+<div id="definition-7" class="section level3">
+<h3><span class="header-section-number">11.3.1</span> Definition</h3>
+<ul>
+<li><p>You can think of both the regressogram and the local average as methods
+which fit local intercept models.</p></li>
+<li><p>For the regressogram, we fit an intercept model (that is a flat line curve) within
+a small bin that contains <span class="math inline">\(x\)</span>.</p></li>
+<li><p>For the local average estimator, we fit an intercept model for a small
+bin around <span class="math inline">\(x\)</span>.</p></li>
+<li><p>The Nadaraya-Watson estimator can be thought of as just smoothing out the
+local intercept approach of the local average estimator.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Instead of fitting local intercept models, we could fit local
+linear models that have an intercept and a slope term.</p></li>
+<li><p>To be specific, suppose we estimated the regression function at <span class="math inline">\(x\)</span>
+by fitting a linear model using only data from the <span class="math inline">\(x_{i}\)</span> that fell into the bin
+<span class="math inline">\((x - h_{n}, x + h_{n})\)</span>.</p></li>
+<li><p>In this case, we would first fit the linear model
+<span class="math inline">\(\hat{s}_{x}(x_{i}) = \hat{\beta}_{0x} + \hat{\beta}_{1x}(x_{i} - x)\)</span> where <span class="math inline">\(\hat{\beta}_{0x}\)</span>, <span class="math inline">\(\hat{\beta}_{1x}\)</span>
+solved the following local least-squares problem
+<span class="math display" id="eq:simple-loclin-regression">\[\begin{equation}
+\hat{\beta}_{0x}, \hat{\beta}_{1x} \textrm{ minimize: } \quad \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} - \beta_{1x}(x_{i} - x) \}^{2}I\big( x - h_{n} &lt; x_{i} &lt; x + h_{n} \big)  
+\tag{11.4}
+\end{equation}\]</span></p></li>
+<li><p>Then, we would estimate <span class="math inline">\(m(x)\)</span> by using the value of <span class="math inline">\(\hat{s}_{x}\)</span> at <span class="math inline">\(x\)</span>. That is, <span class="math inline">\(\hat{s}_{x}(x) = \hat{\beta}_{0x}\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p><strong>Local Linear Regression</strong> uses the same idea as <a href="kernel-regression-and-local-regression.html#eq:simple-loclin-regression">(11.4)</a>, but replaces the indicator function <span class="math inline">\(I( x - h_{n} &lt; x_{i} &lt; x + h_{n})\)</span> with a smooth kernel function.</p></li>
+<li><p>So, the local linear regression estimate of the regression function at <span class="math inline">\(x\)</span> is
+<span class="math display">\[\begin{eqnarray}
+\hat{m}_{h_{n}}^{loclin}(x) &amp;=&amp; \hat{\beta}_{0x} \quad \textrm{ where } \nonumber \\
+\hat{\beta}_{0x}, \hat{\beta}_{1x} &amp;=&amp;  \textrm{argmin}_{\beta_{0x},\beta_{1x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} - \beta_{1x}(x_{i} - x) \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><strong>Exercise 8.3</strong> Suppose we define an estimator <span class="math inline">\(\tilde{m}_{h_{n}}(x)\)</span> of the regression function as
+<span class="math display">\[\begin{eqnarray}
+\tilde{m}_{h_{n}}(x) &amp;=&amp; \hat{\beta}_{0x} \quad \textrm{ where } \nonumber \\
+\hat{\beta}_{0x} &amp;=&amp;  \textrm{argmin}_{\beta_{0x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
+\end{eqnarray}\]</span>
+Show that <span class="math inline">\(\tilde{m}_{h_{n}}(x) = \hat{m}_{h_{n}}^{NW}(x)\)</span>.</li>
+</ul>
+<hr />
+</div>
+<div id="advantages" class="section level3">
+<h3><span class="header-section-number">11.3.2</span> Advantages</h3>
+<ul>
+<li>The local linear regression estimator can reduce the effects of design and boundary bias.</li>
+</ul>
+</div>
+<div id="local-polynomial-regression" class="section level3">
+<h3><span class="header-section-number">11.3.3</span> Local Polynomial Regression</h3>
+</div>
 </div>
 <div id="selecting-the-bandwidthsmoothing-parameter" class="section level2">
 <h2><span class="header-section-number">11.4</span> Selecting the Bandwidth/Smoothing Parameter</h2>
@@ -816,6 +878,9 @@ E\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A}_{h
 <ul>
 <li>Cp Definition.</li>
 </ul>
+</div>
+<div id="leave-one-out-cross-validation" class="section level3">
+<h3><span class="header-section-number">11.4.3</span> Leave-one-out Cross Validation</h3>
 </div>
 </div>
 <div id="additional-reading-5" class="section level2">

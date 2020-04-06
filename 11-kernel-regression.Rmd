@@ -455,7 +455,67 @@ lines(bone.nwest$x, bone.nwest$y, lwd=3, col="red")
 
 ## Local Linear Regression
 
+### Definition
 
+* You can think of both the regressogram and the local average as methods
+which fit local intercept models.
+
+* For the regressogram, we fit an intercept model (that is a flat line curve) within 
+a small bin that contains $x$. 
+
+* For the local average estimator, we fit an intercept model for a small 
+bin around $x$.
+
+* The Nadaraya-Watson estimator can be thought of as just smoothing out the 
+local intercept approach of the local average estimator. 
+
+
+---
+
+* Instead of fitting local intercept models, we could fit local
+linear models that have an intercept and a slope term.
+
+* To be specific, suppose we estimated the regression function at $x$
+by fitting a linear model using only data from the $x_{i}$ that fell into the bin
+$(x - h_{n}, x + h_{n})$.
+
+* In this case, we would first fit the linear model 
+$\hat{s}_{x}(x_{i}) = \hat{\beta}_{0x} + \hat{\beta}_{1x}(x_{i} - x)$ where $\hat{\beta}_{0x}$, $\hat{\beta}_{1x}$
+solved the following local least-squares problem
+\begin{equation}
+\hat{\beta}_{0x}, \hat{\beta}_{1x} \textrm{ minimize: } \quad \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} - \beta_{1x}(x_{i} - x) \}^{2}I\big( x - h_{n} < x_{i} < x + h_{n} \big)  
+(\#eq:simple-loclin-regression)
+\end{equation}
+
+* Then, we would estimate $m(x)$ by using the value of $\hat{s}_{x}$ at $x$. That is, $\hat{s}_{x}(x) = \hat{\beta}_{0x}$. 
+
+---
+
+* **Local Linear Regression** uses the same idea as \@ref(eq:simple-loclin-regression), but replaces the indicator function $I( x - h_{n} < x_{i} < x + h_{n})$ with a smooth kernel function. 
+
+* So, the local linear regression estimate of the regression function at $x$ is
+\begin{eqnarray}
+\hat{m}_{h_{n}}^{loclin}(x) &=& \hat{\beta}_{0x} \quad \textrm{ where } \nonumber \\
+\hat{\beta}_{0x}, \hat{\beta}_{1x} &=&  \textrm{argmin}_{\beta_{0x},\beta_{1x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} - \beta_{1x}(x_{i} - x) \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
+\end{eqnarray}
+
+---
+
+* **Exercise 8.3** Suppose we define an estimator $\tilde{m}_{h_{n}}(x)$ of the regression function as
+\begin{eqnarray}
+\tilde{m}_{h_{n}}(x) &=& \hat{\beta}_{0x} \quad \textrm{ where } \nonumber \\
+\hat{\beta}_{0x} &=&  \textrm{argmin}_{\beta_{0x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
+\end{eqnarray}
+Show that $\tilde{m}_{h_{n}}(x) = \hat{m}_{h_{n}}^{NW}(x)$.
+
+---
+
+### Advantages
+
+* The local linear regression estimator can reduce the effects of design and boundary bias.
+
+
+### Local Polynomial Regression
 
 
 ## Selecting the Bandwidth/Smoothing Parameter
@@ -578,6 +638,9 @@ E\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A}_{h
 ---
 
 * Cp Definition.
+
+
+### Leave-one-out Cross Validation
 
 ## Additional Reading
 
