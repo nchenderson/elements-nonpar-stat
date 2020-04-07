@@ -287,7 +287,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear Regression</a><ul>
 <li class="chapter" data-level="11.3.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#definition-7"><i class="fa fa-check"></i><b>11.3.1</b> Definition</a></li>
-<li class="chapter" data-level="11.3.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#advantages"><i class="fa fa-check"></i><b>11.3.2</b> Advantages</a></li>
+<li class="chapter" data-level="11.3.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#advantages-of-the-local-linear-estimator"><i class="fa fa-check"></i><b>11.3.2</b> Advantages of the Local Linear Estimator</a></li>
 <li class="chapter" data-level="11.3.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-polynomial-regression"><i class="fa fa-check"></i><b>11.3.3</b> Local Polynomial Regression</a></li>
 </ul></li>
 <li class="chapter" data-level="11.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>11.4</b> Selecting the Bandwidth/Smoothing Parameter</a><ul>
@@ -476,7 +476,7 @@ around <span class="math inline">\(x\)</span>.</p></li>
 \frac{ \sum_{i=1}^{n} Y_{i}I\big( x - h_{n} &lt; x_{i} &lt; x + h_{n} \big) }{ \sum_{i=1}^{n} I\big( x - h_{n} &lt; x_{i} &lt; x + h_{n} \big) } \nonumber \\
 &amp;=&amp; \frac{1}{n_{h_{n}}(x)} \sum_{i=1}^{n} Y_{i}I\big( x - h_{n} &lt; x_{i} &lt; x + h_{n} \big) \nonumber 
 \end{eqnarray}\]</span>
-where <span class="math inline">\(n_{h_{n}}(x) = \sum_{i}^{n} I\big( x - h_{n} &lt; x_{i} &lt; x + h_{n} \big)\)</span>.</p></li>
+where <span class="math inline">\(n_{h_{n}}(x) = \sum_{i=1}^{n} I\big( x - h_{n} &lt; x_{i} &lt; x + h_{n} \big)\)</span>.</p></li>
 <li><p>The local average estimator does not need to have a
 constant value within each of a few pre-specified bins.</p></li>
 </ul>
@@ -692,8 +692,8 @@ something like</li>
 using bandwidth <span class="math inline">\(0.5\)</span> and plot the result, you could use the following code:</li>
 </ul>
 <div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb223-1" data-line-number="1">tt &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">10</span>, <span class="dv">25</span>, <span class="dt">by=</span>.<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb223-2" data-line-number="2">bone.nwest &lt;-<span class="st"> </span><span class="kw">ksmooth</span>(<span class="dt">x=</span>bonedat<span class="op">$</span>age, <span class="dt">y=</span>bonedat<span class="op">$</span>spnbmd, <span class="dt">kernel=</span><span class="st">&quot;normal&quot;</span>, <span class="dt">bandwidth=</span><span class="fl">2.7</span><span class="op">*</span><span class="fl">0.5</span>, </a>
-<a class="sourceLine" id="cb223-3" data-line-number="3">                      <span class="dt">x.points=</span>tt)</a>
+<a class="sourceLine" id="cb223-2" data-line-number="2">bone.nwest &lt;-<span class="st"> </span><span class="kw">ksmooth</span>(<span class="dt">x=</span>bonedat<span class="op">$</span>age, <span class="dt">y=</span>bonedat<span class="op">$</span>spnbmd, <span class="dt">kernel=</span><span class="st">&quot;normal&quot;</span>, </a>
+<a class="sourceLine" id="cb223-3" data-line-number="3">                      <span class="dt">bandwidth=</span><span class="fl">2.7</span><span class="op">*</span><span class="fl">0.5</span>, <span class="dt">x.points=</span>tt)</a>
 <a class="sourceLine" id="cb223-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb223-5" data-line-number="5"><span class="kw">plot</span>(bonedat<span class="op">$</span>age, bonedat<span class="op">$</span>spnbmd, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </a>
 <a class="sourceLine" id="cb223-6" data-line-number="6">     <span class="dt">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Bone Data: Nadaraya-Watson Estimate with hn=0.5 and </span></a>
@@ -754,11 +754,33 @@ Show that <span class="math inline">\(\tilde{m}_{h_{n}}(x) = \hat{m}_{h_{n}}^{NW
 </ul>
 <hr />
 </div>
-<div id="advantages" class="section level3">
-<h3><span class="header-section-number">11.3.2</span> Advantages</h3>
+<div id="advantages-of-the-local-linear-estimator" class="section level3">
+<h3><span class="header-section-number">11.3.2</span> Advantages of the Local Linear Estimator</h3>
 <ul>
-<li>The local linear regression estimator can reduce the effects of design and boundary bias.</li>
+<li><p>The local linear regression estimator can reduce the effects of design and boundary bias.</p></li>
+<li><p>If we write the local linear estimate at the point <span class="math inline">\(x\)</span> as
+<span class="math inline">\(\hat{m}_{h_{n}}^{loclin}(x) = \sum_{i=1}^{n} a_{i}^{h_{n}}(x)\)</span>, then the bias is appoximately
+<span class="math display">\[\begin{equation}
+E\{ \hat{m}_{h_{n}}^{loclin}(x) \} - m(x)
+\approx m&#39;(x)\sum_{i=1}^{n} (x_{i} - x)a_{i}^{h_{n}}(x) + \frac{m&#39;&#39;(x)}{2}\sum_{i=1}^{n} (x_{i} - x)^{2}a_{i}^{h_{n}}(x) \nonumber 
+\end{equation}\]</span></p></li>
+<li><p>For local linear regression, the term <span class="math inline">\(m&#39;(x)\sum_{i=1}^{n} (x_{i} - x)a_{i}^{h_{n}}(x)\)</span> equals zero. If
+the weights <span class="math inline">\(a_{i}^{h_{n}}(x)\)</span> were the weights from the Nadaraya-Watson estimator, this term would not necessarily
+equal zero.</p></li>
+<li><p>Also, the local linear estimator can help to reduce the boundary bias that arises
+from asymmetry near the boundary (draw a picture).</p></li>
 </ul>
+<hr />
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb225-1" data-line-number="1">MyLocLinear &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, bandwidth, x.points) {</a>
+<a class="sourceLine" id="cb225-2" data-line-number="2">  q &lt;-<span class="st"> </span><span class="kw">length</span>(x.points) </a>
+<a class="sourceLine" id="cb225-3" data-line-number="3">  loclin.est &lt;-<span class="st"> </span><span class="kw">numeric</span>(q)</a>
+<a class="sourceLine" id="cb225-4" data-line-number="4">  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>q) {</a>
+<a class="sourceLine" id="cb225-5" data-line-number="5">    xtmp &lt;-<span class="st"> </span>x <span class="op">-</span><span class="st"> </span>x.points[k]</a>
+<a class="sourceLine" id="cb225-6" data-line-number="6">    ww &lt;-<span class="st"> </span><span class="kw">dnorm</span>(xtmp, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span>bandwidth) </a>
+<a class="sourceLine" id="cb225-7" data-line-number="7">    loclin.est[k] &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>xtmp, <span class="dt">weights=</span>ww)<span class="op">$</span>coef[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb225-8" data-line-number="8">  }    </a>
+<a class="sourceLine" id="cb225-9" data-line-number="9">  <span class="kw">return</span>(loclin.est)</a>
+<a class="sourceLine" id="cb225-10" data-line-number="10">}</a></code></pre></div>
 </div>
 <div id="local-polynomial-regression" class="section level3">
 <h3><span class="header-section-number">11.3.3</span> Local Polynomial Regression</h3>
@@ -843,7 +865,7 @@ E\{ \mathbf{Z}^{T}\mathbf{Z} \} = E\Big\{ \sum_{i=1}^{n} Z_{i}^{2} \Big\} = \mat
 \end{equation}\]</span></p></li>
 <li><p>Notice that the vector <span class="math inline">\(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}\)</span> has
 <span class="math display">\[\begin{equation}
-E( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) = \sigma^{2}\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}
+E( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) = \sigma^{2}\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T} \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Also, the vector <span class="math inline">\(\mathbf{Y} - \mathbf{A}_{h_{n}}\mathbf{Y} = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}\)</span> has
 <span class="math display">\[\begin{equation}
@@ -871,16 +893,67 @@ E\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A}_{h
 <li><p>So, if <span class="math inline">\(\sigma^{2}\)</span> is known, then <span class="math inline">\(\widehat{\textrm{MASE}}( h_{n} )\)</span> is an unbiased estimate of <span class="math inline">\(\textrm{MASE}( h_{n} )\)</span>
 <span class="math display">\[\begin{eqnarray}
 \widehat{\textrm{MASE}}( h_{n} ) &amp;=&amp; \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber \\
-&amp;=&amp; \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}(x_{i}) \}^{2} - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}})
+&amp;=&amp; \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2} - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}})  \nonumber
 \end{eqnarray}\]</span></p></li>
 </ul>
 <hr />
 <ul>
-<li>Cp Definition.</li>
+<li><p>The predictive mean averaged squared error (PAMSE) is defined as
+<span class="math display">\[\begin{equation}
+\textrm{PAMSE}(h_{n}) = E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ Y_{i}&#39; -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]
+\end{equation}\]</span>
+where <span class="math inline">\(Y_{i}&#39;\)</span> is a “future” independent observation that has the same covariate as <span class="math inline">\(Y_{i}\)</span>.</p></li>
+<li><p>We assume that <span class="math inline">\(Y_{i}&#39; = m(x_{i}) + \varepsilon_{i}&#39;\)</span> where <span class="math inline">\(\varepsilon_{i}&#39;\)</span> is independent of <span class="math inline">\(\varepsilon_{i}\)</span>.</p></li>
+<li><p>So,
+<span class="math display">\[\begin{eqnarray}
+\textrm{PAMSE}(h_{n}) &amp;=&amp; E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) + \varepsilon_{i}&#39; \}^{2} \Big] 
+\nonumber \\
+&amp;=&amp; E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]  +  E\Big[ \frac{1}{n} \sum_{i=1}^{n} (\varepsilon_{i}&#39;)^{2} \Big]  \nonumber \\
+&amp;=&amp; \textrm{AMSE}( h_{n} ) + \sigma^{2} \nonumber
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The <span class="math inline">\(C_{p}\)</span> statistic is based on the idea that, if <span class="math inline">\(\sigma^{2}\)</span> was known, then the following quantity
+would be an unbiased estimate of <span class="math inline">\(\textrm{PAMSE}( h_{n} )\)</span>:
+<span class="math display">\[\begin{equation}
+\frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The <span class="math inline">\(C_{p}\)</span> statistic formula is obtained by plugging in an estimate <span class="math inline">\(\hat{\sigma}^{2}\)</span> of the residual variance into the above
+formula:
+<span class="math display">\[\begin{equation}
+C_{p} = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber
+\end{equation}\]</span></p></li>
 </ul>
 </div>
 <div id="leave-one-out-cross-validation" class="section level3">
 <h3><span class="header-section-number">11.4.3</span> Leave-one-out Cross Validation</h3>
+<ul>
+<li>Similar to the way we defined a leave-on-out density estimate in Chapter 8, we will define
+the leave-one-out estimate of the regression function at <span class="math inline">\(x\)</span> as:
+<span class="math display">\[\begin{equation}
+\hat{m}_{h_{n},-i}(x) - \textrm{ estimate of $m(x)$ found by using all data except $(Y_{i}, x_{i})$.}
+\end{equation}\]</span></li>
+</ul>
+<hr />
+<ul>
+<li>Because we are assuming that <span class="math inline">\(\hat{m}_{h_{n}}(x)\)</span> can be represented as a linear combination of the responses
+<span class="math display">\[\begin{equation}
+\hat{m}_{h_{n}}(x) = \sum_{j=1}^{n} a_{j}^{h_{n}}(x)Y_{j}
+\end{equation}\]</span>
+the leave-one-out estimate can be expressed as
+<span class="math display">\[\begin{equation}
+\hat{m}_{h_{n}, -i}(x) = \sum_{j=1}^{n} a_{j,-i}^{h_{n}}(x)Y_{j}
+\end{equation}\]</span>
+where
+<span class="math display">\[\begin{equation}
+a_{j,-i}^{h_{n}}(x) = 
+\end{equation}\]</span></li>
+</ul>
+<hr />
+<ul>
+<li>The predictive risk estimate is</li>
+</ul>
 </div>
 </div>
 <div id="additional-reading-5" class="section level2">

@@ -25,7 +25,9 @@ Y_{i} = m( \mathbf{x}_{i} ) + \varepsilon_{i}  \nonumber
 * The residuals $\varepsilon_{1}, \ldots, \varepsilon_{n}$ are assumed to 
 be i.i.d. and have mean zero. 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * In a nonparametric approach, we will try to estimate $m(\mathbf{x})$ without
 making any strong assumptions about the form of $m( \mathbf{x} )$. 
@@ -76,7 +78,9 @@ $x_{i}'s$ which fall into the $k^{th}$ bin.
 \end{equation}
 where $n_{k,h_{n}}$ is the number of $x_{i}$ that fall into the $k^{th}$ bin when using bin width $h_{n}$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The estimate $\hat{m}_{h_{n}}^{R}(x)$ of the regression function is called the **regressogram**.
 
@@ -107,16 +111,17 @@ should be a reasonable estimate of the ratio
 \int_{-\infty}^{\infty} y f_{Y,X}(y, x) dy \big/ f_{X}(x) \nonumber 
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
-<div class="figure">
-<img src="11-kernel-regression_files/figure-html/unnamed-chunk-1-1.png" alt="Framingham Data. Regressogram estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years." width="672" />
-<p class="caption">(\#fig:unnamed-chunk-1)Framingham Data. Regressogram estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years.</p>
-</div>
+![(\#fig:unnamed-chunk-1)Framingham Data. Regressogram estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years.](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-1-1.pdf) 
 
-<img src="11-kernel-regression_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+![](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-2-1.pdf)<!-- --> 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * **Exercise 11.1** Let 
 \begin{equation}
@@ -130,7 +135,9 @@ If $\mathbf{Y} = (Y_{1}, \ldots, Y_{n})$, show that you can express $\hat{\mathb
 for an appropriately chosen $n \times n$ matrix $\mathbf{A}$.
 What is the value of $\textrm{tr}(\mathbf{A})$?
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 
 ### The Local Average Estimator
@@ -140,7 +147,9 @@ What is the value of $\textrm{tr}(\mathbf{A})$?
 * The local average estimator can be thought of as a regression analogue of the
 "box-type" density estimator that we described in Chapter 8.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * For each point $x$, we are going to use a regression function estimate which
 has a bin "centered" at $x$.
@@ -158,12 +167,14 @@ around $x$.
 \frac{ \sum_{i=1}^{n} Y_{i}I\big( x - h_{n} < x_{i} < x + h_{n} \big) }{ \sum_{i=1}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big) } \nonumber \\
 &=& \frac{1}{n_{h_{n}}(x)} \sum_{i=1}^{n} Y_{i}I\big( x - h_{n} < x_{i} < x + h_{n} \big) \nonumber 
 \end{eqnarray}
-where $n_{h_{n}}(x) = \sum_{i=1}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big)$.
+where $n_{h_{n}}(x) = \sum_{i}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big)$.
 
 * The local average estimator does not need to have a 
 constant value within each of a few pre-specified bins.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * We can also express the local average estimator in the following way:
 \begin{equation}
@@ -183,7 +194,9 @@ w(t) =
 * While a local average estimate will not be a "step function" like the regressogram, the local average
 estimate will typically be non-smooth and have a jagged appearance.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Like kernel density estimation, there is a bias/variance tradeoff to the choice of $h_{n}$.
 
@@ -198,7 +211,9 @@ of $x_{i}$ values, and $m(x)$ could vary substantially over this range of $x_{i}
 the regression if we simply replace the "box function" $w(t)$ in \@ref(eq:local-average-estimator) with a
 smoother kernel function $K(t)$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * `R` code for computing a local average estimate $\hat{m}_{2}^{loc}(x)$ at the 
 points $x = 31, 32, 33, ...., 71$ is given below
@@ -219,9 +234,11 @@ points(framingham$age, framingham$diaBP, pch=16, cex=0.7)
 lines(xseq, m.hat.loc, lwd=3, col="red")
 ```
 
-<img src="11-kernel-regression_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+![](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-3-1.pdf)<!-- --> 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Let's also look at a local average estimate of the regression function for the bone mineral density dataset.
 
@@ -258,9 +275,9 @@ lines(xseq, m.hat.loc, lwd=3, col="red")
 abline(0, 0)
 ```
 
-<img src="11-kernel-regression_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+![](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-5-1.pdf)<!-- --> 
 
-<img src="11-kernel-regression_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+![](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> 
 
 ### k-Nearest Neighbor (k-NN) Regression
 
@@ -274,7 +291,9 @@ by taking a type of local average around this point.
 rather than taking an average over all the observations which fall into
 a bin centered at $x$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The k-NN estimator of the regression function $\hat{m}_{k}^{kNN}(x)$ is defined as
 \begin{equation}
@@ -293,13 +312,17 @@ and order them so that $d_{(1)}(x) \leq d_{(2)}(x) \leq \ldots \leq d_{(n)}(x)$.
 Then, the k nearest neighbors of $x$ would be those 
 observations which correspond to the $d_{(1)}(x)$ through $d_{(k)}(x)$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Like the local average estimator, increasing the value of $k$
 will increase the bias of the k-NN regression function estimate while 
 decreasing the value of $k$ will increase the variance of the k-NN regression function estimate.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * **Exercise 8.2** Suppose $n=6$ and that we have the following covariate values and responses
 \begin{eqnarray}
@@ -309,7 +332,9 @@ decreasing the value of $k$ will increase the variance of the k-NN regression fu
     + Compute the local average estimate of the regression function at $x = 0.25$ and $x=0.75$ assuming that $h_{n} = 1/2$. 
     + Compute the k nearest neighbors estimate of the regression function at $x = 0.25$ and $x = 0.75$ assuming that $k = 2$.
     
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 ### The Nadaraya-Watson Estimator
 
@@ -336,7 +361,9 @@ a_{i}(x) = \frac{ K(\tfrac{x - x_{i}}{h_{n}})}{ \sum_{i=1}^{n} K(\tfrac{x - x_{i
 \end{equation}
 So, we are using weights which are larger the closer you are to $x$. 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The Nadaraya-Watson estimator suffers from two main drawbacks. These are
 **design bias** and **boundary bias**.
@@ -348,7 +375,9 @@ of the Nadaraya-Watson estimator.
 near the smallest and largest $x_{i}$.
 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * If we assume that the $x_{i}$ are random and have probability density $f_{X}(x)$, then it can be shown
 that the mean-squared error of the Nadaraya-Watson estimator at a particular point $x$ has 
@@ -363,7 +392,9 @@ where $\mu_{2}(K) = \int_{-\infty}^{\infty} u^{2} K(u) du$ and $\kappa_{2}(K) = 
 the $x_{i}$ are drawn from a Uniform distribution. In other words, if the $x_{i}$ are roughly equally spaced, then
 the design bias should be small. 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 **The Nadaraya-Watson estimator in R** 
 
@@ -385,7 +416,9 @@ is estimated. The `y` vector from the fitted `ksmooth` object will be a vector c
 
 * Note that the bandwidth used by this function for the Gaussian kernel is approximately $2.7$ times smaller than the bandwith in our definition of the Gaussian kernel.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * If you wanted to write your own function that computed the Nadaraya-Watson estimate
 at a vector of desired points $x.points = (t_{1}, \ldots, t_{q})$, you could use 
@@ -403,15 +436,17 @@ MyNWEst <- function(x, y, bandwidth, x.points) {
 }
 ```
 
---- 
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * To compute the Nadraya-Watson estimate at a set of equally spaced of points from $10$ to $25$
 using bandwidth $0.5$ and plot the result, you could use the following code:
 
 ```r
 tt <- seq(10, 25, by=.1)
-bone.nwest <- ksmooth(x=bonedat$age, y=bonedat$spnbmd, kernel="normal", 
-                      bandwidth=2.7*0.5, x.points=tt)
+bone.nwest <- ksmooth(x=bonedat$age, y=bonedat$spnbmd, kernel="normal", bandwidth=2.7*0.5, 
+                      x.points=tt)
 
 plot(bonedat$age, bonedat$spnbmd, las=1, ylab="Relative Change in Bone MD", 
      xlab="Age", main="Bone Data: Nadaraya-Watson Estimate with hn=0.5 and 
@@ -420,7 +455,7 @@ points(bonedat$age, bonedat$spnbmd, pch=16, cex=0.7)
 lines(bone.nwest$x, bone.nwest$y, lwd=3, col="red")
 ```
 
-<img src="11-kernel-regression_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+![](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
 
 ```r
 ## Note that bone.nwest$x should equal tt
@@ -445,7 +480,9 @@ bin around $x$.
 local intercept approach of the local average estimator. 
 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Instead of fitting local intercept models, we could fit local
 linear models that have an intercept and a slope term.
@@ -464,7 +501,9 @@ solved the following local least-squares problem
 
 * Then, we would estimate $m(x)$ by using the value of $\hat{s}_{x}$ at $x$. That is, $\hat{s}_{x}(x) = \hat{\beta}_{0x}$. 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * **Local Linear Regression** uses the same idea as \@ref(eq:simple-loclin-regression), but replaces the indicator function $I( x - h_{n} < x_{i} < x + h_{n})$ with a smooth kernel function. 
 
@@ -474,7 +513,9 @@ solved the following local least-squares problem
 \hat{\beta}_{0x}, \hat{\beta}_{1x} &=&  \textrm{argmin}_{\beta_{0x},\beta_{1x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} - \beta_{1x}(x_{i} - x) \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
 \end{eqnarray}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * **Exercise 8.3** Suppose we define an estimator $\tilde{m}_{h_{n}}(x)$ of the regression function as
 \begin{eqnarray}
@@ -483,7 +524,9 @@ solved the following local least-squares problem
 \end{eqnarray}
 Show that $\tilde{m}_{h_{n}}(x) = \hat{m}_{h_{n}}^{NW}(x)$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 ### Advantages of the Local Linear Estimator
 
@@ -505,7 +548,9 @@ equal zero.
 * Also, the local linear estimator can help to reduce the boundary bias that arises
 from asymmetry near the boundary (draw a picture).
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 
 ```r
@@ -537,7 +582,9 @@ the vector of "fitted values" from a vector of estimates of the regression funct
 \end{equation}
 for an appropriately chosen $n \times n$ matrix $\mathbf{A}_{h_{n}}$.
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * For the local average estimator, we have $\hat{\mathbf{m}} = \mathbf{A}_{h_{n}}\mathbf{Y}$ where 
 $\mathbf{A}_{h_{n}}$ is defined as
@@ -557,7 +604,9 @@ a_{i}(x_{j}) = \frac{1}{n_{h_{n}}(x_{i})}I(x_{i} - h_{n} < x_{j} < x_{i} + h_{n}
 \end{equation}
 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * For the Nadaraya-Watson estimator, the $\mathbf{A}_{h_{n}}$ matrix is
 \begin{equation}
@@ -573,11 +622,15 @@ where
 K_{h_{n}}(x_{i}, \cdot) = \sum_{j=1}^{n}K\Big( \frac{x_{i} - x_{j}}{h_{n}}  \Big) \nonumber
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * For the local linear regression estimator, 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * In "classic" linear regression where you would try to fit the straight line model 
 $Y_{i} = \beta_{0} + \beta_{1}x_{i} + \varepsilon_{i}$, the vector of fitted values would be
@@ -606,7 +659,7 @@ E\{ \mathbf{Z}^{T}\mathbf{Z} \} = E\Big\{ \sum_{i=1}^{n} Z_{i}^{2} \Big\} = \mat
 
 * Notice that the vector $\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}$ has 
 \begin{equation}
-E( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) = \sigma^{2}\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T} \nonumber
+E( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) = \sigma^{2}\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}
 \end{equation}
 
 * Also, the vector $\mathbf{Y} - \mathbf{A}_{h_{n}}\mathbf{Y} = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}$ has
@@ -614,7 +667,9 @@ E( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A}_{h_{n}
 E\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}  \qquad \qquad \textrm{Var}\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}) = \sigma^{2} (\mathbf{I} - \mathbf{A}_{h_{n}})(\mathbf{I} - \mathbf{A}_{h_{n}})^{T} \nonumber
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Ideally, we would like to choose the smoothing parameter $h_{n}$ to minimize the following mean averaged squared error
 \begin{eqnarray}
@@ -641,11 +696,13 @@ E\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A}_{h
 &=& \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2} - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}})  \nonumber
 \end{eqnarray}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The predictive mean averaged squared error (PAMSE) is defined as
 \begin{equation}
-\textrm{PAMSE}(h_{n}) = E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ Y_{i}' -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]
+PAMSE(h_{n}) = E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ Y_{i}' -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]
 \end{equation}
 where $Y_{i}'$ is a "future" independent observation that has the same covariate as $Y_{i}$. 
 
@@ -660,7 +717,9 @@ where $Y_{i}'$ is a "future" independent observation that has the same covariate
 \end{eqnarray}
 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The $C_{p}$ statistic is based on the idea that, if $\sigma^{2}$ was known, then the following quantity
 would be an unbiased estimate of $\textrm{PAMSE}( h_{n} )$:
@@ -685,7 +744,9 @@ the leave-one-out estimate of the regression function at $x$ as:
 \end{equation}
 
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * Because we are assuming that $\hat{m}_{h_{n}}(x)$ can be represented as a linear combination of the responses
 \begin{equation}
@@ -700,7 +761,9 @@ where
 a_{j,-i}^{h_{n}}(x) = 
 \end{equation}
 
----
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 * The predictive risk estimate is
 

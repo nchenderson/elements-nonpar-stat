@@ -1,3 +1,4 @@
+# (PART) Nonparametric Estimation {-} 
 
 # U-Statistics {#ustat}
 
@@ -110,7 +111,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.85
+## [1] 1.859
 ```
 
 ```r
@@ -118,7 +119,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.861
+## [1] 1.816
 ```
 
 
@@ -381,7 +382,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.893 0.891
+## [1] 0.907 0.904
 ```
 
 ```r
@@ -391,7 +392,7 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.878 0.878
+## [1] 0.902 0.902
 ```
 
 \begin{center}

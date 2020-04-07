@@ -183,7 +183,7 @@ around $x$.
 \frac{ \sum_{i=1}^{n} Y_{i}I\big( x - h_{n} < x_{i} < x + h_{n} \big) }{ \sum_{i=1}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big) } \nonumber \\
 &=& \frac{1}{n_{h_{n}}(x)} \sum_{i=1}^{n} Y_{i}I\big( x - h_{n} < x_{i} < x + h_{n} \big) \nonumber 
 \end{eqnarray}
-where $n_{h_{n}}(x) = \sum_{i}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big)$.
+where $n_{h_{n}}(x) = \sum_{i=1}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big)$.
 
 * The local average estimator does not need to have a 
 constant value within each of a few pre-specified bins.
@@ -440,8 +440,8 @@ MyNWEst <- function(x, y, bandwidth, x.points) {
 using bandwidth $0.5$ and plot the result, you could use the following code:
 ```{r, fig.height=5.0}
 tt <- seq(10, 25, by=.1)
-bone.nwest <- ksmooth(x=bonedat$age, y=bonedat$spnbmd, kernel="normal", bandwidth=2.7*0.5, 
-                      x.points=tt)
+bone.nwest <- ksmooth(x=bonedat$age, y=bonedat$spnbmd, kernel="normal", 
+                      bandwidth=2.7*0.5, x.points=tt)
 
 plot(bonedat$age, bonedat$spnbmd, las=1, ylab="Relative Change in Bone MD", 
      xlab="Age", main="Bone Data: Nadaraya-Watson Estimate with hn=0.5 and 
@@ -510,10 +510,40 @@ Show that $\tilde{m}_{h_{n}}(x) = \hat{m}_{h_{n}}^{NW}(x)$.
 
 ---
 
-### Advantages
+### Advantages of the Local Linear Estimator
 
 * The local linear regression estimator can reduce the effects of design and boundary bias.
 
+* If we write the local linear estimate at the point $x$ as
+$\hat{m}_{h_{n}}^{loclin}(x) = \sum_{i=1}^{n} a_{i}^{h_{n}}(x)$, then the bias is appoximately 
+\begin{equation}
+E\{ \hat{m}_{h_{n}}^{loclin}(x) \} - m(x)
+\approx m'(x)\sum_{i=1}^{n} (x_{i} - x)a_{i}^{h_{n}}(x) + \frac{m''(x)}{2}\sum_{i=1}^{n} (x_{i} - x)^{2}a_{i}^{h_{n}}(x) \nonumber 
+\end{equation}
+
+
+* For local linear regression, the term $m'(x)\sum_{i=1}^{n} (x_{i} - x)a_{i}^{h_{n}}(x)$ equals zero. If 
+the weights $a_{i}^{h_{n}}(x)$ were the weights from the Nadaraya-Watson estimator, this term would not necessarily
+equal zero.
+
+
+* Also, the local linear estimator can help to reduce the boundary bias that arises
+from asymmetry near the boundary (draw a picture).
+
+---
+
+```{r, eval=FALSE}
+MyLocLinear <- function(x, y, bandwidth, x.points) {
+  q <- length(x.points) 
+  loclin.est <- numeric(q)
+  for(k in 1:q) {
+    xtmp <- x - x.points[k]
+    ww <- dnorm(xtmp, mean=0, sd=bandwidth) 
+    loclin.est[k] <- lm(y ~ xtmp, weights=ww)$coef[1]
+  }    
+  return(loclin.est)
+}
+```
 
 ### Local Polynomial Regression
 
@@ -600,7 +630,7 @@ E\{ \mathbf{Z}^{T}\mathbf{Z} \} = E\Big\{ \sum_{i=1}^{n} Z_{i}^{2} \Big\} = \mat
 
 * Notice that the vector $\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}$ has 
 \begin{equation}
-E( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) = \sigma^{2}\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}
+E( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) = \sigma^{2}\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T} \nonumber
 \end{equation}
 
 * Also, the vector $\mathbf{Y} - \mathbf{A}_{h_{n}}\mathbf{Y} = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}$ has
@@ -632,15 +662,73 @@ E\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A}_{h
 * So, if $\sigma^{2}$ is known, then $\widehat{\textrm{MASE}}( h_{n} )$ is an unbiased estimate of $\textrm{MASE}( h_{n} )$
 \begin{eqnarray}
 \widehat{\textrm{MASE}}( h_{n} ) &=& \frac{1}{n}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}]^{T}[(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}] - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber \\
-&=& \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}(x_{i}) \}^{2} - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}})
+&=& \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2} - \sigma^{2} + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}})  \nonumber
 \end{eqnarray}
 
 ---
 
-* Cp Definition.
+* The predictive mean averaged squared error (PAMSE) is defined as
+\begin{equation}
+\textrm{PAMSE}(h_{n}) = E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ Y_{i}' -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]
+\end{equation}
+where $Y_{i}'$ is a "future" independent observation that has the same covariate as $Y_{i}$. 
+
+* We assume that $Y_{i}' = m(x_{i}) + \varepsilon_{i}'$ where $\varepsilon_{i}'$ is independent of $\varepsilon_{i}$.
+
+* So, 
+\begin{eqnarray}
+\textrm{PAMSE}(h_{n}) &=& E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) + \varepsilon_{i}' \}^{2} \Big] 
+\nonumber \\
+&=& E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]  +  E\Big[ \frac{1}{n} \sum_{i=1}^{n} (\varepsilon_{i}')^{2} \Big]  \nonumber \\
+&=& \textrm{AMSE}( h_{n} ) + \sigma^{2} \nonumber
+\end{eqnarray}
+
+
+---
+
+* The $C_{p}$ statistic is based on the idea that, if $\sigma^{2}$ was known, then the following quantity
+would be an unbiased estimate of $\textrm{PAMSE}( h_{n} )$:
+\begin{equation}
+\frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber
+\end{equation}
+
+* The $C_{p}$ statistic formula is obtained by plugging in an estimate $\hat{\sigma}^{2}$ of the residual variance into the above
+formula:
+\begin{equation}
+C_{p} = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber
+\end{equation}
+
 
 
 ### Leave-one-out Cross Validation
+
+* Similar to the way we defined a leave-on-out density estimate in Chapter 8, we will define
+the leave-one-out estimate of the regression function at $x$ as:
+\begin{equation}
+\hat{m}_{h_{n},-i}(x) - \textrm{ estimate of $m(x)$ found by using all data except $(Y_{i}, x_{i})$.}
+\end{equation}
+
+
+---
+
+* Because we are assuming that $\hat{m}_{h_{n}}(x)$ can be represented as a linear combination of the responses
+\begin{equation}
+\hat{m}_{h_{n}}(x) = \sum_{j=1}^{n} a_{j}^{h_{n}}(x)Y_{j}
+\end{equation}
+the leave-one-out estimate can be expressed as
+\begin{equation}
+\hat{m}_{h_{n}, -i}(x) = \sum_{j=1}^{n} a_{j,-i}^{h_{n}}(x)Y_{j}
+\end{equation}
+where 
+\begin{equation}
+a_{j,-i}^{h_{n}}(x) = 
+\end{equation}
+
+---
+
+* The predictive risk estimate is
+
+
 
 ## Additional Reading
 

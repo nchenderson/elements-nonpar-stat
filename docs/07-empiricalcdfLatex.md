@@ -1,4 +1,3 @@
-# (PART) Nonparametric Estimation {-} 
 
 # The Empirical Distribution Function {#edf}
 
@@ -354,7 +353,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.14026, p-value = 0.0391
+## D = 0.13879, p-value = 0.04246
 ## alternative hypothesis: two-sided
 ```
 
@@ -370,7 +369,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.38367, p-value = 3.272e-13
+## D = 0.30968, p-value = 9.352e-09
 ## alternative hypothesis: two-sided
 ```
 
@@ -424,7 +423,7 @@ ks.test(xx, yy)
 ## 	Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.14, p-value = 0.281
+## D = 0.21, p-value = 0.02431
 ## alternative hypothesis: two-sided
 ```
 
@@ -443,7 +442,7 @@ KS.stat
 ```
 
 ```
-## [1] 0.14
+## [1] 0.21
 ```
 
 \begin{center}
