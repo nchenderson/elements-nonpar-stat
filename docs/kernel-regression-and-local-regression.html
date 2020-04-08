@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-06" />
+<meta name="date" content="2020-04-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -575,7 +575,7 @@ a bin centered at <span class="math inline">\(x\)</span>.</p></li>
 <ul>
 <li><p>The k-NN estimator of the regression function <span class="math inline">\(\hat{m}_{k}^{kNN}(x)\)</span> is defined as
 <span class="math display">\[\begin{equation}
-\hat{m}_{k}^{kNN}(x) = \frac{1}{k}\sum_{i=1}^{n} y_{i} I\big( x \in N_{k}(x) \big) \nonumber
+\hat{m}_{k}^{kNN}(x) = \frac{1}{k}\sum_{i=1}^{n} y_{i} I\big( x_{i} \in N_{k}(x) \big) \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Here, <span class="math inline">\(N_{k}(x)\)</span> is defined as the set of the k <span class="math inline">\(x_{i}&#39;s\)</span> which are
 closest to <span class="math inline">\(x\)</span>. That is, <span class="math inline">\(N_{k}(x)\)</span> is the set of the k “nearest neighbors”
@@ -664,7 +664,7 @@ the design bias should be small.</p></li>
 <li><code>x</code> - vector of covariate values</li>
 <li><code>y</code> - vector of responses</li>
 <li><code>kernel</code> - choice of kernel function; default is <code>box</code>; use <code>normal</code> if you want a Gaussian kernel</li>
-<li><code>bandwidth</code> - value of the bandwidth; default is <span class="math inline">\(0.05\)</span></li>
+<li><code>bandwidth</code> - value of the bandwidth; default is <span class="math inline">\(0.5\)</span></li>
 <li><code>x.points</code> - points at which to estimate the regression function; default is to use <span class="math inline">\(n\)</span> equally spaced points.</li>
 </ul></li>
 <li><p>The <code>x</code> vector from the fitted <code>ksmooth</code> object will be the vector of points at which the regression function
@@ -922,8 +922,21 @@ would be an unbiased estimate of <span class="math inline">\(\textrm{PAMSE}( h_{
 <li><p>The <span class="math inline">\(C_{p}\)</span> statistic formula is obtained by plugging in an estimate <span class="math inline">\(\hat{\sigma}^{2}\)</span> of the residual variance into the above
 formula:
 <span class="math display">\[\begin{equation}
-C_{p} = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber
+C_{p}(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber
 \end{equation}\]</span></p></li>
+<li><p>The reason this is called the “<span class="math inline">\(C_{p}\)</span> statistic” is that in the case of a linear regression model with <span class="math inline">\(p\)</span>
+covariates, we have <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}\mathbf{Y}\)</span>
+and <span class="math inline">\(\textrm{tr}\{ \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T} \}\)</span> so an
+estimator of the PAMSE would be
+<span class="math display">\[\begin{equation}
+C_{p} = \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}p  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>For this reason, <span class="math inline">\(\textrm{tr}( \mathbf{A}_{h_{n}} )\)</span> is often referred to as
+the “degrees of freedom” of a nonparametric estimator of the form <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{A}_{h_{n}}\mathbf{Y}\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li>The main drawback of the <span class="math inline">\(C_{p}\)</span> statistic is that it requires an estimate of the residual variance <span class="math inline">\(\sigma^{2}\)</span>.</li>
 </ul>
 </div>
 <div id="leave-one-out-cross-validation" class="section level3">

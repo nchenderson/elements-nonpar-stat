@@ -311,7 +311,7 @@ a bin centered at $x$.
 
 * The k-NN estimator of the regression function $\hat{m}_{k}^{kNN}(x)$ is defined as
 \begin{equation}
-\hat{m}_{k}^{kNN}(x) = \frac{1}{k}\sum_{i=1}^{n} y_{i} I\big( x \in N_{k}(x) \big) \nonumber
+\hat{m}_{k}^{kNN}(x) = \frac{1}{k}\sum_{i=1}^{n} y_{i} I\big( x_{i} \in N_{k}(x) \big) \nonumber
 \end{equation}
 
 * Here, $N_{k}(x)$ is defined as the set of the k $x_{i}'s$ which are
@@ -409,7 +409,7 @@ ksmooth(x, y, kernel, bandwidth, x.points, ...)
     + `x` - vector of covariate values
     + `y` - vector of responses
     + `kernel` - choice of kernel function; default is `box`; use `normal` if you want a Gaussian kernel
-    + `bandwidth` - value of the bandwidth; default is $0.05$
+    + `bandwidth` - value of the bandwidth; default is $0.5$
     + `x.points` - points at which to estimate the regression function; default is to use $n$ equally spaced points.
 
 * The `x` vector from the fitted `ksmooth` object will be the vector of points at which the regression function
@@ -695,9 +695,23 @@ would be an unbiased estimate of $\textrm{PAMSE}( h_{n} )$:
 * The $C_{p}$ statistic formula is obtained by plugging in an estimate $\hat{\sigma}^{2}$ of the residual variance into the above
 formula:
 \begin{equation}
-C_{p} = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber
+C_{p}(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber
 \end{equation}
 
+* The reason this is called the "$C_{p}$ statistic" is that in the case of a linear regression model with $p$
+covariates, we have $\hat{\mathbf{m}} = \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}\mathbf{Y}$
+and $\textrm{tr}\{ \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}  \}$ so an 
+estimator of the PAMSE would be
+\begin{equation}
+C_{p} = \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}p  \nonumber
+\end{equation}
+
+* For this reason, $\textrm{tr}( \mathbf{A}_{h_{n}} )$ is often referred to as
+the "degrees of freedom" of a nonparametric estimator of the form $\hat{\mathbf{m}} = \mathbf{A}_{h_{n}}\mathbf{Y}$.
+
+---
+
+* The main drawback of the $C_{p}$ statistic is that it requires an estimate of the residual variance $\sigma^{2}$.
 
 
 ### Leave-one-out Cross Validation
