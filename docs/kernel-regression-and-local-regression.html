@@ -936,17 +936,41 @@ the “degrees of freedom” of a nonparametric estimator of the form <span clas
 </ul>
 <hr />
 <ul>
-<li>The main drawback of the <span class="math inline">\(C_{p}\)</span> statistic is that it requires an estimate of the residual variance <span class="math inline">\(\sigma^{2}\)</span>.</li>
+<li><p>The main drawback of the <span class="math inline">\(C_{p}\)</span> statistic is that it requires an estimate of the residual variance <span class="math inline">\(\sigma^{2}\)</span>.</p></li>
+<li><p>So, if we choose a fairly small bandwidth <span class="math inline">\(\tilde{h}_{n}\)</span> so that the bias is close to zero, we could use the following
+estimate of <span class="math inline">\(\sigma^{2}\)</span>
+<span class="math display">\[\begin{equation}
+\hat{\sigma}^{2}( \tilde{h}_{n} ) = \frac{  \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{\tilde{h}_{n}}(x_{i}) \}^{2}  }{ n - 2\textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}) + \textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}\mathbf{A}_{\tilde{h_{n}}}^{T}) }  \nonumber
+\end{equation}\]</span></p></li>
 </ul>
+<hr />
+<ul>
+<li><strong>Exercise 8.4</strong> Suppose the <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}_{h_{n}}\)</span> satifies <span class="math inline">\(\mathbf{A}_{h_{n}}\mathbf{m} = \mathbf{m}\)</span>.
+Show that
+<span class="math display">\[\begin{equation}
+\frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
+\end{equation}\]</span>
+is an unbiased estimator of <span class="math inline">\(\sigma^{2}\)</span></li>
+</ul>
+<hr />
 </div>
 <div id="leave-one-out-cross-validation" class="section level3">
 <h3><span class="header-section-number">11.4.3</span> Leave-one-out Cross Validation</h3>
 <ul>
-<li>Similar to the way we defined a leave-on-out density estimate in Chapter 8, we will define
+<li><p>Similar to the way we defined a leave-on-out density estimate in Chapter 8, we will define
 the leave-one-out estimate of the regression function at <span class="math inline">\(x\)</span> as:
 <span class="math display">\[\begin{equation}
 \hat{m}_{h_{n},-i}(x) - \textrm{ estimate of $m(x)$ found by using all data except $(Y_{i}, x_{i})$.}
-\end{equation}\]</span></li>
+\end{equation}\]</span></p></li>
+<li><p>The leave-one-out cross validation (LOO-CV) estimate of the PAMSE is defined to be
+<span class="math display">\[\begin{equation}
+\textrm{LOOCV}(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) \}^{2}  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The intuition here is that; because the estimate <span class="math inline">\(\hat{m}_{h_{n}, -i}(x_{i})\)</span> is computed without
+the <span class="math inline">\(i^{th}\)</span> observation, <span class="math inline">\(Y_{i}\)</span> plays the role of a “future observation” (relative to the dataset that
+does not contain <span class="math inline">\(Y_{i}\)</span>).</p></li>
+<li><p>Hence, <span class="math inline">\(\{ Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) \}^{2}\)</span> should be a sensible replacement for
+the unobservable <span class="math inline">\(\{ Y_{i}&#39; - \hat{m}_{h_{n}}(x_{i}) \}^{2}\)</span>.</p></li>
 </ul>
 <hr />
 <ul>

@@ -689,6 +689,23 @@ the "degrees of freedom" of a nonparametric estimator of the form $\hat{\mathbf{
 
 * The main drawback of the $C_{p}$ statistic is that it requires an estimate of the residual variance $\sigma^{2}$.
 
+* So, if we choose a fairly small bandwidth $\tilde{h}_{n}$ so that the bias is close to zero, we could use the following
+estimate of $\sigma^{2}$
+\begin{equation}
+\hat{\sigma}^{2}( \tilde{h}_{n} ) = \frac{  \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{\tilde{h}_{n}}(x_{i}) \}^{2}  }{ n - 2\textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}) + \textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}\mathbf{A}_{\tilde{h_{n}}}^{T}) }  \nonumber
+\end{equation}
+
+---
+
+* **Exercise 8.4** Suppose the $n \times n$ matrix $\mathbf{A}_{h_{n}}$ satifies $\mathbf{A}_{h_{n}}\mathbf{m} = \mathbf{m}$.
+Show that 
+\begin{equation}
+\frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
+\end{equation}
+is an unbiased estimator of $\sigma^{2}$
+
+---
+
 
 ### Leave-one-out Cross Validation
 
@@ -697,6 +714,18 @@ the leave-one-out estimate of the regression function at $x$ as:
 \begin{equation}
 \hat{m}_{h_{n},-i}(x) - \textrm{ estimate of $m(x)$ found by using all data except $(Y_{i}, x_{i})$.}
 \end{equation}
+
+* The leave-one-out cross validation (LOO-CV) estimate of the PAMSE is defined to be
+\begin{equation}
+\textrm{LOOCV}(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) \}^{2}  \nonumber
+\end{equation}
+
+* The intuition here is that; because the estimate $\hat{m}_{h_{n}, -i}(x_{i})$ is computed without
+the $i^{th}$ observation, $Y_{i}$ plays the role of a "future observation" (relative to the dataset that
+does not contain $Y_{i}$).
+
+* Hence, $\{ Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) \}^{2}$ should be a sensible replacement for 
+the unobservable $\{ Y_{i}' - \hat{m}_{h_{n}}(x_{i}) \}^{2}$.
 
 
 ---
