@@ -409,9 +409,9 @@ MyNWEst <- function(x, y, bandwidth, x.points) {
 using bandwidth $0.5$ and plot the result, you could use the following code:
 
 ```r
-tt <- seq(10, 25, by=.1)
+xseq <- seq(10, 25, by=.1)
 bone.nwest <- ksmooth(x=bonedat$age, y=bonedat$spnbmd, kernel="normal", 
-                      bandwidth=2.7*0.5, x.points=tt)
+                      bandwidth=2.7*0.5, x.points=xseq)
 
 plot(bonedat$age, bonedat$spnbmd, las=1, ylab="Relative Change in Bone MD", 
      xlab="Age", main="Bone Data: Nadaraya-Watson Estimate with hn=0.5 and 
@@ -423,7 +423,7 @@ lines(bone.nwest$x, bone.nwest$y, lwd=3, col="red")
 <img src="11-kernel-regression_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 ```r
-## Note that bone.nwest$x should equal tt
+## Note that bone.nwest$x should equal xseq
 ```
 
 
@@ -507,19 +507,48 @@ from asymmetry near the boundary (draw a picture).
 
 ---
 
+### An Example in R
+
+* An `R` function which implements local linear regression is the following. The
+input for this function has the same structure as our earlier Nadaraya-Watson `R` function. 
+
 
 ```r
 MyLocLinear <- function(x, y, bandwidth, x.points) {
   q <- length(x.points) 
   loclin.est <- numeric(q)
   for(k in 1:q) {
+    ## First create weights with Gaussian kernel
     xtmp <- x - x.points[k]
     ww <- dnorm(xtmp, mean=0, sd=bandwidth) 
+    
+    ## Now, compute the intercept with a weighted linear regression
     loclin.est[k] <- lm(y ~ xtmp, weights=ww)$coef[1]
   }    
   return(loclin.est)
 }
 ```
+
+* Let's try this function with the `bonedat` dataset again.
+
+* Using age as the covariate, we will estimate the regression function at the points $10, 10.1, 10.2, ..., 25$:
+
+
+```r
+xseq <- seq(10, 25, by=.1)
+bone.loclin <- MyLocLinear(x=bonedat$age, y=bonedat$spnbmd, 
+                           bandwidth=0.5, x.points=xseq)
+
+plot(bonedat$age, bonedat$spnbmd, las=1, ylab="Relative Change in Bone MD", 
+     xlab="Age", main="Local Linear Estimator with hn=0.5", type="n")
+points(bonedat$age, bonedat$spnbmd, pch=16, cex=0.7)
+lines(xseq, bone.loclin, lwd=3, col="red")
+```
+
+<img src="11-kernel-regression_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+
+* Let's compare this with the Nadaraya-Watson esitmate that we computed earlier
+<img src="11-kernel-regression_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 
 ### Local Polynomial Regression
 
@@ -730,23 +759,49 @@ the unobservable $\{ Y_{i}' - \hat{m}_{h_{n}}(x_{i}) \}^{2}$.
 
 ---
 
-* Because we are assuming that $\hat{m}_{h_{n}}(x)$ can be represented as a linear combination of the responses
+* While we could compute $\textrm{LOOCV}(h_{n})$ by computing $\hat{m}_{h_{n}, -i}(x_{i})$
+separately for $i = 1,\ldots,n$, there is a much more efficient way of computing $\textrm{LOOCV}(h_{n})$.
+
+
+* We are assuming that $\hat{m}_{h_{n}}(x)$ can be represented as a linear combination of the responses
 \begin{equation}
-\hat{m}_{h_{n}}(x) = \sum_{j=1}^{n} a_{j}^{h_{n}}(x)Y_{j}
+\hat{m}_{h_{n}}(x) = \sum_{j=1}^{n} a_{j}^{h_{n}}(x)Y_{j}, \nonumber
 \end{equation}
-the leave-one-out estimate can be expressed as
+where we can think of $a_{j}^{h_{n}}(x)$ as weights that sum to $1$.
+
+* If we did not use $Y_{i}$ to compute $\hat{m}_{h_{n}}(x)$, this estimate would look like
 \begin{equation}
 \hat{m}_{h_{n}, -i}(x) = \sum_{j=1}^{n} a_{j,-i}^{h_{n}}(x)Y_{j}
 \end{equation}
 where 
 \begin{equation}
 a_{j,-i}^{h_{n}}(x) = 
+\begin{cases}
+0 & \textrm{ if } j = i \nonumber \\
+\frac{ a_{j}^{h_{n}}(x)}{ \sum_{k \neq i} a_{k}^{h_{n}}(x) }  \nonumber
+\end{cases}
 \end{equation}
+
+* If you want to better convince yourself that the above formula for $a_{j,-i}^{h_{n}}(x_{i})$ is true,
+try an example using the Nadaraya-Watson estimator with $n=3$.
 
 ---
 
-* The predictive risk estimate is
+* Because $\sum_{k \neq i} a_{k}^{h_{n}}(x_{i}) = 1 - a_{i}^{h_{n}}( x_{i} )$, we can express $Y_{i} - \hat{m}_{h_{n},-i}(x_{i})$ as
+\begin{eqnarray}
+Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) &=& Y_{i} - \sum_{j \neq i}^{n} a_{j,-i}^{h_{n}}(x_{i})Y_{j} \nonumber \\
+&=& Y_{i} - \frac{1}{1 - a_{i}^{h_{n}}( x_{i} ) } \sum_{j \neq i}^{n} a_{j}^{h_{n}}(x_{i})Y_{j} \nonumber \\
+&=& Y_{i} - \frac{1}{1 - \Big[ a_{i}^{h_{n}}( x_{i} ) } \sum_{j = 1}^{n} a_{j}^{h_{n}}(x_{i})Y_{j} \Big]  +  \frac{a_{j}^{h_{n}}(x_{i})Y_{i} }{1 - a_{i}^{h_{n}}( x_{i} ) }  \nonumber \\
+&=& \frac{Y_{i} - \hat{m}_{h_{n}}(x_{i}) }{1 - a_{i}^{h_{n}}( x_{i} ) } 
+(\#eq:loocv-simplification)
+\end{eqnarray}
 
+
+* Using \@ref(eq:loocv-simplification), we can re-write the LOOCV estimate as 
+\begin{equation}
+\textrm{LOOCV}(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} \Big( \frac{ Y_{i} - \hat{m}_{h_{n}}(x_{i})}{ 1 - a_{i}^{h_{n}}( x_{i} )  } \Big)^{2}  \nonumber
+\end{equation}
+where $a_{i}^{h_{n}}(x_{i})$ are just the diagonal elements of our original matrix $\mathbf{A}_{h_{n}}$.
 
 
 ## Additional Reading
