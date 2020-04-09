@@ -515,7 +515,7 @@ Show that $\tilde{m}_{h_{n}}(x) = \hat{m}_{h_{n}}^{NW}(x)$.
 * The local linear regression estimator can reduce the effects of design and boundary bias.
 
 * If we write the local linear estimate at the point $x$ as
-$\hat{m}_{h_{n}}^{loclin}(x) = \sum_{i=1}^{n} a_{i}^{h_{n}}(x)$, then the bias is appoximately 
+$\hat{m}_{h_{n}}^{loclin}(x) = \sum_{i=1}^{n} a_{i}^{h_{n}}(x)Y_{i}$, then the bias is appoximately 
 \begin{equation}
 E\{ \hat{m}_{h_{n}}^{loclin}(x) \} - m(x)
 \approx m'(x)\sum_{i=1}^{n} (x_{i} - x)a_{i}^{h_{n}}(x) + \frac{m''(x)}{2}\sum_{i=1}^{n} (x_{i} - x)^{2}a_{i}^{h_{n}}(x) \nonumber 
@@ -586,7 +586,7 @@ could also fit local polynomial models.
 * Similar to the way we approached local linear regression, for a fixed $x$
 we will fit the local model 
 \begin{equation}
-\hat{s}_{x}^{p}(x_{i}) = \hat{\beta}_{0x,p} + \hat{\beta}_{1x,p}(x_{i} - x) + \hat{\beta}_{2x,p}(x_{i} - x)^{2} + \ldots + \beta_{px,p}(x_{i} - x)^{2}, \nonumber
+\hat{s}_{x}^{p}(x_{i}) = \hat{\beta}_{0x,p} + \hat{\beta}_{1x,p}(x_{i} - x) + \hat{\beta}_{2x,p}(x_{i} - x)^{2} + \ldots + \beta_{px,p}(x_{i} - x)^{p}, \nonumber
 \end{equation}
 where the estimated regression coefficients $\hat{\beta}_{0x,p}, \hat{\beta}_{1x,p}, \ldots, \hat{\beta}_{px,p}$ are found
 by solving the least-squares problem
@@ -603,7 +603,7 @@ by solving the least-squares problem
 * To find the estimates of $\beta_{0x,p}$ for linear and polynomial regression, you can use the 
 formulas for the regression coefficient estimates in weighted least squares.
 
-* Define the $n \times n$ diagonal matrix of weights $\mathbf{W}_{x}$ as 
+* Define the $n \times n$ diagonal matrix of weights $\mathbf{W}_{x, h_{n}}$ as 
 \begin{equation}
 \mathbf{W}_{x, h_{n}}
 = \begin{bmatrix} K\Big( \frac{x - x_{1}}{h_{n}} \Big) & 0 & \ldots & 0 \\
@@ -667,9 +667,9 @@ $\mathbf{A}_{h_{n}}$ is defined as
 \end{equation}
 where $n_{h_{n}}(x) = \sum_{i=1}^{n}I(x - h_{n} < x_{i} < x + h_{n})$.
 
-* In other words, the $(i,j)$ element of $\mathbf{A}_{h_{n}}$ is $a_{i}(x_{j})$ where
+* In other words, the $(i,j)$ element of $\mathbf{A}_{h_{n}}$ is $a_{j}(x_{i})$ where
 \begin{equation}
-a_{i}(x_{j}) = \frac{1}{n_{h_{n}}(x_{i})}I(x_{i} - h_{n} < x_{j} < x_{i} + h_{n})  \nonumber 
+a_{j}(x_{i}) = \frac{1}{n_{h_{n}}(x_{i})}I(x_{i} - h_{n} < x_{j} < x_{i} + h_{n})  \nonumber 
 \end{equation}
 
 
@@ -796,11 +796,11 @@ C_{p}(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2
 \end{equation}
 
 * The reason this is called the "$C_{p}$ statistic" is that in the case of a linear regression model with $p$
-covariates, we have $\hat{\mathbf{m}} = \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}\mathbf{Y}$
-and $\textrm{tr}\{ \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}  \}$ so an 
+columns in the design matrix, we have $\hat{\mathbf{m}} = \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}\mathbf{Y}$
+and $\textrm{tr}\{ \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}  \} = p$ so an 
 estimator of the PMASE would be
 \begin{equation}
-C_{p} = \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}p  \nonumber
+C_{p} = \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}p  \nonumber
 \end{equation}
 
 * For this reason, $\textrm{tr}( \mathbf{A}_{h_{n}} )$ is often referred to as
