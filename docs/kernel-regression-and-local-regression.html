@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-08" />
+<meta name="date" content="2020-04-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -295,6 +295,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.4.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#representing-in-linear-form"><i class="fa fa-check"></i><b>11.4.1</b> Representing in Linear Form</a></li>
 <li class="chapter" data-level="11.4.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-cp-statistic"><i class="fa fa-check"></i><b>11.4.2</b> The Cp Statistic</a></li>
 <li class="chapter" data-level="11.4.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>11.4.3</b> Leave-one-out Cross Validation</a></li>
+<li class="chapter" data-level="11.4.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#example-choosing-the-best-bin-width-for-the-local-average-estimator."><i class="fa fa-check"></i><b>11.4.4</b> Example: Choosing the Best Bin Width for the Local Average Estimator.</a></li>
 </ul></li>
 <li class="chapter" data-level="11.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.5</b> Additional Reading</a></li>
 </ul></li>
@@ -733,7 +734,7 @@ solved the following local least-squares problem
 \hat{\beta}_{0x}, \hat{\beta}_{1x} \textrm{ minimize: } \quad \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} - \beta_{1x}(x_{i} - x) \}^{2}I\big( x - h_{n} &lt; x_{i} &lt; x + h_{n} \big)  
 \tag{11.4}
 \end{equation}\]</span></p></li>
-<li><p>Then, we would estimate <span class="math inline">\(m(x)\)</span> by using the value of <span class="math inline">\(\hat{s}_{x}\)</span> at <span class="math inline">\(x\)</span>. That is, <span class="math inline">\(\hat{s}_{x}(x) = \hat{\beta}_{0x}\)</span>.</p></li>
+<li><p>Then, we would estimate <span class="math inline">\(m(x)\)</span> by using the value of <span class="math inline">\(\hat{s}_{x}(\cdot)\)</span> at <span class="math inline">\(x\)</span>. That is, <span class="math inline">\(\hat{s}_{x}(x) = \hat{\beta}_{0x}\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
@@ -812,6 +813,59 @@ input for this function has the same structure as our earlier Nadaraya-Watson <c
 </div>
 <div id="local-polynomial-regression" class="section level3">
 <h3><span class="header-section-number">11.3.4</span> Local Polynomial Regression</h3>
+<ul>
+<li><p>There is no reason why we must restrict ourselves to local linear fits. We
+could also fit local polynomial models.</p></li>
+<li><p>Similar to the way we approached local linear regression, for a fixed <span class="math inline">\(x\)</span>
+we will fit the local model
+<span class="math display">\[\begin{equation}
+\hat{s}_{x}^{p}(x_{i}) = \hat{\beta}_{0x,p} + \hat{\beta}_{1x,p}(x_{i} - x) + \hat{\beta}_{2x,p}(x_{i} - x)^{2} + \ldots + \beta_{px,p}(x_{i} - x)^{2}, \nonumber
+\end{equation}\]</span>
+where the estimated regression coefficients <span class="math inline">\(\hat{\beta}_{0x,p}, \hat{\beta}_{1x,p}, \ldots, \hat{\beta}_{px,p}\)</span> are found
+by solving the least-squares problem
+<span class="math display">\[\begin{equation}
+\sum_{i=1}^{n}\{ Y_{i} - \beta_{0x,p} - \beta_{1x,p}(x_{i} - x) - \ldots - \beta_{px,p}(x_{i} - x)^{p} \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) 
+\end{equation}\]</span></p></li>
+<li><p>Then, we estimate the regression function at <span class="math inline">\(x\)</span> with <span class="math inline">\(\hat{m}_{h_{n}}^{locpoly}(x) = \hat{s}_{x}^{p}(x) = \hat{\beta}_{0x,p}\)</span>.</p></li>
+<li><p>Note that the local linear regression estimate is just a special case of local polynomial regression with <span class="math inline">\(p=1\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>To find the estimates of <span class="math inline">\(\beta_{0x,p}\)</span> for linear and polynomial regression, you can use the
+formulas for the regression coefficient estimates in weighted least squares.</p></li>
+<li><p>Define the <span class="math inline">\(n \times n\)</span> diagonal matrix of weights <span class="math inline">\(\mathbf{W}_{x}\)</span> as
+<span class="math display">\[\begin{equation}
+\mathbf{W}_{x, h_{n}}
+= \begin{bmatrix} K\Big( \frac{x - x_{1}}{h_{n}} \Big) &amp; 0 &amp; \ldots &amp; 0 \\
+0 &amp; K\Big( \frac{x - x_{2}}{h_{n}} \Big) &amp; \ldots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \ldots &amp; K\Big( \frac{x - x_{n}}{h_{n}} \Big)
+\end{bmatrix} \nonumber
+\end{equation}\]</span>
+and define the <span class="math inline">\(n \times (p+1)\)</span> matrix <span class="math inline">\(\mathbf{X}_{x,p}\)</span> as
+<span class="math display">\[\begin{equation}
+\mathbf{X}_{x, p} = \begin{bmatrix} 1 &amp; (x_{1} - x) &amp; \ldots &amp; (x_{1} - x)^{p} \\ 
+1 &amp; (x_{2} - x) &amp; \ldots &amp; (x_{2} - x)^{p} \\
+\vdots &amp; \vdots &amp;  &amp; \vdots \\
+1 &amp; (x_{n} - x) &amp; \ldots &amp; (x_{n} - x)^{p}
+\end{bmatrix}  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The vector of estimated regression coefficients is obtained from the following formula
+<span class="math display">\[\begin{equation}
+\begin{bmatrix}
+\hat{\beta}_{0x,p} \\ \hat{\beta}_{1x,p} \\ \ldots \\ \hat{\beta}_{px,p}
+\end{bmatrix}
+= (\mathbf{X}_{x,p}^{T}\mathbf{W}_{x,h_{n}}\mathbf{X}_{x,p})^{-1}\mathbf{X}_{x,p}^{T}\mathbf{W}_{x,h_{n}}\mathbf{Y}  \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>While using local polynomial regression with higher order polynomials offer more flexibility, they come
+at the price of more variance.</p></li>
+<li><p>For fixed <span class="math inline">\(h_{n}\)</span>, increasing the degree <span class="math inline">\(p\)</span> can decrease bias but will increase variance.</p></li>
+<li><p>In practice, <span class="math inline">\(p = 1\)</span> or <span class="math inline">\(p = 2\)</span> seems to be most common in practice. There is often not
+much benefit to using a degree of <span class="math inline">\(3\)</span> or more.</p></li>
+</ul>
 </div>
 </div>
 <div id="selecting-the-bandwidthsmoothing-parameter" class="section level2">
@@ -863,7 +917,12 @@ K_{h_{n}}(x_{i}, \cdot) = \sum_{j=1}^{n}K\Big( \frac{x_{i} - x_{j}}{h_{n}}  \Big
 </ul>
 <hr />
 <ul>
-<li>For the local linear regression estimator,</li>
+<li>For the local linear regression estimator, the <span class="math inline">\(i^{th}\)</span> row of <span class="math inline">\(\mathbf{A}_{h_{n}}\)</span> equals the first row
+of the following <span class="math inline">\(2 \times n\)</span> matrix:
+<span class="math display">\[\begin{equation}
+(\mathbf{X}_{x_{i},1}^{T}\mathbf{W}_{x_{i},h_{n}}\mathbf{X}_{x_{i},1})^{-1}\mathbf{X}_{x_{i},1}^{T}\mathbf{W}_{x_{i},h_{n}}  \nonumber
+\end{equation}\]</span>
+Here, <span class="math inline">\(\mathbf{X}_{x,1}\)</span> and <span class="math inline">\(\mathbf{W}_{x, h_{n}}\)</span> are as defined in the section on local linear regression.</li>
 </ul>
 <hr />
 <ul>
@@ -926,24 +985,24 @@ E\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A}_{h
 </ul>
 <hr />
 <ul>
-<li><p>The predictive mean averaged squared error (PAMSE) is defined as
+<li><p>The predictive mean averaged squared error (PMASE) is defined as
 <span class="math display">\[\begin{equation}
-\textrm{PAMSE}(h_{n}) = E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ Y_{i}&#39; -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]
+\textrm{PMASE}(h_{n}) = E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ Y_{i}&#39; -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]
 \end{equation}\]</span>
 where <span class="math inline">\(Y_{i}&#39;\)</span> is a “future” independent observation that has the same covariate as <span class="math inline">\(Y_{i}\)</span>.</p></li>
 <li><p>We assume that <span class="math inline">\(Y_{i}&#39; = m(x_{i}) + \varepsilon_{i}&#39;\)</span> where <span class="math inline">\(\varepsilon_{i}&#39;\)</span> is independent of <span class="math inline">\(\varepsilon_{i}\)</span>.</p></li>
 <li><p>So,
 <span class="math display">\[\begin{eqnarray}
-\textrm{PAMSE}(h_{n}) &amp;=&amp; E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) + \varepsilon_{i}&#39; \}^{2} \Big] 
+\textrm{PMASE}(h_{n}) &amp;=&amp; E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) + \varepsilon_{i}&#39; \}^{2} \Big] 
 \nonumber \\
 &amp;=&amp; E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]  +  E\Big[ \frac{1}{n} \sum_{i=1}^{n} (\varepsilon_{i}&#39;)^{2} \Big]  \nonumber \\
-&amp;=&amp; \textrm{AMSE}( h_{n} ) + \sigma^{2} \nonumber
+&amp;=&amp; \textrm{PMASE}( h_{n} ) + \sigma^{2} \nonumber
 \end{eqnarray}\]</span></p></li>
 </ul>
 <hr />
 <ul>
 <li><p>The <span class="math inline">\(C_{p}\)</span> statistic is based on the idea that, if <span class="math inline">\(\sigma^{2}\)</span> was known, then the following quantity
-would be an unbiased estimate of <span class="math inline">\(\textrm{PAMSE}( h_{n} )\)</span>:
+would be an unbiased estimate of <span class="math inline">\(\textrm{PMASE}( h_{n} )\)</span>:
 <span class="math display">\[\begin{equation}
 \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber
 \end{equation}\]</span></p></li>
@@ -955,7 +1014,7 @@ C_{p}(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2
 <li><p>The reason this is called the “<span class="math inline">\(C_{p}\)</span> statistic” is that in the case of a linear regression model with <span class="math inline">\(p\)</span>
 covariates, we have <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}\mathbf{Y}\)</span>
 and <span class="math inline">\(\textrm{tr}\{ \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T} \}\)</span> so an
-estimator of the PAMSE would be
+estimator of the PMASE would be
 <span class="math display">\[\begin{equation}
 C_{p} = \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}p  \nonumber
 \end{equation}\]</span></p></li>
@@ -978,7 +1037,7 @@ Show that
 <span class="math display">\[\begin{equation}
 \frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
 \end{equation}\]</span>
-is an unbiased estimator of <span class="math inline">\(\sigma^{2}\)</span></li>
+is an unbiased estimator of <span class="math inline">\(\sigma^{2}\)</span>.</li>
 </ul>
 <hr />
 </div>
@@ -990,7 +1049,7 @@ the leave-one-out estimate of the regression function at <span class="math inlin
 <span class="math display">\[\begin{equation}
 \hat{m}_{h_{n},-i}(x) - \textrm{ estimate of $m(x)$ found by using all data except $(Y_{i}, x_{i})$.}
 \end{equation}\]</span></p></li>
-<li><p>The leave-one-out cross validation (LOO-CV) estimate of the PAMSE is defined to be
+<li><p>The leave-one-out cross validation (LOO-CV) estimate of the PMASE is defined to be
 <span class="math display">\[\begin{equation}
 \textrm{LOOCV}(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) \}^{2}  \nonumber
 \end{equation}\]</span></p></li>
@@ -1030,7 +1089,7 @@ try an example using the Nadaraya-Watson estimator with <span class="math inline
 <span class="math display" id="eq:loocv-simplification">\[\begin{eqnarray}
 Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) &amp;=&amp; Y_{i} - \sum_{j \neq i}^{n} a_{j,-i}^{h_{n}}(x_{i})Y_{j} \nonumber \\
 &amp;=&amp; Y_{i} - \frac{1}{1 - a_{i}^{h_{n}}( x_{i} ) } \sum_{j \neq i}^{n} a_{j}^{h_{n}}(x_{i})Y_{j} \nonumber \\
-&amp;=&amp; Y_{i} - \frac{1}{1 - \Big[ a_{i}^{h_{n}}( x_{i} ) } \sum_{j = 1}^{n} a_{j}^{h_{n}}(x_{i})Y_{j} \Big]  +  \frac{a_{j}^{h_{n}}(x_{i})Y_{i} }{1 - a_{i}^{h_{n}}( x_{i} ) }  \nonumber \\
+&amp;=&amp; Y_{i} - \Big[ \frac{1}{1 - a_{i}^{h_{n}}( x_{i} ) } \sum_{j = 1}^{n} a_{j}^{h_{n}}(x_{i})Y_{j} \Big]  +  \frac{a_{j}^{h_{n}}(x_{i})Y_{i} }{1 - a_{i}^{h_{n}}( x_{i} ) }  \nonumber \\
 &amp;=&amp; \frac{Y_{i} - \hat{m}_{h_{n}}(x_{i}) }{1 - a_{i}^{h_{n}}( x_{i} ) } 
 \tag{11.5}
 \end{eqnarray}\]</span></p></li>
@@ -1040,6 +1099,113 @@ Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) &amp;=&amp; Y_{i} - \sum_{j \neq i}^{n} a_{j,
 \end{equation}\]</span>
 where <span class="math inline">\(a_{i}^{h_{n}}(x_{i})\)</span> are just the diagonal elements of our original matrix <span class="math inline">\(\mathbf{A}_{h_{n}}\)</span>.</p></li>
 </ul>
+</div>
+<div id="example-choosing-the-best-bin-width-for-the-local-average-estimator." class="section level3">
+<h3><span class="header-section-number">11.4.4</span> Example: Choosing the Best Bin Width for the Local Average Estimator.</h3>
+<p><strong>Cp Statistic</strong></p>
+<ul>
+<li><p>The diagonal entries of the <span class="math inline">\(\mathbf{A}_{h_{n}}\)</span> matrix for the local average estimator
+are <span class="math inline">\(1/n_{h_{n}}(x_{1}), \ldots, 1/n_{h_{n}}(x_{n})\)</span>.</p></li>
+<li><p>So, the “degrees of freedom” for the local average estimator is
+<span class="math display">\[\begin{equation}
+\textrm{tr}( \mathbf{A}_{h_{n}}) = \sum_{i=1}^{n} \frac{1}{n_{h_{n}}(x_{i}) }
+\end{equation}\]</span></p></li>
+<li><p>Notice that if we choose <span class="math inline">\(h_{n}\)</span> large enough so that <span class="math inline">\(n_{h_{n}}(x_{i})\)</span> for all <span class="math inline">\(x_{i}\)</span>,
+then the degrees of freedom is equal to <span class="math inline">\(1\)</span>.</p></li>
+<li><p>The <span class="math inline">\(C_{p}\)</span> statistic for the local average estimator is
+<span class="math display">\[\begin{equation}
+\frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{ 2\hat{\sigma}^{2} }{n}\sum_{i=1}^{n} \frac{1}{n_{h_{n}}(x_{i}) } \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Let’s try to compute <span class="math inline">\(C_{p}(h_{n})\)</span> for the <code>bonedat</code> dataset.</p></li>
+<li><p>The first step is to write a function that computes the <span class="math inline">\(n_{h_{n}}(x_{i})\)</span> for a given value of <span class="math inline">\(h_{n}\)</span>. This will allow us to find the degrees of freedom
+and will also be helpful later when computing LOOCV.</p></li>
+</ul>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb227-1" data-line-number="1">NumInBins &lt;-<span class="st"> </span><span class="cf">function</span>(hh, xx) {</a>
+<a class="sourceLine" id="cb227-2" data-line-number="2">  <span class="co">## This function returns a vector of length n</span></a>
+<a class="sourceLine" id="cb227-3" data-line-number="3">  <span class="co">## Elements of this vector will be: n_[h_n](x_1), n_[h_n](x_2), ...</span></a>
+<a class="sourceLine" id="cb227-4" data-line-number="4">  n &lt;-<span class="st"> </span><span class="kw">length</span>(xx)</a>
+<a class="sourceLine" id="cb227-5" data-line-number="5">  num.bin &lt;-<span class="st"> </span><span class="kw">numeric</span>(n)</a>
+<a class="sourceLine" id="cb227-6" data-line-number="6">  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
+<a class="sourceLine" id="cb227-7" data-line-number="7">    num.bin[k] &lt;-<span class="st"> </span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span>xx[k] <span class="op">-</span><span class="st"> </span>hh <span class="op">&amp;</span><span class="st"> </span>xx <span class="op">&lt;</span><span class="st"> </span>xx[k] <span class="op">+</span><span class="st"> </span>hh)</a>
+<a class="sourceLine" id="cb227-8" data-line-number="8">  } </a>
+<a class="sourceLine" id="cb227-9" data-line-number="9">  <span class="kw">return</span>(num.bin)</a>
+<a class="sourceLine" id="cb227-10" data-line-number="10">}</a></code></pre></div>
+<hr />
+<ul>
+<li>We also want a function that returns the vector with elements <span class="math inline">\(\hat{m}_{h_{n}}(x_{1}), \hat{m}_{h_{n}}(x_{2}) , \ldots \hat{m}_{h_{n}}(x_{n})\)</span>.</li>
+</ul>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb228-1" data-line-number="1">MyLocAvgEst &lt;-<span class="st"> </span><span class="cf">function</span>(xx, yy, hh) {</a>
+<a class="sourceLine" id="cb228-2" data-line-number="2">  n &lt;-<span class="st"> </span><span class="kw">length</span>(xx)</a>
+<a class="sourceLine" id="cb228-3" data-line-number="3">  m.hat.loc &lt;-<span class="st"> </span><span class="kw">numeric</span>(n)</a>
+<a class="sourceLine" id="cb228-4" data-line-number="4">  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
+<a class="sourceLine" id="cb228-5" data-line-number="5">    in.bin &lt;-<span class="st"> </span>xx <span class="op">&gt;</span><span class="st"> </span>xx[k] <span class="op">-</span><span class="st"> </span>hh <span class="op">&amp;</span><span class="st"> </span>xx <span class="op">&lt;</span><span class="st"> </span>xx[k] <span class="op">+</span><span class="st"> </span>hh</a>
+<a class="sourceLine" id="cb228-6" data-line-number="6">    m.hat.loc[k] &lt;-<span class="st"> </span><span class="kw">mean</span>(yy[in.bin])</a>
+<a class="sourceLine" id="cb228-7" data-line-number="7">  }</a>
+<a class="sourceLine" id="cb228-8" data-line-number="8">  <span class="kw">return</span>(m.hat.loc)</a>
+<a class="sourceLine" id="cb228-9" data-line-number="9">}</a></code></pre></div>
+<hr />
+<ul>
+<li><p>The final step is to compute an estimate of <span class="math inline">\(\sigma^{2}\)</span>.</p></li>
+<li><p>Using the estimate that we mentioned before with <span class="math inline">\(h_{n} = 0.1\)</span>, I got a an estimate of <span class="math inline">\(\sigma^{2}\)</span> which was quite close to <span class="math inline">\(0.0015\)</span></p></li>
+</ul>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb229-1" data-line-number="1">sigsq.est &lt;-<span class="st"> </span><span class="fl">0.0015</span></a></code></pre></div>
+<hr />
+<ul>
+<li>Now, we are ready to compute the <span class="math inline">\(C_{p}\)</span> statistic. We will compute <span class="math inline">\(C_{p}(h_{n})\)</span> for <span class="math inline">\(h_{n} = 0.01, 0.11, \ldots, 10.01\)</span>. This can be done with the following code:</li>
+</ul>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb230-1" data-line-number="1">hseq &lt;-<span class="st"> </span><span class="kw">seq</span>(.<span class="dv">01</span>, <span class="fl">10.01</span>, <span class="dt">by=</span>.<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb230-2" data-line-number="2">ngrid &lt;-<span class="st"> </span><span class="kw">length</span>(hseq)</a>
+<a class="sourceLine" id="cb230-3" data-line-number="3">n &lt;-<span class="st"> </span><span class="kw">length</span>(bonedat<span class="op">$</span>age)</a>
+<a class="sourceLine" id="cb230-4" data-line-number="4">Cp &lt;-<span class="st"> </span><span class="kw">numeric</span>(ngrid)</a>
+<a class="sourceLine" id="cb230-5" data-line-number="5"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ngrid) {</a>
+<a class="sourceLine" id="cb230-6" data-line-number="6">   m.hat &lt;-<span class="st"> </span><span class="kw">MyLocAvgEst</span>(bonedat<span class="op">$</span>age, bonedat<span class="op">$</span>spnbmd, hseq[k])</a>
+<a class="sourceLine" id="cb230-7" data-line-number="7">   dfval &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="dv">1</span><span class="op">/</span><span class="kw">NumInBins</span>(hseq[k], bonedat<span class="op">$</span>age))</a>
+<a class="sourceLine" id="cb230-8" data-line-number="8">   Cp[k] &lt;-<span class="st"> </span><span class="kw">mean</span>((bonedat<span class="op">$</span>spnbmd <span class="op">-</span><span class="st"> </span>m.hat)<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>(<span class="dv">2</span><span class="op">*</span>sigsq.est<span class="op">*</span>dfval)<span class="op">/</span>n</a>
+<a class="sourceLine" id="cb230-9" data-line-number="9">}</a></code></pre></div>
+<ul>
+<li>We can plot the values of <span class="math inline">\(C_{p}(h_{n})\)</span> vs. <span class="math inline">\(h_{n}\)</span> to roughly see where the minimum value is. From the graph, it looks to be slighly less than <span class="math inline">\(1\)</span>.</li>
+</ul>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb231-1" data-line-number="1"><span class="kw">plot</span>(hseq, Cp, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="fl">0.001</span>,.<span class="dv">003</span>), <span class="dt">main=</span><span class="st">&quot;Bone Data: Cp Stat for Loc. Avg. Est.&quot;</span>, </a>
+<a class="sourceLine" id="cb231-2" data-line-number="2">     <span class="dt">xlab=</span><span class="st">&quot;hn&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Cp&quot;</span>)</a>
+<a class="sourceLine" id="cb231-3" data-line-number="3"><span class="kw">lines</span>(hseq, Cp)</a></code></pre></div>
+<p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<ul>
+<li>More precisely, the value of <span class="math inline">\(h_{n}\)</span> from our sequence which has the smallest value of <span class="math inline">\(C_{p}(h_{n})\)</span> is <span class="math inline">\(0.81\)</span>.</li>
+</ul>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb232-1" data-line-number="1">hseq[<span class="kw">which.min</span>(Cp)]</a></code></pre></div>
+<pre><code>## [1] 0.81</code></pre>
+<hr />
+<p><strong>LOOCV</strong></p>
+<ul>
+<li><p>We can use the functions that we have written to compute <span class="math inline">\(\textrm{LOOCV}(h_{n})\)</span>.</p></li>
+<li><p>It is useful to notice that <span class="math inline">\(1 - a_{i}^{h_{n}}( x_{i} ) = 1 - 1/n_{h_{n}}(x_{i})\)</span> using the notation
+we used in the description of the LOOCV.</p></li>
+<li><p><code>R</code> code to compute <span class="math inline">\(\textrm{LOOCV}(h_{n})\)</span> at the same sequence of <span class="math inline">\(h_{n}\)</span> values used for the <span class="math inline">\(C_{p}\)</span>
+statistic is given below:</p></li>
+</ul>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb234-1" data-line-number="1">LOOCV &lt;-<span class="st"> </span><span class="kw">numeric</span>(ngrid)</a>
+<a class="sourceLine" id="cb234-2" data-line-number="2"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ngrid) {</a>
+<a class="sourceLine" id="cb234-3" data-line-number="3">  m.hat &lt;-<span class="st"> </span><span class="kw">MyLocAvgEst</span>(bonedat<span class="op">$</span>age, bonedat<span class="op">$</span>spnbmd, hseq[k])</a>
+<a class="sourceLine" id="cb234-4" data-line-number="4">  n.hn &lt;-<span class="st"> </span><span class="kw">NumInBins</span>(hseq[k], bonedat<span class="op">$</span>age)</a>
+<a class="sourceLine" id="cb234-5" data-line-number="5">  dd &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>n.hn</a>
+<a class="sourceLine" id="cb234-6" data-line-number="6">  LOOCV[k] &lt;-<span class="st"> </span><span class="kw">mean</span>(((bonedat<span class="op">$</span>spnbmd <span class="op">-</span><span class="st"> </span>m.hat)<span class="op">/</span>dd)<span class="op">^</span><span class="dv">2</span>) </a>
+<a class="sourceLine" id="cb234-7" data-line-number="7">}</a></code></pre></div>
+<ul>
+<li>We can plot the values of <span class="math inline">\(\textrm{LOOCV}(h_{n})\)</span> vs. <span class="math inline">\(h_{n}\)</span> to roughly see where the minimum value is.</li>
+</ul>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb235-1" data-line-number="1"><span class="kw">plot</span>(hseq, LOOCV, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="fl">0.001</span>,.<span class="dv">003</span>), <span class="dt">main=</span><span class="st">&quot;Bone Data: LOOCV Stat for Loc. Avg. Est.&quot;</span>, </a>
+<a class="sourceLine" id="cb235-2" data-line-number="2">     <span class="dt">xlab=</span><span class="st">&quot;hn&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;LOOCV&quot;</span>)</a>
+<a class="sourceLine" id="cb235-3" data-line-number="3"><span class="kw">lines</span>(hseq, LOOCV)</a></code></pre></div>
+<p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<ul>
+<li>The value of <span class="math inline">\(h_{n}\)</span> from our sequence which has the smallest value of <span class="math inline">\(\textrm{LOOCV}(h_{n})\)</span> is <span class="math inline">\(0.81\)</span>.</li>
+</ul>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb236-1" data-line-number="1">hseq[<span class="kw">which.min</span>(LOOCV)]</a></code></pre></div>
+<pre><code>## [1] 0.81</code></pre>
+<p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 </div>
 <div id="additional-reading-5" class="section level2">

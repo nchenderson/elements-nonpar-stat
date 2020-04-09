@@ -462,7 +462,7 @@ solved the following local least-squares problem
 (\#eq:simple-loclin-regression)
 \end{equation}
 
-* Then, we would estimate $m(x)$ by using the value of $\hat{s}_{x}$ at $x$. That is, $\hat{s}_{x}(x) = \hat{\beta}_{0x}$. 
+* Then, we would estimate $m(x)$ by using the value of $\hat{s}_{x}(\cdot)$ at $x$. That is, $\hat{s}_{x}(x) = \hat{\beta}_{0x}$. 
 
 ---
 
@@ -552,6 +552,65 @@ lines(xseq, bone.loclin, lwd=3, col="red")
 
 ### Local Polynomial Regression
 
+* There is no reason why we must restrict ourselves to local linear fits. We 
+could also fit local polynomial models.
+
+* Similar to the way we approached local linear regression, for a fixed $x$
+we will fit the local model 
+\begin{equation}
+\hat{s}_{x}^{p}(x_{i}) = \hat{\beta}_{0x,p} + \hat{\beta}_{1x,p}(x_{i} - x) + \hat{\beta}_{2x,p}(x_{i} - x)^{2} + \ldots + \beta_{px,p}(x_{i} - x)^{2}, \nonumber
+\end{equation}
+where the estimated regression coefficients $\hat{\beta}_{0x,p}, \hat{\beta}_{1x,p}, \ldots, \hat{\beta}_{px,p}$ are found
+by solving the least-squares problem
+\begin{equation}
+\sum_{i=1}^{n}\{ Y_{i} - \beta_{0x,p} - \beta_{1x,p}(x_{i} - x) - \ldots - \beta_{px,p}(x_{i} - x)^{p} \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) 
+\end{equation}
+
+* Then, we estimate the regression function at $x$ with $\hat{m}_{h_{n}}^{locpoly}(x) = \hat{s}_{x}^{p}(x) = \hat{\beta}_{0x,p}$. 
+
+* Note that the local linear regression estimate is just a special case of local polynomial regression with $p=1$.
+
+---
+
+* To find the estimates of $\beta_{0x,p}$ for linear and polynomial regression, you can use the 
+formulas for the regression coefficient estimates in weighted least squares.
+
+* Define the $n \times n$ diagonal matrix of weights $\mathbf{W}_{x}$ as 
+\begin{equation}
+\mathbf{W}_{x, h_{n}}
+= \begin{bmatrix} K\Big( \frac{x - x_{1}}{h_{n}} \Big) & 0 & \ldots & 0 \\
+0 & K\Big( \frac{x - x_{2}}{h_{n}} \Big) & \ldots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \ldots & K\Big( \frac{x - x_{n}}{h_{n}} \Big)
+\end{bmatrix} \nonumber
+\end{equation}
+and define the $n \times (p+1)$ matrix $\mathbf{X}_{x,p}$ as
+\begin{equation}
+\mathbf{X}_{x, p} = \begin{bmatrix} 1 & (x_{1} - x) & \ldots & (x_{1} - x)^{p} \\ 
+1 & (x_{2} - x) & \ldots & (x_{2} - x)^{p} \\
+\vdots & \vdots &  & \vdots \\
+1 & (x_{n} - x) & \ldots & (x_{n} - x)^{p}
+\end{bmatrix}  \nonumber
+\end{equation}
+
+* The vector of estimated regression coefficients is obtained from the following formula
+\begin{equation}
+\begin{bmatrix}
+\hat{\beta}_{0x,p} \\ \hat{\beta}_{1x,p} \\ \ldots \\ \hat{\beta}_{px,p}
+\end{bmatrix}
+= (\mathbf{X}_{x,p}^{T}\mathbf{W}_{x,h_{n}}\mathbf{X}_{x,p})^{-1}\mathbf{X}_{x,p}^{T}\mathbf{W}_{x,h_{n}}\mathbf{Y}  \nonumber
+\end{equation}
+
+---
+
+* While using local polynomial regression with higher order polynomials offer more flexibility, they come
+at the price of more variance.
+
+* For fixed $h_{n}$, increasing the degree $p$ can decrease bias but will increase variance.
+
+* In practice, $p = 1$ or $p = 2$ seems to be most common in practice. There is often not 
+much benefit to using a degree of $3$ or more.  
+
 
 ## Selecting the Bandwidth/Smoothing Parameter
 
@@ -604,7 +663,12 @@ K_{h_{n}}(x_{i}, \cdot) = \sum_{j=1}^{n}K\Big( \frac{x_{i} - x_{j}}{h_{n}}  \Big
 
 ---
 
-* For the local linear regression estimator, 
+* For the local linear regression estimator, the $i^{th}$ row of $\mathbf{A}_{h_{n}}$ equals the first row
+of the following $2 \times n$ matrix:
+\begin{equation}
+(\mathbf{X}_{x_{i},1}^{T}\mathbf{W}_{x_{i},h_{n}}\mathbf{X}_{x_{i},1})^{-1}\mathbf{X}_{x_{i},1}^{T}\mathbf{W}_{x_{i},h_{n}}  \nonumber
+\end{equation}
+Here, $\mathbf{X}_{x,1}$ and $\mathbf{W}_{x, h_{n}}$ are as defined in the section on local linear regression.
 
 ---
 
@@ -672,9 +736,9 @@ E\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A}_{h
 
 ---
 
-* The predictive mean averaged squared error (PAMSE) is defined as
+* The predictive mean averaged squared error (PMASE) is defined as
 \begin{equation}
-\textrm{PAMSE}(h_{n}) = E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ Y_{i}' -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]
+\textrm{PMASE}(h_{n}) = E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ Y_{i}' -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]
 \end{equation}
 where $Y_{i}'$ is a "future" independent observation that has the same covariate as $Y_{i}$. 
 
@@ -682,17 +746,17 @@ where $Y_{i}'$ is a "future" independent observation that has the same covariate
 
 * So, 
 \begin{eqnarray}
-\textrm{PAMSE}(h_{n}) &=& E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) + \varepsilon_{i}' \}^{2} \Big] 
+\textrm{PMASE}(h_{n}) &=& E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) + \varepsilon_{i}' \}^{2} \Big] 
 \nonumber \\
 &=& E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]  +  E\Big[ \frac{1}{n} \sum_{i=1}^{n} (\varepsilon_{i}')^{2} \Big]  \nonumber \\
-&=& \textrm{AMSE}( h_{n} ) + \sigma^{2} \nonumber
+&=& \textrm{PMASE}( h_{n} ) + \sigma^{2} \nonumber
 \end{eqnarray}
 
 
 ---
 
 * The $C_{p}$ statistic is based on the idea that, if $\sigma^{2}$ was known, then the following quantity
-would be an unbiased estimate of $\textrm{PAMSE}( h_{n} )$:
+would be an unbiased estimate of $\textrm{PMASE}( h_{n} )$:
 \begin{equation}
 \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber
 \end{equation}
@@ -706,7 +770,7 @@ C_{p}(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2
 * The reason this is called the "$C_{p}$ statistic" is that in the case of a linear regression model with $p$
 covariates, we have $\hat{\mathbf{m}} = \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}\mathbf{Y}$
 and $\textrm{tr}\{ \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}  \}$ so an 
-estimator of the PAMSE would be
+estimator of the PMASE would be
 \begin{equation}
 C_{p} = \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}p  \nonumber
 \end{equation}
@@ -731,7 +795,7 @@ Show that
 \begin{equation}
 \frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
 \end{equation}
-is an unbiased estimator of $\sigma^{2}$
+is an unbiased estimator of $\sigma^{2}$.
 
 ---
 
@@ -744,7 +808,7 @@ the leave-one-out estimate of the regression function at $x$ as:
 \hat{m}_{h_{n},-i}(x) - \textrm{ estimate of $m(x)$ found by using all data except $(Y_{i}, x_{i})$.}
 \end{equation}
 
-* The leave-one-out cross validation (LOO-CV) estimate of the PAMSE is defined to be
+* The leave-one-out cross validation (LOO-CV) estimate of the PMASE is defined to be
 \begin{equation}
 \textrm{LOOCV}(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) \}^{2}  \nonumber
 \end{equation}
@@ -791,7 +855,7 @@ try an example using the Nadaraya-Watson estimator with $n=3$.
 \begin{eqnarray}
 Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) &=& Y_{i} - \sum_{j \neq i}^{n} a_{j,-i}^{h_{n}}(x_{i})Y_{j} \nonumber \\
 &=& Y_{i} - \frac{1}{1 - a_{i}^{h_{n}}( x_{i} ) } \sum_{j \neq i}^{n} a_{j}^{h_{n}}(x_{i})Y_{j} \nonumber \\
-&=& Y_{i} - \frac{1}{1 - \Big[ a_{i}^{h_{n}}( x_{i} ) } \sum_{j = 1}^{n} a_{j}^{h_{n}}(x_{i})Y_{j} \Big]  +  \frac{a_{j}^{h_{n}}(x_{i})Y_{i} }{1 - a_{i}^{h_{n}}( x_{i} ) }  \nonumber \\
+&=& Y_{i} - \Big[ \frac{1}{1 - a_{i}^{h_{n}}( x_{i} ) } \sum_{j = 1}^{n} a_{j}^{h_{n}}(x_{i})Y_{j} \Big]  +  \frac{a_{j}^{h_{n}}(x_{i})Y_{i} }{1 - a_{i}^{h_{n}}( x_{i} ) }  \nonumber \\
 &=& \frac{Y_{i} - \hat{m}_{h_{n}}(x_{i}) }{1 - a_{i}^{h_{n}}( x_{i} ) } 
 (\#eq:loocv-simplification)
 \end{eqnarray}
@@ -803,6 +867,153 @@ Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) &=& Y_{i} - \sum_{j \neq i}^{n} a_{j,-i}^{h_{
 \end{equation}
 where $a_{i}^{h_{n}}(x_{i})$ are just the diagonal elements of our original matrix $\mathbf{A}_{h_{n}}$.
 
+
+### Example: Choosing the Best Bin Width for the Local Average Estimator.
+
+**Cp Statistic**
+
+* The diagonal entries of the $\mathbf{A}_{h_{n}}$ matrix for the local average estimator
+are $1/n_{h_{n}}(x_{1}), \ldots, 1/n_{h_{n}}(x_{n})$.
+
+* So, the "degrees of freedom" for the local average estimator is
+\begin{equation}
+\textrm{tr}( \mathbf{A}_{h_{n}}) = \sum_{i=1}^{n} \frac{1}{n_{h_{n}}(x_{i}) }
+\end{equation}
+
+* Notice that if we choose $h_{n}$ large enough so that $n_{h_{n}}(x_{i})$ for all $x_{i}$,
+then the degrees of freedom is equal to $1$.
+
+* The $C_{p}$ statistic for the local average estimator is
+\begin{equation}
+\frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{ 2\hat{\sigma}^{2} }{n}\sum_{i=1}^{n} \frac{1}{n_{h_{n}}(x_{i}) } \nonumber
+\end{equation}
+
+---
+
+* Let's try to compute $C_{p}(h_{n})$ for the `bonedat` dataset.
+
+* The first step is to write a function that computes the $n_{h_{n}}(x_{i})$ for a given value of $h_{n}$. This will allow us to find the degrees of freedom
+and will also be helpful later when computing LOOCV.
+
+```r
+NumInBins <- function(hh, xx) {
+  ## This function returns a vector of length n
+  ## Elements of this vector will be: n_[h_n](x_1), n_[h_n](x_2), ...
+  n <- length(xx)
+  num.bin <- numeric(n)
+  for(k in 1:n) {
+    num.bin[k] <- sum(xx > xx[k] - hh & xx < xx[k] + hh)
+  } 
+  return(num.bin)
+}
+```
+
+---
+
+* We also want a function that returns the vector with elements $\hat{m}_{h_{n}}(x_{1}), \hat{m}_{h_{n}}(x_{2}) , \ldots \hat{m}_{h_{n}}(x_{n})$.
+
+```r
+MyLocAvgEst <- function(xx, yy, hh) {
+  n <- length(xx)
+  m.hat.loc <- numeric(n)
+  for(k in 1:n) {
+    in.bin <- xx > xx[k] - hh & xx < xx[k] + hh
+    m.hat.loc[k] <- mean(yy[in.bin])
+  }
+  return(m.hat.loc)
+}
+```
+
+---
+
+* The final step is to compute an estimate of $\sigma^{2}$.
+
+* Using the estimate that we mentioned before with $h_{n} = 0.1$, I got a an estimate of $\sigma^{2}$ which was quite close to $0.0015$
+
+```r
+sigsq.est <- 0.0015
+```
+
+---
+
+* Now, we are ready to compute the $C_{p}$ statistic. We will compute $C_{p}(h_{n})$ for $h_{n} = 0.01, 0.11, \ldots, 10.01$. This can be done with the following code:
+
+```r
+hseq <- seq(.01, 10.01, by=.1)
+ngrid <- length(hseq)
+n <- length(bonedat$age)
+Cp <- numeric(ngrid)
+for(k in 1:ngrid) {
+   m.hat <- MyLocAvgEst(bonedat$age, bonedat$spnbmd, hseq[k])
+   dfval <- sum(1/NumInBins(hseq[k], bonedat$age))
+   Cp[k] <- mean((bonedat$spnbmd - m.hat)^2) + (2*sigsq.est*dfval)/n
+}
+```
+
+* We can plot the values of $C_{p}(h_{n})$ vs. $h_{n}$ to roughly see where the minimum value is. From the graph, it looks to be slighly less than $1$.
+
+```r
+plot(hseq, Cp, ylim=c(0.001,.003), main="Bone Data: Cp Stat for Loc. Avg. Est.", 
+     xlab="hn", ylab="Cp")
+lines(hseq, Cp)
+```
+
+<img src="11-kernel-regression_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+
+* More precisely, the value of $h_{n}$ from our sequence which has the smallest value of $C_{p}(h_{n})$ is $0.81$.
+
+```r
+hseq[which.min(Cp)]
+```
+
+```
+## [1] 0.81
+```
+
+---
+
+**LOOCV** 
+
+* We can use the functions that we have written to compute $\textrm{LOOCV}(h_{n})$. 
+
+* It is useful to notice that $1 - a_{i}^{h_{n}}( x_{i} ) = 1 - 1/n_{h_{n}}(x_{i})$ using the notation
+we used in the description of the LOOCV.
+
+* `R` code to compute $\textrm{LOOCV}(h_{n})$ at the same sequence of $h_{n}$ values used for the $C_{p}$
+statistic is given below:
+
+```r
+LOOCV <- numeric(ngrid)
+for(k in 1:ngrid) {
+  m.hat <- MyLocAvgEst(bonedat$age, bonedat$spnbmd, hseq[k])
+  n.hn <- NumInBins(hseq[k], bonedat$age)
+  dd <- 1 - 1/n.hn
+  LOOCV[k] <- mean(((bonedat$spnbmd - m.hat)/dd)^2) 
+}
+```
+
+
+* We can plot the values of $\textrm{LOOCV}(h_{n})$ vs. $h_{n}$ to roughly see where the minimum value is.
+
+```r
+plot(hseq, LOOCV, ylim=c(0.001,.003), main="Bone Data: LOOCV Stat for Loc. Avg. Est.", 
+     xlab="hn", ylab="LOOCV")
+lines(hseq, LOOCV)
+```
+
+<img src="11-kernel-regression_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+
+* The value of $h_{n}$ from our sequence which has the smallest value of $\textrm{LOOCV}(h_{n})$ is $0.81$.
+
+```r
+hseq[which.min(LOOCV)]
+```
+
+```
+## [1] 0.81
+```
+
+<img src="11-kernel-regression_files/figure-html/unnamed-chunk-22-1.png" width="672" />
 
 ## Additional Reading
 
