@@ -908,7 +908,7 @@ are $1/n_{h_{n}}(x_{1}), \ldots, 1/n_{h_{n}}(x_{n})$.
 \textrm{tr}( \mathbf{A}_{h_{n}}) = \sum_{i=1}^{n} \frac{1}{n_{h_{n}}(x_{i}) }
 \end{equation}
 
-* Notice that if we choose $h_{n}$ large enough so that $n_{h_{n}}(x_{i})$ for all $x_{i}$,
+* Notice that if we choose $h_{n}$ large enough so that $n_{h_{n}}(x_{i}) = n$ for all $x_{i}$,
 then the degrees of freedom is equal to $1$.
 
 * The $C_{p}$ statistic for the local average estimator is
