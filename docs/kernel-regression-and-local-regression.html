@@ -1149,7 +1149,11 @@ and will also be helpful later when computing LOOCV.</p></li>
 <hr />
 <ul>
 <li><p>The final step is to compute an estimate of <span class="math inline">\(\sigma^{2}\)</span>.</p></li>
-<li><p>Using the estimate that we mentioned before with <span class="math inline">\(h_{n} = 0.1\)</span>, I got a an estimate of <span class="math inline">\(\sigma^{2}\)</span> which was quite close to <span class="math inline">\(0.0015\)</span></p></li>
+<li><p>Using the estimate
+<span class="math display">\[\begin{equation}
+\hat{\sigma}^{2}( \tilde{h}_{n} ) = \frac{  \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{\tilde{h}_{n}}(x_{i}) \}^{2}  }{ n - 2\textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}) + \textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}\mathbf{A}_{\tilde{h_{n}}}^{T}) }
+\end{equation}\]</span>
+that we mentioned before with <span class="math inline">\(\tilde{h}_{n} = 0.1\)</span>, I got a an estimate of <span class="math inline">\(\sigma^{2}\)</span> which was quite close to <span class="math inline">\(0.0015\)</span></p></li>
 </ul>
 <div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb229-1" data-line-number="1">sigsq.est &lt;-<span class="st"> </span><span class="fl">0.0015</span></a></code></pre></div>
 <hr />
@@ -1163,7 +1167,7 @@ and will also be helpful later when computing LOOCV.</p></li>
 <a class="sourceLine" id="cb230-5" data-line-number="5"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ngrid) {</a>
 <a class="sourceLine" id="cb230-6" data-line-number="6">   m.hat &lt;-<span class="st"> </span><span class="kw">MyLocAvgEst</span>(bonedat<span class="op">$</span>age, bonedat<span class="op">$</span>spnbmd, hseq[k])</a>
 <a class="sourceLine" id="cb230-7" data-line-number="7">   dfval &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="dv">1</span><span class="op">/</span><span class="kw">NumInBins</span>(hseq[k], bonedat<span class="op">$</span>age))</a>
-<a class="sourceLine" id="cb230-8" data-line-number="8">   Cp[k] &lt;-<span class="st"> </span><span class="kw">mean</span>((bonedat<span class="op">$</span>spnbmd <span class="op">-</span><span class="st"> </span>m.hat)<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>(<span class="dv">2</span><span class="op">*</span>sigsq.est<span class="op">*</span>dfval)<span class="op">/</span>n</a>
+<a class="sourceLine" id="cb230-8" data-line-number="8">   Cp[k] &lt;-<span class="st"> </span><span class="kw">mean</span>( (bonedat<span class="op">$</span>spnbmd <span class="op">-</span><span class="st"> </span>m.hat)<span class="op">^</span><span class="dv">2</span> ) <span class="op">+</span><span class="st"> </span>(<span class="dv">2</span><span class="op">*</span>sigsq.est<span class="op">*</span>dfval)<span class="op">/</span>n</a>
 <a class="sourceLine" id="cb230-9" data-line-number="9">}</a></code></pre></div>
 <ul>
 <li>We can plot the values of <span class="math inline">\(C_{p}(h_{n})\)</span> vs. <span class="math inline">\(h_{n}\)</span> to roughly see where the minimum value is. From the graph, it looks to be slighly less than <span class="math inline">\(1\)</span>.</li>
@@ -1191,7 +1195,7 @@ statistic is given below:</p></li>
 <a class="sourceLine" id="cb234-3" data-line-number="3">  m.hat &lt;-<span class="st"> </span><span class="kw">MyLocAvgEst</span>(bonedat<span class="op">$</span>age, bonedat<span class="op">$</span>spnbmd, hseq[k])</a>
 <a class="sourceLine" id="cb234-4" data-line-number="4">  n.hn &lt;-<span class="st"> </span><span class="kw">NumInBins</span>(hseq[k], bonedat<span class="op">$</span>age)</a>
 <a class="sourceLine" id="cb234-5" data-line-number="5">  dd &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>n.hn</a>
-<a class="sourceLine" id="cb234-6" data-line-number="6">  LOOCV[k] &lt;-<span class="st"> </span><span class="kw">mean</span>(((bonedat<span class="op">$</span>spnbmd <span class="op">-</span><span class="st"> </span>m.hat)<span class="op">/</span>dd)<span class="op">^</span><span class="dv">2</span>) </a>
+<a class="sourceLine" id="cb234-6" data-line-number="6">  LOOCV[k] &lt;-<span class="st"> </span><span class="kw">mean</span>( ((bonedat<span class="op">$</span>spnbmd <span class="op">-</span><span class="st"> </span>m.hat)<span class="op">/</span>dd)<span class="op">^</span><span class="dv">2</span> ) </a>
 <a class="sourceLine" id="cb234-7" data-line-number="7">}</a></code></pre></div>
 <ul>
 <li>We can plot the values of <span class="math inline">\(\textrm{LOOCV}(h_{n})\)</span> vs. <span class="math inline">\(h_{n}\)</span> to roughly see where the minimum value is.</li>

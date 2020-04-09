@@ -928,7 +928,11 @@ MyLocAvgEst <- function(xx, yy, hh) {
 
 * The final step is to compute an estimate of $\sigma^{2}$.
 
-* Using the estimate that we mentioned before with $h_{n} = 0.1$, I got a an estimate of $\sigma^{2}$ which was quite close to $0.0015$
+* Using the estimate 
+\begin{equation}
+\hat{\sigma}^{2}( \tilde{h}_{n} ) = \frac{  \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{\tilde{h}_{n}}(x_{i}) \}^{2}  }{ n - 2\textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}) + \textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}\mathbf{A}_{\tilde{h_{n}}}^{T}) }
+\end{equation}
+that we mentioned before with $\tilde{h}_{n} = 0.1$, I got a an estimate of $\sigma^{2}$ which was quite close to $0.0015$
 
 ```r
 sigsq.est <- 0.0015
@@ -946,7 +950,7 @@ Cp <- numeric(ngrid)
 for(k in 1:ngrid) {
    m.hat <- MyLocAvgEst(bonedat$age, bonedat$spnbmd, hseq[k])
    dfval <- sum(1/NumInBins(hseq[k], bonedat$age))
-   Cp[k] <- mean((bonedat$spnbmd - m.hat)^2) + (2*sigsq.est*dfval)/n
+   Cp[k] <- mean( (bonedat$spnbmd - m.hat)^2 ) + (2*sigsq.est*dfval)/n
 }
 ```
 
@@ -988,7 +992,7 @@ for(k in 1:ngrid) {
   m.hat <- MyLocAvgEst(bonedat$age, bonedat$spnbmd, hseq[k])
   n.hn <- NumInBins(hseq[k], bonedat$age)
   dd <- 1 - 1/n.hn
-  LOOCV[k] <- mean(((bonedat$spnbmd - m.hat)/dd)^2) 
+  LOOCV[k] <- mean( ((bonedat$spnbmd - m.hat)/dd)^2 ) 
 }
 ```
 
