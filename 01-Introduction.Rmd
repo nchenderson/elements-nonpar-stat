@@ -1,7 +1,6 @@
 # Introduction {#intro}
 
 ```{r, echo=FALSE}
-library(knitr)
 library(xtable)
 library(rpart)
 ```

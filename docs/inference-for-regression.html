@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-09" />
+<meta name="date" content="2020-04-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -300,11 +300,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.5</b> Additional Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
-<li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a></li>
-<li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#spline-basis-functions"><i class="fa fa-check"></i><b>12.2</b> Spline Basis Functions</a></li>
-<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splinespenalized-regression"><i class="fa fa-check"></i><b>12.3</b> Smoothing Splines/Penalized Regression</a><ul>
-<li class="chapter" data-level="12.3.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#selection-of-smoothing-parameter"><i class="fa fa-check"></i><b>12.3.1</b> Selection of Smoothing Parameter</a></li>
+<li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#regressogram-piecewise-constant-estimate"><i class="fa fa-check"></i><b>12.1.1</b> Regressogram (Piecewise Constant Estimate)</a></li>
+<li class="chapter" data-level="12.1.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates"><i class="fa fa-check"></i><b>12.1.2</b> Piecewise Linear Estimates</a></li>
 </ul></li>
+<li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-cubic-estimates"><i class="fa fa-check"></i><b>12.2</b> Piecewise Cubic Estimates</a></li>
+<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates-with-continuity"><i class="fa fa-check"></i><b>12.3</b> Piecewise Linear Estimates with Continuity</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-cubic-estimates-with-constraints-1"><i class="fa fa-check"></i><b>12.3.1</b> Piecewise Cubic Estimates with constraints 1</a></li>
+<li class="chapter" data-level="12.3.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-cubic"><i class="fa fa-check"></i><b>12.3.2</b> Piecewise Cubic</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-spline-basis-functions"><i class="fa fa-check"></i><b>12.4</b> Cubic Splines and Spline Basis Functions</a></li>
+<li class="chapter" data-level="12.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splinespenalized-regression"><i class="fa fa-check"></i><b>12.5</b> Smoothing Splines/Penalized Regression</a></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
 <li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a></li>
@@ -333,16 +339,84 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 12</span> Splines and Penalized Regression</h1>
 <div id="introduction-3" class="section level2">
 <h2><span class="header-section-number">12.1</span> Introduction</h2>
+<ul>
+<li><p>In this chapter, we will focus on using basis functions for estimating
+the regression function.</p></li>
+<li><p>That is, we will look at regression function estimates of the form
+<span class="math display">\[\begin{equation}
+\hat{m}(x) = \hat{\beta}_{0}\varphi_{0}(x) + \sum_{j=1}^{p} \hat{\beta}_{j}\varphi_{j}(x)  \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(\varphi_{0}(x), \varphi_{1}(x), \ldots, \varphi_{p}(x)\)</span> will be referred to as basis functions.</p></li>
+<li><p>If you use a relatively large number of appropriately chosen basis functions,
+you can represent even quite complicated functions with some linear
+combination of the basis functions.</p></li>
+</ul>
+<hr />
+<p><strong>Examples</strong></p>
+<hr />
+<div id="regressogram-piecewise-constant-estimate" class="section level3">
+<h3><span class="header-section-number">12.1.1</span> Regressogram (Piecewise Constant Estimate)</h3>
+<ul>
+<li><p>Let’s consider the regressogram again. The regressogram estimate could be written as
+<span class="math display">\[\begin{equation}
+\hat{m}_{h_{n}}^{R}(x) = \sum_{k=1}^{D_{n}} a_{k, h_{n}}\varphi_{k}(x) = \sum_{k=1}^{D_{n}} a_{k,h_{n}} I\big( x \in B_{k} \big)
+\end{equation}\]</span>
+where the coefficents <span class="math inline">\(a_{k, h_{n}}\)</span> are given by
+<span class="math display">\[\begin{equation}
+a_{k, h_{n}} = \frac{1}{ n_{k,h_{n}} } \sum_{i=1}^{n} Y_{i}I\big( x_{i} \in B_{k} \big)  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>We can think of the regressogram as a basis function estimate with the basis functions
+<span class="math display">\[\begin{equation}
+\varphi_{1}(x) = I\big( x \in B_{1} \big), \ldots, \varphi_{D_{n}}(x) = I\big( x \in B_{D_{n}} \big) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The regressogram estimate will be a piecewise constant function that is constant within each of the bins.</p></li>
+</ul>
+<div class="figure"><span id="fig:unnamed-chunk-1"></span>
+<img src="12-splines_files/figure-html/unnamed-chunk-1-1.png" alt="Basis functions for a regressogram with the following 3 bins: [0,1/3), [1/3, 2/3), [2/3, 1)" width="672" />
+<p class="caption">
+Figure 8.1: Basis functions for a regressogram with the following 3 bins: [0,1/3), [1/3, 2/3), [2/3, 1)
+</p>
 </div>
-<div id="spline-basis-functions" class="section level2">
-<h2><span class="header-section-number">12.2</span> Spline Basis Functions</h2>
+</div>
+<div id="piecewise-linear-estimates" class="section level3">
+<h3><span class="header-section-number">12.1.2</span> Piecewise Linear Estimates</h3>
+<ul>
+<li>Instead of a piecewise constant estimate of <span class="math inline">\(m(x)\)</span>, we could use an estimate which is piecewise linear
+by using the following <span class="math inline">\(2p\)</span> basis functions
+<span class="math display">\[\begin{eqnarray}
+\varphi_{1}(x) &amp;=&amp; I(x \in B_{1}) \nonumber \\
+&amp;\vdots&amp;  \nonumber \\
+\varphi_{p}(x) &amp;=&amp; I(x \in B_{p}) \nonumber \\
+\varphi_{p+1}(x) &amp;=&amp; x I(x \in B_{1})  \nonumber \\
+&amp;\vdots&amp; \nonumber \\
+\varphi_{2p}(x) &amp;=&amp; x I(x \in B_{p}) \nonumber
+\end{eqnarray}\]</span>
+if we now let <span class="math inline">\(p = D_{n}\)</span> denote the number of “bins”.</li>
+</ul>
+</div>
+</div>
+<div id="piecewise-cubic-estimates" class="section level2">
+<h2><span class="header-section-number">12.2</span> Piecewise Cubic Estimates</h2>
+</div>
+<div id="piecewise-linear-estimates-with-continuity" class="section level2">
+<h2><span class="header-section-number">12.3</span> Piecewise Linear Estimates with Continuity</h2>
+<div id="piecewise-cubic-estimates-with-constraints-1" class="section level3">
+<h3><span class="header-section-number">12.3.1</span> Piecewise Cubic Estimates with constraints 1</h3>
+</div>
+<div id="piecewise-cubic" class="section level3">
+<h3><span class="header-section-number">12.3.2</span> Piecewise Cubic</h3>
+</div>
+</div>
+<div id="cubic-splines-and-spline-basis-functions" class="section level2">
+<h2><span class="header-section-number">12.4</span> Cubic Splines and Spline Basis Functions</h2>
+<ul>
+<li>The B-spline functions are a basis for cubic splines. Are they also a basis
+for the set of natural cubic splines?</li>
+</ul>
 </div>
 <div id="smoothing-splinespenalized-regression" class="section level2">
-<h2><span class="header-section-number">12.3</span> Smoothing Splines/Penalized Regression</h2>
-<div id="selection-of-smoothing-parameter" class="section level3">
-<h3><span class="header-section-number">12.3.1</span> Selection of Smoothing Parameter</h3>
+<h2><span class="header-section-number">12.5</span> Smoothing Splines/Penalized Regression</h2>
 
-</div>
 </div>
 </div>
 
