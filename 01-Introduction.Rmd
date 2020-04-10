@@ -195,7 +195,7 @@ is defined as
 
 * The KDE is a type of smoothing procedure.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, cache=TRUE}
 kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", header=TRUE)
 
 mu.kidney <- mean(log(kidney$age))
@@ -404,7 +404,7 @@ a sequence of "yes or no" questions.
 * When the responses $y_{i}$ are binary, such trees are referred to as classification trees.
 Hence, the name: classification and regression trees (CART).
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, cache=TRUE}
 par(xpd=NA)
 RCTdata <- read.csv("~/Documents/STAT685Notes/Data/RCTdata.csv")
 fit.oral <- rpart(oralhlth ~ age + female + smk + arm + pkyrs, data = RCTdata, subset=month==12)
