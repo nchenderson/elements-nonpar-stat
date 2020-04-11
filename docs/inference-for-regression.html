@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-10" />
+<meta name="date" content="2020-04-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -297,7 +297,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.4.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>11.4.3</b> Leave-one-out Cross Validation</a></li>
 <li class="chapter" data-level="11.4.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#example-choosing-the-best-bin-width-for-the-local-average-estimator."><i class="fa fa-check"></i><b>11.4.4</b> Example: Choosing the Best Bin Width for the Local Average Estimator.</a></li>
 </ul></li>
-<li class="chapter" data-level="11.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.5</b> Additional Reading</a></li>
+<li class="chapter" data-level="11.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#functions-in-r"><i class="fa fa-check"></i><b>11.5</b> Functions in R</a></li>
+<li class="chapter" data-level="11.6" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#multivariate-problems"><i class="fa fa-check"></i><b>11.6</b> Multivariate Problems</a></li>
+<li class="chapter" data-level="11.7" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.7</b> Additional Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
 <li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a><ul>
@@ -305,9 +307,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.1.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates"><i class="fa fa-check"></i><b>12.1.2</b> Piecewise Linear Estimates</a></li>
 <li class="chapter" data-level="12.1.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-cubic-estimates"><i class="fa fa-check"></i><b>12.1.3</b> Piecewise Cubic Estimates</a></li>
 </ul></li>
-<li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates-with-continuity-linear-splines"><i class="fa fa-check"></i><b>12.2</b> Piecewise Linear Estimates with Continuity (Linear Splines)</a><ul>
-<li class="chapter" data-level="12.2.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-cubic-estimates-with-constraints-1"><i class="fa fa-check"></i><b>12.2.1</b> Piecewise Cubic Estimates with constraints 1</a></li>
-</ul></li>
+<li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates-with-continuity-linear-splines"><i class="fa fa-check"></i><b>12.2</b> Piecewise Linear Estimates with Continuity (Linear Splines)</a></li>
 <li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-spline-basis-functions"><i class="fa fa-check"></i><b>12.3</b> Cubic Splines and Spline Basis Functions</a></li>
 <li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splinespenalized-regression"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines/Penalized Regression</a></li>
 </ul></li>
@@ -377,6 +377,12 @@ a_{k, h_{n}} = \frac{1}{ n_{k,h_{n}} } \sum_{i=1}^{n} Y_{i}I\big( x_{i} \in B_{k
 Figure 8.1: Basis functions for a regressogram with the following 3 bins: [0,1/3), [1/3, 2/3), [2/3, 1)
 </p>
 </div>
+<div class="figure"><span id="fig:unnamed-chunk-2"></span>
+<img src="12-splines_files/figure-html/unnamed-chunk-2-1.png" alt="Regressogram estimate of a regression function with 3 bins." width="672" />
+<p class="caption">
+Figure 12.1: Regressogram estimate of a regression function with 3 bins.
+</p>
+</div>
 </div>
 <div id="piecewise-linear-estimates" class="section level3">
 <h3><span class="header-section-number">12.1.2</span> Piecewise Linear Estimates</h3>
@@ -397,10 +403,10 @@ if we now let <span class="math inline">\(p = D_{n}\)</span> denote the number o
 the piecwise linear model will still have big jumps at the bin boundaries and have an overall
 unpleasant appearance.</p></li>
 </ul>
-<div class="figure"><span id="fig:unnamed-chunk-2"></span>
-<img src="12-splines_files/figure-html/unnamed-chunk-2-1.png" alt="Example of a regression function estimate that is piecewise linear within 3 bins." width="672" />
+<div class="figure"><span id="fig:unnamed-chunk-3"></span>
+<img src="12-splines_files/figure-html/unnamed-chunk-3-1.png" alt="Example of a regression function estimate that is piecewise linear within 3 bins." width="672" />
 <p class="caption">
-Figure 12.1: Example of a regression function estimate that is piecewise linear within 3 bins.
+Figure 12.2: Example of a regression function estimate that is piecewise linear within 3 bins.
 </p>
 </div>
 </div>
@@ -421,10 +427,10 @@ each bin we could fit a higher order polynomial model within each bin.</p></li>
 \varphi_{3p+1}(x) &amp;=&amp; x^{3}I(x \in B_{1}), \ldots, \varphi_{4p}(x) = x^{3}I(x \in B_{p}) \nonumber \\
 \end{eqnarray}\]</span></p></li>
 </ul>
-<div class="figure"><span id="fig:unnamed-chunk-3"></span>
-<img src="12-splines_files/figure-html/unnamed-chunk-3-1.png" alt="Example of a regression function estimate that is piecewise cubic within 3 bins." width="672" />
+<div class="figure"><span id="fig:unnamed-chunk-4"></span>
+<img src="12-splines_files/figure-html/unnamed-chunk-4-1.png" alt="Example of a regression function estimate that is piecewise cubic within 3 bins." width="672" />
 <p class="caption">
-Figure 12.2: Example of a regression function estimate that is piecewise cubic within 3 bins.
+Figure 1.1: Example of a regression function estimate that is piecewise cubic within 3 bins.
 </p>
 </div>
 </div>
@@ -432,22 +438,88 @@ Figure 12.2: Example of a regression function estimate that is piecewise cubic w
 <div id="piecewise-linear-estimates-with-continuity-linear-splines" class="section level2">
 <h2><span class="header-section-number">12.2</span> Piecewise Linear Estimates with Continuity (Linear Splines)</h2>
 <ul>
-<li><span class="math inline">\(u_{j}\)</span> will be referred to as knots</li>
+<li><p>In the spline world, one typically talks about “knots” rather than “bins”.</p></li>
+<li><p>You can think of knots as the dividing points between the bins.</p></li>
+<li><p>We will let <span class="math inline">\(u_{1} &lt; u_{2} &lt; \ldots &lt; u_{q}\)</span> denote the choice of knots.</p></li>
+<li><p>The bins corresponding to this set of knots would then be <span class="math inline">\(B_{1} = (-\infty, u_{1}), B_{2} = [u_{1}, u_{2}), B_{3} = [u_{2}, u_{3}), \ldots, B_{q+1} = [u_{q}, \infty)\)</span>.</p></li>
+<li><p>In other words, <span class="math inline">\(q\)</span> knots defines <span class="math inline">\(B_{q+1}\)</span> “bins” of the form <span class="math inline">\(B_{k} = [u_{k-1}, u_{k+1})\)</span>, for <span class="math inline">\(k = 2, \ldots, q\)</span>.</p></li>
 </ul>
-<p><span class="math display">\[\begin{eqnarray}
+<hr />
+<ul>
+<li><p>Let’s return to the piecewise linear estimate shown in Figure ?. This has two knots <span class="math inline">\(u_{1} = 1/3\)</span> and <span class="math inline">\(u_{2} = 2/3\)</span> and
+hence <span class="math inline">\(3\)</span> bins.</p></li>
+<li><p>Also, this piecewise linear model has <span class="math inline">\(6\)</span> parameters. If we let <span class="math inline">\((\beta_{0k}, \beta_{1k})\)</span> denote the intercept and slope parameters
+for the <span class="math inline">\(k^{th}\)</span> bin, there are <span class="math inline">\(6\)</span> parameters in total because we have <span class="math inline">\(3\)</span> bins, and we could write a piecewise linear model as
+<span class="math display">\[\begin{equation}
+m(x) = 
+\begin{cases} 
+\beta_{01} + \beta_{11}x &amp; \text{ if } x &lt; u_{1} \nonumber \\
+\beta_{02} + \beta_{12}x &amp; \text{ if } u_{1} \leq x &lt; u_{2} \nonumber \\
+\beta_{03} + \beta_{13}x &amp; \text{if } x \geq u_{2}
+\end{cases}
+\end{equation}\]</span></p></li>
+<li><p>We can make the estimated regression function look better by ensuring that it is
+continuous and does not have discontinuities at the knots.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>To make the estimated regression curve continuous, we just need to make sure it is continuous at the knots.</p></li>
+<li><p>That is, the regression coefficients need to satisfy the following two constraints:
+<span class="math display">\[\begin{equation}
+\beta_{01} + \beta_{11}u_{1} = \beta_{02} + \beta_{12}u_{1} \qquad \textrm{and} \qquad \beta_{02} + \beta_{12}u_{2} = \beta_{03} + \beta_{03}u_{2}  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Because we have two linear constraints, we should expect that the number of “free parameters” in a piecewise linear model
+with continuity constraints should equal <span class="math inline">\(6 - 2 = 4\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>Indeed, if we use the fact that under the continuity constraints: <span class="math inline">\(\beta_{02} = \beta_{01} + \beta_{11}u_{1} - \beta_{12}u_{1}\)</span> and <span class="math inline">\(\beta_{03} = \beta_{02} + \beta_{12}u_{2} - \beta_{13}u_{2}\)</span>, then we can rewrite the piecewise linear model as
+<span class="math display">\[\begin{equation}
+m(x) = 
+\begin{cases} 
+\beta_{01} + \beta_{11}x &amp; \text{ if } x &lt; u_{1} \nonumber \\
+ \beta_{01} + \beta_{11}x + (\beta_{12} - \beta_{11})(x - u_{1})  &amp; \text{ if } u_{1} \leq x &lt; u_{2} \nonumber \\
+\beta_{01} + \beta_{11}x + (\beta_{12} - \beta_{11})(x - u_{1}) + (\beta_{13} - \beta_{12})(x - u_{2}) &amp; \text{ if } x \geq u_{2}
+\end{cases}
+\end{equation}\]</span></p></li>
+<li><p>We can rewrite the above more compactly as:
+<span class="math display">\[\begin{equation}
+m(x) = \beta_{01} + \beta_{11}x + (\beta_{12} - \beta_{11})(x - u_{1})_{+} + (\beta_{13} - \beta_{12})(x - u_{2})_{+} \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\((x - u_{1})_{+} = \max\{ x - u_{1}, 0\}\)</span>.</p></li>
+<li><p>So, the functions <span class="math inline">\(\varphi_{0}(x) = 1\)</span>, <span class="math inline">\(\varphi_{1}(x) = x\)</span>, <span class="math inline">\(\varphi_{2}(x) = (x - u_{1})_{+}\)</span>, <span class="math inline">\(\varphi_{3}(x) = (x - u_{2})_{+}\)</span>
+form a <strong>basis</strong> for the set of piecewise linear function with continuity constraints and knots <span class="math inline">\(u_{1}\)</span> and <span class="math inline">\(u_{2}\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>In general, a <strong>linear spline</strong> with <span class="math inline">\(q\)</span> knots <span class="math inline">\(u_{1} &lt; u_{2} &lt; \ldots &lt; u_{q}\)</span> is a funcion <span class="math inline">\(m(x)\)</span> that can be expressed as
+<span class="math display">\[\begin{equation}
+m(x) = \beta_{0} + \beta_{1}x + \sum_{k=1}^{q} \beta_{k+1} (x - u_{k})_{+}  \nonumber
+\end{equation}\]</span></p></li>
+<li><p>So, the following <span class="math inline">\(q + 2\)</span> functions form a basis for the set of linear splines with knots <span class="math inline">\(u_{1} &lt; u_{2} &lt; \ldots &lt; u_{q}\)</span>
+<span class="math display">\[\begin{eqnarray}
 \varphi_{0}(x) &amp;=&amp; 1  \nonumber \\
 \varphi_{1}(x) &amp;=&amp; x  \nonumber \\
 \varphi_{2}(x) &amp;=&amp; (x - u_{1})_{+} \nonumber \\
 \varphi_{3}(x) &amp;=&amp; (x - u_{2})_{+} \nonumber \\
 &amp;\vdots&amp; \nonumber \\
-\varphi_{p}(x) &amp;=&amp; (x - u_{p-1})_{+} \nonumber
-\end{eqnarray}\]</span></p>
-<div id="piecewise-cubic-estimates-with-constraints-1" class="section level3">
-<h3><span class="header-section-number">12.2.1</span> Piecewise Cubic Estimates with constraints 1</h3>
+\varphi_{q + 1}(x) &amp;=&amp; (x - u_{q})_{+} \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>Hence, if we want to fit a linear spline with <span class="math inline">\(q\)</span> knots, we will need to estimate <span class="math inline">\(q + 2\)</span> parameters.</p></li>
+</ul>
+<div class="figure"><span id="fig:unnamed-chunk-5"></span>
+<img src="12-splines_files/figure-html/unnamed-chunk-5-1.png" alt="A linear spline with knots at 1/3 and 2/3. A linear spline is a piecewise linear function that is constrained to be continuous." width="672" />
+<p class="caption">
+Figure 12.3: A linear spline with knots at 1/3 and 2/3. A linear spline is a piecewise linear function that is constrained to be continuous.
+</p>
 </div>
 </div>
 <div id="cubic-splines-and-spline-basis-functions" class="section level2">
 <h2><span class="header-section-number">12.3</span> Cubic Splines and Spline Basis Functions</h2>
+<ul>
+<li>We also have</li>
+</ul>
+<hr />
 <ul>
 <li>The B-spline functions are a basis for cubic splines. Are they also a basis
 for the set of natural cubic splines?</li>

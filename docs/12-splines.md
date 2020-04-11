@@ -48,7 +48,10 @@ a_{k, h_{n}} = \frac{1}{ n_{k,h_{n}} } \sum_{i=1}^{n} Y_{i}I\big( x_{i} \in B_{k
 </div>
 
 
-
+<div class="figure">
+<img src="12-splines_files/figure-html/unnamed-chunk-2-1.png" alt="Regressogram estimate of a regression function with 3 bins." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-2)Regressogram estimate of a regression function with 3 bins.</p>
+</div>
 
 ### Piecewise Linear Estimates
 
@@ -71,8 +74,8 @@ the piecwise linear model will still have big jumps at the bin boundaries and ha
 unpleasant appearance.
 
 <div class="figure">
-<img src="12-splines_files/figure-html/unnamed-chunk-2-1.png" alt="Example of a regression function estimate that is piecewise linear within 3 bins." width="672" />
-<p class="caption">(\#fig:unnamed-chunk-2)Example of a regression function estimate that is piecewise linear within 3 bins.</p>
+<img src="12-splines_files/figure-html/unnamed-chunk-3-1.png" alt="Example of a regression function estimate that is piecewise linear within 3 bins." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-3)Example of a regression function estimate that is piecewise linear within 3 bins.</p>
 </div>
 
 
@@ -96,29 +99,108 @@ each bin we could fit a higher order polynomial model within each bin.
 \end{eqnarray}
 
 <div class="figure">
-<img src="12-splines_files/figure-html/unnamed-chunk-3-1.png" alt="Example of a regression function estimate that is piecewise cubic within 3 bins." width="672" />
-<p class="caption">(\#fig:unnamed-chunk-3)Example of a regression function estimate that is piecewise cubic within 3 bins.</p>
+<img src="12-splines_files/figure-html/unnamed-chunk-4-1.png" alt="Example of a regression function estimate that is piecewise cubic within 3 bins." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-4)Example of a regression function estimate that is piecewise cubic within 3 bins.</p>
 </div>
 
 
 ## Piecewise Linear Estimates with Continuity (Linear Splines)
 
-* $u_{j}$ will be referred to as knots
+* In the spline world, one typically talks about "knots" rather than "bins". 
 
+* You can think of knots as the dividing points between the bins.
+
+* We will let $u_{1} < u_{2} < \ldots < u_{q}$ denote the choice of knots.
+
+* The bins corresponding to this set of knots would then be $B_{1} = (-\infty, u_{1}), B_{2} = [u_{1}, u_{2}), B_{3} = [u_{2}, u_{3}),
+\ldots, B_{q+1} = [u_{q}, \infty)$.
+
+* In other words, $q$ knots defines $B_{q+1}$ "bins" of the form $B_{k} = [u_{k-1}, u_{k+1})$, for $k = 2, \ldots, q$.
+
+---
+
+* Let's return to the piecewise linear estimate shown in Figure ?. This has two knots $u_{1} = 1/3$ and $u_{2} = 2/3$ and
+hence $3$ bins.
+
+* Also, this piecewise linear model has $6$ parameters. If we let $(\beta_{0k}, \beta_{1k})$ denote the intercept and slope parameters 
+for the $k^{th}$ bin, there are $6$ parameters in total because we have $3$ bins, and we could write a piecewise linear model as
+\begin{equation}
+m(x) = 
+\begin{cases} 
+\beta_{01} + \beta_{11}x & \text{ if } x < u_{1} \nonumber \\
+\beta_{02} + \beta_{12}x & \text{ if } u_{1} \leq x < u_{2} \nonumber \\
+\beta_{03} + \beta_{13}x & \text{if } x \geq u_{2}
+\end{cases}
+\end{equation}
+
+* We can make the estimated regression function look better by ensuring that it is
+continuous and does not have discontinuities at the knots.
+
+---
+
+* To make the estimated regression curve continuous, we just need to make sure it is continuous at the knots.
+
+* That is, the regression coefficients need to satisfy the following two constraints:
+\begin{equation}
+\beta_{01} + \beta_{11}u_{1} = \beta_{02} + \beta_{12}u_{1} \qquad \textrm{and} \qquad \beta_{02} + \beta_{12}u_{2} = \beta_{03} + \beta_{03}u_{2}  \nonumber
+\end{equation}
+
+* Because we have two linear constraints, we should expect that the number of "free parameters" in a piecewise linear model
+with continuity constraints should equal $6 - 2 = 4$.
+
+---
+
+* Indeed, if we use the fact that under the continuity constraints: $\beta_{02} = \beta_{01} + \beta_{11}u_{1} - \beta_{12}u_{1}$ and $\beta_{03} = \beta_{02} + \beta_{12}u_{2} - \beta_{13}u_{2}$, then we can rewrite the piecewise linear model as
+\begin{equation}
+m(x) = 
+\begin{cases} 
+\beta_{01} + \beta_{11}x & \text{ if } x < u_{1} \nonumber \\
+ \beta_{01} + \beta_{11}x + (\beta_{12} - \beta_{11})(x - u_{1})  & \text{ if } u_{1} \leq x < u_{2} \nonumber \\
+\beta_{01} + \beta_{11}x + (\beta_{12} - \beta_{11})(x - u_{1}) + (\beta_{13} - \beta_{12})(x - u_{2}) & \text{ if } x \geq u_{2}
+\end{cases}
+\end{equation}
+
+* We can rewrite the above more compactly as:
+\begin{equation}
+m(x) = \beta_{01} + \beta_{11}x + (\beta_{12} - \beta_{11})(x - u_{1})_{+} + (\beta_{13} - \beta_{12})(x - u_{2})_{+} \nonumber
+\end{equation}
+where $(x - u_{1})_{+} = \max\{ x - u_{1}, 0\}$.
+
+* So, the functions $\varphi_{0}(x) = 1$, $\varphi_{1}(x) = x$, $\varphi_{2}(x) = (x - u_{1})_{+}$, $\varphi_{3}(x) = (x - u_{2})_{+}$
+form a **basis** for the set of piecewise linear function with continuity constraints and knots $u_{1}$ and  $u_{2}$. 
+
+---
+
+* In general, a **linear spline** with $q$ knots $u_{1} < u_{2} < \ldots < u_{q}$ is a funcion $m(x)$ that can be expressed as
+\begin{equation}
+m(x) = \beta_{0} + \beta_{1}x + \sum_{k=1}^{q} \beta_{k+1} (x - u_{k})_{+}  \nonumber
+\end{equation}
+
+* So, the following $q + 2$ functions form a basis for the set of linear splines with knots $u_{1} < u_{2} < \ldots < u_{q}$ 
 \begin{eqnarray}
 \varphi_{0}(x) &=& 1  \nonumber \\
 \varphi_{1}(x) &=& x  \nonumber \\
 \varphi_{2}(x) &=& (x - u_{1})_{+} \nonumber \\
 \varphi_{3}(x) &=& (x - u_{2})_{+} \nonumber \\
 &\vdots& \nonumber \\
-\varphi_{p}(x) &=& (x - u_{p-1})_{+} \nonumber
+\varphi_{q + 1}(x) &=& (x - u_{q})_{+} \nonumber
 \end{eqnarray}
 
+* Hence, if we want to fit a linear spline with $q$ knots, we will need to estimate $q + 2$ parameters.
 
-### Piecewise Cubic Estimates with constraints 1
+<div class="figure">
+<img src="12-splines_files/figure-html/unnamed-chunk-5-1.png" alt="A linear spline with knots at 1/3 and 2/3. A linear spline is a piecewise linear function that is constrained to be continuous." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-5)A linear spline with knots at 1/3 and 2/3. A linear spline is a piecewise linear function that is constrained to be continuous.</p>
+</div>
+
+
 
 
 ## Cubic Splines and Spline Basis Functions
+
+* We also have 
+
+---
 
 * The B-spline functions are a basis for cubic splines. Are they also a basis 
 for the set of natural cubic splines?

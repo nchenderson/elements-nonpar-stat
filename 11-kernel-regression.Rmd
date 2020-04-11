@@ -1041,6 +1041,15 @@ lines(xseq, m.hat.loc, lwd=3, col="red")
 abline(0, 0)
 ```
 
+## Functions in R
+
+* The R functions `lowess` and `loess` are widely used functions for smoothing via local polynomial regression.
+
+* 
+
+## Multivariate Problems
+
+
 ## Additional Reading
 
 * Additional reading which covers the material discussed in this chapter includes:

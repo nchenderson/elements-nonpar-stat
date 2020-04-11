@@ -1019,6 +1019,15 @@ hseq[which.min(LOOCV)]
 
 <img src="11-kernel-regression_files/figure-html/unnamed-chunk-22-1.png" width="672" />
 
+## Functions in R
+
+* The R functions `lowess` and `loess` are widely used functions for smoothing via local polynomial regression.
+
+* 
+
+## Multivariate Problems
+
+
 ## Additional Reading
 
 * Additional reading which covers the material discussed in this chapter includes:
