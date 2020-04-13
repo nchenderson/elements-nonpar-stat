@@ -1124,6 +1124,43 @@ loess.fit <- loess(spnbmd ~ age, data=bonedat, span=2/3, degree=1, family="symme
 
 ---
 
+* The `locpoly` function from the `KernSmooth` package implements local polynomial regression as it was described in Section 10.3.
+```{r, eval=FALSE}
+locpoly(x, y, degree, kernel = "normal", bandwidth)
+```
+
+* You can vary the degree of the polynomical used in the local polynomial regression with the `degree` argument.
+
+* For local linear regression, you should get the same answer as our function `MyLocLinear` written in Section 10.3 
+if you use `degree=1` with the locpoly function:
+```{r}
+library(KernSmooth)
+locpoly.fit <- locpoly(x = bonedat$age, y=bonedat$spnbmd, degree=1, bandwidth=0.5)
+mylocpoly.fit <- MyLocLinear(x=bonedat$age, y=bonedat$spnbmd, bandwidth=0.5, 
+                             x.points=locpoly.fit$x) 
+  
+
+plot(locpoly.fit$x, locpoly.fit$y, main="Local Linear Regression with locpoly 
+     and MyLocLinear", las=1, xlab="age", ylab="Relative Change")
+lines(locpoly.fit$x, mylocpoly.fit, col="red", lwd=2)
+```
+
+---
+
+* The `supsmu` function implements Friednan's "super smoother" (@friedman1984).
+```{r, eval=FALSE}
+supsmu(x, y, span="cv", bass=0)
+```
+* **x** - vector of covariate values.
+
+* **y** - vector of responses.
+
+* **span** - the "span" of the smoother. As with loess, this is the fraction of observations included when estimating the regression function at a particular point. The best span is chosen through cross-validation. 
+
+* **bass** - tuning parameter to further control the smoothness of the fitted curve. Smallest value is $0$ (lowest level of smoothness). Largest value is $10$ (most smoothness).
+
+The `supsmu` function just returns a list with components `$x` and `$y`. The `$x` component will be a sorted vector of the inputted x values and the `$y` component will contain the corresponding estimates of the regression function. 
+
 
 
 ## Multivariate Problems

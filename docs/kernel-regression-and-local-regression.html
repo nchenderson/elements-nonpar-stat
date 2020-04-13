@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-12" />
+<meta name="date" content="2020-04-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1283,6 +1283,39 @@ you can use the following approach:</li>
 <a class="sourceLine" id="cb240-2" data-line-number="2">loess.fit &lt;-<span class="st"> </span><span class="kw">loess</span>(spnbmd <span class="op">~</span><span class="st"> </span>age, <span class="dt">data=</span>bonedat, <span class="dt">span=</span><span class="dv">2</span><span class="op">/</span><span class="dv">3</span>, <span class="dt">degree=</span><span class="dv">1</span>, <span class="dt">family=</span><span class="st">&quot;symmetric&quot;</span>, </a>
 <a class="sourceLine" id="cb240-3" data-line-number="3">                   <span class="dt">iterations=</span><span class="dv">4</span>, <span class="dt">surface=</span><span class="st">&quot;direct&quot;</span>)</a></code></pre></div>
 <hr />
+<ul>
+<li>The <code>locpoly</code> function from the <code>KernSmooth</code> package implements local polynomial regression as it was described in Section 10.3.</li>
+</ul>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb241-1" data-line-number="1"><span class="kw">locpoly</span>(x, y, degree, <span class="dt">kernel =</span> <span class="st">&quot;normal&quot;</span>, bandwidth)</a></code></pre></div>
+<ul>
+<li><p>You can vary the degree of the polynomical used in the local polynomial regression with the <code>degree</code> argument.</p></li>
+<li><p>For local linear regression, you should get the same answer as our function <code>MyLocLinear</code> written in Section 10.3
+if you use <code>degree=1</code> with the locpoly function:</p></li>
+</ul>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb242-1" data-line-number="1"><span class="kw">library</span>(KernSmooth)</a></code></pre></div>
+<pre><code>## KernSmooth 2.23 loaded
+## Copyright M. P. Wand 1997-2009</code></pre>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb244-1" data-line-number="1">locpoly.fit &lt;-<span class="st"> </span><span class="kw">locpoly</span>(<span class="dt">x =</span> bonedat<span class="op">$</span>age, <span class="dt">y=</span>bonedat<span class="op">$</span>spnbmd, <span class="dt">degree=</span><span class="dv">1</span>, <span class="dt">bandwidth=</span><span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb244-2" data-line-number="2">mylocpoly.fit &lt;-<span class="st"> </span><span class="kw">MyLocLinear</span>(<span class="dt">x=</span>bonedat<span class="op">$</span>age, <span class="dt">y=</span>bonedat<span class="op">$</span>spnbmd, <span class="dt">bandwidth=</span><span class="fl">0.5</span>, </a>
+<a class="sourceLine" id="cb244-3" data-line-number="3">                             <span class="dt">x.points=</span>locpoly.fit<span class="op">$</span>x) </a>
+<a class="sourceLine" id="cb244-4" data-line-number="4">  </a>
+<a class="sourceLine" id="cb244-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb244-6" data-line-number="6"><span class="kw">plot</span>(locpoly.fit<span class="op">$</span>x, locpoly.fit<span class="op">$</span>y, <span class="dt">main=</span><span class="st">&quot;Local Linear Regression with locpoly </span></a>
+<a class="sourceLine" id="cb244-7" data-line-number="7"><span class="st">     and MyLocLinear&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Relative Change&quot;</span>)</a>
+<a class="sourceLine" id="cb244-8" data-line-number="8"><span class="kw">lines</span>(locpoly.fit<span class="op">$</span>x, mylocpoly.fit, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<hr />
+<ul>
+<li>The <code>supsmu</code> function implements Friednan’s “super smoother” (<span class="citation">Friedman (<a href="#ref-friedman1984">1984</a>)</span>).</li>
+</ul>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb245-1" data-line-number="1"><span class="kw">supsmu</span>(x, y, <span class="dt">span=</span><span class="st">&quot;cv&quot;</span>, <span class="dt">bass=</span><span class="dv">0</span>)</a></code></pre></div>
+<ul>
+<li><p><strong>x</strong> - vector of covariate values.</p></li>
+<li><p><strong>y</strong> - vector of responses.</p></li>
+<li><p><strong>span</strong> - the “span” of the smoother. As with loess, this is the fraction of observations included when estimating the regression function at a particular point. The best span is chosen through cross-validation.</p></li>
+<li><p><strong>bass</strong> - tuning parameter to further control the smoothness of the fitted curve. Smallest value is <span class="math inline">\(0\)</span> (lowest level of smoothness). Largest value is <span class="math inline">\(10\)</span> (most smoothness).</p></li>
+</ul>
+<p>The <code>supsmu</code> function just returns a list with components <code>$x</code> and <code>$y</code>. The <code>$x</code> component will be a sorted vector of the inputted x values and the <code>$y</code> component will contain the corresponding estimates of the regression function.</p>
 </div>
 <div id="multivariate-problems" class="section level2">
 <h2><span class="header-section-number">11.6</span> Multivariate Problems</h2>
@@ -1301,6 +1334,9 @@ you can use the following approach:</li>
 </div>
 <h3>References</h3>
 <div id="refs" class="references">
+<div id="ref-friedman1984">
+<p>Friedman, Jerome H. 1984. “A Variable Span Scatterplot Smoother.” <em>Laboratory for Computational Statistics, Stanford University Technical Report No. 5</em>.</p>
+</div>
 <div id="ref-hardle2012">
 <p>Härdle, Wolfgang Karl, Marlene Müller, Stefan Sperlich, and Axel Werwatz. 2012. <em>Nonparametric and Semiparametric Models</em>. Springer Science &amp; Business Media.</p>
 </div>
