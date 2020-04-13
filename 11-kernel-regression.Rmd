@@ -1041,11 +1041,90 @@ lines(xseq, m.hat.loc, lwd=3, col="red")
 abline(0, 0)
 ```
 
-## Functions in R
+## Additional functions in R
 
-* The R functions `lowess` and `loess` are widely used functions for smoothing via local polynomial regression.
+* The R functions `lowess` and `loess` are widely used functions for smoothing via local regression.
 
-* 
+* `loess` is basically an expanded version of `lowess`. The function `loess` has more options than 
+the `lowess` function and is written to resemble the `lm` in function in `R`.
+
+* Note that `loess` and `lowess` have different default settings for some of the model fitting parameters
+so they can differ somewhat in the values they return unless you set these parameters to be equal.
+
+* `loess` allows for multivariate covariates $\mathbf{x}_{i}$ while `lowess` does not. 
+
+---
+
+* `lowess` does local quadratic and local linear regression. The format of the `lowess` function is the following:
+```{r, eval=FALSE}
+loess(formula, data, span)
+```
+* **formula** - usally of the form `y ~ x` if using a single response vector `y` and covariate `x`
+
+* **data** - the dataset from which `y` and `x` are drawn from 
+
+* **span** - the "span" of the smoother. This can be thought of as playing the role of the bandwidth. Default of span $= \alpha$ is set to $0.75$. Usually, $0 < \alpha < 1$.
+
+* **degree** - the degree of the polynomial used for local regression. The default is set to $2$.
+
+
+
+* The `loess` function will return two vectors `$x` and `$fitted`. The `$x` is just the vector of covariates from the original data, and
+the `$fitted` vector is the value of the estimated regression function $\hat{m}( x_{i} )$ at these points.
+
+* The `lowess` function performs local linear regression with a few extra steps included to make the fitting procedure more robust. 
+
+---
+
+* For weights $W_{i}^{\alpha}(x)$ in the local linear regression problem, loess and lowess uses the following tri-cube function
+\begin{equation}
+W_{i}^{\alpha}(x)
+= \begin{cases}
+\Bigg( 1 - \Big( \frac{| x - x_{i}| }{| x - x_{(q)}| } \Big)^{3} \Bigg)^{3} & \text{ if } |x - x_{i}| \leq |x - x_{(q)}|  \\
+0 & \textrm{ otherwise }
+\end{cases}
+\end{equation}
+
+* The weights $W_{i}^{\alpha}(x)$ here play the same role as $K( \tfrac{x - x_{i}}{ h_{n} } )$ did in our description of local linear regression in Section 10.3.
+
+* Here, $x_{(q)}$ is the $\lfloor \alpha \times n \rfloor$ furthest observations away from $x$, and $\lfloor \alpha \times n \rfloor$ denotes
+$f n$ rounded down to the nearest integer. 
+
+* So, values of the span $\alpha$ which are closer to $0$ mean that
+you are using a smaller number of observations when performing each local regression while
+values close to $1$ mean that nearly all the observations receive positive weight when performing each local regression.
+ 
+* After fitting a local regression with weights $W_{i}^{\alpha}(x)$, `lowess` actually does an additional local  
+regression with updated weights that reduce the influence of outliers. `loess` will do the same thing if `family` is set to "symmetric" rather than "gaussian".
+
+---
+
+* Let's try plotting a `loess` fit using the bone data. We will set `span = 2/3` instead of 3/4
+```{r}
+bone.low.fit <- loess(spnbmd ~ age, data=bonedat, span=2/3)
+
+plot(bone.low.fit, ylab="Relative Change in Bone MD", 
+     xlab="Age", main="Bone Data: Lowess Fit", las=1, pch=16)
+## plot a line of the the fitted values vs. x. Need to sort 
+## the x_i's first though if we want a nice looking line:
+lines(bone.low.fit$x[order(bone.low.fit$x)], bone.low.fit$fitted[order(bone.low.fit$x)], 
+      col="red", lwd=3)
+abline(0,0, lty=2)
+```
+
+---
+
+* If you want to change the settings for `lowess` and `loess` so that they are using the exact same fitting procedure,
+you can use the following approach:
+```{r}
+lowess.fit <- lowess(x=bonedat$age, y=bonedat$spnbmd, iter=3, delta=0, f=2/3)
+loess.fit <- loess(spnbmd ~ age, data=bonedat, span=2/3, degree=1, family="symmetric", 
+                   iterations=4, surface="direct")
+```
+
+---
+
+
 
 ## Multivariate Problems
 

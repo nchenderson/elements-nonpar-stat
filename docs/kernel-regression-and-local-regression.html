@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-11" />
+<meta name="date" content="2020-04-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -297,7 +297,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.4.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>11.4.3</b> Leave-one-out Cross Validation</a></li>
 <li class="chapter" data-level="11.4.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#example-choosing-the-best-bin-width-for-the-local-average-estimator."><i class="fa fa-check"></i><b>11.4.4</b> Example: Choosing the Best Bin Width for the Local Average Estimator.</a></li>
 </ul></li>
-<li class="chapter" data-level="11.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#functions-in-r"><i class="fa fa-check"></i><b>11.5</b> Functions in R</a></li>
+<li class="chapter" data-level="11.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-functions-in-r"><i class="fa fa-check"></i><b>11.5</b> Additional functions in R</a></li>
 <li class="chapter" data-level="11.6" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#multivariate-problems"><i class="fa fa-check"></i><b>11.6</b> Multivariate Problems</a></li>
 <li class="chapter" data-level="11.7" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.7</b> Additional Reading</a></li>
 </ul></li>
@@ -1217,12 +1217,72 @@ statistic is given below:</p></li>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 </div>
-<div id="functions-in-r" class="section level2">
-<h2><span class="header-section-number">11.5</span> Functions in R</h2>
+<div id="additional-functions-in-r" class="section level2">
+<h2><span class="header-section-number">11.5</span> Additional functions in R</h2>
 <ul>
-<li><p>The R functions <code>lowess</code> and <code>loess</code> are widely used functions for smoothing via local polynomial regression.</p></li>
-<li></li>
+<li><p>The R functions <code>lowess</code> and <code>loess</code> are widely used functions for smoothing via local regression.</p></li>
+<li><p><code>loess</code> is basically an expanded version of <code>lowess</code>. The function <code>loess</code> has more options than
+the <code>lowess</code> function and is written to resemble the <code>lm</code> in function in <code>R</code>.</p></li>
+<li><p>Note that <code>loess</code> and <code>lowess</code> have different default settings for some of the model fitting parameters
+so they can differ somewhat in the values they return unless you set these parameters to be equal.</p></li>
+<li><p><code>loess</code> allows for multivariate covariates <span class="math inline">\(\mathbf{x}_{i}\)</span> while <code>lowess</code> does not.</p></li>
 </ul>
+<hr />
+<ul>
+<li><code>lowess</code> does local quadratic and local linear regression. The format of the <code>lowess</code> function is the following:</li>
+</ul>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb238-1" data-line-number="1"><span class="kw">loess</span>(formula, data, span)</a></code></pre></div>
+<ul>
+<li><p><strong>formula</strong> - usally of the form <code>y ~ x</code> if using a single response vector <code>y</code> and covariate <code>x</code></p></li>
+<li><p><strong>data</strong> - the dataset from which <code>y</code> and <code>x</code> are drawn from</p></li>
+<li><p><strong>span</strong> - the “span” of the smoother. This can be thought of as playing the role of the bandwidth. Default of span <span class="math inline">\(= \alpha\)</span> is set to <span class="math inline">\(0.75\)</span>. Usually, <span class="math inline">\(0 &lt; \alpha &lt; 1\)</span>.</p></li>
+<li><p><strong>degree</strong> - the degree of the polynomial used for local regression. The default is set to <span class="math inline">\(2\)</span>.</p></li>
+<li><p>The <code>loess</code> function will return two vectors <code>$x</code> and <code>$fitted</code>. The <code>$x</code> is just the vector of covariates from the original data, and
+the <code>$fitted</code> vector is the value of the estimated regression function <span class="math inline">\(\hat{m}( x_{i} )\)</span> at these points.</p></li>
+<li><p>The <code>lowess</code> function performs local linear regression with a few extra steps included to make the fitting procedure more robust.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>For weights <span class="math inline">\(W_{i}^{\alpha}(x)\)</span> in the local linear regression problem, loess and lowess uses the following tri-cube function
+<span class="math display">\[\begin{equation}
+W_{i}^{\alpha}(x)
+= \begin{cases}
+\Bigg( 1 - \Big( \frac{| x - x_{i}| }{| x - x_{(q)}| } \Big)^{3} \Bigg)^{3} &amp; \text{ if } |x - x_{i}| \leq |x - x_{(q)}|  \\
+0 &amp; \textrm{ otherwise }
+\end{cases}
+\end{equation}\]</span></p></li>
+<li><p>The weights <span class="math inline">\(W_{i}^{\alpha}(x)\)</span> here play the same role as <span class="math inline">\(K( \tfrac{x - x_{i}}{ h_{n} } )\)</span> did in our description of local linear regression in Section 10.3.</p></li>
+<li><p>Here, <span class="math inline">\(x_{(q)}\)</span> is the <span class="math inline">\(\lfloor \alpha \times n \rfloor\)</span> furthest observations away from <span class="math inline">\(x\)</span>, and <span class="math inline">\(\lfloor \alpha \times n \rfloor\)</span> denotes
+<span class="math inline">\(f n\)</span> rounded down to the nearest integer.</p></li>
+<li><p>So, values of the span <span class="math inline">\(\alpha\)</span> which are closer to <span class="math inline">\(0\)</span> mean that
+you are using a smaller number of observations when performing each local regression while
+values close to <span class="math inline">\(1\)</span> mean that nearly all the observations receive positive weight when performing each local regression.</p></li>
+<li><p>After fitting a local regression with weights <span class="math inline">\(W_{i}^{\alpha}(x)\)</span>, <code>lowess</code> actually does an additional local<br />
+regression with updated weights that reduce the influence of outliers. <code>loess</code> will do the same thing if <code>family</code> is set to “symmetric” rather than “gaussian”.</p></li>
+</ul>
+<hr />
+<ul>
+<li>Let’s try plotting a <code>loess</code> fit using the bone data. We will set <code>span = 2/3</code> instead of 3/4</li>
+</ul>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb239-1" data-line-number="1">bone.low.fit &lt;-<span class="st"> </span><span class="kw">loess</span>(spnbmd <span class="op">~</span><span class="st"> </span>age, <span class="dt">data=</span>bonedat, <span class="dt">span=</span><span class="dv">2</span><span class="op">/</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb239-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb239-3" data-line-number="3"><span class="kw">plot</span>(bone.low.fit, <span class="dt">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </a>
+<a class="sourceLine" id="cb239-4" data-line-number="4">     <span class="dt">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Bone Data: Lowess Fit&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">pch=</span><span class="dv">16</span>)</a>
+<a class="sourceLine" id="cb239-5" data-line-number="5"><span class="co">## plot a line of the the fitted values vs. x. Need to sort </span></a>
+<a class="sourceLine" id="cb239-6" data-line-number="6"><span class="co">## the x_i&#39;s first though if we want a nice looking line:</span></a>
+<a class="sourceLine" id="cb239-7" data-line-number="7"><span class="kw">lines</span>(bone.low.fit<span class="op">$</span>x[<span class="kw">order</span>(bone.low.fit<span class="op">$</span>x)], bone.low.fit<span class="op">$</span>fitted[<span class="kw">order</span>(bone.low.fit<span class="op">$</span>x)], </a>
+<a class="sourceLine" id="cb239-8" data-line-number="8">      <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb239-9" data-line-number="9"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">0</span>, <span class="dt">lty=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<hr />
+<ul>
+<li>If you want to change the settings for <code>lowess</code> and <code>loess</code> so that they are using the exact same fitting procedure,
+you can use the following approach:</li>
+</ul>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb240-1" data-line-number="1">lowess.fit &lt;-<span class="st"> </span><span class="kw">lowess</span>(<span class="dt">x=</span>bonedat<span class="op">$</span>age, <span class="dt">y=</span>bonedat<span class="op">$</span>spnbmd, <span class="dt">iter=</span><span class="dv">3</span>, <span class="dt">delta=</span><span class="dv">0</span>, <span class="dt">f=</span><span class="dv">2</span><span class="op">/</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb240-2" data-line-number="2">loess.fit &lt;-<span class="st"> </span><span class="kw">loess</span>(spnbmd <span class="op">~</span><span class="st"> </span>age, <span class="dt">data=</span>bonedat, <span class="dt">span=</span><span class="dv">2</span><span class="op">/</span><span class="dv">3</span>, <span class="dt">degree=</span><span class="dv">1</span>, <span class="dt">family=</span><span class="st">&quot;symmetric&quot;</span>, </a>
+<a class="sourceLine" id="cb240-3" data-line-number="3">                   <span class="dt">iterations=</span><span class="dv">4</span>, <span class="dt">surface=</span><span class="st">&quot;direct&quot;</span>)</a></code></pre></div>
+<hr />
 </div>
 <div id="multivariate-problems" class="section level2">
 <h2><span class="header-section-number">11.6</span> Multivariate Problems</h2>
