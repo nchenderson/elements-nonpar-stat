@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  6 APR 2020 22:39
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  14 APR 2020 02:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1534,51 +1534,105 @@ Overfull \hbox (2.70561pt too wide) detected at line 10058
  []
 
 [226]
-Overfull \hbox (56.49643pt too wide) detected at line 10123
+File: 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-11-1.pdf Grap
+hic file (type pdf)
+<use 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-11-1.pdf>
+File: 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-12-1.pdf Grap
+hic file (type pdf)
+<use 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-12-1.pdf>
+
+Overfull \hbox (29.50261pt too wide) in paragraph at lines 10125--10127
+\TU/lmr/m/n/10 earlier [] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[227] [228] [229]
+Overfull \hbox (56.49643pt too wide) detected at line 10237
 [][][] [] []
  []
 
 
-Overfull \hbox (4.47096pt too wide) detected at line 10147
+Overfull \hbox (4.47096pt too wide) detected at line 10261
 [][][] [] []
  []
 
-[227]
+[230]
 Missing character: There is no 𝜇 in font [lmroman10-bold]:mapping=tex-text;!
 Missing character: There is no 𝛴 in font [lmroman10-bold]:mapping=tex-text;!
 Missing character: There is no 𝜇 in font [lmroman10-bold]:mapping=tex-text;!
 Missing character: There is no 𝜇 in font [lmroman10-bold]:mapping=tex-text;!
 Missing character: There is no 𝛴 in font [lmroman10-bold]:mapping=tex-text;!
 
-Overfull \hbox (26.18108pt too wide) detected at line 10206
+Overfull \hbox (26.18108pt too wide) detected at line 10325
 [][][][][] [] [][][][][] [] [][] [] [][][][]  [][][][] [] [][][][][] [] [][][][
 ] [] [][][][][] [] [][][][]
  []
 
-[228] [229] (./ElementsNonparStat.bbl [230] [231
+[231] [232] [233] [234] [235]
+Underfull \hbox (badness 2245) in paragraph at lines 10583--10584
+[]\TU/lmr/m/n/10 We also want a function that returns the vector with elements
+ []
+
+[236]
+File: 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-17-1.pdf Grap
+hic file (type pdf)
+<use 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-17-1.pdf>
+[237]
+File: 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-20-1.pdf Grap
+hic file (type pdf)
+<use 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-20-1.pdf>
+
+Underfull \vbox (badness 2460) has occurred while \output is active []
+
+[238]
+File: 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-22-1.pdf Grap
+hic file (type pdf)
+<use 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-22-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[239] [240] [241]
+File: 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-24-1.pdf Grap
+hic file (type pdf)
+<use 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-24-1.pdf>
+[242]
+File: 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-27-1.pdf Grap
+hic file (type pdf)
+<use 11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-27-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[243] [244]
+Overfull \hbox (25.44374pt too wide) detected at line 10955
+[][][][][] [] [] [] [] [] [][] [] [] [] [] [] [] [][][][] [] [][][][][]
+ []
+
+[245] (./ElementsNonparStat.bbl [246] [247
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 10346.
-[232]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 10346.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 11022.
+[248]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 11022.
 (./ElementsNonparStat.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 10346.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 10346
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 11022.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 11022
 .
 Package rerunfilecheck Info: File `ElementsNonparStat.out' has not changed.
-(rerunfilecheck)             Checksum: 31B571BEA2CA2B2121656AD937C1D230;15069.
+(rerunfilecheck)             Checksum: 7DB52E914E5E412203E013E87176AF55;15425.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 10346.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 11022.
  ) 
 Here is how much of TeX's memory you used:
- 17306 strings out of 481765
- 327932 string characters out of 5935194
- 766757 words of memory out of 5000000
- 34038 multiletter control sequences out of 15000+600000
+ 17351 strings out of 481765
+ 330794 string characters out of 5935194
+ 768757 words of memory out of 5000000
+ 34081 multiletter control sequences out of 15000+600000
  538877 words of font info for 88 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  52i,12n,115p,548b,553s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on ElementsNonparStat.pdf (232 pages).
+Output written on ElementsNonparStat.pdf (248 pages).

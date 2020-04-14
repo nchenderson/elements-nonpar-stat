@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-13" />
+<meta name="date" content="2020-04-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -603,7 +603,7 @@ decreasing the value of <span class="math inline">\(k\)</span> will increase the
 </ul>
 <hr />
 <ul>
-<li><strong>Exercise 8.2</strong> Suppose <span class="math inline">\(n=6\)</span> and that we have the following covariate values and responses
+<li><strong>Exercise 11.2</strong> Suppose <span class="math inline">\(n=6\)</span> and that we have the following covariate values and responses
 <span class="math display">\[\begin{eqnarray}
 (x_{1}, x_{2}, x_{3}, x_{4}, x_{5}, x_{6}) &amp;=&amp; (1/7, 2/7, 3/7, 4/7, 5/7, 6/7)  \nonumber \\
 (Y_{1}, Y_{2}, Y_{3}, Y_{4}, Y_{5}, Y_{6}) &amp;=&amp; (1.4, 0.7, 1.1, 1.3, 0.9, 1.7)  \nonumber
@@ -752,7 +752,7 @@ solved the following local least-squares problem
 </ul>
 <hr />
 <ul>
-<li><strong>Exercise 8.3</strong> Suppose we define an estimator <span class="math inline">\(\tilde{m}_{h_{n}}(x)\)</span> of the regression function as
+<li><strong>Exercise 11.3</strong> Suppose we define an estimator <span class="math inline">\(\tilde{m}_{h_{n}}(x)\)</span> of the regression function as
 <span class="math display">\[\begin{eqnarray}
 \tilde{m}_{h_{n}}(x) &amp;=&amp; \hat{\beta}_{0x} \quad \textrm{ where } \nonumber \\
 \hat{\beta}_{0x} &amp;=&amp;  \textrm{argmin}_{\beta_{0x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
@@ -1037,7 +1037,7 @@ estimate of <span class="math inline">\(\sigma^{2}\)</span>
 </ul>
 <hr />
 <ul>
-<li><strong>Exercise 8.4</strong> Suppose the <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}_{h_{n}}\)</span> satifies <span class="math inline">\(\mathbf{A}_{h_{n}}\mathbf{m} = \mathbf{m}\)</span>.
+<li><strong>Exercise 11.4</strong> Suppose the <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}_{h_{n}}\)</span> satifies <span class="math inline">\(\mathbf{A}_{h_{n}}\mathbf{m} = \mathbf{m}\)</span>.
 Show that
 <span class="math display">\[\begin{equation}
 \frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
@@ -1313,12 +1313,48 @@ if you use <code>degree=1</code> with the locpoly function:</p></li>
 <li><p><strong>x</strong> - vector of covariate values.</p></li>
 <li><p><strong>y</strong> - vector of responses.</p></li>
 <li><p><strong>span</strong> - the “span” of the smoother. As with loess, this is the fraction of observations included when estimating the regression function at a particular point. The best span is chosen through cross-validation.</p></li>
-<li><p><strong>bass</strong> - tuning parameter to further control the smoothness of the fitted curve. Smallest value is <span class="math inline">\(0\)</span> (lowest level of smoothness). Largest value is <span class="math inline">\(10\)</span> (most smoothness).</p></li>
+<li><p><strong>bass</strong> - tuning parameter to further control the smoothness of the fitted curve. The smallest value is <span class="math inline">\(0\)</span> (lowest level of smoothness). The largest value is <span class="math inline">\(10\)</span> (most smoothness).</p></li>
 </ul>
 <p>The <code>supsmu</code> function just returns a list with components <code>$x</code> and <code>$y</code>. The <code>$x</code> component will be a sorted vector of the inputted x values and the <code>$y</code> component will contain the corresponding estimates of the regression function.</p>
 </div>
 <div id="multivariate-problems" class="section level2">
 <h2><span class="header-section-number">11.6</span> Multivariate Problems</h2>
+<ul>
+<li><p>All of the methods discussed here can be directly extended to the case of multivariate covariates <span class="math inline">\(\mathbf{x}_{i} \in \mathbb{R}^{p}\)</span> where
+<span class="math inline">\(\mathbf{x}_{i} = (x_{i1}, \ldots, x_{ip})\)</span>.</p></li>
+<li><p>For the methods that use a kernel function, we just use the Euclidean distance between two points in the kernel function.</p></li>
+<li><p>For example, with the Gaussian kernel for the Nadaraya-Watson estimator, we would use the following weights when estimating
+the regression function at <span class="math inline">\(\mathbf{x} \in \mathbb{R}^{p}\)</span>
+<span class="math display">\[\begin{equation}
+K\Big( \frac{ \mathbf{x} - \mathbf{x}_{i} }{h_{n}} \Big)
+= \frac{1}{\sqrt{2\pi}h_{n}}\exp\Big\{ -\frac{||\mathbf{x} - \mathbf{x}_{i}||^{2} }{2h_{n}^{2}}  \Big\} = \frac{1}{\sqrt{2\pi}h_{n}}\exp\Big\{ -\frac{1}{2h_{n}^{2}}\sum_{j=1}^{p} (x_{j} - x_{ij})^{2}  \Big\} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>If we wanted to do k-nearest neighbors regression to estimate the regression function at <span class="math inline">\(\mathbf{x}\)</span>,
+we would just pick the k closest observation in terms of the distance <span class="math inline">\(|| \mathbf{x} - \mathbf{x}_{i}||^{2}\)</span>.</p></li>
+<li><p>Similarly, if we wanted to compute the local average estimator in <span class="math inline">\(\mathbf{R}^{p}\)</span>, we would use
+<span class="math display">\[\begin{equation}
+\hat{m}_{h_{n}}^{loc}( \mathbf{x} ) = \frac{1}{ n_{h_{n}}( \mathbf{x} )}\sum_{i=1}^{n} Y_{i}I\big( || \mathbf{x}_{i} - \mathbf{x} || &lt; h_{n} \big), \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(n_{h_{n}}( \mathbf{x} ) = \sum_{i=1}^{n} I\big( || \mathbf{x}_{i} - \mathbf{x} || &lt; h_{n} \big)\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The performance of kernel and local regression methods can degrade quickly as we move to higher dimensions.
+The convergence rate of the estimated regression function to the true regression function slows substantially
+as we increase <span class="math inline">\(p\)</span>.</p></li>
+<li><p>“Curse of dimensionality” - need very large datasets to have a sufficient number of observations
+near a given point <span class="math inline">\(\mathbf{x}\)</span>.</p></li>
+<li><p>The methods discussed here are most commonly used for <span class="math inline">\(p = 1\)</span> or maybe <span class="math inline">\(p = 2\)</span> or <span class="math inline">\(p = 3\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li>For higher dimensions, modifications of these methods could be useful. For example:
+<ul>
+<li>Incorporating correlation between the covariates in the kernel function.</li>
+<li>Modeling the regression function as an additive model <span class="math inline">\(m(\mathbf{x}) = m_{1}(x_{1}) + \ldots + m_{j}(x_{p})\)</span> and using local regression for each function <span class="math inline">\(m_{j}(x)\)</span>.</li>
+<li>“Sparsity”: try to first discard unimportant covariates and estimate the regression function using a smaller subset of the covariates.</li>
+</ul></li>
+</ul>
 </div>
 <div id="additional-reading-5" class="section level2">
 <h2><span class="header-section-number">11.7</span> Additional Reading</h2>

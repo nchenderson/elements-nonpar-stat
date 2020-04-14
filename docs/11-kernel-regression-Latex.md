@@ -139,7 +139,6 @@ What is the value of $\textrm{tr}(\mathbf{A})$?
 \rule{\textwidth}{.05cm}
 \end{center}
 
-
 ### The Local Average Estimator
 
 * The regressogram can be thought of as a regression analogue of the histogram.
@@ -167,7 +166,7 @@ around $x$.
 \frac{ \sum_{i=1}^{n} Y_{i}I\big( x - h_{n} < x_{i} < x + h_{n} \big) }{ \sum_{i=1}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big) } \nonumber \\
 &=& \frac{1}{n_{h_{n}}(x)} \sum_{i=1}^{n} Y_{i}I\big( x - h_{n} < x_{i} < x + h_{n} \big) \nonumber 
 \end{eqnarray}
-where $n_{h_{n}}(x) = \sum_{i}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big)$.
+where $n_{h_{n}}(x) = \sum_{i=1}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big)$.
 
 * The local average estimator does not need to have a 
 constant value within each of a few pre-specified bins.
@@ -297,7 +296,7 @@ a bin centered at $x$.
 
 * The k-NN estimator of the regression function $\hat{m}_{k}^{kNN}(x)$ is defined as
 \begin{equation}
-\hat{m}_{k}^{kNN}(x) = \frac{1}{k}\sum_{i=1}^{n} y_{i} I\big( x \in N_{k}(x) \big) \nonumber
+\hat{m}_{k}^{kNN}(x) = \frac{1}{k}\sum_{i=1}^{n} y_{i} I\big( x_{i} \in N_{k}(x) \big) \nonumber
 \end{equation}
 
 * Here, $N_{k}(x)$ is defined as the set of the k $x_{i}'s$ which are
@@ -324,7 +323,7 @@ decreasing the value of $k$ will increase the variance of the k-NN regression fu
 \rule{\textwidth}{.05cm}
 \end{center}
 
-* **Exercise 8.2** Suppose $n=6$ and that we have the following covariate values and responses
+* **Exercise 11.2** Suppose $n=6$ and that we have the following covariate values and responses
 \begin{eqnarray}
 (x_{1}, x_{2}, x_{3}, x_{4}, x_{5}, x_{6}) &=& (1/7, 2/7, 3/7, 4/7, 5/7, 6/7)  \nonumber \\
 (Y_{1}, Y_{2}, Y_{3}, Y_{4}, Y_{5}, Y_{6}) &=& (1.4, 0.7, 1.1, 1.3, 0.9, 1.7)  \nonumber
@@ -408,7 +407,7 @@ ksmooth(x, y, kernel, bandwidth, x.points, ...)
     + `x` - vector of covariate values
     + `y` - vector of responses
     + `kernel` - choice of kernel function; default is `box`; use `normal` if you want a Gaussian kernel
-    + `bandwidth` - value of the bandwidth; default is $0.05$
+    + `bandwidth` - value of the bandwidth; default is $0.5$
     + `x.points` - points at which to estimate the regression function; default is to use $n$ equally spaced points.
 
 * The `x` vector from the fitted `ksmooth` object will be the vector of points at which the regression function
@@ -444,9 +443,9 @@ MyNWEst <- function(x, y, bandwidth, x.points) {
 using bandwidth $0.5$ and plot the result, you could use the following code:
 
 ```r
-tt <- seq(10, 25, by=.1)
-bone.nwest <- ksmooth(x=bonedat$age, y=bonedat$spnbmd, kernel="normal", bandwidth=2.7*0.5, 
-                      x.points=tt)
+xseq <- seq(10, 25, by=.1)
+bone.nwest <- ksmooth(x=bonedat$age, y=bonedat$spnbmd, kernel="normal", 
+                      bandwidth=2.7*0.5, x.points=xseq)
 
 plot(bonedat$age, bonedat$spnbmd, las=1, ylab="Relative Change in Bone MD", 
      xlab="Age", main="Bone Data: Nadaraya-Watson Estimate with hn=0.5 and 
@@ -458,7 +457,7 @@ lines(bone.nwest$x, bone.nwest$y, lwd=3, col="red")
 ![](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-9-1.pdf)<!-- --> 
 
 ```r
-## Note that bone.nwest$x should equal tt
+## Note that bone.nwest$x should equal xseq
 ```
 
 
@@ -499,7 +498,7 @@ solved the following local least-squares problem
 (\#eq:simple-loclin-regression)
 \end{equation}
 
-* Then, we would estimate $m(x)$ by using the value of $\hat{s}_{x}$ at $x$. That is, $\hat{s}_{x}(x) = \hat{\beta}_{0x}$. 
+* Then, we would estimate $m(x)$ by using the value of $\hat{s}_{x}(\cdot)$ at $x$. That is, $\hat{s}_{x}(x) = \hat{\beta}_{0x}$. 
 
 \begin{center}
 \rule{\textwidth}{.05cm}
@@ -517,7 +516,7 @@ solved the following local least-squares problem
 \rule{\textwidth}{.05cm}
 \end{center}
 
-* **Exercise 8.3** Suppose we define an estimator $\tilde{m}_{h_{n}}(x)$ of the regression function as
+* **Exercise 11.3** Suppose we define an estimator $\tilde{m}_{h_{n}}(x)$ of the regression function as
 \begin{eqnarray}
 \tilde{m}_{h_{n}}(x) &=& \hat{\beta}_{0x} \quad \textrm{ where } \nonumber \\
 \hat{\beta}_{0x} &=&  \textrm{argmin}_{\beta_{0x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
@@ -533,7 +532,7 @@ Show that $\tilde{m}_{h_{n}}(x) = \hat{m}_{h_{n}}^{NW}(x)$.
 * The local linear regression estimator can reduce the effects of design and boundary bias.
 
 * If we write the local linear estimate at the point $x$ as
-$\hat{m}_{h_{n}}^{loclin}(x) = \sum_{i=1}^{n} a_{i}^{h_{n}}(x)$, then the bias is appoximately 
+$\hat{m}_{h_{n}}^{loclin}(x) = \sum_{i=1}^{n} a_{i}^{h_{n}}(x)Y_{i}$, then the bias is appoximately 
 \begin{equation}
 E\{ \hat{m}_{h_{n}}^{loclin}(x) \} - m(x)
 \approx m'(x)\sum_{i=1}^{n} (x_{i} - x)a_{i}^{h_{n}}(x) + \frac{m''(x)}{2}\sum_{i=1}^{n} (x_{i} - x)^{2}a_{i}^{h_{n}}(x) \nonumber 
@@ -552,21 +551,113 @@ from asymmetry near the boundary (draw a picture).
 \rule{\textwidth}{.05cm}
 \end{center}
 
+### An Example in R
+
+* An `R` function which implements local linear regression is the following. The
+input for this function has the same structure as our earlier Nadaraya-Watson `R` function. 
+
 
 ```r
 MyLocLinear <- function(x, y, bandwidth, x.points) {
   q <- length(x.points) 
   loclin.est <- numeric(q)
   for(k in 1:q) {
+    ## First create weights with Gaussian kernel
     xtmp <- x - x.points[k]
     ww <- dnorm(xtmp, mean=0, sd=bandwidth) 
+    
+    ## Now, compute the intercept with a weighted linear regression
     loclin.est[k] <- lm(y ~ xtmp, weights=ww)$coef[1]
   }    
   return(loclin.est)
 }
 ```
 
+* Let's try this function with the `bonedat` dataset again.
+
+* Using age as the covariate, we will estimate the regression function at the points $10, 10.1, 10.2, ..., 25$:
+
+
+```r
+xseq <- seq(10, 25, by=.1)
+bone.loclin <- MyLocLinear(x=bonedat$age, y=bonedat$spnbmd, 
+                           bandwidth=0.5, x.points=xseq)
+
+plot(bonedat$age, bonedat$spnbmd, las=1, ylab="Relative Change in Bone MD", 
+     xlab="Age", main="Local Linear Estimator with hn=0.5", type="n")
+points(bonedat$age, bonedat$spnbmd, pch=16, cex=0.7)
+lines(xseq, bone.loclin, lwd=3, col="red")
+```
+
+![](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-11-1.pdf)<!-- --> 
+
+* Let's compare this with the Nadaraya-Watson esitmate that we computed earlier
+![](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-12-1.pdf)<!-- --> 
+
 ### Local Polynomial Regression
+
+* There is no reason why we must restrict ourselves to local linear fits. We 
+could also fit local polynomial models.
+
+* Similar to the way we approached local linear regression, for a fixed $x$
+we will fit the local model 
+\begin{equation}
+\hat{s}_{x}^{p}(x_{i}) = \hat{\beta}_{0x,p} + \hat{\beta}_{1x,p}(x_{i} - x) + \hat{\beta}_{2x,p}(x_{i} - x)^{2} + \ldots + \beta_{px,p}(x_{i} - x)^{p}, \nonumber
+\end{equation}
+where the estimated regression coefficients $\hat{\beta}_{0x,p}, \hat{\beta}_{1x,p}, \ldots, \hat{\beta}_{px,p}$ are found
+by solving the least-squares problem
+\begin{equation}
+\sum_{i=1}^{n}\{ Y_{i} - \beta_{0x,p} - \beta_{1x,p}(x_{i} - x) - \ldots - \beta_{px,p}(x_{i} - x)^{p} \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) 
+\end{equation}
+
+* Then, we estimate the regression function at $x$ with $\hat{m}_{h_{n}}^{locpoly}(x) = \hat{s}_{x}^{p}(x) = \hat{\beta}_{0x,p}$. 
+
+* Note that the local linear regression estimate is just a special case of local polynomial regression with $p=1$.
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* To find the estimates of $\beta_{0x,p}$ for linear and polynomial regression, you can use the 
+formulas for the regression coefficient estimates in weighted least squares.
+
+* Define the $n \times n$ diagonal matrix of weights $\mathbf{W}_{x, h_{n}}$ as 
+\begin{equation}
+\mathbf{W}_{x, h_{n}}
+= \begin{bmatrix} K\Big( \frac{x - x_{1}}{h_{n}} \Big) & 0 & \ldots & 0 \\
+0 & K\Big( \frac{x - x_{2}}{h_{n}} \Big) & \ldots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \ldots & K\Big( \frac{x - x_{n}}{h_{n}} \Big)
+\end{bmatrix} \nonumber
+\end{equation}
+and define the $n \times (p+1)$ matrix $\mathbf{X}_{x,p}$ as
+\begin{equation}
+\mathbf{X}_{x, p} = \begin{bmatrix} 1 & (x_{1} - x) & \ldots & (x_{1} - x)^{p} \\ 
+1 & (x_{2} - x) & \ldots & (x_{2} - x)^{p} \\
+\vdots & \vdots &  & \vdots \\
+1 & (x_{n} - x) & \ldots & (x_{n} - x)^{p}
+\end{bmatrix}  \nonumber
+\end{equation}
+
+* The vector of estimated regression coefficients is obtained from the following formula
+\begin{equation}
+\begin{bmatrix}
+\hat{\beta}_{0x,p} \\ \hat{\beta}_{1x,p} \\ \ldots \\ \hat{\beta}_{px,p}
+\end{bmatrix}
+= (\mathbf{X}_{x,p}^{T}\mathbf{W}_{x,h_{n}}\mathbf{X}_{x,p})^{-1}\mathbf{X}_{x,p}^{T}\mathbf{W}_{x,h_{n}}\mathbf{Y}  \nonumber
+\end{equation}
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* While using local polynomial regression with higher order polynomials offer more flexibility, they come
+at the price of more variance.
+
+* For fixed $h_{n}$, increasing the degree $p$ can decrease bias but will increase variance.
+
+* In practice, $p = 1$ or $p = 2$ seems to be most common in practice. There is often not 
+much benefit to using a degree of $3$ or more.  
 
 
 ## Selecting the Bandwidth/Smoothing Parameter
@@ -598,9 +689,9 @@ $\mathbf{A}_{h_{n}}$ is defined as
 \end{equation}
 where $n_{h_{n}}(x) = \sum_{i=1}^{n}I(x - h_{n} < x_{i} < x + h_{n})$.
 
-* In other words, the $(i,j)$ element of $\mathbf{A}_{h_{n}}$ is $a_{i}(x_{j})$ where
+* In other words, the $(i,j)$ element of $\mathbf{A}_{h_{n}}$ is $a_{j}(x_{i})$ where
 \begin{equation}
-a_{i}(x_{j}) = \frac{1}{n_{h_{n}}(x_{i})}I(x_{i} - h_{n} < x_{j} < x_{i} + h_{n})  \nonumber 
+a_{j}(x_{i}) = \frac{1}{n_{h_{n}}(x_{i})}I(x_{i} - h_{n} < x_{j} < x_{i} + h_{n})  \nonumber 
 \end{equation}
 
 
@@ -626,7 +717,12 @@ K_{h_{n}}(x_{i}, \cdot) = \sum_{j=1}^{n}K\Big( \frac{x_{i} - x_{j}}{h_{n}}  \Big
 \rule{\textwidth}{.05cm}
 \end{center}
 
-* For the local linear regression estimator, 
+* For the local linear regression estimator, the $i^{th}$ row of $\mathbf{A}_{h_{n}}$ equals the first row
+of the following $2 \times n$ matrix:
+\begin{equation}
+(\mathbf{X}_{x_{i},1}^{T}\mathbf{W}_{x_{i},h_{n}}\mathbf{X}_{x_{i},1})^{-1}\mathbf{X}_{x_{i},1}^{T}\mathbf{W}_{x_{i},h_{n}}  \nonumber
+\end{equation}
+Here, $\mathbf{X}_{x,1}$ and $\mathbf{W}_{x, h_{n}}$ are as defined in the section on local linear regression.
 
 \begin{center}
 \rule{\textwidth}{.05cm}
@@ -659,7 +755,7 @@ E\{ \mathbf{Z}^{T}\mathbf{Z} \} = E\Big\{ \sum_{i=1}^{n} Z_{i}^{2} \Big\} = \mat
 
 * Notice that the vector $\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}$ has 
 \begin{equation}
-E( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) = \sigma^{2}\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}
+E( \mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y} ) = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{m}  \qquad \qquad \textrm{Var}(\mathbf{m} - \mathbf{A}_{h_{n}}\mathbf{Y}) = \sigma^{2}\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T} \nonumber
 \end{equation}
 
 * Also, the vector $\mathbf{Y} - \mathbf{A}_{h_{n}}\mathbf{Y} = (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y}$ has
@@ -700,9 +796,9 @@ E\{ (\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} \} = (\mathbf{I} - \mathbf{A}_{h
 \rule{\textwidth}{.05cm}
 \end{center}
 
-* The predictive mean averaged squared error (PAMSE) is defined as
+* The predictive mean averaged squared error (PMASE) is defined as
 \begin{equation}
-PAMSE(h_{n}) = E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ Y_{i}' -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]
+\textrm{PMASE}(h_{n}) = E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ Y_{i}' -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]
 \end{equation}
 where $Y_{i}'$ is a "future" independent observation that has the same covariate as $Y_{i}$. 
 
@@ -710,10 +806,10 @@ where $Y_{i}'$ is a "future" independent observation that has the same covariate
 
 * So, 
 \begin{eqnarray}
-\textrm{PAMSE}(h_{n}) &=& E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) + \varepsilon_{i}' \}^{2} \Big] 
+\textrm{PMASE}(h_{n}) &=& E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) + \varepsilon_{i}' \}^{2} \Big] 
 \nonumber \\
 &=& E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]  +  E\Big[ \frac{1}{n} \sum_{i=1}^{n} (\varepsilon_{i}')^{2} \Big]  \nonumber \\
-&=& \textrm{AMSE}( h_{n} ) + \sigma^{2} \nonumber
+&=& \textrm{PMASE}( h_{n} ) + \sigma^{2} \nonumber
 \end{eqnarray}
 
 
@@ -722,7 +818,7 @@ where $Y_{i}'$ is a "future" independent observation that has the same covariate
 \end{center}
 
 * The $C_{p}$ statistic is based on the idea that, if $\sigma^{2}$ was known, then the following quantity
-would be an unbiased estimate of $\textrm{PAMSE}( h_{n} )$:
+would be an unbiased estimate of $\textrm{PMASE}( h_{n} )$:
 \begin{equation}
 \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\sigma^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber
 \end{equation}
@@ -730,9 +826,46 @@ would be an unbiased estimate of $\textrm{PAMSE}( h_{n} )$:
 * The $C_{p}$ statistic formula is obtained by plugging in an estimate $\hat{\sigma}^{2}$ of the residual variance into the above
 formula:
 \begin{equation}
-C_{p} = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber
+C_{p}(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}( \mathbf{A}_{h_{n}}) \nonumber
 \end{equation}
 
+* The reason this is called the "$C_{p}$ statistic" is that in the case of a linear regression model with $p$
+columns in the design matrix, we have $\hat{\mathbf{m}} = \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}\mathbf{Y}$
+and $\textrm{tr}\{ \mathbf{X}(\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}  \} = p$ so an 
+estimator of the PMASE would be
+\begin{equation}
+C_{p} = \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}p  \nonumber
+\end{equation}
+
+* For this reason, $\textrm{tr}( \mathbf{A}_{h_{n}} )$ is often referred to as
+the "degrees of freedom" of a nonparametric estimator of the form $\hat{\mathbf{m}} = \mathbf{A}_{h_{n}}\mathbf{Y}$.
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* The main drawback of the $C_{p}$ statistic is that it requires an estimate of the residual variance $\sigma^{2}$.
+
+* So, if we choose a fairly small bandwidth $\tilde{h}_{n}$ so that the bias is close to zero, we could use the following
+estimate of $\sigma^{2}$
+\begin{equation}
+\hat{\sigma}^{2}( \tilde{h}_{n} ) = \frac{  \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{\tilde{h}_{n}}(x_{i}) \}^{2}  }{ n - 2\textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}) + \textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}\mathbf{A}_{\tilde{h_{n}}}^{T}) }  \nonumber
+\end{equation}
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* **Exercise 11.4** Suppose the $n \times n$ matrix $\mathbf{A}_{h_{n}}$ satifies $\mathbf{A}_{h_{n}}\mathbf{m} = \mathbf{m}$.
+Show that 
+\begin{equation}
+\frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
+\end{equation}
+is an unbiased estimator of $\sigma^{2}$.
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
 
 
 ### Leave-one-out Cross Validation
@@ -743,31 +876,427 @@ the leave-one-out estimate of the regression function at $x$ as:
 \hat{m}_{h_{n},-i}(x) - \textrm{ estimate of $m(x)$ found by using all data except $(Y_{i}, x_{i})$.}
 \end{equation}
 
+* The leave-one-out cross validation (LOO-CV) estimate of the PMASE is defined to be
+\begin{equation}
+\textrm{LOOCV}(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) \}^{2}  \nonumber
+\end{equation}
+
+* The intuition here is that; because the estimate $\hat{m}_{h_{n}, -i}(x_{i})$ is computed without
+the $i^{th}$ observation, $Y_{i}$ plays the role of a "future observation" (relative to the dataset that
+does not contain $Y_{i}$).
+
+* Hence, $\{ Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) \}^{2}$ should be a sensible replacement for 
+the unobservable $\{ Y_{i}' - \hat{m}_{h_{n}}(x_{i}) \}^{2}$.
+
 
 \begin{center}
 \rule{\textwidth}{.05cm}
 \end{center}
 
-* Because we are assuming that $\hat{m}_{h_{n}}(x)$ can be represented as a linear combination of the responses
+* While we could compute $\textrm{LOOCV}(h_{n})$ by computing $\hat{m}_{h_{n}, -i}(x_{i})$
+separately for $i = 1,\ldots,n$, there is a much more efficient way of computing $\textrm{LOOCV}(h_{n})$.
+
+
+* We are assuming that $\hat{m}_{h_{n}}(x)$ can be represented as a linear combination of the responses
 \begin{equation}
-\hat{m}_{h_{n}}(x) = \sum_{j=1}^{n} a_{j}^{h_{n}}(x)Y_{j}
+\hat{m}_{h_{n}}(x) = \sum_{j=1}^{n} a_{j}^{h_{n}}(x)Y_{j}, \nonumber
 \end{equation}
-the leave-one-out estimate can be expressed as
+where we can think of $a_{j}^{h_{n}}(x)$ as weights that sum to $1$.
+
+* If we did not use $Y_{i}$ to compute $\hat{m}_{h_{n}}(x)$, this estimate would look like
 \begin{equation}
 \hat{m}_{h_{n}, -i}(x) = \sum_{j=1}^{n} a_{j,-i}^{h_{n}}(x)Y_{j}
 \end{equation}
 where 
 \begin{equation}
 a_{j,-i}^{h_{n}}(x) = 
+\begin{cases}
+0 & \textrm{ if } j = i \nonumber \\
+\frac{ a_{j}^{h_{n}}(x)}{ \sum_{k \neq i} a_{k}^{h_{n}}(x) }  \nonumber
+\end{cases}
+\end{equation}
+
+* If you want to better convince yourself that the above formula for $a_{j,-i}^{h_{n}}(x_{i})$ is true,
+try an example using the Nadaraya-Watson estimator with $n=3$.
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* Because $\sum_{k \neq i} a_{k}^{h_{n}}(x_{i}) = 1 - a_{i}^{h_{n}}( x_{i} )$, we can express $Y_{i} - \hat{m}_{h_{n},-i}(x_{i})$ as
+\begin{eqnarray}
+Y_{i} - \hat{m}_{h_{n}, -i}(x_{i}) &=& Y_{i} - \sum_{j \neq i}^{n} a_{j,-i}^{h_{n}}(x_{i})Y_{j} \nonumber \\
+&=& Y_{i} - \frac{1}{1 - a_{i}^{h_{n}}( x_{i} ) } \sum_{j \neq i}^{n} a_{j}^{h_{n}}(x_{i})Y_{j} \nonumber \\
+&=& Y_{i} - \Big[ \frac{1}{1 - a_{i}^{h_{n}}( x_{i} ) } \sum_{j = 1}^{n} a_{j}^{h_{n}}(x_{i})Y_{j} \Big]  +  \frac{a_{j}^{h_{n}}(x_{i})Y_{i} }{1 - a_{i}^{h_{n}}( x_{i} ) }  \nonumber \\
+&=& \frac{Y_{i} - \hat{m}_{h_{n}}(x_{i}) }{1 - a_{i}^{h_{n}}( x_{i} ) } 
+(\#eq:loocv-simplification)
+\end{eqnarray}
+
+
+* Using \@ref(eq:loocv-simplification), we can re-write the LOOCV estimate as 
+\begin{equation}
+\textrm{LOOCV}(h_{n}) = \frac{1}{n}\sum_{i=1}^{n} \Big( \frac{ Y_{i} - \hat{m}_{h_{n}}(x_{i})}{ 1 - a_{i}^{h_{n}}( x_{i} )  } \Big)^{2}  \nonumber
+\end{equation}
+where $a_{i}^{h_{n}}(x_{i})$ are just the diagonal elements of our original matrix $\mathbf{A}_{h_{n}}$.
+
+
+### Example: Choosing the Best Bin Width for the Local Average Estimator.
+
+**Cp Statistic**
+
+* The diagonal entries of the $\mathbf{A}_{h_{n}}$ matrix for the local average estimator
+are $1/n_{h_{n}}(x_{1}), \ldots, 1/n_{h_{n}}(x_{n})$.
+
+* So, the "degrees of freedom" for the local average estimator is
+\begin{equation}
+\textrm{tr}( \mathbf{A}_{h_{n}}) = \sum_{i=1}^{n} \frac{1}{n_{h_{n}}(x_{i}) }
+\end{equation}
+
+* Notice that if we choose $h_{n}$ large enough so that $n_{h_{n}}(x_{i}) = n$ for all $x_{i}$,
+then the degrees of freedom is equal to $1$.
+
+* The $C_{p}$ statistic for the local average estimator is
+\begin{equation}
+\frac{1}{n}\sum_{i=1}^{n} \{ Y_{i} - \hat{m}_{h_{n}}(x_{i}) \}^{2}  + \frac{ 2\hat{\sigma}^{2} }{n}\sum_{i=1}^{n} \frac{1}{n_{h_{n}}(x_{i}) } \nonumber
 \end{equation}
 
 \begin{center}
 \rule{\textwidth}{.05cm}
 \end{center}
 
-* The predictive risk estimate is
+* Let's try to compute $C_{p}(h_{n})$ for the `bonedat` dataset.
+
+* The first step is to write a function that computes the $n_{h_{n}}(x_{i})$ for a given value of $h_{n}$. This will allow us to find the degrees of freedom
+and will also be helpful later when computing LOOCV.
+
+```r
+NumInBins <- function(hh, xx) {
+  ## This function returns a vector of length n
+  ## Elements of this vector will be: n_[h_n](x_1), n_[h_n](x_2), ...
+  n <- length(xx)
+  num.bin <- numeric(n)
+  for(k in 1:n) {
+    num.bin[k] <- sum(xx > xx[k] - hh & xx < xx[k] + hh)
+  } 
+  return(num.bin)
+}
+```
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* We also want a function that returns the vector with elements $\hat{m}_{h_{n}}(x_{1}), \hat{m}_{h_{n}}(x_{2}) , \ldots \hat{m}_{h_{n}}(x_{n})$.
+
+```r
+MyLocAvgEst <- function(xx, yy, hh) {
+  n <- length(xx)
+  m.hat.loc <- numeric(n)
+  for(k in 1:n) {
+    in.bin <- xx > xx[k] - hh & xx < xx[k] + hh
+    m.hat.loc[k] <- mean(yy[in.bin])
+  }
+  return(m.hat.loc)
+}
+```
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* The final step is to compute an estimate of $\sigma^{2}$.
+
+* Using the estimate 
+\begin{equation}
+\hat{\sigma}^{2}( \tilde{h}_{n} ) = \frac{  \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{\tilde{h}_{n}}(x_{i}) \}^{2}  }{ n - 2\textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}) + \textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}\mathbf{A}_{\tilde{h_{n}}}^{T}) }
+\end{equation}
+that we mentioned before with $\tilde{h}_{n} = 0.1$, I got a an estimate of $\sigma^{2}$ which was quite close to $0.0015$
+
+```r
+sigsq.est <- 0.0015
+```
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* Now, we are ready to compute the $C_{p}$ statistic. We will compute $C_{p}(h_{n})$ for $h_{n} = 0.01, 0.11, \ldots, 10.01$. This can be done with the following code:
+
+```r
+hseq <- seq(.01, 10.01, by=.1)
+ngrid <- length(hseq)
+n <- length(bonedat$age)
+Cp <- numeric(ngrid)
+for(k in 1:ngrid) {
+   m.hat <- MyLocAvgEst(bonedat$age, bonedat$spnbmd, hseq[k])
+   dfval <- sum(1/NumInBins(hseq[k], bonedat$age))
+   Cp[k] <- mean( (bonedat$spnbmd - m.hat)^2 ) + (2*sigsq.est*dfval)/n
+}
+```
+
+* We can plot the values of $C_{p}(h_{n})$ vs. $h_{n}$ to roughly see where the minimum value is. From the graph, it looks to be slighly less than $1$.
+
+```r
+plot(hseq, Cp, ylim=c(0.001,.003), main="Bone Data: Cp Stat for Loc. Avg. Est.", 
+     xlab="hn", ylab="Cp")
+lines(hseq, Cp)
+```
+
+![](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-17-1.pdf)<!-- --> 
+
+* More precisely, the value of $h_{n}$ from our sequence which has the smallest value of $C_{p}(h_{n})$ is $0.81$.
+
+```r
+hseq[which.min(Cp)]
+```
+
+```
+## [1] 0.81
+```
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+**LOOCV** 
+
+* We can use the functions that we have written to compute $\textrm{LOOCV}(h_{n})$. 
+
+* It is useful to notice that $1 - a_{i}^{h_{n}}( x_{i} ) = 1 - 1/n_{h_{n}}(x_{i})$ using the notation
+we used in the description of the LOOCV.
+
+* `R` code to compute $\textrm{LOOCV}(h_{n})$ at the same sequence of $h_{n}$ values used for the $C_{p}$
+statistic is given below:
+
+```r
+LOOCV <- numeric(ngrid)
+for(k in 1:ngrid) {
+  m.hat <- MyLocAvgEst(bonedat$age, bonedat$spnbmd, hseq[k])
+  n.hn <- NumInBins(hseq[k], bonedat$age)
+  dd <- 1 - 1/n.hn
+  LOOCV[k] <- mean( ((bonedat$spnbmd - m.hat)/dd)^2 ) 
+}
+```
 
 
+* We can plot the values of $\textrm{LOOCV}(h_{n})$ vs. $h_{n}$ to roughly see where the minimum value is.
+
+```r
+plot(hseq, LOOCV, ylim=c(0.001,.003), main="Bone Data: LOOCV Stat for Loc. Avg. Est.", 
+     xlab="hn", ylab="LOOCV")
+lines(hseq, LOOCV)
+```
+
+![](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-20-1.pdf)<!-- --> 
+
+* The value of $h_{n}$ from our sequence which has the smallest value of $\textrm{LOOCV}(h_{n})$ is $0.81$.
+
+```r
+hseq[which.min(LOOCV)]
+```
+
+```
+## [1] 0.81
+```
+
+![](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-22-1.pdf)<!-- --> 
+
+## Additional functions in R
+
+* The R functions `lowess` and `loess` are widely used functions for smoothing via local regression.
+
+* `loess` is basically an expanded version of `lowess`. The function `loess` has more options than 
+the `lowess` function and is written to resemble the `lm` in function in `R`.
+
+* Note that `loess` and `lowess` have different default settings for some of the model fitting parameters
+so they can differ somewhat in the values they return unless you set these parameters to be equal.
+
+* `loess` allows for multivariate covariates $\mathbf{x}_{i}$ while `lowess` does not. 
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* `lowess` does local quadratic and local linear regression. The format of the `lowess` function is the following:
+
+```r
+loess(formula, data, span)
+```
+* **formula** - usally of the form `y ~ x` if using a single response vector `y` and covariate `x`
+
+* **data** - the dataset from which `y` and `x` are drawn from 
+
+* **span** - the "span" of the smoother. This can be thought of as playing the role of the bandwidth. Default of span $= \alpha$ is set to $0.75$. Usually, $0 < \alpha < 1$.
+
+* **degree** - the degree of the polynomial used for local regression. The default is set to $2$.
+
+
+
+* The `loess` function will return two vectors `$x` and `$fitted`. The `$x` is just the vector of covariates from the original data, and
+the `$fitted` vector is the value of the estimated regression function $\hat{m}( x_{i} )$ at these points.
+
+* The `lowess` function performs local linear regression with a few extra steps included to make the fitting procedure more robust. 
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* For weights $W_{i}^{\alpha}(x)$ in the local linear regression problem, loess and lowess uses the following tri-cube function
+\begin{equation}
+W_{i}^{\alpha}(x)
+= \begin{cases}
+\Bigg( 1 - \Big( \frac{| x - x_{i}| }{| x - x_{(q)}| } \Big)^{3} \Bigg)^{3} & \text{ if } |x - x_{i}| \leq |x - x_{(q)}|  \\
+0 & \textrm{ otherwise }
+\end{cases}
+\end{equation}
+
+* The weights $W_{i}^{\alpha}(x)$ here play the same role as $K( \tfrac{x - x_{i}}{ h_{n} } )$ did in our description of local linear regression in Section 10.3.
+
+* Here, $x_{(q)}$ is the $\lfloor \alpha \times n \rfloor$ furthest observations away from $x$, and $\lfloor \alpha \times n \rfloor$ denotes
+$f n$ rounded down to the nearest integer. 
+
+* So, values of the span $\alpha$ which are closer to $0$ mean that
+you are using a smaller number of observations when performing each local regression while
+values close to $1$ mean that nearly all the observations receive positive weight when performing each local regression.
+ 
+* After fitting a local regression with weights $W_{i}^{\alpha}(x)$, `lowess` actually does an additional local  
+regression with updated weights that reduce the influence of outliers. `loess` will do the same thing if `family` is set to "symmetric" rather than "gaussian".
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* Let's try plotting a `loess` fit using the bone data. We will set `span = 2/3` instead of 3/4
+
+```r
+bone.low.fit <- loess(spnbmd ~ age, data=bonedat, span=2/3)
+
+plot(bone.low.fit, ylab="Relative Change in Bone MD", 
+     xlab="Age", main="Bone Data: Lowess Fit", las=1, pch=16)
+## plot a line of the the fitted values vs. x. Need to sort 
+## the x_i's first though if we want a nice looking line:
+lines(bone.low.fit$x[order(bone.low.fit$x)], bone.low.fit$fitted[order(bone.low.fit$x)], 
+      col="red", lwd=3)
+abline(0,0, lty=2)
+```
+
+![](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-24-1.pdf)<!-- --> 
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* If you want to change the settings for `lowess` and `loess` so that they are using the exact same fitting procedure,
+you can use the following approach:
+
+```r
+lowess.fit <- lowess(x=bonedat$age, y=bonedat$spnbmd, iter=3, delta=0, f=2/3)
+loess.fit <- loess(spnbmd ~ age, data=bonedat, span=2/3, degree=1, family="symmetric", 
+                   iterations=4, surface="direct")
+```
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* The `locpoly` function from the `KernSmooth` package implements local polynomial regression as it was described in Section 10.3.
+
+```r
+locpoly(x, y, degree, kernel = "normal", bandwidth)
+```
+
+* You can vary the degree of the polynomical used in the local polynomial regression with the `degree` argument.
+
+* For local linear regression, you should get the same answer as our function `MyLocLinear` written in Section 10.3 
+if you use `degree=1` with the locpoly function:
+
+```r
+library(KernSmooth)
+```
+
+```
+## KernSmooth 2.23 loaded
+## Copyright M. P. Wand 1997-2009
+```
+
+```r
+locpoly.fit <- locpoly(x = bonedat$age, y=bonedat$spnbmd, degree=1, bandwidth=0.5)
+mylocpoly.fit <- MyLocLinear(x=bonedat$age, y=bonedat$spnbmd, bandwidth=0.5, 
+                             x.points=locpoly.fit$x) 
+  
+
+plot(locpoly.fit$x, locpoly.fit$y, main="Local Linear Regression with locpoly 
+     and MyLocLinear", las=1, xlab="age", ylab="Relative Change")
+lines(locpoly.fit$x, mylocpoly.fit, col="red", lwd=2)
+```
+
+![](11-kernel-regression-Latex_files/figure-latex/unnamed-chunk-27-1.pdf)<!-- --> 
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* The `supsmu` function implements Friednan's "super smoother" (@friedman1984).
+
+```r
+supsmu(x, y, span="cv", bass=0)
+```
+* **x** - vector of covariate values.
+
+* **y** - vector of responses.
+
+* **span** - the "span" of the smoother. As with loess, this is the fraction of observations included when estimating the regression function at a particular point. The best span is chosen through cross-validation. 
+
+* **bass** - tuning parameter to further control the smoothness of the fitted curve. The smallest value is $0$ (lowest level of smoothness). The largest value is $10$ (most smoothness).
+
+The `supsmu` function just returns a list with components `$x` and `$y`. The `$x` component will be a sorted vector of the inputted x values and the `$y` component will contain the corresponding estimates of the regression function. 
+
+
+
+## Multivariate Problems
+
+* All of the methods discussed here can be directly extended to the case of multivariate covariates $\mathbf{x}_{i} \in \mathbb{R}^{p}$ where
+$\mathbf{x}_{i} = (x_{i1}, \ldots, x_{ip})$.
+
+* For the methods that use a kernel function, we just use the Euclidean distance between two points in the kernel function.
+
+* For example, with the Gaussian kernel for the Nadaraya-Watson estimator, we would use the following weights when estimating
+the regression function at $\mathbf{x} \in \mathbb{R}^{p}$
+\begin{equation}
+K\Big( \frac{ \mathbf{x} - \mathbf{x}_{i} }{h_{n}} \Big)
+= \frac{1}{\sqrt{2\pi}h_{n}}\exp\Big\{ -\frac{||\mathbf{x} - \mathbf{x}_{i}||^{2} }{2h_{n}^{2}}  \Big\} = \frac{1}{\sqrt{2\pi}h_{n}}\exp\Big\{ -\frac{1}{2h_{n}^{2}}\sum_{j=1}^{p} (x_{j} - x_{ij})^{2}  \Big\} \nonumber
+\end{equation}
+
+* If we wanted to do k-nearest neighbors regression to estimate the regression function at $\mathbf{x}$,
+we would just pick the k closest observation in terms of the distance $|| \mathbf{x} - \mathbf{x}_{i}||^{2}$.
+
+* Similarly, if we wanted to compute the local average estimator in $\mathbf{R}^{p}$, we would use
+\begin{equation}
+\hat{m}_{h_{n}}^{loc}( \mathbf{x} ) = \frac{1}{ n_{h_{n}}( \mathbf{x} )}\sum_{i=1}^{n} Y_{i}I\big( || \mathbf{x}_{i} - \mathbf{x} || < h_{n} \big), \nonumber
+\end{equation}
+where $n_{h_{n}}( \mathbf{x} ) = \sum_{i=1}^{n} I\big( || \mathbf{x}_{i} - \mathbf{x} || < h_{n} \big)$.
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* The performance of kernel and local regression methods can degrade quickly as we move to higher dimensions.
+The convergence rate of the estimated regression function to the true regression function slows substantially
+as we increase $p$.
+
+* "Curse of dimensionality" - need very large datasets to have a sufficient number of observations
+near a given point $\mathbf{x}$.
+
+* The methods discussed here are most commonly used for $p = 1$ or maybe $p = 2$ or $p = 3$.
+
+\begin{center}
+\rule{\textwidth}{.05cm}
+\end{center}
+
+* For higher dimensions, modifications of these methods could be useful. For example:
+    + Incorporating correlation between the covariates in the kernel function.
+    + Modeling the regression function as an additive model $m(\mathbf{x}) = m_{1}(x_{1}) + \ldots + m_{j}(x_{p})$ and using local regression for each function $m_{j}(x)$.
+    + "Sparsity": try to first discard unimportant covariates and estimate the regression function using a smaller subset of the covariates.
 
 ## Additional Reading
 
