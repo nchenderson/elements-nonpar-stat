@@ -840,7 +840,7 @@ where $Y_{i}'$ is a "future" independent observation that has the same covariate
 \textrm{PMASE}(h_{n}) &=& E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) + \varepsilon_{i}' \}^{2} \Big] 
 \nonumber \\
 &=& E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]  +  E\Big[ \frac{1}{n} \sum_{i=1}^{n} (\varepsilon_{i}')^{2} \Big]  \nonumber \\
-&=& \textrm{PMASE}( h_{n} ) + \sigma^{2} \nonumber
+&=& \textrm{MASE}( h_{n} ) + \sigma^{2} \nonumber
 \end{eqnarray}
 
 
@@ -1177,7 +1177,7 @@ W_{i}^{\alpha}(x)
 * The weights $W_{i}^{\alpha}(x)$ here play the same role as $K( \tfrac{x - x_{i}}{ h_{n} } )$ did in our description of local linear regression in Section 10.3.
 
 * Here, $x_{(q)}$ is the $\lfloor \alpha \times n \rfloor$ furthest observations away from $x$, and $\lfloor \alpha \times n \rfloor$ denotes
-$f n$ rounded down to the nearest integer. 
+$\alpha n$ rounded down to the nearest integer. 
 
 * So, values of the span $\alpha$ which are closer to $0$ mean that
 you are using a smaller number of observations when performing each local regression while
@@ -1244,7 +1244,7 @@ lines(locpoly.fit$x, mylocpoly.fit, col="red", lwd=2)
 \rule{\textwidth}{.05cm}
 \end{center}
 
-* The `supsmu` function implements Friednan's "super smoother" (@friedman1984).
+* The `supsmu` function implements Friedman's "super smoother" (@friedman1984).
 ```{r, eval=FALSE}
 supsmu(x, y, span="cv", bass=0)
 ```

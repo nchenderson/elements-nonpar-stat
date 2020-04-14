@@ -1001,7 +1001,7 @@ where <span class="math inline">\(Y_{i}&#39;\)</span> is a “future” independ
 \textrm{PMASE}(h_{n}) &amp;=&amp; E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) + \varepsilon_{i}&#39; \}^{2} \Big] 
 \nonumber \\
 &amp;=&amp; E\Big[ \frac{1}{n} \sum_{i=1}^{n} \{ m(x_{i}) -  \hat{m}_{h_{n}}(x_{i}) \}^{2} \Big]  +  E\Big[ \frac{1}{n} \sum_{i=1}^{n} (\varepsilon_{i}&#39;)^{2} \Big]  \nonumber \\
-&amp;=&amp; \textrm{PMASE}( h_{n} ) + \sigma^{2} \nonumber
+&amp;=&amp; \textrm{MASE}( h_{n} ) + \sigma^{2} \nonumber
 \end{eqnarray}\]</span></p></li>
 </ul>
 <hr />
@@ -1253,7 +1253,7 @@ W_{i}^{\alpha}(x)
 \end{equation}\]</span></p></li>
 <li><p>The weights <span class="math inline">\(W_{i}^{\alpha}(x)\)</span> here play the same role as <span class="math inline">\(K( \tfrac{x - x_{i}}{ h_{n} } )\)</span> did in our description of local linear regression in Section 10.3.</p></li>
 <li><p>Here, <span class="math inline">\(x_{(q)}\)</span> is the <span class="math inline">\(\lfloor \alpha \times n \rfloor\)</span> furthest observations away from <span class="math inline">\(x\)</span>, and <span class="math inline">\(\lfloor \alpha \times n \rfloor\)</span> denotes
-<span class="math inline">\(f n\)</span> rounded down to the nearest integer.</p></li>
+<span class="math inline">\(\alpha n\)</span> rounded down to the nearest integer.</p></li>
 <li><p>So, values of the span <span class="math inline">\(\alpha\)</span> which are closer to <span class="math inline">\(0\)</span> mean that
 you are using a smaller number of observations when performing each local regression while
 values close to <span class="math inline">\(1\)</span> mean that nearly all the observations receive positive weight when performing each local regression.</p></li>
@@ -1306,7 +1306,7 @@ if you use <code>degree=1</code> with the locpoly function:</p></li>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <hr />
 <ul>
-<li>The <code>supsmu</code> function implements Friednan’s “super smoother” (<span class="citation">Friedman (<a href="#ref-friedman1984">1984</a>)</span>).</li>
+<li>The <code>supsmu</code> function implements Friedman’s “super smoother” (<span class="citation">Friedman (<a href="#ref-friedman1984">1984</a>)</span>).</li>
 </ul>
 <div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb245-1" data-line-number="1"><span class="kw">supsmu</span>(x, y, <span class="dt">span=</span><span class="st">&quot;cv&quot;</span>, <span class="dt">bass=</span><span class="dv">0</span>)</a></code></pre></div>
 <ul>
