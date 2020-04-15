@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-14" />
+<meta name="date" content="2020-04-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -308,8 +308,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.1.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-cubic-estimates"><i class="fa fa-check"></i><b>12.1.3</b> Piecewise Cubic Estimates</a></li>
 </ul></li>
 <li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates-with-continuity-linear-splines"><i class="fa fa-check"></i><b>12.2</b> Piecewise Linear Estimates with Continuity (Linear Splines)</a></li>
-<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-spline-basis-functions"><i class="fa fa-check"></i><b>12.3</b> Cubic Splines and Spline Basis Functions</a></li>
-<li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splinespenalized-regression"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines/Penalized Regression</a></li>
+<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-regression-with-splines"><i class="fa fa-check"></i><b>12.3</b> Cubic Splines and Regression with Splines</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#example-smooth-piecewise-cubic-model-with-2-knots"><i class="fa fa-check"></i><b>12.3.1</b> Example: Smooth Piecewise Cubic Model with 2 Knots</a></li>
+<li class="chapter" data-level="12.3.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines"><i class="fa fa-check"></i><b>12.3.2</b> Cubic Splines</a></li>
+<li class="chapter" data-level="12.3.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#estimating-the-coefficients-of-a-cubic-spline"><i class="fa fa-check"></i><b>12.3.3</b> Estimating the Coefficients of a Cubic Spline</a></li>
+<li class="chapter" data-level="12.3.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#an-example-in-r-1"><i class="fa fa-check"></i><b>12.3.4</b> An example in R</a></li>
+<li class="chapter" data-level="12.3.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#natural-cubic-splines"><i class="fa fa-check"></i><b>12.3.5</b> Natural Cubic Splines</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splines"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines</a></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
 <li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a></li>
@@ -601,7 +607,7 @@ that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
 ##  One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.086999, p-value = 0.4355
+## D = 0.08145, p-value = 0.5207
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
@@ -612,7 +618,7 @@ by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
 ##  One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.36513, p-value = 5.257e-12
+## D = 0.33434, p-value = 3.903e-10
 ## alternative hypothesis: two-sided</code></pre>
 <hr />
 <ul>
@@ -652,7 +658,7 @@ the one-sample KS test statistic. In particular, under <span class="math inline"
 ##  Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.18, p-value = 0.07832
+## D = 0.24, p-value = 0.006302
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>We can compute the KS statistic ourselves and check that this matches the value of the KS statistic
@@ -665,7 +671,7 @@ returned by the <strong>ks.test</strong> function:</li>
 <a class="sourceLine" id="cb117-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb117-6" data-line-number="6">KS.stat &lt;-<span class="st"> </span><span class="kw">max</span>( <span class="kw">abs</span>( <span class="kw">F.x</span>(zz.order) <span class="op">-</span><span class="st"> </span><span class="kw">F.y</span>(zz.order) ) )</a>
 <a class="sourceLine" id="cb117-7" data-line-number="7">KS.stat</a></code></pre></div>
-<pre><code>## [1] 0.18</code></pre>
+<pre><code>## [1] 0.24</code></pre>
 <hr />
 <ul>
 <li><strong>Exercise 7.1.</strong> Why does

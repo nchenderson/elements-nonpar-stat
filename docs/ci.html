@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-14" />
+<meta name="date" content="2020-04-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -308,8 +308,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.1.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-cubic-estimates"><i class="fa fa-check"></i><b>12.1.3</b> Piecewise Cubic Estimates</a></li>
 </ul></li>
 <li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates-with-continuity-linear-splines"><i class="fa fa-check"></i><b>12.2</b> Piecewise Linear Estimates with Continuity (Linear Splines)</a></li>
-<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-spline-basis-functions"><i class="fa fa-check"></i><b>12.3</b> Cubic Splines and Spline Basis Functions</a></li>
-<li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splinespenalized-regression"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines/Penalized Regression</a></li>
+<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-regression-with-splines"><i class="fa fa-check"></i><b>12.3</b> Cubic Splines and Regression with Splines</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#example-smooth-piecewise-cubic-model-with-2-knots"><i class="fa fa-check"></i><b>12.3.1</b> Example: Smooth Piecewise Cubic Model with 2 Knots</a></li>
+<li class="chapter" data-level="12.3.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines"><i class="fa fa-check"></i><b>12.3.2</b> Cubic Splines</a></li>
+<li class="chapter" data-level="12.3.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#estimating-the-coefficients-of-a-cubic-spline"><i class="fa fa-check"></i><b>12.3.3</b> Estimating the Coefficients of a Cubic Spline</a></li>
+<li class="chapter" data-level="12.3.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#an-example-in-r-1"><i class="fa fa-check"></i><b>12.3.4</b> An example in R</a></li>
+<li class="chapter" data-level="12.3.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#natural-cubic-splines"><i class="fa fa-check"></i><b>12.3.5</b> Natural Cubic Splines</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splines"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines</a></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
 <li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a></li>
@@ -442,9 +448,9 @@ more details).</p></li>
 <li>Normal bootstrap standard error confidence intervals for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma^{2}\)</span> are</li>
 </ul>
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb193-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(alpha.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot), alpha.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(alpha.boot)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.074 0.555</code></pre>
+<pre><code>## [1] 0.075 0.554</code></pre>
 <div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb195-1" data-line-number="1"><span class="kw">round</span>(<span class="kw">c</span>(sigsq.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot), sigsq.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(sigsq.boot)), <span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.939 1.997</code></pre>
+<pre><code>## [1] 0.920 2.016</code></pre>
 <ul>
 <li>We can compare our confidence interval for <span class="math inline">\(\alpha\)</span> with the confidence interval
 obtained from using a large-sample approximation:</li>
@@ -587,11 +593,11 @@ we can use studentized bootstrap confidence intervals without using the double b
 <div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb202-1" data-line-number="1"><span class="co">## Confidence interval for beta0</span></a>
 <a class="sourceLine" id="cb202-2" data-line-number="2"><span class="kw">c</span>(beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0[<span class="dv">2</span>]<span class="op">*</span>se.est0, beta0.hat <span class="op">-</span><span class="st"> </span>stu.quants0[<span class="dv">1</span>]<span class="op">*</span>se.est0)</a></code></pre></div>
 <pre><code>## (Intercept) (Intercept) 
-##        2.17        3.52</code></pre>
+##        2.17        3.60</code></pre>
 <div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb204-1" data-line-number="1"><span class="co">## Confidence interval for beta1</span></a>
 <a class="sourceLine" id="cb204-2" data-line-number="2"><span class="kw">c</span>(beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1[<span class="dv">2</span>]<span class="op">*</span>se.est1, beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1[<span class="dv">1</span>]<span class="op">*</span>se.est1)</a></code></pre></div>
 <pre><code>##     age     age 
-## -0.0956 -0.0588</code></pre>
+## -0.0980 -0.0614</code></pre>
 <ul>
 <li>Compare these studentized bootstrap confidence intervals with the confidence
 intervals computed under the normality assumption for the residuals:</li>
@@ -688,7 +694,7 @@ and <span class="math inline">\(\hat{\beta}_{1}\)</span>, we just use the follow
 <div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb212-1" data-line-number="1"><span class="co">## Confidence interval for beta1</span></a>
 <a class="sourceLine" id="cb212-2" data-line-number="2"><span class="kw">c</span>(beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1.np[<span class="dv">2</span>]<span class="op">*</span>se.est1, beta1.hat <span class="op">-</span><span class="st"> </span>stu.quants1.np[<span class="dv">1</span>]<span class="op">*</span>se.est1)</a></code></pre></div>
 <pre><code>##     age     age 
-## -0.0967 -0.0608</code></pre>
+## -0.0959 -0.0588</code></pre>
 <hr />
 <ul>
 <li><strong>Exercise 10.2</strong> Another way of using the bootstrap in a regression context
@@ -859,7 +865,7 @@ confidence interval for <span class="math inline">\(\eta\)</span>:</p></li>
 <li>The estimated coverage for this bootstrap confidence interval is</li>
 </ul>
 <div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb216-1" data-line-number="1"><span class="kw">mean</span>(Cover.bootsd.ci)</a></code></pre></div>
-<pre><code>## [1] 0.798</code></pre>
+<pre><code>## [1] 0.82</code></pre>
 <p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 </div>

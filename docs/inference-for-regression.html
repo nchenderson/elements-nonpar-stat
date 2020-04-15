@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-14" />
+<meta name="date" content="2020-04-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -308,8 +308,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.1.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-cubic-estimates"><i class="fa fa-check"></i><b>12.1.3</b> Piecewise Cubic Estimates</a></li>
 </ul></li>
 <li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates-with-continuity-linear-splines"><i class="fa fa-check"></i><b>12.2</b> Piecewise Linear Estimates with Continuity (Linear Splines)</a></li>
-<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-spline-basis-functions"><i class="fa fa-check"></i><b>12.3</b> Cubic Splines and Spline Basis Functions</a></li>
-<li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splinespenalized-regression"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines/Penalized Regression</a></li>
+<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-regression-with-splines"><i class="fa fa-check"></i><b>12.3</b> Cubic Splines and Regression with Splines</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#example-smooth-piecewise-cubic-model-with-2-knots"><i class="fa fa-check"></i><b>12.3.1</b> Example: Smooth Piecewise Cubic Model with 2 Knots</a></li>
+<li class="chapter" data-level="12.3.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines"><i class="fa fa-check"></i><b>12.3.2</b> Cubic Splines</a></li>
+<li class="chapter" data-level="12.3.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#estimating-the-coefficients-of-a-cubic-spline"><i class="fa fa-check"></i><b>12.3.3</b> Estimating the Coefficients of a Cubic Spline</a></li>
+<li class="chapter" data-level="12.3.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#an-example-in-r-1"><i class="fa fa-check"></i><b>12.3.4</b> An example in R</a></li>
+<li class="chapter" data-level="12.3.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#natural-cubic-splines"><i class="fa fa-check"></i><b>12.3.5</b> Natural Cubic Splines</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splines"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines</a></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
 <li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a></li>
@@ -514,19 +520,137 @@ Figure 12.3: A linear spline with knots at 1/3 and 2/3. A linear spline is a pie
 </p>
 </div>
 </div>
-<div id="cubic-splines-and-spline-basis-functions" class="section level2">
-<h2><span class="header-section-number">12.3</span> Cubic Splines and Spline Basis Functions</h2>
+<div id="cubic-splines-and-regression-with-splines" class="section level2">
+<h2><span class="header-section-number">12.3</span> Cubic Splines and Regression with Splines</h2>
+<div id="example-smooth-piecewise-cubic-model-with-2-knots" class="section level3">
+<h3><span class="header-section-number">12.3.1</span> Example: Smooth Piecewise Cubic Model with 2 Knots</h3>
 <ul>
-<li>We also have</li>
+<li><p>Let us go back to the piecewise cubic model shown in Figure ?.</p></li>
+<li><p>This model assumes that the regression function is of the form:
+<span class="math display">\[\begin{equation}
+m(x) = 
+\begin{cases} 
+\beta_{01} + \beta_{11}x + \beta_{21}x^{2} + \beta_{31}x^{3} &amp; \text{ if } 0 &lt; x &lt; u_{1} \nonumber \\
+\beta_{02} + \beta_{12}x + \beta_{22}x^{2} + \beta_{32}x^{3} &amp; \text{ if } u_{1} \leq x &lt; u_{2} \nonumber \\
+\beta_{03} + \beta_{13}x + \beta_{23}x^{2} + \beta_{33}x^{3} &amp; \text{ if } 1 &gt; x \geq u_{2}
+\end{cases}
+\end{equation}\]</span>
+Notice that this model has 12 parameters.</p></li>
+<li><p>Like in the linear spline example, if we wanted to make this piecewise cubic model continuous at the knots <span class="math inline">\(u_{1}\)</span> and <span class="math inline">\(u_{2}\)</span> we would
+need to impose the following constraints on the coefficients <span class="math inline">\(\beta_{jk}\)</span>:
+<span class="math display">\[\begin{eqnarray}
+\beta_{01} + \beta_{11}u_{1} + \beta_{21}u_{1}^{2} + \beta_{31}u_{1}^{3} &amp;=&amp; \beta_{02} + \beta_{12}u_{1} + \beta_{22}u_{1}^{2} + \beta_{32}u_{1}^{3} \nonumber \\ \beta_{02} + \beta_{12}u_{2} + \beta_{22}u_{2}^{2} + \beta_{21}u_{2}^{3} &amp;=&amp; \beta_{03} + \beta_{13}u_{2} + \beta_{23}u_{2}^{2} + \beta_{33}u_{2}^{3} \nonumber
+\end{eqnarray}\]</span></p></li>
 </ul>
 <hr />
 <ul>
-<li>The B-spline functions are a basis for cubic splines. Are they also a basis
-for the set of natural cubic splines?</li>
+<li><p>However, only forcing the piecewise cubic model to be continuous is not enough if we want a smooth estimate for the regression function that will not have
+obvious changes at the knots.</p></li>
+<li><p>We actually need the first and the second derivatives of the function to be continuous if we want a function
+that is smooth and does not have changes at the knots that we can detect visually.</p></li>
+<li><p>So, for the example that we have in Figure ? with the knots <span class="math inline">\(u_{1}\)</span> and <span class="math inline">\(u_{2}\)</span>, we need to enforce the additional four constraints:
+<span class="math display">\[\begin{eqnarray}
+\beta_{11} + 2\beta_{21}u_{1} + 3\beta_{31}u_{1}^{2} &amp;=&amp;  \beta_{12} + 2\beta_{22}u_{1} + 3\beta_{32}u_{1}^{2} \nonumber \\ 
+\beta_{12} + 2\beta_{22}u_{2} + 3\beta_{21}u_{2}^{2} &amp;=&amp;  \beta_{13} + 2\beta_{23}u_{2} + 3\beta_{33}u_{2}^{2} \nonumber \\
+2\beta_{21} + 6\beta_{31}u_{1} &amp;=&amp;  2\beta_{22} + 6\beta_{32}u_{1} \nonumber \\ 
+2\beta_{22} + 6\beta_{21}u_{2} &amp;=&amp; 2\beta_{23} + 6\beta_{33}u_{2} \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>Hence, the piecewise cubic model that has the two continuity constraints () and the four first and second derivative constraints
+will have <span class="math inline">\(12 - 2 - 4 = 6\)</span> parameters in total.</p></li>
+<li><p>In a similar way to how we derived the basis for the linear spline with knots <span class="math inline">\(u_{1}\)</span> and <span class="math inline">\(u_{2}\)</span>, you can show that the following <span class="math inline">\(6\)</span>
+functions form a basis for the set of piecewise cubic functions with knots <span class="math inline">\(u_{1}\)</span> and <span class="math inline">\(u_{2}\)</span> that are continuous and have continuous
+first and second derivatives:
+<span class="math display">\[\begin{eqnarray}
+\varphi_{0}(x) &amp;=&amp; 1 \qquad \varphi_{1}(x) = x \qquad \varphi_{2}(x) = x^{2} \qquad \varphi_{3}(x) = x^{3} \nonumber \\
+\varphi_{4}(x) &amp;=&amp; (x - u_{1})_{+}^{3} \qquad \varphi_{5}(x) = (x - u_{2})_{+}^{3} \nonumber
+\end{eqnarray}\]</span></p></li>
 </ul>
 </div>
-<div id="smoothing-splinespenalized-regression" class="section level2">
-<h2><span class="header-section-number">12.4</span> Smoothing Splines/Penalized Regression</h2>
+<div id="cubic-splines" class="section level3">
+<h3><span class="header-section-number">12.3.2</span> Cubic Splines</h3>
+<ul>
+<li><p>The above example with knots <span class="math inline">\(u_{1}\)</span> and <span class="math inline">\(u_{2}\)</span> is an example of a <strong>cubic spline</strong>.</p></li>
+<li><strong>Definition</strong>: A <strong>cubic spline</strong> with knots <span class="math inline">\(u_{1} &lt; u_{2} &lt; \ldots &lt; u_{q}\)</span> is a function <span class="math inline">\(f(x)\)</span> such that
+<ul>
+<li><span class="math inline">\(f(x)\)</span> is a cubic function over each of the intervals <span class="math inline">\((-\infty, u_{1}], [u_{1}, u_{2}], \ldots, [u_{q-1}, u_{q}], [u_{q}, \infty)\)</span>.</li>
+<li><span class="math inline">\(f(x)\)</span>, <span class="math inline">\(f&#39;(x)\)</span>, and <span class="math inline">\(f&#39;&#39;(x)\)</span> are all continuous functions.</li>
+</ul></li>
+<li><p>One basis for the set of cubic splines with knots <span class="math inline">\(u_{1} &lt; u_{2} &lt; \ldots &lt; u_{q}\)</span> is the following
+<strong>truncated power</strong> basis which consists of <span class="math inline">\(q + 4\)</span> basis functions:
+<span class="math display">\[\begin{eqnarray}
+\varphi_{0}(x) &amp;=&amp; 1 \quad \varphi_{1}(x) = x \quad \varphi_{2}(x) = x^{2} \quad \varphi_{3}(x) = x^{3} \nonumber \\
+\varphi_{k+3}(x) &amp;=&amp; (x - u_{k})_{+}^{3}, \quad k=1,\ldots, q
+\end{eqnarray}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li>The B-spline functions are a basis for the set of cubic splines.</li>
+</ul>
+</div>
+<div id="estimating-the-coefficients-of-a-cubic-spline" class="section level3">
+<h3><span class="header-section-number">12.3.3</span> Estimating the Coefficients of a Cubic Spline</h3>
+<ul>
+<li><p>When fitting a cubic spline, we assume that the knots <span class="math inline">\(u_{1} &lt; u_{2} &lt; \ldots &lt; u_{q}\)</span> are fixed first.</p></li>
+<li><p>Because the B-spline functions form a basis for the set of cubic splines with these knots, we can
+assume that our estimated regression function will have the form
+<span class="math display">\[\begin{equation}
+m(x) = \sum_{k=1}^{q + 4} \beta_{k}\varphi_{k,B}(x) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>To find the best coeffients <span class="math inline">\(\beta_{k}\)</span> in this cubic spline model, we will minimize the residual
+sum-of-residuals-squared criterion
+<span class="math display">\[\begin{equation}
+\sum_{i=1}^{n} \Big( Y_{i} -  \hat{m}(x_{i}) \Big)^{2} = \sum_{i=1}^{n} \Big( Y_{i} -  \sum_{k=1}^{q + 4} \beta_{k}\varphi_{k,B}(x_{i}) \Big)^{2}
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li>Finding the coefficients <span class="math inline">\(\beta_{1}, \ldots, \beta_{q+4}\)</span> to minimize this sum-of-residuals-squared criterion
+can be viewed as solving a regression problem with response vector <span class="math inline">\(\mathbf{Y} = (Y_{1}, \ldots, Y_{n})\)</span> and
+“design matrix”
+<span class="math display">\[\begin{equation}
+\mathbf{X}_{\varphi} = \begin{bmatrix} \varphi_{1}(x_{1}) &amp; \varphi_{2}(x_{1}) &amp; \ldots &amp; \varphi_{q+4}(x_{1}) \\ \varphi_{1}(x_{2}) &amp; \varphi_{2}(x_{2}) &amp; \ldots &amp; \varphi_{q+4}(x_{2}) \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ \varphi_{1}(x_{n}) &amp; \varphi_{2}(x_{n}) &amp; \ldots &amp; \varphi_{q+4}(x_{n}) \end{bmatrix} \nonumber
+\end{equation}\]</span></li>
+</ul>
+</div>
+<div id="an-example-in-r-1" class="section level3">
+<h3><span class="header-section-number">12.3.4</span> An example in R</h3>
+<ul>
+<li>Let us consider the bone data again.</li>
+</ul>
+</div>
+<div id="natural-cubic-splines" class="section level3">
+<h3><span class="header-section-number">12.3.5</span> Natural Cubic Splines</h3>
+<p><span class="math display">\[\begin{equation}
+N_{1}(x) = 1 \qquad N_{2}(x) = x \qquad N_{k+2} = d_{k}(x) - d_{q-1}(x), k = 1, \ldots, q-2,  \nonumber
+\end{equation}\]</span>
+where the functions <span class="math inline">\(d_{k}(x)\)</span> are defined as
+<span class="math display">\[\begin{equation}
+d_{k}(x) = \frac{ (x - u_{k})_{+}^{3} - (x - u_{q})_{+}^{3} }{ u_{q} - u_{k}} \nonumber
+\end{equation}\]</span></p>
+</div>
+</div>
+<div id="smoothing-splines" class="section level2">
+<h2><span class="header-section-number">12.4</span> Smoothing Splines</h2>
+<ul>
+<li><p>When we used cubic splines for regression, we placed knots at a number of fixed points
+in between the smallest and largets <span class="math inline">\(x_{i}\)</span> values.</p></li>
+<li><p>With what are referred to as “smoothing splines” every point <span class="math inline">\(x_{i}\)</span> is treated as a
+potential knot, and the overall smoothness of the regression function estimate
+is determined through penalizing the roughness of the function.</p></li>
+</ul>
+<hr />
+<ul>
+<li>Motivation for smoothing splines can come from considering the following minimization problem:
+<ul>
+<li>Suppose we want to find the function <span class="math inline">\(m(x)\)</span> which solves the optimization problem:
+<span class="math display">\[\begin{equation}
+\textrm{minimize:} \quad \sum_{i=1}^{n} \{ Y_{i} - m( x_{i} ) \}^{2} + \lambda \int \{ m&#39;&#39;(x) \}^{2} dx
+\end{equation}\]</span>
+subject to the constraint that <span class="math inline">\(m&#39;(x)\)</span> and <span class="math inline">\(m&#39;&#39;(x)\)</span> are both continuous.</li>
+</ul></li>
+<li>It is possible to show that the function <span class="math inline">\(\hat{m}_{\lambda}(x)\)</span> which minimizes () is
+a cubic spline with</li>
+</ul>
 
 </div>
 </div>

@@ -732,7 +732,7 @@ For example, $b = H^{-1}(1 - \alpha/2)$ and $a = H^{-1}(\alpha/2)$ would work.
 
 * The only problem is that $H(t)$ is not known. So, how do we find $a$ and $b$ if we don't assume normality of $T_{n}$ and a known $\sigma^{2}$?
 
-* \textbf{Idea:} Look at the distribution of $T_{n,r}^{*} - T_{n}$ as a substitute for $T_{n}$ and use the empirical distribution
+* \textbf{Idea:} Look at the distribution of $T_{n,r}^{*} - T_{n}$ as a substitute for $T_{n} - \theta$ and use the empirical distribution
 function of $T_{n,r}^{*} - T_{n}$ to estimate $H(t)$
 \begin{equation}
 \hat{H}_{R}(t) = \frac{1}{R}\sum_{r=1}^{R} I\Big(T_{n,r}^{*} - T_{n} \leq t \Big)
