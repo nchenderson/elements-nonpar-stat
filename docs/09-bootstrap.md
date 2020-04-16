@@ -932,6 +932,29 @@ c(median(kidney$age) - 1.96*sd(med.boot.np), median(kidney$age) + 1.96*sd(med.bo
 
 ## Exercises
 
+* **Exercise 9.1** With the regular bootstrap we generate bootstrap samples
+by sampling from the empirical distribution function $\hat{F}_{n}$. An alternative approach is to
+sample from a smooth estimate of $F$ instead of the non-smooth estimate $\hat{F}_{n}$.
+Consider the following smooth estimate of $F$ which is just the indefinite integral of a 
+kernel density estimate
+\begin{equation}
+\hat{F}_{h}^{KD}(t) = \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{t} \frac{1}{h} K\Big( \frac{x - X_{i}}{h} \Big) dx  \nonumber 
+\end{equation}
+
+* What is $\hat{F}_{h}^{KD}$ when $K( \cdot )$ is the Gaussian kernel?
+* For the case of a Gaussian kernel, how do you generate an i.i.d. sample $(X_{1}^{*}, \ldots, X_{n}^{*})$ from $\hat{F}_{h}^{KD}$?
+* Using the \verb"galaxies" dataset from the \verb"MASS" package, compute a $95\%$ ``smooth bootstrap" confidence interval 
+for the standard deviation $\sigma_{v}$ of the velocities by using the following steps:
+For $r = 1,\ldots, R$:
+    + Draw an i.i.d. sample: $X_{1}^{*}, \ldots, X_{n}^{*} \sim \hat{F}_{h}^{KD}$.
+    + Compute $T_{n,r}^{*} = \textrm{sd}( X_{1}^{*}, \ldots, X_{n}^{*})$.
+
+* Using $T_{n,1}^{*}, \ldots, T_{n,R}^{*}$, construct the confidence interval for $\sigma_{v}$ using the normal bootstrap standard error approach. For the bandwidth $h$ in $\hat{F}_{h}^{KD}$, you can use Silverman's rule-of-thumb: $h = 0.9 n^{-1/5}\min\{ \hat{\sigma}, IQR/1.34 \}$. 
+
+* Using the usual bootstrap where we sample from $\hat{F}_{n}$, construct three $95\%$ bootstrap confidence intervals for $\sigma_{v}$ using the following methods
+    + Normal bootstrap standard error confidence interval.
+    + A pivotal bootstrap confidence interval based on $T_{n,r}^{*} - T_{n}$ (not the studentized bootstrap confidence interval).
+    + Bootstrap percentile confidence interval.
 
 
 

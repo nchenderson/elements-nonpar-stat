@@ -327,7 +327,7 @@ first and second derivatives:
 
 ### Estimating the Coefficients of a Cubic Spline
 
-* When fitting a cubic spline, we assume that the knots $u_{1} < u_{2} < \ldots < u_{q}$ are fixed first.
+* When fitting a cubic spline, we assume that the knots $\mathbf{u} = (u_{1}, u_{2}, \ldots, u_{q})$ are fixed first.
 
 * Because the B-spline functions form a basis for the set of cubic splines with these knots, we can
 assume that our estimated regression function will have the form
@@ -343,19 +343,125 @@ sum-of-residuals-squared criterion
 
 ---
 
-* Finding the coefficients $\beta_{1}, \ldots, \beta_{q+4}$ to minimize this sum-of-residuals-squared criterion
+* Finding the coefficients $\hat{\beta}_{1}, \ldots, \hat{\beta}_{q+4}$ that minimize this sum-of-residuals-squared criterion
 can be viewed as solving a regression problem with response vector $\mathbf{Y} = (Y_{1}, \ldots, Y_{n})$ and
-"design matrix"
+"design matrix" $\mathbf{X}_{\varphi}$
 \begin{equation}
-\mathbf{X}_{\varphi} = \begin{bmatrix} \varphi_{1}(x_{1}) & \varphi_{2}(x_{1}) & \ldots & \varphi_{q+4}(x_{1}) \\ \varphi_{1}(x_{2}) & \varphi_{2}(x_{2}) & \ldots & \varphi_{q+4}(x_{2}) \\ \vdots & \vdots & \ddots & \vdots \\ \varphi_{1}(x_{n}) & \varphi_{2}(x_{n}) & \ldots & \varphi_{q+4}(x_{n}) \end{bmatrix} \nonumber
+\mathbf{X}_{\mathbf{u}} = \begin{bmatrix} \varphi_{1, B}(x_{1}) & \varphi_{2, B}(x_{1}) & \ldots & \varphi_{q+4, B}(x_{1}) \\ \varphi_{1, B}(x_{2}) & \varphi_{2, B}(x_{2}) & \ldots & \varphi_{q+4,B}(x_{2}) \\ \vdots & \vdots & \ddots & \vdots \\ \varphi_{1,B}(x_{n}) & \varphi_{2,B}(x_{n}) & \ldots & \varphi_{q+4,B}(x_{n}) \end{bmatrix} \nonumber
 \end{equation}
 
+* When written in this form, the vector of estimated regression coeffients can be expressed as
+\begin{equation}
+\begin{bmatrix} \hat{\beta}_{1} \\ \hat{\beta}_{2} \\ \vdots \\ \hat{\beta}_{q + 4} \end{bmatrix} = (\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}^{T}\mathbf{Y} \nonumber
+\end{equation}
+and hence the vector of fitted values $\hat{\mathbf{m}} = \big( \hat{m}(x_{1}), \ldots, \hat{m}(x_{n})  \big)$ can be 
+written as
+\begin{equation}
+\hat{\mathbf{m}} = \mathbf{X}_{\mathbf{u}}(\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}^{T}\mathbf{Y} \nonumber
+\end{equation}
 
 
 
 ### An example in R
 
-* Let us consider the bone data again. 
+* Regression splines can be fitted in R by using the `splines` package
+```{r}
+library(splines)
+```
+
+* The `bs` function from the `splines` package is useful for fitting a linear or cubic spline.
+This function generates the B-spline "design" matrix $\mathbf{X}_{\mathbf{u}}$ described above.
+```{r, eval=FALSE}
+bs(x, df, knots, degree)
+```
+* `x` - vector of covariates values. This can also just be the name of a variable when `bs` is used inside the `lm` function.
+* `df` - the "degrees of freedom". For a cubic spline this is actually $q + 3$ rather than $q + 4$. If you just enter `df`, the `bs` function will pick the knots for you.
+* `knots` - the vector of knots. If you don't want to pick the knots, you can just enter a number for the `df`.
+* `degree` - the degree of the piecewise polynomial. degree=1 for a linear spline and degree=3 for a cubic spline.
+
+---
+
+* As an example of what the `bs` function returns, suppose we input the vector of covariates $(x_{1}, \ldots, x_{10}) = (1, 2, \ldots, 10)$ with knots $u_{1} = 3.5$ and $u_{2} = 6.5$.
+
+* The `bs` function will return the "design matrix" $\mathbf{X}_{\mathbf{u}}$ for this setup without the intercept column. When degree is 3, the dimensions of $\mathbf{X}_{\mathbf{u}}$ should be $10 \times 6$ (because in this case $q = 2$). So, the `bs` function will return a $10 \times 5$ matrix (because the first column of $\mathbf{X}_{u}$ is dropped by `bs`):
+```{r, echo=FALSE}
+options(digits=3)
+```
+```{r}
+xx <- 1:10
+Xu <- bs(xx, knots=c(3.5, 6.5))
+dim(Xu)
+head(Xu)  
+```
+
+
+---
+
+* Let's try an example with a linear spline to see how to use the `bs` function to fit a spline within the `lm` function.
+
+* We will use the `bone` data again with age as the covariate. We will use the knots $\mathbf{u} = (12, 15, 18, 21, 24)$.
+
+```{r}
+bonedat <- read.csv("~/Documents/STAT685Notes/Data/bone.csv")
+knot.seq <- c(12, 15, 18, 21, 24)
+linspline.bone <- lm(spnbmd ~ bs(age, knots=knot.seq, degree=1), data=bonedat)
+```
+
+* Because we are using $5$ knots, based on our discussion in Section 12.2 we should expect that there should be $7$ columns in 
+the design matrix $\mathbf{X}_{u}$ for this linear spline model.
+
+* You can check this by using the following `R` code:
+```{r}
+XX <- model.matrix(linspline.bone)
+dim(XX)
+```  
+
+* If you want to compute the estimated spline function $\hat{m}(t_{j})$ at a sequence of points $t_{1}, \ldots, t_{l}$, 
+you can use the `predict` function on the fitted `lm` object. This is done with the following code
+for the points $9.5, 10, 10.5, 11, \ldots, 24.5, 25$.
+```{r, fig.height=5.5} 
+tt <- seq(9.5, 25, by=0.5)
+plot(bonedat$age, bonedat$spnbmd, xlab="age", ylab="Relative Change in Bone MD", 
+     main="Bone Data: Fitted Linear Spline", las=1)
+lines(tt, predict(linspline.bone, data.frame(age=tt)), lwd=2)
+for(k in 1:5) {
+    ## Plot vertical lines at the knots
+    abline(v=knot.seq[k], lty=2)
+}
+```
+
+---
+
+* Now let's try fitting a cubic spline model to the bone data.
+
+* The procedure is almost exactly the same as fitting the linear spline model. We only need to change `degree=1` to `degree=3` in the `bs` function.
+
+* We will use the same knots as we did for the linear spline.
+```{r}
+knot.seq <- c(12, 15, 18, 21, 24)
+cubspline.bone <- lm(spnbmd ~ bs(age, knots=knot.seq, degree=3), data=bonedat)
+```
+
+* Because we are using $5$ knots, we should expect that there will be $5 + 4 = 9$ columns in 
+the design matrix $\mathbf{X}_{u}$ for this cubic spline model.
+
+* You can check this by using the following `R` code:
+```{r}
+XX <- model.matrix(cubspline.bone)
+dim(XX)
+```  
+
+* Using `predict` again, we will compute the estimated regression function $\hat{m}(x)$ at the points: $9.5, 9.6, \ldots, 24.9, 25$ and plot the result.
+```{r, fig.height=5.5} 
+tt <- seq(9.5, 25, by=0.1)
+plot(bonedat$age, bonedat$spnbmd, xlab="age", ylab="Relative Change in Bone MD", 
+     main="Bone Data: Fitted Linear Spline", las=1)
+lines(tt, predict(cubspline.bone, data.frame(age=tt)), lwd=2)
+for(k in 1:5) {
+    ## Plot vertical lines at the knots
+    abline(v=knot.seq[k], lty=2)
+}
+```
 
 ### Natural Cubic Splines
 

@@ -1156,6 +1156,32 @@ use the following steps.</p></li>
 </div>
 <div id="exercises-1" class="section level2">
 <h2><span class="header-section-number">9.7</span> Exercises</h2>
+<ul>
+<li><p><strong>Exercise 9.1</strong> With the regular bootstrap we generate bootstrap samples
+by sampling from the empirical distribution function <span class="math inline">\(\hat{F}_{n}\)</span>. An alternative approach is to
+sample from a smooth estimate of <span class="math inline">\(F\)</span> instead of the non-smooth estimate <span class="math inline">\(\hat{F}_{n}\)</span>.
+Consider the following smooth estimate of <span class="math inline">\(F\)</span> which is just the indefinite integral of a
+kernel density estimate
+<span class="math display">\[\begin{equation}
+\hat{F}_{h}^{KD}(t) = \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{t} \frac{1}{h} K\Big( \frac{x - X_{i}}{h} \Big) dx  \nonumber 
+\end{equation}\]</span></p></li>
+<li>What is <span class="math inline">\(\hat{F}_{h}^{KD}\)</span> when <span class="math inline">\(K( \cdot )\)</span> is the Gaussian kernel?</li>
+<li>For the case of a Gaussian kernel, how do you generate an i.i.d. sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> from <span class="math inline">\(\hat{F}_{h}^{KD}\)</span>?</li>
+<li>Using the  dataset from the  package, compute a <span class="math inline">\(95\%\)</span> ``smooth bootstrap&quot; confidence interval
+for the standard deviation <span class="math inline">\(\sigma_{v}\)</span> of the velocities by using the following steps:
+For <span class="math inline">\(r = 1,\ldots, R\)</span>:
+<ul>
+<li>Draw an i.i.d. sample: <span class="math inline">\(X_{1}^{*}, \ldots, X_{n}^{*} \sim \hat{F}_{h}^{KD}\)</span>.</li>
+<li>Compute <span class="math inline">\(T_{n,r}^{*} = \textrm{sd}( X_{1}^{*}, \ldots, X_{n}^{*})\)</span>.</li>
+</ul></li>
+<li><p>Using <span class="math inline">\(T_{n,1}^{*}, \ldots, T_{n,R}^{*}\)</span>, construct the confidence interval for <span class="math inline">\(\sigma_{v}\)</span> using the normal bootstrap standard error approach. For the bandwidth <span class="math inline">\(h\)</span> in <span class="math inline">\(\hat{F}_{h}^{KD}\)</span>, you can use Silverman’s rule-of-thumb: <span class="math inline">\(h = 0.9 n^{-1/5}\min\{ \hat{\sigma}, IQR/1.34 \}\)</span>.</p></li>
+<li>Using the usual bootstrap where we sample from <span class="math inline">\(\hat{F}_{n}\)</span>, construct three <span class="math inline">\(95\%\)</span> bootstrap confidence intervals for <span class="math inline">\(\sigma_{v}\)</span> using the following methods
+<ul>
+<li>Normal bootstrap standard error confidence interval.</li>
+<li>A pivotal bootstrap confidence interval based on <span class="math inline">\(T_{n,r}^{*} - T_{n}\)</span> (not the studentized bootstrap confidence interval).</li>
+<li>Bootstrap percentile confidence interval.</li>
+</ul></li>
+</ul>
 
 </div>
 </div>

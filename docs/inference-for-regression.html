@@ -590,7 +590,7 @@ first and second derivatives:
 <div id="estimating-the-coefficients-of-a-cubic-spline" class="section level3">
 <h3><span class="header-section-number">12.3.3</span> Estimating the Coefficients of a Cubic Spline</h3>
 <ul>
-<li><p>When fitting a cubic spline, we assume that the knots <span class="math inline">\(u_{1} &lt; u_{2} &lt; \ldots &lt; u_{q}\)</span> are fixed first.</p></li>
+<li><p>When fitting a cubic spline, we assume that the knots <span class="math inline">\(\mathbf{u} = (u_{1}, u_{2}, \ldots, u_{q})\)</span> are fixed first.</p></li>
 <li><p>Because the B-spline functions form a basis for the set of cubic splines with these knots, we can
 assume that our estimated regression function will have the form
 <span class="math display">\[\begin{equation}
@@ -604,19 +604,115 @@ sum-of-residuals-squared criterion
 </ul>
 <hr />
 <ul>
-<li>Finding the coefficients <span class="math inline">\(\beta_{1}, \ldots, \beta_{q+4}\)</span> to minimize this sum-of-residuals-squared criterion
+<li><p>Finding the coefficients <span class="math inline">\(\hat{\beta}_{1}, \ldots, \hat{\beta}_{q+4}\)</span> that minimize this sum-of-residuals-squared criterion
 can be viewed as solving a regression problem with response vector <span class="math inline">\(\mathbf{Y} = (Y_{1}, \ldots, Y_{n})\)</span> and
-“design matrix”
+“design matrix” <span class="math inline">\(\mathbf{X}_{\varphi}\)</span>
 <span class="math display">\[\begin{equation}
-\mathbf{X}_{\varphi} = \begin{bmatrix} \varphi_{1}(x_{1}) &amp; \varphi_{2}(x_{1}) &amp; \ldots &amp; \varphi_{q+4}(x_{1}) \\ \varphi_{1}(x_{2}) &amp; \varphi_{2}(x_{2}) &amp; \ldots &amp; \varphi_{q+4}(x_{2}) \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ \varphi_{1}(x_{n}) &amp; \varphi_{2}(x_{n}) &amp; \ldots &amp; \varphi_{q+4}(x_{n}) \end{bmatrix} \nonumber
-\end{equation}\]</span></li>
+\mathbf{X}_{\mathbf{u}} = \begin{bmatrix} \varphi_{1, B}(x_{1}) &amp; \varphi_{2, B}(x_{1}) &amp; \ldots &amp; \varphi_{q+4, B}(x_{1}) \\ \varphi_{1, B}(x_{2}) &amp; \varphi_{2, B}(x_{2}) &amp; \ldots &amp; \varphi_{q+4,B}(x_{2}) \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ \varphi_{1,B}(x_{n}) &amp; \varphi_{2,B}(x_{n}) &amp; \ldots &amp; \varphi_{q+4,B}(x_{n}) \end{bmatrix} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>When written in this form, the vector of estimated regression coeffients can be expressed as
+<span class="math display">\[\begin{equation}
+\begin{bmatrix} \hat{\beta}_{1} \\ \hat{\beta}_{2} \\ \vdots \\ \hat{\beta}_{q + 4} \end{bmatrix} = (\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}^{T}\mathbf{Y} \nonumber
+\end{equation}\]</span>
+and hence the vector of fitted values <span class="math inline">\(\hat{\mathbf{m}} = \big( \hat{m}(x_{1}), \ldots, \hat{m}(x_{n}) \big)\)</span> can be
+written as
+<span class="math display">\[\begin{equation}
+\hat{\mathbf{m}} = \mathbf{X}_{\mathbf{u}}(\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}^{T}\mathbf{Y} \nonumber
+\end{equation}\]</span></p></li>
 </ul>
 </div>
 <div id="an-example-in-r-1" class="section level3">
 <h3><span class="header-section-number">12.3.4</span> An example in R</h3>
 <ul>
-<li>Let us consider the bone data again.</li>
+<li>Regression splines can be fitted in R by using the <code>splines</code> package</li>
 </ul>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb246-1" data-line-number="1"><span class="kw">library</span>(splines)</a></code></pre></div>
+<ul>
+<li>The <code>bs</code> function from the <code>splines</code> package is useful for fitting a linear or cubic spline.
+This function generates the B-spline “design” matrix <span class="math inline">\(\mathbf{X}_{\mathbf{u}}\)</span> described above.</li>
+</ul>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb247-1" data-line-number="1"><span class="kw">bs</span>(x, df, knots, degree)</a></code></pre></div>
+<ul>
+<li><code>x</code> - vector of covariates values. This can also just be the name of a variable when <code>bs</code> is used inside the <code>lm</code> function.</li>
+<li><code>df</code> - the “degrees of freedom”. For a cubic spline this is actually <span class="math inline">\(q + 3\)</span> rather than <span class="math inline">\(q + 4\)</span>. If you just enter <code>df</code>, the <code>bs</code> function will pick the knots for you.</li>
+<li><code>knots</code> - the vector of knots. If you don’t want to pick the knots, you can just enter a number for the <code>df</code>.</li>
+<li><code>degree</code> - the degree of the piecewise polynomial. degree=1 for a linear spline and degree=3 for a cubic spline.</li>
+</ul>
+<hr />
+<ul>
+<li><p>As an example of what the <code>bs</code> function returns, suppose we input the vector of covariates <span class="math inline">\((x_{1}, \ldots, x_{10}) = (1, 2, \ldots, 10)\)</span> with knots <span class="math inline">\(u_{1} = 3.5\)</span> and <span class="math inline">\(u_{2} = 6.5\)</span>.</p></li>
+<li><p>The <code>bs</code> function will return the “design matrix” <span class="math inline">\(\mathbf{X}_{\mathbf{u}}\)</span> for this setup without the intercept column. When degree is 3, the dimensions of <span class="math inline">\(\mathbf{X}_{\mathbf{u}}\)</span> should be <span class="math inline">\(10 \times 6\)</span> (because in this case <span class="math inline">\(q = 2\)</span>). So, the <code>bs</code> function will return a <span class="math inline">\(10 \times 5\)</span> matrix (because the first column of <span class="math inline">\(\mathbf{X}_{u}\)</span> is dropped by <code>bs</code>):</p></li>
+</ul>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb248-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb248-2" data-line-number="2">Xu &lt;-<span class="st"> </span><span class="kw">bs</span>(xx, <span class="dt">knots=</span><span class="kw">c</span>(<span class="fl">3.5</span>, <span class="fl">6.5</span>))</a>
+<a class="sourceLine" id="cb248-3" data-line-number="3"><span class="kw">dim</span>(Xu)</a></code></pre></div>
+<pre><code>## [1] 10  5</code></pre>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb250-1" data-line-number="1"><span class="kw">head</span>(Xu)  </a></code></pre></div>
+<pre><code>##            1     2       3        4 5
+## [1,] 0.00000 0.000 0.00000 0.000000 0
+## [2,] 0.60813 0.168 0.00808 0.000000 0
+## [3,] 0.45779 0.470 0.06465 0.000000 0
+## [4,] 0.17218 0.612 0.21463 0.000986 0
+## [5,] 0.03719 0.515 0.42131 0.026627 0
+## [6,] 0.00138 0.309 0.56631 0.123274 0</code></pre>
+<hr />
+<ul>
+<li><p>Let’s try an example with a linear spline to see how to use the <code>bs</code> function to fit a spline within the <code>lm</code> function.</p></li>
+<li><p>We will use the <code>bone</code> data again with age as the covariate. We will use the knots <span class="math inline">\(\mathbf{u} = (12, 15, 18, 21, 24)\)</span>.</p></li>
+</ul>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb252-1" data-line-number="1">bonedat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;~/Documents/STAT685Notes/Data/bone.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb252-2" data-line-number="2">knot.seq &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">21</span>, <span class="dv">24</span>)</a>
+<a class="sourceLine" id="cb252-3" data-line-number="3">linspline.bone &lt;-<span class="st"> </span><span class="kw">lm</span>(spnbmd <span class="op">~</span><span class="st"> </span><span class="kw">bs</span>(age, <span class="dt">knots=</span>knot.seq, <span class="dt">degree=</span><span class="dv">1</span>), <span class="dt">data=</span>bonedat)</a></code></pre></div>
+<ul>
+<li><p>Because we are using <span class="math inline">\(5\)</span> knots, based on our discussion in Section 12.2 we should expect that there should be <span class="math inline">\(7\)</span> columns in
+the design matrix <span class="math inline">\(\mathbf{X}_{u}\)</span> for this linear spline model.</p></li>
+<li><p>You can check this by using the following <code>R</code> code:</p></li>
+</ul>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb253-1" data-line-number="1">XX &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(linspline.bone)</a>
+<a class="sourceLine" id="cb253-2" data-line-number="2"><span class="kw">dim</span>(XX)</a></code></pre></div>
+<pre><code>## [1] 261   7</code></pre>
+<ul>
+<li>If you want to compute the estimated spline function <span class="math inline">\(\hat{m}(t_{j})\)</span> at a sequence of points <span class="math inline">\(t_{1}, \ldots, t_{l}\)</span>,
+you can use the <code>predict</code> function on the fitted <code>lm</code> object. This is done with the following code
+for the points <span class="math inline">\(9.5, 10, 10.5, 11, \ldots, 24.5, 25\)</span>.</li>
+</ul>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb255-1" data-line-number="1">tt &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">9.5</span>, <span class="dv">25</span>, <span class="dt">by=</span><span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb255-2" data-line-number="2"><span class="kw">plot</span>(bonedat<span class="op">$</span>age, bonedat<span class="op">$</span>spnbmd, <span class="dt">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </a>
+<a class="sourceLine" id="cb255-3" data-line-number="3">     <span class="dt">main=</span><span class="st">&quot;Bone Data: Fitted Linear Spline&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb255-4" data-line-number="4"><span class="kw">lines</span>(tt, <span class="kw">predict</span>(linspline.bone, <span class="kw">data.frame</span>(<span class="dt">age=</span>tt)), <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb255-5" data-line-number="5"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>) {</a>
+<a class="sourceLine" id="cb255-6" data-line-number="6">    <span class="co">## Plot vertical lines at the knots</span></a>
+<a class="sourceLine" id="cb255-7" data-line-number="7">    <span class="kw">abline</span>(<span class="dt">v=</span>knot.seq[k], <span class="dt">lty=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb255-8" data-line-number="8">}</a></code></pre></div>
+<p><img src="12-splines_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<hr />
+<ul>
+<li><p>Now let’s try fitting a cubic spline model to the bone data.</p></li>
+<li><p>The procedure is almost exactly the same as fitting the linear spline model. We only need to change <code>degree=1</code> to <code>degree=3</code> in the <code>bs</code> function.</p></li>
+<li><p>We will use the same knots as we did for the linear spline.</p></li>
+</ul>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb256-1" data-line-number="1">knot.seq &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">21</span>, <span class="dv">24</span>)</a>
+<a class="sourceLine" id="cb256-2" data-line-number="2">cubspline.bone &lt;-<span class="st"> </span><span class="kw">lm</span>(spnbmd <span class="op">~</span><span class="st"> </span><span class="kw">bs</span>(age, <span class="dt">knots=</span>knot.seq, <span class="dt">degree=</span><span class="dv">3</span>), <span class="dt">data=</span>bonedat)</a></code></pre></div>
+<ul>
+<li><p>Because we are using <span class="math inline">\(5\)</span> knots, we should expect that there will be <span class="math inline">\(5 + 4 = 9\)</span> columns in
+the design matrix <span class="math inline">\(\mathbf{X}_{u}\)</span> for this cubic spline model.</p></li>
+<li><p>You can check this by using the following <code>R</code> code:</p></li>
+</ul>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb257-1" data-line-number="1">XX &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(cubspline.bone)</a>
+<a class="sourceLine" id="cb257-2" data-line-number="2"><span class="kw">dim</span>(XX)</a></code></pre></div>
+<pre><code>## [1] 261   9</code></pre>
+<ul>
+<li>Using <code>predict</code> again, we will compute the estimated regression function <span class="math inline">\(\hat{m}(x)\)</span> at the points: <span class="math inline">\(9.5, 9.6, \ldots, 24.9, 25\)</span> and plot the result.</li>
+</ul>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb259-1" data-line-number="1">tt &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">9.5</span>, <span class="dv">25</span>, <span class="dt">by=</span><span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb259-2" data-line-number="2"><span class="kw">plot</span>(bonedat<span class="op">$</span>age, bonedat<span class="op">$</span>spnbmd, <span class="dt">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </a>
+<a class="sourceLine" id="cb259-3" data-line-number="3">     <span class="dt">main=</span><span class="st">&quot;Bone Data: Fitted Linear Spline&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb259-4" data-line-number="4"><span class="kw">lines</span>(tt, <span class="kw">predict</span>(cubspline.bone, <span class="kw">data.frame</span>(<span class="dt">age=</span>tt)), <span class="dt">lwd=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb259-5" data-line-number="5"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>) {</a>
+<a class="sourceLine" id="cb259-6" data-line-number="6">    <span class="co">## Plot vertical lines at the knots</span></a>
+<a class="sourceLine" id="cb259-7" data-line-number="7">    <span class="kw">abline</span>(<span class="dt">v=</span>knot.seq[k], <span class="dt">lty=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb259-8" data-line-number="8">}</a></code></pre></div>
+<p><img src="12-splines_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 <div id="natural-cubic-splines" class="section level3">
 <h3><span class="header-section-number">12.3.5</span> Natural Cubic Splines</h3>
