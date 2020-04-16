@@ -316,6 +316,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.3.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#natural-cubic-splines"><i class="fa fa-check"></i><b>12.3.5</b> Natural Cubic Splines</a></li>
 </ul></li>
 <li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splines"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines</a></li>
+<li class="chapter" data-level="12.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knotpenalty-term-selection-for-splines"><i class="fa fa-check"></i><b>12.5</b> Knot/Penalty Term Selection for Splines</a><ul>
+<li class="chapter" data-level="12.5.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#the-cp-statistic-1"><i class="fa fa-check"></i><b>12.5.1</b> The Cp Statistic</a></li>
+<li class="chapter" data-level="12.5.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#leave-one-out-cross-validation-1"><i class="fa fa-check"></i><b>12.5.2</b> Leave-one-out Cross Validation</a></li>
+<li class="chapter" data-level="12.5.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#generalized-cross-validation"><i class="fa fa-check"></i><b>12.5.3</b> Generalized Cross Validation</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
 <li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a></li>
@@ -607,7 +612,7 @@ that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
 ##  One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.1608, p-value = 0.01135
+## D = 0.091985, p-value = 0.3659
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
@@ -618,7 +623,7 @@ by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
 ##  One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.24388, p-value = 1.364e-05
+## D = 0.3149, p-value = 4.873e-09
 ## alternative hypothesis: two-sided</code></pre>
 <hr />
 <ul>
@@ -658,7 +663,7 @@ the one-sample KS test statistic. In particular, under <span class="math inline"
 ##  Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.18, p-value = 0.07832
+## D = 0.21, p-value = 0.02431
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>We can compute the KS statistic ourselves and check that this matches the value of the KS statistic
@@ -671,7 +676,7 @@ returned by the <strong>ks.test</strong> function:</li>
 <a class="sourceLine" id="cb117-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb117-6" data-line-number="6">KS.stat &lt;-<span class="st"> </span><span class="kw">max</span>( <span class="kw">abs</span>( <span class="kw">F.x</span>(zz.order) <span class="op">-</span><span class="st"> </span><span class="kw">F.y</span>(zz.order) ) )</a>
 <a class="sourceLine" id="cb117-7" data-line-number="7">KS.stat</a></code></pre></div>
-<pre><code>## [1] 0.18</code></pre>
+<pre><code>## [1] 0.21</code></pre>
 <hr />
 <ul>
 <li><strong>Exercise 7.1.</strong> Why does

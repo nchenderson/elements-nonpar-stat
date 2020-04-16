@@ -455,7 +455,7 @@ dim(XX)
 ```{r, fig.height=5.5} 
 tt <- seq(9.5, 25, by=0.1)
 plot(bonedat$age, bonedat$spnbmd, xlab="age", ylab="Relative Change in Bone MD", 
-     main="Bone Data: Fitted Linear Spline", las=1)
+     main="Bone Data: Fitted Cubic Spline", las=1)
 lines(tt, predict(cubspline.bone, data.frame(age=tt)), lwd=2)
 for(k in 1:5) {
     ## Plot vertical lines at the knots
@@ -489,13 +489,67 @@ is determined through penalizing the roughness of the function.
     + Suppose we want to find the function $m(x)$ which solves the optimization problem: 
 \begin{equation}
 \textrm{minimize:} \quad \sum_{i=1}^{n} \{ Y_{i} - m( x_{i} ) \}^{2} + \lambda \int \{ m''(x) \}^{2} dx
+(\#eq:spline-smooth-motivation)
 \end{equation}
     subject to the constraint that $m'(x)$ and $m''(x)$ are both continuous. 
 
-* It is possible to show that the function $\hat{m}_{\lambda}(x)$ which minimizes () is 
-a cubic spline with 
+* It is possible to show that the function $\hat{m}_{\lambda}(x)$ which minimizes \@ref(eq:spline-smooth-motivation) is 
+a **natural cubic spline** with $n$ knots at the covariate values $(x_{1}, \ldots, x_{n})$. 
+
+* So, we can restrict our search to functions which can be written as
+\begin{equation}
+m(x) = \sum_{j=1}^{n} \beta_{j}N_{j}(x),
+\end{equation}
+where $N_{1}(x), \ldots, N_{n}(x)$ is the set of basis functions for the set of natural cubic
+splines with these knots.
+
+---
+
+* So, assuming that $m(x) = \sum_{j=1}^{n} \beta_{j}N_{j}(x)$, we can re-write the minimization problem as
+\begin{equation}
+\textrm{minimize:}_{\beta_{1}, \ldots, \beta_{n}} \sum_{i = 1}^{n} \{ Y_{i} - \sum_{j=1}^{n} \beta_{j}N_{j}(x_{i}) \}^{2} + \lambda \sum_{j=1}^{n} \sum_{k=1}^{n} \beta_{j}\beta_{k} \int N_{j}''(x) N_{k}''(x) dx \nonumber
+\end{equation}
+
+* In matrix-vector notation, this minimization problem can be written as
+\begin{equation}
+\textrm{minimize:}_{\boldsymbol\beta} \quad (\mathbf{Y} - \mathbf{N}\boldsymbol\beta)^{T}(\mathbf{Y} - \mathbf{N}\boldsymbol\beta) + \lambda \boldsymbol\beta^{T}\boldsymbol\Omega\boldsymbol\beta,
+(\#eq:spline-smooth-minimization)
+\end{equation}
+where $\mathbf{N}$ is the $n \times n$ matrix whose $(j,k)$ element is $N_{k}(x_{j})$ and $\boldsymbol\Omega$ is the $n \times n$ matrix whose $(j,k)$ element is $\Omega_{jk} = \int N_{j}''(x)N_{k}''(x) dx$.
+
+* The vector of coefficients which solves the minimization problem \@ref(eq:spline-smooth-minimization) is given by
+\begin{equation}
+\hat{\boldsymbol\beta} = \begin{bmatrix} \hat{\beta}_{1} \\ \vdots \\ \hat{\beta}_{n} \end{bmatrix} = (\mathbf{N}^{T}\mathbf{N} + \boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y} \nonumber
+\end{equation}
+
+## Knot/Penalty Term Selection for Splines
+
+* For both regression splines and smoothing splines, we can write the vector of fitted values $\hat{\mathbf{m}} = \big( \hat{m}(x_{1}), \ldots, \hat{m}(x_{n}) \big)$ as 
+\begin{equation}
+\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y}, \nonumber
+\end{equation}
+for an appropriately chosen $n \times n$ matrix $\mathbf{A}$. 
+
+* For the case of a cubic regression spline with fixed knot sequence $\mathbf{u} = (u_{1}, \ldots, u_{q})$, we have that
+$\hat{\mathbf{m}} = \mathbf{A}_{\mathbf{u}}\mathbf{Y}$ where 
+\begin{equation}
+\mathbf{A}_{\mathbf{u}} = \mathbf{X}_{\mathbf{u}}(\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}
+\end{equation}
+Note that, in this case, $\textrm{tr}( \mathbf{A}_{\mathbf{u}} ) = q + 4$. 
+
+* For the case of a smoothing spline with penalty term $\lambda > 0$, we have that $\hat{\mathbf{m}} = \mathbf{A}_{\lambda}\mathbf{Y}$ where
+\begin{equation}
+\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \boldsymbol\Omega)^{-1}\mathbf{N}^{T} \nonumber
+\end{equation}
 
 
+### The Cp Statistic
+
+
+### Leave-one-out Cross Validation
+
+
+### Generalized Cross Validation
 
 
 

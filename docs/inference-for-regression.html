@@ -316,6 +316,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.3.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#natural-cubic-splines"><i class="fa fa-check"></i><b>12.3.5</b> Natural Cubic Splines</a></li>
 </ul></li>
 <li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splines"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines</a></li>
+<li class="chapter" data-level="12.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knotpenalty-term-selection-for-splines"><i class="fa fa-check"></i><b>12.5</b> Knot/Penalty Term Selection for Splines</a><ul>
+<li class="chapter" data-level="12.5.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#the-cp-statistic-1"><i class="fa fa-check"></i><b>12.5.1</b> The Cp Statistic</a></li>
+<li class="chapter" data-level="12.5.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#leave-one-out-cross-validation-1"><i class="fa fa-check"></i><b>12.5.2</b> Leave-one-out Cross Validation</a></li>
+<li class="chapter" data-level="12.5.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#generalized-cross-validation"><i class="fa fa-check"></i><b>12.5.3</b> Generalized Cross Validation</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
 <li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a></li>
@@ -706,7 +711,7 @@ the design matrix <span class="math inline">\(\mathbf{X}_{u}\)</span> for this c
 </ul>
 <div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb259-1" data-line-number="1">tt &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">9.5</span>, <span class="dv">25</span>, <span class="dt">by=</span><span class="fl">0.1</span>)</a>
 <a class="sourceLine" id="cb259-2" data-line-number="2"><span class="kw">plot</span>(bonedat<span class="op">$</span>age, bonedat<span class="op">$</span>spnbmd, <span class="dt">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </a>
-<a class="sourceLine" id="cb259-3" data-line-number="3">     <span class="dt">main=</span><span class="st">&quot;Bone Data: Fitted Linear Spline&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb259-3" data-line-number="3">     <span class="dt">main=</span><span class="st">&quot;Bone Data: Fitted Cubic Spline&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb259-4" data-line-number="4"><span class="kw">lines</span>(tt, <span class="kw">predict</span>(cubspline.bone, <span class="kw">data.frame</span>(<span class="dt">age=</span>tt)), <span class="dt">lwd=</span><span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb259-5" data-line-number="5"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>) {</a>
 <a class="sourceLine" id="cb259-6" data-line-number="6">    <span class="co">## Plot vertical lines at the knots</span></a>
@@ -739,15 +744,68 @@ is determined through penalizing the roughness of the function.</p></li>
 <li>Motivation for smoothing splines can come from considering the following minimization problem:
 <ul>
 <li>Suppose we want to find the function <span class="math inline">\(m(x)\)</span> which solves the optimization problem:
-<span class="math display">\[\begin{equation}
+<span class="math display" id="eq:spline-smooth-motivation">\[\begin{equation}
 \textrm{minimize:} \quad \sum_{i=1}^{n} \{ Y_{i} - m( x_{i} ) \}^{2} + \lambda \int \{ m&#39;&#39;(x) \}^{2} dx
+\tag{12.1}
 \end{equation}\]</span>
 subject to the constraint that <span class="math inline">\(m&#39;(x)\)</span> and <span class="math inline">\(m&#39;&#39;(x)\)</span> are both continuous.</li>
 </ul></li>
-<li>It is possible to show that the function <span class="math inline">\(\hat{m}_{\lambda}(x)\)</span> which minimizes () is
-a cubic spline with</li>
+<li><p>It is possible to show that the function <span class="math inline">\(\hat{m}_{\lambda}(x)\)</span> which minimizes <a href="inference-for-regression.html#eq:spline-smooth-motivation">(12.1)</a> is
+a <strong>natural cubic spline</strong> with <span class="math inline">\(n\)</span> knots at the covariate values <span class="math inline">\((x_{1}, \ldots, x_{n})\)</span>.</p></li>
+<li><p>So, we can restrict our search to functions which can be written as
+<span class="math display">\[\begin{equation}
+m(x) = \sum_{j=1}^{n} \beta_{j}N_{j}(x),
+\end{equation}\]</span>
+where <span class="math inline">\(N_{1}(x), \ldots, N_{n}(x)\)</span> is the set of basis functions for the set of natural cubic
+splines with these knots.</p></li>
 </ul>
+<hr />
+<ul>
+<li><p>So, assuming that <span class="math inline">\(m(x) = \sum_{j=1}^{n} \beta_{j}N_{j}(x)\)</span>, we can re-write the minimization problem as
+<span class="math display">\[\begin{equation}
+\textrm{minimize:}_{\beta_{1}, \ldots, \beta_{n}} \sum_{i = 1}^{n} \{ Y_{i} - \sum_{j=1}^{n} \beta_{j}N_{j}(x_{i}) \}^{2} + \lambda \sum_{j=1}^{n} \sum_{k=1}^{n} \beta_{j}\beta_{k} \int N_{j}&#39;&#39;(x) N_{k}&#39;&#39;(x) dx \nonumber
+\end{equation}\]</span></p></li>
+<li><p>In matrix-vector notation, this minimization problem can be written as
+<span class="math display" id="eq:spline-smooth-minimization">\[\begin{equation}
+\textrm{minimize:}_{\boldsymbol\beta} \quad (\mathbf{Y} - \mathbf{N}\boldsymbol\beta)^{T}(\mathbf{Y} - \mathbf{N}\boldsymbol\beta) + \lambda \boldsymbol\beta^{T}\boldsymbol\Omega\boldsymbol\beta,
+\tag{12.2}
+\end{equation}\]</span>
+where <span class="math inline">\(\mathbf{N}\)</span> is the <span class="math inline">\(n \times n\)</span> matrix whose <span class="math inline">\((j,k)\)</span> element is <span class="math inline">\(N_{k}(x_{j})\)</span> and <span class="math inline">\(\boldsymbol\Omega\)</span> is the <span class="math inline">\(n \times n\)</span> matrix whose <span class="math inline">\((j,k)\)</span> element is <span class="math inline">\(\Omega_{jk} = \int N_{j}&#39;&#39;(x)N_{k}&#39;&#39;(x) dx\)</span>.</p></li>
+<li><p>The vector of coefficients which solves the minimization problem <a href="inference-for-regression.html#eq:spline-smooth-minimization">(12.2)</a> is given by
+<span class="math display">\[\begin{equation}
+\hat{\boldsymbol\beta} = \begin{bmatrix} \hat{\beta}_{1} \\ \vdots \\ \hat{\beta}_{n} \end{bmatrix} = (\mathbf{N}^{T}\mathbf{N} + \boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y} \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+</div>
+<div id="knotpenalty-term-selection-for-splines" class="section level2">
+<h2><span class="header-section-number">12.5</span> Knot/Penalty Term Selection for Splines</h2>
+<ul>
+<li><p>For both regression splines and smoothing splines, we can write the vector of fitted values <span class="math inline">\(\hat{\mathbf{m}} = \big( \hat{m}(x_{1}), \ldots, \hat{m}(x_{n}) \big)\)</span> as
+<span class="math display">\[\begin{equation}
+\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y}, \nonumber
+\end{equation}\]</span>
+for an appropriately chosen <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}\)</span>.</p></li>
+<li><p>For the case of a cubic regression spline with fixed knot sequence <span class="math inline">\(\mathbf{u} = (u_{1}, \ldots, u_{q})\)</span>, we have that
+<span class="math inline">\(\hat{\mathbf{m}} = \mathbf{A}_{\mathbf{u}}\mathbf{Y}\)</span> where
+<span class="math display">\[\begin{equation}
+\mathbf{A}_{\mathbf{u}} = \mathbf{X}_{\mathbf{u}}(\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}
+\end{equation}\]</span>
+Note that, in this case, <span class="math inline">\(\textrm{tr}( \mathbf{A}_{\mathbf{u}} ) = q + 4\)</span>.</p></li>
+<li><p>For the case of a smoothing spline with penalty term <span class="math inline">\(\lambda &gt; 0\)</span>, we have that <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{A}_{\lambda}\mathbf{Y}\)</span> where
+<span class="math display">\[\begin{equation}
+\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \boldsymbol\Omega)^{-1}\mathbf{N}^{T} \nonumber
+\end{equation}\]</span></p></li>
+</ul>
+<div id="the-cp-statistic-1" class="section level3">
+<h3><span class="header-section-number">12.5.1</span> The Cp Statistic</h3>
+</div>
+<div id="leave-one-out-cross-validation-1" class="section level3">
+<h3><span class="header-section-number">12.5.2</span> Leave-one-out Cross Validation</h3>
+</div>
+<div id="generalized-cross-validation" class="section level3">
+<h3><span class="header-section-number">12.5.3</span> Generalized Cross Validation</h3>
 
+</div>
 </div>
 </div>
 
