@@ -21,6 +21,20 @@ combination of the basis functions.
 
 **Examples**
 
+* Basis functions for a straight-line linear regression
+\begin{equation}
+\varphi_{0}(x) = 1  \qquad \varphi_{1}(x) = x  \nonumber
+\end{equation}
+
+* Basis functions for a polynomial regression with degree 3
+\begin{equation}
+\varphi_{0}(x) = 1  \qquad \varphi_{1}(x) = x  \qquad \varphi_{2}(x) = x^{2} \qquad \varphi_{3}(x) = x^{3} \nonumber
+\end{equation}
+
+* Basis functions for a regressogram with bins $[l_{k}, u_{k})$, $k = 1, \ldots, K$:
+\begin{equation}
+\varphi_{k}(x) = I\big( l_{k} \leq x < u_{k}  \big), \quad k = 1, \ldots, K  \nonumber
+\end{equation}
 
 ---
 
@@ -100,7 +114,7 @@ if we now let $p = D_{n}$ denote the number of "bins".
 the piecwise linear model will still have big jumps at the bin boundaries and have an overall
 unpleasant appearance.
 
-```{r, echo=FALSE, fig.cap="Example of a regression function estimate that is piecewise linear within 3 bins."}
+```{r, pwlinear, echo=FALSE, fig.cap="Example of a regression function estimate that is piecewise linear within 3 bins."}
 
 ind1 <- xx < 1/3
 ind2 <- xx < 2/3 & xx > 1/3
@@ -137,7 +151,7 @@ each bin we could fit a higher order polynomial model within each bin.
 \varphi_{3p+1}(x) &=& x^{3}I(x \in B_{1}), \ldots, \varphi_{4p}(x) = x^{3}I(x \in B_{p}) \nonumber \\
 \end{eqnarray}
 
-```{r, echo=FALSE, fig.cap="Example of a regression function estimate that is piecewise cubic within 3 bins."}
+```{r, pwcubic, echo=FALSE, fig.cap="Example of a regression function estimate that is piecewise cubic within 3 bins."}
 lm.cubfit1 <- lm(yy[ind1] ~ xx[ind1] + I(xx[ind1]^2) + I(xx[ind1]^3))
 lm.cubfit2 <- lm(yy[ind2] ~ xx[ind2] + I(xx[ind2]^2) + I(xx[ind2]^3))
 lm.cubfit3 <- lm(yy[ind3] ~ xx[ind3] + I(xx[ind3]^2) + I(xx[ind3]^3))
@@ -169,7 +183,7 @@ abline(v=2/3, lty=2)
 
 ---
 
-* Let's return to the piecewise linear estimate shown in Figure ?. This has two knots $u_{1} = 1/3$ and $u_{2} = 2/3$ and
+* Let's return to the piecewise linear estimate shown in Figure \@ref(fig:pwlinear). This has two knots $u_{1} = 1/3$ and $u_{2} = 2/3$ and
 hence $3$ bins.
 
 * Also, this piecewise linear model has $6$ parameters. If we let $(\beta_{0k}, \beta_{1k})$ denote the intercept and slope parameters 
@@ -258,7 +272,7 @@ abline(v=2/3, lty=2)
 
 ### Example: Smooth Piecewise Cubic Model with 2 Knots
 
-* Let us go back to the piecewise cubic model shown in Figure ?.
+* Let us go back to the piecewise cubic model shown in Figure \@ref(fig:pwcubic).
 
 * This model assumes that the regression function is of the form:
 \begin{equation}
@@ -274,7 +288,8 @@ Notice that this model has 12 parameters.
 * Like in the linear spline example, if we wanted to make this piecewise cubic model continuous at the knots $u_{1}$ and $u_{2}$ we would
 need to impose the following constraints on the coefficients $\beta_{jk}$:
 \begin{eqnarray}
-\beta_{01} + \beta_{11}u_{1} + \beta_{21}u_{1}^{2} + \beta_{31}u_{1}^{3} &=& \beta_{02} + \beta_{12}u_{1} + \beta_{22}u_{1}^{2} + \beta_{32}u_{1}^{3} \nonumber \\ \beta_{02} + \beta_{12}u_{2} + \beta_{22}u_{2}^{2} + \beta_{21}u_{2}^{3} &=& \beta_{03} + \beta_{13}u_{2} + \beta_{23}u_{2}^{2} + \beta_{33}u_{2}^{3} \nonumber
+\beta_{01} + \beta_{11}u_{1} + \beta_{21}u_{1}^{2} + \beta_{31}u_{1}^{3} &=& \beta_{02} + \beta_{12}u_{1} + \beta_{22}u_{1}^{2} + \beta_{32}u_{1}^{3} \nonumber \\ \beta_{02} + \beta_{12}u_{2} + \beta_{22}u_{2}^{2} + \beta_{21}u_{2}^{3} &=& \beta_{03} + \beta_{13}u_{2} + \beta_{23}u_{2}^{2} + \beta_{33}u_{2}^{3}
+(\#eq:continuity-constraints)
 \end{eqnarray}
 
 ---
@@ -285,7 +300,7 @@ obvious changes at the knots.
 * We actually need the first and the second derivatives of the function to be continuous if we want a function
 that is smooth and does not have changes at the knots that we can detect visually.
 
-* So, for the example that we have in Figure ? with the knots $u_{1}$ and $u_{2}$, we need to enforce the additional four constraints:
+* So, for the example that we have in Figure \@ref(fig:pwcubic) with the knots $u_{1}$ and $u_{2}$, we need to enforce the additional four constraints:
 \begin{eqnarray}
 \beta_{11} + 2\beta_{21}u_{1} + 3\beta_{31}u_{1}^{2} &=&  \beta_{12} + 2\beta_{22}u_{1} + 3\beta_{32}u_{1}^{2} \nonumber \\ 
 \beta_{12} + 2\beta_{22}u_{2} + 3\beta_{21}u_{2}^{2} &=&  \beta_{13} + 2\beta_{23}u_{2} + 3\beta_{33}u_{2}^{2} \nonumber \\
@@ -293,7 +308,7 @@ that is smooth and does not have changes at the knots that we can detect visuall
 2\beta_{22} + 6\beta_{21}u_{2} &=& 2\beta_{23} + 6\beta_{33}u_{2} \nonumber
 \end{eqnarray}
 
-* Hence, the piecewise cubic model that has the two continuity constraints () and the four first and second derivative constraints
+* Hence, the piecewise cubic model that has the two continuity constraints \@ref(eq:continuity-constraints) and the four first and second derivative constraints
 will have $12 - 2 - 4 = 6$ parameters in total.
 
 * In a similar way to how we derived the basis for the linear spline with knots $u_{1}$ and $u_{2}$, you can show that the following $6$
@@ -321,9 +336,21 @@ first and second derivatives:
 
 ---
 
+* A common basis for the set of cubic splines with knots $u_{1} < u_{2} < \ldots < u_{q}$ is the **B-spline** basis.
+
+* Using the B-spline basis functions is mathematically equivalent to using the truncated power basis functions. Mathematically,
+using either basis would give you the same fitted curve.
+
+* However, there are computational advantages to using the B-spline basis functions, and using the B-spline seems to be
+much more common in software implementations of spline fitting procedures.
+
+* For a cubic spline with knots $u_{1}, \ldots, u_{q}$, we will let the following $q + 4$ denote the corresponding set of 
+B-spline basis functions
+\begin{equation}
+\varphi_{1, B}(x), \ldots, \varphi_{q+4, B}(x)  \nonumber
+\end{equation}
 
 
-* The B-spline functions are a basis for the set of cubic splines. 
 
 ### Estimating the Coefficients of a Cubic Spline
 
@@ -465,7 +492,23 @@ for(k in 1:5) {
 
 ### Natural Cubic Splines
 
+* Cubic splines can often have highly variable behavior near the edges of the data (i.e., for points near the smallest and largest $x_{i}$).
 
+* One approach for addressing this problem is to use a spline which is linear for both $x < u_{1}$ and $x > u_{q}$.
+
+* A **natural cubic spline** is a function that is still a piecewise cubic function over each of the intervals $[u_{j}, u_{j+1}]$ for $j=1, \ldots, q-1$,
+but is linear for $x < u_{1}$ and $x > u_{q}$. A natural cubic spline is still assumed to satisfy all of the
+continuity and derivative continuity conditions of the usual cubic spline.
+
+* Natural cubic splines are also useful for fitting smoothing splines.
+
+---
+
+* Because we are using linear rather than cubic functions in the regions $(-\infty, u_{1})$ and $(u_{q}, \infty)$ this should reduce
+the number of necessary basis functions by $4$ (so we would only need $q$ rather $q + 4$ basis functions).
+
+* Indeed, one basis for the set of natural cubic splines with knots $u_{1}, \ldots, u_{q}$ is the following collection
+of $q$ basis functions:
 \begin{equation}
 N_{1}(x) = 1 \qquad N_{2}(x) = x \qquad N_{k+2} = d_{k}(x) - d_{q-1}(x), k = 1, \ldots, q-2,  \nonumber
 \end{equation}
@@ -477,7 +520,7 @@ d_{k}(x) = \frac{ (x - u_{k})_{+}^{3} - (x - u_{q})_{+}^{3} }{ u_{q} - u_{k}} \n
 ## Smoothing Splines
 
 * When we used cubic splines for regression, we placed knots at a number of fixed points
-in between the smallest and largets $x_{i}$ values.
+in between the smallest and largest $x_{i}$ values.
 
 * With what are referred to as "smoothing splines" every point $x_{i}$ is treated as a
 potential knot, and the overall smoothness of the regression function estimate
@@ -486,12 +529,26 @@ is determined through penalizing the roughness of the function.
 ---
 
 * Motivation for smoothing splines can come from considering the following minimization problem:
-    + Suppose we want to find the function $m(x)$ which solves the optimization problem: 
+    + For $\lambda \geq 0$, suppose we want to find the function $m(x)$ which solves the optimization problem: 
 \begin{equation}
 \textrm{minimize:} \quad \sum_{i=1}^{n} \{ Y_{i} - m( x_{i} ) \}^{2} + \lambda \int \{ m''(x) \}^{2} dx
 (\#eq:spline-smooth-motivation)
 \end{equation}
     subject to the constraint that $m'(x)$ and $m''(x)$ are both continuous. 
+
+* The second derivative $m''(x)$ represents the curvature of $m$ at $x$. So, the penalty $\int  \{ m''(x) \}^{2} dx$
+is like an average squared curvature of the function $m(x)$. 
+
+* If $\lambda = 0$, then the function $m(x)$ which minimizes \@ref(eq:spline-smooth-motivation) is any function
+such that $m(x_{i}) = Y_{i}$ for each $i$. This will usually be an extremely "wiggly" function.
+
+* If $\lambda = \infty$, then we want a function $m(x)$ such that $m''(x) = 0$ for all $x$. The best function
+in this case would be a linear function $m(x) = \beta_{0} + \beta_{1}x$.
+
+* By choosing $0 < \lambda < 0$, we will get a function that can be nonlinear and capture 
+some curvature but cannot be extremely "wiggly".
+
+---
 
 * It is possible to show that the function $\hat{m}_{\lambda}(x)$ which minimizes \@ref(eq:spline-smooth-motivation) is 
 a **natural cubic spline** with $n$ knots at the covariate values $(x_{1}, \ldots, x_{n})$. 
