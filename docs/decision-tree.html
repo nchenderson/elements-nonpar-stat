@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-16" />
+<meta name="date" content="2020-04-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -318,12 +318,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splines"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines</a></li>
 <li class="chapter" data-level="12.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knotpenalty-term-selection-for-splines"><i class="fa fa-check"></i><b>12.5</b> Knot/Penalty Term Selection for Splines</a><ul>
 <li class="chapter" data-level="12.5.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#the-cp-statistic-1"><i class="fa fa-check"></i><b>12.5.1</b> The Cp Statistic</a></li>
-<li class="chapter" data-level="12.5.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#leave-one-out-cross-validation-1"><i class="fa fa-check"></i><b>12.5.2</b> Leave-one-out Cross Validation</a></li>
-<li class="chapter" data-level="12.5.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#generalized-cross-validation"><i class="fa fa-check"></i><b>12.5.3</b> Generalized Cross Validation</a></li>
+<li class="chapter" data-level="12.5.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#leave-one-out-cross-validation-1"><i class="fa fa-check"></i><b>12.5.2</b> Leave-one-out Cross-Validation</a></li>
+<li class="chapter" data-level="12.5.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#generalized-cross-validation"><i class="fa fa-check"></i><b>12.5.3</b> Generalized Cross-Validation</a></li>
 </ul></li>
+<li class="chapter" data-level="12.6" data-path="inference-for-regression.html"><a href="inference-for-regression.html#fitting-smoothing-splines-in-r"><i class="fa fa-check"></i><b>12.6</b> Fitting Smoothing Splines in R</a></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
-<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a></li>
+<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a><ul>
+<li class="chapter" data-level="13.1" data-path="decision-tree.html"><a href="decision-tree.html#introduction-4"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
+</ul></li>
 <li class="chapter" data-level="14" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>14</b> Ensemble Methods for Prediction</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -347,7 +350,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="decision-tree" class="section level1">
 <h1><span class="header-section-number">Chapter 13</span> Decision Trees and CART</h1>
+<div id="introduction-4" class="section level2">
+<h2><span class="header-section-number">13.1</span> Introduction</h2>
+<ul>
+<li><p>Let’s think about the regressogram estimate again.</p></li>
+<li><p>The regressogram estimate of the regression function is a piecewise constant function that is constant within each of <span class="math inline">\(p\)</span> “bins”
+<span class="math display">\[\begin{equation}
+\hat{m}_{h_{n}}^{R}(x) = \frac{1}{a}\sum_{i=1}^{n} Y_{i} I(x_{i} \in B_{k}), \qquad \textrm{ if } x \in B_{k} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>Figure <a href="decision-tree.html#fig:cart-motivate">13.1</a> shows an example of a regressogram estimate with 4 bins.</p></li>
+</ul>
+<div class="figure"><span id="fig:cart-motivate"></span>
+<img src="13-cart_files/figure-html/cart-motivate-1.png" alt="Regressogram estimate with 4 bins." width="672" />
+<p class="caption">
+Figure 13.1: Regressogram estimate with 4 bins.
+</p>
+</div>
+<ul>
+<li>For the data shown in <a href="decision-tree.html#fig:cart-motivate">13.1</a>,</li>
+</ul>
 
+</div>
 </div>
             </section>
 

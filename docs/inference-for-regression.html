@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-16" />
+<meta name="date" content="2020-04-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -318,12 +318,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splines"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines</a></li>
 <li class="chapter" data-level="12.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knotpenalty-term-selection-for-splines"><i class="fa fa-check"></i><b>12.5</b> Knot/Penalty Term Selection for Splines</a><ul>
 <li class="chapter" data-level="12.5.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#the-cp-statistic-1"><i class="fa fa-check"></i><b>12.5.1</b> The Cp Statistic</a></li>
-<li class="chapter" data-level="12.5.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#leave-one-out-cross-validation-1"><i class="fa fa-check"></i><b>12.5.2</b> Leave-one-out Cross Validation</a></li>
-<li class="chapter" data-level="12.5.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#generalized-cross-validation"><i class="fa fa-check"></i><b>12.5.3</b> Generalized Cross Validation</a></li>
+<li class="chapter" data-level="12.5.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#leave-one-out-cross-validation-1"><i class="fa fa-check"></i><b>12.5.2</b> Leave-one-out Cross-Validation</a></li>
+<li class="chapter" data-level="12.5.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#generalized-cross-validation"><i class="fa fa-check"></i><b>12.5.3</b> Generalized Cross-Validation</a></li>
 </ul></li>
+<li class="chapter" data-level="12.6" data-path="inference-for-regression.html"><a href="inference-for-regression.html#fitting-smoothing-splines-in-r"><i class="fa fa-check"></i><b>12.6</b> Fitting Smoothing Splines in R</a></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
-<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a></li>
+<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a><ul>
+<li class="chapter" data-level="13.1" data-path="decision-tree.html"><a href="decision-tree.html#introduction-4"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
+</ul></li>
 <li class="chapter" data-level="14" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>14</b> Ensemble Methods for Prediction</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -635,7 +638,7 @@ sum-of-residuals-squared criterion
 <ul>
 <li><p>Finding the coefficients <span class="math inline">\(\hat{\beta}_{1}, \ldots, \hat{\beta}_{q+4}\)</span> that minimize this sum-of-residuals-squared criterion
 can be viewed as solving a regression problem with response vector <span class="math inline">\(\mathbf{Y} = (Y_{1}, \ldots, Y_{n})\)</span> and
-“design matrix” <span class="math inline">\(\mathbf{X}_{\varphi}\)</span>
+“design matrix” <span class="math inline">\(\mathbf{X}_{\mathbf{u}}\)</span>
 <span class="math display">\[\begin{equation}
 \mathbf{X}_{\mathbf{u}} = \begin{bmatrix} \varphi_{1, B}(x_{1}) &amp; \varphi_{2, B}(x_{1}) &amp; \ldots &amp; \varphi_{q+4, B}(x_{1}) \\ \varphi_{1, B}(x_{2}) &amp; \varphi_{2, B}(x_{2}) &amp; \ldots &amp; \varphi_{q+4,B}(x_{2}) \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ \varphi_{1,B}(x_{n}) &amp; \varphi_{2,B}(x_{n}) &amp; \ldots &amp; \varphi_{q+4,B}(x_{n}) \end{bmatrix} \nonumber
 \end{equation}\]</span></p></li>
@@ -804,7 +807,7 @@ some curvature but cannot be extremely “wiggly”.</p></li>
 a <strong>natural cubic spline</strong> with <span class="math inline">\(n\)</span> knots at the covariate values <span class="math inline">\((x_{1}, \ldots, x_{n})\)</span>.</p></li>
 <li><p>So, we can restrict our search to functions which can be written as
 <span class="math display">\[\begin{equation}
-m(x) = \sum_{j=1}^{n} \beta_{j}N_{j}(x),
+m(x) = \sum_{j=1}^{n} \beta_{j}N_{j}(x), \nonumber
 \end{equation}\]</span>
 where <span class="math inline">\(N_{1}(x), \ldots, N_{n}(x)\)</span> is the set of basis functions for the set of natural cubic
 splines with these knots.</p></li>
@@ -823,7 +826,7 @@ splines with these knots.</p></li>
 where <span class="math inline">\(\mathbf{N}\)</span> is the <span class="math inline">\(n \times n\)</span> matrix whose <span class="math inline">\((j,k)\)</span> element is <span class="math inline">\(N_{k}(x_{j})\)</span> and <span class="math inline">\(\boldsymbol\Omega\)</span> is the <span class="math inline">\(n \times n\)</span> matrix whose <span class="math inline">\((j,k)\)</span> element is <span class="math inline">\(\Omega_{jk} = \int N_{j}&#39;&#39;(x)N_{k}&#39;&#39;(x) dx\)</span>.</p></li>
 <li><p>The vector of coefficients which solves the minimization problem <a href="inference-for-regression.html#eq:spline-smooth-minimization">(12.3)</a> is given by
 <span class="math display">\[\begin{equation}
-\hat{\boldsymbol\beta} = \begin{bmatrix} \hat{\beta}_{1} \\ \vdots \\ \hat{\beta}_{n} \end{bmatrix} = (\mathbf{N}^{T}\mathbf{N} + \boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y} \nonumber
+\hat{\boldsymbol\beta} = \begin{bmatrix} \hat{\beta}_{1} \\ \vdots \\ \hat{\beta}_{n} \end{bmatrix} = (\mathbf{N}^{T}\mathbf{N} + \lambda \boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y} \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 </div>
@@ -838,24 +841,61 @@ for an appropriately chosen <span class="math inline">\(n \times n\)</span> matr
 <li><p>For the case of a cubic regression spline with fixed knot sequence <span class="math inline">\(\mathbf{u} = (u_{1}, \ldots, u_{q})\)</span>, we have that
 <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{A}_{\mathbf{u}}\mathbf{Y}\)</span> where
 <span class="math display">\[\begin{equation}
-\mathbf{A}_{\mathbf{u}} = \mathbf{X}_{\mathbf{u}}(\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}
+\mathbf{A}_{\mathbf{u}} = \mathbf{X}_{\mathbf{u}}(\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}^{T}
 \end{equation}\]</span>
-Note that, in this case, <span class="math inline">\(\textrm{tr}( \mathbf{A}_{\mathbf{u}} ) = q + 4\)</span>.</p></li>
+Note that, in this case,
+<span class="math display">\[\begin{equation}
+\textrm{tr}( \mathbf{A}_{\mathbf{u}} ) = \textrm{tr}( \mathbf{X}_{\mathbf{u}}(\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}^{T} ) = \textrm{tr}( (\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{u} ) = q + 4
+\end{equation}\]</span></p></li>
 <li><p>For the case of a smoothing spline with penalty term <span class="math inline">\(\lambda &gt; 0\)</span>, we have that <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{A}_{\lambda}\mathbf{Y}\)</span> where
 <span class="math display">\[\begin{equation}
-\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \boldsymbol\Omega)^{-1}\mathbf{N}^{T} \nonumber
+\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T} \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <div id="the-cp-statistic-1" class="section level3">
 <h3><span class="header-section-number">12.5.1</span> The Cp Statistic</h3>
+<ul>
+<li><p>As with kernel and local regression method described in Chapter 11, the <span class="math inline">\(C_{p}\)</span> statistic is defined as
+the mean residual sum of squares plus a penalty which depends on the matrix <span class="math inline">\(\mathbf{A}\)</span>.</p></li>
+<li><p>In the context of regression splines where <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{A}_{\mathbf{u}}\mathbf{Y}\)</span>, the <span class="math inline">\(C_{p}\)</span> statistic can be written as:
+<span class="math display">\[\begin{eqnarray}
+C_{p}(q) &amp;=&amp; \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}(\mathbf{A}_{u})  \nonumber \\
+&amp;=&amp; \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}(x_{i}) \}^{2} + \frac{2\hat{\sigma}^{2}(q + 4)}{n} \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>In the context of smoothing splines where <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{A}_{\lambda}\mathbf{Y}\)</span>, the <span class="math inline">\(C_{p}\)</span> statistic can be written as
+<span class="math display">\[\begin{eqnarray}
+C_{p}(\lambda) &amp;=&amp; \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}(\mathbf{A}_{\lambda})  \nonumber \\
+&amp;=&amp; \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}(x_{i}) \}^{2} + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}\Big( (\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{N} \Big) \nonumber
+\end{eqnarray}\]</span></p></li>
+</ul>
 </div>
 <div id="leave-one-out-cross-validation-1" class="section level3">
-<h3><span class="header-section-number">12.5.2</span> Leave-one-out Cross Validation</h3>
+<h3><span class="header-section-number">12.5.2</span> Leave-one-out Cross-Validation</h3>
+<ul>
+<li><p>As mentioned in Chapter 11, the leave-one-out cross-validation can be expressed as a weighted sum-of-squared residuals with
+the weights coming from the diagonals of the “smoothing” matrix <span class="math inline">\(\mathbf{A}\)</span>.</p></li>
+<li><p>This</p></li>
+</ul>
 </div>
 <div id="generalized-cross-validation" class="section level3">
-<h3><span class="header-section-number">12.5.3</span> Generalized Cross Validation</h3>
-
+<h3><span class="header-section-number">12.5.3</span> Generalized Cross-Validation</h3>
+<ul>
+<li>A criterion which we did not mention in Chapter 11 is Generalized Cross-Validation (GCV).</li>
+</ul>
 </div>
+</div>
+<div id="fitting-smoothing-splines-in-r" class="section level2">
+<h2><span class="header-section-number">12.6</span> Fitting Smoothing Splines in R</h2>
+<ul>
+<li>The <code>R</code> function <code>smooth.spline</code> will fit smoothing splines.</li>
+</ul>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb260-1" data-line-number="1"><span class="kw">smooth.spline</span>(x, y, df, <span class="dt">cv=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+<ul>
+<li><strong>x</strong> - the vector of covariate values.</li>
+<li><strong>y</strong> - the vector of responses.</li>
+<li><strong>df</strong> - the trace of the “smoother” matrix. This is the trace of the matrix <span class="math inline">\(\mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y}\)</span>. This should be less than <span class="math inline">\(n\)</span>.</li>
+</ul>
+
 </div>
 </div>
 

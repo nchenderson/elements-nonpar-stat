@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-16" />
+<meta name="date" content="2020-04-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -318,12 +318,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splines"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines</a></li>
 <li class="chapter" data-level="12.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knotpenalty-term-selection-for-splines"><i class="fa fa-check"></i><b>12.5</b> Knot/Penalty Term Selection for Splines</a><ul>
 <li class="chapter" data-level="12.5.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#the-cp-statistic-1"><i class="fa fa-check"></i><b>12.5.1</b> The Cp Statistic</a></li>
-<li class="chapter" data-level="12.5.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#leave-one-out-cross-validation-1"><i class="fa fa-check"></i><b>12.5.2</b> Leave-one-out Cross Validation</a></li>
-<li class="chapter" data-level="12.5.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#generalized-cross-validation"><i class="fa fa-check"></i><b>12.5.3</b> Generalized Cross Validation</a></li>
+<li class="chapter" data-level="12.5.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#leave-one-out-cross-validation-1"><i class="fa fa-check"></i><b>12.5.2</b> Leave-one-out Cross-Validation</a></li>
+<li class="chapter" data-level="12.5.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#generalized-cross-validation"><i class="fa fa-check"></i><b>12.5.3</b> Generalized Cross-Validation</a></li>
 </ul></li>
+<li class="chapter" data-level="12.6" data-path="inference-for-regression.html"><a href="inference-for-regression.html#fitting-smoothing-splines-in-r"><i class="fa fa-check"></i><b>12.6</b> Fitting Smoothing Splines in R</a></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
-<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a></li>
+<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a><ul>
+<li class="chapter" data-level="13.1" data-path="decision-tree.html"><a href="decision-tree.html#introduction-4"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
+</ul></li>
 <li class="chapter" data-level="14" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>14</b> Ensemble Methods for Prediction</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -779,7 +782,7 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{j}) +
 <a class="sourceLine" id="cb26-8" data-line-number="8"><span class="st">                   </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">==</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb26-9" data-line-number="9">}</a>
 <a class="sourceLine" id="cb26-10" data-line-number="10"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.89</code></pre>
+<pre><code>## [1] 0.845</code></pre>
 <ul>
 <li>This simulation-based estimate of <span class="math inline">\(P(X_{i} &gt; Y_{j}) + P(X_{i} = Y_{j})/2\)</span> is quite close to the value of the Mann-Whitney statistic divided by <span class="math inline">\(mn\)</span>.</li>
 </ul>

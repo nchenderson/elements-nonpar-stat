@@ -314,7 +314,7 @@ sum-of-residuals-squared criterion
 
 * Finding the coefficients $\hat{\beta}_{1}, \ldots, \hat{\beta}_{q+4}$ that minimize this sum-of-residuals-squared criterion
 can be viewed as solving a regression problem with response vector $\mathbf{Y} = (Y_{1}, \ldots, Y_{n})$ and
-"design matrix" $\mathbf{X}_{\varphi}$
+"design matrix" $\mathbf{X}_{\mathbf{u}}$
 \begin{equation}
 \mathbf{X}_{\mathbf{u}} = \begin{bmatrix} \varphi_{1, B}(x_{1}) & \varphi_{2, B}(x_{1}) & \ldots & \varphi_{q+4, B}(x_{1}) \\ \varphi_{1, B}(x_{2}) & \varphi_{2, B}(x_{2}) & \ldots & \varphi_{q+4,B}(x_{2}) \\ \vdots & \vdots & \ddots & \vdots \\ \varphi_{1,B}(x_{n}) & \varphi_{2,B}(x_{n}) & \ldots & \varphi_{q+4,B}(x_{n}) \end{bmatrix} \nonumber
 \end{equation}
@@ -533,7 +533,7 @@ a **natural cubic spline** with $n$ knots at the covariate values $(x_{1}, \ldot
 
 * So, we can restrict our search to functions which can be written as
 \begin{equation}
-m(x) = \sum_{j=1}^{n} \beta_{j}N_{j}(x),
+m(x) = \sum_{j=1}^{n} \beta_{j}N_{j}(x), \nonumber
 \end{equation}
 where $N_{1}(x), \ldots, N_{n}(x)$ is the set of basis functions for the set of natural cubic
 splines with these knots.
@@ -554,8 +554,10 @@ where $\mathbf{N}$ is the $n \times n$ matrix whose $(j,k)$ element is $N_{k}(x_
 
 * The vector of coefficients which solves the minimization problem \@ref(eq:spline-smooth-minimization) is given by
 \begin{equation}
-\hat{\boldsymbol\beta} = \begin{bmatrix} \hat{\beta}_{1} \\ \vdots \\ \hat{\beta}_{n} \end{bmatrix} = (\mathbf{N}^{T}\mathbf{N} + \boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y} \nonumber
+\hat{\boldsymbol\beta} = \begin{bmatrix} \hat{\beta}_{1} \\ \vdots \\ \hat{\beta}_{n} \end{bmatrix} = (\mathbf{N}^{T}\mathbf{N} + \lambda \boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y} \nonumber
 \end{equation}
+
+
 
 ## Knot/Penalty Term Selection for Splines
 
@@ -568,23 +570,54 @@ for an appropriately chosen $n \times n$ matrix $\mathbf{A}$.
 * For the case of a cubic regression spline with fixed knot sequence $\mathbf{u} = (u_{1}, \ldots, u_{q})$, we have that
 $\hat{\mathbf{m}} = \mathbf{A}_{\mathbf{u}}\mathbf{Y}$ where 
 \begin{equation}
-\mathbf{A}_{\mathbf{u}} = \mathbf{X}_{\mathbf{u}}(\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}
+\mathbf{A}_{\mathbf{u}} = \mathbf{X}_{\mathbf{u}}(\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}^{T}
 \end{equation}
-Note that, in this case, $\textrm{tr}( \mathbf{A}_{\mathbf{u}} ) = q + 4$. 
+Note that, in this case,
+\begin{equation}
+\textrm{tr}( \mathbf{A}_{\mathbf{u}} ) = \textrm{tr}( \mathbf{X}_{\mathbf{u}}(\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}^{T} ) = \textrm{tr}( (\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{\mathbf{u}})^{-1}\mathbf{X}_{\mathbf{u}}^{T}\mathbf{X}_{u} ) = q + 4
+\end{equation}
 
 * For the case of a smoothing spline with penalty term $\lambda > 0$, we have that $\hat{\mathbf{m}} = \mathbf{A}_{\lambda}\mathbf{Y}$ where
 \begin{equation}
-\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \boldsymbol\Omega)^{-1}\mathbf{N}^{T} \nonumber
+\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T} \nonumber
 \end{equation}
 
 
 ### The Cp Statistic
 
+* As with kernel and local regression method described in Chapter 11, the $C_{p}$ statistic is defined as
+the mean residual sum of squares plus a penalty which depends on the matrix $\mathbf{A}$.
 
-### Leave-one-out Cross Validation
+* In the context of regression splines where $\hat{\mathbf{m}} = \mathbf{A}_{\mathbf{u}}\mathbf{Y}$, the $C_{p}$ statistic can be written as:
+\begin{eqnarray}
+C_{p}(q) &=& \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}(\mathbf{A}_{u})  \nonumber \\
+&=& \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}(x_{i}) \}^{2} + \frac{2\hat{\sigma}^{2}(q + 4)}{n} \nonumber
+\end{eqnarray}
 
+* In the context of smoothing splines where $\hat{\mathbf{m}} = \mathbf{A}_{\lambda}\mathbf{Y}$, the $C_{p}$ statistic can be written as
+\begin{eqnarray}
+C_{p}(\lambda) &=& \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}(x_{i}) \}^{2}  + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}(\mathbf{A}_{\lambda})  \nonumber \\
+&=& \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}(x_{i}) \}^{2} + \frac{2\hat{\sigma}^{2}}{n}\textrm{tr}\Big( (\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{N} \Big) \nonumber
+\end{eqnarray}
 
-### Generalized Cross Validation
+### Leave-one-out Cross-Validation
 
+* As mentioned in Chapter 11, the leave-one-out cross-validation can be expressed as a weighted sum-of-squared residuals with 
+the weights coming from the diagonals of the "smoothing" matrix $\mathbf{A}$.
 
+* This 
 
+### Generalized Cross-Validation
+
+* A criterion which we did not mention in Chapter 11 is Generalized Cross-Validation (GCV).
+
+## Fitting Smoothing Splines in R
+
+* The `R` function `smooth.spline` will fit smoothing splines.
+
+```r
+smooth.spline(x, y, df, cv=FALSE)
+```
+* **x** - the vector of covariate values.
+* **y** - the vector of responses.
+* **df** - the trace of the "smoother" matrix. This is the trace of the matrix $\mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y}$. This should be less than $n$. 

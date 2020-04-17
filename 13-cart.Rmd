@@ -2,5 +2,38 @@
 
 # Decision Trees and CART {#decision-tree}
 
+## Introduction
+
+* Let's think about the regressogram estimate again. 
+
+* The regressogram estimate of the regression function is a piecewise constant function that is constant within each of $p$ "bins"
+\begin{equation}
+\hat{m}_{h_{n}}^{R}(x) = \frac{1}{a}\sum_{i=1}^{n} Y_{i} I(x_{i} \in B_{k}), \qquad \textrm{ if } x \in B_{k} \nonumber
+\end{equation}
+
+* Figure \@ref(fig:cart-motivate) shows an example of a regressogram estimate with 4 bins. 
+
+```{r, cart-motivate, echo=FALSE, fig.cap="Regressogram estimate with 4 bins."}
+set.seed(53186)
+n <- 100
+xx <- runif(n)
+yy <- (2*xx - 1/2)^3 + rnorm(n,sd=.25)
+
+ind1 <- xx < 1/4
+ind2 <- xx < 2/4 & xx > 1/4
+ind3 <- xx < 3/4 & xx > 1/2
+ind4 <- xx > 3/4
+
+plot(xx, yy, las=1, xlab="x", ylab="Regression function estimate")
+lines(c(0, 1/4), rep(mean(yy[ind1]), 2), lwd=3)
+lines(c(1/4, 1/2), rep(mean(yy[ind2]), 2), lwd=3)
+lines(c(1/2, 3/4), rep(mean(yy[ind3]), 2), lwd=3)
+lines(c(3/4, 1), rep(mean(yy[ind4]), 2), lwd=3)
+abline(v=1/4, lty=2)
+abline(v=1/2, lty=2)
+abline(v=3/4, lty=2)
+```
+
+* For the data shown in \@ref(fig:cart-motivate), 
 
 
