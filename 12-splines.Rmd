@@ -627,11 +627,26 @@ C_{p}(\lambda) &=& \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}(x_{i}) \}^{2}  + 
 * As mentioned in Chapter 11, the leave-one-out cross-validation can be expressed as a weighted sum-of-squared residuals with 
 the weights coming from the diagonals of the "smoothing" matrix $\mathbf{A}$.
 
-* This 
+* For the smoothing spline, the leave-one-out cross-validation criterion is
+\begin{equation}
+\textrm{LOOCV}(\lambda) = \frac{1}{n}\sum_{i=1}^{n} \Big( \frac{ Y_{i} - \hat{m}_{\lambda}(x_{i})}{ 1 - a_{i}^{\lambda}( x_{i} )  } \Big)^{2}  \nonumber
+\end{equation}
+where $a_{i}^{\lambda}(x_{i})$ denotes the $i^{th}$ diagonal of the matrix $\mathbf{A}_{\lambda}$.
+
+
 
 ### Generalized Cross-Validation
 
 * A criterion which we did not mention in Chapter 11 is Generalized Cross-Validation (GCV).
+
+* For the smoothing parameter $\lambda$, the GCV criterion is defined as
+\begin{equation}
+\textrm{GCV}(\lambda) = \frac{1}{n}\sum_{i=1}^{n} \Big( \frac{ Y_{i} - \hat{m}_{\lambda}(x_{i})}{ 1 - \textrm{tr}(\mathbf{A}_{\lambda})/n  } \Big)^{2} = \Big(\frac{n}{n - \textrm{tr}(\mathbf{A}_{\lambda})} \Big)^{2} \frac{1}{n} \sum_{i=1}^{n} \{Y_{i} - \hat{m}_{\lambda}(x_{i}) \}^{2} \nonumber
+\end{equation}
+
+* The GCV criterion can be seen as replacing the individual diagonal elements in the $\textrm{LOOCV}$ criterion with their average value $\textrm{tr}(\mathbf{A}_{\lambda})/n$.
+
+
 
 ## Fitting Smoothing Splines in R
 

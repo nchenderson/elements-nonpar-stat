@@ -300,6 +300,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-functions-in-r"><i class="fa fa-check"></i><b>11.5</b> Additional functions in R</a></li>
 <li class="chapter" data-level="11.6" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#multivariate-problems"><i class="fa fa-check"></i><b>11.6</b> Multivariate Problems</a></li>
 <li class="chapter" data-level="11.7" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.7</b> Additional Reading</a></li>
+<li class="chapter" data-level="11.8" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#exercises-2"><i class="fa fa-check"></i><b>11.8</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
 <li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a><ul>
@@ -462,21 +463,6 @@ Figure 8.1: Framingham Data. Regressogram estimate for a regression model with d
 </p>
 </div>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<hr />
-<ul>
-<li><strong>Exercise 11.1</strong> Let
-<span class="math display">\[\begin{equation}
-\hat{\mathbf{m}} = \big( \hat{m}_{h_{n}}^{R}(x_{1}), \ldots, \hat{m}_{h_{n}}^{R}(x_{n}) \big)  \nonumber
-\end{equation}\]</span>
-denote the vector of “fitted values” from a regressogram estimate that has <span class="math inline">\(D_{n}\)</span> bins.
-If <span class="math inline">\(\mathbf{Y} = (Y_{1}, \ldots, Y_{n})\)</span>, show that you can express <span class="math inline">\(\hat{\mathbf{m}}\)</span> as
-<span class="math display">\[\begin{equation}
-\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y}, \nonumber
-\end{equation}\]</span>
-for an appropriately chosen <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}\)</span>.
-What is the value of <span class="math inline">\(\textrm{tr}(\mathbf{A})\)</span>?</li>
-</ul>
-<hr />
 </div>
 <div id="the-local-average-estimator" class="section level3">
 <h3><span class="header-section-number">11.2.2</span> The Local Average Estimator</h3>
@@ -618,19 +604,6 @@ observations which correspond to the <span class="math inline">\(d_{(1)}(x)\)</s
 will increase the bias of the k-NN regression function estimate while
 decreasing the value of <span class="math inline">\(k\)</span> will increase the variance of the k-NN regression function estimate.</li>
 </ul>
-<hr />
-<ul>
-<li><strong>Exercise 11.2</strong> Suppose <span class="math inline">\(n=6\)</span> and that we have the following covariate values and responses
-<span class="math display">\[\begin{eqnarray}
-(x_{1}, x_{2}, x_{3}, x_{4}, x_{5}, x_{6}) &amp;=&amp; (1/7, 2/7, 3/7, 4/7, 5/7, 6/7)  \nonumber \\
-(Y_{1}, Y_{2}, Y_{3}, Y_{4}, Y_{5}, Y_{6}) &amp;=&amp; (1.4, 0.7, 1.1, 1.3, 0.9, 1.7)  \nonumber
-\end{eqnarray}\]</span>
-<ul>
-<li>Compute the local average estimate of the regression function at <span class="math inline">\(x = 0.25\)</span> and <span class="math inline">\(x=0.75\)</span> assuming that <span class="math inline">\(h_{n} = 1/2\)</span>.</li>
-<li>Compute the k nearest neighbors estimate of the regression function at <span class="math inline">\(x = 0.25\)</span> and <span class="math inline">\(x = 0.75\)</span> assuming that <span class="math inline">\(k = 2\)</span>.</li>
-</ul></li>
-</ul>
-<hr />
 </div>
 <div id="the-nadaraya-watson-estimator" class="section level3">
 <h3><span class="header-section-number">11.2.4</span> The Nadaraya-Watson Estimator</h3>
@@ -767,16 +740,6 @@ solved the following local least-squares problem
 \hat{\beta}_{0x}, \hat{\beta}_{1x} &amp;=&amp;  \textrm{argmin}_{\beta_{0x},\beta_{1x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} - \beta_{1x}(x_{i} - x) \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
 \end{eqnarray}\]</span></p></li>
 </ul>
-<hr />
-<ul>
-<li><strong>Exercise 11.3</strong> Suppose we define an estimator <span class="math inline">\(\tilde{m}_{h_{n}}(x)\)</span> of the regression function as
-<span class="math display">\[\begin{eqnarray}
-\tilde{m}_{h_{n}}(x) &amp;=&amp; \hat{\beta}_{0x} \quad \textrm{ where } \nonumber \\
-\hat{\beta}_{0x} &amp;=&amp;  \textrm{argmin}_{\beta_{0x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
-\end{eqnarray}\]</span>
-Show that <span class="math inline">\(\tilde{m}_{h_{n}}(x) = \hat{m}_{h_{n}}^{NW}(x)\)</span>.</li>
-</ul>
-<hr />
 </div>
 <div id="advantages-of-the-local-linear-estimator" class="section level3">
 <h3><span class="header-section-number">11.3.2</span> Advantages of the Local Linear Estimator</h3>
@@ -1052,16 +1015,6 @@ estimate of <span class="math inline">\(\sigma^{2}\)</span>
 \hat{\sigma}^{2}( \tilde{h}_{n} ) = \frac{  \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{\tilde{h}_{n}}(x_{i}) \}^{2}  }{ n - 2\textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}) + \textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}\mathbf{A}_{\tilde{h_{n}}}^{T}) }  \nonumber
 \end{equation}\]</span></p></li>
 </ul>
-<hr />
-<ul>
-<li><strong>Exercise 11.4</strong> Suppose the <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}_{h_{n}}\)</span> satifies <span class="math inline">\(\mathbf{A}_{h_{n}}\mathbf{m} = \mathbf{m}\)</span>.
-Show that
-<span class="math display">\[\begin{equation}
-\frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
-\end{equation}\]</span>
-is an unbiased estimator of <span class="math inline">\(\sigma^{2}\)</span>.</li>
-</ul>
-<hr />
 </div>
 <div id="leave-one-out-cross-validation" class="section level3">
 <h3><span class="header-section-number">11.4.3</span> Leave-one-out Cross Validation</h3>
@@ -1381,6 +1334,43 @@ near a given point <span class="math inline">\(\mathbf{x}\)</span>.</p></li>
 <li>Chapter 4 from <span class="citation">Härdle et al. (<a href="#ref-hardle2012">2012</a>)</span></li>
 <li>Chapter 5 from <span class="citation">Wasserman (<a href="#ref-wasserman2006">2006</a>)</span></li>
 </ul></li>
+</ul>
+</div>
+<div id="exercises-2" class="section level2">
+<h2><span class="header-section-number">11.8</span> Exercises</h2>
+<ul>
+<li><p><strong>Exercise 11.1</strong> Let
+<span class="math display">\[\begin{equation}
+\hat{\mathbf{m}} = \big( \hat{m}_{h_{n}}^{R}(x_{1}), \ldots, \hat{m}_{h_{n}}^{R}(x_{n}) \big)  \nonumber
+\end{equation}\]</span>
+denote the vector of “fitted values” from a regressogram estimate that has <span class="math inline">\(D_{n}\)</span> bins.
+If <span class="math inline">\(\mathbf{Y} = (Y_{1}, \ldots, Y_{n})\)</span>, show that you can express <span class="math inline">\(\hat{\mathbf{m}}\)</span> as
+<span class="math display">\[\begin{equation}
+\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y}, \nonumber
+\end{equation}\]</span>
+for an appropriately chosen <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}\)</span>.
+What is the value of <span class="math inline">\(\textrm{tr}(\mathbf{A})\)</span>?</p></li>
+<li><strong>Exercise 11.2</strong> Suppose <span class="math inline">\(n=6\)</span> and that we have the following covariate values and responses
+<span class="math display">\[\begin{eqnarray}
+(x_{1}, x_{2}, x_{3}, x_{4}, x_{5}, x_{6}) &amp;=&amp; (1/7, 2/7, 3/7, 4/7, 5/7, 6/7)  \nonumber \\
+(Y_{1}, Y_{2}, Y_{3}, Y_{4}, Y_{5}, Y_{6}) &amp;=&amp; (1.4, 0.7, 1.1, 1.3, 0.9, 1.7)  \nonumber
+\end{eqnarray}\]</span>
+<ul>
+<li>Compute the local average estimate of the regression function at <span class="math inline">\(x = 0.25\)</span> and <span class="math inline">\(x=0.75\)</span> assuming that <span class="math inline">\(h_{n} = 1/2\)</span>.</li>
+<li>Compute the k nearest neighbors estimate of the regression function at <span class="math inline">\(x = 0.25\)</span> and <span class="math inline">\(x = 0.75\)</span> assuming that <span class="math inline">\(k = 2\)</span>.</li>
+</ul></li>
+<li><p><strong>Exercise 11.3</strong> Suppose we define an estimator <span class="math inline">\(\tilde{m}_{h_{n}}(x)\)</span> of the regression function as
+<span class="math display">\[\begin{eqnarray}
+\tilde{m}_{h_{n}}(x) &amp;=&amp; \hat{\beta}_{0x} \quad \textrm{ where } \nonumber \\
+\hat{\beta}_{0x} &amp;=&amp;  \textrm{argmin}_{\beta_{0x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
+\end{eqnarray}\]</span>
+Show that <span class="math inline">\(\tilde{m}_{h_{n}}(x) = \hat{m}_{h_{n}}^{NW}(x)\)</span>.</p></li>
+<li><p><strong>Exercise 11.4</strong> Suppose the <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(\mathbf{A}_{h_{n}}\)</span> satifies <span class="math inline">\(\mathbf{A}_{h_{n}}\mathbf{m} = \mathbf{m}\)</span>.
+Show that
+<span class="math display">\[\begin{equation}
+\frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
+\end{equation}\]</span>
+is an unbiased estimator of <span class="math inline">\(\sigma^{2}\)</span>.</p></li>
 </ul>
 
 </div>

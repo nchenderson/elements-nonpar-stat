@@ -300,6 +300,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-functions-in-r"><i class="fa fa-check"></i><b>11.5</b> Additional functions in R</a></li>
 <li class="chapter" data-level="11.6" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#multivariate-problems"><i class="fa fa-check"></i><b>11.6</b> Multivariate Problems</a></li>
 <li class="chapter" data-level="11.7" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.7</b> Additional Reading</a></li>
+<li class="chapter" data-level="11.8" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#exercises-2"><i class="fa fa-check"></i><b>11.8</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
 <li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a><ul>
@@ -877,13 +878,22 @@ C_{p}(\lambda) &amp;=&amp; \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}(x_{i}) \}
 <ul>
 <li><p>As mentioned in Chapter 11, the leave-one-out cross-validation can be expressed as a weighted sum-of-squared residuals with
 the weights coming from the diagonals of the “smoothing” matrix <span class="math inline">\(\mathbf{A}\)</span>.</p></li>
-<li><p>This</p></li>
+<li><p>For the smoothing spline, the leave-one-out cross-validation criterion is
+<span class="math display">\[\begin{equation}
+\textrm{LOOCV}(\lambda) = \frac{1}{n}\sum_{i=1}^{n} \Big( \frac{ Y_{i} - \hat{m}_{\lambda}(x_{i})}{ 1 - a_{i}^{\lambda}( x_{i} )  } \Big)^{2}  \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(a_{i}^{\lambda}(x_{i})\)</span> denotes the <span class="math inline">\(i^{th}\)</span> diagonal of the matrix <span class="math inline">\(\mathbf{A}_{\lambda}\)</span>.</p></li>
 </ul>
 </div>
 <div id="generalized-cross-validation" class="section level3">
 <h3><span class="header-section-number">12.5.3</span> Generalized Cross-Validation</h3>
 <ul>
-<li>A criterion which we did not mention in Chapter 11 is Generalized Cross-Validation (GCV).</li>
+<li><p>A criterion which we did not mention in Chapter 11 is Generalized Cross-Validation (GCV).</p></li>
+<li><p>For the smoothing parameter <span class="math inline">\(\lambda\)</span>, the GCV criterion is defined as
+<span class="math display">\[\begin{equation}
+\textrm{GCV}(\lambda) = \frac{1}{n}\sum_{i=1}^{n} \Big( \frac{ Y_{i} - \hat{m}_{\lambda}(x_{i})}{ 1 - \textrm{tr}(\mathbf{A}_{\lambda})/n  } \Big)^{2} = \Big(\frac{n}{n - \textrm{tr}(\mathbf{A}_{\lambda})} \Big)^{2} \frac{1}{n} \sum_{i=1}^{n} \{Y_{i} - \hat{m}_{\lambda}(x_{i}) \}^{2} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>The GCV criterion can be seen as replacing the individual diagonal elements in the <span class="math inline">\(\textrm{LOOCV}\)</span> criterion with their average value <span class="math inline">\(\textrm{tr}(\mathbf{A}_{\lambda})/n\)</span>.</p></li>
 </ul>
 </div>
 </div>

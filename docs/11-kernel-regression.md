@@ -116,21 +116,7 @@ should be a reasonable estimate of the ratio
 
 <img src="11-kernel-regression_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
----
 
-* **Exercise 11.1** Let 
-\begin{equation}
-\hat{\mathbf{m}} = \big( \hat{m}_{h_{n}}^{R}(x_{1}), \ldots, \hat{m}_{h_{n}}^{R}(x_{n}) \big)  \nonumber
-\end{equation}
-denote the vector of "fitted values" from a regressogram estimate that has $D_{n}$ bins. 
-If $\mathbf{Y} = (Y_{1}, \ldots, Y_{n})$, show that you can express $\hat{\mathbf{m}}$ as 
-\begin{equation}
-\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y}, \nonumber
-\end{equation}
-for an appropriately chosen $n \times n$ matrix $\mathbf{A}$.
-What is the value of $\textrm{tr}(\mathbf{A})$?
-
----
 
 
 ### The Local Average Estimator
@@ -299,17 +285,7 @@ observations which correspond to the $d_{(1)}(x)$ through $d_{(k)}(x)$.
 will increase the bias of the k-NN regression function estimate while 
 decreasing the value of $k$ will increase the variance of the k-NN regression function estimate.
 
----
 
-* **Exercise 11.2** Suppose $n=6$ and that we have the following covariate values and responses
-\begin{eqnarray}
-(x_{1}, x_{2}, x_{3}, x_{4}, x_{5}, x_{6}) &=& (1/7, 2/7, 3/7, 4/7, 5/7, 6/7)  \nonumber \\
-(Y_{1}, Y_{2}, Y_{3}, Y_{4}, Y_{5}, Y_{6}) &=& (1.4, 0.7, 1.1, 1.3, 0.9, 1.7)  \nonumber
-\end{eqnarray}
-    + Compute the local average estimate of the regression function at $x = 0.25$ and $x=0.75$ assuming that $h_{n} = 1/2$. 
-    + Compute the k nearest neighbors estimate of the regression function at $x = 0.25$ and $x = 0.75$ assuming that $k = 2$.
-    
----
 
 ### The Nadaraya-Watson Estimator
 
@@ -474,16 +450,7 @@ solved the following local least-squares problem
 \hat{\beta}_{0x}, \hat{\beta}_{1x} &=&  \textrm{argmin}_{\beta_{0x},\beta_{1x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} - \beta_{1x}(x_{i} - x) \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
 \end{eqnarray}
 
----
 
-* **Exercise 11.3** Suppose we define an estimator $\tilde{m}_{h_{n}}(x)$ of the regression function as
-\begin{eqnarray}
-\tilde{m}_{h_{n}}(x) &=& \hat{\beta}_{0x} \quad \textrm{ where } \nonumber \\
-\hat{\beta}_{0x} &=&  \textrm{argmin}_{\beta_{0x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
-\end{eqnarray}
-Show that $\tilde{m}_{h_{n}}(x) = \hat{m}_{h_{n}}^{NW}(x)$.
-
----
 
 ### Advantages of the Local Linear Estimator
 
@@ -788,16 +755,7 @@ estimate of $\sigma^{2}$
 \hat{\sigma}^{2}( \tilde{h}_{n} ) = \frac{  \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{\tilde{h}_{n}}(x_{i}) \}^{2}  }{ n - 2\textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}) + \textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}\mathbf{A}_{\tilde{h_{n}}}^{T}) }  \nonumber
 \end{equation}
 
----
 
-* **Exercise 11.4** Suppose the $n \times n$ matrix $\mathbf{A}_{h_{n}}$ satifies $\mathbf{A}_{h_{n}}\mathbf{m} = \mathbf{m}$.
-Show that 
-\begin{equation}
-\frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
-\end{equation}
-is an unbiased estimator of $\sigma^{2}$.
-
----
 
 
 ### Leave-one-out Cross Validation
@@ -1205,3 +1163,43 @@ near a given point $\mathbf{x}$.
 * Additional reading which covers the material discussed in this chapter includes:
     + Chapter 4 from @hardle2012
     + Chapter 5 from @wasserman2006
+    
+
+## Exercises
+
+* **Exercise 11.1** Let 
+\begin{equation}
+\hat{\mathbf{m}} = \big( \hat{m}_{h_{n}}^{R}(x_{1}), \ldots, \hat{m}_{h_{n}}^{R}(x_{n}) \big)  \nonumber
+\end{equation}
+denote the vector of "fitted values" from a regressogram estimate that has $D_{n}$ bins. 
+If $\mathbf{Y} = (Y_{1}, \ldots, Y_{n})$, show that you can express $\hat{\mathbf{m}}$ as 
+\begin{equation}
+\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y}, \nonumber
+\end{equation}
+for an appropriately chosen $n \times n$ matrix $\mathbf{A}$.
+What is the value of $\textrm{tr}(\mathbf{A})$?
+
+
+* **Exercise 11.2** Suppose $n=6$ and that we have the following covariate values and responses
+\begin{eqnarray}
+(x_{1}, x_{2}, x_{3}, x_{4}, x_{5}, x_{6}) &=& (1/7, 2/7, 3/7, 4/7, 5/7, 6/7)  \nonumber \\
+(Y_{1}, Y_{2}, Y_{3}, Y_{4}, Y_{5}, Y_{6}) &=& (1.4, 0.7, 1.1, 1.3, 0.9, 1.7)  \nonumber
+\end{eqnarray}
+    + Compute the local average estimate of the regression function at $x = 0.25$ and $x=0.75$ assuming that $h_{n} = 1/2$. 
+    + Compute the k nearest neighbors estimate of the regression function at $x = 0.25$ and $x = 0.75$ assuming that $k = 2$.
+    
+
+* **Exercise 11.3** Suppose we define an estimator $\tilde{m}_{h_{n}}(x)$ of the regression function as
+\begin{eqnarray}
+\tilde{m}_{h_{n}}(x) &=& \hat{\beta}_{0x} \quad \textrm{ where } \nonumber \\
+\hat{\beta}_{0x} &=&  \textrm{argmin}_{\beta_{0x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
+\end{eqnarray}
+Show that $\tilde{m}_{h_{n}}(x) = \hat{m}_{h_{n}}^{NW}(x)$.
+
+
+* **Exercise 11.4** Suppose the $n \times n$ matrix $\mathbf{A}_{h_{n}}$ satifies $\mathbf{A}_{h_{n}}\mathbf{m} = \mathbf{m}$.
+Show that 
+\begin{equation}
+\frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
+\end{equation}
+is an unbiased estimator of $\sigma^{2}$.
