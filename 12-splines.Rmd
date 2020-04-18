@@ -637,8 +637,112 @@ the weights coming from the diagonals of the "smoothing" matrix $\mathbf{A}$.
 
 * The `R` function `smooth.spline` will fit smoothing splines.
 ```{r, eval=FALSE}
-smooth.spline(x, y, df, cv=FALSE)
+smooth.spline(x, y, df, lambda, cv=FALSE)
 ```
 * **x** - the vector of covariate values.
 * **y** - the vector of responses.
-* **df** - the trace of the "smoother" matrix. This is the trace of the matrix $\mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y}$. This should be less than $n$. 
+* **df** - the trace of the "smoother" matrix. This is the trace of the matrix $\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y}$. This must be less than or equal to $n$ (where $n$ here is the number of unique values of the $x_{i}$). 
+* **lambda** - the value of $\lambda$ in the matrix $\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y}$. Note that you should only enter one of the **df** or **lambda** arguments. 
+* **cv** - the smooth.spline function will perform cross-validation whenever both the **df** and **lambda** arguments are left empty. When both of these arguments are left empty and `cv=FALSE`, the function will use GCV to select the smoothing parameter. When both **df** and **lambda** are left empty and `cv = TRUE`, the function will use LOOCV to select the smoothing parameter.
+
+* Notice that when only input the `x` and `y` vectors, the `smooth.spline` will automatically use generalized cross-validation to select the smoothing parameter.
+
+---
+
+* To see how to use the `smooth.spline` function and how to use the $C_{p}$ statistic, LOOCV, or GCV for selecting the smoothing parameter in smoothing splines or the number of knots in regression splines, we will again consider the `bone` data.
+
+* To start, let's use the `smooth.spline` function on the bone data using GCV to find the smoothing parameter:
+```{r, fig.cap="Smoothing spline fit for the bone data. This used the smooth.spline function with all the default settings.", fig.height=5.5}
+ss.bone <- smooth.spline(x=bonedat$age, y=bonedat$spnbmd)
+
+plot(bonedat$age, bonedat$spnbmd, las=1, pch=16, xlab="age", 
+     ylab="Relative Change in Bone MD", main="Bone Data: Smoothing Spline using GCV")
+lines(ss.bone$x, ss.bone$y, lwd=3, col="red")
+```
+
+* If you just type in `ss.smooth`, this will show the degrees of freedom used, the value of $\lambda$ used, and the value of the GCV criterion for the chosen $\lambda$
+```{r}
+ss.bone
+```
+
+* According to the GCV criterion, the best value for $\lambda$ is about $\lambda^{*} \approx 0.0002$ and the corresponding value for the degrees of freedom is $df^{*} = \textrm{tr}(\mathbf{A}_{\lambda^{*}}) \approx 12.15$.
+
+* Using the LOOCV criterion, the best value for the degrees of freedom is $13$.
+```{r}
+ss.bone2 <- smooth.spline(x=bonedat$age, y=bonedat$spnbmd, cv=TRUE)
+ss.bone2
+```
+
+### Smoothing Parameter Selection for the Smoothing Spline with the Cp statistic
+
+* Suppose we wanted to find the best value of $\textrm{tr}( \mathbf{A}_{\lambda})$ of the smoothing spline using the $C_{p}$ statistic. 
+
+* The first thing we want to find is an estimate of $\sigma^{2}$ that we can keep fixed across different values of the smoothing 
+parameter. Let's use the same value of $\hat{\sigma}^{2} = 0.0015$ that we used in Chapter 11:
+```{r}
+sigsq.est <- 0.0015
+```
+
+* Now, let's write a function that computes the $C_{p}$ statistic for a smoothing spline model given that we input the data, the degrees of freedom $\textrm{tr}(\mathbf{A}_{\lambda})$, and $\hat{\sigma}^{2}$.
+```{r}
+CpStatSmoothSpline <- function(x, y, df, sigsq.hat) {
+  n <- length(x)
+  ss.obj <- smooth.spline(x=x, y=y, df=df)
+  ## Now, compute the vector of residuals from this fitted smoothing spline
+  residu <- y - fitted(ss.obj)
+  ans <- mean(residu^2) + (2*sigsq.hat/n)*df
+  return(ans)
+}
+```
+
+
+* Now, compute the $C_{p}$ statistic for values of the degrees of freedom between $4$ and $20$. From the plot of the $C_{p}$ vs. the degrees of freedom it looks like the best value for the degrees of freedom is about $12$
+```{r}
+df.seq <- seq(4, 20, by=.1)
+nx <- length(df.seq)
+Cp.seq <- numeric(nx)
+for(k in 1:nx) {
+    Cp.seq[k] <- CpStatSmoothSpline(x=bonedat$age, y=bonedat$spnbmd, df=df.seq[k], 
+                                    sigsq.hat=sigsq.est)
+}
+
+plot(df.seq, Cp.seq, ylab="CP Stat", main="Bone Data: Cp(df) vs. 
+     df for the Smoothing Spline")
+```
+
+* More specifically, it's about $11.6$:
+```{r}
+df.seq[which.min(Cp.seq)]
+```
+
+### Knot Selection for Regression Splines with the Cp statistic
+
+* Let's go back to the regression spline methods we described in Section 12.3 also use the bone data to try to find the best number of knots for the case of regression splines. 
+
+* We will consider knots $u_{1}, \ldots, u_{q}$ that are computed automatically by the `bs` function when we specify the degrees of freedom. These are based on the quantiles of the covariate $x_{i}$. We will consider values of $q$ between $0$ and $20$.
+
+```{r}
+sigsq.hat <- .0015
+n <- nrow(bonedat)
+
+qqseq <- 0:20
+Cp.seq <- rep(0, length(qqseq))
+nq <- length(qqseq)
+for(k in 1:nq) {
+  q = qqseq[k]
+  tt <- 1:q
+  
+  #uu <- 9.4 + (15.7/(q+1))*tt
+  if(q == 0) {
+    tmp <- lm(bonedat$spnbmd ~ bs(bonedat$age, df=q+3))
+  } else {
+    tmp <- lm(bonedat$spnbmd ~ bs(bonedat$age, df=q+3))
+  }
+  RSS <- mean((bonedat$spnbmd - tmp$fitted.values)^2)
+  Cp.seq[k] <- RSS + (2*sigsq.hat*(q + 4))/n
+}
+plot(qqseq, Cp.seq)
+```
+
+* From the plot, it looks like the best number of knots when using the $C_{p}$ statistic is $q = 10$.
+

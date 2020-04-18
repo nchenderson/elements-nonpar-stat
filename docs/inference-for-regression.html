@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-17" />
+<meta name="date" content="2020-04-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -321,7 +321,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.5.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#leave-one-out-cross-validation-1"><i class="fa fa-check"></i><b>12.5.2</b> Leave-one-out Cross-Validation</a></li>
 <li class="chapter" data-level="12.5.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#generalized-cross-validation"><i class="fa fa-check"></i><b>12.5.3</b> Generalized Cross-Validation</a></li>
 </ul></li>
-<li class="chapter" data-level="12.6" data-path="inference-for-regression.html"><a href="inference-for-regression.html#fitting-smoothing-splines-in-r"><i class="fa fa-check"></i><b>12.6</b> Fitting Smoothing Splines in R</a></li>
+<li class="chapter" data-level="12.6" data-path="inference-for-regression.html"><a href="inference-for-regression.html#fitting-smoothing-splines-in-r"><i class="fa fa-check"></i><b>12.6</b> Fitting Smoothing Splines in R</a><ul>
+<li class="chapter" data-level="12.6.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-parameter-selection-for-the-smoothing-spline-with-the-cp-statistic"><i class="fa fa-check"></i><b>12.6.1</b> Smoothing Parameter Selection for the Smoothing Spline with the Cp statistic</a></li>
+<li class="chapter" data-level="12.6.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knot-selection-for-regression-splines-with-the-cp-statistic"><i class="fa fa-check"></i><b>12.6.2</b> Knot Selection for Regression Splines with the Cp statistic</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
 <li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a><ul>
@@ -889,13 +892,128 @@ the weights coming from the diagonals of the “smoothing” matrix <span class=
 <ul>
 <li>The <code>R</code> function <code>smooth.spline</code> will fit smoothing splines.</li>
 </ul>
-<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb260-1" data-line-number="1"><span class="kw">smooth.spline</span>(x, y, df, <span class="dt">cv=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb260-1" data-line-number="1"><span class="kw">smooth.spline</span>(x, y, df, lambda, <span class="dt">cv=</span><span class="ot">FALSE</span>)</a></code></pre></div>
 <ul>
 <li><strong>x</strong> - the vector of covariate values.</li>
 <li><strong>y</strong> - the vector of responses.</li>
-<li><strong>df</strong> - the trace of the “smoother” matrix. This is the trace of the matrix <span class="math inline">\(\mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y}\)</span>. This should be less than <span class="math inline">\(n\)</span>.</li>
+<li><strong>df</strong> - the trace of the “smoother” matrix. This is the trace of the matrix <span class="math inline">\(\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y}\)</span>. This must be less than or equal to <span class="math inline">\(n\)</span> (where <span class="math inline">\(n\)</span> here is the number of unique values of the <span class="math inline">\(x_{i}\)</span>).</li>
+<li><strong>lambda</strong> - the value of <span class="math inline">\(\lambda\)</span> in the matrix <span class="math inline">\(\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y}\)</span>. Note that you should only enter one of the <strong>df</strong> or <strong>lambda</strong> arguments.</li>
+<li><p><strong>cv</strong> - the smooth.spline function will perform cross-validation whenever both the <strong>df</strong> and <strong>lambda</strong> arguments are left empty. When both of these arguments are left empty and <code>cv=FALSE</code>, the function will use GCV to select the smoothing parameter. When both <strong>df</strong> and <strong>lambda</strong> are left empty and <code>cv = TRUE</code>, the function will use LOOCV to select the smoothing parameter.</p></li>
+<li><p>Notice that when only input the <code>x</code> and <code>y</code> vectors, the <code>smooth.spline</code> will automatically use generalized cross-validation to select the smoothing parameter.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>To see how to use the <code>smooth.spline</code> function and how to use the <span class="math inline">\(C_{p}\)</span> statistic, LOOCV, or GCV for selecting the smoothing parameter in smoothing splines or the number of knots in regression splines, we will again consider the <code>bone</code> data.</p></li>
+<li><p>To start, let’s use the <code>smooth.spline</code> function on the bone data using GCV to find the smoothing parameter:</p></li>
+</ul>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb261-1" data-line-number="1">ss.bone &lt;-<span class="st"> </span><span class="kw">smooth.spline</span>(<span class="dt">x=</span>bonedat<span class="op">$</span>age, <span class="dt">y=</span>bonedat<span class="op">$</span>spnbmd)</a>
+<a class="sourceLine" id="cb261-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb261-3" data-line-number="3"><span class="kw">plot</span>(bonedat<span class="op">$</span>age, bonedat<span class="op">$</span>spnbmd, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">xlab=</span><span class="st">&quot;age&quot;</span>, </a>
+<a class="sourceLine" id="cb261-4" data-line-number="4">     <span class="dt">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Bone Data: Smoothing Spline using GCV&quot;</span>)</a>
+<a class="sourceLine" id="cb261-5" data-line-number="5"><span class="kw">lines</span>(ss.bone<span class="op">$</span>x, ss.bone<span class="op">$</span>y, <span class="dt">lwd=</span><span class="dv">3</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-15"></span>
+<img src="12-splines_files/figure-html/unnamed-chunk-15-1.png" alt="Smoothing spline fit for the bone data. This used the smooth.spline function with all the default settings." width="672" />
+<p class="caption">
+Figure 12.5: Smoothing spline fit for the bone data. This used the smooth.spline function with all the default settings.
+</p>
+</div>
+<ul>
+<li>If you just type in <code>ss.smooth</code>, this will show the degrees of freedom used, the value of <span class="math inline">\(\lambda\)</span> used, and the value of the GCV criterion for the chosen <span class="math inline">\(\lambda\)</span></li>
+</ul>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb262-1" data-line-number="1">ss.bone</a></code></pre></div>
+<pre><code>## Call:
+## smooth.spline(x = bonedat$age, y = bonedat$spnbmd)
+## 
+## Smoothing Parameter  spar= 0.712  lambda= 0.000239 (15 iterations)
+## Equivalent Degrees of Freedom (Df): 12.2
+## Penalized Criterion (RSS): 0.222
+## GCV: 0.00152</code></pre>
+<ul>
+<li><p>According to the GCV criterion, the best value for <span class="math inline">\(\lambda\)</span> is about <span class="math inline">\(\lambda^{*} \approx 0.0002\)</span> and the corresponding value for the degrees of freedom is <span class="math inline">\(df^{*} = \textrm{tr}(\mathbf{A}_{\lambda^{*}}) \approx 12.15\)</span>.</p></li>
+<li><p>Using the LOOCV criterion, the best value for the degrees of freedom is <span class="math inline">\(13\)</span>.</p></li>
+</ul>
+<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb264-1" data-line-number="1">ss.bone2 &lt;-<span class="st"> </span><span class="kw">smooth.spline</span>(<span class="dt">x=</span>bonedat<span class="op">$</span>age, <span class="dt">y=</span>bonedat<span class="op">$</span>spnbmd, <span class="dt">cv=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## Warning in smooth.spline(x = bonedat$age, y = bonedat$spnbmd, cv = TRUE): cross-
+## validation with non-unique &#39;x&#39; values seems doubtful</code></pre>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb266-1" data-line-number="1">ss.bone2</a></code></pre></div>
+<pre><code>## Call:
+## smooth.spline(x = bonedat$age, y = bonedat$spnbmd, cv = TRUE)
+## 
+## Smoothing Parameter  spar= 0.694  lambda= 0.000177 (13 iterations)
+## Equivalent Degrees of Freedom (Df): 13
+## Penalized Criterion (RSS): 0.219
+## PRESS(l.o.o. CV): 0.00149</code></pre>
+<div id="smoothing-parameter-selection-for-the-smoothing-spline-with-the-cp-statistic" class="section level3">
+<h3><span class="header-section-number">12.6.1</span> Smoothing Parameter Selection for the Smoothing Spline with the Cp statistic</h3>
+<ul>
+<li><p>Suppose we wanted to find the best value of <span class="math inline">\(\textrm{tr}( \mathbf{A}_{\lambda})\)</span> of the smoothing spline using the <span class="math inline">\(C_{p}\)</span> statistic.</p></li>
+<li><p>The first thing we want to find is an estimate of <span class="math inline">\(\sigma^{2}\)</span> that we can keep fixed across different values of the smoothing
+parameter. Let’s use the same value of <span class="math inline">\(\hat{\sigma}^{2} = 0.0015\)</span> that we used in Chapter 11:</p></li>
+</ul>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb268-1" data-line-number="1">sigsq.est &lt;-<span class="st"> </span><span class="fl">0.0015</span></a></code></pre></div>
+<ul>
+<li>Now, let’s write a function that computes the <span class="math inline">\(C_{p}\)</span> statistic for a smoothing spline model given that we input the data, the degrees of freedom <span class="math inline">\(\textrm{tr}(\mathbf{A}_{\lambda})\)</span>, and <span class="math inline">\(\hat{\sigma}^{2}\)</span>.</li>
+</ul>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb269-1" data-line-number="1">CpStatSmoothSpline &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, df, sigsq.hat) {</a>
+<a class="sourceLine" id="cb269-2" data-line-number="2">  n &lt;-<span class="st"> </span><span class="kw">length</span>(x)</a>
+<a class="sourceLine" id="cb269-3" data-line-number="3">  ss.obj &lt;-<span class="st"> </span><span class="kw">smooth.spline</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y, <span class="dt">df=</span>df)</a>
+<a class="sourceLine" id="cb269-4" data-line-number="4">  <span class="co">## Now, compute the vector of residuals from this fitted smoothing spline</span></a>
+<a class="sourceLine" id="cb269-5" data-line-number="5">  residu &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> </span><span class="kw">fitted</span>(ss.obj)</a>
+<a class="sourceLine" id="cb269-6" data-line-number="6">  ans &lt;-<span class="st"> </span><span class="kw">mean</span>(residu<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>(<span class="dv">2</span><span class="op">*</span>sigsq.hat<span class="op">/</span>n)<span class="op">*</span>df</a>
+<a class="sourceLine" id="cb269-7" data-line-number="7">  <span class="kw">return</span>(ans)</a>
+<a class="sourceLine" id="cb269-8" data-line-number="8">}</a></code></pre></div>
+<ul>
+<li>Now, compute the <span class="math inline">\(C_{p}\)</span> statistic for values of the degrees of freedom between <span class="math inline">\(4\)</span> and <span class="math inline">\(20\)</span>. From the plot of the <span class="math inline">\(C_{p}\)</span> vs. the degrees of freedom it looks like the best value for the degrees of freedom is about <span class="math inline">\(12\)</span></li>
+</ul>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb270-1" data-line-number="1">df.seq &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">4</span>, <span class="dv">20</span>, <span class="dt">by=</span>.<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb270-2" data-line-number="2">nx &lt;-<span class="st"> </span><span class="kw">length</span>(df.seq)</a>
+<a class="sourceLine" id="cb270-3" data-line-number="3">Cp.seq &lt;-<span class="st"> </span><span class="kw">numeric</span>(nx)</a>
+<a class="sourceLine" id="cb270-4" data-line-number="4"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nx) {</a>
+<a class="sourceLine" id="cb270-5" data-line-number="5">    Cp.seq[k] &lt;-<span class="st"> </span><span class="kw">CpStatSmoothSpline</span>(<span class="dt">x=</span>bonedat<span class="op">$</span>age, <span class="dt">y=</span>bonedat<span class="op">$</span>spnbmd, <span class="dt">df=</span>df.seq[k], </a>
+<a class="sourceLine" id="cb270-6" data-line-number="6">                                    <span class="dt">sigsq.hat=</span>sigsq.est)</a>
+<a class="sourceLine" id="cb270-7" data-line-number="7">}</a>
+<a class="sourceLine" id="cb270-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb270-9" data-line-number="9"><span class="kw">plot</span>(df.seq, Cp.seq, <span class="dt">ylab=</span><span class="st">&quot;CP Stat&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Bone Data: Cp(df) vs. </span></a>
+<a class="sourceLine" id="cb270-10" data-line-number="10"><span class="st">     df for the Smoothing Spline&quot;</span>)</a></code></pre></div>
+<p><img src="12-splines_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<ul>
+<li>More specifically, it’s about <span class="math inline">\(11.6\)</span>:</li>
+</ul>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb271-1" data-line-number="1">df.seq[<span class="kw">which.min</span>(Cp.seq)]</a></code></pre></div>
+<pre><code>## [1] 11.6</code></pre>
+</div>
+<div id="knot-selection-for-regression-splines-with-the-cp-statistic" class="section level3">
+<h3><span class="header-section-number">12.6.2</span> Knot Selection for Regression Splines with the Cp statistic</h3>
+<ul>
+<li><p>Let’s go back to the regression spline methods we described in Section 12.3 also use the bone data to try to find the best number of knots for the case of regression splines.</p></li>
+<li><p>We will consider knots <span class="math inline">\(u_{1}, \ldots, u_{q}\)</span> that are computed automatically by the <code>bs</code> function when we specify the degrees of freedom. These are based on the quantiles of the covariate <span class="math inline">\(x_{i}\)</span>. We will consider values of <span class="math inline">\(q\)</span> between <span class="math inline">\(0\)</span> and <span class="math inline">\(20\)</span>.</p></li>
+</ul>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb273-1" data-line-number="1">sigsq.hat &lt;-<span class="st"> </span><span class="fl">.0015</span></a>
+<a class="sourceLine" id="cb273-2" data-line-number="2">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(bonedat)</a>
+<a class="sourceLine" id="cb273-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb273-4" data-line-number="4">qqseq &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">20</span></a>
+<a class="sourceLine" id="cb273-5" data-line-number="5">Cp.seq &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(qqseq))</a>
+<a class="sourceLine" id="cb273-6" data-line-number="6">nq &lt;-<span class="st"> </span><span class="kw">length</span>(qqseq)</a>
+<a class="sourceLine" id="cb273-7" data-line-number="7"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nq) {</a>
+<a class="sourceLine" id="cb273-8" data-line-number="8">  q =<span class="st"> </span>qqseq[k]</a>
+<a class="sourceLine" id="cb273-9" data-line-number="9">  tt &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span>q</a>
+<a class="sourceLine" id="cb273-10" data-line-number="10">  </a>
+<a class="sourceLine" id="cb273-11" data-line-number="11">  <span class="co">#uu &lt;- 9.4 + (15.7/(q+1))*tt</span></a>
+<a class="sourceLine" id="cb273-12" data-line-number="12">  <span class="cf">if</span>(q <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb273-13" data-line-number="13">    tmp &lt;-<span class="st"> </span><span class="kw">lm</span>(bonedat<span class="op">$</span>spnbmd <span class="op">~</span><span class="st"> </span><span class="kw">bs</span>(bonedat<span class="op">$</span>age, <span class="dt">df=</span>q<span class="op">+</span><span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb273-14" data-line-number="14">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb273-15" data-line-number="15">    tmp &lt;-<span class="st"> </span><span class="kw">lm</span>(bonedat<span class="op">$</span>spnbmd <span class="op">~</span><span class="st"> </span><span class="kw">bs</span>(bonedat<span class="op">$</span>age, <span class="dt">df=</span>q<span class="op">+</span><span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb273-16" data-line-number="16">  }</a>
+<a class="sourceLine" id="cb273-17" data-line-number="17">  RSS &lt;-<span class="st"> </span><span class="kw">mean</span>((bonedat<span class="op">$</span>spnbmd <span class="op">-</span><span class="st"> </span>tmp<span class="op">$</span>fitted.values)<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb273-18" data-line-number="18">  Cp.seq[k] &lt;-<span class="st"> </span>RSS <span class="op">+</span><span class="st"> </span>(<span class="dv">2</span><span class="op">*</span>sigsq.hat<span class="op">*</span>(q <span class="op">+</span><span class="st"> </span><span class="dv">4</span>))<span class="op">/</span>n</a>
+<a class="sourceLine" id="cb273-19" data-line-number="19">}</a>
+<a class="sourceLine" id="cb273-20" data-line-number="20"><span class="kw">plot</span>(qqseq, Cp.seq)</a></code></pre></div>
+<p><img src="12-splines_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<ul>
+<li>From the plot, it looks like the best number of knots when using the <span class="math inline">\(C_{p}\)</span> statistic is <span class="math inline">\(q = 10\)</span>.</li>
 </ul>
 
+</div>
 </div>
 </div>
 
