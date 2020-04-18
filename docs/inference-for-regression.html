@@ -894,6 +894,7 @@ where <span class="math inline">\(a_{i}^{\lambda}(x_{i})\)</span> denotes the <s
 \textrm{GCV}(\lambda) = \frac{1}{n}\sum_{i=1}^{n} \Big( \frac{ Y_{i} - \hat{m}_{\lambda}(x_{i})}{ 1 - \textrm{tr}(\mathbf{A}_{\lambda})/n  } \Big)^{2} = \Big(\frac{n}{n - \textrm{tr}(\mathbf{A}_{\lambda})} \Big)^{2} \frac{1}{n} \sum_{i=1}^{n} \{Y_{i} - \hat{m}_{\lambda}(x_{i}) \}^{2} \nonumber
 \end{equation}\]</span></p></li>
 <li><p>The GCV criterion can be seen as replacing the individual diagonal elements in the <span class="math inline">\(\textrm{LOOCV}\)</span> criterion with their average value <span class="math inline">\(\textrm{tr}(\mathbf{A}_{\lambda})/n\)</span>.</p></li>
+<li><p>GCV can often perform better when some of the diagonal elements of <span class="math inline">\(\mathbf{A}_{\lambda}\)</span> are close to <span class="math inline">\(1\)</span>.</p></li>
 </ul>
 </div>
 </div>

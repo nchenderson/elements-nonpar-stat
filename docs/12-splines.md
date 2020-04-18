@@ -624,6 +624,8 @@ where $a_{i}^{\lambda}(x_{i})$ denotes the $i^{th}$ diagonal of the matrix $\mat
 
 * The GCV criterion can be seen as replacing the individual diagonal elements in the $\textrm{LOOCV}$ criterion with their average value $\textrm{tr}(\mathbf{A}_{\lambda})/n$.
 
+* GCV can often perform better when some of the diagonal elements of $\mathbf{A}_{\lambda}$ are close to $1$.
+
 
 
 ## Fitting Smoothing Splines in R

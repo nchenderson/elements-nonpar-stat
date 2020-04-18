@@ -370,17 +370,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 Figure 13.1: Regressogram estimate with the 3 bins: [0,1/3), [1/3, 2/3), [2/3, 1).
 </p>
 </div>
+<hr />
 <ul>
 <li><p>Suppose we were forced to combined two adjacent bins to estimate the regression function. For the data shown in <a href="decision-tree.html#fig:cart-motivate">13.1</a>,
 which two bins should we combine if we were forced to do so? The only options here are to combine bins 1 and 2 or to combine bins 2 and 3.</p></li>
-<li>I would say we should combine bins 1 and 2. Look at Figures <a href="decision-tree.html#fig:cart-motivate2">13.2</a> and <a href="decision-tree.html#fig:cart-motivate3">13.3</a> for a comparison.
+<li><p>I would say we should combine bins 1 and 2. Look at Figures <a href="decision-tree.html#fig:cart-motivate2">13.2</a> and <a href="decision-tree.html#fig:cart-motivate3">13.3</a> for a comparison of these two choices.</p></li>
+<li><p>The responses <span class="math inline">\(Y_{i}\)</span> change much more over the range of the third bin than they do over the first and second bins. Hence, an
+intercept model for the first two bins is not all that bad.</p></li>
+<li><p>In contrast, an intercept model for the last two bins is a terrible model.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>This intuition for why the choice of bins <span class="math inline">\([0,2/3), [2/3, 1)\)</span> is better than the choice of bins <span class="math inline">\([0,1/3), [1/3, 1)\)</span> can
+be formalized by considering the within-bin variance of <span class="math inline">\(Y_{i}\)</span>.</p></li>
+<li><p>If we have <span class="math inline">\(p\)</span> bins, the within-bin variance of <span class="math inline">\(Y_{i}\)</span> would be
+<span class="math display">\[\begin{equation}
+WBVar = \sum_{k=1}^{p} \frac{1}{n_{k}-1}\sum_{i=1} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \in B_{k}) \nonumber
+\end{equation}\]</span></p></li>
+</ul>
 <div class="figure"><span id="fig:cart-motivate2"></span>
 <img src="13-cart_files/figure-html/cart-motivate2-1.png" alt="Regressogram estimate with the 2 bins: [0,1/3), [1/3, 1)." width="672" />
 <p class="caption">
 Figure 13.2: Regressogram estimate with the 2 bins: [0,1/3), [1/3, 1).
 </p>
-</div></li>
-</ul>
+</div>
 <div class="figure"><span id="fig:cart-motivate3"></span>
 <img src="13-cart_files/figure-html/cart-motivate3-1.png" alt="Regressogram estimate with the 2 bins: [0,2/3), [2/3, 1)." width="672" />
 <p class="caption">
