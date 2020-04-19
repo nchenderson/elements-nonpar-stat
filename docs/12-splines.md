@@ -784,7 +784,7 @@ for(k in 1:nq) {
   RSS <- mean((bonedat$spnbmd - tmp$fitted.values)^2)
   Cp.seq[k] <- RSS + (2*sigsq.hat*(q + 4))/n
 }
-plot(qqseq, Cp.seq)
+plot(qqseq, Cp.seq, xlab="q", ylab="Cp", main="Bone Data with Regression Splines: Cp Statistic for Different Number of Knots")
 ```
 
 <img src="12-splines_files/figure-html/unnamed-chunk-22-1.png" width="672" />

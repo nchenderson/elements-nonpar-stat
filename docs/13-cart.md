@@ -1,6 +1,6 @@
 # (PART) Nonparametric Regression: Part II {-} 
 
-# Decision Trees and CART {#decision-tree}
+# Regression Trees and CART {#decision-tree}
 
 ## Introduction
 
@@ -32,15 +32,6 @@ intercept model for the first two bins is not all that bad.
 
 ---
 
-* This intuition for why the choice of bins $[0,2/3), [2/3, 1)$ is better than the choice of bins $[0,1/3), [1/3, 1)$ can 
-be formalized by considering the within-bin variance of $Y_{i}$.
-
-* If we have $p$ bins, the within-bin variance of $Y_{i}$ would be
-\begin{equation}
-WBVar = \sum_{k=1}^{p} \frac{1}{n_{k}-1}\sum_{i=1} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \in B_{k}) \nonumber
-\end{equation}
-
-
 <div class="figure">
 <img src="13-cart_files/figure-html/cart-motivate2-1.png" alt="Regressogram estimate with the 2 bins: [0,1/3), [1/3, 1)." width="672" />
 <p class="caption">(\#fig:cart-motivate2)Regressogram estimate with the 2 bins: [0,1/3), [1/3, 1).</p>
@@ -51,46 +42,71 @@ WBVar = \sum_{k=1}^{p} \frac{1}{n_{k}-1}\sum_{i=1} (Y_{i} - \bar{Y}_{k})^{2}I(x_
 <p class="caption">(\#fig:cart-motivate3)Regressogram estimate with the 2 bins: [0,2/3), [2/3, 1).</p>
 </div>
 
+* The intuition for why the choice of bins $[0,2/3), [2/3, 1)$ is better than the choice of bins $[0,1/3), [1/3, 1)$ can 
+be formalized by considering the within-bin variation of $Y_{i}$.
 
+* For two bins $B_{1}$ and $B_{2}$, the within-bin sum of squares (WBSS) of $Y_{i}$ is
+\begin{equation}
+\textrm{WBSS} = \sum_{k=1}^{2} \sum_{i=1} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \in B_{k}) \nonumber
+\end{equation}
 
-```r
-var(yy[ind1 | ind2])
-```
+* You want to choose the bins in order to minimize the within-bin sum of squares. The reason for this is that: if the within-bin
+sum of squares is low, an intercept model for each bin will fit the data very well.
 
-```
-## [1] 0.07720792
-```
+---
 
-```r
-var(yy[ind3])
-```
-
-```
-## [1] 0.4485642
-```
+* For the data shown in Figures \@ref(fig:cart-motivate) - \@ref(fig:cart-motivate3), the WBSS when using the bins $[0, 1/3), [1/3, 1)$
+is
 
 ```r
-var(yy[ind2 | ind3])
+sum((yy[xx < 1/3] - mean(yy[xx < 1/3]))^2) + sum((yy[xx >= 1/3] - mean(yy[xx >= 1/3]))^2) 
 ```
 
 ```
-## [1] 0.9214935
+## [1] 62.72984
 ```
+
+* The WBSS when using the bins $[0,2/3), [2/3, 1)$ is
 
 ```r
-var(yy[ind1])
+sum((yy[xx < 2/3] - mean(yy[xx < 2/3]))^2) + sum((yy[xx >= 2/3] - mean(yy[xx >= 2/3]))^2) 
 ```
 
 ```
-## [1] 0.05972719
+## [1] 20.19249
 ```
 
 
+## Regression Trees with a Single Covariate
+
+* For a single covariate, regression trees estimate the regression function by a piecewise constant
+function that is constant within each of several bins. We will focus on the well-known 
+CART (Classification and Regression Trees) method for using regression trees.
+
+* More generally, with multivariate covariates CART will fit a regression function that is constant
+within each of many multi-dimensional "rectangles".
+
+* The main difference between CART and the regressogram is that the placements
+and widths of the bins in CART are chosen in a more selective manner than the regressogram.
+
+* Specifically, rather than just using a collection of bins of fixed width, CART chooses where to place the bin boundaries by considering
+the resulting within-bin sum of squares.
+
+---
+
+* CART constructs the bins through sequential binary splits. 
+
+* That is, in the first step, CART will divide the covariates into two bins. Then, in the next step,
+
+<img src="13-cart_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+
+---
+
+* This sequential process for constructing bins is typically depicted throug a binary decision tree.
 
 
 
 
 
-
-
+## Regression Trees With Multiple Covariates
 

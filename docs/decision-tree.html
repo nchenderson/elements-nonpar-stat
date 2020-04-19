@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 13 Decision Trees and CART | Elements of Nonparametric Statistics</title>
+  <title>Chapter 13 Regression Trees and CART | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 13 Decision Trees and CART | Elements of Nonparametric Statistics" />
+  <meta property="og:title" content="Chapter 13 Regression Trees and CART | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 13 Decision Trees and CART | Elements of Nonparametric Statistics" />
+  <meta name="twitter:title" content="Chapter 13 Regression Trees and CART | Elements of Nonparametric Statistics" />
   
   <meta name="twitter:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-18" />
+<meta name="date" content="2020-04-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -328,8 +328,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
-<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Decision Trees and CART</a><ul>
+<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Regression Trees and CART</a><ul>
 <li class="chapter" data-level="13.1" data-path="decision-tree.html"><a href="decision-tree.html#introduction-4"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
+<li class="chapter" data-level="13.2" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-a-single-covariate"><i class="fa fa-check"></i><b>13.2</b> Regression Trees with a Single Covariate</a></li>
+<li class="chapter" data-level="13.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>13.3</b> Regression Trees With Multiple Covariates</a></li>
 </ul></li>
 <li class="chapter" data-level="14" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>14</b> Ensemble Methods for Prediction</a></li>
 <li class="divider"></li>
@@ -353,7 +355,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="decision-tree" class="section level1">
-<h1><span class="header-section-number">Chapter 13</span> Decision Trees and CART</h1>
+<h1><span class="header-section-number">Chapter 13</span> Regression Trees and CART</h1>
 <div id="introduction-4" class="section level2">
 <h2><span class="header-section-number">13.1</span> Introduction</h2>
 <ul>
@@ -380,14 +382,6 @@ intercept model for the first two bins is not all that bad.</p></li>
 <li><p>In contrast, an intercept model for the last two bins is a terrible model.</p></li>
 </ul>
 <hr />
-<ul>
-<li><p>This intuition for why the choice of bins <span class="math inline">\([0,2/3), [2/3, 1)\)</span> is better than the choice of bins <span class="math inline">\([0,1/3), [1/3, 1)\)</span> can
-be formalized by considering the within-bin variance of <span class="math inline">\(Y_{i}\)</span>.</p></li>
-<li><p>If we have <span class="math inline">\(p\)</span> bins, the within-bin variance of <span class="math inline">\(Y_{i}\)</span> would be
-<span class="math display">\[\begin{equation}
-WBVar = \sum_{k=1}^{p} \frac{1}{n_{k}-1}\sum_{i=1} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \in B_{k}) \nonumber
-\end{equation}\]</span></p></li>
-</ul>
 <div class="figure"><span id="fig:cart-motivate2"></span>
 <img src="13-cart_files/figure-html/cart-motivate2-1.png" alt="Regressogram estimate with the 2 bins: [0,1/3), [1/3, 1)." width="672" />
 <p class="caption">
@@ -400,14 +394,55 @@ Figure 13.2: Regressogram estimate with the 2 bins: [0,1/3), [1/3, 1).
 Figure 13.3: Regressogram estimate with the 2 bins: [0,2/3), [2/3, 1).
 </p>
 </div>
-<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb274-1" data-line-number="1"><span class="kw">var</span>(yy[ind1 <span class="op">|</span><span class="st"> </span>ind2])</a></code></pre></div>
-<pre><code>## [1] 0.07720792</code></pre>
-<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb276-1" data-line-number="1"><span class="kw">var</span>(yy[ind3])</a></code></pre></div>
-<pre><code>## [1] 0.4485642</code></pre>
-<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb278-1" data-line-number="1"><span class="kw">var</span>(yy[ind2 <span class="op">|</span><span class="st"> </span>ind3])</a></code></pre></div>
-<pre><code>## [1] 0.9214935</code></pre>
-<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb280-1" data-line-number="1"><span class="kw">var</span>(yy[ind1])</a></code></pre></div>
-<pre><code>## [1] 0.05972719</code></pre>
+<ul>
+<li><p>The intuition for why the choice of bins <span class="math inline">\([0,2/3), [2/3, 1)\)</span> is better than the choice of bins <span class="math inline">\([0,1/3), [1/3, 1)\)</span> can
+be formalized by considering the within-bin variation of <span class="math inline">\(Y_{i}\)</span>.</p></li>
+<li><p>For two bins <span class="math inline">\(B_{1}\)</span> and <span class="math inline">\(B_{2}\)</span>, the within-bin sum of squares (WBSS) of <span class="math inline">\(Y_{i}\)</span> is
+<span class="math display">\[\begin{equation}
+\textrm{WBSS} = \sum_{k=1}^{2} \sum_{i=1} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \in B_{k}) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>You want to choose the bins in order to minimize the within-bin sum of squares. The reason for this is that: if the within-bin
+sum of squares is low, an intercept model for each bin will fit the data very well.</p></li>
+</ul>
+<hr />
+<ul>
+<li>For the data shown in Figures <a href="decision-tree.html#fig:cart-motivate">13.1</a> - <a href="decision-tree.html#fig:cart-motivate3">13.3</a>, the WBSS when using the bins <span class="math inline">\([0, 1/3), [1/3, 1)\)</span>
+is</li>
+</ul>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb274-1" data-line-number="1"><span class="kw">sum</span>((yy[xx <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(yy[xx <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>]))<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>((yy[xx <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(yy[xx <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>]))<span class="op">^</span><span class="dv">2</span>) </a></code></pre></div>
+<pre><code>## [1] 62.72984</code></pre>
+<ul>
+<li>The WBSS when using the bins <span class="math inline">\([0,2/3), [2/3, 1)\)</span> is</li>
+</ul>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb276-1" data-line-number="1"><span class="kw">sum</span>((yy[xx <span class="op">&lt;</span><span class="st"> </span><span class="dv">2</span><span class="op">/</span><span class="dv">3</span>] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(yy[xx <span class="op">&lt;</span><span class="st"> </span><span class="dv">2</span><span class="op">/</span><span class="dv">3</span>]))<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>((yy[xx <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span><span class="op">/</span><span class="dv">3</span>] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(yy[xx <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span><span class="op">/</span><span class="dv">3</span>]))<span class="op">^</span><span class="dv">2</span>) </a></code></pre></div>
+<pre><code>## [1] 20.19249</code></pre>
+</div>
+<div id="regression-trees-with-a-single-covariate" class="section level2">
+<h2><span class="header-section-number">13.2</span> Regression Trees with a Single Covariate</h2>
+<ul>
+<li><p>For a single covariate, regression trees estimate the regression function by a piecewise constant
+function that is constant within each of several bins. We will focus on the well-known
+CART (Classification and Regression Trees) method for using regression trees.</p></li>
+<li><p>More generally, with multivariate covariates CART will fit a regression function that is constant
+within each of many multi-dimensional “rectangles”.</p></li>
+<li><p>The main difference between CART and the regressogram is that the placements
+and widths of the bins in CART are chosen in a more selective manner than the regressogram.</p></li>
+<li><p>Specifically, rather than just using a collection of bins of fixed width, CART chooses where to place the bin boundaries by considering
+the resulting within-bin sum of squares.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>CART constructs the bins through sequential binary splits.</p></li>
+<li><p>That is, in the first step, CART will divide the covariates into two bins. Then, in the next step,</p></li>
+</ul>
+<p><img src="13-cart_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<hr />
+<ul>
+<li>This sequential process for constructing bins is typically depicted throug a binary decision tree.</li>
+</ul>
+</div>
+<div id="regression-trees-with-multiple-covariates" class="section level2">
+<h2><span class="header-section-number">13.3</span> Regression Trees With Multiple Covariates</h2>
 
 </div>
 </div>
