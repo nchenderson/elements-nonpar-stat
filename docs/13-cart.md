@@ -94,19 +94,52 @@ the resulting within-bin sum of squares.
 
 ---
 
-* CART constructs the bins through sequential binary splits. 
+* CART constructs the bins through sequential binary splits of the x axis. 
 
-* That is, in the first step, CART will divide the covariates into two bins. Then, in the next step,
+* In the first step, CART will divide the covariates into two bins $B_{1}$ and $B_{2}$. These bins will
+have the form $B_{1} = (-\infty, t_{1})$ and $B_{2} = [t_{1}, \infty)$.
+
+* At the next step, CART will create $4$ bins by further dividing each of these two bins into two more bins. So, 
+we will have four bins $B_{11}, B_{12}, B_{21}, B_{22}$. 
+
+* Bins $B_{11}$ and $B_{12}$ will have the form $B_{11} = (-\infty, t_{11})$ and $B_{12} = [t_{11}, t_{1})$,
+and bins $B_{21}$ and $B_{22}$ will have the form $B_{21} = [t_{1}, t_{21})$ and $B_{22} = [t_{21}, \infty)$.
+
+
+---
+
+* The first two bins are determined by the "split point" $t_{1}$. To find this split point, CART looks 
+at the within-bin sum of squares induced by a splitting point $t$.
+\begin{equation}
+\textrm{WBSS}(t) = \sum_{k=1}^{2} \sum_{i=1} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \in B_{k})
+=  \sum_{i=1} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} < t) + \sum_{i=1} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \geq t) \nonumber
+\end{equation}
+
+* The first split point $t_{1}$ is the value of $t$ which minimizes this within-bin sum of squares criterion. That is,
+\begin{equation}
+t_{1} = \arg\min \textrm{WBSS}(t) \nonumber
+\end{equation}
+
 
 <img src="13-cart_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 ---
 
-* This sequential process for constructing bins is typically depicted throug a binary decision tree.
+* This sequential process for constructing bins is typically depicted with a binary decision tree.
 
+* Figure \@ref(fig:dectree-basic) shows the decision tree representation of a CART regression function estimate with $4$ bins where it is assumed that all the covariates are between $0$ and $1$.
 
+<div class="figure">
+<img src="13-cart_files/figure-html/dectree-basic-1.png" alt="Binary decision tree representing a regression function estimate with 4 bins. The 4 bins here are [0, 0.6), [0.6, 0.74), [0.74, 0.89), [0.89, 1)." width="672" />
+<p class="caption">(\#fig:dectree-basic)Binary decision tree representing a regression function estimate with 4 bins. The 4 bins here are [0, 0.6), [0.6, 0.74), [0.74, 0.89), [0.89, 1).</p>
+</div>
 
 
 
 ## Regression Trees With Multiple Covariates
+
+
+
+
+
 
