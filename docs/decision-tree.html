@@ -330,7 +330,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
 <li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Regression Trees and CART</a><ul>
 <li class="chapter" data-level="13.1" data-path="decision-tree.html"><a href="decision-tree.html#introduction-4"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
-<li class="chapter" data-level="13.2" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-a-single-covariate"><i class="fa fa-check"></i><b>13.2</b> Regression Trees with a Single Covariate</a></li>
+<li class="chapter" data-level="13.2" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-a-single-covariate"><i class="fa fa-check"></i><b>13.2</b> Regression Trees with a Single Covariate</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="decision-tree.html"><a href="decision-tree.html#determining-the-split-points"><i class="fa fa-check"></i><b>13.2.1</b> Determining the Split Points</a></li>
+</ul></li>
 <li class="chapter" data-level="13.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>13.3</b> Regression Trees With Multiple Covariates</a></li>
 </ul></li>
 <li class="chapter" data-level="14" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>14</b> Ensemble Methods for Prediction</a></li>
@@ -442,32 +444,57 @@ and bins <span class="math inline">\(B_{21}\)</span> and <span class="math inlin
 </ul>
 <hr />
 <ul>
-<li><p>The first two bins are determined by the “split point” <span class="math inline">\(t_{1}\)</span>. To find this split point, CART looks
-at the within-bin sum of squares induced by a splitting point <span class="math inline">\(t\)</span>.
-<span class="math display">\[\begin{equation}
-\textrm{WBSS}(t) = \sum_{k=1}^{2} \sum_{i=1} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \in B_{k})
-=  \sum_{i=1} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} &lt; t) + \sum_{i=1} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \geq t) \nonumber
-\end{equation}\]</span></p></li>
-<li><p>The first split point <span class="math inline">\(t_{1}\)</span> is the value of <span class="math inline">\(t\)</span> which minimizes this within-bin sum of squares criterion. That is,
-<span class="math display">\[\begin{equation}
-t_{1} = \arg\min \textrm{WBSS}(t) \nonumber
-\end{equation}\]</span></p></li>
-</ul>
-<p><img src="13-cart_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<hr />
-<ul>
 <li><p>This sequential process for constructing bins is typically depicted with a binary decision tree.</p></li>
-<li><p>Figure <a href="decision-tree.html#fig:dectree-basic">13.4</a> shows the decision tree representation of a CART regression function estimate with <span class="math inline">\(4\)</span> bins where it is assumed that all the covariates are between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>.</p></li>
+<li><p>Figure <a href="decision-tree.html#fig:dectree-basic">13.4</a> shows the decision tree representation of a CART regression function estimate with <span class="math inline">\(4\)</span> bins.</p></li>
 </ul>
 <div class="figure"><span id="fig:dectree-basic"></span>
-<img src="13-cart_files/figure-html/dectree-basic-1.png" alt="Binary decision tree representing a regression function estimate with 4 bins. The 4 bins here are [0, 0.6), [0.6, 0.74), [0.74, 0.89), [0.89, 1)." width="672" />
+<img src="13-cart_files/figure-html/dectree-basic-1.png" alt="Binary decision tree representing a regression function estimate with 4 bins where it is assumed that all the covariates are between $0$ and $1$. The 4 bins here are [0, 0.6), [0.6, 0.74), [0.74, 0.89), [0.89, 1)." width="672" />
 <p class="caption">
-Figure 13.4: Binary decision tree representing a regression function estimate with 4 bins. The 4 bins here are [0, 0.6), [0.6, 0.74), [0.74, 0.89), [0.89, 1).
+Figure 13.4: Binary decision tree representing a regression function estimate with 4 bins where it is assumed that all the covariates are between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>. The 4 bins here are [0, 0.6), [0.6, 0.74), [0.74, 0.89), [0.89, 1).
 </p>
+</div>
+<ul>
+<li>Figure <a href="decision-tree.html#fig:fourbin-example">13.5</a> shows the regression function estimate which corresponds to the decision tree shown in Figure <a href="decision-tree.html#fig:dectree-basic">13.4</a>.</li>
+</ul>
+<div class="figure"><span id="fig:fourbin-example"></span>
+<img src="13-cart_files/figure-html/fourbin-example-1.png" alt="Regression function estimate that corresponds to the decision tree shown in the previous figure." width="672" />
+<p class="caption">
+Figure 13.5: Regression function estimate that corresponds to the decision tree shown in the previous figure.
+</p>
+</div>
+<div id="determining-the-split-points" class="section level3">
+<h3><span class="header-section-number">13.2.1</span> Determining the Split Points</h3>
+<ul>
+<li><p>The first two bins are determined by the “split point” <span class="math inline">\(t_{1}\)</span>. To find this split point, CART looks
+at the within-bin sum of squares induced by a splitting point <span class="math inline">\(t\)</span>.
+<span class="math display">\[\begin{eqnarray}
+\textrm{WBSS}(t) &amp;=&amp; \sum_{k=1}^{2} \sum_{i=1}^{n} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \in B_{k}) \nonumber \\
+&amp;=&amp;  \sum_{i=1}^{n} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} &lt; t) + \sum_{i=1}^{n} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \geq t) \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>The first split point <span class="math inline">\(t_{1}\)</span> is the value of <span class="math inline">\(t\)</span> which minimizes this within-bin sum of squares criterion. That is,
+<span class="math display">\[\begin{equation}
+t_{1} = \arg\min_{t} \textrm{ WBSS}(t) = \textrm{argmin}_{t \in \{x_{1}, \ldots, x_{n}  \}} \textrm{ WBSS}(t) \nonumber
+\end{equation}\]</span></p></li>
+<li><p>To find <span class="math inline">\(t_{1}\)</span>, we only have to take the minimum over the set of covariates since the value of <span class="math inline">\(\textrm{WBSS}(t)\)</span> only changes
+at each <span class="math inline">\(x_{i}\)</span>.</p></li>
+<li><p>Figure <a href="decision-tree.html#fig:wbss-example">13.6</a> shows a plot of <span class="math inline">\(\textrm{WBSS}(t)\)</span> vs. <span class="math inline">\(t\)</span> for the data shown in Figures <a href="decision-tree.html#fig:cart-motivate">13.1</a> - <a href="decision-tree.html#fig:cart-motivate3">13.3</a>.</p></li>
+<li><p>Figure <a href="decision-tree.html#fig:wbss-example">13.6</a> suggests that the value of <span class="math inline">\(t_{1}\)</span> will be around <span class="math inline">\(0.75\)</span>.</p></li>
+</ul>
+<div class="figure"><span id="fig:wbss-example"></span>
+<img src="13-cart_files/figure-html/wbss-example-1.png" alt="Plot of WBSS(t) vs. t for the data shown in the above figures." width="672" />
+<p class="caption">
+Figure 13.6: Plot of WBSS(t) vs. t for the data shown in the above figures.
+</p>
+</div>
+<hr />
+<ul>
+<li>Finding subsequent splitting points.</li>
+</ul>
 </div>
 </div>
 <div id="regression-trees-with-multiple-covariates" class="section level2">
 <h2><span class="header-section-number">13.3</span> Regression Trees With Multiple Covariates</h2>
+<p><img src="13-cart_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 
 </div>
 </div>
