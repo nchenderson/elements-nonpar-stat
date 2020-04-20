@@ -517,6 +517,14 @@ where the functions $d_{k}(x)$ are defined as
 d_{k}(x) = \frac{ (x - u_{k})_{+}^{3} - (x - u_{q})_{+}^{3} }{ u_{q} - u_{k}} \nonumber
 \end{equation}
 
+```{r, fig.height=5.5} 
+natural.cubspline.bone <- lm(spnbmd ~ ns(age, df=8), data=bonedat)
+tt <- seq(9.5, 25, by=0.1)
+plot(bonedat$age, bonedat$spnbmd, xlab="age", ylab="Relative Change in Bone MD", 
+     main="Bone Data: Fitted Natural Cubic Spline", las=1)
+lines(tt, predict(natural.cubspline.bone, data.frame(age=tt)), lwd=2)
+```
+
 ## Smoothing Splines
 
 * When we used cubic splines for regression, we placed knots at a number of fixed points

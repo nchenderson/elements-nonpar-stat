@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  14 APR 2020 11:32
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.8)  20 APR 2020 13:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -424,6 +424,12 @@ LaTeX Warning: Label `fig:unnamed-chunk-1' multiply defined.
 
 
 LaTeX Warning: Label `fig:unnamed-chunk-1' multiply defined.
+
+
+LaTeX Warning: Label `fig:unnamed-chunk-1' multiply defined.
+
+
+LaTeX Warning: Label `fig:unnamed-chunk-3' multiply defined.
 
 )
 \openout1 = `ElementsNonparStat.aux'.
@@ -1609,30 +1615,158 @@ Overfull \hbox (25.44374pt too wide) detected at line 10955
 [][][][][] [] [] [] [] [] [][] [] [] [] [] [] [] [][][][] [] [][][][][]
  []
 
-[245] (./ElementsNonparStat.bbl [246] [247
+[245] [246]
+Chapter 12.
+[247
 
-])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 11022.
+]
+File: 12-splines-Latex_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (t
+ype pdf)
+<use 12-splines-Latex_files/figure-latex/unnamed-chunk-2-1.pdf>
 [248]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 11022.
+File: 12-splines-Latex_files/figure-latex/pwlinear-1.pdf Graphic file (type pdf
+)
+<use 12-splines-Latex_files/figure-latex/pwlinear-1.pdf>
+[249]
+File: 12-splines-Latex_files/figure-latex/pwcubic-1.pdf Graphic file (type pdf)
+
+<use 12-splines-Latex_files/figure-latex/pwcubic-1.pdf>
+[250]
+Overfull \hbox (49.52344pt too wide) has occurred while \output is active
+\TU/lmr/m/sl/10 12.2.  PIECEWISE LINEAR ESTIMATES WITH CONTINUITY (LINEAR SPLIN
+ES) \TU/lmr/m/n/10 251
+ []
+
+[251]
+Overfull \hbox (40.1499pt too wide) detected at line 11227
+[][][][][] [] []
+ []
+
+[252]
+File: 12-splines-Latex_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (t
+ype pdf)
+<use 12-splines-Latex_files/figure-latex/unnamed-chunk-3-1.pdf>
+[253]
+Overfull \hbox (80.61823pt too wide) in paragraph at lines 11342--11344
+[]$[][][][]$ \TU/lmr/m/n/10 is a cubic function over each of the intervals $[][
+][][] [][][][] [][][][] [][][][] [] [] [][][][] [][][][] [][][][] [][]$. 
+ []
+
+[254] [255] [256] [257]
+File: 12-splines-Latex_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (
+type pdf)
+<use 12-splines-Latex_files/figure-latex/unnamed-chunk-10-1.pdf>
+[258]
+File: 12-splines-Latex_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (
+type pdf)
+<use 12-splines-Latex_files/figure-latex/unnamed-chunk-13-1.pdf>
+
+Underfull \vbox (badness 3428) has occurred while \output is active []
+
+[259] [260]
+File: 12-splines-Latex_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (
+type pdf)
+<use 12-splines-Latex_files/figure-latex/unnamed-chunk-14-1.pdf>
+[261]
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
+(Font)              scaled to size 10.0pt on input line 11743.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
+(Font)              scaled to size 7.0pt on input line 11743.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/b/n' will be
+(Font)              scaled to size 5.0pt on input line 11743.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
+(Font)              scaled to size 10.00092pt on input line 11743.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
+(Font)              scaled to size 7.00064pt on input line 11743.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/b/n' will be
+(Font)              scaled to size 5.00046pt on input line 11743.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
+(Font)              scaled to size 9.99893pt on input line 11743.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
+(Font)              scaled to size 6.99925pt on input line 11743.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/b/n' will be
+(Font)              scaled to size 4.99947pt on input line 11743.
+[262] [263] [264]
+File: 12-splines-Latex_files/figure-latex/unnamed-chunk-16-1.pdf Graphic file (
+type pdf)
+<use 12-splines-Latex_files/figure-latex/unnamed-chunk-16-1.pdf>
+[265] [266]
+Overfull \hbox (17.25pt too wide) in paragraph at lines 11911--11911
+[]\TU/lmtt/m/n/10 ## Smoothing Parameter  spar= 0.712  lambda= 0.000239 (15 ite
+rations)[] 
+ []
+
+
+Overfull \hbox (90.75pt too wide) in paragraph at lines 11929--11929
+[]\TU/lmtt/m/n/10 ## Warning in smooth.spline(x = bonedat$age, y = bonedat$spnb
+md, cv = TRUE): cross-[] 
+ []
+
+
+Overfull \hbox (17.25pt too wide) in paragraph at lines 11945--11945
+[]\TU/lmtt/m/n/10 ## Smoothing Parameter  spar= 0.694  lambda= 0.000177 (13 ite
+rations)[] 
+ []
+
+[267]
+File: 12-splines-Latex_files/figure-latex/unnamed-chunk-21-1.pdf Graphic file (
+type pdf)
+<use 12-splines-Latex_files/figure-latex/unnamed-chunk-21-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[268] [269]
+File: 12-splines-Latex_files/figure-latex/unnamed-chunk-23-1.pdf Graphic file (
+type pdf)
+<use 12-splines-Latex_files/figure-latex/unnamed-chunk-23-1.pdf>
+[270] [271
+
+] [272]
+Chapter 13.
+[273
+
+] [274]
+File: 13-cart-Latex_files/figure-latex/fourbin-example-1.pdf Graphic file (type
+ pdf)
+<use 13-cart-Latex_files/figure-latex/fourbin-example-1.pdf>
+[275]
+File: 13-cart-Latex_files/figure-latex/wbss-example-1.pdf Graphic file (type pd
+f)
+<use 13-cart-Latex_files/figure-latex/wbss-example-1.pdf>
+[276] [277]
+File: 13-cart-Latex_files/figure-latex/twod-cart-example-1.pdf Graphic file (ty
+pe pdf)
+<use 13-cart-Latex_files/figure-latex/twod-cart-example-1.pdf>
+File: 13-cart-Latex_files/figure-latex/bone-dectree-1.pdf Graphic file (type pd
+f)
+<use 13-cart-Latex_files/figure-latex/bone-dectree-1.pdf>
+File: 13-cart-Latex_files/figure-latex/bone-fittedregfn-1.pdf Graphic file (typ
+e pdf)
+<use 13-cart-Latex_files/figure-latex/bone-fittedregfn-1.pdf>
+(./ElementsNonparStat.bbl [278] [279] [280] [281] [282
+
+] [283])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 12359.
+[284]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 12359.
 (./ElementsNonparStat.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 11022.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 11022
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 12359.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 12359
 .
 Package rerunfilecheck Info: File `ElementsNonparStat.out' has not changed.
-(rerunfilecheck)             Checksum: 7DB52E914E5E412203E013E87176AF55;15425.
+(rerunfilecheck)             Checksum: 306EE0E1B8C1024BB9292B1EB997E7A0;18120.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 11022.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 12359.
  ) 
 Here is how much of TeX's memory you used:
- 17351 strings out of 481765
- 330794 string characters out of 5935194
- 767757 words of memory out of 5000000
- 34081 multiletter control sequences out of 15000+600000
- 538877 words of font info for 88 fonts, out of 8000000 for 9000
+ 17502 strings out of 481765
+ 337633 string characters out of 5935194
+ 775476 words of memory out of 5000000
+ 34213 multiletter control sequences out of 15000+600000
+ 540330 words of font info for 97 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  52i,12n,115p,548b,553s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on ElementsNonparStat.pdf (248 pages).
+Output written on ElementsNonparStat.pdf (284 pages).

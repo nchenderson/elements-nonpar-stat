@@ -495,6 +495,17 @@ where the functions $d_{k}(x)$ are defined as
 d_{k}(x) = \frac{ (x - u_{k})_{+}^{3} - (x - u_{q})_{+}^{3} }{ u_{q} - u_{k}} \nonumber
 \end{equation}
 
+
+```r
+natural.cubspline.bone <- lm(spnbmd ~ ns(age, df=8), data=bonedat)
+tt <- seq(9.5, 25, by=0.1)
+plot(bonedat$age, bonedat$spnbmd, xlab="age", ylab="Relative Change in Bone MD", 
+     main="Bone Data: Fitted Natural Cubic Spline", las=1)
+lines(tt, predict(natural.cubspline.bone, data.frame(age=tt)), lwd=2)
+```
+
+<img src="12-splines_files/figure-html/unnamed-chunk-14-1.png" width="672" />
+
 ## Smoothing Splines
 
 * When we used cubic splines for regression, we placed knots at a number of fixed points
@@ -658,8 +669,8 @@ lines(ss.bone$x, ss.bone$y, lwd=3, col="red")
 ```
 
 <div class="figure">
-<img src="12-splines_files/figure-html/unnamed-chunk-15-1.png" alt="Smoothing spline fit for the bone data. This used the smooth.spline function with all the default settings." width="672" />
-<p class="caption">(\#fig:unnamed-chunk-15)Smoothing spline fit for the bone data. This used the smooth.spline function with all the default settings.</p>
+<img src="12-splines_files/figure-html/unnamed-chunk-16-1.png" alt="Smoothing spline fit for the bone data. This used the smooth.spline function with all the default settings." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-16)Smoothing spline fit for the bone data. This used the smooth.spline function with all the default settings.</p>
 </div>
 
 * If you just type in `ss.smooth`, this will show the degrees of freedom used, the value of $\lambda$ used, and the value of the GCV criterion for the chosen $\lambda$
@@ -745,7 +756,7 @@ plot(df.seq, Cp.seq, ylab="CP Stat", main="Bone Data: Cp(df) vs.
      df for the Smoothing Spline")
 ```
 
-<img src="12-splines_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+<img src="12-splines_files/figure-html/unnamed-chunk-21-1.png" width="672" />
 
 * More specifically, it's about $11.6$:
 
@@ -787,7 +798,7 @@ for(k in 1:nq) {
 plot(qqseq, Cp.seq, xlab="q", ylab="Cp", main="Bone Data with Regression Splines: Cp Statistic for Different Number of Knots")
 ```
 
-<img src="12-splines_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+<img src="12-splines_files/figure-html/unnamed-chunk-23-1.png" width="672" />
 
 * From the plot, it looks like the best number of knots when using the $C_{p}$ statistic is $q = 10$.
 

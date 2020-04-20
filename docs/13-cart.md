@@ -49,6 +49,7 @@ be formalized by considering the within-bin variation of $Y_{i}$.
 \begin{equation}
 \textrm{WBSS} = \sum_{k=1}^{2} \sum_{i=1} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \in B_{k}) \nonumber
 \end{equation}
+where $\bar{Y}_{k} = \frac{1}{n_{k}}\sum_{i=1}^{n} Y_{i}$ denotes the mean of the responses within the $k^{th}$ bin.
 
 * You want to choose the bins in order to minimize the within-bin sum of squares. The reason for this is that: if the within-bin
 sum of squares is low, an intercept model for each bin will fit the data very well.
@@ -59,7 +60,8 @@ sum of squares is low, an intercept model for each bin will fit the data very we
 is
 
 ```r
-sum((yy[xx < 1/3] - mean(yy[xx < 1/3]))^2) + sum((yy[xx >= 1/3] - mean(yy[xx >= 1/3]))^2) 
+sum( (yy[xx < 1/3] - mean(yy[xx < 1/3]))^2 ) + 
+  sum( (yy[xx >= 1/3] - mean(yy[xx >= 1/3]))^2 ) 
 ```
 
 ```
@@ -69,7 +71,8 @@ sum((yy[xx < 1/3] - mean(yy[xx < 1/3]))^2) + sum((yy[xx >= 1/3] - mean(yy[xx >= 
 * The WBSS when using the bins $[0,2/3), [2/3, 1)$ is
 
 ```r
-sum((yy[xx < 2/3] - mean(yy[xx < 2/3]))^2) + sum((yy[xx >= 2/3] - mean(yy[xx >= 2/3]))^2) 
+sum( (yy[xx < 2/3] - mean(yy[xx < 2/3]))^2 ) + 
+  sum( (yy[xx >= 2/3] - mean(yy[xx >= 2/3]))^2 ) 
 ```
 
 ```
@@ -105,6 +108,9 @@ we will have four bins $B_{11}, B_{12}, B_{21}, B_{22}$.
 * Bins $B_{11}$ and $B_{12}$ will have the form $B_{11} = (-\infty, t_{11})$ and $B_{12} = [t_{11}, t_{1})$,
 and bins $B_{21}$ and $B_{22}$ will have the form $B_{21} = [t_{1}, t_{21})$ and $B_{22} = [t_{21}, \infty)$.
 
+* You can repeat this process to get smaller and smaller bins. Usually, this process will stop once
+a threshold for the minimum number of observations in a bin has been reached.
+
 
 ---
 
@@ -131,12 +137,12 @@ and bins $B_{21}$ and $B_{22}$ will have the form $B_{21} = [t_{1}, t_{21})$ and
 at the within-bin sum of squares induced by a splitting point $t$.
 \begin{eqnarray}
 \textrm{WBSS}(t) &=& \sum_{k=1}^{2} \sum_{i=1}^{n} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \in B_{k}) \nonumber \\
-&=&  \sum_{i=1}^{n} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} < t) + \sum_{i=1}^{n} (Y_{i} - \bar{Y}_{k})^{2}I(x_{i} \geq t) \nonumber
+&=&  \sum_{i=1}^{n} (Y_{i} - \bar{Y}_{1})^{2}I(x_{i} < t) + \sum_{i=1}^{n} (Y_{i} - \bar{Y}_{2})^{2}I(x_{i} \geq t) \nonumber
 \end{eqnarray}
 
 * The first split point $t_{1}$ is the value of $t$ which minimizes this within-bin sum of squares criterion. That is,
 \begin{equation}
-t_{1} = \arg\min_{t} \textrm{ WBSS}(t) = \textrm{argmin}_{t \in \{x_{1}, \ldots, x_{n}  \}} \textrm{ WBSS}(t) \nonumber
+t_{1} = \textrm{argmin}_{t} \textrm{ WBSS}(t) = \textrm{argmin}_{t \in \{x_{1}, \ldots, x_{n}  \}} \textrm{ WBSS}(t) \nonumber
 \end{equation}
 
 * To find $t_{1}$, we only have to take the minimum over the set of covariates since the value of $\textrm{WBSS}(t)$ only changes 
@@ -153,12 +159,70 @@ at each $x_{i}$.
 
 ---
 
-* Finding subsequent splitting points. 
+* The splitting point "partitions" the data into two datasets. The indices of these datasets are defined as 
+\begin{eqnarray}
+\mathcal{D}_{1} &=& \big\{ (Y_{i}, x_{i}): x_{i} < t_{1} \big\} \nonumber \\
+\mathcal{D}_{2} &=& \big\{ (Y_{i}, x_{i}): x_{i} \geq t_{1} \big\} \nonumber
+\end{eqnarray}
+
+* After finding $t_{1}$, we can find the next two splitting points $t_{11}$ and $t_{21}$ by using the exact same procedure
+we used to find $t_{1}$.
+
+* That is, $t_{11}$ and $t_{21}$ are given by
+\begin{eqnarray}
+t_{11} &=& \textrm{argmin}_{t} \textrm{ WBSS}_{1}(t)  \nonumber \\
+t_{21} &=& \textrm{argmin}_{t} \textrm{ WBSS}_{2}(t)  \nonumber
+\end{eqnarray}
+where $\textrm{WBSS}_{a}(t)$ is the within-bin sum of squares for dataset $\mathcal{D}_{a}$:
+\begin{equation}
+\textrm{WBSS}_{a}(t) =  \sum_{i \in \mathcal{D}_{a}} (Y_{i} - \bar{Y}_{1a})^{2}I(x_{i} < t) + \sum_{i \in \mathcal{D}_{a}} (Y_{i} - \bar{Y}_{2a})^{2}I(x_{i} \geq t) \nonumber
+\end{equation}
+
+---
+
+* The splitting points $t_{11}$ and $t_{21}$ will further partition the dataset into $4$ datasets. Additional splitting points
+$t_{12}, t_{22}, t_{32}, t_{42}$ which further partition the dataset, can be found by minimizing the within-bin sum of squares
+for each of these $4$ datasets.
+
+* This algorithm for constructing smaller and smaller bins is often referred to as recursive partitioning.
+
+
 
 ## Regression Trees With Multiple Covariates
 
+* When we have multivariate covariates where $\mathbf{x}_{i} = (x_{i1}, \ldots, x_{ip})$,
+CART will partition the covariate space into multivariate "rectangles".
 
-<img src="13-cart_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+* An example of a CART-type regression function estimate for the case of two covariates is shown in
+Figure \@ref(fig:twod-cart-example)
+
+<div class="figure">
+<img src="13-cart_files/figure-html/twod-cart-example-1.png" alt="An example of a CART-type estimate of a regression function that has two covariates." width="672" />
+<p class="caption">(\#fig:twod-cart-example)An example of a CART-type estimate of a regression function that has two covariates.</p>
+</div>
+
+---
+
+* One advantage of CART is that it can easily handle covariates of different types, for example, both continuous and binary covariates.
+
+* You can see an example of this by looking at the `bone` data. This dataset has both sex and age as covariates.
+
+* A CART regression tree for the bone data using both age and sex is shown in Figure \@ref(fig:bone-dectree).
+
+<div class="figure">
+<img src="13-cart_files/figure-html/bone-dectree-1.png" alt="Regression tree for the bone data. This fitted regression tree has 6 bins." width="672" />
+<p class="caption">(\#fig:bone-dectree)Regression tree for the bone data. This fitted regression tree has 6 bins.</p>
+</div>
+
+---
+
+* Figure \@ref(fig:bone-fittedregfn) plots the regression function estimate which corresponds to the decision tree shown in Figure \@ref(fig:bone-dectree).
+Notice that the regression function estimate for men vs. women only differs for ages $< 12$.
+
+<div class="figure">
+<img src="13-cart_files/figure-html/bone-fittedregfn-1.png" alt="Plot of regression function estimate that corresponds to the decision tree in the previous figure." width="672" />
+<p class="caption">(\#fig:bone-fittedregfn)Plot of regression function estimate that corresponds to the decision tree in the previous figure.</p>
+</div>
 
 
 
