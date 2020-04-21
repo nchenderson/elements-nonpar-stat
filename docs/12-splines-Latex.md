@@ -687,7 +687,7 @@ lines(ss.bone$x, ss.bone$y, lwd=3, col="red")
 
 ![(\#fig:unnamed-chunk-16)Smoothing spline fit for the bone data. This used the smooth.spline function with all the default settings.](12-splines-Latex_files/figure-latex/unnamed-chunk-16-1.pdf) 
 
-* If you just type in `ss.smooth`, this will show the degrees of freedom used, the value of $\lambda$ used, and the value of the GCV criterion for the chosen $\lambda$
+* If you just type in `ss.bone`, this will show the degrees of freedom used, the value of $\lambda$ used, and the value of the GCV criterion for the chosen $\lambda$
 
 ```r
 ss.bone

@@ -717,7 +717,7 @@ plot(bonedat$age, bonedat$spnbmd, las=1, pch=16, xlab="age",
 lines(ss.bone$x, ss.bone$y, lwd=3, col="red")
 ```
 
-* If you just type in `ss.smooth`, this will show the degrees of freedom used, the value of $\lambda$ used, and the value of the GCV criterion for the chosen $\lambda$
+* If you just type in `ss.bone`, this will show the degrees of freedom used, the value of $\lambda$ used, and the value of the GCV criterion for the chosen $\lambda$
 ```{r}
 ss.bone
 ```
