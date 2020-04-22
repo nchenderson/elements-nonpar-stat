@@ -1303,3 +1303,61 @@ near a given point $\mathbf{x}$.
 * Additional reading which covers the material discussed in this chapter includes:
     + Chapter 4 from @hardle2012
     + Chapter 5 from @wasserman2006
+    
+## Exercises
+
+* **Exercise 11.1** Let 
+\begin{equation}
+\hat{\mathbf{m}} = \big( \hat{m}_{h_{n}}^{R}(x_{1}), \ldots, \hat{m}_{h_{n}}^{R}(x_{n}) \big)  \nonumber
+\end{equation}
+denote the vector of "fitted values" from a regressogram estimate that has $D_{n}$ bins. 
+If $\mathbf{Y} = (Y_{1}, \ldots, Y_{n})$, show that you can express $\hat{\mathbf{m}}$ as 
+\begin{equation}
+\hat{\mathbf{m}} = \mathbf{A}\mathbf{Y}, \nonumber
+\end{equation}
+for an appropriately chosen $n \times n$ matrix $\mathbf{A}$.
+What is the value of $\textrm{tr}(\mathbf{A})$?
+
+
+* **Exercise 11.2** Suppose $n=6$ and that we have the following covariate values and responses
+\begin{eqnarray}
+(x_{1}, x_{2}, x_{3}, x_{4}, x_{5}, x_{6}) &=& (1/7, 2/7, 3/7, 4/7, 5/7, 6/7)  \nonumber \\
+(Y_{1}, Y_{2}, Y_{3}, Y_{4}, Y_{5}, Y_{6}) &=& (1.4, 0.7, 1.1, 1.3, 0.9, 1.7)  \nonumber
+\end{eqnarray}
+    + Compute the local average estimate of the regression function at $x = 0.25$ and $x=0.75$ assuming that $h_{n} = 1/2$. 
+    + Compute the k nearest neighbors estimate of the regression function at $x = 0.25$ and $x = 0.75$ assuming that $k = 2$.
+    
+
+* **Exercise 11.3** Suppose we define an estimator $\tilde{m}_{h_{n}}(x)$ of the regression function as
+\begin{eqnarray}
+\tilde{m}_{h_{n}}(x) &=& \hat{\beta}_{0x} \quad \textrm{ where } \nonumber \\
+\hat{\beta}_{0x} &=&  \textrm{argmin}_{\beta_{0x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
+\end{eqnarray}
+Show that $\tilde{m}_{h_{n}}(x) = \hat{m}_{h_{n}}^{NW}(x)$.
+
+
+* **Exercise 11.4** Suppose the $n \times n$ matrix $\mathbf{A}_{h_{n}}$ satifies $\mathbf{A}_{h_{n}}\mathbf{m} = \mathbf{m}$.
+Show that 
+\begin{equation}
+\frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
+\end{equation}
+is an unbiased estimator of $\sigma^{2}$.
+
+* **Exercise 11.5** Suppose we have independent responses $Y_{i}$ that arise from the following model
+\begin{equation}
+Y_{i} = \beta_{0} + \beta_{1}x_{i}^{2} + \varepsilon_{i}, \qquad \varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2}) \nonumber
+\end{equation}
+where 
+\begin{equation}
+x_{i} = \frac{(i-1)}{n - 1}, \qquad \textrm{ for } i=1,\ldots, n \nonumber
+\end{equation}
+Suppose we estimate the regression function for this model using the local average estimator with bin width $2h_{n}$
+\begin{equation}
+\hat{m}_{h_{n}}^{loc}(x) = \frac{1}{n_{h_{n}}(x)}\sum_{i=1}^{n} Y_{i} I(x - h_{n} < x_{i} < x + h_{n}), \nonumber
+\end{equation}
+where $n_{h_{n}}(x) = \sum_{i=1}^{n} I(x - h_{n} < x_{i} < x + h_{n})$.
+    + Assuming that the $x_{i}$ are fixed and are not random, what is the bias and variance of $\hat{m}_{h_{n}}^{loc}(1/2)$?
+    + Assuming that $n=100$, $\sigma^{2} = 1$ and $\beta_{1} = 1$, what is the approximate value of $0.001 \leq h_{n} \leq 0.5$ that minimizes the mean-squared error at $x=1/2$:
+\begin{equation}
+    \textrm{MSE}(1/2) = E\Big[  \big\{  m(1/2) - \hat{m}_{h_{n}}^{loc}(1/2) \big\}^{2} \Big] \nonumber
+\end{equation}

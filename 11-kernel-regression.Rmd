@@ -1207,3 +1207,26 @@ Show that
 \frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
 \end{equation}
 is an unbiased estimator of $\sigma^{2}$.
+
+* **Exercise 11.5** Suppose we have independent responses $Y_{i}$ that arise from the following model
+\begin{equation}
+Y_{i} = \beta_{0} + \beta_{1}x_{i}^{2} + \varepsilon_{i}, \qquad \varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2}) \nonumber
+\end{equation}
+where 
+\begin{equation}
+x_{i} = \frac{(i-1)}{n - 1}, \qquad \textrm{ for } i=1,\ldots, n \nonumber
+\end{equation}
+Suppose we estimate the regression function for this model using the local average estimator with bin width $2h_{n}$
+\begin{equation}
+\hat{m}_{h_{n}}^{loc}(x) = \frac{1}{n_{h_{n}}(x)}\sum_{i=1}^{n} Y_{i} I(x - h_{n} < x_{i} < x + h_{n}), \nonumber
+\end{equation}
+where $n_{h_{n}}(x) = \sum_{i=1}^{n} I(x - h_{n} < x_{i} < x + h_{n})$.
+    + Assuming that the $x_{i}$ are fixed and are not random, what is the bias and variance of $\hat{m}_{h_{n}}^{loc}(1/2)$?
+    + Assuming that $n=100$, $\sigma^{2} = 1$ and $\beta_{1} = 1$, what is the approximate value of $0.001 \leq h_{n} \leq 0.5$ that minimizes the mean-squared error at $x=1/2$:
+\begin{equation}
+    \textrm{MSE}(1/2) = E\Big[  \big\{  m(1/2) - \hat{m}_{h_{n}}^{loc}(1/2) \big\}^{2} \Big] \nonumber
+\end{equation}
+
+
+
+

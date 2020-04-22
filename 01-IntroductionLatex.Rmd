@@ -1,11 +1,9 @@
 # Introduction {#intro}
 
-```{r hello, echo=FALSE, fig.cap='Hello World!', out.width='90%'}
+```{r hello, echo=FALSE}
 library(xtable)
 library(rpart)
 library(knitr)
-par(mar = c(4, 4, 1, .1))
-plot(cars, pch = 19)
 ```
 
 \begin{center}

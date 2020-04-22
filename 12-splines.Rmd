@@ -553,7 +553,7 @@ such that $m(x_{i}) = Y_{i}$ for each $i$. This will usually be an extremely "wi
 * If $\lambda = \infty$, then we want a function $m(x)$ such that $m''(x) = 0$ for all $x$. The best function
 in this case would be a linear function $m(x) = \beta_{0} + \beta_{1}x$.
 
-* By choosing $0 < \lambda < 0$, we will get a function that can be nonlinear and capture 
+* By choosing $0 < \lambda < \infty$, we will get a function that can be nonlinear and capture 
 some curvature but cannot be extremely "wiggly".
 
 ---
@@ -666,8 +666,8 @@ smooth.spline(x, y, df, lambda, cv=FALSE)
 ```
 * **x** - the vector of covariate values.
 * **y** - the vector of responses.
-* **df** - the trace of the "smoother" matrix. This is the trace of the matrix $\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y}$. This must be less than or equal to $n$ (where $n$ here is the number of unique values of the $x_{i}$). 
-* **lambda** - the value of $\lambda$ in the matrix $\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}\mathbf{Y}$. Note that you should only enter one of the **df** or **lambda** arguments. 
+* **df** - the trace of the "smoother" matrix. This is the trace of the matrix $\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}$. This must be less than or equal to $n$ (where $n$ here is the number of unique values of the $x_{i}$). 
+* **lambda** - the value of $\lambda$ in the matrix $\mathbf{A}_{\lambda} = \mathbf{N}(\mathbf{N}^{T}\mathbf{N} + \lambda\boldsymbol\Omega)^{-1}\mathbf{N}^{T}$. Note that you should only enter one of the **df** or **lambda** arguments. 
 * **cv** - the smooth.spline function will perform cross-validation whenever both the **df** and **lambda** arguments are left empty. When both of these arguments are left empty and `cv=FALSE`, the function will use GCV to select the smoothing parameter. When both **df** and **lambda** are left empty and `cv = TRUE`, the function will use LOOCV to select the smoothing parameter.
 
 * Notice that when only input the `x` and `y` vectors, the `smooth.spline` will automatically use generalized cross-validation to select the smoothing parameter.

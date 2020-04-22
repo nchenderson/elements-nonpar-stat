@@ -24,7 +24,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-21" />
+<meta name="date" content="2020-04-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -247,6 +247,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8.6" data-path="density-estimation.html"><a href="density-estimation.html#density-estimation-in-r"><i class="fa fa-check"></i><b>8.6</b> Density Estimation in R</a></li>
 <li class="chapter" data-level="8.7" data-path="density-estimation.html"><a href="density-estimation.html#additional-reading-3"><i class="fa fa-check"></i><b>8.7</b> Additional Reading</a></li>
+<li class="chapter" data-level="8.8" data-path="density-estimation.html"><a href="density-estimation.html#exercises-1"><i class="fa fa-check"></i><b>8.8</b> Exercises</a></li>
 </ul></li>
 <li class="part"><span><b>III Quantifying Uncertainty</b></span></li>
 <li class="chapter" data-level="9" data-path="bootstrap-main.html"><a href="bootstrap-main.html"><i class="fa fa-check"></i><b>9</b> The Bootstrap</a><ul>
@@ -262,7 +263,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.5.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#parametric-bootstrap-for-the-median-age-from-the-kidney-data"><i class="fa fa-check"></i><b>9.5.1</b> Parametric Bootstrap for the Median Age from the Kidney Data</a></li>
 </ul></li>
 <li class="chapter" data-level="9.6" data-path="bootstrap-main.html"><a href="bootstrap-main.html#additional-reading-4"><i class="fa fa-check"></i><b>9.6</b> Additional Reading</a></li>
-<li class="chapter" data-level="9.7" data-path="bootstrap-main.html"><a href="bootstrap-main.html#exercises-1"><i class="fa fa-check"></i><b>9.7</b> Exercises</a></li>
+<li class="chapter" data-level="9.7" data-path="bootstrap-main.html"><a href="bootstrap-main.html#exercises-2"><i class="fa fa-check"></i><b>9.7</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> Bootstrap Examples and the Jackknife</a><ul>
 <li class="chapter" data-level="10.1" data-path="ci.html"><a href="ci.html#the-parametric-bootstrap-for-an-ar1-model"><i class="fa fa-check"></i><b>10.1</b> The Parametric Bootstrap for an AR(1) model</a></li>
@@ -300,7 +301,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-functions-in-r"><i class="fa fa-check"></i><b>11.5</b> Additional functions in R</a></li>
 <li class="chapter" data-level="11.6" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#multivariate-problems"><i class="fa fa-check"></i><b>11.6</b> Multivariate Problems</a></li>
 <li class="chapter" data-level="11.7" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.7</b> Additional Reading</a></li>
-<li class="chapter" data-level="11.8" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#exercises-2"><i class="fa fa-check"></i><b>11.8</b> Exercises</a></li>
+<li class="chapter" data-level="11.8" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#exercises-3"><i class="fa fa-check"></i><b>11.8</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
 <li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a><ul>
@@ -1340,7 +1341,7 @@ near a given point <span class="math inline">\(\mathbf{x}\)</span>.</p></li>
 </ul></li>
 </ul>
 </div>
-<div id="exercises-2" class="section level2">
+<div id="exercises-3" class="section level2">
 <h2><span class="header-section-number">11.8</span> Exercises</h2>
 <ul>
 <li><p><strong>Exercise 11.1</strong> Let
@@ -1375,6 +1376,26 @@ Show that
 \frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
 \end{equation}\]</span>
 is an unbiased estimator of <span class="math inline">\(\sigma^{2}\)</span>.</p></li>
+<li><strong>Exercise 11.5</strong> Suppose we have independent responses <span class="math inline">\(Y_{i}\)</span> that arise from the following model
+<span class="math display">\[\begin{equation}
+Y_{i} = \beta_{0} + \beta_{1}x_{i}^{2} + \varepsilon_{i}, \qquad \varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2}) \nonumber
+\end{equation}\]</span>
+where
+<span class="math display">\[\begin{equation}
+x_{i} = \frac{(i-1)}{n - 1}, \qquad \textrm{ for } i=1,\ldots, n \nonumber
+\end{equation}\]</span>
+Suppose we estimate the regression function for this model using the local average estimator with bin width <span class="math inline">\(2h_{n}\)</span>
+<span class="math display">\[\begin{equation}
+\hat{m}_{h_{n}}^{loc}(x) = \frac{1}{n_{h_{n}}(x)}\sum_{i=1}^{n} Y_{i} I(x - h_{n} &lt; x_{i} &lt; x + h_{n}), \nonumber
+\end{equation}\]</span>
+where <span class="math inline">\(n_{h_{n}}(x) = \sum_{i=1}^{n} I(x - h_{n} &lt; x_{i} &lt; x + h_{n})\)</span>.
+<ul>
+<li>Assuming that the <span class="math inline">\(x_{i}\)</span> are fixed and are not random, what is the bias and variance of <span class="math inline">\(\hat{m}_{h_{n}}^{loc}(1/2)\)</span>?</li>
+<li>Assuming that <span class="math inline">\(n=100\)</span>, <span class="math inline">\(\sigma^{2} = 1\)</span> and <span class="math inline">\(\beta_{1} = 1\)</span>, what is the approximate value of <span class="math inline">\(0.001 \leq h_{n} \leq 0.5\)</span> that minimizes the mean-squared error at <span class="math inline">\(x=1/2\)</span>:
+<span class="math display">\[\begin{equation}
+  \textrm{MSE}(1/2) = E\Big[  \big\{  m(1/2) - \hat{m}_{h_{n}}^{loc}(1/2) \big\}^{2} \Big] \nonumber
+\end{equation}\]</span></li>
+</ul></li>
 </ul>
 
 </div>
