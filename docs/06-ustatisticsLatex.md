@@ -111,7 +111,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.862
+## [1] 1.852
 ```
 
 ```r
@@ -119,7 +119,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.853
+## [1] 1.847
 ```
 
 
@@ -152,17 +152,6 @@ to the mean difference parameter via
 \end{equation}
 where $\mu = E( X_{i} )$.
 
-\begin{center}
-\rule{\textwidth}{.05cm}
-\end{center}
-
-* **Exercise 6.1**. Compute the Gini coefficient $\theta_{Gc}$ when it is assumed that
-    + $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2})$, for $\mu > 0$. 
-    + $X_{i} \sim \textrm{Exponential}(\lambda)$, (**Hint**: The difference between two independent Exponential random variables has a Laplace distribution).
-
-\begin{center}
-\rule{\textwidth}{.05cm}
-\end{center}
 
 ### Example 4: Wilcoxon Signed Rank Statistic
 
@@ -382,7 +371,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.874 0.864
+## [1] 0.894 0.892
 ```
 
 ```r
@@ -392,7 +381,7 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.853 0.853
+## [1] 0.899 0.899
 ```
 
 \begin{center}
@@ -631,16 +620,6 @@ dcov.sq.est
 the two variables are dependent while the usual covariance between
 these two variables is zero.
 
-\begin{center}
-\rule{\textwidth}{.05cm}
-\end{center}
-
-* **Exercise 6.2**. For the example where we have observed pairs $(X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})$
-    with $X_{i} \sim \textrm{Normal}(0, 1)$ and $Y_{i} = X_{i}^{2}$, compute Kendall's $\tau$ parameter $\theta_{\tau}$.
-
-\begin{center}
-\rule{\textwidth}{.05cm}
-\end{center}
 
 #### Estimation of Distance Covariance and Distance Correlation
 
@@ -756,4 +735,15 @@ round(c(p.cor2, kend.cor2, spear.cor2, d.cor2), 4) ## circle
 ```
 ## [1] 0.0134 0.0041 0.0138 0.1508
 ```
+
+## Exercises
+
+* **Exercise 6.1**. Compute the Gini coefficient $\theta_{Gc}$ when it is assumed that
+    + $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2})$, for $\mu > 0$. 
+    + $X_{i} \sim \textrm{Exponential}(\lambda)$, (**Hint**: The difference between two independent Exponential random variables has a Laplace distribution).
+
+* **Exercise 6.2**. For the example where we have observed pairs $(X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})$
+    with $X_{i} \sim \textrm{Normal}(0, 1)$ and $Y_{i} = X_{i}^{2}$, compute Kendall's $\tau$ parameter $\theta_{\tau}$.
+
+
 

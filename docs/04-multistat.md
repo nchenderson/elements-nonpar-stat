@@ -115,11 +115,6 @@ WRS test should be the same when $K = 2$.
 * However, you cannot directly perform a one-sided test using 
 the Kruskal-Wallis test.
 
----
-
-* **Exercise 4.1** If $K=2$, show that equation \@ref(eq:kw-wrs-equivalence) holds.
-
----
 
 **An Example**
 
@@ -407,5 +402,9 @@ kruskal.test(prop ~ block, data=cane)
 
 * Additional reading which covers the material discussed in this chapter includes:
     + Chapters 6 from @hollander2013
+
+## Exercises
+
+* **Exercise 4.1** If $K=2$, show that equation \@ref(eq:kw-wrs-equivalence) holds.
 
 

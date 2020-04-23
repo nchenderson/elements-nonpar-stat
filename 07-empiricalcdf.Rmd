@@ -368,16 +368,7 @@ KS.stat
 ```
 
 
----
 
-* **Exercise 7.1.** Why does
-\begin{equation}
-KS_{n,m}^{(2)} = \max_{1 \leq i \leq n+m} \big| \hat{F}_{n,X}(Z_{(i)}) -  \hat{F}_{n,Y}(Z_{(i)}) \big|, \nonumber
-\end{equation}
-where $\mathbf{Z} = (Z_{1}, \ldots, Z_{n+m})$ denotes the pooled sample and $Z_{(1)}, \ldots, Z_{(n+m)}$
-denote the order statistics from $\mathbf{Z}$?
-
----
 
 
 ## The empirical distribution function and statistical functionals
@@ -459,6 +450,13 @@ topics in this course.
 * Additional reading which covers the material discussed in this chapter includes:
     + Chapter 2 from @wasserman2006
 
+## Exercises
 
 
+* **Exercise 7.1.** Why does
+\begin{equation}
+KS_{n,m}^{(2)} = \max_{1 \leq i \leq n+m} \big| \hat{F}_{n,X}(Z_{(i)}) -  \hat{F}_{n,Y}(Z_{(i)}) \big|, \nonumber
+\end{equation}
+where $\mathbf{Z} = (Z_{1}, \ldots, Z_{n+m})$ denotes the pooled sample and $Z_{(1)}, \ldots, Z_{(n+m)}$
+denote the order statistics from $\mathbf{Z}$?
 

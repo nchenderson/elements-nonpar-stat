@@ -138,13 +138,6 @@ to the mean difference parameter via
 \end{equation}
 where $\mu = E( X_{i} )$.
 
----
-
-* **Exercise 6.1**. Compute the Gini coefficient $\theta_{Gc}$ when it is assumed that
-    + $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2})$, for $\mu > 0$. 
-    + $X_{i} \sim \textrm{Exponential}(\lambda)$, (**Hint**: The difference between two independent Exponential random variables has a Laplace distribution).
-
----
 
 ### Example 4: Wilcoxon Signed Rank Statistic
 
@@ -589,12 +582,6 @@ dcov.sq.est
 the two variables are dependent while the usual covariance between
 these two variables is zero.
 
----
-
-* **Exercise 6.2**. For the example where we have observed pairs $(X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})$
-    with $X_{i} \sim \textrm{Normal}(0, 1)$ and $Y_{i} = X_{i}^{2}$, compute Kendall's $\tau$ parameter $\theta_{\tau}$.
-
----
 
 #### Estimation of Distance Covariance and Distance Correlation
 
@@ -691,4 +678,13 @@ spear.cor2 <- cor(xx2, yy2, method="spearman")
 round(c(p.cor1, kend.cor1, spear.cor1, d.cor1), 4) ## parabola
 round(c(p.cor2, kend.cor2, spear.cor2, d.cor2), 4) ## circle
 ```
+
+## Exercises
+
+* **Exercise 6.1**. Compute the Gini coefficient $\theta_{Gc}$ when it is assumed that
+    + $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2})$, for $\mu > 0$. 
+    + $X_{i} \sim \textrm{Exponential}(\lambda)$, (**Hint**: The difference between two independent Exponential random variables has a Laplace distribution).
+
+* **Exercise 6.2**. For the example where we have observed pairs $(X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})$
+    with $X_{i} \sim \textrm{Normal}(0, 1)$ and $Y_{i} = X_{i}^{2}$, compute Kendall's $\tau$ parameter $\theta_{\tau}$.
 

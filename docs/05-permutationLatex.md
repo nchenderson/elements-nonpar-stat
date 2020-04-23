@@ -242,37 +242,6 @@ quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
 
 ![](05-permutationLatex_files/figure-latex/unnamed-chunk-6-1.pdf)<!-- --> 
 
-\begin{center}
-\rule{\textwidth}{.05cm}
-\end{center}
-
-* **Exercise 5.1** Suppose we have the following data from two groups 
-$(X_{1}, X_{2}, X_{3}) = (-1, 0, 1)$ and $(Y_{1}, Y_{2}, Y_{3}) = (4, -2, 2)$.
-Compute the (two-sided) permutation p-value for the following two statistics:
-    + $T_{N}( \mathbf{Z} ) = \textrm{median}(X_{1}, X_{2}, X_{3}) - \textrm{median}(Y_{1}, Y_{2}, Y_{3})$.
-    + $T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$.
-
-* **Exercise 5.2.** Suppose we have data from two groups
-such that $X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)$ and
-$Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)$. Using 
-$n=m=50$ and 500 simulation replications, compute 
-$500$ significance thresholds from the one-sided permutation 
-test which uses the statistic $T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$.
-How, does this compare with the t-statistic threshold of 
-approximately $1.64*\sqrt{2/50}$?
-
-* **Exercise 5.3.** Suppose we have data from two groups
-such that $X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)$ and
-$Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)$. Using 
-$n=m=50$ and 500 simulation replications, compute the power of 
-the permutation test which uses the statistic 
-$T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$ to detect this true alternative.
-How, does the power compare with the (two-sided) two-sample t-statistic and 
-the (two-sided) Wilcoxon rank sum test?
-
-\begin{center}
-\rule{\textwidth}{.05cm}
-\end{center}
 
 ## The Permutation Test as a Conditional Test    
       
@@ -678,3 +647,30 @@ Alcohol & 0.000 \\
    \hline
 \end{tabular}
 \end{table}
+
+## Exercises
+
+* **Exercise 5.1** Suppose we have the following data from two groups 
+$(X_{1}, X_{2}, X_{3}) = (-1, 0, 1)$ and $(Y_{1}, Y_{2}, Y_{3}) = (4, -2, 2)$.
+Compute the (two-sided) permutation p-value for the following two statistics:
+    + $T_{N}( \mathbf{Z} ) = \textrm{median}(X_{1}, X_{2}, X_{3}) - \textrm{median}(Y_{1}, Y_{2}, Y_{3})$.
+    + $T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$.
+
+* **Exercise 5.2.** Suppose we have data from two groups
+such that $X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)$ and
+$Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)$. Using 
+$n=m=50$ and 500 simulation replications, compute 
+$500$ significance thresholds from the one-sided permutation 
+test which uses the statistic $T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$.
+How, does this compare with the t-statistic threshold of 
+approximately $1.64*\sqrt{2/50}$?
+
+* **Exercise 5.3.** Suppose we have data from two groups
+such that $X_{1}, \ldots, X_{n} \sim \textrm{Normal}(0, 1)$ and
+$Y_{1}, \ldots, Y_{m} \sim \textrm{Normal}(1, 1)$. Using 
+$n=m=50$ and 500 simulation replications, compute the power of 
+the permutation test which uses the statistic 
+$T_{N}( \mathbf{Z} ) = \bar{X} - \bar{Y}$ to detect this true alternative.
+How, does the power compare with the (two-sided) two-sample t-statistic and 
+the (two-sided) Wilcoxon rank sum test?
+

@@ -109,7 +109,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.863
+## [1] 1.844
 ```
 
 ```r
@@ -117,7 +117,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.822
+## [1] 1.843
 ```
 
 
@@ -150,13 +150,6 @@ to the mean difference parameter via
 \end{equation}
 where $\mu = E( X_{i} )$.
 
----
-
-* **Exercise 6.1**. Compute the Gini coefficient $\theta_{Gc}$ when it is assumed that
-    + $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2})$, for $\mu > 0$. 
-    + $X_{i} \sim \textrm{Exponential}(\lambda)$, (**Hint**: The difference between two independent Exponential random variables has a Laplace distribution).
-
----
 
 ### Example 4: Wilcoxon Signed Rank Statistic
 
@@ -367,7 +360,7 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.905 0.900
+## [1] 0.895 0.890
 ```
 
 ```r
@@ -377,7 +370,7 @@ round(c( cor(xx, yy, method="spearman"),
 ```
 
 ```
-## [1] 0.903 0.903
+## [1] 0.887 0.887
 ```
 
 ---
@@ -606,12 +599,6 @@ dcov.sq.est
 the two variables are dependent while the usual covariance between
 these two variables is zero.
 
----
-
-* **Exercise 6.2**. For the example where we have observed pairs $(X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})$
-    with $X_{i} \sim \textrm{Normal}(0, 1)$ and $Y_{i} = X_{i}^{2}$, compute Kendall's $\tau$ parameter $\theta_{\tau}$.
-
----
 
 #### Estimation of Distance Covariance and Distance Correlation
 
@@ -723,4 +710,13 @@ round(c(p.cor2, kend.cor2, spear.cor2, d.cor2), 4) ## circle
 ```
 ## [1] 0.0134 0.0041 0.0138 0.1508
 ```
+
+## Exercises
+
+* **Exercise 6.1**. Compute the Gini coefficient $\theta_{Gc}$ when it is assumed that
+    + $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2})$, for $\mu > 0$. 
+    + $X_{i} \sim \textrm{Exponential}(\lambda)$, (**Hint**: The difference between two independent Exponential random variables has a Laplace distribution).
+
+* **Exercise 6.2**. For the example where we have observed pairs $(X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})$
+    with $X_{i} \sim \textrm{Normal}(0, 1)$ and $Y_{i} = X_{i}^{2}$, compute Kendall's $\tau$ parameter $\theta_{\tau}$.
 

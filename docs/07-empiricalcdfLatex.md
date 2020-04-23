@@ -353,7 +353,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.10796, p-value = 0.1942
+## D = 0.11527, p-value = 0.1402
 ## alternative hypothesis: two-sided
 ```
 
@@ -369,7 +369,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	One-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.30798, p-value = 1.155e-08
+## D = 0.31063, p-value = 8.314e-09
 ## alternative hypothesis: two-sided
 ```
 
@@ -423,7 +423,7 @@ ks.test(xx, yy)
 ## 	Two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.14, p-value = 0.281
+## D = 0.22, p-value = 0.01581
 ## alternative hypothesis: two-sided
 ```
 
@@ -442,23 +442,9 @@ KS.stat
 ```
 
 ```
-## [1] 0.14
+## [1] 0.22
 ```
 
-\begin{center}
-\rule{\textwidth}{.05cm}
-\end{center}
-
-* **Exercise 7.1.** Why does
-\begin{equation}
-KS_{n,m}^{(2)} = \max_{1 \leq i \leq n+m} \big| \hat{F}_{n,X}(Z_{(i)}) -  \hat{F}_{n,Y}(Z_{(i)}) \big|, \nonumber
-\end{equation}
-where $\mathbf{Z} = (Z_{1}, \ldots, Z_{n+m})$ denotes the pooled sample and $Z_{(1)}, \ldots, Z_{(n+m)}$
-denote the order statistics from $\mathbf{Z}$?
-
-\begin{center}
-\rule{\textwidth}{.05cm}
-\end{center}
 
 
 ## The empirical distribution function and statistical functionals
@@ -546,6 +532,13 @@ topics in this course.
 * Additional reading which covers the material discussed in this chapter includes:
     + Chapter 2 from @wasserman2006
 
+## Exercises
 
+* **Exercise 7.1.** Why does
+\begin{equation}
+KS_{n,m}^{(2)} = \max_{1 \leq i \leq n+m} \big| \hat{F}_{n,X}(Z_{(i)}) -  \hat{F}_{n,Y}(Z_{(i)}) \big|, \nonumber
+\end{equation}
+where $\mathbf{Z} = (Z_{1}, \ldots, Z_{n+m})$ denotes the pooled sample and $Z_{(1)}, \ldots, Z_{(n+m)}$
+denote the order statistics from $\mathbf{Z}$?
 
 
