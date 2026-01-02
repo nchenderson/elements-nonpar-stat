@@ -335,14 +335,14 @@ written as
 
 * Regression splines can be fitted in R by using the `splines` package
 
-```r
+``` r
 library(splines)
 ```
 
 * The `bs` function from the `splines` package is useful for fitting a linear or cubic spline.
 This function generates the B-spline "design" matrix $\mathbf{X}_{\mathbf{u}}$ described above.
 
-```r
+``` r
 bs(x, df, knots, degree)
 ```
 * `x` - vector of covariates values. This can also just be the name of a variable when `bs` is used inside the `lm` function.
@@ -357,7 +357,7 @@ bs(x, df, knots, degree)
 * The `bs` function will return the "design matrix" $\mathbf{X}_{\mathbf{u}}$ for this setup without the intercept column. When degree is 3, the dimensions of $\mathbf{X}_{\mathbf{u}}$ should be $10 \times 6$ (because in this case $q = 2$). So, the `bs` function will return a $10 \times 5$ matrix (because the first column of $\mathbf{X}_{u}$ is dropped by `bs`):
 
 
-```r
+``` r
 xx <- 1:10
 Xu <- bs(xx, knots=c(3.5, 6.5))
 dim(Xu)
@@ -367,7 +367,7 @@ dim(Xu)
 ## [1] 10  5
 ```
 
-```r
+``` r
 head(Xu)  
 ```
 
@@ -389,8 +389,8 @@ head(Xu)
 * We will use the `bone` data again with age as the covariate. We will use the knots $\mathbf{u} = (12, 15, 18, 21, 24)$.
 
 
-```r
-bonedat <- read.csv("~/Documents/STAT685Notes/Data/bone.csv")
+``` r
+bonedat <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/bone.csv")
 knot.seq <- c(12, 15, 18, 21, 24)
 linspline.bone <- lm(spnbmd ~ bs(age, knots=knot.seq, degree=1), data=bonedat)
 ```
@@ -400,7 +400,7 @@ the design matrix $\mathbf{X}_{u}$ for this linear spline model.
 
 * You can check this by using the following `R` code:
 
-```r
+``` r
 XX <- model.matrix(linspline.bone)
 dim(XX)
 ```
@@ -413,7 +413,7 @@ dim(XX)
 you can use the `predict` function on the fitted `lm` object. This is done with the following code
 for the points $9.5, 10, 10.5, 11, \ldots, 24.5, 25$.
 
-```r
+``` r
 tt <- seq(9.5, 25, by=0.5)
 plot(bonedat$age, bonedat$spnbmd, xlab="age", ylab="Relative Change in Bone MD", 
      main="Bone Data: Fitted Linear Spline", las=1)
@@ -434,7 +434,7 @@ for(k in 1:5) {
 
 * We will use the same knots as we did for the linear spline.
 
-```r
+``` r
 knot.seq <- c(12, 15, 18, 21, 24)
 cubspline.bone <- lm(spnbmd ~ bs(age, knots=knot.seq, degree=3), data=bonedat)
 ```
@@ -444,7 +444,7 @@ the design matrix $\mathbf{X}_{u}$ for this cubic spline model.
 
 * You can check this by using the following `R` code:
 
-```r
+``` r
 XX <- model.matrix(cubspline.bone)
 dim(XX)
 ```
@@ -455,7 +455,7 @@ dim(XX)
 
 * Using `predict` again, we will compute the estimated regression function $\hat{m}(x)$ at the points: $9.5, 9.6, \ldots, 24.9, 25$ and plot the result.
 
-```r
+``` r
 tt <- seq(9.5, 25, by=0.1)
 plot(bonedat$age, bonedat$spnbmd, xlab="age", ylab="Relative Change in Bone MD", 
      main="Bone Data: Fitted Cubic Spline", las=1)
@@ -496,7 +496,7 @@ d_{k}(x) = \frac{ (x - u_{k})_{+}^{3} - (x - u_{q})_{+}^{3} }{ u_{q} - u_{k}} \n
 \end{equation}
 
 
-```r
+``` r
 natural.cubspline.bone <- lm(spnbmd ~ ns(age, df=8), data=bonedat)
 tt <- seq(9.5, 25, by=0.1)
 plot(bonedat$age, bonedat$spnbmd, xlab="age", ylab="Relative Change in Bone MD", 
@@ -643,7 +643,7 @@ where $a_{i}^{\lambda}(x_{i})$ denotes the $i^{th}$ diagonal of the matrix $\mat
 
 * The `R` function `smooth.spline` will fit smoothing splines.
 
-```r
+``` r
 smooth.spline(x, y, df, lambda, cv=FALSE)
 ```
 * **x** - the vector of covariate values.
@@ -660,7 +660,7 @@ smooth.spline(x, y, df, lambda, cv=FALSE)
 
 * To start, let's use the `smooth.spline` function on the bone data using GCV to find the smoothing parameter:
 
-```r
+``` r
 ss.bone <- smooth.spline(x=bonedat$age, y=bonedat$spnbmd)
 
 plot(bonedat$age, bonedat$spnbmd, las=1, pch=16, xlab="age", 
@@ -675,7 +675,7 @@ lines(ss.bone$x, ss.bone$y, lwd=3, col="red")
 
 * If you just type in `ss.bone`, this will show the degrees of freedom used, the value of $\lambda$ used, and the value of the GCV criterion for the chosen $\lambda$
 
-```r
+``` r
 ss.bone
 ```
 
@@ -693,16 +693,16 @@ ss.bone
 
 * Using the LOOCV criterion, the best value for the degrees of freedom is $13$.
 
-```r
+``` r
 ss.bone2 <- smooth.spline(x=bonedat$age, y=bonedat$spnbmd, cv=TRUE)
 ```
 
 ```
-## Warning in smooth.spline(x = bonedat$age, y = bonedat$spnbmd, cv = TRUE): cross-
-## validation with non-unique 'x' values seems doubtful
+## Warning in smooth.spline(x = bonedat$age, y = bonedat$spnbmd, cv = TRUE):
+## cross-validation with non-unique 'x' values seems doubtful
 ```
 
-```r
+``` r
 ss.bone2
 ```
 
@@ -723,13 +723,13 @@ ss.bone2
 * The first thing we want to find is an estimate of $\sigma^{2}$ that we can keep fixed across different values of the smoothing 
 parameter. Let's use the same value of $\hat{\sigma}^{2} = 0.0015$ that we used in Chapter 11:
 
-```r
+``` r
 sigsq.est <- 0.0015
 ```
 
 * Now, let's write a function that computes the $C_{p}$ statistic for a smoothing spline model given that we input the data, the degrees of freedom $\textrm{tr}(\mathbf{A}_{\lambda})$, and $\hat{\sigma}^{2}$.
 
-```r
+``` r
 CpStatSmoothSpline <- function(x, y, df, sigsq.hat) {
   n <- length(x)
   ss.obj <- smooth.spline(x=x, y=y, df=df)
@@ -743,7 +743,7 @@ CpStatSmoothSpline <- function(x, y, df, sigsq.hat) {
 
 * Now, compute the $C_{p}$ statistic for values of the degrees of freedom between $4$ and $20$. From the plot of the $C_{p}$ vs. the degrees of freedom it looks like the best value for the degrees of freedom is about $12$
 
-```r
+``` r
 df.seq <- seq(4, 20, by=.1)
 nx <- length(df.seq)
 Cp.seq <- numeric(nx)
@@ -760,7 +760,7 @@ plot(df.seq, Cp.seq, ylab="CP Stat", main="Bone Data: Cp(df) vs.
 
 * More specifically, it's about $11.6$:
 
-```r
+``` r
 df.seq[which.min(Cp.seq)]
 ```
 
@@ -775,7 +775,7 @@ df.seq[which.min(Cp.seq)]
 * We will consider knots $u_{1}, \ldots, u_{q}$ that are computed automatically by the `bs` function when we specify the degrees of freedom. These are based on the quantiles of the covariate $x_{i}$. We will consider values of $q$ between $0$ and $20$.
 
 
-```r
+``` r
 sigsq.hat <- .0015
 n <- nrow(bonedat)
 

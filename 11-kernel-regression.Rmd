@@ -110,7 +110,7 @@ should be a reasonable estimate of the ratio
 ---
 
 ```{r, echo=FALSE, fig.height=6, fig.cap="Framingham Data. Regressogram estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years."}
-framingham <- read.csv("~/Documents/STAT685Notes/Data/framingham.csv")
+framingham <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/framingham.csv")
 
 age.bins <- seq(31, 71, by=5)
 tau <- length(age.bins) - 1

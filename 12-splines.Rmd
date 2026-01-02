@@ -429,7 +429,7 @@ head(Xu)
 * We will use the `bone` data again with age as the covariate. We will use the knots $\mathbf{u} = (12, 15, 18, 21, 24)$.
 
 ```{r}
-bonedat <- read.csv("~/Documents/STAT685Notes/Data/bone.csv")
+bonedat <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/bone.csv")
 knot.seq <- c(12, 15, 18, 21, 24)
 linspline.bone <- lm(spnbmd ~ bs(age, knots=knot.seq, degree=1), data=bonedat)
 ```

@@ -406,7 +406,7 @@ Hence, the name: classification and regression trees (CART).
 
 ```{r, echo=FALSE, cache=TRUE}
 par(xpd=NA)
-RCTdata <- read.csv("~/Documents/STAT685Notes/Data/RCTdata.csv")
+RCTdata <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/RCTdata.csv")
 fit.oral <- rpart(oralhlth ~ age + female + smk + arm + pkyrs, data = RCTdata, subset=month==12)
 par(xpd=NA)
 plot(fit.oral, lwd=2, main="CART for Regression: Predicting an Oral Health Score", branch=1/2)

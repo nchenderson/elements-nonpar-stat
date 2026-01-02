@@ -15,7 +15,7 @@ and constructing confidence intervals.
 
 ---
 
-**Example: Inference for $e^{\mu}$**
+**Example 1: Inference for $e^{\mu}$ from a Logistic distribution**
 
 * Suppose we have i.i.d. data $X_{1}, \ldots, X_{n} \sim \textrm{Logistic}( \mu, s)$,
 meaning that $E(X_{i}) = \mu$ and $\textrm{Var}(X_{i}) = \sigma^{2} = s^{2}\pi^{2}/3$.
@@ -48,7 +48,8 @@ e^{\bar{X}} + 1.96 \times \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}}
 
 * For specific choices of $n$, how good is the Normal approximation for the distribution of $e^{\bar{X}}$?
 
-* The figure below shows a histogram for the simulated distribution of $e^{\bar{X}}$ when $n=50$.
+* The figure below shows a histogram for the simulated distribution of $e^{\bar{X}}$ when $n=50$, $\mu = 2$, 
+and $s = 2$.
 The density of the Normal approximation is also shown in this figure.
 
 <div class="figure">
@@ -68,12 +69,12 @@ intervals which does not depend on parametric approximations such as \@ref(eq:no
 
 ---
 
-**Example: Inference for the Correlation**
+**Example 2: Inference for the Correlation**
 
 * The sample correlation $\hat{\rho}$ which estimates the correlation $\rho = \textrm{Corr}(X_{i}, Y_{i})$
 between $X_{i}$ and $Y_{i}$ is defined as
 \begin{equation}
-\hat{\rho} = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X})(Y_{i} - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_{i} - \bar{X})^{2}}\sqrt{\sum_{i=1}^{n}(Y_{i} - \bar{Y})}} \nonumber
+\hat{\rho} = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X})(Y_{i} - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_{i} - \bar{X})^{2}}\sqrt{\sum_{i=1}^{n}(Y_{i} - \bar{Y})^{2}}} \nonumber
 \end{equation}
 
 * Even such a relatively straightforward estimate has a pretty complicated formula for the estimated standard error if 
@@ -128,6 +129,7 @@ T_{n} = h\Big( X_{1}, \ldots, X_{n}   \Big)  \nonumber
 * Suppose we want to estimate the standard deviation of $T_{n}$. 
 
 * The true standard deviation of $T_{n}$ is referred to as the **standard error**. 
+(need to change this terminology)
 
 * Confidence intervals are often based on subtracting or adding an estimate of the standard error, 
 e.g.
@@ -154,8 +156,8 @@ but to characterize the distribution of $T_{n}$.
 
 * The bootstrap works in the following way:
 * For $r = 1, \ldots, R$:
-    + Draw a sample of size $n$: $(X_{1}^{*}, \ldots, X_{n}^{*})$ by sampling with replacement from $\mathbf{X}$.
-    + Compute $T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})$. 
+    + Draw a sample of size $n$: $(X_{1,r}^{*}, \ldots, X_{n,r}^{*})$ by sampling **with replacement** from $\mathbf{X}$.
+    + Compute $T_{n,r}^{*} = h(X_{1,r}^{*}, \ldots, X_{n,r}^{*})$. 
 
 ---
 
@@ -167,9 +169,10 @@ P(X_{i}^{*} = X_{j}) = \frac{1}{n} \quad \textrm{ for } j=1,\ldots,n \nonumber
 
 * We will refer to each sample $(X_{1}^{*}, \ldots, X_{n}^{*})$ as a **bootstrap sample**.
 
-* We will refer to $T_{n,r}^{*}$ as a **bootstrap replication**.
+* We will refer to $T_{n,r}^{*}$ as a **bootstrap replication** of the statistic $T_{n}$.
 
-* The bootstrap estimate for the standard error of $T_{n}$ is
+* The bootstrap estimate $se_{boot}$ for the standard error of $T_{n}$ is the sample
+standard deviation from the bootstrap replications $T_{n,1}^{*}, \ldots, T_{n,R}^{*}$:
 \begin{equation}
 se_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} \Big)^{2} \Bigg]^{1/2} \nonumber
 \end{equation}
@@ -192,8 +195,8 @@ boostrap replications $T_{n,1}^{*}, \ldots, T_{n,R}^{*}$ to form a confidence in
 
 * The bootstrap $100 \times \alpha/2$ and $100 \times (1 - \alpha/2)$ percentiles are roughly defined as
 \begin{eqnarray}
-T_{[\alpha/2]}^{boot} &=& \textrm{the point } t^{*} \textrm{ such that } 100\alpha/2 \textrm{ of the bootstrap replications are less than } t^{*} \nonumber \\
-T_{1 - [\alpha/2]}^{boot} &=& \textrm{the point } t^{*} \textrm{ such that } 100\alpha/2 \textrm{ of the bootstrap replications are less than } t^{*} \nonumber 
+T_{[\alpha/2]}^{boot} &=& \textrm{the point } t^{*} \textrm{ such that } 100\alpha/2 \textrm{ percent of the bootstrap replications are less than } t^{*} \nonumber \\
+T_{1 - [\alpha/2]}^{boot} &=& \textrm{the point } t^{*} \textrm{ such that } 100(1 - \alpha/2) \textrm{ percent of the bootstrap replications are less than } t^{*} \nonumber 
 \end{eqnarray}
 
 * The level $100 \times (1 - \alpha) \%$ level boostrap percentile confidence interval 
@@ -262,7 +265,7 @@ confidence interval and the percentile bootstrap confidence interval.
 
 
 
-```r
+``` r
 xx <- rexp(50, rate=2) ## data, sample of 50 exponential r.v.s with mean 1/2
 R <- 500   ## number of bootstrap replications
 boot.mean <- rep(0, R)
@@ -274,7 +277,7 @@ for(r in 1:R) {
 ```
 
 
-```r
+``` r
 par.ci <- c(mean(xx) - 1.96*mean(xx)/sqrt(50), mean(xx) + 1.96*mean(xx)/sqrt(50))
 boot.ci.sd <- c(mean(xx) - 1.96*sd(boot.mean), mean(xx) + 1.96*sd(boot.mean))
 boot.ci.quant <- quantile(boot.mean, probs=c(.025, .975))
@@ -282,7 +285,7 @@ boot.ci.quant <- quantile(boot.mean, probs=c(.025, .975))
 
 * The normal-approximation confidence interval is
 
-```r
+``` r
 round(par.ci, 2)
 ```
 
@@ -291,7 +294,7 @@ round(par.ci, 2)
 ```
 * The standard error boostrap confidence interval is
 
-```r
+``` r
 round(boot.ci.sd, 2)
 ```
 
@@ -300,7 +303,7 @@ round(boot.ci.sd, 2)
 ```
 * The percentile bootstrap confidence interval
 
-```r
+``` r
 round(boot.ci.quant, 2)
 ```
 
@@ -371,7 +374,7 @@ compares with bootstrap-based confidence intervals.
 
 * We will simulate $X_{i} \sim \textrm{Gamma}(2, 1.5)$ and $Y_{i} \sim \textrm{Gamma}(2, 2)$ with $n = 100$ and $m = 100$. 
 
-```r
+``` r
 n <- 100
 m <- 100
 xx <- rgamma(n, shape=2, rate=1.5) 
@@ -383,7 +386,7 @@ true value of $\eta$ is $\eta \approx 4/3$.
 
 * The estimate $\hat{\eta}$ and the estimated standard error using the large-sample approximation \@ref(eq:quantile-ratio-approx) is
 
-```r
+``` r
 theta.hat1 <- quantile(xx, probs=0.9)
 theta.hat2 <- quantile(yy, probs=0.9)
 eta.hat <- theta.hat1/theta.hat2    ## estimate of quantile ratio
@@ -400,7 +403,7 @@ std.err <- sqrt(q1.se.sq + q2.se.sq)
 
 * The confidence interval using the large-sample approximation \@ref(eq:quantile-ratio-approx) is
 
-```r
+``` r
 CI <- c(eta.hat - 1.96*std.err, eta.hat + 1.96*std.err)
 round(CI, 2)
 ```
@@ -414,7 +417,7 @@ round(CI, 2)
 
 * Now, using the same simulated data, let's compute $500$ bootstrap replications of the statistic $\hat{\eta}$
 
-```r
+``` r
 R <- 500
 eta.boot <- numeric(R)
 
@@ -435,7 +438,7 @@ for(r in 1:R)
 
 * The standard error boostrap confidence interval is
 
-```r
+``` r
 boot.ci.sd <- c(eta.hat - 1.96*sd(eta.boot), eta.hat + 1.96*sd(eta.boot))
 
 round(boot.ci.sd, 2)
@@ -447,7 +450,7 @@ round(boot.ci.sd, 2)
 
 * The percentile bootstrap confidence interval is
 
-```r
+``` r
 boot.ci.quant <- quantile(eta.boot, probs=c(.025, .975))
 round(boot.ci.quant, 2)
 ```
@@ -511,7 +514,7 @@ confidence interval which uses \@ref(eq:quantile-ratio-approx) with two bootstra
 
 
 
-```r
+``` r
 n <- 100
 m <- 100
 R <- 500
@@ -564,7 +567,7 @@ for(k in 1:nreps)  {
 
 * The coverage proportions for each of the methods are:
 
-```r
+``` r
 mean(Cover.par.ci)
 ```
 
@@ -572,7 +575,7 @@ mean(Cover.par.ci)
 ## [1] 0.921
 ```
 
-```r
+``` r
 mean(Cover.bootsd.ci)
 ```
 
@@ -580,7 +583,7 @@ mean(Cover.bootsd.ci)
 ## [1] 0.949
 ```
 
-```r
+``` r
 mean(Cover.bootquant.ci)
 ```
 
@@ -851,7 +854,7 @@ X_{i} - 17 \sim \textrm{Gamma}(\alpha, \beta) \nonumber
 * We can find the maximum likelihood estimates $(\hat{\alpha}, \hat{\beta})$ for this model
 using the following `R` code
 
-```r
+``` r
 kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
                      header=TRUE)
 
@@ -867,7 +870,7 @@ best.beta <- best.alpha/mean(kidney$age - 17)
 
 * We can plot this estimated Gamma density overlaid on the histogram of the ages to see how they compare
 
-```r
+``` r
 tt <- seq(17, 90, length.out=500)
 hist(kidney$age, breaks="FD", probability=TRUE, las=1, xlab="Age", 
      main="Estimate Gamma Density for the Kidney Age Data", col="grey")
@@ -890,7 +893,7 @@ use the following steps.
 
 * The code for implementing this parametric bootstrap is given below
 
-```r
+``` r
 R <- 500
 med.boot.par <- rep(0, R)
 med.boot.np <- rep(0, R)
@@ -905,7 +908,7 @@ for(r in 1:R) {
 
 * The normal standard error confidence interval using the parametric bootstrap is
 
-```r
+``` r
 c(median(kidney$age) - 1.96*sd(med.boot.par), median(kidney$age) + 1.96*sd(med.boot.par))
 ```
 
@@ -915,7 +918,7 @@ c(median(kidney$age) - 1.96*sd(med.boot.par), median(kidney$age) + 1.96*sd(med.b
 
 * The normal standard error confidence interval using the nonparametric bootstrap is
 
-```r
+``` r
 c(median(kidney$age) - 1.96*sd(med.boot.np), median(kidney$age) + 1.96*sd(med.boot.np))
 ```
 
@@ -956,7 +959,7 @@ For $r = 1,\ldots, R$:
     + A pivotal bootstrap confidence interval based on $T_{n,r}^{*} - T_{n}$ (not the studentized bootstrap confidence interval).
     + Bootstrap percentile confidence interval.
 
-
+* **Exercise 9.2**: What is the distribution of $X_{1,r}^{*}$?
 
 
 

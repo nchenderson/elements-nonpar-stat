@@ -1,7 +1,7 @@
 --- 
 title: "Elements of Nonparametric Statistics"
 author: "Nicholas Henderson"
-date: "2020-04-23"
+date: "2026-01-02"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: ["book.bib"]
@@ -14,4 +14,4 @@ description: "Course notes for Biostatistics 685/Statistics 560 (Winter 2020)."
 
 # Preface {-}
 
-This book will serve as the main source of course notes for Biostatistics 685/Statistics 560, Winter 2020.
+This book will serve as the main source of course notes for Biostatistics 685/Statistics 560, Winter 2026.

@@ -490,7 +490,7 @@ Then, compute the estimated standard error:
 
 * `R` code to compute these standard error estimates for the `sysBP` variable from the `framingham` dataset is given below
 ```{r}
-framingham <- read.csv("~/Documents/STAT685Notes/Data/framingham.csv")
+framingham <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/framingham.csv")
 R <- 500
 BootMat <- matrix(0, nrow=R, ncol=4)
 for(r in 1:R) {

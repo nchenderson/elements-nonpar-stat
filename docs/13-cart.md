@@ -4,11 +4,11 @@
 
 ## Introduction
 
-* Let's think about the regressogram estimate again. 
+* Let's think about the **regressogram** estimate again. 
 
 * The regressogram estimate of the regression function is a piecewise constant function that is constant within each of $p$ "bins"
 \begin{equation}
-\hat{m}_{h_{n}}^{R}(x) = \frac{1}{a}\sum_{i=1}^{n} Y_{i} I(x_{i} \in B_{k}), \qquad \textrm{ if } x \in B_{k} \nonumber
+\hat{m}_{h_{n}}^{R}(x) = \frac{1}{n_{k,h_{n}}}\sum_{i=1}^{n} Y_{i} I(x_{i} \in B_{k}), \qquad \textrm{ if } x \in B_{k} \nonumber
 \end{equation}
 
 * Figure \@ref(fig:cart-motivate) shows an example of a regressogram estimate with 3 bins. 
@@ -59,7 +59,7 @@ sum of squares is low, an intercept model for each bin will fit the data very we
 * For the data shown in Figures \@ref(fig:cart-motivate) - \@ref(fig:cart-motivate3), the WBSS when using the bins $[0, 1/3), [1/3, 1)$
 is
 
-```r
+``` r
 sum( (yy[xx < 1/3] - mean(yy[xx < 1/3]))^2 ) + 
   sum( (yy[xx >= 1/3] - mean(yy[xx >= 1/3]))^2 ) 
 ```
@@ -70,7 +70,7 @@ sum( (yy[xx < 1/3] - mean(yy[xx < 1/3]))^2 ) +
 
 * The WBSS when using the bins $[0,2/3), [2/3, 1)$ is
 
-```r
+``` r
 sum( (yy[xx < 2/3] - mean(yy[xx < 2/3]))^2 ) + 
   sum( (yy[xx >= 2/3] - mean(yy[xx >= 2/3]))^2 ) 
 ```
@@ -86,7 +86,7 @@ sum( (yy[xx < 2/3] - mean(yy[xx < 2/3]))^2 ) +
 function that is constant within each of several bins. We will focus on the well-known 
 CART (Classification and Regression Trees) method for using regression trees.
 
-* More generally, with multivariate covariates CART will fit a regression function that is constant
+* More generally, with multivariate covariates, CART will fit a regression function that is constant
 within each of many multi-dimensional "rectangles".
 
 * The main difference between CART and the regressogram is that the placements

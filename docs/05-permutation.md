@@ -107,7 +107,7 @@ $t_{obs} = T_{N}(\mathbf{Z}_{obs})$, where $\mathbf{Z}_{obs}$ is the vector of t
 many other permutations of the data.
 
 
-```r
+``` r
 z <- c(0.6, -0.8, -0.6, -0.9, 0.3, -1.3, 0.2, 0.7, -1.4, -0.4) ## data
 observed.diff <- mean(z[1:5]) - mean(z[6:10])  ## observed mean difference
 nperms <- 1000
@@ -150,13 +150,13 @@ where $\pi_{1}, \ldots, \pi_{S}$ are randomly drawn permutations
 
 * The two-sided (Monte Carlo) p-value for the example shown in Table 5.1 is
 
-```r
+``` r
 pval.mc <- (1 + sum(abs(mean.diff) >= abs(observed.diff)))/(nperms + 1)
 round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.77
+## [1] 0.76
 ```
     
 ### Example 2: Ratios of Means
@@ -172,7 +172,7 @@ T_{N}( \mathbf{Z} ) = \max\Big\{ \bar{X}/\bar{Y} , \bar{Y}/\bar{X}  \Big\}
 * Let us see how this works for a simulated example with $n = m = 20$ where we assume that
 $X_{1}, \ldots, X_{n} \sim \textrm{Exponential}(1)$ and $Y_{1}, \ldots, Y_{m} \sim \textrm{Exponential}(1/2)$.
 
-```r
+``` r
 set.seed(5127)
 xx <- rexp(20, rate=1)
 yy <- rexp(20, rate=0.5)
@@ -196,7 +196,7 @@ abline(v=t.obs, lwd=3)
 * The two-side (Monte Carlo) permutation test p-value is:
 
 
-```r
+``` r
 pval.mc <- (1 + sum(mean.ratio >= t.obs))/(nperms + 1)
 round(pval.mc, 2)
 ```
@@ -222,7 +222,7 @@ where $Q_{p}(X_{1}, \ldots, X_{H})$ denotes the $p^{th}$ quantile from the data 
 
 * The difference in quantiles could be computed with the following **R** code:
 
-```r
+``` r
 z <- rnorm(10)
 quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
 ```
@@ -233,6 +233,21 @@ quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
 ```
 
 * Note that setting **probs=.5** in the **quantile** function will return the median.
+
+
+```
+## Loading required package: tibble
+```
+
+```
+## Loading required package: bitops
+```
+
+```
+## Rattle: A free graphical interface for data science with R.
+## Version 5.5.1 Copyright (c) 2006-2021 Togaware Pty Ltd.
+## Type 'rattle()' to shake, rattle, and roll your data.
+```
 
 <img src="05-permutation_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
@@ -420,8 +435,8 @@ of randomly "switching observation pairs".
 
 
 
-```r
-library(rattle.data)
+``` r
+library(rattle)
 ## Computing the permutation distribution for correlation 
 ## between flavanoids and phenols
 
@@ -449,7 +464,7 @@ abline(v=t.obs.pf, lwd=3)
 Phenols/Flavanoids and Phenols/Color association tests.
 
 
-```r
+``` r
 # p-value for correlation between Phenols/Flavanoids
 pval.mc <- (1 + sum(abs(cor.perm.pf) >= abs(t.obs.pf)))/(nperms + 1)
 round(pval.mc, 4)
@@ -460,7 +475,7 @@ round(pval.mc, 4)
 ```
 
 
-```r
+``` r
 # p-value for correlation between Phenols/Color
 pval.mc <- (1 + sum(abs(cor.perm.pc) >= abs(t.obs.pc)))/(nperms + 1)
 round(pval.mc, 4)
@@ -534,20 +549,31 @@ the **wine** data.
 * First, we will load the data and fit a random forest model.
 
 
-```r
-library(rattle.data)
+``` r
+library(rattle)
 library(randomForest)
 ```
 
 ```
-## randomForest 4.6-14
+## randomForest 4.7-1.2
 ```
 
 ```
 ## Type rfNews() to see new features/changes/bug fixes.
 ```
 
-```r
+```
+## 
+## Attaching package: 'randomForest'
+```
+
+```
+## The following object is masked from 'package:rattle':
+## 
+##     importance
+```
+
+``` r
 wine2 <- subset(wine, Type==1 | Type==2)
 wine2$Type <- factor(wine2$Type)
 X <- model.matrix(Type ~ . -1, data=wine2)
@@ -582,7 +608,7 @@ var.imp
 the importance scores obtained across 10,000 permuted datasets.
 
 
-```r
+``` r
 nperm <- 10000
 VarImpMat <- matrix(0, nrow=nperm, ncol=ncol(X))
 for(k in 1:nperm) {

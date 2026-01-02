@@ -168,7 +168,7 @@ a measure of overall kidney function. The data can be obtained at https://web.st
 
 * We will only look at the **tot** variable in this chapter. 
 
-```r
+``` r
 kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
                      header=TRUE)
 head(kidney)
@@ -190,13 +190,13 @@ in **R**
 * The **ecdf** function will create an **ecdf** object. To create an ecdf object
 for the kidney totals, use the following code:
 
-```r
+``` r
 kidney.Fhat <- ecdf(kidney$tot)
 ```
 
 * You can plot the ecdf for the kidney totals by just calling **plot(ecdf)**
 
-```r
+``` r
 plot(kidney.Fhat, main = "Kidney Data: Default plot for ecdf", las=1)
 ```
 
@@ -207,7 +207,7 @@ plot(kidney.Fhat, main = "Kidney Data: Default plot for ecdf", las=1)
 if you want the plot to draw vertical lines whenever there is a jump in the empirical distribution function.
 
 
-```r
+``` r
 plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data: 
     ecdf with vertical lines and without points", las=1, lwd=2)
 ```
@@ -220,7 +220,7 @@ plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data:
 can be treated as a function which computes the empirical distribution function.
 For example,
 
-```r
+``` r
 kidney.Fhat <- ecdf(kidney$tot)
 
 kidney.Fhat(0)
@@ -230,7 +230,7 @@ kidney.Fhat(0)
 ## [1] 0.5095541
 ```
 
-```r
+``` r
 kidney.Fhat( c(-1,1,4) )
 ```
 
@@ -245,7 +245,7 @@ kidney.Fhat( c(-1,1,4) )
 * We can do this ourselves, by using the pointwise confidence interval formula shown in \@ref(eq:pointwise-cis)
 
 
-```r
+``` r
 ## 1. First, we will compute the standard errors at each of the 
 ##    observed time points
 tt <- sort(unique(kidney$tot)) 
@@ -268,7 +268,7 @@ lines(tt, ci.upper, type="s", lty=2, lwd=2)
 * We could plot the confidence bands as well.
 
 
-```r
+``` r
 n <- length(kidney$tot)
 
 ## Compute the confidence bands at each time point
@@ -328,33 +328,33 @@ F_{Kolmo}(t) = 1 - 2\sum_{j=1}^{\infty} (-1)^{(j+1)} e^{-2j^{2}t^{2}} \nonumber
 For one-sample tests, you have to provide the "name" of the distribution function
 that you are choosing for $F_{0}$.
 
-```r
+``` r
 xx <- rt(100, df=2) ## generate 100 observations from a t-dist with 2 d.f.
 ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ```
 
 ```
 ## 
-## 	One-sample Kolmogorov-Smirnov test
+## 	Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.15983, p-value = 0.01209
+## D = 0.1907, p-value = 0.001388
 ## alternative hypothesis: two-sided
 ```
 
 * You can even test that the data follow some other $\textrm{Normal}(\mu, \sigma^{2})$
 by just providing **mean** and **sd** arguments.
 
-```r
+``` r
 ks.test(xx, y="pnorm", mean=1, sd=2)  
 ```
 
 ```
 ## 
-## 	One-sample Kolmogorov-Smirnov test
+## 	Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.32583, p-value = 1.202e-09
+## D = 0.38321, p-value = 3.513e-13
 ## alternative hypothesis: two-sided
 ```
 
@@ -393,7 +393,7 @@ the one-sample KS test statistic. In particular, under $H_{0}$:
 
 * The **ks.test** function in **R** also performs two-sample KS tests.
 
-```r
+``` r
 xx <- rnorm(100)
 yy <- rlogis(100)
 ks.test(xx, yy)  
@@ -401,10 +401,10 @@ ks.test(xx, yy)
 
 ```
 ## 
-## 	Two-sample Kolmogorov-Smirnov test
+## 	Asymptotic two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.2, p-value = 0.03663
+## D = 0.17, p-value = 0.1111
 ## alternative hypothesis: two-sided
 ```
 
@@ -412,7 +412,7 @@ ks.test(xx, yy)
 returned by the **ks.test** function:
 
 
-```r
+``` r
 zz <- c(xx, yy)
 zz.order <- sort(zz)
 F.x <- ecdf(xx)
@@ -423,7 +423,7 @@ KS.stat
 ```
 
 ```
-## [1] 0.2
+## [1] 0.17
 ```
 
 

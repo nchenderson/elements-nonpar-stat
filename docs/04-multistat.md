@@ -191,7 +191,7 @@ is just a constant times the Kruskal-Wallis statistic.
 * We will look at performing Kruskal-Wallis tests in **R** by using the
 "InsectSprays" dataset.
 
-```r
+``` r
 head(InsectSprays)
 ```
 
@@ -224,7 +224,7 @@ approach. (The square-root transformation is the "variance-stabilizing transform
 for Poisson-distributed data).
 
 
-```r
+``` r
 boxplot(sqrt(count) ~ spray, data=InsectSprays,las=1, 
         ylab="square root of insect counts")
 ```
@@ -237,7 +237,7 @@ boxplot(sqrt(count) ~ spray, data=InsectSprays,las=1,
 test
 
 
-```r
+``` r
 anova(lm(sqrt(count) ~ spray, data=InsectSprays))
 ```
 
@@ -254,7 +254,7 @@ anova(lm(sqrt(count) ~ spray, data=InsectSprays))
 
 
 
-```r
+``` r
 a  <- kruskal.test(sqrt(count) ~ spray, data=InsectSprays)
 a$p.value
 ```
@@ -270,7 +270,7 @@ a$p.value
 value of the Kruskal-Wallis statistic or the Kruskal-Wallis p-value.
 
 
-```r
+``` r
 kruskal.test(count ~ spray, data=InsectSprays)
 ```
 
@@ -284,7 +284,7 @@ kruskal.test(count ~ spray, data=InsectSprays)
 
 * This invariance to data transformation is not true for the standard one-way ANOVA.
 
-```r
+``` r
 anova(lm(count ~ spray, data=InsectSprays))
 ```
 
@@ -343,7 +343,7 @@ on the proportional odds model.
 * We will use the "cane" dataset from the **boot** package.
 
 
-```r
+``` r
 library(boot)
 data(cane)
 head(cane)
@@ -370,7 +370,7 @@ of sugar cane to a particular type of disease.
 of shoots that are diseased.
 
 
-```r
+``` r
 cane$prop <- cane$r/cane$n
 ```
 
@@ -378,7 +378,7 @@ cane$prop <- cane$r/cane$n
 but we will analyze the transformed proportions using the arcsine square root transformation.
 
 
-```r
+``` r
 cane$prop.trans <- asin(sqrt(cane$prop))
 boxplot(prop.trans ~ block, data=cane, las=1, ylab="number of shoots")
 ```
@@ -386,7 +386,7 @@ boxplot(prop.trans ~ block, data=cane, las=1, ylab="number of shoots")
 <img src="04-multistat_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 
-```r
+``` r
 kruskal.test(prop ~ block, data=cane)
 ```
 

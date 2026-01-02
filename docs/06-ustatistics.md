@@ -97,7 +97,7 @@ the expected squared distance between $X_{i}$ and $X_{j}$ will be $2\sigma^{2}$.
 
 * You can see this through the following computer experiment.
 
-```r
+``` r
 n <- 50000
 xx <- rlogis(n, location=2, scale=0.75)
 diff.sq <- rep(0, 5000)
@@ -109,15 +109,15 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.844
+## [1] 1.838
 ```
 
-```r
+``` r
 round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.843
+## [1] 1.854
 ```
 
 
@@ -350,7 +350,7 @@ the rank correlation is very effective at detecting any monotone associations be
 and $\hat{\rho}_{R}$ will equal -1 if $Y_{i}$ is a monotone decreasing function $X_{i}$.
 
 
-```r
+``` r
 xx <- pmax(rnorm(100, mean=10), 0.01)
 yy <- pmax(xx + rnorm(100, sd=.5), 0.01)
 
@@ -360,17 +360,17 @@ round( c( cor(xx, yy), cor(xx, yy^2)), 3)
 ```
 
 ```
-## [1] 0.895 0.890
+## [1] 0.870 0.867
 ```
 
-```r
+``` r
 ## Now do the same for Spearman's rank correlation
 round(c( cor(xx, yy, method="spearman"), 
          cor(xx, yy^2, method="spearman")), 3)
 ```
 
 ```
-## [1] 0.887 0.887
+## [1] 0.868 0.868
 ```
 
 ---
@@ -574,7 +574,7 @@ where $X_{i} \sim \textrm{Normal}(0, 1)$ and $Y_{i} = X_{i}^{2}$.
 we can estimate it pretty closely using simulation:
 
 
-```r
+``` r
 set.seed(4157)
 nreps <- 500000 ## number of simulation replications
 term1 <- term2 <- term3 <- term4 <- rep(0, nreps)
@@ -658,7 +658,7 @@ h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y
 * You can compute distance covariances and distance correlations using the **energy** package in **R**.
 
 
-```r
+``` r
 library(energy)
 
 n <- 5000
@@ -683,7 +683,7 @@ plot(xx2, yy2, xlab="x", ylab="y", main=paste("Sample Distance Corr. = ",
 <img src="06-ustatistics_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 
-```r
+``` r
 ## Let's just compare the values of distance correlation and Pearson's 
 ## for both examples 
 p.cor1 <- cor(xx1, yy1)
@@ -703,7 +703,7 @@ round(c(p.cor1, kend.cor1, spear.cor1, d.cor1), 4) ## parabola
 ## [1] -0.0124  0.0077  0.0109  0.5268
 ```
 
-```r
+``` r
 round(c(p.cor2, kend.cor2, spear.cor2, d.cor2), 4) ## circle
 ```
 

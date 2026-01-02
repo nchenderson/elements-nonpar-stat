@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 Rank and Sign Statistics | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 Rank and Sign Statistics | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
-  <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
   
   <meta property="og:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
@@ -24,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-23" />
+<meta name="date" content="2026-01-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,8 @@
   
 <link rel="prev" href="getting-started.html"/>
 <link rel="next" href="krusk-wallis.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,29 +49,34 @@
 
 
 
-
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,15 +85,15 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -101,7 +106,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -113,6 +118,34 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -132,7 +165,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#sec:whatisnonpar"><i class="fa fa-check"></i><b>1.1</b> What is Nonparametric Statistics?</a></li>
 <li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#sec:course-outline"><i class="fa fa-check"></i><b>1.2</b> Outline of Course</a></li>
 <li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#sec:example-nonpar-tests"><i class="fa fa-check"></i><b>1.3</b> Example 1: Nonparametric vs. Parametric Two-Sample Testing</a></li>
@@ -143,32 +177,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Working with R</a></li>
 <li class="part"><span><b>I Nonparametric Testing</b></span></li>
-<li class="chapter" data-level="3" data-path="rank-tests.html"><a href="rank-tests.html"><i class="fa fa-check"></i><b>3</b> Rank and Sign Statistics</a><ul>
-<li class="chapter" data-level="3.1" data-path="rank-tests.html"><a href="rank-tests.html#ranks"><i class="fa fa-check"></i><b>3.1</b> Ranks</a><ul>
+<li class="chapter" data-level="3" data-path="rank-tests.html"><a href="rank-tests.html"><i class="fa fa-check"></i><b>3</b> Rank and Sign Statistics</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="rank-tests.html"><a href="rank-tests.html#ranks"><i class="fa fa-check"></i><b>3.1</b> Ranks</a>
+<ul>
 <li class="chapter" data-level="3.1.1" data-path="rank-tests.html"><a href="rank-tests.html#definition"><i class="fa fa-check"></i><b>3.1.1</b> Definition</a></li>
 <li class="chapter" data-level="3.1.2" data-path="rank-tests.html"><a href="rank-tests.html#handling-ties"><i class="fa fa-check"></i><b>3.1.2</b> Handling Ties</a></li>
 <li class="chapter" data-level="3.1.3" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-ranks"><i class="fa fa-check"></i><b>3.1.3</b> Properties of Ranks</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test-a-two-sample-test"><i class="fa fa-check"></i><b>3.2</b> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test</a><ul>
+<li class="chapter" data-level="3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test-a-two-sample-test"><i class="fa fa-check"></i><b>3.2</b> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test</a>
+<ul>
 <li class="chapter" data-level="3.2.1" data-path="rank-tests.html"><a href="rank-tests.html#goal-of-the-test"><i class="fa fa-check"></i><b>3.2.1</b> Goal of the Test</a></li>
 <li class="chapter" data-level="3.2.2" data-path="rank-tests.html"><a href="rank-tests.html#definition-of-the-wrs-test-statistic"><i class="fa fa-check"></i><b>3.2.2</b> Definition of the WRS Test Statistic</a></li>
 <li class="chapter" data-level="3.2.3" data-path="rank-tests.html"><a href="rank-tests.html#computing-p-values-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.3</b> Computing p-values for the WRS Test</a></li>
 <li class="chapter" data-level="3.2.4" data-path="rank-tests.html"><a href="rank-tests.html#computing-the-wrs-test-in-r"><i class="fa fa-check"></i><b>3.2.4</b> Computing the WRS test in R</a></li>
 <li class="chapter" data-level="3.2.5" data-path="rank-tests.html"><a href="rank-tests.html#additional-notes-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.5</b> Additional Notes for the WRS test</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.3</b> One Sample Tests</a><ul>
+<li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.3</b> One Sample Tests</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#sign-test"><i class="fa fa-check"></i><b>3.3.1</b> The Sign Test</a></li>
 <li class="chapter" data-level="3.3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-signed-rank-test"><i class="fa fa-check"></i><b>3.3.2</b> The Wilcoxon Signed Rank Test</a></li>
 <li class="chapter" data-level="3.3.3" data-path="rank-tests.html"><a href="rank-tests.html#using-r-to-perform-the-sign-and-wilcoxon-tests"><i class="fa fa-check"></i><b>3.3.3</b> Using R to Perform the Sign and Wilcoxon Tests</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#power-and-comparisons-with-parametric-tests"><i class="fa fa-check"></i><b>3.4</b> Power and Comparisons with Parametric Tests</a><ul>
+<li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#power-and-comparisons-with-parametric-tests"><i class="fa fa-check"></i><b>3.4</b> Power and Comparisons with Parametric Tests</a>
+<ul>
 <li class="chapter" data-level="3.4.1" data-path="rank-tests.html"><a href="rank-tests.html#the-power-function-of-a-test"><i class="fa fa-check"></i><b>3.4.1</b> The Power Function of a Test</a></li>
 <li class="chapter" data-level="3.4.2" data-path="rank-tests.html"><a href="rank-tests.html#power-comparisons-and-asymptotic-relative-efficiency"><i class="fa fa-check"></i><b>3.4.2</b> Power Comparisons and Asymptotic Relative Efficiency</a></li>
 <li class="chapter" data-level="3.4.3" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-examples"><i class="fa fa-check"></i><b>3.4.3</b> Efficiency Examples</a></li>
 <li class="chapter" data-level="3.4.4" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-comparisons-for-several-distributions"><i class="fa fa-check"></i><b>3.4.4</b> Efficiency Comparisons for Several Distributions</a></li>
 <li class="chapter" data-level="3.4.5" data-path="rank-tests.html"><a href="rank-tests.html#a-power-contest"><i class="fa fa-check"></i><b>3.4.5</b> A Power “Contest”</a></li>
 </ul></li>
-<li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#linear-rank-statistics-in-general"><i class="fa fa-check"></i><b>3.5</b> Linear Rank Statistics in General</a><ul>
+<li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#linear-rank-statistics-in-general"><i class="fa fa-check"></i><b>3.5</b> Linear Rank Statistics in General</a>
+<ul>
 <li class="chapter" data-level="3.5.1" data-path="rank-tests.html"><a href="rank-tests.html#definition-1"><i class="fa fa-check"></i><b>3.5.1</b> Definition</a></li>
 <li class="chapter" data-level="3.5.2" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.2</b> Properties of Linear Rank Statistics</a></li>
 <li class="chapter" data-level="3.5.3" data-path="rank-tests.html"><a href="rank-tests.html#other-examples-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.3</b> Other Examples of Linear Rank Statistics</a></li>
@@ -177,8 +217,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#additional-reading"><i class="fa fa-check"></i><b>3.6</b> Additional Reading</a></li>
 <li class="chapter" data-level="3.7" data-path="rank-tests.html"><a href="rank-tests.html#exercises"><i class="fa fa-check"></i><b>3.7</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a><ul>
-<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskal-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskal-Wallis Test</a><ul>
+<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskal-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskal-Wallis Test</a>
+<ul>
 <li class="chapter" data-level="4.1.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#definition-2"><i class="fa fa-check"></i><b>4.1.1</b> Definition</a></li>
 <li class="chapter" data-level="4.1.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#asymptotic-distribution-and-connection-to-one-way-anova"><i class="fa fa-check"></i><b>4.1.2</b> Asymptotic Distribution and Connection to One-Way ANOVA</a></li>
 </ul></li>
@@ -188,9 +230,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.5" data-path="krusk-wallis.html"><a href="krusk-wallis.html#additional-reading-1"><i class="fa fa-check"></i><b>4.5</b> Additional Reading</a></li>
 <li class="chapter" data-level="4.6" data-path="krusk-wallis.html"><a href="krusk-wallis.html#exercises-1"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a><ul>
+<li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="permutation.html"><a href="permutation.html#notation"><i class="fa fa-check"></i><b>5.1</b> Notation</a></li>
-<li class="chapter" data-level="5.2" data-path="permutation.html"><a href="permutation.html#permutation-tests-for-the-two-sample-problem"><i class="fa fa-check"></i><b>5.2</b> Permutation Tests for the Two-Sample Problem</a><ul>
+<li class="chapter" data-level="5.2" data-path="permutation.html"><a href="permutation.html#permutation-tests-for-the-two-sample-problem"><i class="fa fa-check"></i><b>5.2</b> Permutation Tests for the Two-Sample Problem</a>
+<ul>
 <li class="chapter" data-level="5.2.1" data-path="permutation.html"><a href="permutation.html#example-1"><i class="fa fa-check"></i><b>5.2.1</b> Example 1</a></li>
 <li class="chapter" data-level="5.2.2" data-path="permutation.html"><a href="permutation.html#permutation-test-p-values"><i class="fa fa-check"></i><b>5.2.2</b> Permutation Test p-values</a></li>
 <li class="chapter" data-level="5.2.3" data-path="permutation.html"><a href="permutation.html#example-2-ratios-of-means"><i class="fa fa-check"></i><b>5.2.3</b> Example 2: Ratios of Means</a></li>
@@ -202,26 +246,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.6" data-path="permutation.html"><a href="permutation.html#exercises-2"><i class="fa fa-check"></i><b>5.6</b> Exercises</a></li>
 </ul></li>
 <li class="part"><span><b>II Nonparametric Estimation</b></span></li>
-<li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
+<li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-3"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
-<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a><ul>
+<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a>
+<ul>
 <li class="chapter" data-level="6.2.1" data-path="ustat.html"><a href="ustat.html#example-1-the-sample-mean"><i class="fa fa-check"></i><b>6.2.1</b> Example 1: The Sample Mean</a></li>
 <li class="chapter" data-level="6.2.2" data-path="ustat.html"><a href="ustat.html#example-2-the-sample-variance"><i class="fa fa-check"></i><b>6.2.2</b> Example 2: The Sample Variance</a></li>
 <li class="chapter" data-level="6.2.3" data-path="ustat.html"><a href="ustat.html#example-3-ginis-mean-difference"><i class="fa fa-check"></i><b>6.2.3</b> Example 3: Gini’s Mean Difference</a></li>
 <li class="chapter" data-level="6.2.4" data-path="ustat.html"><a href="ustat.html#example-4-wilcoxon-signed-rank-statistic"><i class="fa fa-check"></i><b>6.2.4</b> Example 4: Wilcoxon Signed Rank Statistic</a></li>
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#inference-using-u-statistics"><i class="fa fa-check"></i><b>6.3</b> Inference using U-statistics</a></li>
-<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#u-statistics-for-two-sample-problems"><i class="fa fa-check"></i><b>6.4</b> U-statistics for Two-Sample Problems</a><ul>
+<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#u-statistics-for-two-sample-problems"><i class="fa fa-check"></i><b>6.4</b> U-statistics for Two-Sample Problems</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="ustat.html"><a href="ustat.html#the-mann-whitney-statistic"><i class="fa fa-check"></i><b>6.4.1</b> The Mann-Whitney Statistic</a></li>
 </ul></li>
-<li class="chapter" data-level="6.5" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.5</b> Measures of Association</a><ul>
+<li class="chapter" data-level="6.5" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.5</b> Measures of Association</a>
+<ul>
 <li class="chapter" data-level="6.5.1" data-path="ustat.html"><a href="ustat.html#spearmans-rank-correlation"><i class="fa fa-check"></i><b>6.5.1</b> Spearman’s Rank Correlation</a></li>
 <li class="chapter" data-level="6.5.2" data-path="ustat.html"><a href="ustat.html#kendalls-tau"><i class="fa fa-check"></i><b>6.5.2</b> Kendall’s tau</a></li>
 <li class="chapter" data-level="6.5.3" data-path="ustat.html"><a href="ustat.html#distance-covariance-and-correlation"><i class="fa fa-check"></i><b>6.5.3</b> Distance Covariance and Correlation</a></li>
 </ul></li>
 <li class="chapter" data-level="6.6" data-path="ustat.html"><a href="ustat.html#exercises-3"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="edf.html"><a href="edf.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
+<li class="chapter" data-level="7" data-path="edf.html"><a href="edf.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="edf.html"><a href="edf.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1</b> Definition and Basic Properties</a></li>
 <li class="chapter" data-level="7.2" data-path="edf.html"><a href="edf.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.2</b> Confidence intervals for F(t)</a></li>
 <li class="chapter" data-level="7.3" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.3</b> The Empirical Distribution Function in R</a></li>
@@ -230,21 +279,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.6" data-path="edf.html"><a href="edf.html#additional-reading-2"><i class="fa fa-check"></i><b>7.6</b> Additional Reading</a></li>
 <li class="chapter" data-level="7.7" data-path="edf.html"><a href="edf.html#exercises-4"><i class="fa fa-check"></i><b>7.7</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
+<li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
-<li class="chapter" data-level="8.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms"><i class="fa fa-check"></i><b>8.2</b> Histograms</a><ul>
+<li class="chapter" data-level="8.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms"><i class="fa fa-check"></i><b>8.2</b> Histograms</a>
+<ul>
 <li class="chapter" data-level="8.2.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-5"><i class="fa fa-check"></i><b>8.2.1</b> Definition</a></li>
 <li class="chapter" data-level="8.2.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms-in-r"><i class="fa fa-check"></i><b>8.2.2</b> Histograms in R</a></li>
 <li class="chapter" data-level="8.2.3" data-path="density-estimation.html"><a href="density-estimation.html#performance-of-the-histogram-estimate-and-bin-width-selection"><i class="fa fa-check"></i><b>8.2.3</b> Performance of the Histogram Estimate and Bin Width Selection</a></li>
 <li class="chapter" data-level="8.2.4" data-path="density-estimation.html"><a href="density-estimation.html#choosing-the-histogram-bin-width"><i class="fa fa-check"></i><b>8.2.4</b> Choosing the Histogram Bin Width</a></li>
 </ul></li>
 <li class="chapter" data-level="8.3" data-path="density-estimation.html"><a href="density-estimation.html#a-box-type-density-estimate"><i class="fa fa-check"></i><b>8.3</b> A Box-type Density Estimate</a></li>
-<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a><ul>
+<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a>
+<ul>
 <li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-6"><i class="fa fa-check"></i><b>8.4.1</b> Definition</a></li>
 <li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-amise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and AMISE of Kernel Density Estimates</a></li>
 <li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule-and-silvermans-rule-of-thumb"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection with the Normal Reference Rule and Silverman’s “Rule of Thumb”</a></li>
 </ul></li>
-<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5</b> Cross-Validation for Bandwidth Selection</a><ul>
+<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5</b> Cross-Validation for Bandwidth Selection</a>
+<ul>
 <li class="chapter" data-level="8.5.1" data-path="density-estimation.html"><a href="density-estimation.html#squared-error-cross-validation"><i class="fa fa-check"></i><b>8.5.1</b> Squared-Error Cross-Validation</a></li>
 <li class="chapter" data-level="8.5.2" data-path="density-estimation.html"><a href="density-estimation.html#computing-the-cross-validation-bandwidth"><i class="fa fa-check"></i><b>8.5.2</b> Computing the Cross-validation Bandwidth</a></li>
 <li class="chapter" data-level="8.5.3" data-path="density-estimation.html"><a href="density-estimation.html#likelihood-cross-validation"><i class="fa fa-check"></i><b>8.5.3</b> Likelihood Cross-Validation</a></li>
@@ -254,49 +307,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.8" data-path="density-estimation.html"><a href="density-estimation.html#exercises-5"><i class="fa fa-check"></i><b>8.8</b> Exercises</a></li>
 </ul></li>
 <li class="part"><span><b>III Quantifying Uncertainty</b></span></li>
-<li class="chapter" data-level="9" data-path="bootstrap-main.html"><a href="bootstrap-main.html"><i class="fa fa-check"></i><b>9</b> The Bootstrap</a><ul>
+<li class="chapter" data-level="9" data-path="bootstrap-main.html"><a href="bootstrap-main.html"><i class="fa fa-check"></i><b>9</b> The Bootstrap</a>
+<ul>
 <li class="chapter" data-level="9.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#introduction-1"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
-<li class="chapter" data-level="9.2" data-path="bootstrap-main.html"><a href="bootstrap-main.html#description-of-the-bootstrap"><i class="fa fa-check"></i><b>9.2</b> Description of the Bootstrap</a><ul>
+<li class="chapter" data-level="9.2" data-path="bootstrap-main.html"><a href="bootstrap-main.html#description-of-the-bootstrap"><i class="fa fa-check"></i><b>9.2</b> Description of the Bootstrap</a>
+<ul>
 <li class="chapter" data-level="9.2.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#description"><i class="fa fa-check"></i><b>9.2.1</b> Description</a></li>
 <li class="chapter" data-level="9.2.2" data-path="bootstrap-main.html"><a href="bootstrap-main.html#example-confidence-intervals-for-the-rate-parameter-of-an-exponential-distribution"><i class="fa fa-check"></i><b>9.2.2</b> Example: Confidence Intervals for the Rate Parameter of an Exponential Distribution</a></li>
 <li class="chapter" data-level="9.2.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#example-confidence-intervals-for-the-ratio-of-two-quantiles"><i class="fa fa-check"></i><b>9.2.3</b> Example: Confidence Intervals for the Ratio of Two Quantiles</a></li>
 </ul></li>
 <li class="chapter" data-level="9.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#why-is-the-bootstrap-procedure-reasonable"><i class="fa fa-check"></i><b>9.3</b> Why is the Bootstrap Procedure Reasonable?</a></li>
 <li class="chapter" data-level="9.4" data-path="bootstrap-main.html"><a href="bootstrap-main.html#pivotal-bootstrap-confidence-intervals"><i class="fa fa-check"></i><b>9.4</b> Pivotal Bootstrap Confidence Intervals</a></li>
-<li class="chapter" data-level="9.5" data-path="bootstrap-main.html"><a href="bootstrap-main.html#the-parametric-bootstrap"><i class="fa fa-check"></i><b>9.5</b> The Parametric Bootstrap</a><ul>
+<li class="chapter" data-level="9.5" data-path="bootstrap-main.html"><a href="bootstrap-main.html#the-parametric-bootstrap"><i class="fa fa-check"></i><b>9.5</b> The Parametric Bootstrap</a>
+<ul>
 <li class="chapter" data-level="9.5.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#parametric-bootstrap-for-the-median-age-from-the-kidney-data"><i class="fa fa-check"></i><b>9.5.1</b> Parametric Bootstrap for the Median Age from the Kidney Data</a></li>
 </ul></li>
 <li class="chapter" data-level="9.6" data-path="bootstrap-main.html"><a href="bootstrap-main.html#additional-reading-4"><i class="fa fa-check"></i><b>9.6</b> Additional Reading</a></li>
 <li class="chapter" data-level="9.7" data-path="bootstrap-main.html"><a href="bootstrap-main.html#exercises-6"><i class="fa fa-check"></i><b>9.7</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> Bootstrap Examples and the Jackknife</a><ul>
+<li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> Bootstrap Examples and the Jackknife</a>
+<ul>
 <li class="chapter" data-level="10.1" data-path="ci.html"><a href="ci.html#the-parametric-bootstrap-for-an-ar1-model"><i class="fa fa-check"></i><b>10.1</b> The Parametric Bootstrap for an AR(1) model</a></li>
-<li class="chapter" data-level="10.2" data-path="ci.html"><a href="ci.html#using-the-bootstrap-in-regression"><i class="fa fa-check"></i><b>10.2</b> Using the Bootstrap in Regression</a><ul>
+<li class="chapter" data-level="10.2" data-path="ci.html"><a href="ci.html#using-the-bootstrap-in-regression"><i class="fa fa-check"></i><b>10.2</b> Using the Bootstrap in Regression</a>
+<ul>
 <li class="chapter" data-level="10.2.1" data-path="ci.html"><a href="ci.html#parametric-bootstrap-for-regression"><i class="fa fa-check"></i><b>10.2.1</b> Parametric Bootstrap for Regression</a></li>
 <li class="chapter" data-level="10.2.2" data-path="ci.html"><a href="ci.html#nonparametric-bootstrap-for-regression"><i class="fa fa-check"></i><b>10.2.2</b> Nonparametric Bootstrap for Regression</a></li>
 </ul></li>
 <li class="chapter" data-level="10.3" data-path="ci.html"><a href="ci.html#pointwise-confidence-intervals-for-a-density-function"><i class="fa fa-check"></i><b>10.3</b> Pointwise Confidence Intervals for a Density Function</a></li>
-<li class="chapter" data-level="10.4" data-path="ci.html"><a href="ci.html#when-can-the-bootstrap-fail"><i class="fa fa-check"></i><b>10.4</b> When can the Bootstrap Fail?</a><ul>
+<li class="chapter" data-level="10.4" data-path="ci.html"><a href="ci.html#when-can-the-bootstrap-fail"><i class="fa fa-check"></i><b>10.4</b> When can the Bootstrap Fail?</a>
+<ul>
 <li class="chapter" data-level="10.4.1" data-path="ci.html"><a href="ci.html#example-the-shifted-exponential-distribution"><i class="fa fa-check"></i><b>10.4.1</b> Example: The Shifted Exponential Distribution</a></li>
 </ul></li>
 <li class="chapter" data-level="10.5" data-path="ci.html"><a href="ci.html#the-jackknife"><i class="fa fa-check"></i><b>10.5</b> The Jackknife</a></li>
 </ul></li>
 <li class="part"><span><b>IV Nonparametric Regression: Part I</b></span></li>
-<li class="chapter" data-level="11" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression and Local Regression</a><ul>
+<li class="chapter" data-level="11" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression and Local Regression</a>
+<ul>
 <li class="chapter" data-level="11.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#introduction-2"><i class="fa fa-check"></i><b>11.1</b> Introduction</a></li>
-<li class="chapter" data-level="11.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#kernel-regression"><i class="fa fa-check"></i><b>11.2</b> Kernel Regression</a><ul>
+<li class="chapter" data-level="11.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#kernel-regression"><i class="fa fa-check"></i><b>11.2</b> Kernel Regression</a>
+<ul>
 <li class="chapter" data-level="11.2.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-regressogram"><i class="fa fa-check"></i><b>11.2.1</b> The Regressogram</a></li>
 <li class="chapter" data-level="11.2.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-local-average-estimator"><i class="fa fa-check"></i><b>11.2.2</b> The Local Average Estimator</a></li>
 <li class="chapter" data-level="11.2.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#k-nearest-neighbor-k-nn-regression"><i class="fa fa-check"></i><b>11.2.3</b> k-Nearest Neighbor (k-NN) Regression</a></li>
 <li class="chapter" data-level="11.2.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>11.2.4</b> The Nadaraya-Watson Estimator</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear Regression</a><ul>
+<li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear Regression</a>
+<ul>
 <li class="chapter" data-level="11.3.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#definition-7"><i class="fa fa-check"></i><b>11.3.1</b> Definition</a></li>
 <li class="chapter" data-level="11.3.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#advantages-of-the-local-linear-estimator"><i class="fa fa-check"></i><b>11.3.2</b> Advantages of the Local Linear Estimator</a></li>
 <li class="chapter" data-level="11.3.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#an-example-in-r"><i class="fa fa-check"></i><b>11.3.3</b> An Example in R</a></li>
 <li class="chapter" data-level="11.3.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-polynomial-regression"><i class="fa fa-check"></i><b>11.3.4</b> Local Polynomial Regression</a></li>
 </ul></li>
-<li class="chapter" data-level="11.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>11.4</b> Selecting the Bandwidth/Smoothing Parameter</a><ul>
+<li class="chapter" data-level="11.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>11.4</b> Selecting the Bandwidth/Smoothing Parameter</a>
+<ul>
 <li class="chapter" data-level="11.4.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#representing-in-linear-form"><i class="fa fa-check"></i><b>11.4.1</b> Representing in Linear Form</a></li>
 <li class="chapter" data-level="11.4.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-cp-statistic"><i class="fa fa-check"></i><b>11.4.2</b> The Cp Statistic</a></li>
 <li class="chapter" data-level="11.4.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>11.4.3</b> Leave-one-out Cross Validation</a></li>
@@ -307,14 +370,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.7" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.7</b> Additional Reading</a></li>
 <li class="chapter" data-level="11.8" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#exercises-7"><i class="fa fa-check"></i><b>11.8</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
-<li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a><ul>
+<li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a>
+<ul>
 <li class="chapter" data-level="12.1.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#regressogram-piecewise-constant-estimate"><i class="fa fa-check"></i><b>12.1.1</b> Regressogram (Piecewise Constant Estimate)</a></li>
 <li class="chapter" data-level="12.1.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates"><i class="fa fa-check"></i><b>12.1.2</b> Piecewise Linear Estimates</a></li>
 <li class="chapter" data-level="12.1.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-cubic-estimates"><i class="fa fa-check"></i><b>12.1.3</b> Piecewise Cubic Estimates</a></li>
 </ul></li>
 <li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates-with-continuity-linear-splines"><i class="fa fa-check"></i><b>12.2</b> Piecewise Linear Estimates with Continuity (Linear Splines)</a></li>
-<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-regression-with-splines"><i class="fa fa-check"></i><b>12.3</b> Cubic Splines and Regression with Splines</a><ul>
+<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-regression-with-splines"><i class="fa fa-check"></i><b>12.3</b> Cubic Splines and Regression with Splines</a>
+<ul>
 <li class="chapter" data-level="12.3.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#example-smooth-piecewise-cubic-model-with-2-knots"><i class="fa fa-check"></i><b>12.3.1</b> Example: Smooth Piecewise Cubic Model with 2 Knots</a></li>
 <li class="chapter" data-level="12.3.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines"><i class="fa fa-check"></i><b>12.3.2</b> Cubic Splines</a></li>
 <li class="chapter" data-level="12.3.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#estimating-the-coefficients-of-a-cubic-spline"><i class="fa fa-check"></i><b>12.3.3</b> Estimating the Coefficients of a Cubic Spline</a></li>
@@ -322,20 +388,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.3.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#natural-cubic-splines"><i class="fa fa-check"></i><b>12.3.5</b> Natural Cubic Splines</a></li>
 </ul></li>
 <li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splines"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines</a></li>
-<li class="chapter" data-level="12.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knotpenalty-term-selection-for-splines"><i class="fa fa-check"></i><b>12.5</b> Knot/Penalty Term Selection for Splines</a><ul>
+<li class="chapter" data-level="12.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knotpenalty-term-selection-for-splines"><i class="fa fa-check"></i><b>12.5</b> Knot/Penalty Term Selection for Splines</a>
+<ul>
 <li class="chapter" data-level="12.5.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#the-cp-statistic-1"><i class="fa fa-check"></i><b>12.5.1</b> The Cp Statistic</a></li>
 <li class="chapter" data-level="12.5.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#leave-one-out-cross-validation-1"><i class="fa fa-check"></i><b>12.5.2</b> Leave-one-out Cross-Validation</a></li>
 <li class="chapter" data-level="12.5.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#generalized-cross-validation"><i class="fa fa-check"></i><b>12.5.3</b> Generalized Cross-Validation</a></li>
 </ul></li>
-<li class="chapter" data-level="12.6" data-path="inference-for-regression.html"><a href="inference-for-regression.html#fitting-smoothing-splines-in-r"><i class="fa fa-check"></i><b>12.6</b> Fitting Smoothing Splines in R</a><ul>
+<li class="chapter" data-level="12.6" data-path="inference-for-regression.html"><a href="inference-for-regression.html#fitting-smoothing-splines-in-r"><i class="fa fa-check"></i><b>12.6</b> Fitting Smoothing Splines in R</a>
+<ul>
 <li class="chapter" data-level="12.6.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-parameter-selection-for-the-smoothing-spline-with-the-cp-statistic"><i class="fa fa-check"></i><b>12.6.1</b> Smoothing Parameter Selection for the Smoothing Spline with the Cp statistic</a></li>
 <li class="chapter" data-level="12.6.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knot-selection-for-regression-splines-with-the-cp-statistic"><i class="fa fa-check"></i><b>12.6.2</b> Knot Selection for Regression Splines with the Cp statistic</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
-<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Regression Trees and CART</a><ul>
+<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Regression Trees and CART</a>
+<ul>
 <li class="chapter" data-level="13.1" data-path="decision-tree.html"><a href="decision-tree.html#introduction-4"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
-<li class="chapter" data-level="13.2" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-a-single-covariate"><i class="fa fa-check"></i><b>13.2</b> Regression Trees with a Single Covariate</a><ul>
+<li class="chapter" data-level="13.2" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-a-single-covariate"><i class="fa fa-check"></i><b>13.2</b> Regression Trees with a Single Covariate</a>
+<ul>
 <li class="chapter" data-level="13.2.1" data-path="decision-tree.html"><a href="decision-tree.html#determining-the-split-points"><i class="fa fa-check"></i><b>13.2.1</b> Determining the Split Points</a></li>
 </ul></li>
 <li class="chapter" data-level="13.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>13.3</b> Regression Trees With Multiple Covariates</a></li>
@@ -361,36 +431,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="rank-tests" class="section level1">
-<h1><span class="header-section-number">Chapter 3</span> Rank and Sign Statistics</h1>
-<!--   ## Introduction
-
-Start with t-test example, difference in means is sufficient for superiority
-
-Give example of type of tests we are interested in.
-
-Why ranks and why nonparametric testing?
-
-(reduce influence of outliers)
--->
-<div id="ranks" class="section level2">
-<h2><span class="header-section-number">3.1</span> Ranks</h2>
-<div id="definition" class="section level3">
-<h3><span class="header-section-number">3.1.1</span> Definition</h3>
+<div id="rank-tests" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Rank and Sign Statistics<a href="rank-tests.html#rank-tests" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="ranks" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Ranks<a href="rank-tests.html#ranks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="definition" class="section level3 hasAnchor" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Definition<a href="rank-tests.html#definition" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li>Suppose we have <span class="math inline">\(n\)</span> observations <span class="math inline">\(\mathbf{X} = (X_{1}, \ldots, X_{n})\)</span>. The <strong>rank</strong> <span class="math inline">\(R_{i}\)</span> of the <span class="math inline">\(i^{th}\)</span> observation is defined as
+<li><p>Suppose we have <span class="math inline">\(n\)</span> observations <span class="math inline">\(\mathbf{X} = (X_{1}, \ldots, X_{n})\)</span>. The <strong>rank</strong> <span class="math inline">\(R_{i}\)</span> of the <span class="math inline">\(i^{th}\)</span> observation is defined as
 <span class="math display" id="eq:rankdef">\[\begin{equation}
-R_{i} = R_{i}(\mathbf{X}) = \sum_{j=1}^{n} I( X_{i} \geq X_{j}) 
+R_{i} = R_{i}(\mathbf{X}) = \sum_{j=1}^{n} I( X_{i} \geq X_{j})
 \tag{3.1}
 \end{equation}\]</span>
 where
 <span class="math display">\[\begin{equation}
-I(X_{i} \geq X_{j}) 
+I(X_{i} \geq X_{j})
 = \begin{cases}
 1 &amp; \text{ if } X_{i} \geq X_{j} \\
 0 &amp; \text{ if } X_{i} &lt; X_{j}
 \end{cases}
-\end{equation}\]</span></li>
+\end{equation}\]</span></p></li>
 <li><p>The largest observation has a rank of <span class="math inline">\(n\)</span>.</p></li>
 <li><p>The smallest observation has a rank of <span class="math inline">\(1\)</span> (if there are no ties).</p></li>
 <li><p>I am using the notation <span class="math inline">\(R_{i}(\mathbf{X})\)</span> to emphasize that the rank
@@ -398,12 +458,12 @@ of the <span class="math inline">\(i^{th}\)</span> observations depends on the e
 rather than only on the value of <span class="math inline">\(X_{i}\)</span>.</p></li>
 <li><p>You can compute ranks in <strong>R</strong> using the <strong>rank</strong> function:</p></li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">1</span>, <span class="dv">12</span>, <span class="dv">6</span>)  <span class="co">## 5 observations</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">rank</span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="rank-tests.html#cb1-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">1</span>, <span class="dv">12</span>, <span class="dv">6</span>)  <span class="do">## 5 observations</span></span>
+<span id="cb1-2"><a href="rank-tests.html#cb1-2" tabindex="-1"></a><span class="fu">rank</span>(x)</span></code></pre></div>
 <pre><code>## [1] 2 4 1 5 3</code></pre>
 </div>
-<div id="handling-ties" class="section level3">
-<h3><span class="header-section-number">3.1.2</span> Handling Ties</h3>
+<div id="handling-ties" class="section level3 hasAnchor" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Handling Ties<a href="rank-tests.html#handling-ties" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>In the definition of ranks shown in <a href="rank-tests.html#eq:rankdef">(3.1)</a>, tied observations
 receive their maximum possible rank.</p></li>
@@ -414,22 +474,22 @@ ranks of <span class="math inline">\(1\)</span> and <span class="math inline">\(
 <li><p>Under definition <a href="rank-tests.html#eq:rankdef">(3.1)</a>, both observations <span class="math inline">\(2\)</span> and <span class="math inline">\(3\)</span> receive a rank of <span class="math inline">\(3\)</span>.</p></li>
 <li><p>In <strong>R</strong>, handling ties in a way that is consistent with definition <a href="rank-tests.html#eq:rankdef">(3.1)</a> is done using the <strong>ties.method = “max”</strong> argument</p></li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)  </a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">rank</span>(x, <span class="dt">ties.method=</span><span class="st">&quot;max&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="rank-tests.html#cb3-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)  </span>
+<span id="cb3-2"><a href="rank-tests.html#cb3-2" tabindex="-1"></a><span class="fu">rank</span>(x, <span class="at">ties.method=</span><span class="st">&quot;max&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 1 3 3 4</code></pre>
 <ul>
 <li>The default in <strong>R</strong> is to replace the ranks of tied observations with their “average” rank</li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)  </a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">rank</span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="rank-tests.html#cb5-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)  </span>
+<span id="cb5-2"><a href="rank-tests.html#cb5-2" tabindex="-1"></a><span class="fu">rank</span>(x)</span></code></pre></div>
 <pre><code>## [1] 1.0 2.5 2.5 4.0</code></pre>
 <ul>
 <li>As another example of the “average” definition of ranks, consider the following example:</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">rank</span>(y, <span class="dt">ties.method=</span><span class="st">&quot;max&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="rank-tests.html#cb7-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb7-2"><a href="rank-tests.html#cb7-2" tabindex="-1"></a><span class="fu">rank</span>(y, <span class="at">ties.method=</span><span class="st">&quot;max&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 3 7 6 6 4 3 1</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">rank</span>(y)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="rank-tests.html#cb9-1" tabindex="-1"></a><span class="fu">rank</span>(y)</span></code></pre></div>
 <pre><code>## [1] 2.5 7.0 5.5 5.5 4.0 2.5 1.0</code></pre>
 <hr />
 <ul>
@@ -444,8 +504,8 @@ would be
 Wilcoxon rank sum statistic.</p></li>
 </ul>
 </div>
-<div id="properties-of-ranks" class="section level3">
-<h3><span class="header-section-number">3.1.3</span> Properties of Ranks</h3>
+<div id="properties-of-ranks" class="section level3 hasAnchor" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> Properties of Ranks<a href="rank-tests.html#properties-of-ranks" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Suppose <span class="math inline">\((X_{1}, \ldots, X_{n})\)</span> is random sample from a continuous distribution <span class="math inline">\(F\)</span> (so that the probability
 of ties is zero). Then, the following properties hold for the associated ranks <span class="math inline">\(R_{1}, \ldots, R_{n}\)</span>.</p>
 <ul>
@@ -470,10 +530,10 @@ on the set of <span class="math inline">\(n!\)</span> permutations of <span clas
 </ul>
 </div>
 </div>
-<div id="the-wilcoxon-rank-sum-wrs-test-a-two-sample-test" class="section level2">
-<h2><span class="header-section-number">3.2</span> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test</h2>
-<div id="goal-of-the-test" class="section level3">
-<h3><span class="header-section-number">3.2.1</span> Goal of the Test</h3>
+<div id="the-wilcoxon-rank-sum-wrs-test-a-two-sample-test" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test<a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test-a-two-sample-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="goal-of-the-test" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Goal of the Test<a href="rank-tests.html#goal-of-the-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>The Wilcoxon Rank Sum (WRS) test (sometimes referred to as the Wilcoxon-Mann-Whitney test) is a popular,
 rank-based two-sample test.</p></li>
@@ -490,12 +550,12 @@ H_{A}: &amp;&amp; \textrm{Observations from } F_{X} \textrm{ tend to be larger t
 <hr />
 <ul>
 <li><p>What is meant by “tend to be larger” in the alternative hypothesis?</p></li>
-<li>Two common ways of stating the alternative hypothesis for the WRS include
+<li><p>Two common ways of stating the alternative hypothesis for the WRS include</p>
 <ol style="list-style-type: decimal">
 <li>The stochastic dominance alternative
 <span class="math display" id="eq:stochasticlarger-formulation">\[\begin{eqnarray}
 H_{0}: &amp; &amp; F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
-H_{A}: &amp; &amp; F_{X} \textrm{ is stochastically larger than } F_{Y} 
+H_{A}: &amp; &amp; F_{X} \textrm{ is stochastically larger than } F_{Y}
 \tag{3.4}
 \end{eqnarray}\]</span></li>
 <li>The “shift” alternative
@@ -569,8 +629,8 @@ P(X_{i} &gt; Y_{j}) + \frac{1}{2}P(X_{i} = Y_{j}&amp;)&amp; = P(X_{i}=1, Y_{j}=0
 \end{eqnarray}\]</span></p></li>
 </ul>
 </div>
-<div id="definition-of-the-wrs-test-statistic" class="section level3">
-<h3><span class="header-section-number">3.2.2</span> Definition of the WRS Test Statistic</h3>
+<div id="definition-of-the-wrs-test-statistic" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Definition of the WRS Test Statistic<a href="rank-tests.html#definition-of-the-wrs-test-statistic" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>The WRS test statistic is based on computing the sum of ranks (ranks based on the pooled sample)
 in one group.</p></li>
@@ -612,12 +672,12 @@ E_{H_{0}}( W ) = \sum_{i=1}^{n} E_{H_{0}}\{ R_{i}( \mathbf{Z} ) \} \nonumber
 \end{equation}\]</span></p></li>
 <li><p>It can be shown that the variance of <span class="math inline">\(W\)</span> under the null hypothesis is
 <span class="math display">\[\begin{equation}
-\textrm{Var}_{H_{0}}( W ) = \frac{mn(m + n + 1)}{12}  \nonumber 
+\textrm{Var}_{H_{0}}( W ) = \frac{mn(m + n + 1)}{12}  \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 </div>
-<div id="computing-p-values-for-the-wrs-test" class="section level3">
-<h3><span class="header-section-number">3.2.3</span> Computing p-values for the WRS Test</h3>
+<div id="computing-p-values-for-the-wrs-test" class="section level3 hasAnchor" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> Computing p-values for the WRS Test<a href="rank-tests.html#computing-p-values-for-the-wrs-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Exact Distribution</strong></p>
 <ul>
 <li><p>The p-value for the WRS test is found by computing the probability
@@ -647,7 +707,7 @@ P_{H_{0}}( W = 7) &amp;=&amp; 1/6 \nonumber \\
 P_{H_{0}}( W = 6 ) &amp;=&amp; 1/6 \nonumber \\
 P_{H_{0}}(W = 5) &amp;=&amp; 1/3  \nonumber \\
 P_{H_{0}}( W = 4 ) &amp;=&amp; 1/6  \nonumber \\
-P_{H_{0}}(W = 3) &amp;=&amp; 1/6. \nonumber 
+P_{H_{0}}(W = 3) &amp;=&amp; 1/6. \nonumber
 \end{eqnarray}\]</span></p></li>
 </ul>
 <hr />
@@ -667,7 +727,7 @@ version of <span class="math inline">\(W\)</span> should be approximately Normal
 <li><p>A p-value using this large-sample approximation would then be computed in the following
 way
 <span class="math display">\[\begin{eqnarray}
-\textrm{p-value} &amp;=&amp; P_{H_{0}}( W \geq w_{obs}) 
+\textrm{p-value} &amp;=&amp; P_{H_{0}}( W \geq w_{obs})
 = P\Bigg( \frac{W - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  } \geq \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }\Bigg)
 \nonumber \\
 &amp;=&amp; P_{H_{0}}\Big( \tilde{W} \geq \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }\Big)
@@ -704,14 +764,19 @@ H_{A}: &amp;&amp; P(X_{i} &gt; Y_{i}) + \tfrac{1}{2}P(X_{i} = Y_{i}) \neq 1/2  \
 we have two populations. both are Normally distributed
 with mean zero but different variances. -->
 </div>
-<div id="computing-the-wrs-test-in-r" class="section level3">
-<h3><span class="header-section-number">3.2.4</span> Computing the WRS test in R</h3>
+<div id="computing-the-wrs-test-in-r" class="section level3 hasAnchor" number="3.2.4">
+<h3><span class="header-section-number">3.2.4</span> Computing the WRS test in R<a href="rank-tests.html#computing-the-wrs-test-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li>To illustrate performing the WRS test in <strong>R</strong>, we can use the <strong>wine</strong> dataset from the <strong>rattle.data</strong> package.
+<li>To illustrate performing the WRS test in <strong>R</strong>, we can use the <strong>wine</strong> dataset from the <strong>rattle</strong> package.
 This dataset is also available from the UCI Machine Learning Repository.</li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">library</span>(rattle.data)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">head</span>(wine)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="rank-tests.html#cb11-1" tabindex="-1"></a><span class="fu">library</span>(rattle)</span></code></pre></div>
+<pre><code>## Loading required package: tibble</code></pre>
+<pre><code>## Loading required package: bitops</code></pre>
+<pre><code>## Rattle: A free graphical interface for data science with R.
+## Version 5.5.1 Copyright (c) 2006-2021 Togaware Pty Ltd.
+## Type &#39;rattle()&#39; to shake, rattle, and roll your data.</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="rank-tests.html#cb15-1" tabindex="-1"></a><span class="fu">head</span>(wine)</span></code></pre></div>
 <pre><code>##   Type Alcohol Malic  Ash Alcalinity Magnesium Phenols Flavanoids Nonflavanoids
 ## 1    1   14.23  1.71 2.43       15.6       127    2.80       3.06          0.28
 ## 2    1   13.20  1.78 2.14       11.2       100    2.65       2.76          0.26
@@ -729,8 +794,8 @@ This dataset is also available from the UCI Machine Learning Repository.</li>
 <ul>
 <li>This dataset contains three types of wine. We will only consider the first two.</li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">wine2 &lt;-<span class="st"> </span><span class="kw">subset</span>(wine, Type<span class="op">==</span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Type<span class="op">==</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">wine2<span class="op">$</span>Type &lt;-<span class="st"> </span><span class="kw">factor</span>(wine2<span class="op">$</span>Type)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="rank-tests.html#cb17-1" tabindex="-1"></a>wine2 <span class="ot">&lt;-</span> <span class="fu">subset</span>(wine, Type<span class="sc">==</span><span class="dv">1</span> <span class="sc">|</span> Type<span class="sc">==</span><span class="dv">2</span>)</span>
+<span id="cb17-2"><a href="rank-tests.html#cb17-2" tabindex="-1"></a>wine2<span class="sc">$</span>Type <span class="ot">&lt;-</span> <span class="fu">factor</span>(wine2<span class="sc">$</span>Type)</span></code></pre></div>
 <ul>
 <li><p>Let us consider the difference in the level of magnesium across the two types of wine.
 <img src="03-rankstat_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p></li>
@@ -738,8 +803,8 @@ This dataset is also available from the UCI Machine Learning Repository.</li>
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
 This can be done with the following code</p></li>
 </ul>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">wilcox.test</span>(<span class="dt">x=</span>wine2<span class="op">$</span>Magnesium[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>], <span class="dt">y=</span>wine2<span class="op">$</span>Magnesium[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">2</span>], </a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">            <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="rank-tests.html#cb18-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(<span class="at">x=</span>wine2<span class="sc">$</span>Magnesium[wine2<span class="sc">$</span>Type<span class="sc">==</span><span class="dv">1</span>], <span class="at">y=</span>wine2<span class="sc">$</span>Magnesium[wine2<span class="sc">$</span>Type<span class="sc">==</span><span class="dv">2</span>], </span>
+<span id="cb18-2"><a href="rank-tests.html#cb18-2" tabindex="-1"></a>            <span class="at">alternative=</span><span class="st">&quot;greater&quot;</span>)</span></code></pre></div>
 <pre><code>## 
 ##  Wilcoxon rank sum test with continuity correction
 ## 
@@ -749,7 +814,7 @@ This can be done with the following code</p></li>
 <ul>
 <li>You could also use the following code to perform this test (just be careful about the ordering of the levels of <strong>Type</strong>)</li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">wilcox.test</span>(Magnesium <span class="op">~</span><span class="st"> </span>Type, <span class="dt">data=</span>wine2, <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="rank-tests.html#cb20-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(Magnesium <span class="sc">~</span> Type, <span class="at">data=</span>wine2, <span class="at">alternative=</span><span class="st">&quot;greater&quot;</span>)</span></code></pre></div>
 <pre><code>## 
 ##  Wilcoxon rank sum test with continuity correction
 ## 
@@ -760,53 +825,53 @@ This can be done with the following code</p></li>
 <li>What is the value of the WRS test statistic? We can code this directly
 with the following steps:</li>
 </ul>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">W &lt;-<span class="st"> </span><span class="kw">wilcox.test</span>(<span class="dt">x=</span>wine2<span class="op">$</span>Magnesium[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>], <span class="dt">y=</span>wine2<span class="op">$</span>Magnesium[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">2</span>])</a>
-<a class="sourceLine" id="cb18-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">n &lt;-<span class="st"> </span><span class="kw">sum</span>(wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb18-4" data-line-number="4">m &lt;-<span class="st"> </span><span class="kw">sum</span>(wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb18-5" data-line-number="5">zz &lt;-<span class="st"> </span><span class="kw">rank</span>(wine2<span class="op">$</span>Magnesium) <span class="co">## vector of pooled ranks</span></a>
-<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="kw">sum</span>(zz[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>])  <span class="co">## The WRS test statistic</span></a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="rank-tests.html#cb22-1" tabindex="-1"></a>W <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(<span class="at">x=</span>wine2<span class="sc">$</span>Magnesium[wine2<span class="sc">$</span>Type<span class="sc">==</span><span class="dv">1</span>], <span class="at">y=</span>wine2<span class="sc">$</span>Magnesium[wine2<span class="sc">$</span>Type<span class="sc">==</span><span class="dv">2</span>])</span>
+<span id="cb22-2"><a href="rank-tests.html#cb22-2" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="rank-tests.html#cb22-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sum</span>(wine2<span class="sc">$</span>Type<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb22-4"><a href="rank-tests.html#cb22-4" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">sum</span>(wine2<span class="sc">$</span>Type<span class="sc">==</span><span class="dv">2</span>)</span>
+<span id="cb22-5"><a href="rank-tests.html#cb22-5" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">rank</span>(wine2<span class="sc">$</span>Magnesium) <span class="do">## vector of pooled ranks</span></span>
+<span id="cb22-6"><a href="rank-tests.html#cb22-6" tabindex="-1"></a><span class="fu">sum</span>(zz[wine2<span class="sc">$</span>Type<span class="sc">==</span><span class="dv">1</span>])  <span class="do">## The WRS test statistic</span></span></code></pre></div>
 <pre><code>## [1] 5151.5</code></pre>
 <ul>
 <li>The statistic returned by the <strong>wilcox.test</strong> function is actually equal to <span class="math inline">\(W - n(n+1)/2\)</span> not <span class="math inline">\(W\)</span></li>
 </ul>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">sum</span>(zz[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>]) <span class="op">-</span><span class="st"> </span>n<span class="op">*</span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">/</span><span class="dv">2</span></a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="rank-tests.html#cb24-1" tabindex="-1"></a><span class="fu">sum</span>(zz[wine2<span class="sc">$</span>Type<span class="sc">==</span><span class="dv">1</span>]) <span class="sc">-</span> n<span class="sc">*</span>(n <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">/</span><span class="dv">2</span></span></code></pre></div>
 <pre><code>## [1] 3381.5</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">W<span class="op">$</span>statistic</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="rank-tests.html#cb26-1" tabindex="-1"></a>W<span class="sc">$</span>statistic</span></code></pre></div>
 <pre><code>##      W 
 ## 3381.5</code></pre>
 <ul>
 <li><span class="math inline">\(\{ W - n(n+1)/2 \}\)</span> is equal to the Mann-Whitney statistic. Thus, <strong>W$statistic/(mn)</strong> is
 an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{j}) + P(X_{i} = Y_{j})/2\)</span>.</li>
 </ul>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">W<span class="op">$</span>statistic<span class="op">/</span>(m<span class="op">*</span>n)</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="rank-tests.html#cb28-1" tabindex="-1"></a>W<span class="sc">$</span>statistic<span class="sc">/</span>(m<span class="sc">*</span>n)</span></code></pre></div>
 <pre><code>##         W 
 ## 0.8072332</code></pre>
 <ul>
 <li>Let’s check how the Mann-Whitney statistic matches a simulation-based estimate of this probability</li>
 </ul>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">ind1 &lt;-<span class="st"> </span><span class="kw">which</span>(wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">ind2 &lt;-<span class="st"> </span><span class="kw">which</span>(wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb26-3" data-line-number="3">xgreater &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>) {</a>
-<a class="sourceLine" id="cb26-5" data-line-number="5">    xi &lt;-<span class="st"> </span><span class="kw">sample</span>(ind1, <span class="dt">size=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb26-6" data-line-number="6">    yi &lt;-<span class="st"> </span><span class="kw">sample</span>(ind2, <span class="dt">size=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb26-7" data-line-number="7">    xgreater[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">&gt;</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span>, <span class="dv">0</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb26-8" data-line-number="8"><span class="st">                   </span><span class="kw">ifelse</span>(wine2<span class="op">$</span>Magnesium[xi] <span class="op">==</span><span class="st"> </span>wine2<span class="op">$</span>Magnesium[yi], <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb26-9" data-line-number="9">}</a>
-<a class="sourceLine" id="cb26-10" data-line-number="10"><span class="kw">mean</span>(xgreater)  <span class="co">## estimate of this probability</span></a></code></pre></div>
-<pre><code>## [1] 0.81</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="rank-tests.html#cb30-1" tabindex="-1"></a>ind1 <span class="ot">&lt;-</span> <span class="fu">which</span>(wine2<span class="sc">$</span>Type<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb30-2"><a href="rank-tests.html#cb30-2" tabindex="-1"></a>ind2 <span class="ot">&lt;-</span> <span class="fu">which</span>(wine2<span class="sc">$</span>Type<span class="sc">==</span><span class="dv">2</span>)</span>
+<span id="cb30-3"><a href="rank-tests.html#cb30-3" tabindex="-1"></a>xgreater <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">100</span>)</span>
+<span id="cb30-4"><a href="rank-tests.html#cb30-4" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>) {</span>
+<span id="cb30-5"><a href="rank-tests.html#cb30-5" tabindex="-1"></a>    xi <span class="ot">&lt;-</span> <span class="fu">sample</span>(ind1, <span class="at">size=</span><span class="dv">1</span>)</span>
+<span id="cb30-6"><a href="rank-tests.html#cb30-6" tabindex="-1"></a>    yi <span class="ot">&lt;-</span> <span class="fu">sample</span>(ind2, <span class="at">size=</span><span class="dv">1</span>)</span>
+<span id="cb30-7"><a href="rank-tests.html#cb30-7" tabindex="-1"></a>    xgreater[k] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(wine2<span class="sc">$</span>Magnesium[xi] <span class="sc">&gt;</span> wine2<span class="sc">$</span>Magnesium[yi], <span class="dv">1</span>, <span class="dv">0</span>) <span class="sc">+</span> </span>
+<span id="cb30-8"><a href="rank-tests.html#cb30-8" tabindex="-1"></a>                   <span class="fu">ifelse</span>(wine2<span class="sc">$</span>Magnesium[xi] <span class="sc">==</span> wine2<span class="sc">$</span>Magnesium[yi], <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">0</span>)</span>
+<span id="cb30-9"><a href="rank-tests.html#cb30-9" tabindex="-1"></a>}</span>
+<span id="cb30-10"><a href="rank-tests.html#cb30-10" tabindex="-1"></a><span class="fu">mean</span>(xgreater)  <span class="do">## estimate of this probability</span></span></code></pre></div>
+<pre><code>## [1] 0.795</code></pre>
 <ul>
 <li>This simulation-based estimate of <span class="math inline">\(P(X_{i} &gt; Y_{j}) + P(X_{i} = Y_{j})/2\)</span> is quite close to the value of the Mann-Whitney statistic divided by <span class="math inline">\(mn\)</span>.</li>
 </ul>
 </div>
-<div id="additional-notes-for-the-wrs-test" class="section level3">
-<h3><span class="header-section-number">3.2.5</span> Additional Notes for the WRS test</h3>
-<div id="comparing-ordinal-data" class="section level4">
-<h4><span class="header-section-number">3.2.5.1</span> Comparing Ordinal Data</h4>
+<div id="additional-notes-for-the-wrs-test" class="section level3 hasAnchor" number="3.2.5">
+<h3><span class="header-section-number">3.2.5</span> Additional Notes for the WRS test<a href="rank-tests.html#additional-notes-for-the-wrs-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="comparing-ordinal-data" class="section level4 hasAnchor" number="3.2.5.1">
+<h4><span class="header-section-number">3.2.5.1</span> Comparing Ordinal Data<a href="rank-tests.html#comparing-ordinal-data" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p>The WRS test is often suggested when comparing categorical data which are <strong>ordinal</strong>.</p></li>
-<li>For example, we might have 4 categories:
+<li><p>For example, we might have 4 categories:</p>
 <ul>
 <li>Poor</li>
 <li>Fair</li>
@@ -826,8 +891,8 @@ of the WRS test is probably more reasonable than the “shift alternative <a hre
 <li><p>Note that there will probably be many ties when comparing ordinal data.</p></li>
 </ul>
 </div>
-<div id="the-hodges-lehmann-estimator" class="section level4">
-<h4><span class="header-section-number">3.2.5.2</span> The Hodges-Lehmann Estimator</h4>
+<div id="the-hodges-lehmann-estimator" class="section level4 hasAnchor" number="3.2.5.2">
+<h4><span class="header-section-number">3.2.5.2</span> The Hodges-Lehmann Estimator<a href="rank-tests.html#the-hodges-lehmann-estimator" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p>The Hodges-Lehmann Estimator <span class="math inline">\(\hat{\Delta}\)</span> is an estimator of <span class="math inline">\(\Delta\)</span> in the location-shift model
 <span class="math display">\[\begin{equation}
@@ -844,24 +909,24 @@ Hodges-Lehmann is often reported when computing the WRS test.</p></li>
 <li><p>In <strong>R</strong>, the Hodges-Lehmann estimator can be obtained by using the <strong>conf.int=TRUE</strong>
 argument in the <strong>wilcox.test</strong> function</p></li>
 </ul>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">WC &lt;-<span class="st"> </span><span class="kw">wilcox.test</span>(<span class="dt">x=</span>wine2<span class="op">$</span>Magnesium[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">1</span>], <span class="dt">y=</span>wine2<span class="op">$</span>Magnesium[wine2<span class="op">$</span>Type<span class="op">==</span><span class="dv">2</span>],</a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">                  <span class="dt">conf.int=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb28-3" data-line-number="3">WC<span class="op">$</span>estimate     <span class="co">## The Hodges-Lehmann estimate</span></a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="rank-tests.html#cb32-1" tabindex="-1"></a>WC <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(<span class="at">x=</span>wine2<span class="sc">$</span>Magnesium[wine2<span class="sc">$</span>Type<span class="sc">==</span><span class="dv">1</span>], <span class="at">y=</span>wine2<span class="sc">$</span>Magnesium[wine2<span class="sc">$</span>Type<span class="sc">==</span><span class="dv">2</span>],</span>
+<span id="cb32-2"><a href="rank-tests.html#cb32-2" tabindex="-1"></a>                  <span class="at">conf.int=</span><span class="cn">TRUE</span>)</span>
+<span id="cb32-3"><a href="rank-tests.html#cb32-3" tabindex="-1"></a>WC<span class="sc">$</span>estimate     <span class="do">## The Hodges-Lehmann estimate</span></span></code></pre></div>
 <pre><code>## difference in location 
 ##               14.00005</code></pre>
 </div>
 </div>
 </div>
-<div id="one-sample-tests" class="section level2">
-<h2><span class="header-section-number">3.3</span> One Sample Tests</h2>
-<div id="sign-test" class="section level3">
-<h3><span class="header-section-number">3.3.1</span> The Sign Test</h3>
-<div id="motivation-and-definition" class="section level4">
-<h4><span class="header-section-number">3.3.1.1</span> Motivation and Definition</h4>
+<div id="one-sample-tests" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> One Sample Tests<a href="rank-tests.html#one-sample-tests" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="sign-test" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> The Sign Test<a href="rank-tests.html#sign-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="motivation-and-definition" class="section level4 hasAnchor" number="3.3.1.1">
+<h4><span class="header-section-number">3.3.1.1</span> Motivation and Definition<a href="rank-tests.html#motivation-and-definition" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p>The <strong>sign test</strong> can be thought of as a test of whether or not
 the median of a distribution is greater than zero (or greater than some other fixed value <span class="math inline">\(\theta_{0}\)</span>).</p></li>
-<li>Frequently, the sign test is applied in the following context:
+<li><p>Frequently, the sign test is applied in the following context:</p>
 <ul>
 <li>Suppose we have observations <span class="math inline">\(D_{1}, \ldots, D_{n}\)</span> which arise from the model
 <span class="math display" id="eq:general-location">\[\begin{equation}
@@ -881,7 +946,7 @@ F_{D}(t) = P(D_{i} \leq t) = P(\varepsilon_{i} \leq t - \theta) = F_{\epsilon}(t
 f_{D}(t) = f_{\epsilon}(t - \theta)
 \end{equation}\]</span></p></li>
 <li><p>In this context, <span class="math inline">\(\theta\)</span> is usually referred to as a <strong>location parameter</strong>.</p></li>
-<li><p>The goal here is to test <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; \theta_{0}\)</span>. (Often, <span class="math inline">\(\theta_{0} = 0\)</span>).</p></li>
+<li><p>The goal here is to test <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; \theta_{0}\)</span>. (Often, <span class="math inline">\(\theta_{0} = 0\)</span>).</p></li>
 </ul>
 <hr />
 <ul>
@@ -970,8 +1035,8 @@ of the observations will be positive.</p></li>
 number that is greater than <span class="math inline">\(n/2\)</span>.</p></li>
 </ul>
 </div>
-<div id="null-distribution-and-p-values-for-the-sign-test" class="section level4">
-<h4><span class="header-section-number">3.3.1.2</span> Null Distribution and p-values for the Sign Test</h4>
+<div id="null-distribution-and-p-values-for-the-sign-test" class="section level4 hasAnchor" number="3.3.1.2">
+<h4><span class="header-section-number">3.3.1.2</span> Null Distribution and p-values for the Sign Test<a href="rank-tests.html#null-distribution-and-p-values-for-the-sign-test" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p>Notice that the sign statistic defined in <a href="rank-tests.html#eq:sign-statistic">(3.9)</a> is the sum of independent
 Bernoulli random variable.</p></li>
@@ -997,11 +1062,11 @@ in the sense that the null distribution of <span class="math inline">\(S_{n}\)</
 \end{equation}\]</span>
 where <span class="math inline">\(s_{obs}\)</span> is the observed value of the sign statistic.</p></li>
 </ul>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co">### How to compute the p-value for the sign test using R</span></a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">xx &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3">sign.stat &lt;-<span class="st"> </span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)  <span class="co">## This is the value of the sign statistic</span></a>
-<a class="sourceLine" id="cb30-4" data-line-number="4"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pbinom</span>(sign.stat <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">size=</span><span class="dv">100</span>, <span class="dt">prob=</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) <span class="co">## p-value for sign test</span></a></code></pre></div>
-<pre><code>## [1] 0.955687</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="rank-tests.html#cb34-1" tabindex="-1"></a><span class="do">### How to compute the p-value for the sign test using R</span></span>
+<span id="cb34-2"><a href="rank-tests.html#cb34-2" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb34-3"><a href="rank-tests.html#cb34-3" tabindex="-1"></a>sign.stat <span class="ot">&lt;-</span> <span class="fu">sum</span>(xx <span class="sc">&gt;</span> <span class="dv">0</span>)  <span class="do">## This is the value of the sign statistic</span></span>
+<span id="cb34-4"><a href="rank-tests.html#cb34-4" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pbinom</span>(sign.stat <span class="sc">-</span> <span class="dv">1</span>, <span class="at">size=</span><span class="dv">100</span>, <span class="at">prob=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>) <span class="do">## p-value for sign test</span></span></code></pre></div>
+<pre><code>## [1] 0.4602054</code></pre>
 <ul>
 <li><p>The reason that this is the right expression using <strong>R</strong> is that for any positive integer <span class="math inline">\(w\)</span>
 <span class="math display">\[\begin{equation}
@@ -1011,12 +1076,12 @@ and the <strong>R</strong> function <strong>pbinom(t, n, prob)</strong> computes
 a binomial random variable with <span class="math inline">\(n\)</span> trials and success probability <strong>prob</strong>.</p></li>
 <li><p>You can also perform the one-sided sign test by using the <strong>binom.test</strong> function in <strong>R</strong>.</p></li>
 </ul>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">btest &lt;-<span class="st"> </span><span class="kw">binom.test</span>(sign.stat, <span class="dt">n=</span><span class="dv">100</span>, <span class="dt">p=</span><span class="fl">0.5</span>, <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>) </a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">btest<span class="op">$</span>p.value</a></code></pre></div>
-<pre><code>## [1] 0.955687</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="rank-tests.html#cb36-1" tabindex="-1"></a>btest <span class="ot">&lt;-</span> <span class="fu">binom.test</span>(sign.stat, <span class="at">n=</span><span class="dv">100</span>, <span class="at">p=</span><span class="fl">0.5</span>, <span class="at">alternative=</span><span class="st">&quot;greater&quot;</span>) </span>
+<span id="cb36-2"><a href="rank-tests.html#cb36-2" tabindex="-1"></a>btest<span class="sc">$</span>p.value</span></code></pre></div>
+<pre><code>## [1] 0.4602054</code></pre>
 </div>
-<div id="two-sided-sign-test" class="section level4">
-<h4><span class="header-section-number">3.3.1.3</span> Two-sided Sign Test</h4>
+<div id="two-sided-sign-test" class="section level4 hasAnchor" number="3.3.1.3">
+<h4><span class="header-section-number">3.3.1.3</span> Two-sided Sign Test<a href="rank-tests.html#two-sided-sign-test" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p>Notice that the number of negative values of <span class="math inline">\(D_{i}\)</span> can be expressed as
 <span class="math display">\[\begin{equation}
@@ -1037,7 +1102,7 @@ If <span class="math inline">\(s_{obs} = 10\)</span>, then the collection of “
 <span class="math inline">\(\leq 2\)</span> or <span class="math inline">\(\geq 10\)</span>.</p></li>
 <li><p>The two-sided p-value is determined by looking at the tail probabilities on both sides
 <span class="math display">\[\begin{equation}
-\textrm{p-value} = 
+\textrm{p-value} =
 \begin{cases}
 P_{H_{0}}(S_{n} \geq s_{obs}) + P_{H_{0}}(S_{n} \leq n - s_{obs}) &amp; \textrm{ if } s_{obs} \geq n/2 \nonumber \\
 P_{H_{0}}(S_{n} \leq s_{obs}) + P_{H_{0}}(S_{n} \geq n - s_{obs}) &amp; \textrm{ if } s_{obs} &lt; n/2 \nonumber
@@ -1045,21 +1110,21 @@ P_{H_{0}}(S_{n} \leq s_{obs}) + P_{H_{0}}(S_{n} \geq n - s_{obs}) &amp; \textrm{
 \end{equation}\]</span></p></li>
 <li><p>It actually works out that
 <span class="math display">\[\begin{equation}
-\textrm{p-value} = 
+\textrm{p-value} =
 \begin{cases}
 2 P_{H_{0}}(S_{n} \geq s_{obs})   &amp; \textrm{ if } s_{obs} \geq n/2 \nonumber \\
 2 P_{H_{0}}(S_{n} \leq s_{obs})   &amp; \textrm{ if } s_{obs} &lt; n/2  \nonumber
 \end{cases}
 \end{equation}\]</span></p></li>
 <li><p>Also, you can note that this p-value would be the same that you would get from performing the test
-<span class="math inline">\(H_{0}: p = 1/2\)</span> vs. <span class="math inline">\(H_{A}: p \neq 1/2\)</span> when it is assumed that <span class="math inline">\(S_{n} \sim \textrm{Binomial}(n, p)\)</span>.</p></li>
+<span class="math inline">\(H_{0}: p = 1/2\)</span> vs. <span class="math inline">\(H_{A}: p \neq 1/2\)</span> when it is assumed that <span class="math inline">\(S_{n} \sim \textrm{Binomial}(n, p)\)</span>.</p></li>
 <li><p>Another note: It is often suggested that one should drop observations which are exactly zero
 when performing the sign test.</p></li>
 </ul>
 </div>
 </div>
-<div id="the-wilcoxon-signed-rank-test" class="section level3">
-<h3><span class="header-section-number">3.3.2</span> The Wilcoxon Signed Rank Test</h3>
+<div id="the-wilcoxon-signed-rank-test" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> The Wilcoxon Signed Rank Test<a href="rank-tests.html#the-wilcoxon-signed-rank-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>The Wilcoxon signed rank test can be applied
 under the same scenario that we used the sign test.</p></li>
@@ -1088,8 +1153,8 @@ where the <span class="math inline">\(\textrm{sign}\)</span> function is defined
 or not large values of <span class="math inline">\(|D_{i}|\)</span> tend to be associated with positive
 vs. negative values of <span class="math inline">\(D_{i}\)</span>.</p></li>
 </ul>
-<div id="asymptotic-distribution" class="section level4">
-<h4><span class="header-section-number">3.3.2.1</span> Asymptotic Distribution</h4>
+<div id="asymptotic-distribution" class="section level4 hasAnchor" number="3.3.2.1">
+<h4><span class="header-section-number">3.3.2.1</span> Asymptotic Distribution<a href="rank-tests.html#asymptotic-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p>As mentioned in the above exercise, the expectation of <span class="math inline">\(T_{n}\)</span> under <span class="math inline">\(H_{0}\)</span> is zero.</p></li>
 <li><p>It can be shown that the variance under the null hypothesis is
@@ -1109,8 +1174,8 @@ that
 In other words, we can say that <span class="math inline">\(T_{n}\)</span> has an approximately <span class="math inline">\(\textrm{Normal}(0, n^{3}/3)\)</span> for large <span class="math inline">\(n\)</span>.</p></li>
 </ul>
 </div>
-<div id="exact-distribution" class="section level4">
-<h4><span class="header-section-number">3.3.2.2</span> Exact Distribution</h4>
+<div id="exact-distribution" class="section level4 hasAnchor" number="3.3.2.2">
+<h4><span class="header-section-number">3.3.2.2</span> Exact Distribution<a href="rank-tests.html#exact-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li>The exact distribution of the Wilcoxon signed rank statistic <span class="math inline">\(T_{n}\)</span>
 is somewhat more complicated than the exact distribution of the WRS test statistic.
@@ -1118,17 +1183,17 @@ Nevertheless, there exists functions in <strong>R</strong> for working with this
 </ul>
 </div>
 </div>
-<div id="using-r-to-perform-the-sign-and-wilcoxon-tests" class="section level3">
-<h3><span class="header-section-number">3.3.3</span> Using R to Perform the Sign and Wilcoxon Tests</h3>
+<div id="using-r-to-perform-the-sign-and-wilcoxon-tests" class="section level3 hasAnchor" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Using R to Perform the Sign and Wilcoxon Tests<a href="rank-tests.html#using-r-to-perform-the-sign-and-wilcoxon-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>Let’s first look at the <strong>Meat</strong> data from the <strong>PairedData</strong> <strong>R</strong> package.</p></li>
 <li><p>This data set contains 20 observations with each observation corresponding to a single piece of meat.
 For each observation, we have two measures of fat percentage that were obtained different
 measuring techniques.</p></li>
 </ul>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">library</span>(PairedData, <span class="dt">quietly=</span><span class="ot">TRUE</span>, <span class="dt">warn.conflicts=</span><span class="ot">FALSE</span>) <span class="co">## loading PairedData package</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw">data</span>(Meat)  <span class="co">## loading Meat data</span></a>
-<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw">head</span>(Meat)</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="rank-tests.html#cb38-1" tabindex="-1"></a><span class="fu">library</span>(PairedData, <span class="at">quietly=</span><span class="cn">TRUE</span>, <span class="at">warn.conflicts=</span><span class="cn">FALSE</span>) <span class="do">## loading PairedData package</span></span>
+<span id="cb38-2"><a href="rank-tests.html#cb38-2" tabindex="-1"></a><span class="fu">data</span>(Meat)  <span class="do">## loading Meat data</span></span>
+<span id="cb38-3"><a href="rank-tests.html#cb38-3" tabindex="-1"></a><span class="fu">head</span>(Meat)</span></code></pre></div>
 <pre><code>##   AOAC Babcock     MeatType
 ## 1 22.0    22.3       Wiener
 ## 2 22.1    21.8       Wiener
@@ -1140,20 +1205,20 @@ measuring techniques.</p></li>
 <li>Define the differences <span class="math inline">\(D_{i}\)</span> as the <strong>Babcock</strong> measurements minus the <strong>AOAC</strong> measures.
 We will drop the single observation that equals zero.</li>
 </ul>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">DD &lt;-<span class="st"> </span>Meat[,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>Meat[,<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">DD &lt;-<span class="st"> </span>DD[DD<span class="op">!=</span><span class="dv">0</span>]</a>
-<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="kw">hist</span>(DD, <span class="dt">main=</span><span class="st">&quot;Meat Data&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Difference in Measured Fat </span></a>
-<a class="sourceLine" id="cb36-4" data-line-number="4"><span class="st">     Percentage&quot;</span>, <span class="dt">las=</span><span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="rank-tests.html#cb40-1" tabindex="-1"></a>DD <span class="ot">&lt;-</span> Meat[,<span class="dv">2</span>] <span class="sc">-</span> Meat[,<span class="dv">1</span>]</span>
+<span id="cb40-2"><a href="rank-tests.html#cb40-2" tabindex="-1"></a>DD <span class="ot">&lt;-</span> DD[DD<span class="sc">!=</span><span class="dv">0</span>]</span>
+<span id="cb40-3"><a href="rank-tests.html#cb40-3" tabindex="-1"></a><span class="fu">hist</span>(DD, <span class="at">main=</span><span class="st">&quot;Meat Data&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Difference in Measured Fat </span></span>
+<span id="cb40-4"><a href="rank-tests.html#cb40-4" tabindex="-1"></a><span class="st">     Percentage&quot;</span>, <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
 <p><img src="03-rankstat_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">summary</span>(DD)</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="rank-tests.html#cb41-1" tabindex="-1"></a><span class="fu">summary</span>(DD)</span></code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ## -1.60000 -0.25000  0.30000  0.04211  0.40000  1.10000</code></pre>
 <p><strong>The Sign Test in R</strong></p>
 <ul>
-<li>Let’s first test the hypothesis <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta \neq 0\)</span> using
+<li>Let’s first test the hypothesis <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta \neq 0\)</span> using
 the two-sided sign test. This can be done using the <strong>binom.test</strong> function</li>
 </ul>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">binom.test</span>(<span class="kw">sum</span>(DD <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n =</span> <span class="kw">length</span>(DD), <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="rank-tests.html#cb43-1" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="fu">sum</span>(DD <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">n =</span> <span class="fu">length</span>(DD), <span class="at">p=</span><span class="fl">0.5</span>)<span class="sc">$</span>p.value</span></code></pre></div>
 <pre><code>## [1] 0.6476059</code></pre>
 <p><strong>Wilcoxon Signed Rank Test in R</strong></p>
 <ul>
@@ -1161,7 +1226,7 @@ the two-sided sign test. This can be done using the <strong>binom.test</strong> 
 to the Wilcoxon rank sum test. To perform the Wilcoxon signed rank test in <strong>R</strong>, you just
 need to enter data for the <strong>x</strong> argument and leave the <strong>y</strong> argument empty.</li>
 </ul>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">wilcox.test</span>(<span class="dt">x=</span>DD)</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="rank-tests.html#cb45-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(<span class="at">x=</span>DD)</span></code></pre></div>
 <pre><code>## Warning in wilcox.test.default(x = DD): cannot compute exact p-value with ties</code></pre>
 <pre><code>## 
 ##  Wilcoxon signed rank test with continuity correction
@@ -1178,27 +1243,27 @@ to reject <span class="math inline">\(H_{0}\)</span> for small deviations from <
 will consider a scenario where <span class="math inline">\(D_{i} = 0.4 + \varepsilon_{i}\)</span> with <span class="math inline">\(\varepsilon_{i}\)</span>
 having a t distribution with <span class="math inline">\(3\)</span> degrees of freedom.</p></li>
 </ul>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">1327</span>)</a>
-<a class="sourceLine" id="cb44-2" data-line-number="2">n.reps &lt;-<span class="st"> </span><span class="dv">500</span>  <span class="co">## number of simulation replications</span></a>
-<a class="sourceLine" id="cb44-3" data-line-number="3">samp.size &lt;-<span class="st"> </span><span class="dv">50</span>  <span class="co">## the sample size</span></a>
-<a class="sourceLine" id="cb44-4" data-line-number="4">wilcox.reject &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, n.reps)</a>
-<a class="sourceLine" id="cb44-5" data-line-number="5">sign.reject &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, n.reps)</a>
-<a class="sourceLine" id="cb44-6" data-line-number="6"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n.reps) {</a>
-<a class="sourceLine" id="cb44-7" data-line-number="7">    dsim &lt;-<span class="st"> </span><span class="fl">.4</span> <span class="op">+</span><span class="st"> </span><span class="kw">rt</span>(samp.size, <span class="dt">df=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb44-8" data-line-number="8">    wilcox.reject[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">wilcox.test</span>(<span class="dt">x=</span>dsim)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb44-9" data-line-number="9">    sign.reject[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">binom.test</span>(<span class="kw">sum</span>(dsim <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), </a>
-<a class="sourceLine" id="cb44-10" data-line-number="10">                                       <span class="dt">n=</span>samp.size, <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb44-11" data-line-number="11">}</a>
-<a class="sourceLine" id="cb44-12" data-line-number="12"><span class="kw">mean</span>(wilcox.reject)  <span class="co">## proportion of times Wilcoxon signed rank rejected H0</span></a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="rank-tests.html#cb48-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1327</span>)</span>
+<span id="cb48-2"><a href="rank-tests.html#cb48-2" tabindex="-1"></a>n.reps <span class="ot">&lt;-</span> <span class="dv">500</span>  <span class="do">## number of simulation replications</span></span>
+<span id="cb48-3"><a href="rank-tests.html#cb48-3" tabindex="-1"></a>samp.size <span class="ot">&lt;-</span> <span class="dv">50</span>  <span class="do">## the sample size</span></span>
+<span id="cb48-4"><a href="rank-tests.html#cb48-4" tabindex="-1"></a>wilcox.reject <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n.reps)</span>
+<span id="cb48-5"><a href="rank-tests.html#cb48-5" tabindex="-1"></a>sign.reject <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n.reps)</span>
+<span id="cb48-6"><a href="rank-tests.html#cb48-6" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n.reps) {</span>
+<span id="cb48-7"><a href="rank-tests.html#cb48-7" tabindex="-1"></a>    dsim <span class="ot">&lt;-</span> .<span class="dv">4</span> <span class="sc">+</span> <span class="fu">rt</span>(samp.size, <span class="at">df=</span><span class="dv">3</span>)</span>
+<span id="cb48-8"><a href="rank-tests.html#cb48-8" tabindex="-1"></a>    wilcox.reject[k] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">wilcox.test</span>(<span class="at">x=</span>dsim)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb48-9"><a href="rank-tests.html#cb48-9" tabindex="-1"></a>    sign.reject[k] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">binom.test</span>(<span class="fu">sum</span>(dsim <span class="sc">&gt;</span> <span class="dv">0</span>), </span>
+<span id="cb48-10"><a href="rank-tests.html#cb48-10" tabindex="-1"></a>                                       <span class="at">n=</span>samp.size, <span class="at">p=</span><span class="fl">0.5</span>)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb48-11"><a href="rank-tests.html#cb48-11" tabindex="-1"></a>}</span>
+<span id="cb48-12"><a href="rank-tests.html#cb48-12" tabindex="-1"></a><span class="fu">mean</span>(wilcox.reject)  <span class="do">## proportion of times Wilcoxon signed rank rejected H0</span></span></code></pre></div>
 <pre><code>## [1] 0.614</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="kw">mean</span>(sign.reject)  <span class="co">## proportion of times Wilcoxon signed rank rejected H0</span></a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="rank-tests.html#cb50-1" tabindex="-1"></a><span class="fu">mean</span>(sign.reject)  <span class="do">## proportion of times Wilcoxon signed rank rejected H0</span></span></code></pre></div>
 <pre><code>## [1] 0.488</code></pre>
 </div>
 </div>
-<div id="power-and-comparisons-with-parametric-tests" class="section level2">
-<h2><span class="header-section-number">3.4</span> Power and Comparisons with Parametric Tests</h2>
-<div id="the-power-function-of-a-test" class="section level3">
-<h3><span class="header-section-number">3.4.1</span> The Power Function of a Test</h3>
+<div id="power-and-comparisons-with-parametric-tests" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Power and Comparisons with Parametric Tests<a href="rank-tests.html#power-and-comparisons-with-parametric-tests" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="the-power-function-of-a-test" class="section level3 hasAnchor" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> The Power Function of a Test<a href="rank-tests.html#the-power-function-of-a-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>The <strong>power</strong> of a test is the probability
 that a test rejects the null hypothesis when the
@@ -1218,13 +1283,13 @@ of alternative values of <span class="math inline">\(\theta\)</span>.</p></li>
 <span class="math display">\[\begin{equation}
 \gamma_{n}(\delta) = P_{\theta=\delta}\{  \textrm{reject } H_{0} \} \qquad \textrm{ for } \delta \in H_{A}. \nonumber
 \end{equation}\]</span></p></li>
-<li><p>The notation <span class="math inline">\(P_{\theta=\delta}\{ \textrm{reject } H_{0} \}\)</span> means that we are computing this
+<li><p>The notation <span class="math inline">\(P_{\theta=\delta}\{  \textrm{reject } H_{0} \}\)</span> means that we are computing this
 probability under the assumption that the parameter of interest <span class="math inline">\(\theta\)</span> equals <span class="math inline">\(\delta\)</span>.</p></li>
 </ul>
 <hr />
 <p><strong>The Approximate Power Function of the Sign Test</strong></p>
 <ul>
-<li><p>Let us consider the sign test for testing <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(\theta &gt; 0\)</span>.</p></li>
+<li><p>Let us consider the sign test for testing <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(\theta &gt; 0\)</span>.</p></li>
 <li><p>The sign test is based on the value of the sign statistic <span class="math inline">\(S_{n}\)</span>.</p></li>
 <li><p>Recalling <a href="rank-tests.html#eq:signstat-distribution">(3.10)</a>, we know that <span class="math inline">\(S_{n} \sim \textrm{Binomial}(n, p(\theta))\)</span>.
 Hence,
@@ -1236,15 +1301,15 @@ Hence,
 so that <span class="math inline">\(P_{H_{0}}( S_{n} \geq c_{\alpha,n} ) = \alpha\)</span>. Using the large-sample approximation <a href="rank-tests.html#eq:approx-signstat">(3.11)</a>, you can
 show that
 <span class="math display" id="eq:critical-value-signstat">\[\begin{equation}
-c_{\alpha, n} = \frac{n + \sqrt{n}z_{1-\alpha}}{2}, 
+c_{\alpha, n} = \frac{n + \sqrt{n}z_{1-\alpha}}{2},
 \tag{3.12}
 \end{equation}\]</span>
 where <span class="math inline">\(z_{1-\alpha}\)</span> denotes the upper <span class="math inline">\(1 - \alpha\)</span> quantile of the standard normal distribution. In other words,
 <span class="math inline">\(\Phi( z_{1-\alpha}) = 1-\alpha\)</span>.</p></li>
 <li><p>Also, when using large-sample approximation <a href="rank-tests.html#eq:approx-signstat">(3.11)</a>, the power of this test to detect a value of <span class="math inline">\(\theta = \delta\)</span> is given by
 <span class="math display" id="eq:powerfn-signstat">\[\begin{eqnarray}
-\gamma_{n}(\delta) &amp;=&amp; P_{\theta=\delta}\{ S_{n} \geq c_{\alpha,n} \} 
-= P_{\theta=\delta}\Bigg\{ \frac{\sqrt{n}(S_{n}/n - p(\delta))}{\sqrt{ p(\delta)(1 - p(\delta)) } } \geq 
+\gamma_{n}(\delta) &amp;=&amp; P_{\theta=\delta}\{ S_{n} \geq c_{\alpha,n} \}
+= P_{\theta=\delta}\Bigg\{ \frac{\sqrt{n}(S_{n}/n - p(\delta))}{\sqrt{ p(\delta)(1 - p(\delta)) } } \geq
 \frac{ \sqrt{n}(c_{\alpha, n}/n - p(\delta)) }{ \sqrt{p(\delta)(1 - p(\delta))}  } \Bigg\}  \nonumber \\
 &amp;=&amp; 1 - \Phi\Bigg( \frac{ \sqrt{n}(c_{\alpha,n}/n - p(\delta)) }{ \sqrt{p(\delta)(1 - p(\delta))}  } \Bigg) \nonumber \\
 &amp;=&amp; 1 - \Phi\Bigg( \frac{ z_{1-\alpha} }{ 2\sqrt{p(\delta)(1 - p(\delta))}  } - \frac{ \sqrt{n}(p(\delta) - 1/2) }{ \sqrt{p(\delta)(1 - p(\delta))}  }\Bigg)
@@ -1260,8 +1325,8 @@ values for <span class="math inline">\(p(\delta)\)</span> rather than <span clas
 </ul>
 <p><img src="03-rankstat_files/figure-html/unnamed-chunk-22-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
 </div>
-<div id="power-comparisons-and-asymptotic-relative-efficiency" class="section level3">
-<h3><span class="header-section-number">3.4.2</span> Power Comparisons and Asymptotic Relative Efficiency</h3>
+<div id="power-comparisons-and-asymptotic-relative-efficiency" class="section level3 hasAnchor" number="3.4.2">
+<h3><span class="header-section-number">3.4.2</span> Power Comparisons and Asymptotic Relative Efficiency<a href="rank-tests.html#power-comparisons-and-asymptotic-relative-efficiency" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>Notice that for the sign statistic power function shown in <a href="rank-tests.html#eq:powerfn-signstat">(3.13)</a>,
 we have that
@@ -1298,7 +1363,7 @@ the sample size required to achieve a certain level of power.</p></li>
 <ul>
 <li><p>To find the asymptotic relative efficiency, we first need to derive the
 asymptotic power function.</p></li>
-<li><p>For our hypothesis <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; \theta_{0}\)</span>, this is defined as
+<li><p>For our hypothesis <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; \theta_{0}\)</span>, this is defined as
 <span class="math display">\[\begin{equation}
 \tilde{\gamma}(\delta) = \lim_{n \longrightarrow \infty} \gamma_{n}( \theta_{0} + \delta/\sqrt{n}) \nonumber
 \end{equation}\]</span></p></li>
@@ -1310,10 +1375,10 @@ we avoid the problem of the power always converging to <span class="math inline"
 \end{equation}\]</span>
 as long as we can find functions <span class="math inline">\(\mu(\cdot)\)</span> and <span class="math inline">\(\sigma(\cdot)\)</span> such that
 <span class="math display" id="eq:asymptotic-v">\[\begin{equation}
-\frac{\sqrt{n}(V_{n} - \mu(\theta_{n}))}{ \sigma(\theta_{n})} \longrightarrow \textrm{Normal}(0, 1) 
+\frac{\sqrt{n}(V_{n} - \mu(\theta_{n}))}{ \sigma(\theta_{n})} \longrightarrow \textrm{Normal}(0, 1)
 \tag{3.15}
 \end{equation}\]</span>
-where the test of <span class="math inline">\(H_{0}:\theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; \theta_{0}\)</span>
+where the test of <span class="math inline">\(H_{0}:\theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; \theta_{0}\)</span>
 is based on the test statistic <span class="math inline">\(V_{n}\)</span> with rejection of <span class="math inline">\(H_{0}\)</span> occurring whenever <span class="math inline">\(V_{n} \geq c_{\alpha, n}\)</span>.
 Statement <a href="rank-tests.html#eq:asymptotic-v">(3.15)</a> asssumes that the distribution of <span class="math inline">\(V_{n}\)</span> is governed by <span class="math inline">\(\theta_{n}\)</span> for each <span class="math inline">\(n\)</span>.</p></li>
 </ul>
@@ -1368,7 +1433,7 @@ size ratio (using approximation <a href="rank-tests.html#eq:approx-sample-size">
 <span class="math display">\[\begin{equation}
 \frac{ n_{\beta}^{2}(\theta_{A}) }{n_{\beta}^{1}(\theta_{A}) }
 = \Bigg( \frac{ \mu_{1}&#39;(\theta_{0})\sigma_{2}(\theta_{0}) }{ \mu_{2}&#39;(\theta_{0})\sigma_{1}(\theta_{0})} \Bigg)^{2}
-= \textrm{ARE}_{12}(\theta_{0}) 
+= \textrm{ARE}_{12}(\theta_{0})
 \end{equation}\]</span></p></li>
 <li><p>Notice that <span class="math inline">\(\textrm{ARE}_{12}(\theta_{0}) &gt; 1\)</span> indicates that the test <span class="math inline">\(1\)</span> is better than test <span class="math inline">\(2\)</span>
 because the sample size required for test <span class="math inline">\(1\)</span> would be less than the sample size required for test <span class="math inline">\(2\)</span>.</p></li>
@@ -1377,7 +1442,7 @@ was not very rigorous or precise, but it is possible to make a more rigorous sta
 See, for example, Chapter 13 of <span class="citation">Lehmann and Romano (<a href="#ref-lehmann2006">2006</a>)</span> for a more rigorous treatment of relative efficiency.</p></li>
 <li><p>In <span class="citation">Lehmann and Romano (<a href="#ref-lehmann2006">2006</a>)</span>, they have a result that states (under appropriate assumptions) that
 <span class="math display">\[\begin{equation}
-\lim_{\theta \downarrow \theta_{0}} \frac{N_{2}(\theta)}{N_{1}(\theta)} 
+\lim_{\theta \downarrow \theta_{0}} \frac{N_{2}(\theta)}{N_{1}(\theta)}
 = ARE_{12}(\theta_{0})
 \end{equation}\]</span>
 where <span class="math inline">\(N_{1}(\theta)\)</span> and <span class="math inline">\(N_{2}(\theta)\)</span> are the sample
@@ -1385,20 +1450,20 @@ sizes required to have power <span class="math inline">\(\beta\)</span> against 
 </ul>
 <hr />
 </div>
-<div id="efficiency-examples" class="section level3">
-<h3><span class="header-section-number">3.4.3</span> Efficiency Examples</h3>
+<div id="efficiency-examples" class="section level3 hasAnchor" number="3.4.3">
+<h3><span class="header-section-number">3.4.3</span> Efficiency Examples<a href="rank-tests.html#efficiency-examples" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>The Sign Test</strong></p>
 <ul>
 <li><p>Let us return to the example of the sign statistic <span class="math inline">\(S_{n}\)</span> and its use
-in testing the hypothesis <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; 0\)</span>.</p></li>
+in testing the hypothesis <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; 0\)</span>.</p></li>
 <li><p>Notice that the sign test rejects <span class="math inline">\(H_{0}:\theta=0\)</span> for <span class="math inline">\(V_{n} &gt; c_{\alpha,n}\)</span>
 where <span class="math inline">\(V_{n} = S_{n}/n\)</span> and <span class="math inline">\(S_{n}\)</span> is the sign statistic.</p></li>
 <li><p>When <span class="math inline">\(V_{n}\)</span> is defined this way <a href="rank-tests.html#eq:asymptotic-v">(3.15)</a> is satisfied
 when <span class="math inline">\(\mu(\theta) = p(\theta)\)</span> and <span class="math inline">\(\sigma(\theta) = \sqrt{p(\theta)(1 - p(\theta) )}\)</span>
 where <span class="math inline">\(p(\theta) = 1 - F_{\epsilon}( -\theta )\)</span>.</p></li>
-<li><p>Thus, the efficiency of the sign test for testing <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; 0\)</span> is
+<li><p>Thus, the efficiency of the sign test for testing <span class="math inline">\(H_{0}: \theta = 0\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; 0\)</span> is
 <span class="math display">\[\begin{equation}
-\frac{\mu&#39;(0)}{\sigma(0)} = \frac{p&#39;(0)}{\sqrt{p(0)(1 - p(0))}} = 2f_{\epsilon}(0)  \nonumber 
+\frac{\mu&#39;(0)}{\sigma(0)} = \frac{p&#39;(0)}{\sqrt{p(0)(1 - p(0))}} = 2f_{\epsilon}(0)  \nonumber
 \end{equation}\]</span>
 where <span class="math inline">\(f_{\epsilon}(t) = F_{\epsilon}&#39;(t)\)</span>.</p></li>
 </ul>
@@ -1408,7 +1473,7 @@ where <span class="math inline">\(f_{\epsilon}(t) = F_{\epsilon}&#39;(t)\)</span
 <li><p>Assume that we have data <span class="math inline">\(D_{1}, \ldots, D_{n}\)</span> generated under the same assumption
 as in our discussion of the sign test and the Wilcoxon signed-rank test. That is,
 <span class="math display">\[\begin{equation}
-D_{i} = \theta + \varepsilon_{i},  \nonumber 
+D_{i} = \theta + \varepsilon_{i},  \nonumber
 \end{equation}\]</span>
 where <span class="math inline">\(\varepsilon_{i}\)</span> are assumed to have median <span class="math inline">\(0\)</span> with <span class="math inline">\(\varepsilon_{i}\)</span> having p.d.f. <span class="math inline">\(f_{\varepsilon}\)</span></p></li>
 <li><p>The one-sample t-test will reject <span class="math inline">\(H_{0}: \theta = 0\)</span> whenever
@@ -1430,7 +1495,7 @@ V_{n} = \frac{\bar{D}}{ \hat{\sigma} }  \nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>So, the efficiency of the one-sample t-test is given by
 <span class="math display">\[\begin{equation}
-\frac{\mu&#39;(0)}{\sigma(0)} = \frac{1}{ \sigma_{e} }  \nonumber 
+\frac{\mu&#39;(0)}{\sigma(0)} = \frac{1}{ \sigma_{e} }  \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
@@ -1445,7 +1510,7 @@ V_{N} = \frac{1}{mn} \sum_{i=1}^{n}\sum_{j=1}^{m} I(X_{i} \geq Y_{j})  \nonumber
 and <span class="math inline">\(N = n + m\)</span>.</p></li>
 <li><p>The power of the WRS test is usually analyzed in the context of
 the “shift alternative”. Namely, we are assuming that <span class="math inline">\(F_{X}(t) = F_{Y}(t - \theta)\)</span>
-and test <span class="math inline">\(H_{0}: \theta=0\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; 0\)</span>.</p></li>
+and test <span class="math inline">\(H_{0}: \theta=0\)</span> vs. <span class="math inline">\(H_{A}: \theta &gt; 0\)</span>.</p></li>
 <li><p>The natural choice for <span class="math inline">\(\mu(\theta)\)</span> is the expectation of <span class="math inline">\(V_{N}\)</span> when <span class="math inline">\(\theta\)</span> is the true
 shift parameter.</p></li>
 <li><p>So, let <span class="math inline">\(\mu(\theta) = P_{\theta}(X_{i} \geq Y_{j})\)</span>. This can be written in terms of <span class="math inline">\(F_{Y}\)</span> and <span class="math inline">\(f_{Y}\)</span>:
@@ -1467,8 +1532,8 @@ e(0) = \frac{\mu&#39;(0)}{\sigma(0)} = \frac{\int_{-\infty}^{\infty} f^{2}(t) dt
 \end{equation}\]</span></p></li>
 </ul>
 </div>
-<div id="efficiency-comparisons-for-several-distributions" class="section level3">
-<h3><span class="header-section-number">3.4.4</span> Efficiency Comparisons for Several Distributions</h3>
+<div id="efficiency-comparisons-for-several-distributions" class="section level3 hasAnchor" number="3.4.4">
+<h3><span class="header-section-number">3.4.4</span> Efficiency Comparisons for Several Distributions<a href="rank-tests.html#efficiency-comparisons-for-several-distributions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Sign Test vs. One-Sample t-test</strong></p>
 <ul>
 <li><p>Comparisons of the Efficiency of the sign and one-sample t-test only
@@ -1503,8 +1568,8 @@ for several distributions are shown below.</li>
 \textrm{t-dist}_{5} &amp; &amp; \qquad 1.90 \\
 \end{eqnarray}\]</span></p>
 </div>
-<div id="a-power-contest" class="section level3">
-<h3><span class="header-section-number">3.4.5</span> A Power “Contest”</h3>
+<div id="a-power-contest" class="section level3 hasAnchor" number="3.4.5">
+<h3><span class="header-section-number">3.4.5</span> A Power “Contest”<a href="rank-tests.html#a-power-contest" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>To compare power for specific sample sizes, effect sizes, and
 distributional assumptions, a simulation study can be more
@@ -1518,7 +1583,7 @@ the following model:
 <span class="math display">\[\begin{equation}
 D_{i} = 0.2 + \varepsilon_{i}  \nonumber
 \end{equation}\]</span></p></li>
-<li>Three choices for the distribution of <span class="math inline">\(\varepsilon_{i}\)</span> were considered:
+<li><p>Three choices for the distribution of <span class="math inline">\(\varepsilon_{i}\)</span> were considered:</p>
 <ul>
 <li><span class="math inline">\(\varepsilon_{i} \sim \textrm{Logistic}(0, 1)\)</span></li>
 <li><span class="math inline">\(\varepsilon_{i} \sim \textrm{Normal}(0, 1)\)</span></li>
@@ -1526,37 +1591,37 @@ D_{i} = 0.2 + \varepsilon_{i}  \nonumber
 </ul></li>
 <li><p>The <strong>R</strong> code and simulation results are shown below.</p></li>
 </ul>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">148930</span>)</a>
-<a class="sourceLine" id="cb48-2" data-line-number="2">theta &lt;-<span class="st"> </span><span class="fl">0.2</span></a>
-<a class="sourceLine" id="cb48-3" data-line-number="3">n &lt;-<span class="st"> </span><span class="dv">200</span></a>
-<a class="sourceLine" id="cb48-4" data-line-number="4">nreps &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb48-5" data-line-number="5">RejectSign &lt;-<span class="st"> </span>RejectWilcoxonSign &lt;-<span class="st"> </span>RejectT &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">nrow=</span>nreps, <span class="dt">ncol=</span><span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb48-6" data-line-number="6"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nreps) {</a>
-<a class="sourceLine" id="cb48-7" data-line-number="7">  xx &lt;-<span class="st"> </span>theta <span class="op">+</span><span class="st"> </span><span class="kw">rlogis</span>(n)</a>
-<a class="sourceLine" id="cb48-8" data-line-number="8">  yy &lt;-<span class="st"> </span>theta <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n)</a>
-<a class="sourceLine" id="cb48-9" data-line-number="9">  zz &lt;-<span class="st"> </span>theta <span class="op">+</span><span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min=</span><span class="op">-</span><span class="dv">3</span><span class="op">/</span><span class="dv">2</span>, <span class="dt">max=</span><span class="dv">3</span><span class="op">/</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb48-10" data-line-number="10">  ww &lt;-<span class="st"> </span>theta <span class="op">+</span><span class="st"> </span>(<span class="kw">rexp</span>(n, <span class="dt">rate=</span><span class="dv">1</span>) <span class="op">-</span><span class="st"> </span><span class="kw">rexp</span>(n, <span class="dt">rate=</span><span class="dv">1</span>))<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb48-11" data-line-number="11">  </a>
-<a class="sourceLine" id="cb48-12" data-line-number="12">  RejectSign[k,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">binom.test</span>(<span class="dt">x=</span><span class="kw">sum</span>(xx <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n=</span>n, <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb48-13" data-line-number="13">  RejectWilcoxonSign[k,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">wilcox.test</span>(xx)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </a>
-<a class="sourceLine" id="cb48-14" data-line-number="14">  RejectT[k,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">t.test</span>(xx)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb48-15" data-line-number="15">  </a>
-<a class="sourceLine" id="cb48-16" data-line-number="16">  RejectSign[k,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">binom.test</span>(<span class="dt">x=</span><span class="kw">sum</span>(yy <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n=</span>n, <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb48-17" data-line-number="17">  RejectWilcoxonSign[k,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">wilcox.test</span>(yy)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </a>
-<a class="sourceLine" id="cb48-18" data-line-number="18">  RejectT[k,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">t.test</span>(yy)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>,<span class="dv">0</span>)  </a>
-<a class="sourceLine" id="cb48-19" data-line-number="19">  </a>
-<a class="sourceLine" id="cb48-20" data-line-number="20">  RejectSign[k,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">binom.test</span>(<span class="dt">x=</span><span class="kw">sum</span>(zz <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n=</span>n, <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb48-21" data-line-number="21">  RejectWilcoxonSign[k,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">wilcox.test</span>(zz)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </a>
-<a class="sourceLine" id="cb48-22" data-line-number="22">  RejectT[k,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">t.test</span>(zz)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>,<span class="dv">1</span>,<span class="dv">0</span>)  </a>
-<a class="sourceLine" id="cb48-23" data-line-number="23">  </a>
-<a class="sourceLine" id="cb48-24" data-line-number="24">  RejectSign[k,<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">binom.test</span>(<span class="dt">x=</span><span class="kw">sum</span>(ww <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">n=</span>n, <span class="dt">p=</span><span class="fl">0.5</span>)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb48-25" data-line-number="25">  RejectWilcoxonSign[k,<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">wilcox.test</span>(ww)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </a>
-<a class="sourceLine" id="cb48-26" data-line-number="26">  RejectT[k,<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">t.test</span>(ww)<span class="op">$</span>p.value <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb48-27" data-line-number="27">}</a>
-<a class="sourceLine" id="cb48-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb48-29" data-line-number="29">power.results &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Distribution=</span><span class="kw">c</span>(<span class="st">&quot;Logistic&quot;</span>, <span class="st">&quot;Normal&quot;</span>, <span class="st">&quot;Uniform&quot;</span>, <span class="st">&quot;Laplace&quot;</span>),</a>
-<a class="sourceLine" id="cb48-30" data-line-number="30">                 <span class="dt">SignTest=</span><span class="kw">colMeans</span>(RejectSign), <span class="dt">WilcoxonSign=</span><span class="kw">colMeans</span>(RejectWilcoxonSign),</a>
-<a class="sourceLine" id="cb48-31" data-line-number="31">                 <span class="dt">tTest=</span><span class="kw">colMeans</span>(RejectT))</a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="rank-tests.html#cb52-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">148930</span>)</span>
+<span id="cb52-2"><a href="rank-tests.html#cb52-2" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
+<span id="cb52-3"><a href="rank-tests.html#cb52-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb52-4"><a href="rank-tests.html#cb52-4" tabindex="-1"></a>nreps <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb52-5"><a href="rank-tests.html#cb52-5" tabindex="-1"></a>RejectSign <span class="ot">&lt;-</span> RejectWilcoxonSign <span class="ot">&lt;-</span> RejectT <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow=</span>nreps, <span class="at">ncol=</span><span class="dv">4</span>)</span>
+<span id="cb52-6"><a href="rank-tests.html#cb52-6" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nreps) {</span>
+<span id="cb52-7"><a href="rank-tests.html#cb52-7" tabindex="-1"></a>  xx <span class="ot">&lt;-</span> theta <span class="sc">+</span> <span class="fu">rlogis</span>(n)</span>
+<span id="cb52-8"><a href="rank-tests.html#cb52-8" tabindex="-1"></a>  yy <span class="ot">&lt;-</span> theta <span class="sc">+</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb52-9"><a href="rank-tests.html#cb52-9" tabindex="-1"></a>  zz <span class="ot">&lt;-</span> theta <span class="sc">+</span> <span class="fu">runif</span>(n, <span class="at">min=</span><span class="sc">-</span><span class="dv">3</span><span class="sc">/</span><span class="dv">2</span>, <span class="at">max=</span><span class="dv">3</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb52-10"><a href="rank-tests.html#cb52-10" tabindex="-1"></a>  ww <span class="ot">&lt;-</span> theta <span class="sc">+</span> (<span class="fu">rexp</span>(n, <span class="at">rate=</span><span class="dv">1</span>) <span class="sc">-</span> <span class="fu">rexp</span>(n, <span class="at">rate=</span><span class="dv">1</span>))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">2</span>)</span>
+<span id="cb52-11"><a href="rank-tests.html#cb52-11" tabindex="-1"></a>  </span>
+<span id="cb52-12"><a href="rank-tests.html#cb52-12" tabindex="-1"></a>  RejectSign[k,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">binom.test</span>(<span class="at">x=</span><span class="fu">sum</span>(xx <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">n=</span>n, <span class="at">p=</span><span class="fl">0.5</span>)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb52-13"><a href="rank-tests.html#cb52-13" tabindex="-1"></a>  RejectWilcoxonSign[k,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">wilcox.test</span>(xx)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </span>
+<span id="cb52-14"><a href="rank-tests.html#cb52-14" tabindex="-1"></a>  RejectT[k,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">t.test</span>(xx)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb52-15"><a href="rank-tests.html#cb52-15" tabindex="-1"></a>  </span>
+<span id="cb52-16"><a href="rank-tests.html#cb52-16" tabindex="-1"></a>  RejectSign[k,<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">binom.test</span>(<span class="at">x=</span><span class="fu">sum</span>(yy <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">n=</span>n, <span class="at">p=</span><span class="fl">0.5</span>)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb52-17"><a href="rank-tests.html#cb52-17" tabindex="-1"></a>  RejectWilcoxonSign[k,<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">wilcox.test</span>(yy)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </span>
+<span id="cb52-18"><a href="rank-tests.html#cb52-18" tabindex="-1"></a>  RejectT[k,<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">t.test</span>(yy)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="dv">1</span>,<span class="dv">0</span>)  </span>
+<span id="cb52-19"><a href="rank-tests.html#cb52-19" tabindex="-1"></a>  </span>
+<span id="cb52-20"><a href="rank-tests.html#cb52-20" tabindex="-1"></a>  RejectSign[k,<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">binom.test</span>(<span class="at">x=</span><span class="fu">sum</span>(zz <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">n=</span>n, <span class="at">p=</span><span class="fl">0.5</span>)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb52-21"><a href="rank-tests.html#cb52-21" tabindex="-1"></a>  RejectWilcoxonSign[k,<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">wilcox.test</span>(zz)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </span>
+<span id="cb52-22"><a href="rank-tests.html#cb52-22" tabindex="-1"></a>  RejectT[k,<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">t.test</span>(zz)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>,<span class="dv">1</span>,<span class="dv">0</span>)  </span>
+<span id="cb52-23"><a href="rank-tests.html#cb52-23" tabindex="-1"></a>  </span>
+<span id="cb52-24"><a href="rank-tests.html#cb52-24" tabindex="-1"></a>  RejectSign[k,<span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">binom.test</span>(<span class="at">x=</span><span class="fu">sum</span>(ww <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">n=</span>n, <span class="at">p=</span><span class="fl">0.5</span>)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb52-25"><a href="rank-tests.html#cb52-25" tabindex="-1"></a>  RejectWilcoxonSign[k,<span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">wilcox.test</span>(ww)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>) </span>
+<span id="cb52-26"><a href="rank-tests.html#cb52-26" tabindex="-1"></a>  RejectT[k,<span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">t.test</span>(ww)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb52-27"><a href="rank-tests.html#cb52-27" tabindex="-1"></a>}</span>
+<span id="cb52-28"><a href="rank-tests.html#cb52-28" tabindex="-1"></a></span>
+<span id="cb52-29"><a href="rank-tests.html#cb52-29" tabindex="-1"></a>power.results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Distribution=</span><span class="fu">c</span>(<span class="st">&quot;Logistic&quot;</span>, <span class="st">&quot;Normal&quot;</span>, <span class="st">&quot;Uniform&quot;</span>, <span class="st">&quot;Laplace&quot;</span>),</span>
+<span id="cb52-30"><a href="rank-tests.html#cb52-30" tabindex="-1"></a>                 <span class="at">SignTest=</span><span class="fu">colMeans</span>(RejectSign), <span class="at">WilcoxonSign=</span><span class="fu">colMeans</span>(RejectWilcoxonSign),</span>
+<span id="cb52-31"><a href="rank-tests.html#cb52-31" tabindex="-1"></a>                 <span class="at">tTest=</span><span class="fu">colMeans</span>(RejectT))</span></code></pre></div>
 <table border="1">
 <caption align="bottom">
 Estimated power for three one-sample tests and
@@ -1635,10 +1700,10 @@ Laplace
 </table>
 </div>
 </div>
-<div id="linear-rank-statistics-in-general" class="section level2">
-<h2><span class="header-section-number">3.5</span> Linear Rank Statistics in General</h2>
-<div id="definition-1" class="section level3">
-<h3><span class="header-section-number">3.5.1</span> Definition</h3>
+<div id="linear-rank-statistics-in-general" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Linear Rank Statistics in General<a href="rank-tests.html#linear-rank-statistics-in-general" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="definition-1" class="section level3 hasAnchor" number="3.5.1">
+<h3><span class="header-section-number">3.5.1</span> Definition<a href="rank-tests.html#definition-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>The Wilcoxon rank sum statistic is an example of a statistic that belongs to a more general class of rank statistics.</p></li>
 <li><p>This is the class of <strong>linear rank statistics</strong>.</p></li>
@@ -1672,10 +1737,10 @@ W = \sum_{i=1}^{n} R_{i}(\mathbf{Z}) \nonumber
 if we choose the coefficients to be the following
 <span class="math display">\[\begin{equation}
 c_{iN} = \begin{cases}
- 1 &amp; \textrm{ if } i \leq n \\
- 0 &amp; \textrm{ if } i &gt; n 
- \end{cases}
- \nonumber
+1 &amp; \textrm{ if } i \leq n \\
+0 &amp; \textrm{ if } i &gt; n
+\end{cases}
+\nonumber
 \end{equation}\]</span>
 and we choose the scores to be
 <span class="math display">\[\begin{equation}
@@ -1683,8 +1748,8 @@ a_{N}(i) = i  \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 </div>
-<div id="properties-of-linear-rank-statistics" class="section level3">
-<h3><span class="header-section-number">3.5.2</span> Properties of Linear Rank Statistics</h3>
+<div id="properties-of-linear-rank-statistics" class="section level3 hasAnchor" number="3.5.2">
+<h3><span class="header-section-number">3.5.2</span> Properties of Linear Rank Statistics<a href="rank-tests.html#properties-of-linear-rank-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>The expected value of the linear rank statistic (if the distribution of the <span class="math inline">\(Z_{i}\)</span> is continuous)
 is
@@ -1731,10 +1796,10 @@ where, as we showed, both <span class="math inline">\(E(T_{N})\)</span> and <spa
 for an arbitrary linear rank statistic.</p></li>
 </ul>
 </div>
-<div id="other-examples-of-linear-rank-statistics" class="section level3">
-<h3><span class="header-section-number">3.5.3</span> Other Examples of Linear Rank Statistics</h3>
-<div id="the-van-der-waerden-statistic-and-the-normal-scores-test" class="section level4">
-<h4><span class="header-section-number">3.5.3.1</span> The van der Waerden statistic and the normal scores test</h4>
+<div id="other-examples-of-linear-rank-statistics" class="section level3 hasAnchor" number="3.5.3">
+<h3><span class="header-section-number">3.5.3</span> Other Examples of Linear Rank Statistics<a href="rank-tests.html#other-examples-of-linear-rank-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="the-van-der-waerden-statistic-and-the-normal-scores-test" class="section level4 hasAnchor" number="3.5.3.1">
+<h4><span class="header-section-number">3.5.3.1</span> The van der Waerden statistic and the normal scores test<a href="rank-tests.html#the-van-der-waerden-statistic-and-the-normal-scores-test" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p>Van der Waerden’s rank statistic is used for two-sample problems
 where the first <span class="math inline">\(n\)</span> observations come from group 1 while the last
@@ -1748,10 +1813,10 @@ function of a standard Normal random variable.</p></li>
 <li><p>The statistic <span class="math inline">\(VW_{N}\)</span> is a linear rank statistic with coefficients
 <span class="math display">\[\begin{equation}
 c_{iN} = \begin{cases}
- 1 &amp; \textrm{ if } i \leq n \\
- 0 &amp; \textrm{ if } i &gt; n 
- \end{cases}
- \nonumber
+1 &amp; \textrm{ if } i \leq n \\
+0 &amp; \textrm{ if } i &gt; n
+\end{cases}
+\nonumber
 \end{equation}\]</span>
 and scores determined by
 <span class="math display">\[\begin{equation}
@@ -1765,8 +1830,8 @@ the underlying data has an approximately normal distribution.</p></li>
 roughly like a Gaussian distribution (if there are not too many ties).</p></li>
 </ul>
 </div>
-<div id="the-median-test" class="section level4">
-<h4><span class="header-section-number">3.5.3.2</span> The median test</h4>
+<div id="the-median-test" class="section level4 hasAnchor" number="3.5.3.2">
+<h4><span class="header-section-number">3.5.3.2</span> The median test<a href="rank-tests.html#the-median-test" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p>The median test is also a two-sample rank test.</p></li>
 <li><p>While the Wilcoxon rank sum test looks at the average rank within group <span class="math inline">\(1\)</span>,
@@ -1780,27 +1845,27 @@ because <span class="math inline">\((N+1)/2\)</span> will be the median rank.</p
 <li><p>This is a linear rank statistic with coefficients
 <span class="math display">\[\begin{equation}
 c_{iN} = \begin{cases}
- 1 &amp; \textrm{ if } i \leq n \\
- 0 &amp; \textrm{ if } i &gt; n 
- \end{cases}
+1 &amp; \textrm{ if } i \leq n \\
+0 &amp; \textrm{ if } i &gt; n
+\end{cases}
 \nonumber
 \end{equation}\]</span>
 and scores
 <span class="math display">\[\begin{equation}
-a_{N}(i) = 
+a_{N}(i) =
 \begin{cases}
- 1 &amp; \textrm{ if } i \leq (N+1)/2 \\
- 0 &amp; \textrm{ if } i &gt; (N+1)/2 
- \end{cases}
- \nonumber
+1 &amp; \textrm{ if } i \leq (N+1)/2 \\
+0 &amp; \textrm{ if } i &gt; (N+1)/2
+\end{cases}
+\nonumber
 \end{equation}\]</span></p></li>
 <li><p>The median test could be used to test whether or not observations
 from group 1 tend to be smaller than those from group 2.</p></li>
 </ul>
 </div>
 </div>
-<div id="choosing-the-scores-a_ni" class="section level3">
-<h3><span class="header-section-number">3.5.4</span> Choosing the scores <span class="math inline">\(a_{N}(i)\)</span></h3>
+<div id="choosing-the-scores-a_ni" class="section level3 hasAnchor" number="3.5.4">
+<h3><span class="header-section-number">3.5.4</span> Choosing the scores <span class="math inline">\(a_{N}(i)\)</span><a href="rank-tests.html#choosing-the-scores-a_ni" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>The rank tests we have discussed so far are nonparametric in the sense
 that their null distribution does not depend on any particular parametric
@@ -1813,7 +1878,7 @@ in the two-sample problem.</p></li>
 <hr />
 <ul>
 <li><p>In parametric statistics, when testing <span class="math inline">\(H_{0}:\theta = 0\)</span> the most powerful test
-of <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}:\theta = \theta_{A}\)</span> is based on
+of <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}:\theta = \theta_{A}\)</span> is based on
 rejecting <span class="math inline">\(H_{0}\)</span> whenever the likelihood ratio is large enough:
 <span class="math display" id="eq:parametric-np-lemma">\[\begin{equation}
 \textrm{Reject } H_{0} \textrm{ if: } \quad \frac{p_{\theta_{A}}(\mathbf{z})}{p_{\theta_{0}}(\mathbf{z})} \geq c_{\alpha, n}
@@ -1821,9 +1886,9 @@ rejecting <span class="math inline">\(H_{0}\)</span> whenever the likelihood rat
 \end{equation}\]</span>
 This is the Neyman-Pearson Lemma.</p></li>
 <li><p>The same property is true if we are considering tests based on ranks. The most powerful test
-for testing <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}:\theta = \theta_{A}\)</span> is based on
+for testing <span class="math inline">\(H_{0}: \theta = \theta_{0}\)</span> vs. <span class="math inline">\(H_{A}:\theta = \theta_{A}\)</span> is based on
 <span class="math display" id="eq:nonparametric-np-lemma">\[\begin{equation}
-\textrm{Reject } H_{0} \textrm{ if: } \quad 
+\textrm{Reject } H_{0} \textrm{ if: } \quad
 \frac{P_{\theta_{A}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big)}{ P_{\theta_{0}}\Big( R_{1}(\mathbf{Z}), \ldots, R_{N}(\mathbf{Z}) \Big) } \geq c_{\alpha, n}
 \tag{3.20}
 \end{equation}\]</span></p></li>
@@ -1869,8 +1934,8 @@ correspond to the median test.</p></li>
 </ul>
 </div>
 </div>
-<div id="additional-reading" class="section level2">
-<h2><span class="header-section-number">3.6</span> Additional Reading</h2>
+<div id="additional-reading" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Additional Reading<a href="rank-tests.html#additional-reading" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li>Additional reading which covers the material discussed in this chapter includes:
 <ul>
@@ -1878,8 +1943,8 @@ correspond to the median test.</p></li>
 </ul></li>
 </ul>
 </div>
-<div id="exercises" class="section level2">
-<h2><span class="header-section-number">3.7</span> Exercises</h2>
+<div id="exercises" class="section level2 hasAnchor" number="3.7">
+<h2><span class="header-section-number">3.7</span> Exercises<a href="rank-tests.html#exercises" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><strong>Exercise 3.1</strong>: Suppose <span class="math inline">\(X_{1}, X_{2}, X_{3}\)</span> are i.i.d. observations from a continuous
 distribution function <span class="math inline">\(F_{X}\)</span>. Compute the covariance matrix of the vector
 of ranks <span class="math inline">\(\big( R_{1}(\mathbf{X}), R_{2}(\mathbf{X}), R_{3}( \mathbf{X} ) \big)\)</span>.</p>
@@ -1901,7 +1966,7 @@ statistic is <span class="math inline">\(0\)</span>.</p>
     f_{Y_{i}}(y) = \begin{cases}
          \frac{\theta^{\alpha}}{ \Gamma(\alpha) } y^{\alpha - 1}e^{-\theta y} &amp; \textrm{ if } y &gt; 0  \nonumber \\
          0 &amp; \textrm{ otherwise.}
-     \end{cases} 
+     \end{cases}
 \end{equation}\]</span>
 The pooled-data vector is <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldots, Z_{n + m}) = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})\)</span> so that <span class="math inline">\(Z_{j} = X_{j}\)</span> for <span class="math inline">\(1 \leq j \leq n\)</span> and <span class="math inline">\(Z_{j} = Y_{j-n}\)</span> for <span class="math inline">\(n + 1 \leq j \leq n + m\)</span>.</p>
 <p>Compute both <span class="math inline">\(E\{ R_{1}(\mathbf{Z}) \}\)</span> and <span class="math inline">\(E\{ R_{n+1}( \mathbf{Z} ) \}\)</span>.</p>
@@ -1909,18 +1974,18 @@ The pooled-data vector is <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldot
 </div>
 </div>
 <h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-divine2018">
-<p>Divine, George W, H James Norton, Anna E Barón, and Elizabeth Juarez-Colunga. 2018. “The Wilcoxon–Mann–Whitney Procedure Fails as a Test of Medians.” <em>The American Statistician</em> 72 (3). Taylor &amp; Francis: 278–86.</p>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-divine2018" class="csl-entry">
+Divine, George W, H James Norton, Anna E Barón, and Elizabeth Juarez-Colunga. 2018. <span>“The Wilcoxon–Mann–Whitney Procedure Fails as a Test of Medians.”</span> <em>The American Statistician</em> 72 (3): 278–86.
 </div>
-<div id="ref-hollander2013">
-<p>Hollander, Myles, Douglas A Wolfe, and Eric Chicken. 2013. <em>Nonparametric Statistical Methods</em>. Vol. 751. John Wiley &amp; Sons.</p>
+<div id="ref-hollander2013" class="csl-entry">
+Hollander, Myles, Douglas A Wolfe, and Eric Chicken. 2013. <em>Nonparametric Statistical Methods</em>. Vol. 751. John Wiley &amp; Sons.
 </div>
-<div id="ref-lehmann2006">
-<p>Lehmann, Erich L, and Joseph P Romano. 2006. <em>Testing Statistical Hypotheses</em>. Springer Science &amp; Business Media.</p>
+<div id="ref-lehmann2006" class="csl-entry">
+Lehmann, Erich L, and Joseph P Romano. 2006. <em>Testing Statistical Hypotheses</em>. Springer Science &amp; Business Media.
 </div>
-<div id="ref-van2000">
-<p>Van der Vaart, Aad W. 2000. <em>Asymptotic Statistics</em>. Vol. 3. Cambridge university press.</p>
+<div id="ref-van2000" class="csl-entry">
+Van der Vaart, Aad W. 2000. <em>Asymptotic Statistics</em>. Vol. 3. Cambridge university press.
 </div>
 </div>
             </section>
@@ -1933,7 +1998,6 @@ The pooled-data vector is <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldot
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -1944,37 +2008,42 @@ The pooled-data vector is <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldot
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["ElementsNonparStat.pdf"],
-"toc": {
-"collapse": "section"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["ElementsNonparStat.pdf"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
 });
 });
 </script>
@@ -1985,7 +2054,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

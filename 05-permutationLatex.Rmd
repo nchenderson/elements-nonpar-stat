@@ -216,7 +216,7 @@ quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
 * Note that setting **probs=.5** in the **quantile** function will return the median.
 
 ```{r, echo=FALSE}
-library(rattle.data)
+library(rattle)
 zz <- wine$Color[wine$Type==1 | wine$Type==2]
 t.obs <- quantile(zz[1:59], probs=.5) - quantile(zz[60:130], probs=.5)
 nperms <- 500
@@ -422,7 +422,7 @@ of randomly "switching observation pairs".
 
 
 ```{r}
-library(rattle.data)
+library(rattle)
 ## Computing the permutation distribution for correlation 
 ## between flavanoids and phenols
 
@@ -555,7 +555,7 @@ the **wine** data.
 * First, we will load the data and fit a random forest model.
 
 ```{r}
-library(rattle.data)
+library(rattle)
 library(randomForest)
 wine2 <- subset(wine, Type==1 | Type==2)
 wine2$Type <- factor(wine2$Type)

@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 9 The Bootstrap | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 9 The Bootstrap | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
-  <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
   
   <meta property="og:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
@@ -24,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-23" />
+<meta name="date" content="2026-01-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,8 @@
   
 <link rel="prev" href="density-estimation.html"/>
 <link rel="next" href="ci.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,29 +49,34 @@
 
 
 
-
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,15 +85,15 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -101,7 +106,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -113,6 +118,34 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -132,7 +165,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#sec:whatisnonpar"><i class="fa fa-check"></i><b>1.1</b> What is Nonparametric Statistics?</a></li>
 <li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#sec:course-outline"><i class="fa fa-check"></i><b>1.2</b> Outline of Course</a></li>
 <li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#sec:example-nonpar-tests"><i class="fa fa-check"></i><b>1.3</b> Example 1: Nonparametric vs. Parametric Two-Sample Testing</a></li>
@@ -143,32 +177,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Working with R</a></li>
 <li class="part"><span><b>I Nonparametric Testing</b></span></li>
-<li class="chapter" data-level="3" data-path="rank-tests.html"><a href="rank-tests.html"><i class="fa fa-check"></i><b>3</b> Rank and Sign Statistics</a><ul>
-<li class="chapter" data-level="3.1" data-path="rank-tests.html"><a href="rank-tests.html#ranks"><i class="fa fa-check"></i><b>3.1</b> Ranks</a><ul>
+<li class="chapter" data-level="3" data-path="rank-tests.html"><a href="rank-tests.html"><i class="fa fa-check"></i><b>3</b> Rank and Sign Statistics</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="rank-tests.html"><a href="rank-tests.html#ranks"><i class="fa fa-check"></i><b>3.1</b> Ranks</a>
+<ul>
 <li class="chapter" data-level="3.1.1" data-path="rank-tests.html"><a href="rank-tests.html#definition"><i class="fa fa-check"></i><b>3.1.1</b> Definition</a></li>
 <li class="chapter" data-level="3.1.2" data-path="rank-tests.html"><a href="rank-tests.html#handling-ties"><i class="fa fa-check"></i><b>3.1.2</b> Handling Ties</a></li>
 <li class="chapter" data-level="3.1.3" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-ranks"><i class="fa fa-check"></i><b>3.1.3</b> Properties of Ranks</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test-a-two-sample-test"><i class="fa fa-check"></i><b>3.2</b> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test</a><ul>
+<li class="chapter" data-level="3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test-a-two-sample-test"><i class="fa fa-check"></i><b>3.2</b> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test</a>
+<ul>
 <li class="chapter" data-level="3.2.1" data-path="rank-tests.html"><a href="rank-tests.html#goal-of-the-test"><i class="fa fa-check"></i><b>3.2.1</b> Goal of the Test</a></li>
 <li class="chapter" data-level="3.2.2" data-path="rank-tests.html"><a href="rank-tests.html#definition-of-the-wrs-test-statistic"><i class="fa fa-check"></i><b>3.2.2</b> Definition of the WRS Test Statistic</a></li>
 <li class="chapter" data-level="3.2.3" data-path="rank-tests.html"><a href="rank-tests.html#computing-p-values-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.3</b> Computing p-values for the WRS Test</a></li>
 <li class="chapter" data-level="3.2.4" data-path="rank-tests.html"><a href="rank-tests.html#computing-the-wrs-test-in-r"><i class="fa fa-check"></i><b>3.2.4</b> Computing the WRS test in R</a></li>
 <li class="chapter" data-level="3.2.5" data-path="rank-tests.html"><a href="rank-tests.html#additional-notes-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.5</b> Additional Notes for the WRS test</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.3</b> One Sample Tests</a><ul>
+<li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.3</b> One Sample Tests</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#sign-test"><i class="fa fa-check"></i><b>3.3.1</b> The Sign Test</a></li>
 <li class="chapter" data-level="3.3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-signed-rank-test"><i class="fa fa-check"></i><b>3.3.2</b> The Wilcoxon Signed Rank Test</a></li>
 <li class="chapter" data-level="3.3.3" data-path="rank-tests.html"><a href="rank-tests.html#using-r-to-perform-the-sign-and-wilcoxon-tests"><i class="fa fa-check"></i><b>3.3.3</b> Using R to Perform the Sign and Wilcoxon Tests</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#power-and-comparisons-with-parametric-tests"><i class="fa fa-check"></i><b>3.4</b> Power and Comparisons with Parametric Tests</a><ul>
+<li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#power-and-comparisons-with-parametric-tests"><i class="fa fa-check"></i><b>3.4</b> Power and Comparisons with Parametric Tests</a>
+<ul>
 <li class="chapter" data-level="3.4.1" data-path="rank-tests.html"><a href="rank-tests.html#the-power-function-of-a-test"><i class="fa fa-check"></i><b>3.4.1</b> The Power Function of a Test</a></li>
 <li class="chapter" data-level="3.4.2" data-path="rank-tests.html"><a href="rank-tests.html#power-comparisons-and-asymptotic-relative-efficiency"><i class="fa fa-check"></i><b>3.4.2</b> Power Comparisons and Asymptotic Relative Efficiency</a></li>
 <li class="chapter" data-level="3.4.3" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-examples"><i class="fa fa-check"></i><b>3.4.3</b> Efficiency Examples</a></li>
 <li class="chapter" data-level="3.4.4" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-comparisons-for-several-distributions"><i class="fa fa-check"></i><b>3.4.4</b> Efficiency Comparisons for Several Distributions</a></li>
 <li class="chapter" data-level="3.4.5" data-path="rank-tests.html"><a href="rank-tests.html#a-power-contest"><i class="fa fa-check"></i><b>3.4.5</b> A Power “Contest”</a></li>
 </ul></li>
-<li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#linear-rank-statistics-in-general"><i class="fa fa-check"></i><b>3.5</b> Linear Rank Statistics in General</a><ul>
+<li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#linear-rank-statistics-in-general"><i class="fa fa-check"></i><b>3.5</b> Linear Rank Statistics in General</a>
+<ul>
 <li class="chapter" data-level="3.5.1" data-path="rank-tests.html"><a href="rank-tests.html#definition-1"><i class="fa fa-check"></i><b>3.5.1</b> Definition</a></li>
 <li class="chapter" data-level="3.5.2" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.2</b> Properties of Linear Rank Statistics</a></li>
 <li class="chapter" data-level="3.5.3" data-path="rank-tests.html"><a href="rank-tests.html#other-examples-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.3</b> Other Examples of Linear Rank Statistics</a></li>
@@ -177,8 +217,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#additional-reading"><i class="fa fa-check"></i><b>3.6</b> Additional Reading</a></li>
 <li class="chapter" data-level="3.7" data-path="rank-tests.html"><a href="rank-tests.html#exercises"><i class="fa fa-check"></i><b>3.7</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a><ul>
-<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskal-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskal-Wallis Test</a><ul>
+<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskal-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskal-Wallis Test</a>
+<ul>
 <li class="chapter" data-level="4.1.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#definition-2"><i class="fa fa-check"></i><b>4.1.1</b> Definition</a></li>
 <li class="chapter" data-level="4.1.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#asymptotic-distribution-and-connection-to-one-way-anova"><i class="fa fa-check"></i><b>4.1.2</b> Asymptotic Distribution and Connection to One-Way ANOVA</a></li>
 </ul></li>
@@ -188,9 +230,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.5" data-path="krusk-wallis.html"><a href="krusk-wallis.html#additional-reading-1"><i class="fa fa-check"></i><b>4.5</b> Additional Reading</a></li>
 <li class="chapter" data-level="4.6" data-path="krusk-wallis.html"><a href="krusk-wallis.html#exercises-1"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a><ul>
+<li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="permutation.html"><a href="permutation.html#notation"><i class="fa fa-check"></i><b>5.1</b> Notation</a></li>
-<li class="chapter" data-level="5.2" data-path="permutation.html"><a href="permutation.html#permutation-tests-for-the-two-sample-problem"><i class="fa fa-check"></i><b>5.2</b> Permutation Tests for the Two-Sample Problem</a><ul>
+<li class="chapter" data-level="5.2" data-path="permutation.html"><a href="permutation.html#permutation-tests-for-the-two-sample-problem"><i class="fa fa-check"></i><b>5.2</b> Permutation Tests for the Two-Sample Problem</a>
+<ul>
 <li class="chapter" data-level="5.2.1" data-path="permutation.html"><a href="permutation.html#example-1"><i class="fa fa-check"></i><b>5.2.1</b> Example 1</a></li>
 <li class="chapter" data-level="5.2.2" data-path="permutation.html"><a href="permutation.html#permutation-test-p-values"><i class="fa fa-check"></i><b>5.2.2</b> Permutation Test p-values</a></li>
 <li class="chapter" data-level="5.2.3" data-path="permutation.html"><a href="permutation.html#example-2-ratios-of-means"><i class="fa fa-check"></i><b>5.2.3</b> Example 2: Ratios of Means</a></li>
@@ -202,26 +246,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.6" data-path="permutation.html"><a href="permutation.html#exercises-2"><i class="fa fa-check"></i><b>5.6</b> Exercises</a></li>
 </ul></li>
 <li class="part"><span><b>II Nonparametric Estimation</b></span></li>
-<li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
+<li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-3"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
-<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a><ul>
+<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a>
+<ul>
 <li class="chapter" data-level="6.2.1" data-path="ustat.html"><a href="ustat.html#example-1-the-sample-mean"><i class="fa fa-check"></i><b>6.2.1</b> Example 1: The Sample Mean</a></li>
 <li class="chapter" data-level="6.2.2" data-path="ustat.html"><a href="ustat.html#example-2-the-sample-variance"><i class="fa fa-check"></i><b>6.2.2</b> Example 2: The Sample Variance</a></li>
 <li class="chapter" data-level="6.2.3" data-path="ustat.html"><a href="ustat.html#example-3-ginis-mean-difference"><i class="fa fa-check"></i><b>6.2.3</b> Example 3: Gini’s Mean Difference</a></li>
 <li class="chapter" data-level="6.2.4" data-path="ustat.html"><a href="ustat.html#example-4-wilcoxon-signed-rank-statistic"><i class="fa fa-check"></i><b>6.2.4</b> Example 4: Wilcoxon Signed Rank Statistic</a></li>
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#inference-using-u-statistics"><i class="fa fa-check"></i><b>6.3</b> Inference using U-statistics</a></li>
-<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#u-statistics-for-two-sample-problems"><i class="fa fa-check"></i><b>6.4</b> U-statistics for Two-Sample Problems</a><ul>
+<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#u-statistics-for-two-sample-problems"><i class="fa fa-check"></i><b>6.4</b> U-statistics for Two-Sample Problems</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="ustat.html"><a href="ustat.html#the-mann-whitney-statistic"><i class="fa fa-check"></i><b>6.4.1</b> The Mann-Whitney Statistic</a></li>
 </ul></li>
-<li class="chapter" data-level="6.5" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.5</b> Measures of Association</a><ul>
+<li class="chapter" data-level="6.5" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.5</b> Measures of Association</a>
+<ul>
 <li class="chapter" data-level="6.5.1" data-path="ustat.html"><a href="ustat.html#spearmans-rank-correlation"><i class="fa fa-check"></i><b>6.5.1</b> Spearman’s Rank Correlation</a></li>
 <li class="chapter" data-level="6.5.2" data-path="ustat.html"><a href="ustat.html#kendalls-tau"><i class="fa fa-check"></i><b>6.5.2</b> Kendall’s tau</a></li>
 <li class="chapter" data-level="6.5.3" data-path="ustat.html"><a href="ustat.html#distance-covariance-and-correlation"><i class="fa fa-check"></i><b>6.5.3</b> Distance Covariance and Correlation</a></li>
 </ul></li>
 <li class="chapter" data-level="6.6" data-path="ustat.html"><a href="ustat.html#exercises-3"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="edf.html"><a href="edf.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
+<li class="chapter" data-level="7" data-path="edf.html"><a href="edf.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="edf.html"><a href="edf.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1</b> Definition and Basic Properties</a></li>
 <li class="chapter" data-level="7.2" data-path="edf.html"><a href="edf.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.2</b> Confidence intervals for F(t)</a></li>
 <li class="chapter" data-level="7.3" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.3</b> The Empirical Distribution Function in R</a></li>
@@ -230,21 +279,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.6" data-path="edf.html"><a href="edf.html#additional-reading-2"><i class="fa fa-check"></i><b>7.6</b> Additional Reading</a></li>
 <li class="chapter" data-level="7.7" data-path="edf.html"><a href="edf.html#exercises-4"><i class="fa fa-check"></i><b>7.7</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
+<li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
-<li class="chapter" data-level="8.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms"><i class="fa fa-check"></i><b>8.2</b> Histograms</a><ul>
+<li class="chapter" data-level="8.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms"><i class="fa fa-check"></i><b>8.2</b> Histograms</a>
+<ul>
 <li class="chapter" data-level="8.2.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-5"><i class="fa fa-check"></i><b>8.2.1</b> Definition</a></li>
 <li class="chapter" data-level="8.2.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms-in-r"><i class="fa fa-check"></i><b>8.2.2</b> Histograms in R</a></li>
 <li class="chapter" data-level="8.2.3" data-path="density-estimation.html"><a href="density-estimation.html#performance-of-the-histogram-estimate-and-bin-width-selection"><i class="fa fa-check"></i><b>8.2.3</b> Performance of the Histogram Estimate and Bin Width Selection</a></li>
 <li class="chapter" data-level="8.2.4" data-path="density-estimation.html"><a href="density-estimation.html#choosing-the-histogram-bin-width"><i class="fa fa-check"></i><b>8.2.4</b> Choosing the Histogram Bin Width</a></li>
 </ul></li>
 <li class="chapter" data-level="8.3" data-path="density-estimation.html"><a href="density-estimation.html#a-box-type-density-estimate"><i class="fa fa-check"></i><b>8.3</b> A Box-type Density Estimate</a></li>
-<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a><ul>
+<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a>
+<ul>
 <li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-6"><i class="fa fa-check"></i><b>8.4.1</b> Definition</a></li>
 <li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-amise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and AMISE of Kernel Density Estimates</a></li>
 <li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule-and-silvermans-rule-of-thumb"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection with the Normal Reference Rule and Silverman’s “Rule of Thumb”</a></li>
 </ul></li>
-<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5</b> Cross-Validation for Bandwidth Selection</a><ul>
+<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5</b> Cross-Validation for Bandwidth Selection</a>
+<ul>
 <li class="chapter" data-level="8.5.1" data-path="density-estimation.html"><a href="density-estimation.html#squared-error-cross-validation"><i class="fa fa-check"></i><b>8.5.1</b> Squared-Error Cross-Validation</a></li>
 <li class="chapter" data-level="8.5.2" data-path="density-estimation.html"><a href="density-estimation.html#computing-the-cross-validation-bandwidth"><i class="fa fa-check"></i><b>8.5.2</b> Computing the Cross-validation Bandwidth</a></li>
 <li class="chapter" data-level="8.5.3" data-path="density-estimation.html"><a href="density-estimation.html#likelihood-cross-validation"><i class="fa fa-check"></i><b>8.5.3</b> Likelihood Cross-Validation</a></li>
@@ -254,49 +307,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.8" data-path="density-estimation.html"><a href="density-estimation.html#exercises-5"><i class="fa fa-check"></i><b>8.8</b> Exercises</a></li>
 </ul></li>
 <li class="part"><span><b>III Quantifying Uncertainty</b></span></li>
-<li class="chapter" data-level="9" data-path="bootstrap-main.html"><a href="bootstrap-main.html"><i class="fa fa-check"></i><b>9</b> The Bootstrap</a><ul>
+<li class="chapter" data-level="9" data-path="bootstrap-main.html"><a href="bootstrap-main.html"><i class="fa fa-check"></i><b>9</b> The Bootstrap</a>
+<ul>
 <li class="chapter" data-level="9.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#introduction-1"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
-<li class="chapter" data-level="9.2" data-path="bootstrap-main.html"><a href="bootstrap-main.html#description-of-the-bootstrap"><i class="fa fa-check"></i><b>9.2</b> Description of the Bootstrap</a><ul>
+<li class="chapter" data-level="9.2" data-path="bootstrap-main.html"><a href="bootstrap-main.html#description-of-the-bootstrap"><i class="fa fa-check"></i><b>9.2</b> Description of the Bootstrap</a>
+<ul>
 <li class="chapter" data-level="9.2.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#description"><i class="fa fa-check"></i><b>9.2.1</b> Description</a></li>
 <li class="chapter" data-level="9.2.2" data-path="bootstrap-main.html"><a href="bootstrap-main.html#example-confidence-intervals-for-the-rate-parameter-of-an-exponential-distribution"><i class="fa fa-check"></i><b>9.2.2</b> Example: Confidence Intervals for the Rate Parameter of an Exponential Distribution</a></li>
 <li class="chapter" data-level="9.2.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#example-confidence-intervals-for-the-ratio-of-two-quantiles"><i class="fa fa-check"></i><b>9.2.3</b> Example: Confidence Intervals for the Ratio of Two Quantiles</a></li>
 </ul></li>
 <li class="chapter" data-level="9.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#why-is-the-bootstrap-procedure-reasonable"><i class="fa fa-check"></i><b>9.3</b> Why is the Bootstrap Procedure Reasonable?</a></li>
 <li class="chapter" data-level="9.4" data-path="bootstrap-main.html"><a href="bootstrap-main.html#pivotal-bootstrap-confidence-intervals"><i class="fa fa-check"></i><b>9.4</b> Pivotal Bootstrap Confidence Intervals</a></li>
-<li class="chapter" data-level="9.5" data-path="bootstrap-main.html"><a href="bootstrap-main.html#the-parametric-bootstrap"><i class="fa fa-check"></i><b>9.5</b> The Parametric Bootstrap</a><ul>
+<li class="chapter" data-level="9.5" data-path="bootstrap-main.html"><a href="bootstrap-main.html#the-parametric-bootstrap"><i class="fa fa-check"></i><b>9.5</b> The Parametric Bootstrap</a>
+<ul>
 <li class="chapter" data-level="9.5.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#parametric-bootstrap-for-the-median-age-from-the-kidney-data"><i class="fa fa-check"></i><b>9.5.1</b> Parametric Bootstrap for the Median Age from the Kidney Data</a></li>
 </ul></li>
 <li class="chapter" data-level="9.6" data-path="bootstrap-main.html"><a href="bootstrap-main.html#additional-reading-4"><i class="fa fa-check"></i><b>9.6</b> Additional Reading</a></li>
 <li class="chapter" data-level="9.7" data-path="bootstrap-main.html"><a href="bootstrap-main.html#exercises-6"><i class="fa fa-check"></i><b>9.7</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> Bootstrap Examples and the Jackknife</a><ul>
+<li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> Bootstrap Examples and the Jackknife</a>
+<ul>
 <li class="chapter" data-level="10.1" data-path="ci.html"><a href="ci.html#the-parametric-bootstrap-for-an-ar1-model"><i class="fa fa-check"></i><b>10.1</b> The Parametric Bootstrap for an AR(1) model</a></li>
-<li class="chapter" data-level="10.2" data-path="ci.html"><a href="ci.html#using-the-bootstrap-in-regression"><i class="fa fa-check"></i><b>10.2</b> Using the Bootstrap in Regression</a><ul>
+<li class="chapter" data-level="10.2" data-path="ci.html"><a href="ci.html#using-the-bootstrap-in-regression"><i class="fa fa-check"></i><b>10.2</b> Using the Bootstrap in Regression</a>
+<ul>
 <li class="chapter" data-level="10.2.1" data-path="ci.html"><a href="ci.html#parametric-bootstrap-for-regression"><i class="fa fa-check"></i><b>10.2.1</b> Parametric Bootstrap for Regression</a></li>
 <li class="chapter" data-level="10.2.2" data-path="ci.html"><a href="ci.html#nonparametric-bootstrap-for-regression"><i class="fa fa-check"></i><b>10.2.2</b> Nonparametric Bootstrap for Regression</a></li>
 </ul></li>
 <li class="chapter" data-level="10.3" data-path="ci.html"><a href="ci.html#pointwise-confidence-intervals-for-a-density-function"><i class="fa fa-check"></i><b>10.3</b> Pointwise Confidence Intervals for a Density Function</a></li>
-<li class="chapter" data-level="10.4" data-path="ci.html"><a href="ci.html#when-can-the-bootstrap-fail"><i class="fa fa-check"></i><b>10.4</b> When can the Bootstrap Fail?</a><ul>
+<li class="chapter" data-level="10.4" data-path="ci.html"><a href="ci.html#when-can-the-bootstrap-fail"><i class="fa fa-check"></i><b>10.4</b> When can the Bootstrap Fail?</a>
+<ul>
 <li class="chapter" data-level="10.4.1" data-path="ci.html"><a href="ci.html#example-the-shifted-exponential-distribution"><i class="fa fa-check"></i><b>10.4.1</b> Example: The Shifted Exponential Distribution</a></li>
 </ul></li>
 <li class="chapter" data-level="10.5" data-path="ci.html"><a href="ci.html#the-jackknife"><i class="fa fa-check"></i><b>10.5</b> The Jackknife</a></li>
 </ul></li>
 <li class="part"><span><b>IV Nonparametric Regression: Part I</b></span></li>
-<li class="chapter" data-level="11" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression and Local Regression</a><ul>
+<li class="chapter" data-level="11" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression and Local Regression</a>
+<ul>
 <li class="chapter" data-level="11.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#introduction-2"><i class="fa fa-check"></i><b>11.1</b> Introduction</a></li>
-<li class="chapter" data-level="11.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#kernel-regression"><i class="fa fa-check"></i><b>11.2</b> Kernel Regression</a><ul>
+<li class="chapter" data-level="11.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#kernel-regression"><i class="fa fa-check"></i><b>11.2</b> Kernel Regression</a>
+<ul>
 <li class="chapter" data-level="11.2.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-regressogram"><i class="fa fa-check"></i><b>11.2.1</b> The Regressogram</a></li>
 <li class="chapter" data-level="11.2.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-local-average-estimator"><i class="fa fa-check"></i><b>11.2.2</b> The Local Average Estimator</a></li>
 <li class="chapter" data-level="11.2.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#k-nearest-neighbor-k-nn-regression"><i class="fa fa-check"></i><b>11.2.3</b> k-Nearest Neighbor (k-NN) Regression</a></li>
 <li class="chapter" data-level="11.2.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>11.2.4</b> The Nadaraya-Watson Estimator</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear Regression</a><ul>
+<li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear Regression</a>
+<ul>
 <li class="chapter" data-level="11.3.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#definition-7"><i class="fa fa-check"></i><b>11.3.1</b> Definition</a></li>
 <li class="chapter" data-level="11.3.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#advantages-of-the-local-linear-estimator"><i class="fa fa-check"></i><b>11.3.2</b> Advantages of the Local Linear Estimator</a></li>
 <li class="chapter" data-level="11.3.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#an-example-in-r"><i class="fa fa-check"></i><b>11.3.3</b> An Example in R</a></li>
 <li class="chapter" data-level="11.3.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-polynomial-regression"><i class="fa fa-check"></i><b>11.3.4</b> Local Polynomial Regression</a></li>
 </ul></li>
-<li class="chapter" data-level="11.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>11.4</b> Selecting the Bandwidth/Smoothing Parameter</a><ul>
+<li class="chapter" data-level="11.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>11.4</b> Selecting the Bandwidth/Smoothing Parameter</a>
+<ul>
 <li class="chapter" data-level="11.4.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#representing-in-linear-form"><i class="fa fa-check"></i><b>11.4.1</b> Representing in Linear Form</a></li>
 <li class="chapter" data-level="11.4.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-cp-statistic"><i class="fa fa-check"></i><b>11.4.2</b> The Cp Statistic</a></li>
 <li class="chapter" data-level="11.4.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>11.4.3</b> Leave-one-out Cross Validation</a></li>
@@ -307,14 +370,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.7" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.7</b> Additional Reading</a></li>
 <li class="chapter" data-level="11.8" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#exercises-7"><i class="fa fa-check"></i><b>11.8</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
-<li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a><ul>
+<li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a>
+<ul>
 <li class="chapter" data-level="12.1.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#regressogram-piecewise-constant-estimate"><i class="fa fa-check"></i><b>12.1.1</b> Regressogram (Piecewise Constant Estimate)</a></li>
 <li class="chapter" data-level="12.1.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates"><i class="fa fa-check"></i><b>12.1.2</b> Piecewise Linear Estimates</a></li>
 <li class="chapter" data-level="12.1.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-cubic-estimates"><i class="fa fa-check"></i><b>12.1.3</b> Piecewise Cubic Estimates</a></li>
 </ul></li>
 <li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates-with-continuity-linear-splines"><i class="fa fa-check"></i><b>12.2</b> Piecewise Linear Estimates with Continuity (Linear Splines)</a></li>
-<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-regression-with-splines"><i class="fa fa-check"></i><b>12.3</b> Cubic Splines and Regression with Splines</a><ul>
+<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-regression-with-splines"><i class="fa fa-check"></i><b>12.3</b> Cubic Splines and Regression with Splines</a>
+<ul>
 <li class="chapter" data-level="12.3.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#example-smooth-piecewise-cubic-model-with-2-knots"><i class="fa fa-check"></i><b>12.3.1</b> Example: Smooth Piecewise Cubic Model with 2 Knots</a></li>
 <li class="chapter" data-level="12.3.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines"><i class="fa fa-check"></i><b>12.3.2</b> Cubic Splines</a></li>
 <li class="chapter" data-level="12.3.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#estimating-the-coefficients-of-a-cubic-spline"><i class="fa fa-check"></i><b>12.3.3</b> Estimating the Coefficients of a Cubic Spline</a></li>
@@ -322,20 +388,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.3.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#natural-cubic-splines"><i class="fa fa-check"></i><b>12.3.5</b> Natural Cubic Splines</a></li>
 </ul></li>
 <li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splines"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines</a></li>
-<li class="chapter" data-level="12.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knotpenalty-term-selection-for-splines"><i class="fa fa-check"></i><b>12.5</b> Knot/Penalty Term Selection for Splines</a><ul>
+<li class="chapter" data-level="12.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knotpenalty-term-selection-for-splines"><i class="fa fa-check"></i><b>12.5</b> Knot/Penalty Term Selection for Splines</a>
+<ul>
 <li class="chapter" data-level="12.5.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#the-cp-statistic-1"><i class="fa fa-check"></i><b>12.5.1</b> The Cp Statistic</a></li>
 <li class="chapter" data-level="12.5.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#leave-one-out-cross-validation-1"><i class="fa fa-check"></i><b>12.5.2</b> Leave-one-out Cross-Validation</a></li>
 <li class="chapter" data-level="12.5.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#generalized-cross-validation"><i class="fa fa-check"></i><b>12.5.3</b> Generalized Cross-Validation</a></li>
 </ul></li>
-<li class="chapter" data-level="12.6" data-path="inference-for-regression.html"><a href="inference-for-regression.html#fitting-smoothing-splines-in-r"><i class="fa fa-check"></i><b>12.6</b> Fitting Smoothing Splines in R</a><ul>
+<li class="chapter" data-level="12.6" data-path="inference-for-regression.html"><a href="inference-for-regression.html#fitting-smoothing-splines-in-r"><i class="fa fa-check"></i><b>12.6</b> Fitting Smoothing Splines in R</a>
+<ul>
 <li class="chapter" data-level="12.6.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-parameter-selection-for-the-smoothing-spline-with-the-cp-statistic"><i class="fa fa-check"></i><b>12.6.1</b> Smoothing Parameter Selection for the Smoothing Spline with the Cp statistic</a></li>
 <li class="chapter" data-level="12.6.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knot-selection-for-regression-splines-with-the-cp-statistic"><i class="fa fa-check"></i><b>12.6.2</b> Knot Selection for Regression Splines with the Cp statistic</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
-<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Regression Trees and CART</a><ul>
+<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Regression Trees and CART</a>
+<ul>
 <li class="chapter" data-level="13.1" data-path="decision-tree.html"><a href="decision-tree.html#introduction-4"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
-<li class="chapter" data-level="13.2" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-a-single-covariate"><i class="fa fa-check"></i><b>13.2</b> Regression Trees with a Single Covariate</a><ul>
+<li class="chapter" data-level="13.2" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-a-single-covariate"><i class="fa fa-check"></i><b>13.2</b> Regression Trees with a Single Covariate</a>
+<ul>
 <li class="chapter" data-level="13.2.1" data-path="decision-tree.html"><a href="decision-tree.html#determining-the-split-points"><i class="fa fa-check"></i><b>13.2.1</b> Determining the Split Points</a></li>
 </ul></li>
 <li class="chapter" data-level="13.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>13.3</b> Regression Trees With Multiple Covariates</a></li>
@@ -361,10 +431,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="bootstrap-main" class="section level1">
-<h1><span class="header-section-number">Chapter 9</span> The Bootstrap</h1>
-<div id="introduction-1" class="section level2">
-<h2><span class="header-section-number">9.1</span> Introduction</h2>
+<div id="bootstrap-main" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">Chapter 9</span> The Bootstrap<a href="bootstrap-main.html#bootstrap-main" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction-1" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Introduction<a href="bootstrap-main.html#introduction-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li>The jackknife and the bootstrap are nonparametric procedures that are mainly used for finding standard errors
 and constructing confidence intervals.</li>
@@ -375,7 +445,7 @@ and constructing confidence intervals.</li>
 <li>To find standard errors and/or confidence intervals when you have no idea how to compute reasonable standard errors.</li>
 </ol>
 <hr />
-<p><strong>Example: Inference for <span class="math inline">\(e^{\mu}\)</span></strong></p>
+<p><strong>Example 1: Inference for <span class="math inline">\(e^{\mu}\)</span> from a Logistic distribution</strong></p>
 <ul>
 <li><p>Suppose we have i.i.d. data <span class="math inline">\(X_{1}, \ldots, X_{n} \sim \textrm{Logistic}( \mu, s)\)</span>,
 meaning that <span class="math inline">\(E(X_{i}) = \mu\)</span> and <span class="math inline">\(\textrm{Var}(X_{i}) = \sigma^{2} = s^{2}\pi^{2}/3\)</span>.</p></li>
@@ -403,10 +473,11 @@ e^{\bar{X}} + 1.96 \times \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}}
 <hr />
 <ul>
 <li><p>For specific choices of <span class="math inline">\(n\)</span>, how good is the Normal approximation for the distribution of <span class="math inline">\(e^{\bar{X}}\)</span>?</p></li>
-<li><p>The figure below shows a histogram for the simulated distribution of <span class="math inline">\(e^{\bar{X}}\)</span> when <span class="math inline">\(n=50\)</span>.
+<li><p>The figure below shows a histogram for the simulated distribution of <span class="math inline">\(e^{\bar{X}}\)</span> when <span class="math inline">\(n=50\)</span>, <span class="math inline">\(\mu = 2\)</span>,
+and <span class="math inline">\(s = 2\)</span>.
 The density of the Normal approximation is also shown in this figure.</p></li>
 </ul>
-<div class="figure"><span id="fig:unnamed-chunk-1"></span>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-1"></span>
 <img src="09-bootstrap_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of simulated values of exp(sample mean) with density of the Normal approximation overlaid. This assumes n=50 and that the data are from a Logistic distribution with mu = 2 and s = 2." width="672" />
 <p class="caption">
 Figure 8.1: Histogram of simulated values of exp(sample mean) with density of the Normal approximation overlaid. This assumes n=50 and that the data are from a Logistic distribution with mu = 2 and s = 2.
@@ -421,12 +492,12 @@ Normal approximation <a href="bootstrap-main.html#eq:normal-approx-emu">(9.1)</a
 intervals which does not depend on parametric approximations such as <a href="bootstrap-main.html#eq:normal-approx-emu">(9.1)</a>.</p></li>
 </ul>
 <hr />
-<p><strong>Example: Inference for the Correlation</strong></p>
+<p><strong>Example 2: Inference for the Correlation</strong></p>
 <ul>
 <li><p>The sample correlation <span class="math inline">\(\hat{\rho}\)</span> which estimates the correlation <span class="math inline">\(\rho = \textrm{Corr}(X_{i}, Y_{i})\)</span>
 between <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(Y_{i}\)</span> is defined as
 <span class="math display">\[\begin{equation}
-\hat{\rho} = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X})(Y_{i} - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_{i} - \bar{X})^{2}}\sqrt{\sum_{i=1}^{n}(Y_{i} - \bar{Y})}} \nonumber
+\hat{\rho} = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X})(Y_{i} - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_{i} - \bar{X})^{2}}\sqrt{\sum_{i=1}^{n}(Y_{i} - \bar{Y})^{2}}} \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Even such a relatively straightforward estimate has a pretty complicated formula for the estimated standard error if
 you use a multivariate delta method argument:
@@ -457,13 +528,13 @@ as <a href="bootstrap-main.html#eq:rho-stderr-ztrans">(9.3)</a> may not even be 
 need to be able to compute the estimate of interest.</p></li>
 </ul>
 </div>
-<div id="description-of-the-bootstrap" class="section level2">
-<h2><span class="header-section-number">9.2</span> Description of the Bootstrap</h2>
-<div id="description" class="section level3">
-<h3><span class="header-section-number">9.2.1</span> Description</h3>
+<div id="description-of-the-bootstrap" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Description of the Bootstrap<a href="bootstrap-main.html#description-of-the-bootstrap" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="description" class="section level3 hasAnchor" number="9.2.1">
+<h3><span class="header-section-number">9.2.1</span> Description<a href="bootstrap-main.html#description" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>Suppose we have a statistic <span class="math inline">\(T_{n}\)</span> that is an estimate of some quantity of interest <span class="math inline">\(\theta\)</span>.</p></li>
-<li>For example:
+<li><p>For example:</p>
 <ul>
 <li><span class="math inline">\(T_{n}\)</span> - sample mean, <span class="math inline">\(\theta = E(X_{1})\)</span>.</li>
 <li><span class="math inline">\(T_{n}\)</span> - sample correlation, <span class="math inline">\(\theta = \textrm{Corr}(X_{1}, Y_{1})\)</span>.</li>
@@ -474,11 +545,12 @@ need to be able to compute the estimate of interest.</p></li>
 T_{n} = h\Big( X_{1}, \ldots, X_{n}   \Big)  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Suppose we want to estimate the standard deviation of <span class="math inline">\(T_{n}\)</span>.</p></li>
-<li><p>The true standard deviation of <span class="math inline">\(T_{n}\)</span> is referred to as the <strong>standard error</strong>.</p></li>
+<li><p>The true standard deviation of <span class="math inline">\(T_{n}\)</span> is referred to as the <strong>standard error</strong>.
+(need to change this terminology)</p></li>
 <li><p>Confidence intervals are often based on subtracting or adding an estimate of the standard error,
 e.g.
 <span class="math display">\[\begin{equation}
-CI = T_{n} \pm z_{\alpha/2} \times \widehat{\textrm{standard error}},  \nonumber 
+CI = T_{n} \pm z_{\alpha/2} \times \widehat{\textrm{standard error}},  \nonumber
 \end{equation}\]</span>
 where <span class="math inline">\(z_{\alpha/2}\)</span> is the <span class="math inline">\(100 \times (1 - \alpha/2)\)</span> percentile of the <span class="math inline">\(\textrm{Normal}(0,1)\)</span> distribution.</p></li>
 <li><p>The bootstrap estimates the standard deviation of <span class="math inline">\(T_{n}\)</span> by repeatedly subsampling from
@@ -499,8 +571,8 @@ but to characterize the distribution of <span class="math inline">\(T_{n}\)</spa
 <li>The bootstrap works in the following way:</li>
 <li>For <span class="math inline">\(r = 1, \ldots, R\)</span>:
 <ul>
-<li>Draw a sample of size <span class="math inline">\(n\)</span>: <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> by sampling with replacement from <span class="math inline">\(\mathbf{X}\)</span>.</li>
-<li>Compute <span class="math inline">\(T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})\)</span>.</li>
+<li>Draw a sample of size <span class="math inline">\(n\)</span>: <span class="math inline">\((X_{1,r}^{*}, \ldots, X_{n,r}^{*})\)</span> by sampling <strong>with replacement</strong> from <span class="math inline">\(\mathbf{X}\)</span>.</li>
+<li>Compute <span class="math inline">\(T_{n,r}^{*} = h(X_{1,r}^{*}, \ldots, X_{n,r}^{*})\)</span>.</li>
 </ul></li>
 </ul>
 <hr />
@@ -511,8 +583,9 @@ That is, <span class="math inline">\(X_{1}^{*}, \ldots, X_{n}^{*}\)</span> are i
 P(X_{i}^{*} = X_{j}) = \frac{1}{n} \quad \textrm{ for } j=1,\ldots,n \nonumber
 \end{equation}\]</span></p></li>
 <li><p>We will refer to each sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> as a <strong>bootstrap sample</strong>.</p></li>
-<li><p>We will refer to <span class="math inline">\(T_{n,r}^{*}\)</span> as a <strong>bootstrap replication</strong>.</p></li>
-<li><p>The bootstrap estimate for the standard error of <span class="math inline">\(T_{n}\)</span> is
+<li><p>We will refer to <span class="math inline">\(T_{n,r}^{*}\)</span> as a <strong>bootstrap replication</strong> of the statistic <span class="math inline">\(T_{n}\)</span>.</p></li>
+<li><p>The bootstrap estimate <span class="math inline">\(se_{boot}\)</span> for the standard error of <span class="math inline">\(T_{n}\)</span> is the sample
+standard deviation from the bootstrap replications <span class="math inline">\(T_{n,1}^{*}, \ldots, T_{n,R}^{*}\)</span>:
 <span class="math display">\[\begin{equation}
 se_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} \Big)^{2} \Bigg]^{1/2} \nonumber
 \end{equation}\]</span></p></li>
@@ -532,8 +605,8 @@ se_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} 
 boostrap replications <span class="math inline">\(T_{n,1}^{*}, \ldots, T_{n,R}^{*}\)</span> to form a confidence interval.</p></li>
 <li><p>The bootstrap <span class="math inline">\(100 \times \alpha/2\)</span> and <span class="math inline">\(100 \times (1 - \alpha/2)\)</span> percentiles are roughly defined as
 <span class="math display">\[\begin{eqnarray}
-T_{[\alpha/2]}^{boot} &amp;=&amp; \textrm{the point } t^{*} \textrm{ such that } 100\alpha/2 \textrm{ of the bootstrap replications are less than } t^{*} \nonumber \\
-T_{1 - [\alpha/2]}^{boot} &amp;=&amp; \textrm{the point } t^{*} \textrm{ such that } 100\alpha/2 \textrm{ of the bootstrap replications are less than } t^{*} \nonumber 
+T_{[\alpha/2]}^{boot} &amp;=&amp; \textrm{the point } t^{*} \textrm{ such that } 100\alpha/2 \textrm{ percent of the bootstrap replications are less than } t^{*} \nonumber \\
+T_{1 - [\alpha/2]}^{boot} &amp;=&amp; \textrm{the point } t^{*} \textrm{ such that } 100(1 - \alpha/2) \textrm{ percent of the bootstrap replications are less than } t^{*} \nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>The level <span class="math inline">\(100 \times (1 - \alpha) \%\)</span> level boostrap percentile confidence interval
 is then
@@ -555,8 +628,8 @@ and/or making asymptotic arguments for the distribution of <span class="math inl
 will automatically produce a confidence interval for us.</p></li>
 </ul>
 </div>
-<div id="example-confidence-intervals-for-the-rate-parameter-of-an-exponential-distribution" class="section level3">
-<h3><span class="header-section-number">9.2.2</span> Example: Confidence Intervals for the Rate Parameter of an Exponential Distribution</h3>
+<div id="example-confidence-intervals-for-the-rate-parameter-of-an-exponential-distribution" class="section level3 hasAnchor" number="9.2.2">
+<h3><span class="header-section-number">9.2.2</span> Example: Confidence Intervals for the Rate Parameter of an Exponential Distribution<a href="bootstrap-main.html#example-confidence-intervals-for-the-rate-parameter-of-an-exponential-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>Suppose we have i.i.d. data <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> from an Exponential distribution with rate parameter <span class="math inline">\(1/\lambda\)</span>.
 That is, the pdf of <span class="math inline">\(X_{i}\)</span> is
@@ -590,47 +663,47 @@ bootstrap-based confidence intervals.</p></li>
 <li><p>We will compare the Normal-approximation confidence interval with both the normal standard error bootstrap
 confidence interval and the percentile bootstrap confidence interval.</p></li>
 </ul>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb155-1" data-line-number="1">xx &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">50</span>, <span class="dt">rate=</span><span class="dv">2</span>) <span class="co">## data, sample of 50 exponential r.v.s with mean 1/2</span></a>
-<a class="sourceLine" id="cb155-2" data-line-number="2">R &lt;-<span class="st"> </span><span class="dv">500</span>   <span class="co">## number of bootstrap replications</span></a>
-<a class="sourceLine" id="cb155-3" data-line-number="3">boot.mean &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, R)</a>
-<a class="sourceLine" id="cb155-4" data-line-number="4"><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R) {</a>
-<a class="sourceLine" id="cb155-5" data-line-number="5">   boot.samp &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>, <span class="dt">size=</span><span class="dv">50</span>, <span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb155-6" data-line-number="6">   xx.boot &lt;-<span class="st"> </span>xx[boot.samp]   <span class="co">## this is the bootstrap sample</span></a>
-<a class="sourceLine" id="cb155-7" data-line-number="7">   boot.mean[r] &lt;-<span class="st"> </span><span class="kw">mean</span>(xx.boot)  <span class="co">## this is the rth bootstrap replication</span></a>
-<a class="sourceLine" id="cb155-8" data-line-number="8">}</a></code></pre></div>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb156-1" data-line-number="1">par.ci &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(xx) <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">mean</span>(xx)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">50</span>), <span class="kw">mean</span>(xx) <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">mean</span>(xx)<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">50</span>))</a>
-<a class="sourceLine" id="cb156-2" data-line-number="2">boot.ci.sd &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(xx) <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(boot.mean), <span class="kw">mean</span>(xx) <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(boot.mean))</a>
-<a class="sourceLine" id="cb156-3" data-line-number="3">boot.ci.quant &lt;-<span class="st"> </span><span class="kw">quantile</span>(boot.mean, <span class="dt">probs=</span><span class="kw">c</span>(.<span class="dv">025</span>, <span class="fl">.975</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="bootstrap-main.html#cb164-1" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">50</span>, <span class="at">rate=</span><span class="dv">2</span>) <span class="do">## data, sample of 50 exponential r.v.s with mean 1/2</span></span>
+<span id="cb164-2"><a href="bootstrap-main.html#cb164-2" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span>   <span class="do">## number of bootstrap replications</span></span>
+<span id="cb164-3"><a href="bootstrap-main.html#cb164-3" tabindex="-1"></a>boot.mean <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, R)</span>
+<span id="cb164-4"><a href="bootstrap-main.html#cb164-4" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
+<span id="cb164-5"><a href="bootstrap-main.html#cb164-5" tabindex="-1"></a>   boot.samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>, <span class="at">size=</span><span class="dv">50</span>, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb164-6"><a href="bootstrap-main.html#cb164-6" tabindex="-1"></a>   xx.boot <span class="ot">&lt;-</span> xx[boot.samp]   <span class="do">## this is the bootstrap sample</span></span>
+<span id="cb164-7"><a href="bootstrap-main.html#cb164-7" tabindex="-1"></a>   boot.mean[r] <span class="ot">&lt;-</span> <span class="fu">mean</span>(xx.boot)  <span class="do">## this is the rth bootstrap replication</span></span>
+<span id="cb164-8"><a href="bootstrap-main.html#cb164-8" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="bootstrap-main.html#cb165-1" tabindex="-1"></a>par.ci <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">mean</span>(xx) <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">mean</span>(xx)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">50</span>), <span class="fu">mean</span>(xx) <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">mean</span>(xx)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">50</span>))</span>
+<span id="cb165-2"><a href="bootstrap-main.html#cb165-2" tabindex="-1"></a>boot.ci.sd <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">mean</span>(xx) <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(boot.mean), <span class="fu">mean</span>(xx) <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(boot.mean))</span>
+<span id="cb165-3"><a href="bootstrap-main.html#cb165-3" tabindex="-1"></a>boot.ci.quant <span class="ot">&lt;-</span> <span class="fu">quantile</span>(boot.mean, <span class="at">probs=</span><span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">975</span>))</span></code></pre></div>
 <ul>
 <li>The normal-approximation confidence interval is</li>
 </ul>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb157-1" data-line-number="1"><span class="kw">round</span>(par.ci, <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="bootstrap-main.html#cb166-1" tabindex="-1"></a><span class="fu">round</span>(par.ci, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>## [1] 0.31 0.54</code></pre>
 <ul>
 <li>The standard error boostrap confidence interval is</li>
 </ul>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb159-1" data-line-number="1"><span class="kw">round</span>(boot.ci.sd, <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="bootstrap-main.html#cb168-1" tabindex="-1"></a><span class="fu">round</span>(boot.ci.sd, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>## [1] 0.32 0.52</code></pre>
 <ul>
 <li>The percentile bootstrap confidence interval</li>
 </ul>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb161-1" data-line-number="1"><span class="kw">round</span>(boot.ci.quant, <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="bootstrap-main.html#cb170-1" tabindex="-1"></a><span class="fu">round</span>(boot.ci.quant, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>##  2.5% 97.5% 
 ##  0.32  0.52</code></pre>
 <p><img src="09-bootstrap_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
-<div id="example-confidence-intervals-for-the-ratio-of-two-quantiles" class="section level3">
-<h3><span class="header-section-number">9.2.3</span> Example: Confidence Intervals for the Ratio of Two Quantiles</h3>
+<div id="example-confidence-intervals-for-the-ratio-of-two-quantiles" class="section level3 hasAnchor" number="9.2.3">
+<h3><span class="header-section-number">9.2.3</span> Example: Confidence Intervals for the Ratio of Two Quantiles<a href="bootstrap-main.html#example-confidence-intervals-for-the-ratio-of-two-quantiles" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>Suppose we have data from two groups
 <span class="math display">\[\begin{eqnarray}
 &amp;&amp; \textrm{Group 1: }  X_{1}, \ldots, X_{n} \sim F_{X}  \nonumber \\
-&amp;&amp; \textrm{Group 2: }  Y_{1}, \ldots, Y_{n} \sim F_{Y} \nonumber 
+&amp;&amp; \textrm{Group 2: }  Y_{1}, \ldots, Y_{n} \sim F_{Y} \nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>The pth quantile for group 1 is defined as <span class="math inline">\(\theta_{p1} = F_{X}^{-1}(p)\)</span>.
 In other words, if <span class="math inline">\(F_{X}\)</span> is continuous then
 <span class="math display">\[\begin{equation}
-P(X_{i} \leq \theta_{p1}) = F_{X}(F_{X}^{-1}(p)) = p  \nonumber 
+P(X_{i} \leq \theta_{p1}) = F_{X}(F_{X}^{-1}(p)) = p  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Likewise, the pth quantile for group 2 is defined as <span class="math inline">\(\theta_{p2} = F_{Y}^{-1}(p)\)</span></p></li>
 <li><p>Suppose we are interested in estimating and constructing a confidence for the following parameter
@@ -645,22 +718,22 @@ pth sample quantile from <span class="math inline">\((X_{1}, \ldots, X_{n})\)</s
 <span class="math inline">\(\hat{\theta}_{p2}\)</span> denote the pth sample quantile from <span class="math inline">\((Y_{1}, \ldots, Y_{n})\)</span>.</p></li>
 <li><p>We will estimate <span class="math inline">\(\eta\)</span> with the ratio of the sample quantiles
 <span class="math display">\[\begin{equation}
-\hat{\eta} = \frac{  \hat{\theta}_{p1}  }{ \hat{\theta}_{p2} }  \nonumber 
+\hat{\eta} = \frac{  \hat{\theta}_{p1}  }{ \hat{\theta}_{p2} }  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>It can be shown that
 <span class="math display">\[\begin{equation}
-\hat{\theta}_{p1} \textrm{ has an approximate } \textrm{Normal}\Bigg( \theta_{p1}, \frac{p(1-p)}{n f_{X}^{2}(\theta_{p1})} \Bigg) \textrm{ distribution},  \nonumber 
+\hat{\theta}_{p1} \textrm{ has an approximate } \textrm{Normal}\Bigg( \theta_{p1}, \frac{p(1-p)}{n f_{X}^{2}(\theta_{p1})} \Bigg) \textrm{ distribution},  \nonumber
 \end{equation}\]</span>
 where <span class="math inline">\(f_{X}(t) = F_{X}&#39;(t)\)</span> is the probability density function of <span class="math inline">\(X_{i}\)</span>.</p></li>
 <li><p>Using a multivariate delta method argument, you can show that
 <span class="math display" id="eq:quantile-ratio-approx">\[\begin{equation}
-\hat{\eta} \textrm{ has an approximate } \textrm{Normal}\Bigg( \eta, \frac{p(1-p)}{n f_{X}^{2}(\theta_{p1})\theta_{p2}^{2} } + \frac{p(1-p)\theta_{p1}^{2} }{n f_{Y}^{2}(\theta_{p2})\theta_{p2}^{4} } \Bigg) \textrm{ distribution} 
+\hat{\eta} \textrm{ has an approximate } \textrm{Normal}\Bigg( \eta, \frac{p(1-p)}{n f_{X}^{2}(\theta_{p1})\theta_{p2}^{2} } + \frac{p(1-p)\theta_{p1}^{2} }{n f_{Y}^{2}(\theta_{p2})\theta_{p2}^{4} } \Bigg) \textrm{ distribution}
 \tag{9.4}
 \end{equation}\]</span></p></li>
 <li><p>Using the above large-sample approximation, the estimated standard error that can be used to construct
 a confidence interval for <span class="math inline">\(\eta\)</span> is
 <span class="math display">\[\begin{equation}
-\sqrt{\frac{p(1-p)}{n \hat{f}_{X}^{2}(\hat{\theta}_{p1})\hat{\theta}_{p2}^{2} } + \frac{p(1-p)\hat{\theta}_{p1}^{2} }{n \hat{f}_{Y}^{2}(\hat{\theta}_{p2})\hat{\theta}_{p2}^{4} } }  \nonumber 
+\sqrt{\frac{p(1-p)}{n \hat{f}_{X}^{2}(\hat{\theta}_{p1})\hat{\theta}_{p2}^{2} } + \frac{p(1-p)\hat{\theta}_{p1}^{2} }{n \hat{f}_{Y}^{2}(\hat{\theta}_{p2})\hat{\theta}_{p2}^{4} } }  \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
@@ -669,86 +742,86 @@ a confidence interval for <span class="math inline">\(\eta\)</span> is
 compares with bootstrap-based confidence intervals.</p></li>
 <li><p>We will simulate <span class="math inline">\(X_{i} \sim \textrm{Gamma}(2, 1.5)\)</span> and <span class="math inline">\(Y_{i} \sim \textrm{Gamma}(2, 2)\)</span> with <span class="math inline">\(n = 100\)</span> and <span class="math inline">\(m = 100\)</span>.</p></li>
 </ul>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb163-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="dv">100</span></a>
-<a class="sourceLine" id="cb163-2" data-line-number="2">m &lt;-<span class="st"> </span><span class="dv">100</span></a>
-<a class="sourceLine" id="cb163-3" data-line-number="3">xx &lt;-<span class="st"> </span><span class="kw">rgamma</span>(n, <span class="dt">shape=</span><span class="dv">2</span>, <span class="dt">rate=</span><span class="fl">1.5</span>) </a>
-<a class="sourceLine" id="cb163-4" data-line-number="4">yy &lt;-<span class="st"> </span><span class="kw">rgamma</span>(m, <span class="dt">shape=</span><span class="dv">2</span>, <span class="dt">rate=</span><span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="bootstrap-main.html#cb172-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb172-2"><a href="bootstrap-main.html#cb172-2" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb172-3"><a href="bootstrap-main.html#cb172-3" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(n, <span class="at">shape=</span><span class="dv">2</span>, <span class="at">rate=</span><span class="fl">1.5</span>) </span>
+<span id="cb172-4"><a href="bootstrap-main.html#cb172-4" tabindex="-1"></a>yy <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(m, <span class="at">shape=</span><span class="dv">2</span>, <span class="at">rate=</span><span class="dv">2</span>)</span></code></pre></div>
 <ul>
 <li><p>We will focus on estimating the pth quantile ratio for <span class="math inline">\(p = 0.9\)</span>. In this case, the
 true value of <span class="math inline">\(\eta\)</span> is <span class="math inline">\(\eta \approx 4/3\)</span>.</p></li>
 <li><p>The estimate <span class="math inline">\(\hat{\eta}\)</span> and the estimated standard error using the large-sample approximation <a href="bootstrap-main.html#eq:quantile-ratio-approx">(9.4)</a> is</p></li>
 </ul>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" data-line-number="1">theta.hat1 &lt;-<span class="st"> </span><span class="kw">quantile</span>(xx, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
-<a class="sourceLine" id="cb164-2" data-line-number="2">theta.hat2 &lt;-<span class="st"> </span><span class="kw">quantile</span>(yy, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
-<a class="sourceLine" id="cb164-3" data-line-number="3">eta.hat &lt;-<span class="st"> </span>theta.hat1<span class="op">/</span>theta.hat2    <span class="co">## estimate of quantile ratio</span></a>
-<a class="sourceLine" id="cb164-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb164-5" data-line-number="5">xdensity &lt;-<span class="st"> </span><span class="kw">density</span>(xx)</a>
-<a class="sourceLine" id="cb164-6" data-line-number="6">ydensity &lt;-<span class="st"> </span><span class="kw">density</span>(yy)</a>
-<a class="sourceLine" id="cb164-7" data-line-number="7">fx &lt;-<span class="st"> </span><span class="kw">approxfun</span>(xdensity<span class="op">$</span>x, xdensity<span class="op">$</span>y)(theta.hat1)</a>
-<a class="sourceLine" id="cb164-8" data-line-number="8">fy &lt;-<span class="st"> </span><span class="kw">approxfun</span>(ydensity<span class="op">$</span>x, ydensity<span class="op">$</span>y)(theta.hat2)</a>
-<a class="sourceLine" id="cb164-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb164-10" data-line-number="10">q1.se.sq &lt;-<span class="st"> </span>(.<span class="dv">9</span><span class="op">*</span>.<span class="dv">1</span>)<span class="op">/</span>(n<span class="op">*</span>(fx<span class="op">*</span>theta.hat2)<span class="op">^</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb164-11" data-line-number="11">q2.se.sq &lt;-<span class="st"> </span>(.<span class="dv">9</span><span class="op">*</span>.<span class="dv">1</span><span class="op">*</span>theta.hat1<span class="op">*</span>theta.hat1)<span class="op">/</span>(n<span class="op">*</span>fy<span class="op">*</span>fy<span class="op">*</span>((theta.hat2)<span class="op">^</span><span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb164-12" data-line-number="12">std.err &lt;-<span class="st"> </span><span class="kw">sqrt</span>(q1.se.sq <span class="op">+</span><span class="st"> </span>q2.se.sq)</a></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="bootstrap-main.html#cb173-1" tabindex="-1"></a>theta.hat1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(xx, <span class="at">probs=</span><span class="fl">0.9</span>)</span>
+<span id="cb173-2"><a href="bootstrap-main.html#cb173-2" tabindex="-1"></a>theta.hat2 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(yy, <span class="at">probs=</span><span class="fl">0.9</span>)</span>
+<span id="cb173-3"><a href="bootstrap-main.html#cb173-3" tabindex="-1"></a>eta.hat <span class="ot">&lt;-</span> theta.hat1<span class="sc">/</span>theta.hat2    <span class="do">## estimate of quantile ratio</span></span>
+<span id="cb173-4"><a href="bootstrap-main.html#cb173-4" tabindex="-1"></a></span>
+<span id="cb173-5"><a href="bootstrap-main.html#cb173-5" tabindex="-1"></a>xdensity <span class="ot">&lt;-</span> <span class="fu">density</span>(xx)</span>
+<span id="cb173-6"><a href="bootstrap-main.html#cb173-6" tabindex="-1"></a>ydensity <span class="ot">&lt;-</span> <span class="fu">density</span>(yy)</span>
+<span id="cb173-7"><a href="bootstrap-main.html#cb173-7" tabindex="-1"></a>fx <span class="ot">&lt;-</span> <span class="fu">approxfun</span>(xdensity<span class="sc">$</span>x, xdensity<span class="sc">$</span>y)(theta.hat1)</span>
+<span id="cb173-8"><a href="bootstrap-main.html#cb173-8" tabindex="-1"></a>fy <span class="ot">&lt;-</span> <span class="fu">approxfun</span>(ydensity<span class="sc">$</span>x, ydensity<span class="sc">$</span>y)(theta.hat2)</span>
+<span id="cb173-9"><a href="bootstrap-main.html#cb173-9" tabindex="-1"></a></span>
+<span id="cb173-10"><a href="bootstrap-main.html#cb173-10" tabindex="-1"></a>q1.se.sq <span class="ot">&lt;-</span> (.<span class="dv">9</span><span class="sc">*</span>.<span class="dv">1</span>)<span class="sc">/</span>(n<span class="sc">*</span>(fx<span class="sc">*</span>theta.hat2)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb173-11"><a href="bootstrap-main.html#cb173-11" tabindex="-1"></a>q2.se.sq <span class="ot">&lt;-</span> (.<span class="dv">9</span><span class="sc">*</span>.<span class="dv">1</span><span class="sc">*</span>theta.hat1<span class="sc">*</span>theta.hat1)<span class="sc">/</span>(n<span class="sc">*</span>fy<span class="sc">*</span>fy<span class="sc">*</span>((theta.hat2)<span class="sc">^</span><span class="dv">4</span>))</span>
+<span id="cb173-12"><a href="bootstrap-main.html#cb173-12" tabindex="-1"></a>std.err <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(q1.se.sq <span class="sc">+</span> q2.se.sq)</span></code></pre></div>
 <ul>
 <li>The confidence interval using the large-sample approximation <a href="bootstrap-main.html#eq:quantile-ratio-approx">(9.4)</a> is</li>
 </ul>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb165-1" data-line-number="1">CI &lt;-<span class="st"> </span><span class="kw">c</span>(eta.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>std.err, eta.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>std.err)</a>
-<a class="sourceLine" id="cb165-2" data-line-number="2"><span class="kw">round</span>(CI, <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="bootstrap-main.html#cb174-1" tabindex="-1"></a>CI <span class="ot">&lt;-</span> <span class="fu">c</span>(eta.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>std.err, eta.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>std.err)</span>
+<span id="cb174-2"><a href="bootstrap-main.html#cb174-2" tabindex="-1"></a><span class="fu">round</span>(CI, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>##  90%  90% 
 ## 0.94 1.57</code></pre>
 <hr />
 <ul>
 <li>Now, using the same simulated data, let’s compute <span class="math inline">\(500\)</span> bootstrap replications of the statistic <span class="math inline">\(\hat{\eta}\)</span></li>
 </ul>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb167-1" data-line-number="1">R &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb167-2" data-line-number="2">eta.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
-<a class="sourceLine" id="cb167-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb167-4" data-line-number="4"><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R)</a>
-<a class="sourceLine" id="cb167-5" data-line-number="5">{</a>
-<a class="sourceLine" id="cb167-6" data-line-number="6">  boot.xx &lt;-<span class="st"> </span><span class="kw">sample</span>(xx, <span class="dt">size=</span>n, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb167-7" data-line-number="7">  boot.yy &lt;-<span class="st"> </span><span class="kw">sample</span>(yy, <span class="dt">size=</span>m, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb167-8" data-line-number="8">  thetahat.p1 &lt;-<span class="st"> </span><span class="kw">quantile</span>(boot.xx, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
-<a class="sourceLine" id="cb167-9" data-line-number="9">  thetahat.p2 &lt;-<span class="st"> </span><span class="kw">quantile</span>(boot.yy, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
-<a class="sourceLine" id="cb167-10" data-line-number="10">  eta.boot[r] &lt;-<span class="st"> </span>thetahat.p1<span class="op">/</span>thetahat.p2</a>
-<a class="sourceLine" id="cb167-11" data-line-number="11">}</a></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="bootstrap-main.html#cb176-1" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb176-2"><a href="bootstrap-main.html#cb176-2" tabindex="-1"></a>eta.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
+<span id="cb176-3"><a href="bootstrap-main.html#cb176-3" tabindex="-1"></a></span>
+<span id="cb176-4"><a href="bootstrap-main.html#cb176-4" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R)</span>
+<span id="cb176-5"><a href="bootstrap-main.html#cb176-5" tabindex="-1"></a>{</span>
+<span id="cb176-6"><a href="bootstrap-main.html#cb176-6" tabindex="-1"></a>  boot.xx <span class="ot">&lt;-</span> <span class="fu">sample</span>(xx, <span class="at">size=</span>n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb176-7"><a href="bootstrap-main.html#cb176-7" tabindex="-1"></a>  boot.yy <span class="ot">&lt;-</span> <span class="fu">sample</span>(yy, <span class="at">size=</span>m, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb176-8"><a href="bootstrap-main.html#cb176-8" tabindex="-1"></a>  thetahat.p1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(boot.xx, <span class="at">probs=</span><span class="fl">0.9</span>)</span>
+<span id="cb176-9"><a href="bootstrap-main.html#cb176-9" tabindex="-1"></a>  thetahat.p2 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(boot.yy, <span class="at">probs=</span><span class="fl">0.9</span>)</span>
+<span id="cb176-10"><a href="bootstrap-main.html#cb176-10" tabindex="-1"></a>  eta.boot[r] <span class="ot">&lt;-</span> thetahat.p1<span class="sc">/</span>thetahat.p2</span>
+<span id="cb176-11"><a href="bootstrap-main.html#cb176-11" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
 <li><p>Because this is a two-sample setting, we draw bootstrap samples <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> and <span class="math inline">\((Y_{1}^{*}, \ldots, Y_{m}^{*})\)</span> for each group separately to generate each bootstrap replications.</p></li>
 <li><p>The standard error boostrap confidence interval is</p></li>
 </ul>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb168-1" data-line-number="1">boot.ci.sd &lt;-<span class="st"> </span><span class="kw">c</span>(eta.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot), eta.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot))</a>
-<a class="sourceLine" id="cb168-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb168-3" data-line-number="3"><span class="kw">round</span>(boot.ci.sd, <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="bootstrap-main.html#cb177-1" tabindex="-1"></a>boot.ci.sd <span class="ot">&lt;-</span> <span class="fu">c</span>(eta.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(eta.boot), eta.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(eta.boot))</span>
+<span id="cb177-2"><a href="bootstrap-main.html#cb177-2" tabindex="-1"></a></span>
+<span id="cb177-3"><a href="bootstrap-main.html#cb177-3" tabindex="-1"></a><span class="fu">round</span>(boot.ci.sd, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>## [1] 0.75 1.76</code></pre>
 <ul>
 <li>The percentile bootstrap confidence interval is</li>
 </ul>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb170-1" data-line-number="1">boot.ci.quant &lt;-<span class="st"> </span><span class="kw">quantile</span>(eta.boot, <span class="dt">probs=</span><span class="kw">c</span>(.<span class="dv">025</span>, <span class="fl">.975</span>))</a>
-<a class="sourceLine" id="cb170-2" data-line-number="2"><span class="kw">round</span>(boot.ci.quant, <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="bootstrap-main.html#cb179-1" tabindex="-1"></a>boot.ci.quant <span class="ot">&lt;-</span> <span class="fu">quantile</span>(eta.boot, <span class="at">probs=</span><span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">975</span>))</span>
+<span id="cb179-2"><a href="bootstrap-main.html#cb179-2" tabindex="-1"></a><span class="fu">round</span>(boot.ci.quant, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>##  2.5% 97.5% 
 ##  0.93  1.94</code></pre>
 <ul>
 <li>A histogram of the bootstrap replications of <span class="math inline">\(\hat{\eta}\)</span> is shown in the below figure. Note that the true
 value of <span class="math inline">\(\eta\)</span> is <span class="math inline">\(\eta = 4/3\)</span>.</li>
 </ul>
-<div class="figure"><span id="fig:unnamed-chunk-17"></span>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-17"></span>
 <img src="09-bootstrap_files/figure-html/unnamed-chunk-17-1.png" alt="Bootstrap Distribution of the 0.9-Quantile Ratio. Vertical Lines are the Upper and Lower Bounds from the Percentile Bootstrap Confidence Interval." width="672" />
 <p class="caption">
 Figure 9.1: Bootstrap Distribution of the 0.9-Quantile Ratio. Vertical Lines are the Upper and Lower Bounds from the Percentile Bootstrap Confidence Interval.
 </p>
 </div>
-<div id="comparing-the-performance-of-the-bootstrap-and-large-sample-confidence-intervals" class="section level4">
-<h4><span class="header-section-number">9.2.3.1</span> Comparing the Performance of the Bootstrap and Large-Sample Confidence Intervals</h4>
+<div id="comparing-the-performance-of-the-bootstrap-and-large-sample-confidence-intervals" class="section level4 hasAnchor" number="9.2.3.1">
+<h4><span class="header-section-number">9.2.3.1</span> Comparing the Performance of the Bootstrap and Large-Sample Confidence Intervals<a href="bootstrap-main.html#comparing-the-performance-of-the-bootstrap-and-large-sample-confidence-intervals" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p>We just saw that the bootstrap and the large-sample confidence intervals gave different answers.</p></li>
 <li><p>For this problem, what is the best approach for constructing confidence intervals?</p></li>
 <li><p>We can compare the performance of different confidence intervals by
 looking at their <strong>coverage probability</strong>.</p></li>
-<li>For a vector of data <span class="math inline">\(\mathbf{X} = (X_{1}, \ldots, X_{n})\)</span>, we can represent
+<li><p>For a vector of data <span class="math inline">\(\mathbf{X} = (X_{1}, \ldots, X_{n})\)</span>, we can represent
 a confidence interval for a parameter of interest <span class="math inline">\(\theta\)</span> as
 <span class="math display">\[\begin{equation}
 \Big[ L_{\alpha}(\mathbf{X}), U_{\alpha}(\mathbf{X}) \Big]
-\end{equation}\]</span>
+\end{equation}\]</span></p>
 <ul>
 <li><span class="math inline">\(L_{\alpha}(\mathbf{X})\)</span> is the lower confidence bound.</li>
 <li><span class="math inline">\(U_{\alpha}( \mathbf{X} )\)</span> is the upper confidence bound.</li>
@@ -759,10 +832,10 @@ P\Big(  L_{\alpha}(\mathbf{X}) \leq \theta \leq U_{\alpha}(\mathbf{X}) \Big), \n
 \end{equation}\]</span>
 where we usually construct <span class="math inline">\(L_{\alpha}(\mathbf{X})\)</span> and <span class="math inline">\(U_{\alpha}(\mathbf{X})\)</span> so
 that the coverage probability is exactly equal or close to <span class="math inline">\(1 - \alpha\)</span>.</p></li>
-<li>We can estimate this probability via simulation by looking at the following coverage proportion
+<li><p>We can estimate this probability via simulation by looking at the following coverage proportion
 <span class="math display">\[\begin{equation}
 \textrm{CoverProp}_{n_{rep}}(\theta) = \frac{1}{n_{rep}}\sum_{k=1}^{n_{rep}} I\Big( L_{\alpha}(\mathbf{X}^{(k)})  \leq \theta \leq  U_{\alpha}(\mathbf{X}^{(k)})  \Big) \nonumber
-\end{equation}\]</span>
+\end{equation}\]</span></p>
 <ul>
 <li><span class="math inline">\(n_{rep}\)</span> is the number of simulation replications</li>
 <li><span class="math inline">\(X^{(k)}\)</span> is the dataset from the <span class="math inline">\(k^{th}\)</span> simulation replication</li>
@@ -776,62 +849,62 @@ that the coverage probability is exactly equal or close to <span class="math inl
 <li><p>Below shows code for a simulation study which uses 1000 simulation replications. It compares the large-sample
 confidence interval which uses <a href="bootstrap-main.html#eq:quantile-ratio-approx">(9.4)</a> with two bootstrap confidence intervals.</p></li>
 </ul>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb172-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="dv">100</span></a>
-<a class="sourceLine" id="cb172-2" data-line-number="2">m &lt;-<span class="st"> </span><span class="dv">100</span></a>
-<a class="sourceLine" id="cb172-3" data-line-number="3">R &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb172-4" data-line-number="4">eta.true &lt;-<span class="st"> </span><span class="dv">4</span><span class="op">/</span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb172-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb172-6" data-line-number="6">nreps &lt;-<span class="st"> </span><span class="dv">1000</span></a>
-<a class="sourceLine" id="cb172-7" data-line-number="7">Cover.par.ci &lt;-<span class="st"> </span><span class="kw">numeric</span>(nreps)</a>
-<a class="sourceLine" id="cb172-8" data-line-number="8">Cover.bootsd.ci &lt;-<span class="st"> </span><span class="kw">numeric</span>(nreps)</a>
-<a class="sourceLine" id="cb172-9" data-line-number="9">Cover.bootquant.ci &lt;-<span class="st"> </span><span class="kw">numeric</span>(nreps)</a>
-<a class="sourceLine" id="cb172-10" data-line-number="10"><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nreps)  {</a>
-<a class="sourceLine" id="cb172-11" data-line-number="11">    <span class="co">## Step 1: Generate the Data from Two Groups</span></a>
-<a class="sourceLine" id="cb172-12" data-line-number="12">    xx &lt;-<span class="st"> </span><span class="kw">rgamma</span>(n, <span class="dt">shape=</span><span class="dv">2</span>, <span class="dt">rate=</span><span class="fl">1.5</span>) </a>
-<a class="sourceLine" id="cb172-13" data-line-number="13">    yy &lt;-<span class="st"> </span><span class="kw">rgamma</span>(m, <span class="dt">shape=</span><span class="dv">2</span>, <span class="dt">rate=</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb172-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb172-15" data-line-number="15">    <span class="co">## Step 2: Estimate eta from this data</span></a>
-<a class="sourceLine" id="cb172-16" data-line-number="16">    theta.hat1 &lt;-<span class="st"> </span><span class="kw">quantile</span>(xx, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
-<a class="sourceLine" id="cb172-17" data-line-number="17">    theta.hat2 &lt;-<span class="st"> </span><span class="kw">quantile</span>(yy, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
-<a class="sourceLine" id="cb172-18" data-line-number="18">    eta.hat &lt;-<span class="st"> </span>theta.hat1<span class="op">/</span>theta.hat2    </a>
-<a class="sourceLine" id="cb172-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb172-20" data-line-number="20">    <span class="co">## Step 3: Find confidence interval using large-sample Normal approximation</span></a>
-<a class="sourceLine" id="cb172-21" data-line-number="21">    xdensity &lt;-<span class="st"> </span><span class="kw">density</span>(xx)</a>
-<a class="sourceLine" id="cb172-22" data-line-number="22">    ydensity &lt;-<span class="st"> </span><span class="kw">density</span>(yy)</a>
-<a class="sourceLine" id="cb172-23" data-line-number="23">    fx &lt;-<span class="st"> </span><span class="kw">approxfun</span>(xdensity<span class="op">$</span>x, xdensity<span class="op">$</span>y)(theta.hat1)</a>
-<a class="sourceLine" id="cb172-24" data-line-number="24">    fy &lt;-<span class="st"> </span><span class="kw">approxfun</span>(ydensity<span class="op">$</span>x, ydensity<span class="op">$</span>y)(theta.hat2)</a>
-<a class="sourceLine" id="cb172-25" data-line-number="25">    q1.se.sq &lt;-<span class="st"> </span>(.<span class="dv">9</span><span class="op">*</span>.<span class="dv">1</span>)<span class="op">/</span>(n<span class="op">*</span>(fx<span class="op">*</span>theta.hat2)<span class="op">^</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb172-26" data-line-number="26">    q2.se.sq &lt;-<span class="st"> </span>(.<span class="dv">9</span><span class="op">*</span>.<span class="dv">1</span><span class="op">*</span>theta.hat1<span class="op">*</span>theta.hat1)<span class="op">/</span>(n<span class="op">*</span>fy<span class="op">*</span>fy<span class="op">*</span>((theta.hat2)<span class="op">^</span><span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb172-27" data-line-number="27">    std.err &lt;-<span class="st"> </span><span class="kw">sqrt</span>(q1.se.sq <span class="op">+</span><span class="st"> </span>q2.se.sq)</a>
-<a class="sourceLine" id="cb172-28" data-line-number="28">    par.ci &lt;-<span class="st"> </span><span class="kw">c</span>(eta.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>std.err, eta.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span>std.err)</a>
-<a class="sourceLine" id="cb172-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb172-30" data-line-number="30">    <span class="co">## Step 4: Find bootstrap confidence intervals using R bootstrap replications</span></a>
-<a class="sourceLine" id="cb172-31" data-line-number="31">    eta.boot &lt;-<span class="st"> </span><span class="kw">numeric</span>(R)</a>
-<a class="sourceLine" id="cb172-32" data-line-number="32">    <span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R)   {</a>
-<a class="sourceLine" id="cb172-33" data-line-number="33">        boot.xx &lt;-<span class="st"> </span><span class="kw">sample</span>(xx, <span class="dt">size=</span>n, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb172-34" data-line-number="34">        boot.yy &lt;-<span class="st"> </span><span class="kw">sample</span>(yy, <span class="dt">size=</span>m, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb172-35" data-line-number="35">        thetahat.p1 &lt;-<span class="st"> </span><span class="kw">quantile</span>(boot.xx, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
-<a class="sourceLine" id="cb172-36" data-line-number="36">        thetahat.p2 &lt;-<span class="st"> </span><span class="kw">quantile</span>(boot.yy, <span class="dt">probs=</span><span class="fl">0.9</span>)</a>
-<a class="sourceLine" id="cb172-37" data-line-number="37">        eta.boot[r] &lt;-<span class="st"> </span>thetahat.p1<span class="op">/</span>thetahat.p2</a>
-<a class="sourceLine" id="cb172-38" data-line-number="38">    }</a>
-<a class="sourceLine" id="cb172-39" data-line-number="39">    boot.ci.sd &lt;-<span class="st"> </span><span class="kw">c</span>(eta.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot), eta.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(eta.boot))</a>
-<a class="sourceLine" id="cb172-40" data-line-number="40">    boot.ci.quant &lt;-<span class="st"> </span><span class="kw">quantile</span>(eta.boot, <span class="dt">probs=</span><span class="kw">c</span>(.<span class="dv">025</span>, <span class="fl">.975</span>))</a>
-<a class="sourceLine" id="cb172-41" data-line-number="41">    </a>
-<a class="sourceLine" id="cb172-42" data-line-number="42">    <span class="co">## Step 5: Record if the true parameter is covered or not:</span></a>
-<a class="sourceLine" id="cb172-43" data-line-number="43">    Cover.par.ci[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(par.ci[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>eta.true <span class="op">&amp;</span><span class="st"> </span>par.ci[<span class="dv">2</span>] <span class="op">&gt;=</span><span class="st"> </span>eta.true, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb172-44" data-line-number="44">    Cover.bootsd.ci[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(boot.ci.sd[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>eta.true <span class="op">&amp;</span><span class="st"> </span>boot.ci.sd[<span class="dv">2</span>] <span class="op">&gt;=</span><span class="st"> </span>eta.true, </a>
-<a class="sourceLine" id="cb172-45" data-line-number="45">                                 <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb172-46" data-line-number="46">    Cover.bootquant.ci[k] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(boot.ci.quant[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>eta.true <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb172-47" data-line-number="47"><span class="st">                                        </span>boot.ci.quant[<span class="dv">2</span>] <span class="op">&gt;=</span><span class="st"> </span>eta.true, <span class="dv">1</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb172-48" data-line-number="48">}</a></code></pre></div>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="bootstrap-main.html#cb181-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb181-2"><a href="bootstrap-main.html#cb181-2" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb181-3"><a href="bootstrap-main.html#cb181-3" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb181-4"><a href="bootstrap-main.html#cb181-4" tabindex="-1"></a>eta.true <span class="ot">&lt;-</span> <span class="dv">4</span><span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb181-5"><a href="bootstrap-main.html#cb181-5" tabindex="-1"></a></span>
+<span id="cb181-6"><a href="bootstrap-main.html#cb181-6" tabindex="-1"></a>nreps <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb181-7"><a href="bootstrap-main.html#cb181-7" tabindex="-1"></a>Cover.par.ci <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nreps)</span>
+<span id="cb181-8"><a href="bootstrap-main.html#cb181-8" tabindex="-1"></a>Cover.bootsd.ci <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nreps)</span>
+<span id="cb181-9"><a href="bootstrap-main.html#cb181-9" tabindex="-1"></a>Cover.bootquant.ci <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nreps)</span>
+<span id="cb181-10"><a href="bootstrap-main.html#cb181-10" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nreps)  {</span>
+<span id="cb181-11"><a href="bootstrap-main.html#cb181-11" tabindex="-1"></a>    <span class="do">## Step 1: Generate the Data from Two Groups</span></span>
+<span id="cb181-12"><a href="bootstrap-main.html#cb181-12" tabindex="-1"></a>    xx <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(n, <span class="at">shape=</span><span class="dv">2</span>, <span class="at">rate=</span><span class="fl">1.5</span>) </span>
+<span id="cb181-13"><a href="bootstrap-main.html#cb181-13" tabindex="-1"></a>    yy <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(m, <span class="at">shape=</span><span class="dv">2</span>, <span class="at">rate=</span><span class="dv">2</span>)</span>
+<span id="cb181-14"><a href="bootstrap-main.html#cb181-14" tabindex="-1"></a></span>
+<span id="cb181-15"><a href="bootstrap-main.html#cb181-15" tabindex="-1"></a>    <span class="do">## Step 2: Estimate eta from this data</span></span>
+<span id="cb181-16"><a href="bootstrap-main.html#cb181-16" tabindex="-1"></a>    theta.hat1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(xx, <span class="at">probs=</span><span class="fl">0.9</span>)</span>
+<span id="cb181-17"><a href="bootstrap-main.html#cb181-17" tabindex="-1"></a>    theta.hat2 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(yy, <span class="at">probs=</span><span class="fl">0.9</span>)</span>
+<span id="cb181-18"><a href="bootstrap-main.html#cb181-18" tabindex="-1"></a>    eta.hat <span class="ot">&lt;-</span> theta.hat1<span class="sc">/</span>theta.hat2    </span>
+<span id="cb181-19"><a href="bootstrap-main.html#cb181-19" tabindex="-1"></a></span>
+<span id="cb181-20"><a href="bootstrap-main.html#cb181-20" tabindex="-1"></a>    <span class="do">## Step 3: Find confidence interval using large-sample Normal approximation</span></span>
+<span id="cb181-21"><a href="bootstrap-main.html#cb181-21" tabindex="-1"></a>    xdensity <span class="ot">&lt;-</span> <span class="fu">density</span>(xx)</span>
+<span id="cb181-22"><a href="bootstrap-main.html#cb181-22" tabindex="-1"></a>    ydensity <span class="ot">&lt;-</span> <span class="fu">density</span>(yy)</span>
+<span id="cb181-23"><a href="bootstrap-main.html#cb181-23" tabindex="-1"></a>    fx <span class="ot">&lt;-</span> <span class="fu">approxfun</span>(xdensity<span class="sc">$</span>x, xdensity<span class="sc">$</span>y)(theta.hat1)</span>
+<span id="cb181-24"><a href="bootstrap-main.html#cb181-24" tabindex="-1"></a>    fy <span class="ot">&lt;-</span> <span class="fu">approxfun</span>(ydensity<span class="sc">$</span>x, ydensity<span class="sc">$</span>y)(theta.hat2)</span>
+<span id="cb181-25"><a href="bootstrap-main.html#cb181-25" tabindex="-1"></a>    q1.se.sq <span class="ot">&lt;-</span> (.<span class="dv">9</span><span class="sc">*</span>.<span class="dv">1</span>)<span class="sc">/</span>(n<span class="sc">*</span>(fx<span class="sc">*</span>theta.hat2)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb181-26"><a href="bootstrap-main.html#cb181-26" tabindex="-1"></a>    q2.se.sq <span class="ot">&lt;-</span> (.<span class="dv">9</span><span class="sc">*</span>.<span class="dv">1</span><span class="sc">*</span>theta.hat1<span class="sc">*</span>theta.hat1)<span class="sc">/</span>(n<span class="sc">*</span>fy<span class="sc">*</span>fy<span class="sc">*</span>((theta.hat2)<span class="sc">^</span><span class="dv">4</span>))</span>
+<span id="cb181-27"><a href="bootstrap-main.html#cb181-27" tabindex="-1"></a>    std.err <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(q1.se.sq <span class="sc">+</span> q2.se.sq)</span>
+<span id="cb181-28"><a href="bootstrap-main.html#cb181-28" tabindex="-1"></a>    par.ci <span class="ot">&lt;-</span> <span class="fu">c</span>(eta.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>std.err, eta.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>std.err)</span>
+<span id="cb181-29"><a href="bootstrap-main.html#cb181-29" tabindex="-1"></a></span>
+<span id="cb181-30"><a href="bootstrap-main.html#cb181-30" tabindex="-1"></a>    <span class="do">## Step 4: Find bootstrap confidence intervals using R bootstrap replications</span></span>
+<span id="cb181-31"><a href="bootstrap-main.html#cb181-31" tabindex="-1"></a>    eta.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
+<span id="cb181-32"><a href="bootstrap-main.html#cb181-32" tabindex="-1"></a>    <span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R)   {</span>
+<span id="cb181-33"><a href="bootstrap-main.html#cb181-33" tabindex="-1"></a>        boot.xx <span class="ot">&lt;-</span> <span class="fu">sample</span>(xx, <span class="at">size=</span>n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb181-34"><a href="bootstrap-main.html#cb181-34" tabindex="-1"></a>        boot.yy <span class="ot">&lt;-</span> <span class="fu">sample</span>(yy, <span class="at">size=</span>m, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb181-35"><a href="bootstrap-main.html#cb181-35" tabindex="-1"></a>        thetahat.p1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(boot.xx, <span class="at">probs=</span><span class="fl">0.9</span>)</span>
+<span id="cb181-36"><a href="bootstrap-main.html#cb181-36" tabindex="-1"></a>        thetahat.p2 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(boot.yy, <span class="at">probs=</span><span class="fl">0.9</span>)</span>
+<span id="cb181-37"><a href="bootstrap-main.html#cb181-37" tabindex="-1"></a>        eta.boot[r] <span class="ot">&lt;-</span> thetahat.p1<span class="sc">/</span>thetahat.p2</span>
+<span id="cb181-38"><a href="bootstrap-main.html#cb181-38" tabindex="-1"></a>    }</span>
+<span id="cb181-39"><a href="bootstrap-main.html#cb181-39" tabindex="-1"></a>    boot.ci.sd <span class="ot">&lt;-</span> <span class="fu">c</span>(eta.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(eta.boot), eta.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(eta.boot))</span>
+<span id="cb181-40"><a href="bootstrap-main.html#cb181-40" tabindex="-1"></a>    boot.ci.quant <span class="ot">&lt;-</span> <span class="fu">quantile</span>(eta.boot, <span class="at">probs=</span><span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">975</span>))</span>
+<span id="cb181-41"><a href="bootstrap-main.html#cb181-41" tabindex="-1"></a>    </span>
+<span id="cb181-42"><a href="bootstrap-main.html#cb181-42" tabindex="-1"></a>    <span class="do">## Step 5: Record if the true parameter is covered or not:</span></span>
+<span id="cb181-43"><a href="bootstrap-main.html#cb181-43" tabindex="-1"></a>    Cover.par.ci[k] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(par.ci[<span class="dv">1</span>] <span class="sc">&lt;</span> eta.true <span class="sc">&amp;</span> par.ci[<span class="dv">2</span>] <span class="sc">&gt;=</span> eta.true, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb181-44"><a href="bootstrap-main.html#cb181-44" tabindex="-1"></a>    Cover.bootsd.ci[k] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(boot.ci.sd[<span class="dv">1</span>] <span class="sc">&lt;</span> eta.true <span class="sc">&amp;</span> boot.ci.sd[<span class="dv">2</span>] <span class="sc">&gt;=</span> eta.true, </span>
+<span id="cb181-45"><a href="bootstrap-main.html#cb181-45" tabindex="-1"></a>                                 <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb181-46"><a href="bootstrap-main.html#cb181-46" tabindex="-1"></a>    Cover.bootquant.ci[k] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(boot.ci.quant[<span class="dv">1</span>] <span class="sc">&lt;</span> eta.true <span class="sc">&amp;</span> </span>
+<span id="cb181-47"><a href="bootstrap-main.html#cb181-47" tabindex="-1"></a>                                        boot.ci.quant[<span class="dv">2</span>] <span class="sc">&gt;=</span> eta.true, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb181-48"><a href="bootstrap-main.html#cb181-48" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
 <li>The coverage proportions for each of the methods are:</li>
 </ul>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb173-1" data-line-number="1"><span class="kw">mean</span>(Cover.par.ci)</a></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="bootstrap-main.html#cb182-1" tabindex="-1"></a><span class="fu">mean</span>(Cover.par.ci)</span></code></pre></div>
 <pre><code>## [1] 0.921</code></pre>
-<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb175-1" data-line-number="1"><span class="kw">mean</span>(Cover.bootsd.ci)</a></code></pre></div>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="bootstrap-main.html#cb184-1" tabindex="-1"></a><span class="fu">mean</span>(Cover.bootsd.ci)</span></code></pre></div>
 <pre><code>## [1] 0.949</code></pre>
-<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb177-1" data-line-number="1"><span class="kw">mean</span>(Cover.bootquant.ci)</a></code></pre></div>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="bootstrap-main.html#cb186-1" tabindex="-1"></a><span class="fu">mean</span>(Cover.bootquant.ci)</span></code></pre></div>
 <pre><code>## [1] 0.959</code></pre>
 <ul>
 <li>Using these simulated outcomes, we can also construct <span class="math inline">\(95\%\)</span> confidence intervals for the coverage probabilities:</li>
@@ -899,23 +972,23 @@ Bootstrap Percentile
 </div>
 </div>
 </div>
-<div id="why-is-the-bootstrap-procedure-reasonable" class="section level2">
-<h2><span class="header-section-number">9.3</span> Why is the Bootstrap Procedure Reasonable?</h2>
+<div id="why-is-the-bootstrap-procedure-reasonable" class="section level2 hasAnchor" number="9.3">
+<h2><span class="header-section-number">9.3</span> Why is the Bootstrap Procedure Reasonable?<a href="bootstrap-main.html#why-is-the-bootstrap-procedure-reasonable" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p>As mentioned before, our original motivation for the bootstrap was to find an estimate of
 <span class="math inline">\(\textrm{Var}(T_{n})\)</span> where <span class="math inline">\(T_{n}\)</span> is a statistic that can be thought of as an estimate of <span class="math inline">\(\theta\)</span>.</p></li>
 <li><p>The statistic <span class="math inline">\(T_{n}\)</span> can be thought of as a function of our sample
 <span class="math display">\[\begin{equation}
-T_{n} = h(X_{1}, \ldots, X_{n}) \nonumber 
+T_{n} = h(X_{1}, \ldots, X_{n}) \nonumber
 \end{equation}\]</span>
 where <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> is an i.i.d. sample with cumulative distribution function <span class="math inline">\(F\)</span>.</p></li>
-<li>If we had a way of simulating data <span class="math inline">\(X_{i}^{(k)}\)</span> from <span class="math inline">\(F\)</span>, we could estimate <span class="math inline">\(\textrm{Var}(T_{n})\)</span>
+<li><p>If we had a way of simulating data <span class="math inline">\(X_{i}^{(k)}\)</span> from <span class="math inline">\(F\)</span>, we could estimate <span class="math inline">\(\textrm{Var}(T_{n})\)</span>
 with the following quantity
 <span class="math display" id="eq:boostrap-approx-knownF">\[\begin{eqnarray}
 \widehat{\textrm{Var}( T_{n} )} &amp;=&amp; \frac{1}{K-1}\sum_{k=1}^{K}\Big( h(X_{1}^{(k)}, \ldots, X_{n}^{(k)}) - \frac{1}{K}\sum_{k=1}^{K} h(X_{1}^{(k)}, \ldots, X_{n}^{(k)})  \Big)^{2} \nonumber \\
-&amp;=&amp; \frac{1}{K-1}\sum_{k=1}^{K}\Big( T_{n}^{(k)} - \frac{1}{K}\sum_{k=1}^{K} T_{n}^{(k)}  \Big)^{2} 
+&amp;=&amp; \frac{1}{K-1}\sum_{k=1}^{K}\Big( T_{n}^{(k)} - \frac{1}{K}\sum_{k=1}^{K} T_{n}^{(k)}  \Big)^{2}
 \tag{9.5}
-\end{eqnarray}\]</span>
+\end{eqnarray}\]</span></p>
 <ul>
 <li><span class="math inline">\(X_{1}^{(k)}, \ldots, X_{n}^{(k)}\)</span> is an i.i.d. sample from <span class="math inline">\(F\)</span>.</li>
 <li><span class="math inline">\(T_{n}^{(k)} = h(X_{1}^{(k)}, \ldots, X_{n}^{(k)})\)</span> is the value of out statistic of interest from the <span class="math inline">\(k^{th}\)</span> simulated dataset.</li>
@@ -974,8 +1047,8 @@ confidence intervals from the bootstrap estimate of the variance of <span class=
 asymptotic sense (see, for example, Chapter 5 of <span class="citation">Shao (<a href="#ref-shao2003">2003</a>)</span> for a somewhat more rigorous discussion of this).</p></li>
 </ul>
 </div>
-<div id="pivotal-bootstrap-confidence-intervals" class="section level2">
-<h2><span class="header-section-number">9.4</span> Pivotal Bootstrap Confidence Intervals</h2>
+<div id="pivotal-bootstrap-confidence-intervals" class="section level2 hasAnchor" number="9.4">
+<h2><span class="header-section-number">9.4</span> Pivotal Bootstrap Confidence Intervals<a href="bootstrap-main.html#pivotal-bootstrap-confidence-intervals" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p>Confidence intervals are often based on what is referred to as a <strong>pivot</strong>.</p></li>
 <li><p>The quantity <span class="math inline">\(W_{n}( \mathbf{X}, \theta)\)</span> is a pivot if the distribution of <span class="math inline">\(W_{n}(\mathbf{X}, \theta)\)</span>
@@ -990,7 +1063,7 @@ is a pivot. The distribution of <span class="math inline">\(W_{n}(\mathbf{X}, \t
 <span class="math display">\[\begin{eqnarray}
 1 - \alpha &amp;=&amp; P\Big( -\sigma z_{1 - \alpha/2} \leq W_{n}(\mathbf{X}, \theta) \leq \sigma z_{1 - \alpha/2} \Big) \nonumber \\
 &amp;=&amp; P\Big(-\sigma z_{1 - \alpha/2} \leq \bar{X} - \theta \leq \sigma z_{1 - \alpha/2} \Big)  \nonumber \\
-&amp;=&amp; P\Big(\bar{X} - \sigma z_{1 - \alpha/2} \leq \theta \leq \bar{X} + \sigma z_{1 - \alpha/2} \Big)  \nonumber 
+&amp;=&amp; P\Big(\bar{X} - \sigma z_{1 - \alpha/2} \leq \theta \leq \bar{X} + \sigma z_{1 - \alpha/2} \Big)  \nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>Another common pivot (if we did not assume <span class="math inline">\(\sigma^{2}\)</span> was known) would be
 <span class="math display">\[\begin{equation}
@@ -1018,7 +1091,7 @@ function of <span class="math inline">\(T_{n,r}^{*} - T_{n}\)</span> to estimate
 \end{equation}\]</span></p></li>
 <li><p>Using this approximation for <span class="math inline">\(H(t)\)</span>, we could use the following confidence interval
 <span class="math display">\[\begin{equation}
-\Big[ T_{n} - \hat{H}_{R}^{-1}(1 - \alpha/2), T_{n} - \hat{H}_{R}^{-1}(\alpha/2)   \Big]  \nonumber 
+\Big[ T_{n} - \hat{H}_{R}^{-1}(1 - \alpha/2), T_{n} - \hat{H}_{R}^{-1}(\alpha/2)   \Big]  \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
@@ -1049,7 +1122,7 @@ where <span class="math inline">\(T_{n,r,j}^{**}\)</span> is the value of our te
 <li><p>So, to find <span class="math inline">\(\hat{se}_{r}\)</span>, we need <span class="math inline">\(J\)</span> bootstrap samples within each of the <span class="math inline">\(R\)</span> bootstrap samples that were used to generated <span class="math inline">\(T_{n,1}^{*}, \ldots, T_{n,R}^{*}\)</span>. For this reason, this is often referred to as the double bootstrap.</p></li>
 <li><p>Then, the estimate of <span class="math inline">\(K(t)\)</span> is defined as
 <span class="math display">\[\begin{equation}
-\hat{K}_{R}(t) = \frac{1}{R} \sum_{r=1}^{R} I\Big( Z_{n,r}^{*} \leq t \Big)  \nonumber 
+\hat{K}_{R}(t) = \frac{1}{R} \sum_{r=1}^{R} I\Big( Z_{n,r}^{*} \leq t \Big)  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>The <strong>studentized</strong> bootstrap confidence interval (or the <strong>bootstrap-t</strong> confidence interval) is then defined as
 <span class="math display">\[\begin{equation}
@@ -1057,8 +1130,8 @@ where <span class="math inline">\(T_{n,r,j}^{**}\)</span> is the value of our te
 \end{equation}\]</span></p></li>
 </ul>
 </div>
-<div id="the-parametric-bootstrap" class="section level2">
-<h2><span class="header-section-number">9.5</span> The Parametric Bootstrap</h2>
+<div id="the-parametric-bootstrap" class="section level2 hasAnchor" number="9.5">
+<h2><span class="header-section-number">9.5</span> The Parametric Bootstrap<a href="bootstrap-main.html#the-parametric-bootstrap" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p>With the bootstrap, we generate each bootstrap sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> by
 sampling with replacement from the empirical distribution function <span class="math inline">\(\hat{F}_{n}\)</span>.</p></li>
@@ -1072,7 +1145,7 @@ and we estimate <span class="math inline">\(\mu\)</span> and <span class="math i
 \end{equation}\]</span></p></li>
 <li><p>If we are interested in getting a confidence interval for <span class="math inline">\(\theta\)</span> where <span class="math inline">\(T_{n} = h(X_{1}, \ldots, X_{n})\)</span> is
 an estimate of <span class="math inline">\(\theta\)</span>, the parametric bootstrap would use the following procedure:</p></li>
-<li>For <span class="math inline">\(r = 1, \ldots, R\)</span>:
+<li><p>For <span class="math inline">\(r = 1, \ldots, R\)</span>:</p>
 <ul>
 <li>Draw an i.i.d. sample: <span class="math inline">\(X_{1}^{*}, \ldots, X_{n}^{*} \sim \textrm{Normal}(\hat{\mu}, \hat{\sigma}^{2})\)</span>.</li>
 <li>Compute <span class="math inline">\(T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})\)</span>.</li>
@@ -1094,14 +1167,14 @@ often be straightforward to implement.</p></li>
 <li><p>Suppose <span class="math inline">\(G_{\varphi}\)</span> is a parametric model that describes the joint distribution of <span class="math inline">\((X_{1}, \ldots, X_{n})\)</span>
 and that it is easy to simulate observations from <span class="math inline">\(G_{\varphi}\)</span>.</p></li>
 <li><p>Then, if you have an estimate <span class="math inline">\(\hat{\varphi}\)</span> of <span class="math inline">\(\varphi\)</span>, you can use the following procedure to generate bootstrap replications for your statistic of interest.</p></li>
-<li>For <span class="math inline">\(r = 1, \ldots, R\)</span>:
+<li><p>For <span class="math inline">\(r = 1, \ldots, R\)</span>:</p>
 <ul>
 <li>Draw a sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*}) \sim G_{\hat{\varphi}}\)</span>.</li>
 <li>Compute <span class="math inline">\(T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})\)</span>.</li>
 </ul></li>
 </ul>
-<div id="parametric-bootstrap-for-the-median-age-from-the-kidney-data" class="section level3">
-<h3><span class="header-section-number">9.5.1</span> Parametric Bootstrap for the Median Age from the Kidney Data</h3>
+<div id="parametric-bootstrap-for-the-median-age-from-the-kidney-data" class="section level3 hasAnchor" number="9.5.1">
+<h3><span class="header-section-number">9.5.1</span> Parametric Bootstrap for the Median Age from the Kidney Data<a href="bootstrap-main.html#parametric-bootstrap-for-the-median-age-from-the-kidney-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>Let us consider the ages from the kidney data.</p></li>
 <li><p>One somewhat reasonable model for the ages <span class="math inline">\(X_{i}\)</span> from the kidney data is that
@@ -1111,24 +1184,24 @@ X_{i} - 17 \sim \textrm{Gamma}(\alpha, \beta) \nonumber
 <li><p>We can find the maximum likelihood estimates <span class="math inline">\((\hat{\alpha}, \hat{\beta})\)</span> for this model
 using the following <code>R</code> code</p></li>
 </ul>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb179-1" data-line-number="1">kidney &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </a>
-<a class="sourceLine" id="cb179-2" data-line-number="2">                     <span class="dt">header=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb179-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb179-4" data-line-number="4">LogProfLik &lt;-<span class="st"> </span><span class="cf">function</span>(alpha, x) {</a>
-<a class="sourceLine" id="cb179-5" data-line-number="5">    ans &lt;-<span class="st"> </span>alpha<span class="op">*</span><span class="kw">log</span>(alpha<span class="op">/</span><span class="kw">mean</span>(x)) <span class="op">-</span><span class="st"> </span><span class="kw">lgamma</span>(alpha) <span class="op">+</span><span class="st"> </span>(alpha <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)<span class="op">*</span><span class="kw">mean</span>(<span class="kw">log</span>(x)) <span class="op">-</span><span class="st"> </span>alpha</a>
-<a class="sourceLine" id="cb179-6" data-line-number="6">    <span class="kw">return</span>(ans)</a>
-<a class="sourceLine" id="cb179-7" data-line-number="7">}</a>
-<a class="sourceLine" id="cb179-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb179-9" data-line-number="9">best.alpha &lt;-<span class="st"> </span><span class="kw">optimize</span>(LogProfLik, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">10</span>), <span class="dt">x=</span>kidney<span class="op">$</span>age <span class="op">-</span><span class="st"> </span><span class="dv">17</span>, </a>
-<a class="sourceLine" id="cb179-10" data-line-number="10">                       <span class="dt">maximum=</span><span class="ot">TRUE</span>)<span class="op">$</span>maximum</a>
-<a class="sourceLine" id="cb179-11" data-line-number="11">best.beta &lt;-<span class="st"> </span>best.alpha<span class="op">/</span><span class="kw">mean</span>(kidney<span class="op">$</span>age <span class="op">-</span><span class="st"> </span><span class="dv">17</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="bootstrap-main.html#cb188-1" tabindex="-1"></a>kidney <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </span>
+<span id="cb188-2"><a href="bootstrap-main.html#cb188-2" tabindex="-1"></a>                     <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb188-3"><a href="bootstrap-main.html#cb188-3" tabindex="-1"></a></span>
+<span id="cb188-4"><a href="bootstrap-main.html#cb188-4" tabindex="-1"></a>LogProfLik <span class="ot">&lt;-</span> <span class="cf">function</span>(alpha, x) {</span>
+<span id="cb188-5"><a href="bootstrap-main.html#cb188-5" tabindex="-1"></a>    ans <span class="ot">&lt;-</span> alpha<span class="sc">*</span><span class="fu">log</span>(alpha<span class="sc">/</span><span class="fu">mean</span>(x)) <span class="sc">-</span> <span class="fu">lgamma</span>(alpha) <span class="sc">+</span> (alpha <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">mean</span>(<span class="fu">log</span>(x)) <span class="sc">-</span> alpha</span>
+<span id="cb188-6"><a href="bootstrap-main.html#cb188-6" tabindex="-1"></a>    <span class="fu">return</span>(ans)</span>
+<span id="cb188-7"><a href="bootstrap-main.html#cb188-7" tabindex="-1"></a>}</span>
+<span id="cb188-8"><a href="bootstrap-main.html#cb188-8" tabindex="-1"></a></span>
+<span id="cb188-9"><a href="bootstrap-main.html#cb188-9" tabindex="-1"></a>best.alpha <span class="ot">&lt;-</span> <span class="fu">optimize</span>(LogProfLik, <span class="at">interval=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">10</span>), <span class="at">x=</span>kidney<span class="sc">$</span>age <span class="sc">-</span> <span class="dv">17</span>, </span>
+<span id="cb188-10"><a href="bootstrap-main.html#cb188-10" tabindex="-1"></a>                       <span class="at">maximum=</span><span class="cn">TRUE</span>)<span class="sc">$</span>maximum</span>
+<span id="cb188-11"><a href="bootstrap-main.html#cb188-11" tabindex="-1"></a>best.beta <span class="ot">&lt;-</span> best.alpha<span class="sc">/</span><span class="fu">mean</span>(kidney<span class="sc">$</span>age <span class="sc">-</span> <span class="dv">17</span>)</span></code></pre></div>
 <ul>
 <li>We can plot this estimated Gamma density overlaid on the histogram of the ages to see how they compare</li>
 </ul>
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb180-1" data-line-number="1">tt &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">17</span>, <span class="dv">90</span>, <span class="dt">length.out=</span><span class="dv">500</span>)</a>
-<a class="sourceLine" id="cb180-2" data-line-number="2"><span class="kw">hist</span>(kidney<span class="op">$</span>age, <span class="dt">breaks=</span><span class="st">&quot;FD&quot;</span>, <span class="dt">probability=</span><span class="ot">TRUE</span>, <span class="dt">las=</span><span class="dv">1</span>, <span class="dt">xlab=</span><span class="st">&quot;Age&quot;</span>, </a>
-<a class="sourceLine" id="cb180-3" data-line-number="3">     <span class="dt">main=</span><span class="st">&quot;Estimate Gamma Density for the Kidney Age Data&quot;</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>)</a>
-<a class="sourceLine" id="cb180-4" data-line-number="4"><span class="kw">lines</span>(tt, <span class="kw">dgamma</span>(tt <span class="op">-</span><span class="st"> </span><span class="dv">17</span>, <span class="dt">shape=</span>best.alpha, <span class="dt">rate=</span>best.beta), <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="bootstrap-main.html#cb189-1" tabindex="-1"></a>tt <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">17</span>, <span class="dv">90</span>, <span class="at">length.out=</span><span class="dv">500</span>)</span>
+<span id="cb189-2"><a href="bootstrap-main.html#cb189-2" tabindex="-1"></a><span class="fu">hist</span>(kidney<span class="sc">$</span>age, <span class="at">breaks=</span><span class="st">&quot;FD&quot;</span>, <span class="at">probability=</span><span class="cn">TRUE</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, </span>
+<span id="cb189-3"><a href="bootstrap-main.html#cb189-3" tabindex="-1"></a>     <span class="at">main=</span><span class="st">&quot;Estimate Gamma Density for the Kidney Age Data&quot;</span>, <span class="at">col=</span><span class="st">&quot;grey&quot;</span>)</span>
+<span id="cb189-4"><a href="bootstrap-main.html#cb189-4" tabindex="-1"></a><span class="fu">lines</span>(tt, <span class="fu">dgamma</span>(tt <span class="sc">-</span> <span class="dv">17</span>, <span class="at">shape=</span>best.alpha, <span class="at">rate=</span>best.beta), <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
 <p><img src="09-bootstrap_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <hr />
 <ul>
@@ -1136,37 +1209,37 @@ using the following <code>R</code> code</p></li>
 <li><p>To use the parametric boostrap with the parametric model <span class="math inline">\(X_{i} - 17 \sim \textrm{Gamma}(\alpha, \beta)\)</span>
 and using our estimates <span class="math inline">\(\hat{\alpha}\)</span> and <span class="math inline">\(\hat{\beta}\)</span> computed above, we would
 use the following steps.</p></li>
-<li>For <span class="math inline">\(r = 1, \ldots, R\)</span>:
+<li><p>For <span class="math inline">\(r = 1, \ldots, R\)</span>:</p>
 <ul>
 <li>Draw an i.i.d. sample: <span class="math inline">\(X_{1}^{*}, \ldots, X_{n}^{*} \sim 17 + \textrm{Gamma}(\hat{\alpha}, \hat{\beta})\)</span>.</li>
 <li>Compute <span class="math inline">\(T_{n,r}^{*} = \textrm{median}(X_{1}^{*}, \ldots, X_{n}^{*})\)</span>.</li>
 </ul></li>
 <li><p>The code for implementing this parametric bootstrap is given below</p></li>
 </ul>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb181-1" data-line-number="1">R &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb181-2" data-line-number="2">med.boot.par &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, R)</a>
-<a class="sourceLine" id="cb181-3" data-line-number="3">med.boot.np &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, R)</a>
-<a class="sourceLine" id="cb181-4" data-line-number="4"><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>R) {</a>
-<a class="sourceLine" id="cb181-5" data-line-number="5">    xx.boot.par &lt;-<span class="st"> </span><span class="dv">17</span> <span class="op">+</span><span class="st"> </span><span class="kw">rgamma</span>(<span class="dv">157</span>, <span class="dt">shape=</span>best.alpha, <span class="dt">rate=</span>best.beta)</a>
-<a class="sourceLine" id="cb181-6" data-line-number="6">    xx.boot.np &lt;-<span class="st"> </span><span class="kw">sample</span>(kidney<span class="op">$</span>age, <span class="dt">size=</span><span class="dv">157</span>, <span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb181-7" data-line-number="7">    </a>
-<a class="sourceLine" id="cb181-8" data-line-number="8">    med.boot.par[r] &lt;-<span class="st"> </span><span class="kw">median</span>(xx.boot.par)  <span class="co">## rth par. bootstrap replication</span></a>
-<a class="sourceLine" id="cb181-9" data-line-number="9">    med.boot.np[r] &lt;-<span class="st"> </span><span class="kw">median</span>(xx.boot.np)  <span class="co">## rth par. bootstrap replication</span></a>
-<a class="sourceLine" id="cb181-10" data-line-number="10">}</a></code></pre></div>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="bootstrap-main.html#cb190-1" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb190-2"><a href="bootstrap-main.html#cb190-2" tabindex="-1"></a>med.boot.par <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, R)</span>
+<span id="cb190-3"><a href="bootstrap-main.html#cb190-3" tabindex="-1"></a>med.boot.np <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, R)</span>
+<span id="cb190-4"><a href="bootstrap-main.html#cb190-4" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
+<span id="cb190-5"><a href="bootstrap-main.html#cb190-5" tabindex="-1"></a>    xx.boot.par <span class="ot">&lt;-</span> <span class="dv">17</span> <span class="sc">+</span> <span class="fu">rgamma</span>(<span class="dv">157</span>, <span class="at">shape=</span>best.alpha, <span class="at">rate=</span>best.beta)</span>
+<span id="cb190-6"><a href="bootstrap-main.html#cb190-6" tabindex="-1"></a>    xx.boot.np <span class="ot">&lt;-</span> <span class="fu">sample</span>(kidney<span class="sc">$</span>age, <span class="at">size=</span><span class="dv">157</span>, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb190-7"><a href="bootstrap-main.html#cb190-7" tabindex="-1"></a>    </span>
+<span id="cb190-8"><a href="bootstrap-main.html#cb190-8" tabindex="-1"></a>    med.boot.par[r] <span class="ot">&lt;-</span> <span class="fu">median</span>(xx.boot.par)  <span class="do">## rth par. bootstrap replication</span></span>
+<span id="cb190-9"><a href="bootstrap-main.html#cb190-9" tabindex="-1"></a>    med.boot.np[r] <span class="ot">&lt;-</span> <span class="fu">median</span>(xx.boot.np)  <span class="do">## rth par. bootstrap replication</span></span>
+<span id="cb190-10"><a href="bootstrap-main.html#cb190-10" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
 <li>The normal standard error confidence interval using the parametric bootstrap is</li>
 </ul>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb182-1" data-line-number="1"><span class="kw">c</span>(<span class="kw">median</span>(kidney<span class="op">$</span>age) <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(med.boot.par), <span class="kw">median</span>(kidney<span class="op">$</span>age) <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(med.boot.par))</a></code></pre></div>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="bootstrap-main.html#cb191-1" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">median</span>(kidney<span class="sc">$</span>age) <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(med.boot.par), <span class="fu">median</span>(kidney<span class="sc">$</span>age) <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(med.boot.par))</span></code></pre></div>
 <pre><code>## [1] 28.39858 33.60142</code></pre>
 <ul>
 <li>The normal standard error confidence interval using the nonparametric bootstrap is</li>
 </ul>
-<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb184-1" data-line-number="1"><span class="kw">c</span>(<span class="kw">median</span>(kidney<span class="op">$</span>age) <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(med.boot.np), <span class="kw">median</span>(kidney<span class="op">$</span>age) <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span><span class="op">*</span><span class="kw">sd</span>(med.boot.np))</a></code></pre></div>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="bootstrap-main.html#cb193-1" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">median</span>(kidney<span class="sc">$</span>age) <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(med.boot.np), <span class="fu">median</span>(kidney<span class="sc">$</span>age) <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(med.boot.np))</span></code></pre></div>
 <pre><code>## [1] 28.64083 33.35917</code></pre>
 </div>
 </div>
-<div id="additional-reading-4" class="section level2">
-<h2><span class="header-section-number">9.6</span> Additional Reading</h2>
+<div id="additional-reading-4" class="section level2 hasAnchor" number="9.6">
+<h2><span class="header-section-number">9.6</span> Additional Reading<a href="bootstrap-main.html#additional-reading-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li>Additional reading which covers the material discussed in this chapter includes:
 <ul>
@@ -1175,8 +1248,8 @@ use the following steps.</p></li>
 </ul></li>
 </ul>
 </div>
-<div id="exercises-6" class="section level2">
-<h2><span class="header-section-number">9.7</span> Exercises</h2>
+<div id="exercises-6" class="section level2 hasAnchor" number="9.7">
+<h2><span class="header-section-number">9.7</span> Exercises<a href="bootstrap-main.html#exercises-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p><strong>Exercise 9.1</strong> With the regular bootstrap we generate bootstrap samples
 by sampling from the empirical distribution function <span class="math inline">\(\hat{F}_{n}\)</span>. An alternative approach is to
@@ -1184,38 +1257,39 @@ sample from a smooth estimate of <span class="math inline">\(F\)</span> instead 
 Consider the following smooth estimate of <span class="math inline">\(F\)</span> which is just the indefinite integral of a
 kernel density estimate
 <span class="math display">\[\begin{equation}
-\hat{F}_{h}^{KD}(t) = \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{t} \frac{1}{h} K\Big( \frac{x - X_{i}}{h} \Big) dx  \nonumber 
+\hat{F}_{h}^{KD}(t) = \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{t} \frac{1}{h} K\Big( \frac{x - X_{i}}{h} \Big) dx  \nonumber
 \end{equation}\]</span></p></li>
-<li>What is <span class="math inline">\(\hat{F}_{h}^{KD}\)</span> when <span class="math inline">\(K( \cdot )\)</span> is the Gaussian kernel?</li>
-<li>For the case of a Gaussian kernel, how do you generate an i.i.d. sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> from <span class="math inline">\(\hat{F}_{h}^{KD}\)</span>?</li>
-<li>Using the  dataset from the  package, compute a <span class="math inline">\(95\%\)</span> ``smooth bootstrap&quot; confidence interval
+<li><p>What is <span class="math inline">\(\hat{F}_{h}^{KD}\)</span> when <span class="math inline">\(K( \cdot )\)</span> is the Gaussian kernel?</p></li>
+<li><p>For the case of a Gaussian kernel, how do you generate an i.i.d. sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> from <span class="math inline">\(\hat{F}_{h}^{KD}\)</span>?</p></li>
+<li><p>Using the dataset from the package, compute a <span class="math inline">\(95\%\)</span> ``smooth bootstrap” confidence interval
 for the standard deviation <span class="math inline">\(\sigma_{v}\)</span> of the velocities by using the following steps:
-For <span class="math inline">\(r = 1,\ldots, R\)</span>:
+For <span class="math inline">\(r = 1,\ldots, R\)</span>:</p>
 <ul>
 <li>Draw an i.i.d. sample: <span class="math inline">\(X_{1}^{*}, \ldots, X_{n}^{*} \sim \hat{F}_{h}^{KD}\)</span>.</li>
 <li>Compute <span class="math inline">\(T_{n,r}^{*} = \textrm{sd}( X_{1}^{*}, \ldots, X_{n}^{*})\)</span>.</li>
 </ul></li>
 <li><p>Using <span class="math inline">\(T_{n,1}^{*}, \ldots, T_{n,R}^{*}\)</span>, construct the confidence interval for <span class="math inline">\(\sigma_{v}\)</span> using the normal bootstrap standard error approach. For the bandwidth <span class="math inline">\(h\)</span> in <span class="math inline">\(\hat{F}_{h}^{KD}\)</span>, you can use Silverman’s rule-of-thumb: <span class="math inline">\(h = 0.9 n^{-1/5}\min\{ \hat{\sigma}, IQR/1.34 \}\)</span>.</p></li>
-<li>Using the usual bootstrap where we sample from <span class="math inline">\(\hat{F}_{n}\)</span>, construct three <span class="math inline">\(95\%\)</span> bootstrap confidence intervals for <span class="math inline">\(\sigma_{v}\)</span> using the following methods
+<li><p>Using the usual bootstrap where we sample from <span class="math inline">\(\hat{F}_{n}\)</span>, construct three <span class="math inline">\(95\%\)</span> bootstrap confidence intervals for <span class="math inline">\(\sigma_{v}\)</span> using the following methods</p>
 <ul>
 <li>Normal bootstrap standard error confidence interval.</li>
 <li>A pivotal bootstrap confidence interval based on <span class="math inline">\(T_{n,r}^{*} - T_{n}\)</span> (not the studentized bootstrap confidence interval).</li>
 <li>Bootstrap percentile confidence interval.</li>
 </ul></li>
+<li><p><strong>Exercise 9.2</strong>: What is the distribution of <span class="math inline">\(X_{1,r}^{*}\)</span>?</p></li>
 </ul>
 
 </div>
 </div>
 <h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-davison1997">
-<p>Davison, Anthony Christopher, and David Victor Hinkley. 1997. <em>Bootstrap Methods and Their Application</em>. Vol. 1. Cambridge university press.</p>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-davison1997" class="csl-entry">
+Davison, Anthony Christopher, and David Victor Hinkley. 1997. <em>Bootstrap Methods and Their Application</em>. Vol. 1. Cambridge university press.
 </div>
-<div id="ref-shao2003">
-<p>Shao, Jun. 2003. <em>Mathematical Statistics</em>. 2nd ed. Springer-Verlag New York Inc.</p>
+<div id="ref-shao2003" class="csl-entry">
+Shao, Jun. 2003. <em>Mathematical Statistics</em>. 2nd ed. Springer-Verlag New York Inc.
 </div>
-<div id="ref-wasserman2006">
-<p>Wasserman, Larry. 2006. <em>All of Nonparametric Statistics</em>. Springer Science &amp; Business Media.</p>
+<div id="ref-wasserman2006" class="csl-entry">
+Wasserman, Larry. 2006. <em>All of Nonparametric Statistics</em>. Springer Science &amp; Business Media.
 </div>
 </div>
             </section>
@@ -1228,7 +1302,6 @@ For <span class="math inline">\(r = 1,\ldots, R\)</span>:
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -1239,37 +1312,42 @@ For <span class="math inline">\(r = 1,\ldots, R\)</span>:
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["ElementsNonparStat.pdf"],
-"toc": {
-"collapse": "section"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["ElementsNonparStat.pdf"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
 });
 });
 </script>
@@ -1280,7 +1358,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

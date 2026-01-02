@@ -2,16 +2,6 @@
 
 # Rank and Sign Statistics {#rank-tests}
 
-<!--   ## Introduction
-
-Start with t-test example, difference in means is sufficient for superiority
-
-Give example of type of tests we are interested in.
-
-Why ranks and why nonparametric testing?
-
-(reduce influence of outliers)
--->
 
 ## Ranks
 
@@ -41,7 +31,7 @@ rather than only on the value of $X_{i}$.
 
 * You can compute ranks in **R** using the **rank** function:
 
-```r
+``` r
 x <- c(3, 7, 1, 12, 6)  ## 5 observations
 rank(x)
 ```
@@ -64,7 +54,7 @@ ranks of $1$ and $4$ respectively.
 
 * In **R**, handling ties in a way that is consistent with definition \@ref(eq:rankdef) is done using the **ties.method = "max"** argument
 
-```r
+``` r
 x <- c(0, 1, 1, 2)  
 rank(x, ties.method="max")
 ```
@@ -74,7 +64,7 @@ rank(x, ties.method="max")
 ```
 * The default in **R** is to replace the ranks of tied observations with their "average" rank
 
-```r
+``` r
 x <- c(0, 1, 1, 2)  
 rank(x)
 ```
@@ -86,7 +76,7 @@ rank(x)
 * As another example of the "average" definition of ranks, consider the following example:
 
 
-```r
+``` r
 y <- c(2, 9, 7, 7, 3, 2, 1)
 rank(y, ties.method="max")
 ```
@@ -95,7 +85,7 @@ rank(y, ties.method="max")
 ## [1] 3 7 6 6 4 3 1
 ```
 
-```r
+``` r
 rank(y)
 ```
 
@@ -413,11 +403,28 @@ with mean zero but different variances. -->
 
 ### Computing the WRS test in R
 
-* To illustrate performing the WRS test in **R**, we can use the **wine** dataset from the **rattle.data** package.
+* To illustrate performing the WRS test in **R**, we can use the **wine** dataset from the **rattle** package.
 This dataset is also available from the UCI Machine Learning Repository.
 
-```r
-library(rattle.data)
+``` r
+library(rattle)
+```
+
+```
+## Loading required package: tibble
+```
+
+```
+## Loading required package: bitops
+```
+
+```
+## Rattle: A free graphical interface for data science with R.
+## Version 5.5.1 Copyright (c) 2006-2021 Togaware Pty Ltd.
+## Type 'rattle()' to shake, rattle, and roll your data.
+```
+
+``` r
 head(wine)
 ```
 
@@ -440,7 +447,7 @@ head(wine)
 
 * This dataset contains three types of wine. We will only consider the first two. 
 
-```r
+``` r
 wine2 <- subset(wine, Type==1 | Type==2)
 wine2$Type <- factor(wine2$Type)
 ```
@@ -452,7 +459,7 @@ wine2$Type <- factor(wine2$Type)
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
 This can be done with the following code
 
-```r
+``` r
 wilcox.test(x=wine2$Magnesium[wine2$Type==1], y=wine2$Magnesium[wine2$Type==2], 
             alternative="greater")
 ```
@@ -468,7 +475,7 @@ wilcox.test(x=wine2$Magnesium[wine2$Type==1], y=wine2$Magnesium[wine2$Type==2],
 
 * You could also use the following code to perform this test (just be careful about the ordering of the levels of **Type**)
 
-```r
+``` r
 wilcox.test(Magnesium ~ Type, data=wine2, alternative="greater")
 ```
 
@@ -484,7 +491,7 @@ wilcox.test(Magnesium ~ Type, data=wine2, alternative="greater")
 * What is the value of the WRS test statistic? We can code this directly 
 with the following steps:
 
-```r
+``` r
 W <- wilcox.test(x=wine2$Magnesium[wine2$Type==1], y=wine2$Magnesium[wine2$Type==2])
 
 n <- sum(wine2$Type==1)
@@ -499,7 +506,7 @@ sum(zz[wine2$Type==1])  ## The WRS test statistic
 
 * The statistic returned by the **wilcox.test** function is actually equal to $W - n(n+1)/2$ not $W$
 
-```r
+``` r
 sum(zz[wine2$Type==1]) - n*(n + 1)/2
 ```
 
@@ -507,7 +514,7 @@ sum(zz[wine2$Type==1]) - n*(n + 1)/2
 ## [1] 3381.5
 ```
 
-```r
+``` r
 W$statistic
 ```
 
@@ -519,7 +526,7 @@ W$statistic
 * $\{ W - n(n+1)/2 \}$ is equal to the Mann-Whitney statistic. Thus, **W$statistic/(mn)** is
 an estimate of the probability $P(X_{i} > Y_{j}) + P(X_{i} = Y_{j})/2$.
 
-```r
+``` r
 W$statistic/(m*n)
 ```
 
@@ -530,7 +537,7 @@ W$statistic/(m*n)
 
 * Let's check how the Mann-Whitney statistic matches a simulation-based estimate of this probability
 
-```r
+``` r
 ind1 <- which(wine2$Type==1)
 ind2 <- which(wine2$Type==2)
 xgreater <- rep(0, 100)
@@ -544,7 +551,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.81
+## [1] 0.795
 ```
 
 * This simulation-based estimate of $P(X_{i} > Y_{j}) + P(X_{i} = Y_{j})/2$ is quite close to the value of the Mann-Whitney statistic divided by $mn$.
@@ -597,7 +604,7 @@ Hodges-Lehmann is often reported when computing the WRS test.
 * In **R**, the Hodges-Lehmann estimator can be obtained by using the **conf.int=TRUE**
 argument in the **wilcox.test** function
 
-```r
+``` r
 WC <- wilcox.test(x=wine2$Magnesium[wine2$Type==1], y=wine2$Magnesium[wine2$Type==2],
                   conf.int=TRUE)
 WC$estimate     ## The Hodges-Lehmann estimate
@@ -713,7 +720,7 @@ in the sense that the null distribution of $S_{n}$ does not depend on the distri
 where $s_{obs}$ is the observed value of the sign statistic.
 
 
-```r
+``` r
 ### How to compute the p-value for the sign test using R
 xx <- rnorm(100)
 sign.stat <- sum(xx > 0)  ## This is the value of the sign statistic
@@ -721,7 +728,7 @@ sign.stat <- sum(xx > 0)  ## This is the value of the sign statistic
 ```
 
 ```
-## [1] 0.955687
+## [1] 0.4602054
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -733,13 +740,13 @@ a binomial random variable with $n$ trials and success probability **prob**.
 
 * You can also perform the one-sided sign test by using the **binom.test** function in **R**.
 
-```r
+``` r
 btest <- binom.test(sign.stat, n=100, p=0.5, alternative="greater") 
 btest$p.value
 ```
 
 ```
-## [1] 0.955687
+## [1] 0.4602054
 ```
 
 #### Two-sided Sign Test
@@ -868,7 +875,7 @@ For each observation, we have two measures of fat percentage that were obtained 
 measuring techniques.
  
 
-```r
+``` r
 library(PairedData, quietly=TRUE, warn.conflicts=FALSE) ## loading PairedData package
 data(Meat)  ## loading Meat data
 head(Meat)
@@ -887,7 +894,7 @@ head(Meat)
 * Define the differences $D_{i}$ as the **Babcock** measurements minus the **AOAC** measures. 
 We will drop the single observation that equals zero.
 
-```r
+``` r
 DD <- Meat[,2] - Meat[,1]
 DD <- DD[DD!=0]
 hist(DD, main="Meat Data", xlab="Difference in Measured Fat 
@@ -896,7 +903,7 @@ hist(DD, main="Meat Data", xlab="Difference in Measured Fat
 
 <img src="03-rankstat_files/figure-html/unnamed-chunk-18-1.png" width="672" />
 
-```r
+``` r
 summary(DD)
 ```
 
@@ -911,7 +918,7 @@ summary(DD)
 the two-sided sign test. This can be done using the **binom.test** function
 
 
-```r
+``` r
 binom.test(sum(DD > 0), n = length(DD), p=0.5)$p.value
 ```
 
@@ -926,7 +933,7 @@ to the Wilcoxon rank sum test. To perform the Wilcoxon signed rank test in **R**
 need to enter data for the **x** argument and leave the **y** argument empty.
 
 
-```r
+``` r
 wilcox.test(x=DD)
 ```
 
@@ -952,7 +959,7 @@ to reject $H_{0}$ for small deviations from $H_{0}$.
 will consider a scenario where $D_{i} = 0.4 + \varepsilon_{i}$ with $\varepsilon_{i}$
 having a t distribution with $3$ degrees of freedom.
 
-```r
+``` r
 set.seed(1327)
 n.reps <- 500  ## number of simulation replications
 samp.size <- 50  ## the sample size
@@ -971,7 +978,7 @@ mean(wilcox.reject)  ## proportion of times Wilcoxon signed rank rejected H0
 ## [1] 0.614
 ```
 
-```r
+``` r
 mean(sign.reject)  ## proportion of times Wilcoxon signed rank rejected H0
 ```
 
@@ -1369,7 +1376,7 @@ D_{i} = 0.2 + \varepsilon_{i}  \nonumber
 * The **R** code and simulation results are shown below.
 
 
-```r
+``` r
 set.seed(148930)
 theta <- 0.2
 n <- 200

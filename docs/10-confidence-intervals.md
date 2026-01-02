@@ -40,7 +40,7 @@ and, more generally, that
 * For known values of $c_{0}, \alpha$, and $\sigma^{2}$, we can simulate
 an AR(1) time series with the following `R` code:
 
-```r
+``` r
 SimulateParAR1 <- function(m, c0, alpha, sig.sq) {
      xx <- numeric(m)
      xx[1] <- c0/(1 - alpha) + rnorm(1, sd=sqrt(sig.sq))
@@ -56,7 +56,7 @@ SimulateParAR1 <- function(m, c0, alpha, sig.sq) {
  
 * In `R`, estimates of $c_{0}, \alpha,$ and $\sigma^{2}$ can be found by using the `ar` function. For example,
 
-```r
+``` r
 x <- SimulateParAR1(1000, 1, 0.8, sig.sq=.25)
 ar1.fit <- ar(x, aic=FALSE, order.max = 1, method="mle")
 
@@ -90,17 +90,21 @@ $\hat{\alpha}_{r}^{*}$ and $\hat{\sigma}_{r}^{2,*}$ for estimates of $\alpha$ an
 
 * The `nhtemp` dataset contains the mean annual temperature in New Haven, Connecticut from the years 1912-1971
 
-```r
+``` r
 head(nhtemp)
 ```
 
 ```
+## Time Series:
+## Start = 1912 
+## End = 1917 
+## Frequency = 1 
 ## [1] 49.9 52.3 49.4 51.1 49.4 47.9
 ```
 
 * The estimated autocorrelation parameter $\alpha$ is about $0.31$ for this data
 
-```r
+``` r
 ar1.temp <- ar(nhtemp, aic=FALSE, order.max = 1)
 c0.hat <- ar1.temp$x.mean*(1 - ar1.temp$ar)
 alpha.hat <- ar1.temp$ar
@@ -114,7 +118,7 @@ alpha.hat
 
 * Now, that we have estimated all the parameter of the AR(1) model, we can run our parametric bootstrap for $\hat{\alpha}$ and $\hat{\sigma}$:
 
-```r
+``` r
 R <- 500
 alpha.boot <- numeric(R)
 sigsq.boot <- numeric(R)
@@ -129,26 +133,26 @@ for(r in 1:R) {
 
 * Normal bootstrap standard error confidence intervals for $\alpha$ and $\sigma^{2}$ are
 
-```r
+``` r
 round(c(alpha.hat - 1.96*sd(alpha.boot), alpha.hat + 1.96*sd(alpha.boot)), 3)
 ```
 
 ```
-## [1] 0.082 0.548
+## [1] 0.079 0.551
 ```
 
-```r
+``` r
 round(c(sigsq.hat - 1.96*sd(sigsq.boot), sigsq.hat + 1.96*sd(sigsq.boot)), 3)
 ```
 
 ```
-## [1] 0.930 2.006
+## [1] 0.941 1.995
 ```
 
 * We can compare our confidence interval for $\alpha$ with the confidence interval
 obtained from using a large-sample approximation:
 
-```r
+``` r
 asymp.se <- sqrt(ar1.temp$asy.var.coef)
 round(c(alpha.hat - 1.96*asymp.se, alpha.hat + 1.96*asymp.se), 3)
 ```
@@ -233,7 +237,7 @@ at the kidney function data.
 the outcome and age is the covariate.
 
 
-```r
+``` r
 kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
                      header=TRUE)
 ```
@@ -243,7 +247,7 @@ kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.tx
 * Bootstrap replications of $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ can
 be computed using the following `R` code:
 
-```r
+``` r
 ## First find the parameter estimates
 lm.kidney <- lm(tot ~ age, data=kidney)
 beta0.hat <- lm.kidney$coef[1]
@@ -295,7 +299,7 @@ we can use studentized bootstrap confidence intervals without using the double b
 
 * `R` code to compute the studentized confidence intervals is given below:
 
-```r
+``` r
 ## First get estimates of the standard error of our estimates
 ## I use the formulas for the regression standard errors, but
 ## we could have used a bootstrap estimate.
@@ -309,30 +313,30 @@ stu.quants1 <- quantile( (beta1.boot - beta1.hat)/se.beta1.boot, probs=c(0.025, 
 
 * The studentized bootstrap confidence intervals are then
 
-```r
+``` r
 ## Confidence interval for beta0
 c(beta0.hat - stu.quants0[2]*se.est0, beta0.hat - stu.quants0[1]*se.est0)
 ```
 
 ```
 ## (Intercept) (Intercept) 
-##        2.18        3.56
+##        2.16        3.53
 ```
 
-```r
+``` r
 ## Confidence interval for beta1
 c(beta1.hat - stu.quants1[2]*se.est1, beta1.hat - stu.quants1[1]*se.est1)
 ```
 
 ```
 ##     age     age 
-## -0.0964 -0.0615
+## -0.0955 -0.0600
 ```
 
 * Compare these studentized bootstrap confidence intervals with the confidence 
 intervals computed under the normality assumption for the residuals:
 
-```r
+``` r
 confint(lm.kidney)
 ```
 
@@ -397,7 +401,7 @@ and $\hat{\beta}_{1}$, we just use the following procedure
 
 * `R` code for generating these bootstrap replications for the `kidney` data is below:
 
-```r
+``` r
 R <- 500
 beta0.boot.np <- numeric(R)
 beta1.boot.np <- numeric(R)
@@ -420,7 +424,7 @@ for(r in 1:R) {
 
 * To find the studentized confidence intervals for this nonparametric bootstrap, we can use the following code:
 
-```r
+``` r
 se.est0 <- summary(lm.kidney)$sigma*sqrt(summary(lm.boot)$cov.unscaled[1,1])
 se.est1 <- summary(lm.kidney)$sigma*sqrt(summary(lm.boot)$cov.unscaled[2,2])
 
@@ -433,24 +437,24 @@ stu.quants1.np <- quantile( (beta1.boot.np - beta1.hat)/se.beta1.boot.np,
 
 * The studentized bootstrap confidence intervals for $\beta_{0}$ and $\beta_{1}$ are then
 
-```r
+``` r
 ## Confidence interval for beta0
 c(beta0.hat - stu.quants0.np[2]*se.est0, beta0.hat - stu.quants0.np[1]*se.est0)
 ```
 
 ```
 ## (Intercept) (Intercept) 
-##        2.13        3.50
+##        2.15        3.64
 ```
 
-```r
+``` r
 ## Confidence interval for beta1
 c(beta1.hat - stu.quants1.np[2]*se.est1, beta1.hat - stu.quants1.np[1]*se.est1)
 ```
 
 ```
 ##     age     age 
-## -0.0974 -0.0594
+## -0.0993 -0.0622
 ```
   
 ---  
@@ -542,8 +546,8 @@ Then, compute the estimated standard error:
 
 * `R` code to compute these standard error estimates for the `sysBP` variable from the `framingham` dataset is given below
 
-```r
-framingham <- read.csv("~/Documents/STAT685Notes/Data/framingham.csv")
+``` r
+framingham <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/framingham.csv")
 R <- 500
 BootMat <- matrix(0, nrow=R, ncol=4)
 for(r in 1:R) {
@@ -607,7 +611,7 @@ a shifted Exponential distribution with $\lambda = 1/3$ and $\eta = 2$.
 * The following code can estimate the coverage proportion of a bootstrap 
 confidence interval for $\eta$:
 
-```r
+``` r
 n <- 200
 R <- 500
 eta.true <- 2
@@ -635,12 +639,12 @@ for(k in 1:nreps)  {
 
 * The estimated coverage for this bootstrap confidence interval is
 
-```r
+``` r
 mean(Cover.bootsd.ci)
 ```
 
 ```
-## [1] 0.78
+## [1] 0.794
 ```
 
 <img src="10-confidence-intervals_files/figure-html/unnamed-chunk-24-1.png" width="672" />

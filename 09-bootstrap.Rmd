@@ -15,7 +15,7 @@ and constructing confidence intervals.
 
 ---
 
-**Example: Inference for $e^{\mu}$**
+**Example 1: Inference for $e^{\mu}$ from a Logistic distribution**
 
 * Suppose we have i.i.d. data $X_{1}, \ldots, X_{n} \sim \textrm{Logistic}( \mu, s)$,
 meaning that $E(X_{i}) = \mu$ and $\textrm{Var}(X_{i}) = \sigma^{2} = s^{2}\pi^{2}/3$.
@@ -48,19 +48,20 @@ e^{\bar{X}} + 1.96 \times \frac{\hat{\sigma}e^{\bar{X}}}{\sqrt{n}}
 
 * For specific choices of $n$, how good is the Normal approximation for the distribution of $e^{\bar{X}}$?
 
-* The figure below shows a histogram for the simulated distribution of $e^{\bar{X}}$ when $n=50$.
+* The figure below shows a histogram for the simulated distribution of $e^{\bar{X}}$ when $n=50$, $\mu = 2$, 
+and $s = 2$.
 The density of the Normal approximation is also shown in this figure.
 
 ```{r, echo=FALSE, fig.cap="Histogram of simulated values of exp(sample mean) with density of the Normal approximation overlaid. This assumes n=50 and that the data are from a Logistic distribution with mu = 2 and s = 2.", fig.height=6}
 
 set.seed(5138)
-R <- 500   ## number of bootstrap replications
+R <- 500   
 ex <- rep(0, R)
 ss <- 2
 n <- 50
 for(k in 1:R) {
    xx <- rlogis(n, location=2, scale=ss)
-   ex[k] <- exp(mean(xx))  ## compute mean of bootstrap sample
+   ex[k] <- exp(mean(xx))  
 }
 tt <- seq(-10, 40, length.out=1000)
 hist(ex, breaks="FD", las=1, col="grey", prob=TRUE,
@@ -82,12 +83,12 @@ intervals which does not depend on parametric approximations such as \@ref(eq:no
 
 ---
 
-**Example: Inference for the Correlation**
+**Example 2: Inference for the Correlation**
 
 * The sample correlation $\hat{\rho}$ which estimates the correlation $\rho = \textrm{Corr}(X_{i}, Y_{i})$
 between $X_{i}$ and $Y_{i}$ is defined as
 \begin{equation}
-\hat{\rho} = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X})(Y_{i} - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_{i} - \bar{X})^{2}}\sqrt{\sum_{i=1}^{n}(Y_{i} - \bar{Y})}} \nonumber
+\hat{\rho} = \frac{\sum_{i=1}^{n}(X_{i} - \bar{X})(Y_{i} - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_{i} - \bar{X})^{2}}\sqrt{\sum_{i=1}^{n}(Y_{i} - \bar{Y})^{2}}} \nonumber
 \end{equation}
 
 * Even such a relatively straightforward estimate has a pretty complicated formula for the estimated standard error if 
@@ -142,6 +143,7 @@ T_{n} = h\Big( X_{1}, \ldots, X_{n}   \Big)  \nonumber
 * Suppose we want to estimate the standard deviation of $T_{n}$. 
 
 * The true standard deviation of $T_{n}$ is referred to as the **standard error**. 
+(need to change this terminology)
 
 * Confidence intervals are often based on subtracting or adding an estimate of the standard error, 
 e.g.
@@ -168,8 +170,8 @@ but to characterize the distribution of $T_{n}$.
 
 * The bootstrap works in the following way:
 * For $r = 1, \ldots, R$:
-    + Draw a sample of size $n$: $(X_{1}^{*}, \ldots, X_{n}^{*})$ by sampling with replacement from $\mathbf{X}$.
-    + Compute $T_{n,r}^{*} = h(X_{1}^{*}, \ldots, X_{n}^{*})$. 
+    + Draw a sample of size $n$: $(X_{1,r}^{*}, \ldots, X_{n,r}^{*})$ by sampling **with replacement** from $\mathbf{X}$.
+    + Compute $T_{n,r}^{*} = h(X_{1,r}^{*}, \ldots, X_{n,r}^{*})$. 
 
 ---
 
@@ -181,9 +183,10 @@ P(X_{i}^{*} = X_{j}) = \frac{1}{n} \quad \textrm{ for } j=1,\ldots,n \nonumber
 
 * We will refer to each sample $(X_{1}^{*}, \ldots, X_{n}^{*})$ as a **bootstrap sample**.
 
-* We will refer to $T_{n,r}^{*}$ as a **bootstrap replication**.
+* We will refer to $T_{n,r}^{*}$ as a **bootstrap replication** of the statistic $T_{n}$.
 
-* The bootstrap estimate for the standard error of $T_{n}$ is
+* The bootstrap estimate $se_{boot}$ for the standard error of $T_{n}$ is the sample
+standard deviation from the bootstrap replications $T_{n,1}^{*}, \ldots, T_{n,R}^{*}$:
 \begin{equation}
 se_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} \Big)^{2} \Bigg]^{1/2} \nonumber
 \end{equation}
@@ -206,8 +209,8 @@ boostrap replications $T_{n,1}^{*}, \ldots, T_{n,R}^{*}$ to form a confidence in
 
 * The bootstrap $100 \times \alpha/2$ and $100 \times (1 - \alpha/2)$ percentiles are roughly defined as
 \begin{eqnarray}
-T_{[\alpha/2]}^{boot} &=& \textrm{the point } t^{*} \textrm{ such that } 100\alpha/2 \textrm{ of the bootstrap replications are less than } t^{*} \nonumber \\
-T_{1 - [\alpha/2]}^{boot} &=& \textrm{the point } t^{*} \textrm{ such that } 100\alpha/2 \textrm{ of the bootstrap replications are less than } t^{*} \nonumber 
+T_{[\alpha/2]}^{boot} &=& \textrm{the point } t^{*} \textrm{ such that } 100\alpha/2 \textrm{ percent of the bootstrap replications are less than } t^{*} \nonumber \\
+T_{1 - [\alpha/2]}^{boot} &=& \textrm{the point } t^{*} \textrm{ such that } 100(1 - \alpha/2) \textrm{ percent of the bootstrap replications are less than } t^{*} \nonumber 
 \end{eqnarray}
 
 * The level $100 \times (1 - \alpha) \%$ level boostrap percentile confidence interval 
@@ -917,7 +920,7 @@ For $r = 1,\ldots, R$:
     + A pivotal bootstrap confidence interval based on $T_{n,r}^{*} - T_{n}$ (not the studentized bootstrap confidence interval).
     + Bootstrap percentile confidence interval.
 
-
+* **Exercise 9.2**: What is the distribution of $X_{1,r}^{*}$?
 
 
 

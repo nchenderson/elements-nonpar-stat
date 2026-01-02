@@ -85,7 +85,7 @@ E\{ \hat{f}_{h_{n}}^{H}(x) \} &=& \frac{1}{n h_{n}} E\{ n_{k} \} \nonumber \\
 
 * In **R**, histograms are computed using the `hist` function 
 
-```r
+``` r
 hist(x, breaks, probability, plot, ...)
 ```
 
@@ -114,14 +114,14 @@ This can be changed using the **right** argument of the **hist** function.
 we will focus on the **age** variable.
 
 
-```r
+``` r
 kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
                      header=TRUE)
 ```
 
 * You can plot a histogram of **age** just by calling the `hist` function.
 
-```r
+``` r
 kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
 ```
 
@@ -131,7 +131,7 @@ kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
 * Use the `probability = TRUE` argument to plot the density-estimate version of the histogram.
 This histogram should integrate to 1.
 
-```r
+``` r
 kidney.hist2 <- hist(kidney$age, main="Histogram of Age on Probability Scale", 
                      xlab="Age from Kidney Data", probability=TRUE)
 ```
@@ -143,7 +143,7 @@ kidney.hist2 <- hist(kidney$age, main="Histogram of Age on Probability Scale",
 * In addition to generating a histogram plot, the histogram function 
 also returns useful stuff.
 
-```r
+``` r
 names(kidney.hist)
 ```
 
@@ -161,7 +161,7 @@ names(kidney.hist)
    + the midpoint of each of the bins
 
 
-```r
+``` r
 kidney.hist$breaks
 ```
 
@@ -169,7 +169,7 @@ kidney.hist$breaks
 ## [1] 10 20 30 40 50 60 70 80 90
 ```
 
-```r
+``` r
 kidney.hist$counts
 ```
 
@@ -177,7 +177,7 @@ kidney.hist$counts
 ## [1]  4 74 35 11 13 12  6  2
 ```
 
-```r
+``` r
 ## The following sum should match the first element of kidney.hist$counts[1]
 sum(kidney.hist$breaks[1] < kidney$age & kidney$age <= kidney.hist$breaks[2]) 
 ```
@@ -189,7 +189,7 @@ sum(kidney.hist$breaks[1] < kidney$age & kidney$age <= kidney.hist$breaks[2])
 * Let's check that the density values returned by `hist` match our definition of the histogram density estimate in \@ref(eq:hist-density).
 
 
-```r
+``` r
 binwidth <- kidney.hist$breaks[2] - kidney.hist$breaks[1]
 kidney.hist$density
 ```
@@ -199,7 +199,7 @@ kidney.hist$density
 ## [7] 0.003821656 0.001273885
 ```
 
-```r
+``` r
 kidney.hist$counts/(length(kidney$age)*binwidth)
 ```
 
@@ -861,7 +861,7 @@ let's do an example ourselves to see how the process works.
     + Output: the value of $\hat{J}_{MISE}(h)$
 
 
-```r
+``` r
 J_mise <- function(h, x) {
     n <- length(x)
     loo.val <- rep(0, n)
@@ -897,7 +897,7 @@ a density which is oversmoothed.
 
 * Let us compute $\hat{J}(h)$ for a grid of $100$ bandwidths between $1/2$ and $5$:
 
-```r
+``` r
 h.grid <- seq(1/2, 5, length.out=100)
 CV.est <- rep(0, 100)
 for(j in 1:100) {
@@ -908,7 +908,7 @@ for(j in 1:100) {
 * Now, if we plot $\hat{J}(h)$ vs. $h$, we can see what the best value of the bandwidth is.
 From the graph, it appears that a bandwidth of roughly $h = 1.8$ minimizes $\hat{J}(h)$
 
-```r
+``` r
 plot(h.grid, CV.est, xlab="bandwidth", ylab="J_mise(h)", 
      main = "Cross-Validation Estimates for Age Data")
 ```
@@ -917,7 +917,7 @@ plot(h.grid, CV.est, xlab="bandwidth", ylab="J_mise(h)",
 
 * The specific value of the bandwidth where $\hat{J}(h_{j})$ reaches its minimum is:
 
-```r
+``` r
 h.grid[ which.min(CV.est) ]
 ```
 
@@ -949,7 +949,7 @@ to estimate $\int \log \{ \hat{f}_{h}(x) \}  f(x) dx$.
 
 * An **R** function which can compute $\hat{J}_{KL}(h)$ is given below:
 
-```r
+``` r
 J_KL <- function(h, x) {
   n <- length(x)
   loo.val <- rep(0, n)
@@ -972,7 +972,7 @@ J_KL <- function(h, x) {
 
 * In **R**, kernel density estimates are computed using the `density` function 
 
-```r
+``` r
 density(x, bw, kernel, n, ...)
 ```
 * **x** - the vector containing the data
@@ -993,7 +993,7 @@ density(x, bw, kernel, n, ...)
 * In this section, we will use the `galaxies` dataset in the `MASS` package. 
 The first few observations of the `galaxies` dataset look like:  
 
-```r
+``` r
 library(MASS)
 galaxies[1:5]
 ```
@@ -1004,13 +1004,13 @@ galaxies[1:5]
 
 * Kernel density estimates can be computed in **R** using the `density` function
 
-```r
+``` r
 galax.dens <- density(galaxies)
 ```
 
 * You can display a density plot just by applying the `plot` function to our `galax.dens` object
 
-```r
+``` r
 plot(galax.dens, main="Default Density Estimate for Galaxy Data", 
      xlab="velocity in km/sec", ylab="Density", lwd=2)
 ```
@@ -1025,7 +1025,7 @@ plot(galax.dens, main="Default Density Estimate for Galaxy Data",
     
 * So, just plotting the `(x, y)` should give you a plot of the density estimate
 
-```r
+``` r
 plot(galax.dens$x, galax.dens$y, main="Default Density Estimate for Galaxy Data", 
      xlab="velocity in km/sec", ylab="Density", lwd=2)
 ```
@@ -1039,7 +1039,7 @@ and `galax.dens$y` should each have length 512.
 
 * The `bw` component returned by the `density` function is the bandwidth used to estimate the density.
 
-```r
+``` r
 galax.dens$bw
 ```
 
@@ -1051,7 +1051,7 @@ galax.dens$bw
 
 * We can check that this is true with the following code:
 
-```r
+``` r
 0.9*min(sd(galaxies), IQR(galaxies)/1.34)/(length(galaxies)^(1/5))
 ```
 
@@ -1073,22 +1073,22 @@ at points which are either less than the minimum x value or greater than maximum
 * For example, suppose we want to know the value of the density estimate at the points $18000$
 and $33000$. This could be done with the following code
 
-```r
+``` r
 galaxy.fn <- approxfun(galax.dens$x, galax.dens$y)
 
 galaxy.fn(18000)
 ```
 
 ```
-## [1] 4.73857e-05
+## [1] 4.729812e-05
 ```
 
-```r
+``` r
 galaxy.fn(33000)
 ```
 
 ```
-## [1] 1.004542e-05
+## [1] 1.003912e-05
 ```
 
 

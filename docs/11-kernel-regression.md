@@ -189,7 +189,7 @@ smoother kernel function $K(t)$.
 * `R` code for computing a local average estimate $\hat{m}_{2}^{loc}(x)$ at the 
 points $x = 31, 32, 33, ...., 71$ is given below
 
-```r
+``` r
 xseq <- seq(31, 71, by=1)
 hn <- 2
 nx <- length(xseq)
@@ -220,14 +220,14 @@ x_{i} &=& \frac{1}{2}(\textrm{Age at Visit 2}_{i} + \textrm{Age at Visit 1}_{i})
 \end{eqnarray}
 
 
-```r
+``` r
 tmp <- read.table("https://web.stanford.edu/~hastie/ElemStatLearn/datasets/bone.data", 
                   header=TRUE)
 bonedat <- tmp[!duplicated(tmp$idnum),]  ## only keep the first observation of a person
 ```
 
 
-```r
+``` r
 xseq <- seq(9.4, 25.2, by=.1)
 hn <- 1
 nx <- length(xseq)
@@ -345,7 +345,7 @@ the design bias should be small.
 
 * The Nadaraya-Watson estimator can be computed in `R` with the `ksmooth` function.
 
-```r
+``` r
 ksmooth(x, y, kernel, bandwidth, x.points, ...)
 ```
 
@@ -367,7 +367,7 @@ is estimated. The `y` vector from the fitted `ksmooth` object will be a vector c
 at a vector of desired points $x.points = (t_{1}, \ldots, t_{q})$, you could use 
 something like
 
-```r
+``` r
 MyNWEst <- function(x, y, bandwidth, x.points) {
     q <- length(x.points) 
     nw.est <- numeric(q)
@@ -384,7 +384,7 @@ MyNWEst <- function(x, y, bandwidth, x.points) {
 * To compute the Nadraya-Watson estimate at a set of equally spaced of points from $10$ to $25$
 using bandwidth $0.5$ and plot the result, you could use the following code:
 
-```r
+``` r
 xseq <- seq(10, 25, by=.1)
 bone.nwest <- ksmooth(x=bonedat$age, y=bonedat$spnbmd, kernel="normal", 
                       bandwidth=2.7*0.5, x.points=xseq)
@@ -398,7 +398,7 @@ lines(bone.nwest$x, bone.nwest$y, lwd=3, col="red")
 
 <img src="11-kernel-regression_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
-```r
+``` r
 ## Note that bone.nwest$x should equal xseq
 ```
 
@@ -480,7 +480,7 @@ from asymmetry near the boundary (draw a picture).
 input for this function has the same structure as our earlier Nadaraya-Watson `R` function. 
 
 
-```r
+``` r
 MyLocLinear <- function(x, y, bandwidth, x.points) {
   q <- length(x.points) 
   loclin.est <- numeric(q)
@@ -501,7 +501,7 @@ MyLocLinear <- function(x, y, bandwidth, x.points) {
 * Using age as the covariate, we will estimate the regression function at the points $10, 10.1, 10.2, ..., 25$:
 
 
-```r
+``` r
 xseq <- seq(10, 25, by=.1)
 bone.loclin <- MyLocLinear(x=bonedat$age, y=bonedat$spnbmd, 
                            bandwidth=0.5, x.points=xseq)
@@ -853,7 +853,7 @@ then the degrees of freedom is equal to $1$.
 * The first step is to write a function that computes the $n_{h_{n}}(x_{i})$ for a given value of $h_{n}$. This will allow us to find the degrees of freedom
 and will also be helpful later when computing LOOCV.
 
-```r
+``` r
 NumInBins <- function(hh, xx) {
   ## This function returns a vector of length n
   ## Elements of this vector will be: n_[h_n](x_1), n_[h_n](x_2), ...
@@ -870,7 +870,7 @@ NumInBins <- function(hh, xx) {
 
 * We also want a function that returns the vector with elements $\hat{m}_{h_{n}}(x_{1}), \hat{m}_{h_{n}}(x_{2}) , \ldots \hat{m}_{h_{n}}(x_{n})$.
 
-```r
+``` r
 MyLocAvgEst <- function(xx, yy, hh) {
   n <- length(xx)
   m.hat.loc <- numeric(n)
@@ -892,7 +892,7 @@ MyLocAvgEst <- function(xx, yy, hh) {
 \end{equation}
 that we mentioned before with $\tilde{h}_{n} = 0.1$, I got a an estimate of $\sigma^{2}$ which was quite close to $0.0015$
 
-```r
+``` r
 sigsq.est <- 0.0015
 ```
 
@@ -900,7 +900,7 @@ sigsq.est <- 0.0015
 
 * Now, we are ready to compute the $C_{p}$ statistic. We will compute $C_{p}(h_{n})$ for $h_{n} = 0.01, 0.11, \ldots, 10.01$. This can be done with the following code:
 
-```r
+``` r
 hseq <- seq(.01, 10.01, by=.1)
 ngrid <- length(hseq)
 n <- length(bonedat$age)
@@ -914,7 +914,7 @@ for(k in 1:ngrid) {
 
 * We can plot the values of $C_{p}(h_{n})$ vs. $h_{n}$ to roughly see where the minimum value is. From the graph, it looks to be slighly less than $1$.
 
-```r
+``` r
 plot(hseq, Cp, ylim=c(0.001,.003), main="Bone Data: Cp Stat for Loc. Avg. Est.", 
      xlab="hn", ylab="Cp")
 lines(hseq, Cp)
@@ -924,7 +924,7 @@ lines(hseq, Cp)
 
 * More precisely, the value of $h_{n}$ from our sequence which has the smallest value of $C_{p}(h_{n})$ is $0.81$.
 
-```r
+``` r
 hseq[which.min(Cp)]
 ```
 
@@ -944,7 +944,7 @@ we used in the description of the LOOCV.
 * `R` code to compute $\textrm{LOOCV}(h_{n})$ at the same sequence of $h_{n}$ values used for the $C_{p}$
 statistic is given below:
 
-```r
+``` r
 LOOCV <- numeric(ngrid)
 for(k in 1:ngrid) {
   m.hat <- MyLocAvgEst(bonedat$age, bonedat$spnbmd, hseq[k])
@@ -957,7 +957,7 @@ for(k in 1:ngrid) {
 
 * We can plot the values of $\textrm{LOOCV}(h_{n})$ vs. $h_{n}$ to roughly see where the minimum value is.
 
-```r
+``` r
 plot(hseq, LOOCV, ylim=c(0.001,.003), main="Bone Data: LOOCV Stat for Loc. Avg. Est.", 
      xlab="hn", ylab="LOOCV")
 lines(hseq, LOOCV)
@@ -967,7 +967,7 @@ lines(hseq, LOOCV)
 
 * The value of $h_{n}$ from our sequence which has the smallest value of $\textrm{LOOCV}(h_{n})$ is $0.81$.
 
-```r
+``` r
 hseq[which.min(LOOCV)]
 ```
 
@@ -993,7 +993,7 @@ so they can differ somewhat in the values they return unless you set these param
 
 * `lowess` does local quadratic and local linear regression. The format of the `lowess` function is the following:
 
-```r
+``` r
 loess(formula, data, span)
 ```
 * **formula** - usally of the form `y ~ x` if using a single response vector `y` and covariate `x`
@@ -1038,7 +1038,7 @@ regression with updated weights that reduce the influence of outliers. `loess` w
 
 * Let's try plotting a `loess` fit using the bone data. We will set `span = 2/3` instead of 3/4
 
-```r
+``` r
 bone.low.fit <- loess(spnbmd ~ age, data=bonedat, span=2/3)
 
 plot(bone.low.fit, ylab="Relative Change in Bone MD", 
@@ -1057,7 +1057,7 @@ abline(0,0, lty=2)
 * If you want to change the settings for `lowess` and `loess` so that they are using the exact same fitting procedure,
 you can use the following approach:
 
-```r
+``` r
 lowess.fit <- lowess(x=bonedat$age, y=bonedat$spnbmd, iter=3, delta=0, f=2/3)
 loess.fit <- loess(spnbmd ~ age, data=bonedat, span=2/3, degree=1, family="symmetric", 
                    iterations=4, surface="direct")
@@ -1067,7 +1067,7 @@ loess.fit <- loess(spnbmd ~ age, data=bonedat, span=2/3, degree=1, family="symme
 
 * The `locpoly` function from the `KernSmooth` package implements local polynomial regression as it was described in Section 10.3.
 
-```r
+``` r
 locpoly(x, y, degree, kernel = "normal", bandwidth)
 ```
 
@@ -1076,7 +1076,7 @@ locpoly(x, y, degree, kernel = "normal", bandwidth)
 * For local linear regression, you should get the same answer as our function `MyLocLinear` written in Section 10.3 
 if you use `degree=1` with the locpoly function:
 
-```r
+``` r
 library(KernSmooth)
 ```
 
@@ -1085,7 +1085,7 @@ library(KernSmooth)
 ## Copyright M. P. Wand 1997-2009
 ```
 
-```r
+``` r
 locpoly.fit <- locpoly(x = bonedat$age, y=bonedat$spnbmd, degree=1, bandwidth=0.5)
 mylocpoly.fit <- MyLocLinear(x=bonedat$age, y=bonedat$spnbmd, bandwidth=0.5, 
                              x.points=locpoly.fit$x) 
@@ -1102,7 +1102,7 @@ lines(locpoly.fit$x, mylocpoly.fit, col="red", lwd=2)
 
 * The `supsmu` function implements Friedman's "super smoother" (@friedman1984).
 
-```r
+``` r
 supsmu(x, y, span="cv", bass=0)
 ```
 * **x** - vector of covariate values.

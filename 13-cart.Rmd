@@ -4,11 +4,11 @@
 
 ## Introduction
 
-* Let's think about the regressogram estimate again. 
+* Let's think about the **regressogram** estimate again. 
 
 * The regressogram estimate of the regression function is a piecewise constant function that is constant within each of $p$ "bins"
 \begin{equation}
-\hat{m}_{h_{n}}^{R}(x) = \frac{1}{a}\sum_{i=1}^{n} Y_{i} I(x_{i} \in B_{k}), \qquad \textrm{ if } x \in B_{k} \nonumber
+\hat{m}_{h_{n}}^{R}(x) = \frac{1}{n_{k,h_{n}}}\sum_{i=1}^{n} Y_{i} I(x_{i} \in B_{k}), \qquad \textrm{ if } x \in B_{k} \nonumber
 \end{equation}
 
 * Figure \@ref(fig:cart-motivate) shows an example of a regressogram estimate with 3 bins. 
@@ -95,7 +95,7 @@ sum( (yy[xx < 2/3] - mean(yy[xx < 2/3]))^2 ) +
 function that is constant within each of several bins. We will focus on the well-known 
 CART (Classification and Regression Trees) method for using regression trees.
 
-* More generally, with multivariate covariates CART will fit a regression function that is constant
+* More generally, with multivariate covariates, CART will fit a regression function that is constant
 within each of many multi-dimensional "rectangles".
 
 * The main difference between CART and the regressogram is that the placements
@@ -254,7 +254,7 @@ persp(x, y, z, zlim=c(-.2, 2.5), cex=1.5)
 * A CART regression tree for the bone data using both age and sex is shown in Figure \@ref(fig:bone-dectree).
 
 ```{r, bone-dectree, echo=FALSE, fig.cap="Regression tree for the bone data. This fitted regression tree has 6 bins.", fig.height=5.5}
-bonedat <- read.csv("~/Documents/STAT685Notes/Data/bone.csv")
+bonedat <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/bone.csv")
 ## This has variables age and gender
 mod.bone <- rpart(spnbmd ~ age + gender, data = bonedat, cp = .02)
 rpart.plot(mod.bone, extra=0, cex=1.5)

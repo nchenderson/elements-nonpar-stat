@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 Density Estimation | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 Density Estimation | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
-  <meta property="og:url" content="https://nchenderson.github.io/elements-nonpar-stat/" />
   
   <meta property="og:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
@@ -24,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2020-04-23" />
+<meta name="date" content="2026-01-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,8 @@
   
 <link rel="prev" href="edf.html"/>
 <link rel="next" href="bootstrap-main.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,29 +49,34 @@
 
 
 
-
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,15 +85,15 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -101,7 +106,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -113,6 +118,34 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -132,7 +165,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#sec:whatisnonpar"><i class="fa fa-check"></i><b>1.1</b> What is Nonparametric Statistics?</a></li>
 <li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#sec:course-outline"><i class="fa fa-check"></i><b>1.2</b> Outline of Course</a></li>
 <li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#sec:example-nonpar-tests"><i class="fa fa-check"></i><b>1.3</b> Example 1: Nonparametric vs. Parametric Two-Sample Testing</a></li>
@@ -143,32 +177,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Working with R</a></li>
 <li class="part"><span><b>I Nonparametric Testing</b></span></li>
-<li class="chapter" data-level="3" data-path="rank-tests.html"><a href="rank-tests.html"><i class="fa fa-check"></i><b>3</b> Rank and Sign Statistics</a><ul>
-<li class="chapter" data-level="3.1" data-path="rank-tests.html"><a href="rank-tests.html#ranks"><i class="fa fa-check"></i><b>3.1</b> Ranks</a><ul>
+<li class="chapter" data-level="3" data-path="rank-tests.html"><a href="rank-tests.html"><i class="fa fa-check"></i><b>3</b> Rank and Sign Statistics</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="rank-tests.html"><a href="rank-tests.html#ranks"><i class="fa fa-check"></i><b>3.1</b> Ranks</a>
+<ul>
 <li class="chapter" data-level="3.1.1" data-path="rank-tests.html"><a href="rank-tests.html#definition"><i class="fa fa-check"></i><b>3.1.1</b> Definition</a></li>
 <li class="chapter" data-level="3.1.2" data-path="rank-tests.html"><a href="rank-tests.html#handling-ties"><i class="fa fa-check"></i><b>3.1.2</b> Handling Ties</a></li>
 <li class="chapter" data-level="3.1.3" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-ranks"><i class="fa fa-check"></i><b>3.1.3</b> Properties of Ranks</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test-a-two-sample-test"><i class="fa fa-check"></i><b>3.2</b> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test</a><ul>
+<li class="chapter" data-level="3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-rank-sum-wrs-test-a-two-sample-test"><i class="fa fa-check"></i><b>3.2</b> The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test</a>
+<ul>
 <li class="chapter" data-level="3.2.1" data-path="rank-tests.html"><a href="rank-tests.html#goal-of-the-test"><i class="fa fa-check"></i><b>3.2.1</b> Goal of the Test</a></li>
 <li class="chapter" data-level="3.2.2" data-path="rank-tests.html"><a href="rank-tests.html#definition-of-the-wrs-test-statistic"><i class="fa fa-check"></i><b>3.2.2</b> Definition of the WRS Test Statistic</a></li>
 <li class="chapter" data-level="3.2.3" data-path="rank-tests.html"><a href="rank-tests.html#computing-p-values-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.3</b> Computing p-values for the WRS Test</a></li>
 <li class="chapter" data-level="3.2.4" data-path="rank-tests.html"><a href="rank-tests.html#computing-the-wrs-test-in-r"><i class="fa fa-check"></i><b>3.2.4</b> Computing the WRS test in R</a></li>
 <li class="chapter" data-level="3.2.5" data-path="rank-tests.html"><a href="rank-tests.html#additional-notes-for-the-wrs-test"><i class="fa fa-check"></i><b>3.2.5</b> Additional Notes for the WRS test</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.3</b> One Sample Tests</a><ul>
+<li class="chapter" data-level="3.3" data-path="rank-tests.html"><a href="rank-tests.html#one-sample-tests"><i class="fa fa-check"></i><b>3.3</b> One Sample Tests</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="rank-tests.html"><a href="rank-tests.html#sign-test"><i class="fa fa-check"></i><b>3.3.1</b> The Sign Test</a></li>
 <li class="chapter" data-level="3.3.2" data-path="rank-tests.html"><a href="rank-tests.html#the-wilcoxon-signed-rank-test"><i class="fa fa-check"></i><b>3.3.2</b> The Wilcoxon Signed Rank Test</a></li>
 <li class="chapter" data-level="3.3.3" data-path="rank-tests.html"><a href="rank-tests.html#using-r-to-perform-the-sign-and-wilcoxon-tests"><i class="fa fa-check"></i><b>3.3.3</b> Using R to Perform the Sign and Wilcoxon Tests</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#power-and-comparisons-with-parametric-tests"><i class="fa fa-check"></i><b>3.4</b> Power and Comparisons with Parametric Tests</a><ul>
+<li class="chapter" data-level="3.4" data-path="rank-tests.html"><a href="rank-tests.html#power-and-comparisons-with-parametric-tests"><i class="fa fa-check"></i><b>3.4</b> Power and Comparisons with Parametric Tests</a>
+<ul>
 <li class="chapter" data-level="3.4.1" data-path="rank-tests.html"><a href="rank-tests.html#the-power-function-of-a-test"><i class="fa fa-check"></i><b>3.4.1</b> The Power Function of a Test</a></li>
 <li class="chapter" data-level="3.4.2" data-path="rank-tests.html"><a href="rank-tests.html#power-comparisons-and-asymptotic-relative-efficiency"><i class="fa fa-check"></i><b>3.4.2</b> Power Comparisons and Asymptotic Relative Efficiency</a></li>
 <li class="chapter" data-level="3.4.3" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-examples"><i class="fa fa-check"></i><b>3.4.3</b> Efficiency Examples</a></li>
 <li class="chapter" data-level="3.4.4" data-path="rank-tests.html"><a href="rank-tests.html#efficiency-comparisons-for-several-distributions"><i class="fa fa-check"></i><b>3.4.4</b> Efficiency Comparisons for Several Distributions</a></li>
 <li class="chapter" data-level="3.4.5" data-path="rank-tests.html"><a href="rank-tests.html#a-power-contest"><i class="fa fa-check"></i><b>3.4.5</b> A Power “Contest”</a></li>
 </ul></li>
-<li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#linear-rank-statistics-in-general"><i class="fa fa-check"></i><b>3.5</b> Linear Rank Statistics in General</a><ul>
+<li class="chapter" data-level="3.5" data-path="rank-tests.html"><a href="rank-tests.html#linear-rank-statistics-in-general"><i class="fa fa-check"></i><b>3.5</b> Linear Rank Statistics in General</a>
+<ul>
 <li class="chapter" data-level="3.5.1" data-path="rank-tests.html"><a href="rank-tests.html#definition-1"><i class="fa fa-check"></i><b>3.5.1</b> Definition</a></li>
 <li class="chapter" data-level="3.5.2" data-path="rank-tests.html"><a href="rank-tests.html#properties-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.2</b> Properties of Linear Rank Statistics</a></li>
 <li class="chapter" data-level="3.5.3" data-path="rank-tests.html"><a href="rank-tests.html#other-examples-of-linear-rank-statistics"><i class="fa fa-check"></i><b>3.5.3</b> Other Examples of Linear Rank Statistics</a></li>
@@ -177,8 +217,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.6" data-path="rank-tests.html"><a href="rank-tests.html#additional-reading"><i class="fa fa-check"></i><b>3.6</b> Additional Reading</a></li>
 <li class="chapter" data-level="3.7" data-path="rank-tests.html"><a href="rank-tests.html#exercises"><i class="fa fa-check"></i><b>3.7</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a><ul>
-<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskal-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskal-Wallis Test</a><ul>
+<li class="chapter" data-level="4" data-path="krusk-wallis.html"><a href="krusk-wallis.html"><i class="fa fa-check"></i><b>4</b> Rank Tests for Multiple Groups</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#the-kruskal-wallis-test"><i class="fa fa-check"></i><b>4.1</b> The Kruskal-Wallis Test</a>
+<ul>
 <li class="chapter" data-level="4.1.1" data-path="krusk-wallis.html"><a href="krusk-wallis.html#definition-2"><i class="fa fa-check"></i><b>4.1.1</b> Definition</a></li>
 <li class="chapter" data-level="4.1.2" data-path="krusk-wallis.html"><a href="krusk-wallis.html#asymptotic-distribution-and-connection-to-one-way-anova"><i class="fa fa-check"></i><b>4.1.2</b> Asymptotic Distribution and Connection to One-Way ANOVA</a></li>
 </ul></li>
@@ -188,9 +230,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.5" data-path="krusk-wallis.html"><a href="krusk-wallis.html#additional-reading-1"><i class="fa fa-check"></i><b>4.5</b> Additional Reading</a></li>
 <li class="chapter" data-level="4.6" data-path="krusk-wallis.html"><a href="krusk-wallis.html#exercises-1"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a><ul>
+<li class="chapter" data-level="5" data-path="permutation.html"><a href="permutation.html"><i class="fa fa-check"></i><b>5</b> Permutation Tests</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="permutation.html"><a href="permutation.html#notation"><i class="fa fa-check"></i><b>5.1</b> Notation</a></li>
-<li class="chapter" data-level="5.2" data-path="permutation.html"><a href="permutation.html#permutation-tests-for-the-two-sample-problem"><i class="fa fa-check"></i><b>5.2</b> Permutation Tests for the Two-Sample Problem</a><ul>
+<li class="chapter" data-level="5.2" data-path="permutation.html"><a href="permutation.html#permutation-tests-for-the-two-sample-problem"><i class="fa fa-check"></i><b>5.2</b> Permutation Tests for the Two-Sample Problem</a>
+<ul>
 <li class="chapter" data-level="5.2.1" data-path="permutation.html"><a href="permutation.html#example-1"><i class="fa fa-check"></i><b>5.2.1</b> Example 1</a></li>
 <li class="chapter" data-level="5.2.2" data-path="permutation.html"><a href="permutation.html#permutation-test-p-values"><i class="fa fa-check"></i><b>5.2.2</b> Permutation Test p-values</a></li>
 <li class="chapter" data-level="5.2.3" data-path="permutation.html"><a href="permutation.html#example-2-ratios-of-means"><i class="fa fa-check"></i><b>5.2.3</b> Example 2: Ratios of Means</a></li>
@@ -202,26 +246,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.6" data-path="permutation.html"><a href="permutation.html#exercises-2"><i class="fa fa-check"></i><b>5.6</b> Exercises</a></li>
 </ul></li>
 <li class="part"><span><b>II Nonparametric Estimation</b></span></li>
-<li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a><ul>
+<li class="chapter" data-level="6" data-path="ustat.html"><a href="ustat.html"><i class="fa fa-check"></i><b>6</b> U-Statistics</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="ustat.html"><a href="ustat.html#definition-3"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
-<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a><ul>
+<li class="chapter" data-level="6.2" data-path="ustat.html"><a href="ustat.html#examples"><i class="fa fa-check"></i><b>6.2</b> Examples</a>
+<ul>
 <li class="chapter" data-level="6.2.1" data-path="ustat.html"><a href="ustat.html#example-1-the-sample-mean"><i class="fa fa-check"></i><b>6.2.1</b> Example 1: The Sample Mean</a></li>
 <li class="chapter" data-level="6.2.2" data-path="ustat.html"><a href="ustat.html#example-2-the-sample-variance"><i class="fa fa-check"></i><b>6.2.2</b> Example 2: The Sample Variance</a></li>
 <li class="chapter" data-level="6.2.3" data-path="ustat.html"><a href="ustat.html#example-3-ginis-mean-difference"><i class="fa fa-check"></i><b>6.2.3</b> Example 3: Gini’s Mean Difference</a></li>
 <li class="chapter" data-level="6.2.4" data-path="ustat.html"><a href="ustat.html#example-4-wilcoxon-signed-rank-statistic"><i class="fa fa-check"></i><b>6.2.4</b> Example 4: Wilcoxon Signed Rank Statistic</a></li>
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="ustat.html"><a href="ustat.html#inference-using-u-statistics"><i class="fa fa-check"></i><b>6.3</b> Inference using U-statistics</a></li>
-<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#u-statistics-for-two-sample-problems"><i class="fa fa-check"></i><b>6.4</b> U-statistics for Two-Sample Problems</a><ul>
+<li class="chapter" data-level="6.4" data-path="ustat.html"><a href="ustat.html#u-statistics-for-two-sample-problems"><i class="fa fa-check"></i><b>6.4</b> U-statistics for Two-Sample Problems</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="ustat.html"><a href="ustat.html#the-mann-whitney-statistic"><i class="fa fa-check"></i><b>6.4.1</b> The Mann-Whitney Statistic</a></li>
 </ul></li>
-<li class="chapter" data-level="6.5" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.5</b> Measures of Association</a><ul>
+<li class="chapter" data-level="6.5" data-path="ustat.html"><a href="ustat.html#measures-of-association"><i class="fa fa-check"></i><b>6.5</b> Measures of Association</a>
+<ul>
 <li class="chapter" data-level="6.5.1" data-path="ustat.html"><a href="ustat.html#spearmans-rank-correlation"><i class="fa fa-check"></i><b>6.5.1</b> Spearman’s Rank Correlation</a></li>
 <li class="chapter" data-level="6.5.2" data-path="ustat.html"><a href="ustat.html#kendalls-tau"><i class="fa fa-check"></i><b>6.5.2</b> Kendall’s tau</a></li>
 <li class="chapter" data-level="6.5.3" data-path="ustat.html"><a href="ustat.html#distance-covariance-and-correlation"><i class="fa fa-check"></i><b>6.5.3</b> Distance Covariance and Correlation</a></li>
 </ul></li>
 <li class="chapter" data-level="6.6" data-path="ustat.html"><a href="ustat.html#exercises-3"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="edf.html"><a href="edf.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a><ul>
+<li class="chapter" data-level="7" data-path="edf.html"><a href="edf.html"><i class="fa fa-check"></i><b>7</b> The Empirical Distribution Function</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="edf.html"><a href="edf.html#definition-and-basic-properties"><i class="fa fa-check"></i><b>7.1</b> Definition and Basic Properties</a></li>
 <li class="chapter" data-level="7.2" data-path="edf.html"><a href="edf.html#confidence-intervals-for-ft"><i class="fa fa-check"></i><b>7.2</b> Confidence intervals for F(t)</a></li>
 <li class="chapter" data-level="7.3" data-path="edf.html"><a href="edf.html#the-empirical-distribution-function-in-r"><i class="fa fa-check"></i><b>7.3</b> The Empirical Distribution Function in R</a></li>
@@ -230,21 +279,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.6" data-path="edf.html"><a href="edf.html#additional-reading-2"><i class="fa fa-check"></i><b>7.6</b> Additional Reading</a></li>
 <li class="chapter" data-level="7.7" data-path="edf.html"><a href="edf.html#exercises-4"><i class="fa fa-check"></i><b>7.7</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a><ul>
+<li class="chapter" data-level="8" data-path="density-estimation.html"><a href="density-estimation.html"><i class="fa fa-check"></i><b>8</b> Density Estimation</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="density-estimation.html"><a href="density-estimation.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
-<li class="chapter" data-level="8.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms"><i class="fa fa-check"></i><b>8.2</b> Histograms</a><ul>
+<li class="chapter" data-level="8.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms"><i class="fa fa-check"></i><b>8.2</b> Histograms</a>
+<ul>
 <li class="chapter" data-level="8.2.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-5"><i class="fa fa-check"></i><b>8.2.1</b> Definition</a></li>
 <li class="chapter" data-level="8.2.2" data-path="density-estimation.html"><a href="density-estimation.html#histograms-in-r"><i class="fa fa-check"></i><b>8.2.2</b> Histograms in R</a></li>
 <li class="chapter" data-level="8.2.3" data-path="density-estimation.html"><a href="density-estimation.html#performance-of-the-histogram-estimate-and-bin-width-selection"><i class="fa fa-check"></i><b>8.2.3</b> Performance of the Histogram Estimate and Bin Width Selection</a></li>
 <li class="chapter" data-level="8.2.4" data-path="density-estimation.html"><a href="density-estimation.html#choosing-the-histogram-bin-width"><i class="fa fa-check"></i><b>8.2.4</b> Choosing the Histogram Bin Width</a></li>
 </ul></li>
 <li class="chapter" data-level="8.3" data-path="density-estimation.html"><a href="density-estimation.html#a-box-type-density-estimate"><i class="fa fa-check"></i><b>8.3</b> A Box-type Density Estimate</a></li>
-<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a><ul>
+<li class="chapter" data-level="8.4" data-path="density-estimation.html"><a href="density-estimation.html#kernel-density-estimation"><i class="fa fa-check"></i><b>8.4</b> Kernel Density Estimation</a>
+<ul>
 <li class="chapter" data-level="8.4.1" data-path="density-estimation.html"><a href="density-estimation.html#definition-6"><i class="fa fa-check"></i><b>8.4.1</b> Definition</a></li>
 <li class="chapter" data-level="8.4.2" data-path="density-estimation.html"><a href="density-estimation.html#bias-variance-and-amise-of-kernel-density-estimates"><i class="fa fa-check"></i><b>8.4.2</b> Bias, Variance, and AMISE of Kernel Density Estimates</a></li>
 <li class="chapter" data-level="8.4.3" data-path="density-estimation.html"><a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule-and-silvermans-rule-of-thumb"><i class="fa fa-check"></i><b>8.4.3</b> Bandwidth Selection with the Normal Reference Rule and Silverman’s “Rule of Thumb”</a></li>
 </ul></li>
-<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5</b> Cross-Validation for Bandwidth Selection</a><ul>
+<li class="chapter" data-level="8.5" data-path="density-estimation.html"><a href="density-estimation.html#cross-validation-for-bandwidth-selection"><i class="fa fa-check"></i><b>8.5</b> Cross-Validation for Bandwidth Selection</a>
+<ul>
 <li class="chapter" data-level="8.5.1" data-path="density-estimation.html"><a href="density-estimation.html#squared-error-cross-validation"><i class="fa fa-check"></i><b>8.5.1</b> Squared-Error Cross-Validation</a></li>
 <li class="chapter" data-level="8.5.2" data-path="density-estimation.html"><a href="density-estimation.html#computing-the-cross-validation-bandwidth"><i class="fa fa-check"></i><b>8.5.2</b> Computing the Cross-validation Bandwidth</a></li>
 <li class="chapter" data-level="8.5.3" data-path="density-estimation.html"><a href="density-estimation.html#likelihood-cross-validation"><i class="fa fa-check"></i><b>8.5.3</b> Likelihood Cross-Validation</a></li>
@@ -254,49 +307,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.8" data-path="density-estimation.html"><a href="density-estimation.html#exercises-5"><i class="fa fa-check"></i><b>8.8</b> Exercises</a></li>
 </ul></li>
 <li class="part"><span><b>III Quantifying Uncertainty</b></span></li>
-<li class="chapter" data-level="9" data-path="bootstrap-main.html"><a href="bootstrap-main.html"><i class="fa fa-check"></i><b>9</b> The Bootstrap</a><ul>
+<li class="chapter" data-level="9" data-path="bootstrap-main.html"><a href="bootstrap-main.html"><i class="fa fa-check"></i><b>9</b> The Bootstrap</a>
+<ul>
 <li class="chapter" data-level="9.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#introduction-1"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
-<li class="chapter" data-level="9.2" data-path="bootstrap-main.html"><a href="bootstrap-main.html#description-of-the-bootstrap"><i class="fa fa-check"></i><b>9.2</b> Description of the Bootstrap</a><ul>
+<li class="chapter" data-level="9.2" data-path="bootstrap-main.html"><a href="bootstrap-main.html#description-of-the-bootstrap"><i class="fa fa-check"></i><b>9.2</b> Description of the Bootstrap</a>
+<ul>
 <li class="chapter" data-level="9.2.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#description"><i class="fa fa-check"></i><b>9.2.1</b> Description</a></li>
 <li class="chapter" data-level="9.2.2" data-path="bootstrap-main.html"><a href="bootstrap-main.html#example-confidence-intervals-for-the-rate-parameter-of-an-exponential-distribution"><i class="fa fa-check"></i><b>9.2.2</b> Example: Confidence Intervals for the Rate Parameter of an Exponential Distribution</a></li>
 <li class="chapter" data-level="9.2.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#example-confidence-intervals-for-the-ratio-of-two-quantiles"><i class="fa fa-check"></i><b>9.2.3</b> Example: Confidence Intervals for the Ratio of Two Quantiles</a></li>
 </ul></li>
 <li class="chapter" data-level="9.3" data-path="bootstrap-main.html"><a href="bootstrap-main.html#why-is-the-bootstrap-procedure-reasonable"><i class="fa fa-check"></i><b>9.3</b> Why is the Bootstrap Procedure Reasonable?</a></li>
 <li class="chapter" data-level="9.4" data-path="bootstrap-main.html"><a href="bootstrap-main.html#pivotal-bootstrap-confidence-intervals"><i class="fa fa-check"></i><b>9.4</b> Pivotal Bootstrap Confidence Intervals</a></li>
-<li class="chapter" data-level="9.5" data-path="bootstrap-main.html"><a href="bootstrap-main.html#the-parametric-bootstrap"><i class="fa fa-check"></i><b>9.5</b> The Parametric Bootstrap</a><ul>
+<li class="chapter" data-level="9.5" data-path="bootstrap-main.html"><a href="bootstrap-main.html#the-parametric-bootstrap"><i class="fa fa-check"></i><b>9.5</b> The Parametric Bootstrap</a>
+<ul>
 <li class="chapter" data-level="9.5.1" data-path="bootstrap-main.html"><a href="bootstrap-main.html#parametric-bootstrap-for-the-median-age-from-the-kidney-data"><i class="fa fa-check"></i><b>9.5.1</b> Parametric Bootstrap for the Median Age from the Kidney Data</a></li>
 </ul></li>
 <li class="chapter" data-level="9.6" data-path="bootstrap-main.html"><a href="bootstrap-main.html#additional-reading-4"><i class="fa fa-check"></i><b>9.6</b> Additional Reading</a></li>
 <li class="chapter" data-level="9.7" data-path="bootstrap-main.html"><a href="bootstrap-main.html#exercises-6"><i class="fa fa-check"></i><b>9.7</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> Bootstrap Examples and the Jackknife</a><ul>
+<li class="chapter" data-level="10" data-path="ci.html"><a href="ci.html"><i class="fa fa-check"></i><b>10</b> Bootstrap Examples and the Jackknife</a>
+<ul>
 <li class="chapter" data-level="10.1" data-path="ci.html"><a href="ci.html#the-parametric-bootstrap-for-an-ar1-model"><i class="fa fa-check"></i><b>10.1</b> The Parametric Bootstrap for an AR(1) model</a></li>
-<li class="chapter" data-level="10.2" data-path="ci.html"><a href="ci.html#using-the-bootstrap-in-regression"><i class="fa fa-check"></i><b>10.2</b> Using the Bootstrap in Regression</a><ul>
+<li class="chapter" data-level="10.2" data-path="ci.html"><a href="ci.html#using-the-bootstrap-in-regression"><i class="fa fa-check"></i><b>10.2</b> Using the Bootstrap in Regression</a>
+<ul>
 <li class="chapter" data-level="10.2.1" data-path="ci.html"><a href="ci.html#parametric-bootstrap-for-regression"><i class="fa fa-check"></i><b>10.2.1</b> Parametric Bootstrap for Regression</a></li>
 <li class="chapter" data-level="10.2.2" data-path="ci.html"><a href="ci.html#nonparametric-bootstrap-for-regression"><i class="fa fa-check"></i><b>10.2.2</b> Nonparametric Bootstrap for Regression</a></li>
 </ul></li>
 <li class="chapter" data-level="10.3" data-path="ci.html"><a href="ci.html#pointwise-confidence-intervals-for-a-density-function"><i class="fa fa-check"></i><b>10.3</b> Pointwise Confidence Intervals for a Density Function</a></li>
-<li class="chapter" data-level="10.4" data-path="ci.html"><a href="ci.html#when-can-the-bootstrap-fail"><i class="fa fa-check"></i><b>10.4</b> When can the Bootstrap Fail?</a><ul>
+<li class="chapter" data-level="10.4" data-path="ci.html"><a href="ci.html#when-can-the-bootstrap-fail"><i class="fa fa-check"></i><b>10.4</b> When can the Bootstrap Fail?</a>
+<ul>
 <li class="chapter" data-level="10.4.1" data-path="ci.html"><a href="ci.html#example-the-shifted-exponential-distribution"><i class="fa fa-check"></i><b>10.4.1</b> Example: The Shifted Exponential Distribution</a></li>
 </ul></li>
 <li class="chapter" data-level="10.5" data-path="ci.html"><a href="ci.html#the-jackknife"><i class="fa fa-check"></i><b>10.5</b> The Jackknife</a></li>
 </ul></li>
 <li class="part"><span><b>IV Nonparametric Regression: Part I</b></span></li>
-<li class="chapter" data-level="11" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression and Local Regression</a><ul>
+<li class="chapter" data-level="11" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html"><i class="fa fa-check"></i><b>11</b> Kernel Regression and Local Regression</a>
+<ul>
 <li class="chapter" data-level="11.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#introduction-2"><i class="fa fa-check"></i><b>11.1</b> Introduction</a></li>
-<li class="chapter" data-level="11.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#kernel-regression"><i class="fa fa-check"></i><b>11.2</b> Kernel Regression</a><ul>
+<li class="chapter" data-level="11.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#kernel-regression"><i class="fa fa-check"></i><b>11.2</b> Kernel Regression</a>
+<ul>
 <li class="chapter" data-level="11.2.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-regressogram"><i class="fa fa-check"></i><b>11.2.1</b> The Regressogram</a></li>
 <li class="chapter" data-level="11.2.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-local-average-estimator"><i class="fa fa-check"></i><b>11.2.2</b> The Local Average Estimator</a></li>
 <li class="chapter" data-level="11.2.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#k-nearest-neighbor-k-nn-regression"><i class="fa fa-check"></i><b>11.2.3</b> k-Nearest Neighbor (k-NN) Regression</a></li>
 <li class="chapter" data-level="11.2.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>11.2.4</b> The Nadaraya-Watson Estimator</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear Regression</a><ul>
+<li class="chapter" data-level="11.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>11.3</b> Local Linear Regression</a>
+<ul>
 <li class="chapter" data-level="11.3.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#definition-7"><i class="fa fa-check"></i><b>11.3.1</b> Definition</a></li>
 <li class="chapter" data-level="11.3.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#advantages-of-the-local-linear-estimator"><i class="fa fa-check"></i><b>11.3.2</b> Advantages of the Local Linear Estimator</a></li>
 <li class="chapter" data-level="11.3.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#an-example-in-r"><i class="fa fa-check"></i><b>11.3.3</b> An Example in R</a></li>
 <li class="chapter" data-level="11.3.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-polynomial-regression"><i class="fa fa-check"></i><b>11.3.4</b> Local Polynomial Regression</a></li>
 </ul></li>
-<li class="chapter" data-level="11.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>11.4</b> Selecting the Bandwidth/Smoothing Parameter</a><ul>
+<li class="chapter" data-level="11.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>11.4</b> Selecting the Bandwidth/Smoothing Parameter</a>
+<ul>
 <li class="chapter" data-level="11.4.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#representing-in-linear-form"><i class="fa fa-check"></i><b>11.4.1</b> Representing in Linear Form</a></li>
 <li class="chapter" data-level="11.4.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-cp-statistic"><i class="fa fa-check"></i><b>11.4.2</b> The Cp Statistic</a></li>
 <li class="chapter" data-level="11.4.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>11.4.3</b> Leave-one-out Cross Validation</a></li>
@@ -307,14 +370,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.7" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>11.7</b> Additional Reading</a></li>
 <li class="chapter" data-level="11.8" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#exercises-7"><i class="fa fa-check"></i><b>11.8</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a><ul>
-<li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a><ul>
+<li class="chapter" data-level="12" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>12</b> Splines and Penalized Regression</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#introduction-3"><i class="fa fa-check"></i><b>12.1</b> Introduction</a>
+<ul>
 <li class="chapter" data-level="12.1.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#regressogram-piecewise-constant-estimate"><i class="fa fa-check"></i><b>12.1.1</b> Regressogram (Piecewise Constant Estimate)</a></li>
 <li class="chapter" data-level="12.1.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates"><i class="fa fa-check"></i><b>12.1.2</b> Piecewise Linear Estimates</a></li>
 <li class="chapter" data-level="12.1.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-cubic-estimates"><i class="fa fa-check"></i><b>12.1.3</b> Piecewise Cubic Estimates</a></li>
 </ul></li>
 <li class="chapter" data-level="12.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#piecewise-linear-estimates-with-continuity-linear-splines"><i class="fa fa-check"></i><b>12.2</b> Piecewise Linear Estimates with Continuity (Linear Splines)</a></li>
-<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-regression-with-splines"><i class="fa fa-check"></i><b>12.3</b> Cubic Splines and Regression with Splines</a><ul>
+<li class="chapter" data-level="12.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines-and-regression-with-splines"><i class="fa fa-check"></i><b>12.3</b> Cubic Splines and Regression with Splines</a>
+<ul>
 <li class="chapter" data-level="12.3.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#example-smooth-piecewise-cubic-model-with-2-knots"><i class="fa fa-check"></i><b>12.3.1</b> Example: Smooth Piecewise Cubic Model with 2 Knots</a></li>
 <li class="chapter" data-level="12.3.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#cubic-splines"><i class="fa fa-check"></i><b>12.3.2</b> Cubic Splines</a></li>
 <li class="chapter" data-level="12.3.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#estimating-the-coefficients-of-a-cubic-spline"><i class="fa fa-check"></i><b>12.3.3</b> Estimating the Coefficients of a Cubic Spline</a></li>
@@ -322,20 +388,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.3.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#natural-cubic-splines"><i class="fa fa-check"></i><b>12.3.5</b> Natural Cubic Splines</a></li>
 </ul></li>
 <li class="chapter" data-level="12.4" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-splines"><i class="fa fa-check"></i><b>12.4</b> Smoothing Splines</a></li>
-<li class="chapter" data-level="12.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knotpenalty-term-selection-for-splines"><i class="fa fa-check"></i><b>12.5</b> Knot/Penalty Term Selection for Splines</a><ul>
+<li class="chapter" data-level="12.5" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knotpenalty-term-selection-for-splines"><i class="fa fa-check"></i><b>12.5</b> Knot/Penalty Term Selection for Splines</a>
+<ul>
 <li class="chapter" data-level="12.5.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#the-cp-statistic-1"><i class="fa fa-check"></i><b>12.5.1</b> The Cp Statistic</a></li>
 <li class="chapter" data-level="12.5.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#leave-one-out-cross-validation-1"><i class="fa fa-check"></i><b>12.5.2</b> Leave-one-out Cross-Validation</a></li>
 <li class="chapter" data-level="12.5.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#generalized-cross-validation"><i class="fa fa-check"></i><b>12.5.3</b> Generalized Cross-Validation</a></li>
 </ul></li>
-<li class="chapter" data-level="12.6" data-path="inference-for-regression.html"><a href="inference-for-regression.html#fitting-smoothing-splines-in-r"><i class="fa fa-check"></i><b>12.6</b> Fitting Smoothing Splines in R</a><ul>
+<li class="chapter" data-level="12.6" data-path="inference-for-regression.html"><a href="inference-for-regression.html#fitting-smoothing-splines-in-r"><i class="fa fa-check"></i><b>12.6</b> Fitting Smoothing Splines in R</a>
+<ul>
 <li class="chapter" data-level="12.6.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#smoothing-parameter-selection-for-the-smoothing-spline-with-the-cp-statistic"><i class="fa fa-check"></i><b>12.6.1</b> Smoothing Parameter Selection for the Smoothing Spline with the Cp statistic</a></li>
 <li class="chapter" data-level="12.6.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#knot-selection-for-regression-splines-with-the-cp-statistic"><i class="fa fa-check"></i><b>12.6.2</b> Knot Selection for Regression Splines with the Cp statistic</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>V Nonparametric Regression: Part II</b></span></li>
-<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Regression Trees and CART</a><ul>
+<li class="chapter" data-level="13" data-path="decision-tree.html"><a href="decision-tree.html"><i class="fa fa-check"></i><b>13</b> Regression Trees and CART</a>
+<ul>
 <li class="chapter" data-level="13.1" data-path="decision-tree.html"><a href="decision-tree.html#introduction-4"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
-<li class="chapter" data-level="13.2" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-a-single-covariate"><i class="fa fa-check"></i><b>13.2</b> Regression Trees with a Single Covariate</a><ul>
+<li class="chapter" data-level="13.2" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-a-single-covariate"><i class="fa fa-check"></i><b>13.2</b> Regression Trees with a Single Covariate</a>
+<ul>
 <li class="chapter" data-level="13.2.1" data-path="decision-tree.html"><a href="decision-tree.html#determining-the-split-points"><i class="fa fa-check"></i><b>13.2.1</b> Determining the Split Points</a></li>
 </ul></li>
 <li class="chapter" data-level="13.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>13.3</b> Regression Trees With Multiple Covariates</a></li>
@@ -361,10 +431,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="density-estimation" class="section level1">
-<h1><span class="header-section-number">Chapter 8</span> Density Estimation</h1>
-<div id="introduction" class="section level2">
-<h2><span class="header-section-number">8.1</span> Introduction</h2>
+<div id="density-estimation" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Density Estimation<a href="density-estimation.html#density-estimation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Introduction<a href="density-estimation.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p>In this section, we focus on methods for estimating a <strong>probability density function</strong> (pdf) <span class="math inline">\(f(x)\)</span>.</p></li>
 <li><p>For a continuous random variable <span class="math inline">\(X\)</span>, areas under the probability density function are probabilities
@@ -381,16 +451,16 @@ are an independent identically distribution sample from a distribution with pdf 
 make few assumptions about the particular form of <span class="math inline">\(f(x)\)</span>.</p></li>
 </ul>
 </div>
-<div id="histograms" class="section level2">
-<h2><span class="header-section-number">8.2</span> Histograms</h2>
-<div class="figure"><span id="fig:unnamed-chunk-1"></span>
+<div id="histograms" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Histograms<a href="density-estimation.html#histograms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-1"></span>
 <img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" width="672" />
 <p class="caption">
 Figure 8.1: Histogram of ages from kidney function data. Data retrieved from: <a href="https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" class="uri">https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</a>
 </p>
 </div>
-<div id="definition-5" class="section level3">
-<h3><span class="header-section-number">8.2.1</span> Definition</h3>
+<div id="definition-5" class="section level3 hasAnchor" number="8.2.1">
+<h3><span class="header-section-number">8.2.1</span> Definition<a href="density-estimation.html#definition-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>While histograms are often thought of as mainly a visualization tool,
 a histogram can also be thought of as an estimate of the density <span class="math inline">\(f(x)\)</span>.</p></li>
@@ -401,10 +471,10 @@ of “bins”: <span class="math inline">\(B_{1}, \ldots, B_{D_{n}}\)</span>.</p
 B_{1} &amp;=&amp; [x_{0}, x_{0} + h_{n}) \nonumber \\
 B_{2} &amp;=&amp; [x_{0} + h_{n}, x_{0} + 2h_{n}) \nonumber \\
 &amp;\vdots&amp; \nonumber \\
-B_{D_{n}} &amp;=&amp; [x_{0} + (D_{n}-1)h_{n}, x_{0} + D_{n}h_{n}) \nonumber 
+B_{D_{n}} &amp;=&amp; [x_{0} + (D_{n}-1)h_{n}, x_{0} + D_{n}h_{n}) \nonumber
 \end{eqnarray}\]</span></p></li>
-<li><span class="math inline">\(x_{0}\)</span> - the origin</li>
-<li><span class="math inline">\(h_{n}\)</span> - bin width</li>
+<li><p><span class="math inline">\(x_{0}\)</span> - the origin</p></li>
+<li><p><span class="math inline">\(h_{n}\)</span> - bin width</p></li>
 <li><p><span class="math inline">\(D_{n}\)</span> - number of bins</p></li>
 <li><p>Histograms are based on the counts <span class="math inline">\(n_{k}\)</span> of observations that fall into each bin:
 <span class="math display">\[\begin{eqnarray}
@@ -437,14 +507,14 @@ E\{ \hat{f}_{h_{n}}^{H}(x) \} &amp;=&amp; \frac{1}{n h_{n}} E\{ n_{k} \} \nonumb
 \end{eqnarray}\]</span></p></li>
 </ul>
 </div>
-<div id="histograms-in-r" class="section level3">
-<h3><span class="header-section-number">8.2.2</span> Histograms in R</h3>
+<div id="histograms-in-r" class="section level3 hasAnchor" number="8.2.2">
+<h3><span class="header-section-number">8.2.2</span> Histograms in R<a href="density-estimation.html#histograms-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>In <strong>R</strong>, histograms are computed using the <code>hist</code> function</li>
 </ul>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1"><span class="kw">hist</span>(x, breaks, probability, plot, ...)</a></code></pre></div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="density-estimation.html#cb128-1" tabindex="-1"></a><span class="fu">hist</span>(x, breaks, probability, plot, ...)</span></code></pre></div>
 <ul>
-<li>The <strong>breaks</strong> argument
+<li><p>The <strong>breaks</strong> argument</p>
 <ul>
 <li>Default is “Sturges”. This is a method for finding the bin width.</li>
 <li>Can be a name giving the name of an algorithm for computing bin width
@@ -467,26 +537,26 @@ This can be changed using the <strong>right</strong> argument of the <strong>his
 <li>Let’s use the kidney function data again to demonstrate the use of histograms in <strong>R</strong>. This time
 we will focus on the <strong>age</strong> variable.</li>
 </ul>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1">kidney &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </a>
-<a class="sourceLine" id="cb120-2" data-line-number="2">                     <span class="dt">header=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="density-estimation.html#cb129-1" tabindex="-1"></a>kidney <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </span>
+<span id="cb129-2"><a href="density-estimation.html#cb129-2" tabindex="-1"></a>                     <span class="at">header=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <ul>
 <li>You can plot a histogram of <strong>age</strong> just by calling the <code>hist</code> function.</li>
 </ul>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1">kidney.hist &lt;-<span class="st"> </span><span class="kw">hist</span>(kidney<span class="op">$</span>age, <span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Age from Kidney Data&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="density-estimation.html#cb130-1" tabindex="-1"></a>kidney.hist <span class="ot">&lt;-</span> <span class="fu">hist</span>(kidney<span class="sc">$</span>age, <span class="at">main=</span><span class="st">&quot;&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Age from Kidney Data&quot;</span>)</span></code></pre></div>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <ul>
 <li>Use the <code>probability = TRUE</code> argument to plot the density-estimate version of the histogram.
 This histogram should integrate to 1.</li>
 </ul>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" data-line-number="1">kidney.hist2 &lt;-<span class="st"> </span><span class="kw">hist</span>(kidney<span class="op">$</span>age, <span class="dt">main=</span><span class="st">&quot;Histogram of Age on Probability Scale&quot;</span>, </a>
-<a class="sourceLine" id="cb122-2" data-line-number="2">                     <span class="dt">xlab=</span><span class="st">&quot;Age from Kidney Data&quot;</span>, <span class="dt">probability=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="density-estimation.html#cb131-1" tabindex="-1"></a>kidney.hist2 <span class="ot">&lt;-</span> <span class="fu">hist</span>(kidney<span class="sc">$</span>age, <span class="at">main=</span><span class="st">&quot;Histogram of Age on Probability Scale&quot;</span>, </span>
+<span id="cb131-2"><a href="density-estimation.html#cb131-2" tabindex="-1"></a>                     <span class="at">xlab=</span><span class="st">&quot;Age from Kidney Data&quot;</span>, <span class="at">probability=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <hr />
 <ul>
 <li>In addition to generating a histogram plot, the histogram function
 also returns useful stuff.</li>
 </ul>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1"><span class="kw">names</span>(kidney.hist)</a></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="density-estimation.html#cb132-1" tabindex="-1"></a><span class="fu">names</span>(kidney.hist)</span></code></pre></div>
 <pre><code>## [1] &quot;breaks&quot;   &quot;counts&quot;   &quot;density&quot;  &quot;mids&quot;     &quot;xname&quot;    &quot;equidist&quot;</code></pre>
 <ul>
 <li><strong>breaks</strong>
@@ -506,50 +576,50 @@ also returns useful stuff.</li>
 <li>the midpoint of each of the bins</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1">kidney.hist<span class="op">$</span>breaks</a></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="density-estimation.html#cb134-1" tabindex="-1"></a>kidney.hist<span class="sc">$</span>breaks</span></code></pre></div>
 <pre><code>## [1] 10 20 30 40 50 60 70 80 90</code></pre>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" data-line-number="1">kidney.hist<span class="op">$</span>counts</a></code></pre></div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="density-estimation.html#cb136-1" tabindex="-1"></a>kidney.hist<span class="sc">$</span>counts</span></code></pre></div>
 <pre><code>## [1]  4 74 35 11 13 12  6  2</code></pre>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" data-line-number="1"><span class="co">## The following sum should match the first element of kidney.hist$counts[1]</span></a>
-<a class="sourceLine" id="cb129-2" data-line-number="2"><span class="kw">sum</span>(kidney.hist<span class="op">$</span>breaks[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>kidney<span class="op">$</span>age <span class="op">&amp;</span><span class="st"> </span>kidney<span class="op">$</span>age <span class="op">&lt;=</span><span class="st"> </span>kidney.hist<span class="op">$</span>breaks[<span class="dv">2</span>]) </a></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="density-estimation.html#cb138-1" tabindex="-1"></a><span class="do">## The following sum should match the first element of kidney.hist$counts[1]</span></span>
+<span id="cb138-2"><a href="density-estimation.html#cb138-2" tabindex="-1"></a><span class="fu">sum</span>(kidney.hist<span class="sc">$</span>breaks[<span class="dv">1</span>] <span class="sc">&lt;</span> kidney<span class="sc">$</span>age <span class="sc">&amp;</span> kidney<span class="sc">$</span>age <span class="sc">&lt;=</span> kidney.hist<span class="sc">$</span>breaks[<span class="dv">2</span>]) </span></code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <ul>
 <li>Let’s check that the density values returned by <code>hist</code> match our definition of the histogram density estimate in <a href="density-estimation.html#eq:hist-density">(8.1)</a>.</li>
 </ul>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" data-line-number="1">binwidth &lt;-<span class="st"> </span>kidney.hist<span class="op">$</span>breaks[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>kidney.hist<span class="op">$</span>breaks[<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb131-2" data-line-number="2">kidney.hist<span class="op">$</span>density</a></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="density-estimation.html#cb140-1" tabindex="-1"></a>binwidth <span class="ot">&lt;-</span> kidney.hist<span class="sc">$</span>breaks[<span class="dv">2</span>] <span class="sc">-</span> kidney.hist<span class="sc">$</span>breaks[<span class="dv">1</span>]</span>
+<span id="cb140-2"><a href="density-estimation.html#cb140-2" tabindex="-1"></a>kidney.hist<span class="sc">$</span>density</span></code></pre></div>
 <pre><code>## [1] 0.002547771 0.047133758 0.022292994 0.007006369 0.008280255 0.007643312
 ## [7] 0.003821656 0.001273885</code></pre>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1">kidney.hist<span class="op">$</span>counts<span class="op">/</span>(<span class="kw">length</span>(kidney<span class="op">$</span>age)<span class="op">*</span>binwidth)</a></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="density-estimation.html#cb142-1" tabindex="-1"></a>kidney.hist<span class="sc">$</span>counts<span class="sc">/</span>(<span class="fu">length</span>(kidney<span class="sc">$</span>age)<span class="sc">*</span>binwidth)</span></code></pre></div>
 <pre><code>## [1] 0.002547771 0.047133758 0.022292994 0.007006369 0.008280255 0.007643312
 ## [7] 0.003821656 0.001273885</code></pre>
 </div>
-<div id="performance-of-the-histogram-estimate-and-bin-width-selection" class="section level3">
-<h3><span class="header-section-number">8.2.3</span> Performance of the Histogram Estimate and Bin Width Selection</h3>
-<div id="biasvariance-decomposition" class="section level4">
-<h4><span class="header-section-number">8.2.3.1</span> Bias/Variance Decomposition</h4>
+<div id="performance-of-the-histogram-estimate-and-bin-width-selection" class="section level3 hasAnchor" number="8.2.3">
+<h3><span class="header-section-number">8.2.3</span> Performance of the Histogram Estimate and Bin Width Selection<a href="density-estimation.html#performance-of-the-histogram-estimate-and-bin-width-selection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="biasvariance-decomposition" class="section level4 hasAnchor" number="8.2.3.1">
+<h4><span class="header-section-number">8.2.3.1</span> Bias/Variance Decomposition<a href="density-estimation.html#biasvariance-decomposition" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p>It is common to evaluate the performance of a density estimator
 through its <strong>mean-squared error</strong> (MSE).</p></li>
 <li><p>In general, MSE is a function of bias and variance
 <span class="math display">\[\begin{equation}
-\textrm{MSE} = \textrm{Bias}^2 + \textrm{Variance}  \nonumber 
+\textrm{MSE} = \textrm{Bias}^2 + \textrm{Variance}  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>We will first look at the mean-squared error of <span class="math inline">\(\hat{f}_{h_{n}}^{H}( x )\)</span> at a single point <span class="math inline">\(x\)</span>
 <span class="math display">\[\begin{eqnarray}
-\textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
+\textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \}
 &amp;=&amp; E\Big( \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}  \Big) \nonumber \\
 &amp;=&amp; E\Big( \Big[ \hat{f}_{h_{n}}^{H}(x) - E\{ \hat{f}_{n}^{H}(x) \} + E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \Big]^{2}  \Big) \nonumber \\
 &amp;=&amp; E\Big( \Big[ \hat{f}_{h_{n}}^{H}(x) - E\{ \hat{f}_{n}^{H}(x) \} \Big]^{2}  \Big) + E\Big( \Big[ E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \Big]^{2}  \Big) \nonumber \\
-&amp;+&amp; 2E\Big( \Big[ \hat{f}_{h_{n}}^{H}(x) - E\{ \hat{f}_{n}^{H}(x) \}\Big]\Big[ E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \Big]  \Big)  \nonumber \\ 
+&amp;+&amp; 2E\Big( \Big[ \hat{f}_{h_{n}}^{H}(x) - E\{ \hat{f}_{n}^{H}(x) \}\Big]\Big[ E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x) \Big]  \Big)  \nonumber \\
 &amp;=&amp; \underbrace{\textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \}}_{\textrm{Variance}} + \underbrace{\Big( E\{ \hat{f}_{h_{n}}^{H}(x) \} - f(x)  \Big)^{2} }_{\textrm{Bias Squared}}  \nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>In general, as the bin width <span class="math inline">\(h_{n}\)</span> increases, the histogram estimate
 will have less variation but will become more biased.</p></li>
 </ul>
 </div>
-<div id="bias-and-variance-of-the-histogram-estimate" class="section level4">
-<h4><span class="header-section-number">8.2.3.2</span> Bias and Variance of the Histogram Estimate</h4>
+<div id="bias-and-variance-of-the-histogram-estimate" class="section level4 hasAnchor" number="8.2.3.2">
+<h4><span class="header-section-number">8.2.3.2</span> Bias and Variance of the Histogram Estimate<a href="density-estimation.html#bias-and-variance-of-the-histogram-estimate" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p>Recall that, for a histogram estimate, we have <span class="math inline">\(D_{n}\)</span> bins where the <span class="math inline">\(k^{th}\)</span> bin
 takes the form
@@ -590,7 +660,7 @@ p_{h_{n}, x_{0}}(x) &amp;=&amp; P\Big\{ X_{i} \textrm{ falls into bin } B_{A_{h_
 <ul>
 <li><p>Because <span class="math inline">\(n_{A_{h_{n}, x_{0}}(x)}\)</span> follows a binomial distribution, we know that
 <span class="math display">\[\begin{eqnarray}
-E( n_{A_{h_{n}, x_{0}}(x)} ) &amp;=&amp; np_{h_{n}, x_{0}}(x)  \nonumber \\ 
+E( n_{A_{h_{n}, x_{0}}(x)} ) &amp;=&amp; np_{h_{n}, x_{0}}(x)  \nonumber \\
 \textrm{Var}( n_{A_{h_{n}, x_{0}}(x)} ) &amp;=&amp; np_{h_{n}, x_{0}}(x)\{1 - p_{h_{n},x_{0}}(x) \} \nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>So, we can express the bias of the histogram density
@@ -609,7 +679,7 @@ and we can express the variance as:
 <li><p>Using the approximation <span class="math inline">\(f(t) \approx f(x) + f&#39;(x)(t - x)\)</span> for <span class="math inline">\(t\)</span> close to <span class="math inline">\(x\)</span>, we have that
 <span class="math display">\[\begin{eqnarray}
 \frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } &amp;=&amp; \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt \nonumber \\
- &amp;\approx&amp; \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(x) dt + \frac{f&#39;(x)}{h_{n}}\int_{x_{0} + (A_{h_{n}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } (t - x) dt \nonumber \\
+&amp;\approx&amp; \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(x) dt + \frac{f&#39;(x)}{h_{n}}\int_{x_{0} + (A_{h_{n}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } (t - x) dt \nonumber \\
 &amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ (t - x)^{2}\Big|_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } \Big] \nonumber \\
 &amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ (x_{0} + A_{h_{n}, x_{0}}(x)h_{n})^{2} - (x_{0} + (A_{h_{n}, x_{0}}(x)-1)h_{n} )^{2} - 2xh_{n} \Big] \nonumber \\
 &amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ 2x_{0}A_{h_{n}, x_{0}}(x)h_{n} + A_{h_{n}, x_{0}}^{2}(x)h_{n}^{2} - 2x_{0}(A_{h_{n}, x_{0}}(x)-1)h_{n}  \nonumber \\
@@ -619,9 +689,9 @@ and we can express the variance as:
 \end{eqnarray}\]</span></p></li>
 <li><p>So, the bias of the histogram density estimate <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span> is
 <span class="math display" id="eq:approx-bias-hist">\[\begin{eqnarray}
-\textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} 
+\textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \}
 &amp;=&amp; \frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } - f(x)  \nonumber \\
-&amp;\approx&amp; f&#39;(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big] 
+&amp;\approx&amp; f&#39;(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big]
 \tag{8.2}
 \end{eqnarray}\]</span></p></li>
 <li><p>Choosing a very small bin width <span class="math inline">\(h_{n}\)</span> will result in a small bias because the left endpoint of the
@@ -640,18 +710,18 @@ bin <span class="math inline">\(x_{0} + (A_{h_{n}}(x) - 1)h_{n}\)</span> will al
 <li><p>Note that large bin widths will reduce the variance of <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span>.</p></li>
 </ul>
 </div>
-<div id="pointwise-approximate-mean-squared-error" class="section level4">
-<h4><span class="header-section-number">8.2.3.3</span> Pointwise Approximate Mean Squared Error</h4>
+<div id="pointwise-approximate-mean-squared-error" class="section level4 hasAnchor" number="8.2.3.3">
+<h4><span class="header-section-number">8.2.3.3</span> Pointwise Approximate Mean Squared Error<a href="density-estimation.html#pointwise-approximate-mean-squared-error" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p>Using <a href="density-estimation.html#eq:approx-var-hist">(8.3)</a> and <a href="density-estimation.html#eq:approx-bias-hist">(8.2)</a>, the approximate mean-squared error (AMSE) of the histogram density estimate
 at a particular point <span class="math inline">\(x\)</span> is given by
 <span class="math display" id="eq:mse-hist-decomp">\[\begin{eqnarray}
-\textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
+\textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \}
 &amp;=&amp; E\Big( \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}  \Big) \nonumber \\
 &amp;=&amp; \Big( \textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} \Big)^{2} + \textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \} \nonumber \\
 &amp;\approx&amp;  \frac{h_{n}^{2}[f&#39;(x)]^{2} }{4} - h_{n}f&#39;(x)[ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ]  \nonumber \\
 &amp;+&amp; [f&#39;(x)]^{2}\Big( x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} \Big)^{2} + \frac{f(x)}{n h_{n} } \nonumber \\
-&amp;=&amp; \textrm{AMSE}\{ \hat{f}_{h_{n}}^{H}(x) \} 
+&amp;=&amp; \textrm{AMSE}\{ \hat{f}_{h_{n}}^{H}(x) \}
 \tag{8.4}
 \end{eqnarray}\]</span></p></li>
 <li><p>For any approach to bin width selection, we should have <span class="math inline">\(h_{n} \longrightarrow 0\)</span> and
@@ -661,14 +731,14 @@ at a particular point <span class="math inline">\(x\)</span> is given by
 because the best choice of <span class="math inline">\(h_{n}\)</span> will usually depend on your choice of <span class="math inline">\(x\)</span>.</p></li>
 </ul>
 </div>
-<div id="integrated-mean-squared-error-and-optimal-histogram-bin-width" class="section level4">
-<h4><span class="header-section-number">8.2.3.4</span> Integrated Mean Squared Error and Optimal Histogram Bin Width</h4>
+<div id="integrated-mean-squared-error-and-optimal-histogram-bin-width" class="section level4 hasAnchor" number="8.2.3.4">
+<h4><span class="header-section-number">8.2.3.4</span> Integrated Mean Squared Error and Optimal Histogram Bin Width<a href="density-estimation.html#integrated-mean-squared-error-and-optimal-histogram-bin-width" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p>Using the approximate mean integrated squared error (AMISE) allows us to find an optimal bin width
 that does not depend on a particular choice of <span class="math inline">\(x\)</span>.</p></li>
 <li><p>The AMISE is defined as
 <span class="math display">\[\begin{eqnarray}
-\textrm{AMISE}\{ \hat{f}_{h_{n}}^{H} \} 
+\textrm{AMISE}\{ \hat{f}_{h_{n}}^{H} \}
 &amp;=&amp; E\Big\{ \int_{-\infty}^{\infty} \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}dx   \Big\} \nonumber \\
 &amp;=&amp; \int_{-\infty}^{\infty} \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} dx \nonumber
 \end{eqnarray}\]</span>
@@ -684,7 +754,7 @@ Using the previously derived approximation <a href="density-estimation.html#eq:m
 <li><p>To select the optimal bin width, we minimize the MISE as a function of <span class="math inline">\(h_{n}\)</span>.</p></li>
 <li><p>Minimizing <a href="density-estimation.html#eq:mise-formula">(8.5)</a>, as a function of <span class="math inline">\(h_{n}\)</span> yields the following formula for the optimal bin width
 <span class="math display" id="eq:opt-binwidth-hist">\[\begin{equation}
-h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx}  \Big)^{1/3} = C n^{-1/3} 
+h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx}  \Big)^{1/3} = C n^{-1/3}
 \tag{8.6}
 \end{equation}\]</span></p></li>
 <li><p>Notice that <span class="math inline">\(h_{n}^{opt} \longrightarrow 0\)</span> and <span class="math inline">\(nh_{n}^{opt} \longrightarrow \infty\)</span> as <span class="math inline">\(n \longrightarrow \infty\)</span>.</p></li>
@@ -692,8 +762,8 @@ h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx}  \Big
 </ul>
 </div>
 </div>
-<div id="choosing-the-histogram-bin-width" class="section level3">
-<h3><span class="header-section-number">8.2.4</span> Choosing the Histogram Bin Width</h3>
+<div id="choosing-the-histogram-bin-width" class="section level3 hasAnchor" number="8.2.4">
+<h3><span class="header-section-number">8.2.4</span> Choosing the Histogram Bin Width<a href="density-estimation.html#choosing-the-histogram-bin-width" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>We will mention three rules for selecting the bin width of a histogram.
 <ul>
@@ -724,8 +794,8 @@ intervals.</p></li>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 </div>
-<div id="a-box-type-density-estimate" class="section level2">
-<h2><span class="header-section-number">8.3</span> A Box-type Density Estimate</h2>
+<div id="a-box-type-density-estimate" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> A Box-type Density Estimate<a href="density-estimation.html#a-box-type-density-estimate" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p>A related estimator <span class="math inline">\(\hat{f}_{h_{n}}^{B}\)</span> of the density <span class="math inline">\(f(x)\)</span> uses a
 “sliding bin” at each point <span class="math inline">\(x\)</span> to calculate the estimate of <span class="math inline">\(f(x)\)</span>.</p></li>
@@ -740,8 +810,8 @@ the number of observations that fall in this bin.</p></li>
 <li><p>The expectation of the box estimator at the point <span class="math inline">\(x\)</span> is<br />
 <span class="math display">\[\begin{equation}
 E \{ \hat{f}_{h_{n}}^{B}(x) \}
-= \frac{1}{2h_{n}} P(x - h_{n} &lt; X_{i}  &lt; x + h_{n}) 
-\approx f(x)  \nonumber 
+= \frac{1}{2h_{n}} P(x - h_{n} &lt; X_{i}  &lt; x + h_{n})
+\approx f(x)  \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 <hr />
@@ -764,7 +834,7 @@ have a “jagged” appearance.</p></li>
 \end{equation}\]</span>
 where <span class="math inline">\(w(t)\)</span> is defined as the following “box function”
 <span class="math display">\[\begin{equation}
-w(t) = 
+w(t) =
 \begin{cases}
 \frac{1}{2} &amp; \textrm{ if } |t| &lt; 1 \nonumber \\
 0 &amp; \textrm{ otherwise } \nonumber
@@ -779,10 +849,10 @@ results in density estimates which are not “smooth.”</p></li>
 a smoother function.</p></li>
 </ul>
 </div>
-<div id="kernel-density-estimation" class="section level2">
-<h2><span class="header-section-number">8.4</span> Kernel Density Estimation</h2>
-<div id="definition-6" class="section level3">
-<h3><span class="header-section-number">8.4.1</span> Definition</h3>
+<div id="kernel-density-estimation" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Kernel Density Estimation<a href="density-estimation.html#kernel-density-estimation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="definition-6" class="section level3 hasAnchor" number="8.4.1">
+<h3><span class="header-section-number">8.4.1</span> Definition<a href="density-estimation.html#definition-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>Kernel density estimates are a generalization of the box-type density estimate <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>.</p></li>
 <li><p>With kernel density estimation, we replace the “box function” in <a href="density-estimation.html#eq:box-density">(8.7)</a>
@@ -794,7 +864,7 @@ than those that are further away from <span class="math inline">\(x\)</span>.</p
 <ul>
 <li><p>A kernel density estimator <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> of the density <span class="math inline">\(f(x)\)</span> is defined as
 <span class="math display" id="eq:kernel-density-formula">\[\begin{equation}
-\hat{f}_{h_{n}}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big) 
+\hat{f}_{h_{n}}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big)
 \tag{8.8}
 \end{equation}\]</span></p></li>
 <li><p>The function <span class="math inline">\(K( \cdot )\)</span> is referred to as the <strong>kernel function</strong>.</p></li>
@@ -808,13 +878,13 @@ the choice of kernel function.</p></li>
 <ul>
 <li><p>Kernel functions are usually chosen so that
 <span class="math display">\[\begin{equation}
-K(t) \geq  0 \quad \textrm{ for all } t \nonumber 
+K(t) \geq  0 \quad \textrm{ for all } t \nonumber
 \end{equation}\]</span>
 and that they also satisfy the following properties:
 <span class="math display">\[\begin{eqnarray}
-K(t) = K(-t) \qquad 
-\int_{-\infty}^{\infty} K(t) dt = 1  \nonumber 
-\qquad 
+K(t) = K(-t) \qquad
+\int_{-\infty}^{\infty} K(t) dt = 1  \nonumber
+\qquad
 \int_{-\infty}^{\infty} K^{2}(t) dt  &lt; \infty
 \nonumber
 \end{eqnarray}\]</span></p></li>
@@ -824,7 +894,7 @@ which is symmetric around <span class="math inline">\(0\)</span>.</p></li>
 <span class="math display">\[\begin{eqnarray}
 \textrm{Gaussian} :&amp;&amp; \quad  K(u) = \exp(-u^{2}/2)/\sqrt{2\pi} \nonumber \\
 \textrm{Epanechnikov} :&amp;&amp; \quad  K(u) = \tfrac{3}{4\sqrt{5}}(1 - \tfrac{1}{5} u^{2}) I(|u| &lt; \sqrt{5}) \nonumber \\
-\textrm{biweight} :&amp;&amp; \quad  K(u) = \tfrac{15}{16\sqrt{7}}(1 - \tfrac{1}{7} u^{2})^{2} I(|u| &lt; \sqrt{7}) \nonumber 
+\textrm{biweight} :&amp;&amp; \quad  K(u) = \tfrac{15}{16\sqrt{7}}(1 - \tfrac{1}{7} u^{2})^{2} I(|u| &lt; \sqrt{7}) \nonumber
 \end{eqnarray}\]</span></p></li>
 </ul>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
@@ -841,7 +911,7 @@ becomes more strongly concentrated around <span class="math inline">\(X_{i}\)</s
 <li><p>The nice thing about <a href="density-estimation.html#eq:kernel-density-formula">(8.8)</a> is that it guarantees that <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is a probability
 density function
 <span class="math display">\[\begin{eqnarray}
-\int_{-\infty}^{\infty} \hat{f}_{h_{n}}(x) dx 
+\int_{-\infty}^{\infty} \hat{f}_{h_{n}}(x) dx
 &amp;=&amp; \int_{-\infty}^{\infty} \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big)  dx  \nonumber \\
 &amp;=&amp;  \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{\infty} \frac{1}{h_{n}} K\Big( \frac{x - X_{i}}{h_{n}} \Big) dx  \nonumber \\
 &amp;=&amp; 1 \nonumber
@@ -853,8 +923,8 @@ of <span class="math inline">\(K(u)\)</span>
 \end{equation}\]</span></p></li>
 </ul>
 </div>
-<div id="bias-variance-and-amise-of-kernel-density-estimates" class="section level3">
-<h3><span class="header-section-number">8.4.2</span> Bias, Variance, and AMISE of Kernel Density Estimates</h3>
+<div id="bias-variance-and-amise-of-kernel-density-estimates" class="section level3 hasAnchor" number="8.4.2">
+<h3><span class="header-section-number">8.4.2</span> Bias, Variance, and AMISE of Kernel Density Estimates<a href="density-estimation.html#bias-variance-and-amise-of-kernel-density-estimates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>As with the bin width in histogram estimation, the bias/variance tradeoff
 drives the best choice of the bandwidth <span class="math inline">\(h_{n}\)</span> in kernel density estimation.</li>
@@ -868,14 +938,14 @@ E\{ \hat{f}_{h_{n}}(x) \}
 &amp;=&amp; \frac{1}{nh_{n}} \sum_{i=1}^{n} E\Big\{ K\Big( \frac{x - X_{i}}{h_{n}} \Big) \Big\} \nonumber \\
 &amp;=&amp; \frac{1}{h_{n}} E\Big\{ K\Big( \frac{x - X_{1}}{h_{n}} \Big) \Big\} \nonumber \\
 &amp;=&amp; \frac{1}{h_{n}} \int_{-\infty}^{\infty} K\Big( \frac{x - t}{h_{n}} \Big) f(t) dt \nonumber \\
-&amp;=&amp;  \int_{-\infty}^{\infty} K( u ) f(x - uh_{n}) du \nonumber 
+&amp;=&amp;  \int_{-\infty}^{\infty} K( u ) f(x - uh_{n}) du \nonumber
 \end{eqnarray}\]</span>
 Above, we used the substitution <span class="math inline">\(u = (x - t)/h_{n}\)</span>.</p></li>
 <li><p>Thus, the exact bias of <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is
 <span class="math display" id="eq:exact-density-bias">\[\begin{eqnarray}
 \textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
 &amp;=&amp; \int_{-\infty}^{\infty} K( u ) f(x - uh_{n}) du - f(x)  \nonumber \\
-&amp;=&amp; \int_{-\infty}^{\infty} K( u ) \{ f(x - uh_{n}) - f(x) \} du 
+&amp;=&amp; \int_{-\infty}^{\infty} K( u ) \{ f(x - uh_{n}) - f(x) \} du
 \tag{8.9}
 \end{eqnarray}\]</span></p></li>
 <li><p>The expression for bias shown in <a href="density-estimation.html#eq:exact-density-bias">(8.9)</a> will only
@@ -883,7 +953,7 @@ have a closed form for special choices of <span class="math inline">\(K(\cdot)\)
 <li><p>Nevertheless, we can get a reasonable approximation of this bias for small <span class="math inline">\(h_{n}\)</span>.</p></li>
 <li><p>To approximate the bias for small <span class="math inline">\(h_{n}\)</span>, we can use the following Taylor series approximation
 <span class="math display">\[\begin{equation}
-f(x - uh_{n}) - f(x) \approx -uh_{n}f&#39;(x) + \frac{u^{2}h_{n}^{2}}{2} f&#39;&#39;(x) \nonumber 
+f(x - uh_{n}) - f(x) \approx -uh_{n}f&#39;(x) + \frac{u^{2}h_{n}^{2}}{2} f&#39;&#39;(x) \nonumber
 \end{equation}\]</span>
 Plugging this approximation into our expression for the bias in <a href="density-estimation.html#eq:exact-density-bias">(8.9)</a> gives:
 <span class="math display" id="eq:asymp-bias-density">\[\begin{eqnarray}
@@ -891,7 +961,7 @@ Plugging this approximation into our expression for the bias in <a href="density
 &amp;\approx&amp;  -h_{n}f&#39;(x) \int_{-\infty}^{\infty} u K( u )  du + \frac{h_{n}^{2}f&#39;&#39;(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du  \nonumber \\
 &amp;=&amp; \frac{h_{n}^{2}f&#39;&#39;(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du \nonumber \\
 &amp;=&amp; \frac{h_{n}^{2}f&#39;&#39;(x)\mu_{2}(K)}{2} \qquad \textrm{ where } \mu_{2}(K) = \int_{-\infty}^{\infty} u^{2} K( u ) du \nonumber \\
-&amp;=&amp; \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} 
+&amp;=&amp; \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \}
 \tag{8.10}
 \end{eqnarray}\]</span>
 Here, <span class="math inline">\(\textrm{ABias}\{ \hat{f}_{h_{n}}(x) \}\)</span> stands for the approximate bias.</p></li>
@@ -926,14 +996,14 @@ of the density on the magnitude of bias.</p></li>
 <li><p>Using our approximations for the bias and variance, we can get an approximate expression
 for the mean-squared error of <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> at the point <span class="math inline">\(x\)</span>
 <span class="math display" id="eq:asymp-mse-density">\[\begin{eqnarray}
-\textrm{MSE}\{ \hat{f}_{h_{n}}(x) \} 
-&amp;\approx&amp; 
+\textrm{MSE}\{ \hat{f}_{h_{n}}(x) \}
+&amp;\approx&amp;
 \textrm{AVar}\{ \hat{f}_{h_{n}}(x) \} + \Big( \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} \Big)^{2} \nonumber \\
-&amp;=&amp; \frac{f(x)\kappa_{2}(K) }{n h_{n} } + \frac{h_{n}^{4}[f&#39;&#39;(x)]^{2}\mu_{2}^{2}(K)}{4} 
+&amp;=&amp; \frac{f(x)\kappa_{2}(K) }{n h_{n} } + \frac{h_{n}^{4}[f&#39;&#39;(x)]^{2}\mu_{2}^{2}(K)}{4}
 \tag{8.11}
 \end{eqnarray}\]</span></p></li>
-<li>Notice that if we want the MSE to go to <span class="math inline">\(0\)</span> as <span class="math inline">\(n \longrightarrow \infty\)</span>, we need the
-following two things to happen:
+<li><p>Notice that if we want the MSE to go to <span class="math inline">\(0\)</span> as <span class="math inline">\(n \longrightarrow \infty\)</span>, we need the
+following two things to happen:</p>
 <ul>
 <li><span class="math inline">\(h_{n} \longrightarrow 0\)</span> as <span class="math inline">\(n \longrightarrow \infty\)</span></li>
 <li><span class="math inline">\(n h_{n} \longrightarrow \infty\)</span> as <span class="math inline">\(n \longrightarrow \infty\)</span></li>
@@ -950,8 +1020,8 @@ the approximation <a href="density-estimation.html#eq:asymp-mse-density">(8.11)<
 \end{eqnarray}\]</span></li>
 </ul>
 </div>
-<div id="bandwidth-selection-with-the-normal-reference-rule-and-silvermans-rule-of-thumb" class="section level3">
-<h3><span class="header-section-number">8.4.3</span> Bandwidth Selection with the Normal Reference Rule and Silverman’s “Rule of Thumb”</h3>
+<div id="bandwidth-selection-with-the-normal-reference-rule-and-silvermans-rule-of-thumb" class="section level3 hasAnchor" number="8.4.3">
+<h3><span class="header-section-number">8.4.3</span> Bandwidth Selection with the Normal Reference Rule and Silverman’s “Rule of Thumb”<a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule-and-silvermans-rule-of-thumb" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>If we differentiate the formula for AMISE given in <a href="density-estimation.html#eq:amise-density">(8.12)</a> with respect to <span class="math inline">\(h_{n}\)</span> and set it to zero,
 we get the following equation for <span class="math inline">\(h_{n}^{opt}\)</span> which would be the bandwidth minimizing <span class="math inline">\(\textrm{AMISE}\{ \hat{f}_{h_{n}} \}\)</span>:
@@ -983,7 +1053,7 @@ of a kernel density estimate is to use the value of <span class="math inline">\(
 <span class="math inline">\(f(x)\)</span> is the density of a <span class="math inline">\(\textrm{Normal}(0, \sigma^{2})\)</span> random variable.</p></li>
 <li><p>If <span class="math inline">\(f(x) = \textrm{Normal}(0, \sigma^{2})\)</span>, then
 <span class="math display">\[\begin{equation}
-\int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx = \frac{3}{8\sqrt{\pi}\sigma^{5}} \nonumber 
+\int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx = \frac{3}{8\sqrt{\pi}\sigma^{5}} \nonumber
 \end{equation}\]</span></p></li>
 <li><p>If we use this assumption about <span class="math inline">\(f&#39;&#39;(x)\)</span> and assume a Gaussian kernel, the formula for the optimal bandwidth becomes
 bandwidth is
@@ -1006,7 +1076,7 @@ h_{n}^{NR} = 1.06 \tilde{\sigma} n^{-1/5}  \nonumber
 if <span class="math inline">\(f(x)\)</span> has substantial skewness.</p></li>
 <li><p>This oversmoothing effect of <span class="math inline">\(h_{n} = 1.06 \hat{\sigma} n^{-1/5}\)</span> can be reduced somewhat by replacing <span class="math inline">\(\hat{\sigma}\)</span> with
 <span class="math display">\[\begin{equation}
-s = \min\Big\{ \hat{\sigma}, \frac{IQR}{1.34} \Big\} \nonumber 
+s = \min\Big\{ \hat{\sigma}, \frac{IQR}{1.34} \Big\} \nonumber
 \end{equation}\]</span></p></li>
 <li><p>For multimodal distributions, we typically have <span class="math inline">\(\hat{\sigma} \leq IQR/1.34\)</span> while for strongly skewed
 distributions such as the log-normal distribution we typically have <span class="math inline">\(\hat{\sigma} \geq IQR/1.34\)</span>.</p></li>
@@ -1025,10 +1095,10 @@ this problem.</p></li>
 </ul>
 </div>
 </div>
-<div id="cross-validation-for-bandwidth-selection" class="section level2">
-<h2><span class="header-section-number">8.5</span> Cross-Validation for Bandwidth Selection</h2>
-<div id="squared-error-cross-validation" class="section level3">
-<h3><span class="header-section-number">8.5.1</span> Squared-Error Cross-Validation</h3>
+<div id="cross-validation-for-bandwidth-selection" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Cross-Validation for Bandwidth Selection<a href="density-estimation.html#cross-validation-for-bandwidth-selection" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="squared-error-cross-validation" class="section level3 hasAnchor" number="8.5.1">
+<h3><span class="header-section-number">8.5.1</span> Squared-Error Cross-Validation<a href="density-estimation.html#squared-error-cross-validation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>The usual goal in bandwidth selection is to choose the bandwidth
 which minimizes the mean integrated squared error (MISE)
@@ -1049,12 +1119,12 @@ or some related criterion which also measures an expected discrepancy between <s
 and this estimate will use a technique called leave-one-out <strong>cross-validation</strong>.</p></li>
 <li><p>Regarding the first term in <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a>, we can just estimate this expectation with
 <span class="math display">\[\begin{equation}
-\int \hat{f}_{h}^{2}(x) dx  \nonumber 
+\int \hat{f}_{h}^{2}(x) dx  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>The second term in <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a> is trickier because it has <span class="math inline">\(f(x)\)</span> in it.</p></li>
 <li><p>We can simplify this term though
 <span class="math display">\[\begin{equation}
-\int E\Big[ \hat{f}_{h}(x) \Big] f(x) dx = E\Bigg[ \frac{1}{h} K\Big( \frac{X_{1} - X_{2}}{h} \Big)  \Bigg] \nonumber 
+\int E\Big[ \hat{f}_{h}(x) \Big] f(x) dx = E\Bigg[ \frac{1}{h} K\Big( \frac{X_{1} - X_{2}}{h} \Big)  \Bigg] \nonumber
 \end{equation}\]</span>
 (why is this true?)</p></li>
 </ul>
@@ -1069,8 +1139,8 @@ following “leave-one-out” estimate
 bandwidth <span class="math inline">\(h\)</span> and all the data except for the <span class="math inline">\(i^{th}\)</span> observation.</p></li>
 <li><p>Then, we are going use the following quantity to estimate <span class="math inline">\(\int E[ \hat{f}_{h}(x) ] f(x) dx\)</span>
 <span class="math display">\[\begin{equation}
-\frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} ) 
-= \frac{1}{n(n-1)} \sum_{i=1}^{n} \sum_{j \neq i} \frac{1}{h}K\Big( \frac{X_{i} - X_{j}}{ h } \Big) \nonumber 
+\frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} )
+= \frac{1}{n(n-1)} \sum_{i=1}^{n} \sum_{j \neq i} \frac{1}{h}K\Big( \frac{X_{i} - X_{j}}{ h } \Big) \nonumber
 \end{equation}\]</span></p></li>
 <li><p>The term <span class="math inline">\(\frac{1}{n} \sum_{i=1}^{n} \hat{f}_{h, -i}( X_{i} )\)</span> is referred to as a leave-one-out cross-validation
 estimate.</p></li>
@@ -1093,33 +1163,33 @@ h_{n,cv} = \arg\min_{h &gt; 0} \hat{J}_{MISE}(h) \nonumber
 \end{equation}\]</span></p></li>
 </ul>
 </div>
-<div id="computing-the-cross-validation-bandwidth" class="section level3">
-<h3><span class="header-section-number">8.5.2</span> Computing the Cross-validation Bandwidth</h3>
+<div id="computing-the-cross-validation-bandwidth" class="section level3 hasAnchor" number="8.5.2">
+<h3><span class="header-section-number">8.5.2</span> Computing the Cross-validation Bandwidth<a href="density-estimation.html#computing-the-cross-validation-bandwidth" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p><strong>R</strong> does have built-in capabilities for finding the bandwidth through cross-validation, but
 let’s do an example ourselves to see how the process works.</p></li>
-<li>First, we can build a function called <code>J_mise</code> that has input and output:
+<li><p>First, we can build a function called <code>J_mise</code> that has input and output:</p>
 <ul>
 <li>Input: a value of the bandwidth <span class="math inline">\(h\)</span> and a vector of data</li>
 <li>Output: the value of <span class="math inline">\(\hat{J}_{MISE}(h)\)</span></li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1">J_mise &lt;-<span class="st"> </span><span class="cf">function</span>(h, x) {</a>
-<a class="sourceLine" id="cb135-2" data-line-number="2">    n &lt;-<span class="st"> </span><span class="kw">length</span>(x)</a>
-<a class="sourceLine" id="cb135-3" data-line-number="3">    loo.val &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, n)</a>
-<a class="sourceLine" id="cb135-4" data-line-number="4">    <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
-<a class="sourceLine" id="cb135-5" data-line-number="5">        <span class="co">## compute the leave-one-out density estimate</span></a>
-<a class="sourceLine" id="cb135-6" data-line-number="6">        <span class="co">## only focus on density on interval (18, 90)</span></a>
-<a class="sourceLine" id="cb135-7" data-line-number="7">        loo.fhat &lt;-<span class="st"> </span><span class="kw">density</span>(x[<span class="op">-</span>k], <span class="dt">bw=</span>h, <span class="dt">from=</span><span class="dv">18</span>, <span class="dt">to=</span><span class="dv">90</span>)</a>
-<a class="sourceLine" id="cb135-8" data-line-number="8">        loo.fhat.fn &lt;-<span class="st"> </span><span class="kw">approxfun</span>(loo.fhat<span class="op">$</span>x, loo.fhat<span class="op">$</span>y)</a>
-<a class="sourceLine" id="cb135-9" data-line-number="9">        loo.val[k] &lt;-<span class="st"> </span><span class="kw">loo.fhat.fn</span>(x[k])</a>
-<a class="sourceLine" id="cb135-10" data-line-number="10">    }</a>
-<a class="sourceLine" id="cb135-11" data-line-number="11">    fhat &lt;-<span class="st"> </span><span class="kw">density</span>(x, <span class="dt">bw=</span>h, <span class="dt">from=</span><span class="dv">18</span>, <span class="dt">to=</span><span class="dv">90</span>)</a>
-<a class="sourceLine" id="cb135-12" data-line-number="12">    fhat.sq.fn &lt;-<span class="st"> </span><span class="kw">approxfun</span>(fhat<span class="op">$</span>x, fhat<span class="op">$</span>y<span class="op">^</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb135-13" data-line-number="13">    </a>
-<a class="sourceLine" id="cb135-14" data-line-number="14">    ans &lt;-<span class="st"> </span><span class="kw">integrate</span>(fhat.sq.fn, <span class="dt">lower=</span><span class="dv">18</span>, <span class="dt">upper=</span><span class="dv">90</span>)<span class="op">$</span>value <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span><span class="kw">mean</span>(loo.val)</a>
-<a class="sourceLine" id="cb135-15" data-line-number="15">    <span class="kw">return</span>(ans)</a>
-<a class="sourceLine" id="cb135-16" data-line-number="16">}</a></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="density-estimation.html#cb144-1" tabindex="-1"></a>J_mise <span class="ot">&lt;-</span> <span class="cf">function</span>(h, x) {</span>
+<span id="cb144-2"><a href="density-estimation.html#cb144-2" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb144-3"><a href="density-estimation.html#cb144-3" tabindex="-1"></a>    loo.val <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb144-4"><a href="density-estimation.html#cb144-4" tabindex="-1"></a>    <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb144-5"><a href="density-estimation.html#cb144-5" tabindex="-1"></a>        <span class="do">## compute the leave-one-out density estimate</span></span>
+<span id="cb144-6"><a href="density-estimation.html#cb144-6" tabindex="-1"></a>        <span class="do">## only focus on density on interval (18, 90)</span></span>
+<span id="cb144-7"><a href="density-estimation.html#cb144-7" tabindex="-1"></a>        loo.fhat <span class="ot">&lt;-</span> <span class="fu">density</span>(x[<span class="sc">-</span>k], <span class="at">bw=</span>h, <span class="at">from=</span><span class="dv">18</span>, <span class="at">to=</span><span class="dv">90</span>)</span>
+<span id="cb144-8"><a href="density-estimation.html#cb144-8" tabindex="-1"></a>        loo.fhat.fn <span class="ot">&lt;-</span> <span class="fu">approxfun</span>(loo.fhat<span class="sc">$</span>x, loo.fhat<span class="sc">$</span>y)</span>
+<span id="cb144-9"><a href="density-estimation.html#cb144-9" tabindex="-1"></a>        loo.val[k] <span class="ot">&lt;-</span> <span class="fu">loo.fhat.fn</span>(x[k])</span>
+<span id="cb144-10"><a href="density-estimation.html#cb144-10" tabindex="-1"></a>    }</span>
+<span id="cb144-11"><a href="density-estimation.html#cb144-11" tabindex="-1"></a>    fhat <span class="ot">&lt;-</span> <span class="fu">density</span>(x, <span class="at">bw=</span>h, <span class="at">from=</span><span class="dv">18</span>, <span class="at">to=</span><span class="dv">90</span>)</span>
+<span id="cb144-12"><a href="density-estimation.html#cb144-12" tabindex="-1"></a>    fhat.sq.fn <span class="ot">&lt;-</span> <span class="fu">approxfun</span>(fhat<span class="sc">$</span>x, fhat<span class="sc">$</span>y<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb144-13"><a href="density-estimation.html#cb144-13" tabindex="-1"></a>    </span>
+<span id="cb144-14"><a href="density-estimation.html#cb144-14" tabindex="-1"></a>    ans <span class="ot">&lt;-</span> <span class="fu">integrate</span>(fhat.sq.fn, <span class="at">lower=</span><span class="dv">18</span>, <span class="at">upper=</span><span class="dv">90</span>)<span class="sc">$</span>value <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">mean</span>(loo.val)</span>
+<span id="cb144-15"><a href="density-estimation.html#cb144-15" tabindex="-1"></a>    <span class="fu">return</span>(ans)</span>
+<span id="cb144-16"><a href="density-estimation.html#cb144-16" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
 <li><p>Now, we want to use our <strong>R</strong> function to compute <span class="math inline">\(\hat{J}(h_{j})\)</span> over
 a grid of bandwidth values
@@ -1134,36 +1204,36 @@ a density which is oversmoothed.</p></li>
 <li><p>For the ages from the kidney data, <span class="math inline">\(h_{min} = 1/2\)</span> and <span class="math inline">\(h_{max} = 5\)</span> seem like reasonable choices.</p></li>
 <li><p>Let us compute <span class="math inline">\(\hat{J}(h)\)</span> for a grid of <span class="math inline">\(100\)</span> bandwidths between <span class="math inline">\(1/2\)</span> and <span class="math inline">\(5\)</span>:</p></li>
 </ul>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1">h.grid &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="dv">5</span>, <span class="dt">length.out=</span><span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb136-2" data-line-number="2">CV.est &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb136-3" data-line-number="3"><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>) {</a>
-<a class="sourceLine" id="cb136-4" data-line-number="4">   CV.est[j] &lt;-<span class="st"> </span><span class="kw">J_mise</span>(<span class="dt">h=</span>h.grid[j], <span class="dt">x=</span>kidney<span class="op">$</span>age)</a>
-<a class="sourceLine" id="cb136-5" data-line-number="5">}</a></code></pre></div>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="density-estimation.html#cb145-1" tabindex="-1"></a>h.grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">5</span>, <span class="at">length.out=</span><span class="dv">100</span>)</span>
+<span id="cb145-2"><a href="density-estimation.html#cb145-2" tabindex="-1"></a>CV.est <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">100</span>)</span>
+<span id="cb145-3"><a href="density-estimation.html#cb145-3" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>) {</span>
+<span id="cb145-4"><a href="density-estimation.html#cb145-4" tabindex="-1"></a>   CV.est[j] <span class="ot">&lt;-</span> <span class="fu">J_mise</span>(<span class="at">h=</span>h.grid[j], <span class="at">x=</span>kidney<span class="sc">$</span>age)</span>
+<span id="cb145-5"><a href="density-estimation.html#cb145-5" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
-<li>Now, if we plot <span class="math inline">\(\hat{J}(h)\)</span> vs. <span class="math inline">\(h\)</span>, we can see what the best value of the bandwidth is.
+<li>Now, if we plot <span class="math inline">\(\hat{J}(h)\)</span> vs. <span class="math inline">\(h\)</span>, we can see what the best value of the bandwidth is.
 From the graph, it appears that a bandwidth of roughly <span class="math inline">\(h = 1.8\)</span> minimizes <span class="math inline">\(\hat{J}(h)\)</span></li>
 </ul>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" data-line-number="1"><span class="kw">plot</span>(h.grid, CV.est, <span class="dt">xlab=</span><span class="st">&quot;bandwidth&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;J_mise(h)&quot;</span>, </a>
-<a class="sourceLine" id="cb137-2" data-line-number="2">     <span class="dt">main =</span> <span class="st">&quot;Cross-Validation Estimates for Age Data&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="density-estimation.html#cb146-1" tabindex="-1"></a><span class="fu">plot</span>(h.grid, CV.est, <span class="at">xlab=</span><span class="st">&quot;bandwidth&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;J_mise(h)&quot;</span>, </span>
+<span id="cb146-2"><a href="density-estimation.html#cb146-2" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Cross-Validation Estimates for Age Data&quot;</span>)</span></code></pre></div>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <ul>
 <li>The specific value of the bandwidth where <span class="math inline">\(\hat{J}(h_{j})\)</span> reaches its minimum is:</li>
 </ul>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1">h.grid[ <span class="kw">which.min</span>(CV.est) ]</a></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="density-estimation.html#cb147-1" tabindex="-1"></a>h.grid[ <span class="fu">which.min</span>(CV.est) ]</span></code></pre></div>
 <pre><code>## [1] 1.772727</code></pre>
 </div>
-<div id="likelihood-cross-validation" class="section level3">
-<h3><span class="header-section-number">8.5.3</span> Likelihood Cross-Validation</h3>
+<div id="likelihood-cross-validation" class="section level3 hasAnchor" number="8.5.3">
+<h3><span class="header-section-number">8.5.3</span> Likelihood Cross-Validation<a href="density-estimation.html#likelihood-cross-validation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>An alternative to MISE is the <strong>Kullback-Leibler (KL) divergence</strong>
 <span class="math display">\[\begin{eqnarray}
 \textrm{KL}(h) &amp;=&amp; \int \log \Big( \frac{ f(x) }{ \hat{f}_{h}(x) } \Big)  f(x) dx  \nonumber \\
 &amp;=&amp; -\int \log \{ \hat{f}_{h}(x) \}  f(x) dx + \int \log\{ f(x) \}f(x) dx  \nonumber
 \end{eqnarray}\]</span></p></li>
-<li><p>We only need to get an estimate of <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \} f(x) dx\)</span>
+<li><p>We only need to get an estimate of <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \}  f(x) dx\)</span>
 because <span class="math inline">\(\int \log\{ f(x) \}f(x) dx\)</span> does not depend on <span class="math inline">\(h\)</span>.</p></li>
 <li><p>We can use the same approach as we did for integrated squared error cross-validation
-to estimate <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \} f(x) dx\)</span>.</p></li>
+to estimate <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \}  f(x) dx\)</span>.</p></li>
 <li><p>The leave-one-out <strong>cross-validation estimate of the KL divergence</strong> (ignoring the irrelevant <span class="math inline">\(\int \log\{ f(x) \}f(x) dx\)</span> term) is
 <span class="math display">\[\begin{equation}
 \hat{J}_{KL}(h) = -\frac{1}{n} \sum_{i=1}^{n} \log \{ \hat{f}_{h, -i}( X_{i} ) \}  \nonumber
@@ -1171,29 +1241,29 @@ to estimate <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \} f(x) dx\)
 <li><p>Choosing the bandwidth which minimizes <span class="math inline">\(\hat{J}_{KL}(h)\)</span> is often referred to as <strong>likelihood cross-validation</strong>.</p></li>
 <li><p>An <strong>R</strong> function which can compute <span class="math inline">\(\hat{J}_{KL}(h)\)</span> is given below:</p></li>
 </ul>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1">J_KL &lt;-<span class="st"> </span><span class="cf">function</span>(h, x) {</a>
-<a class="sourceLine" id="cb140-2" data-line-number="2">  n &lt;-<span class="st"> </span><span class="kw">length</span>(x)</a>
-<a class="sourceLine" id="cb140-3" data-line-number="3">  loo.val &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, n)</a>
-<a class="sourceLine" id="cb140-4" data-line-number="4">  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
-<a class="sourceLine" id="cb140-5" data-line-number="5">    <span class="co">## compute the leave-one-out density estimate</span></a>
-<a class="sourceLine" id="cb140-6" data-line-number="6">    <span class="co">## only focus on density on interval (18, 90)</span></a>
-<a class="sourceLine" id="cb140-7" data-line-number="7">    loo.fhat &lt;-<span class="st"> </span><span class="kw">density</span>(x[<span class="op">-</span>k], <span class="dt">bw=</span>h, <span class="dt">from=</span><span class="dv">18</span>, <span class="dt">to=</span><span class="dv">90</span>)</a>
-<a class="sourceLine" id="cb140-8" data-line-number="8">    loo.fhat.fn &lt;-<span class="st"> </span><span class="kw">approxfun</span>(loo.fhat<span class="op">$</span>x, loo.fhat<span class="op">$</span>y)</a>
-<a class="sourceLine" id="cb140-9" data-line-number="9">    loo.val[k] &lt;-<span class="st"> </span>(<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="kw">log</span>(<span class="kw">loo.fhat.fn</span>(x[k]))</a>
-<a class="sourceLine" id="cb140-10" data-line-number="10">  }</a>
-<a class="sourceLine" id="cb140-11" data-line-number="11">  <span class="kw">return</span>(<span class="kw">mean</span>(loo.val))</a>
-<a class="sourceLine" id="cb140-12" data-line-number="12">}</a></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="density-estimation.html#cb149-1" tabindex="-1"></a>J_KL <span class="ot">&lt;-</span> <span class="cf">function</span>(h, x) {</span>
+<span id="cb149-2"><a href="density-estimation.html#cb149-2" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb149-3"><a href="density-estimation.html#cb149-3" tabindex="-1"></a>  loo.val <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb149-4"><a href="density-estimation.html#cb149-4" tabindex="-1"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb149-5"><a href="density-estimation.html#cb149-5" tabindex="-1"></a>    <span class="do">## compute the leave-one-out density estimate</span></span>
+<span id="cb149-6"><a href="density-estimation.html#cb149-6" tabindex="-1"></a>    <span class="do">## only focus on density on interval (18, 90)</span></span>
+<span id="cb149-7"><a href="density-estimation.html#cb149-7" tabindex="-1"></a>    loo.fhat <span class="ot">&lt;-</span> <span class="fu">density</span>(x[<span class="sc">-</span>k], <span class="at">bw=</span>h, <span class="at">from=</span><span class="dv">18</span>, <span class="at">to=</span><span class="dv">90</span>)</span>
+<span id="cb149-8"><a href="density-estimation.html#cb149-8" tabindex="-1"></a>    loo.fhat.fn <span class="ot">&lt;-</span> <span class="fu">approxfun</span>(loo.fhat<span class="sc">$</span>x, loo.fhat<span class="sc">$</span>y)</span>
+<span id="cb149-9"><a href="density-estimation.html#cb149-9" tabindex="-1"></a>    loo.val[k] <span class="ot">&lt;-</span> (<span class="sc">-</span><span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(<span class="fu">loo.fhat.fn</span>(x[k]))</span>
+<span id="cb149-10"><a href="density-estimation.html#cb149-10" tabindex="-1"></a>  }</span>
+<span id="cb149-11"><a href="density-estimation.html#cb149-11" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">mean</span>(loo.val))</span>
+<span id="cb149-12"><a href="density-estimation.html#cb149-12" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
-<div id="density-estimation-in-r" class="section level2">
-<h2><span class="header-section-number">8.6</span> Density Estimation in R</h2>
+<div id="density-estimation-in-r" class="section level2 hasAnchor" number="8.6">
+<h2><span class="header-section-number">8.6</span> Density Estimation in R<a href="density-estimation.html#density-estimation-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li>In <strong>R</strong>, kernel density estimates are computed using the <code>density</code> function</li>
 </ul>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" data-line-number="1"><span class="kw">density</span>(x, bw, kernel, n, ...)</a></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="density-estimation.html#cb150-1" tabindex="-1"></a><span class="fu">density</span>(x, bw, kernel, n, ...)</span></code></pre></div>
 <ul>
 <li><p><strong>x</strong> - the vector containing the data</p></li>
-<li><strong>bw</strong> - the value of the bandwidth.
+<li><p><strong>bw</strong> - the value of the bandwidth.</p>
 <ul>
 <li><code>bw = nrd0</code> gives the default bandwidth rule. This is Silverman’s rule-of-thumb <span class="math inline">\(h_{n} = 0.9 s n^{-1/5}\)</span></li>
 <li><code>bw = nrd</code> gives the bandwidth <span class="math inline">\(h_{n} = 1.06 \hat{\sigma} n^{-1/5}\)</span></li>
@@ -1208,18 +1278,18 @@ to estimate <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \} f(x) dx\)
 <li>In this section, we will use the <code>galaxies</code> dataset in the <code>MASS</code> package.
 The first few observations of the <code>galaxies</code> dataset look like:</li>
 </ul>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" data-line-number="1"><span class="kw">library</span>(MASS)</a>
-<a class="sourceLine" id="cb142-2" data-line-number="2">galaxies[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="density-estimation.html#cb151-1" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb151-2"><a href="density-estimation.html#cb151-2" tabindex="-1"></a>galaxies[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
 <pre><code>## [1] 9172 9350 9483 9558 9775</code></pre>
 <ul>
 <li>Kernel density estimates can be computed in <strong>R</strong> using the <code>density</code> function</li>
 </ul>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" data-line-number="1">galax.dens &lt;-<span class="st"> </span><span class="kw">density</span>(galaxies)</a></code></pre></div>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="density-estimation.html#cb153-1" tabindex="-1"></a>galax.dens <span class="ot">&lt;-</span> <span class="fu">density</span>(galaxies)</span></code></pre></div>
 <ul>
 <li>You can display a density plot just by applying the <code>plot</code> function to our <code>galax.dens</code> object</li>
 </ul>
-<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" data-line-number="1"><span class="kw">plot</span>(galax.dens, <span class="dt">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, </a>
-<a class="sourceLine" id="cb145-2" data-line-number="2">     <span class="dt">xlab=</span><span class="st">&quot;velocity in km/sec&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="density-estimation.html#cb154-1" tabindex="-1"></a><span class="fu">plot</span>(galax.dens, <span class="at">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, </span>
+<span id="cb154-2"><a href="density-estimation.html#cb154-2" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;velocity in km/sec&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <hr />
 <ul>
@@ -1230,8 +1300,8 @@ The first few observations of the <code>galaxies</code> dataset look like:</li>
 </ul></li>
 <li>So, just plotting the <code>(x, y)</code> should give you a plot of the density estimate</li>
 </ul>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb146-1" data-line-number="1"><span class="kw">plot</span>(galax.dens<span class="op">$</span>x, galax.dens<span class="op">$</span>y, <span class="dt">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, </a>
-<a class="sourceLine" id="cb146-2" data-line-number="2">     <span class="dt">xlab=</span><span class="st">&quot;velocity in km/sec&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="density-estimation.html#cb155-1" tabindex="-1"></a><span class="fu">plot</span>(galax.dens<span class="sc">$</span>x, galax.dens<span class="sc">$</span>y, <span class="at">main=</span><span class="st">&quot;Default Density Estimate for Galaxy Data&quot;</span>, </span>
+<span id="cb155-2"><a href="density-estimation.html#cb155-2" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;velocity in km/sec&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Density&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <ul>
 <li>The default in <strong>R</strong> is to estimate the density at 512 points. Thus, <code>galax.dens$x</code>
@@ -1241,13 +1311,13 @@ and <code>galax.dens$y</code> should each have length 512.</li>
 <ul>
 <li>The <code>bw</code> component returned by the <code>density</code> function is the bandwidth used to estimate the density.</li>
 </ul>
-<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb147-1" data-line-number="1">galax.dens<span class="op">$</span>bw</a></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="density-estimation.html#cb156-1" tabindex="-1"></a>galax.dens<span class="sc">$</span>bw</span></code></pre></div>
 <pre><code>## [1] 1001.839</code></pre>
 <ul>
 <li><p>The default bandwidth selection rule in <strong>R</strong> is Silverman’s rule-of-thumb <span class="math inline">\(h_{n}^{SR} = 0.9 s n^{-1/5}\)</span>.</p></li>
 <li><p>We can check that this is true with the following code:</p></li>
 </ul>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb149-1" data-line-number="1"><span class="fl">0.9</span><span class="op">*</span><span class="kw">min</span>(<span class="kw">sd</span>(galaxies), <span class="kw">IQR</span>(galaxies)<span class="op">/</span><span class="fl">1.34</span>)<span class="op">/</span>(<span class="kw">length</span>(galaxies)<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">5</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="density-estimation.html#cb158-1" tabindex="-1"></a><span class="fl">0.9</span><span class="sc">*</span><span class="fu">min</span>(<span class="fu">sd</span>(galaxies), <span class="fu">IQR</span>(galaxies)<span class="sc">/</span><span class="fl">1.34</span>)<span class="sc">/</span>(<span class="fu">length</span>(galaxies)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>))</span></code></pre></div>
 <pre><code>## [1] 1001.839</code></pre>
 <hr />
 <ul>
@@ -1260,15 +1330,15 @@ at points which are either less than the minimum x value or greater than maximum
 <li><p>For example, suppose we want to know the value of the density estimate at the points <span class="math inline">\(18000\)</span>
 and <span class="math inline">\(33000\)</span>. This could be done with the following code</p></li>
 </ul>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb151-1" data-line-number="1">galaxy.fn &lt;-<span class="st"> </span><span class="kw">approxfun</span>(galax.dens<span class="op">$</span>x, galax.dens<span class="op">$</span>y)</a>
-<a class="sourceLine" id="cb151-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb151-3" data-line-number="3"><span class="kw">galaxy.fn</span>(<span class="dv">18000</span>)</a></code></pre></div>
-<pre><code>## [1] 4.73857e-05</code></pre>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb153-1" data-line-number="1"><span class="kw">galaxy.fn</span>(<span class="dv">33000</span>)</a></code></pre></div>
-<pre><code>## [1] 1.004542e-05</code></pre>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="density-estimation.html#cb160-1" tabindex="-1"></a>galaxy.fn <span class="ot">&lt;-</span> <span class="fu">approxfun</span>(galax.dens<span class="sc">$</span>x, galax.dens<span class="sc">$</span>y)</span>
+<span id="cb160-2"><a href="density-estimation.html#cb160-2" tabindex="-1"></a></span>
+<span id="cb160-3"><a href="density-estimation.html#cb160-3" tabindex="-1"></a><span class="fu">galaxy.fn</span>(<span class="dv">18000</span>)</span></code></pre></div>
+<pre><code>## [1] 4.729812e-05</code></pre>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="density-estimation.html#cb162-1" tabindex="-1"></a><span class="fu">galaxy.fn</span>(<span class="dv">33000</span>)</span></code></pre></div>
+<pre><code>## [1] 1.003912e-05</code></pre>
 </div>
-<div id="additional-reading-3" class="section level2">
-<h2><span class="header-section-number">8.7</span> Additional Reading</h2>
+<div id="additional-reading-3" class="section level2 hasAnchor" number="8.7">
+<h2><span class="header-section-number">8.7</span> Additional Reading<a href="density-estimation.html#additional-reading-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li>Additional reading which covers the material discussed in this chapter includes:
 <ul>
@@ -1280,8 +1350,8 @@ and <span class="math inline">\(33000\)</span>. This could be done with the foll
 </ul></li>
 </ul>
 </div>
-<div id="exercises-5" class="section level2">
-<h2><span class="header-section-number">8.8</span> Exercises</h2>
+<div id="exercises-5" class="section level2 hasAnchor" number="8.8">
+<h2><span class="header-section-number">8.8</span> Exercises<a href="density-estimation.html#exercises-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p><strong>Exercise 8.1.</strong> Suppose <span class="math inline">\(x_{0} = -2\)</span> and <span class="math inline">\(h_{n} = 1/2\)</span>. What are the values of
 <span class="math inline">\(A_{h_{n}, x_{0}}( -1 )\)</span>, <span class="math inline">\(A_{h_{n}, x_{0}}( 1.3 )\)</span>, and <span class="math inline">\(A_{h_{n}, x_{0}}( 0.75 )\)</span>?</p></li>
@@ -1297,8 +1367,8 @@ that
 <span class="math display">\[\begin{equation}
 \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx = \frac{3}{8\sqrt{\pi}\sigma^{5}} \nonumber
 \end{equation}\]</span></p></li>
-<li><strong>Exercise 8.6</strong> Suppose <span class="math inline">\(X_{1}, \ldots, X_{n} \sim N(0, \sigma^{2})\)</span>. Suppose that
-we have density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> that uses the Gaussian kernel.
+<li><p><strong>Exercise 8.6</strong> Suppose <span class="math inline">\(X_{1}, \ldots, X_{n} \sim N(0, \sigma^{2})\)</span>. Suppose that
+we have density estimate <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> that uses the Gaussian kernel.</p>
 <ul>
 <li>Compute the exact values of <span class="math inline">\(E\{ \hat{f}_{h_{n}}(x) \}\)</span> and <span class="math inline">\(\textrm{Var}\{ \hat{f}_{h_{n}}(x) \}\)</span>.</li>
 <li>Compute AMISE<span class="math inline">\(\{ \hat{f}_{h_{n}} \}\)</span>. Can you get an expression for the value of <span class="math inline">\(h_{n}\)</span> which minimizes AMISE?</li>
@@ -1325,24 +1395,24 @@ next to the kernel density estimate returned by the <code>density</code> functio
 
 
 <h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-hardle2012">
-<p>Härdle, Wolfgang Karl, Marlene Müller, Stefan Sperlich, and Axel Werwatz. 2012. <em>Nonparametric and Semiparametric Models</em>. Springer Science &amp; Business Media.</p>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-hardle2012" class="csl-entry">
+Härdle, Wolfgang Karl, Marlene Müller, Stefan Sperlich, and Axel Werwatz. 2012. <em>Nonparametric and Semiparametric Models</em>. Springer Science &amp; Business Media.
 </div>
-<div id="ref-izenman2008">
-<p>Izenman, Alan Julian. 2008. “Modern Multivariate Statistical Techniques.” <em>Regression, Classification and Manifold Learning</em> 10. Springer: 978–0.</p>
+<div id="ref-izenman2008" class="csl-entry">
+Izenman, Alan Julian. 2008. <span>“Modern Multivariate Statistical Techniques.”</span> <em>Regression, Classification and Manifold Learning</em> 10: 978–70.
 </div>
-<div id="ref-scott1979">
-<p>Scott, David W. 1979. “On Optimal and Data-Based Histograms.” <em>Biometrika</em> 66 (3). Oxford University Press: 605–10.</p>
+<div id="ref-scott1979" class="csl-entry">
+Scott, David W. 1979. <span>“On Optimal and Data-Based Histograms.”</span> <em>Biometrika</em> 66 (3): 605–10.
 </div>
-<div id="ref-sheather2004">
-<p>Sheather, Simon J. 2004. “Density Estimation.” <em>Statistical Science</em>, 588–97.</p>
+<div id="ref-sheather2004" class="csl-entry">
+Sheather, Simon J. 2004. <span>“Density Estimation.”</span> <em>Statistical Science</em>, 588–97.
 </div>
-<div id="ref-silverman2018">
-<p>Silverman, Bernard W. 2018. <em>Density Estimation for Statistics and Data Analysis</em>. Routledge.</p>
+<div id="ref-silverman2018" class="csl-entry">
+Silverman, Bernard W. 2018. <em>Density Estimation for Statistics and Data Analysis</em>. Routledge.
 </div>
-<div id="ref-wasserman2006">
-<p>Wasserman, Larry. 2006. <em>All of Nonparametric Statistics</em>. Springer Science &amp; Business Media.</p>
+<div id="ref-wasserman2006" class="csl-entry">
+Wasserman, Larry. 2006. <em>All of Nonparametric Statistics</em>. Springer Science &amp; Business Media.
 </div>
 </div>
             </section>
@@ -1355,7 +1425,6 @@ next to the kernel density estimate returned by the <code>density</code> functio
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -1366,37 +1435,42 @@ next to the kernel density estimate returned by the <code>density</code> functio
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["ElementsNonparStat.pdf"],
-"toc": {
-"collapse": "section"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["ElementsNonparStat.pdf"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
 });
 });
 </script>
@@ -1407,7 +1481,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
