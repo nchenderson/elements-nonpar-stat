@@ -527,9 +527,9 @@ the expected squared distance between <span class="math inline">\(X_{i}\)</span>
 <span id="cb94-6"><a href="ustat.html#cb94-6" tabindex="-1"></a>   diff.sq[k] <span class="ot">&lt;-</span> (xx[idx[<span class="dv">1</span>]] <span class="sc">-</span> xx[idx[<span class="dv">2</span>]])<span class="sc">^</span><span class="dv">2</span></span>
 <span id="cb94-7"><a href="ustat.html#cb94-7" tabindex="-1"></a>}</span>
 <span id="cb94-8"><a href="ustat.html#cb94-8" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">var</span>(xx), <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 1.838</code></pre>
+<pre><code>## [1] 1.852</code></pre>
 <div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="ustat.html#cb96-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">mean</span>(diff.sq)<span class="sc">/</span><span class="dv">2</span>, <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 1.854</code></pre>
+<pre><code>## [1] 1.837</code></pre>
 </div>
 <div id="example-3-ginis-mean-difference" class="section level3 hasAnchor" number="6.2.3">
 <h3><span class="header-section-number">6.2.3</span> Example 3: Gini’s Mean Difference<a href="ustat.html#example-3-ginis-mean-difference" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -741,11 +741,11 @@ and <span class="math inline">\(\hat{\rho}_{R}\)</span> will equal -1 if <span c
 <span id="cb98-4"><a href="ustat.html#cb98-4" tabindex="-1"></a><span class="do">## Compare the usual Pearson&#39;s correlation between </span></span>
 <span id="cb98-5"><a href="ustat.html#cb98-5" tabindex="-1"></a><span class="do">## (xx, yy) and (xx, yy^2)</span></span>
 <span id="cb98-6"><a href="ustat.html#cb98-6" tabindex="-1"></a><span class="fu">round</span>( <span class="fu">c</span>( <span class="fu">cor</span>(xx, yy), <span class="fu">cor</span>(xx, yy<span class="sc">^</span><span class="dv">2</span>)), <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 0.870 0.867</code></pre>
+<pre><code>## [1] 0.856 0.852</code></pre>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="ustat.html#cb100-1" tabindex="-1"></a><span class="do">## Now do the same for Spearman&#39;s rank correlation</span></span>
 <span id="cb100-2"><a href="ustat.html#cb100-2" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>( <span class="fu">cor</span>(xx, yy, <span class="at">method=</span><span class="st">&quot;spearman&quot;</span>), </span>
 <span id="cb100-3"><a href="ustat.html#cb100-3" tabindex="-1"></a>         <span class="fu">cor</span>(xx, yy<span class="sc">^</span><span class="dv">2</span>, <span class="at">method=</span><span class="st">&quot;spearman&quot;</span>)), <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 0.868 0.868</code></pre>
+<pre><code>## [1] 0.826 0.826</code></pre>
 <hr />
 <ul>
 <li><p><span class="math inline">\(\hat{\rho}_{R}\)</span> can be thought of as an estimate of the following population

@@ -545,7 +545,7 @@ more details).</p></li>
 <div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="ci.html#cb202-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(alpha.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(alpha.boot), alpha.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(alpha.boot)), <span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## [1] 0.079 0.551</code></pre>
 <div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="ci.html#cb204-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(sigsq.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(sigsq.boot), sigsq.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(sigsq.boot)), <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 0.941 1.995</code></pre>
+<pre><code>## [1] 0.917 2.018</code></pre>
 <ul>
 <li>We can compare our confidence interval for <span class="math inline">\(\alpha\)</span> with the confidence interval
 obtained from using a large-sample approximation:</li>
@@ -688,11 +688,11 @@ we can use studentized bootstrap confidence intervals without using the double b
 <div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="ci.html#cb211-1" tabindex="-1"></a><span class="do">## Confidence interval for beta0</span></span>
 <span id="cb211-2"><a href="ci.html#cb211-2" tabindex="-1"></a><span class="fu">c</span>(beta0.hat <span class="sc">-</span> stu.quants0[<span class="dv">2</span>]<span class="sc">*</span>se.est0, beta0.hat <span class="sc">-</span> stu.quants0[<span class="dv">1</span>]<span class="sc">*</span>se.est0)</span></code></pre></div>
 <pre><code>## (Intercept) (Intercept) 
-##        2.16        3.53</code></pre>
+##        2.12        3.56</code></pre>
 <div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="ci.html#cb213-1" tabindex="-1"></a><span class="do">## Confidence interval for beta1</span></span>
 <span id="cb213-2"><a href="ci.html#cb213-2" tabindex="-1"></a><span class="fu">c</span>(beta1.hat <span class="sc">-</span> stu.quants1[<span class="dv">2</span>]<span class="sc">*</span>se.est1, beta1.hat <span class="sc">-</span> stu.quants1[<span class="dv">1</span>]<span class="sc">*</span>se.est1)</span></code></pre></div>
 <pre><code>##     age     age 
-## -0.0955 -0.0600</code></pre>
+## -0.0948 -0.0596</code></pre>
 <ul>
 <li>Compare these studentized bootstrap confidence intervals with the confidence
 intervals computed under the normality assumption for the residuals:</li>
@@ -785,11 +785,11 @@ and <span class="math inline">\(\hat{\beta}_{1}\)</span>, we just use the follow
 <div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="ci.html#cb219-1" tabindex="-1"></a><span class="do">## Confidence interval for beta0</span></span>
 <span id="cb219-2"><a href="ci.html#cb219-2" tabindex="-1"></a><span class="fu">c</span>(beta0.hat <span class="sc">-</span> stu.quants0.np[<span class="dv">2</span>]<span class="sc">*</span>se.est0, beta0.hat <span class="sc">-</span> stu.quants0.np[<span class="dv">1</span>]<span class="sc">*</span>se.est0)</span></code></pre></div>
 <pre><code>## (Intercept) (Intercept) 
-##        2.15        3.64</code></pre>
+##        2.20        3.49</code></pre>
 <div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="ci.html#cb221-1" tabindex="-1"></a><span class="do">## Confidence interval for beta1</span></span>
 <span id="cb221-2"><a href="ci.html#cb221-2" tabindex="-1"></a><span class="fu">c</span>(beta1.hat <span class="sc">-</span> stu.quants1.np[<span class="dv">2</span>]<span class="sc">*</span>se.est1, beta1.hat <span class="sc">-</span> stu.quants1.np[<span class="dv">1</span>]<span class="sc">*</span>se.est1)</span></code></pre></div>
 <pre><code>##     age     age 
-## -0.0993 -0.0622</code></pre>
+## -0.0940 -0.0622</code></pre>
 <hr />
 <ul>
 <li><strong>Exercise 10.2</strong> Another way of using the bootstrap in a regression context
@@ -960,7 +960,7 @@ confidence interval for <span class="math inline">\(\eta\)</span>:</p></li>
 <li>The estimated coverage for this bootstrap confidence interval is</li>
 </ul>
 <div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="ci.html#cb225-1" tabindex="-1"></a><span class="fu">mean</span>(Cover.bootsd.ci)</span></code></pre></div>
-<pre><code>## [1] 0.794</code></pre>
+<pre><code>## [1] 0.798</code></pre>
 <p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 </div>

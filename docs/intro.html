@@ -439,32 +439,41 @@ div.csl-indent {
 <h2><span class="header-section-number">1.1</span> What is Nonparametric Statistics?<a href="intro.html#sec:whatisnonpar" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><strong>What is Parametric Statistics?</strong></p>
 <ul>
-<li><p>Parametric models refer to probability distributions that can
-be fully described by a fixed number of parameters that do not change
-with the sample size.</p></li>
-<li><p>Typical examples include</p>
+<li>Parametric methods are based on <strong>probability models</strong> that can
+be fully described by a <strong>fixed</strong> number of parameters.
 <ul>
-<li>Gaussian</li>
-<li>Poisson</li>
-<li>Exponential</li>
-<li>Beta</li>
+<li>The number of parameters <strong>does not change</strong> with the sample size.</li>
 </ul></li>
-<li><p>Could also refer to a regression setting where the mean function
-is described by a fixed number of parameters.</p></li>
+<li>Typical examples include
+<ul>
+<li>Gaussian (2 parameters)</li>
+<li>Poisson (1 parameter)</li>
+<li>Exponential (1 parameter)</li>
+<li>Beta (2 parameters)</li>
+</ul></li>
+<li>In regression settings where we have pairs of observations
+<span class="math inline">\((x_{1}, Y_{1})\)</span>, …, <span class="math inline">\((x_{n}, Y_{n})\)</span>.
+<ul>
+<li>Parametric methods would assume the conditional mean function <span class="math inline">\(E(Y_{i} | x_{i})\)</span>
+would be described by a fixed number of parameters.</li>
+<li>For example, <span class="math inline">\(E(Y_{i}|x_{i}) = \beta_{0} + \beta_{1}x_{i}\)</span>.</li>
+</ul></li>
 </ul>
 <p><strong>What is Nonparametric Statistics?</strong></p>
 <ul>
-<li><p>It is difficult to give a concise, all-encompassing definition, but nonparametric
-statistics generally refers to statistical methods where there is not a clear parametric component.</p></li>
-<li><p>A more practical definition is that nonparametric statistics refers to flexible statistical procedures where
-very few assumptions are made regarding the distribution of the data or the form
+<li><p>It is difficult to give a concise, all-encompassing definition of nonparametric statistics, but nonparametric
+statistics generally refers to statistical methods where there is <strong>not</strong> a clear parametric component.</p></li>
+<li><p>A more practical definition is that nonparametric statistics refers to <strong>flexible statistical procedures</strong> where
+<strong>few assumptions</strong> are made regarding the distribution of the data or the form
 of a regression model.</p></li>
 <li><p>The uses of nonparametric methods in several common statistical contexts are described in Sections <a href="intro.html#sec:example-nonpar-tests">1.3</a> - <a href="intro.html#sec:example-nonpar-regress2">1.7</a>.</p></li>
 </ul>
 </div>
 <div id="sec:course-outline" class="section level2 hasAnchor" number="1.2">
 <h2><span class="header-section-number">1.2</span> Outline of Course<a href="intro.html#sec:course-outline" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This course is roughly divided into the following 5 categories.</p>
+<p>The topics in this course are roughly divided into the following 5 categories.
+The plan is to describe nonparametric methods for 5 main themes in
+statistical inference.</p>
 <ol style="list-style-type: decimal">
 <li><strong>Nonparametric Testing</strong>
 <ul>
@@ -476,10 +485,10 @@ of a regression model.</p></li>
 <li>The Empirical Distribution Function</li>
 <li>Density Estimation</li>
 </ul></li>
-<li><strong>Nonparametric Confidence Intervals</strong>
+<li><strong>Nonparametric Confidence Intervals and Prediction Intervals</strong>
 <ul>
 <li>Bootstrap</li>
-<li>Jacknife</li>
+<li>Conformal Inference</li>
 </ul></li>
 <li><strong>Nonparametric Regression Part I (Smoothing Methods)</strong>
 <ul>
@@ -490,13 +499,13 @@ of a regression model.</p></li>
 <li><strong>Nonparametric Regression Part II (Machine Learning Methods)</strong>
 <ul>
 <li>Decision Trees/CART</li>
-<li>Ensemble Methods</li>
+<li>Ensemble Methods (boosting)</li>
 </ul></li>
 </ol>
 </div>
 <div id="sec:example-nonpar-tests" class="section level2 hasAnchor" number="1.3">
 <h2><span class="header-section-number">1.3</span> Example 1: Nonparametric vs. Parametric Two-Sample Testing<a href="intro.html#sec:example-nonpar-tests" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Suppose we have data from two groups. For example, outcomes from
+<p>Suppose we have data from <strong>two groups</strong>. For example, outcomes from
 two different treatments.</p>
 <ul>
 <li><p><strong>Group 1 outcomes</strong>: <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> an i.i.d (independent and identically distributed) sample from distribution function <span class="math inline">\(F_{X}\)</span>.
@@ -542,26 +551,29 @@ s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \su
 </ul>
 <p><img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <ul>
-<li><p>Notice that the null distribution of <span class="math inline">\(T\)</span> depends on the parametric assumption that both <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span>
-and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>. Appealing to the Central Limit Theorem, one could
-argue that is a quite reasonable assumption.</p></li>
-<li><p>In addition to using the assumption that <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span> and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>, we used this parametric assumption (at least implicitly) in the formulation of the hypothesis test itself because we assumed that any difference between <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span> would be fully described by difference in <span class="math inline">\(\mu_{x}\)</span> and <span class="math inline">\(\mu_{y}\)</span>.</p></li>
-<li><p>So, in a sense, you are using the assumption of normality twice in the construction of the two-sample t-test.</p></li>
+<li>Notice that the null distribution of <span class="math inline">\(T\)</span> depends on the parametric assumption that both <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span>
+and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>.
+<ul>
+<li>Appealing to the Central Limit Theorem, one could argue that is a quite reasonable assumption.</li>
+</ul></li>
+<li>In addition to using the assumption that <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span> and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>, we used this parametric assumption (at least implicitly) in the formulation of the hypothesis test itself because we assumed that most relevant differences between <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span> would be fully described by difference in <span class="math inline">\(\mu_{x}\)</span> and <span class="math inline">\(\mu_{y}\)</span>.</li>
 </ul>
 <hr />
 <p><strong>Nonparametric Tests</strong></p>
 <ul>
-<li><p>Two-sample nonparametric tests are meant to be “distribution-free”. This means the null distribution of the test statistic does not depend on any parametric
+<li><p>Two-sample nonparametric tests are meant to be <strong>“distribution-free”</strong>. This usually means
+the null distribution of the test statistic does not depend on any parametric
 assumptions about the two populations <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span>.</p></li>
 <li><p>Many such tests are based on <strong>ranks</strong>. The distribution of the ranks under the assumption that <span class="math inline">\(F_{X} = F_{Y}\)</span> do
 not depend on the form of <span class="math inline">\(F_{X}\)</span> (assuming <span class="math inline">\(F_{X}\)</span> is continuous).</p></li>
-<li><p>Also, the statements of hypotheses tests for nonparametric tests should not rely on any parametric assumptions about <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span>.</p></li>
+<li><p>Also, the statements of hypotheses tests for nonparametric tests should not rely on typical parametric assumptions about <span class="math inline">\(F_{X}\)</span> and <span class="math inline">\(F_{Y}\)</span>.</p></li>
 <li><p>For example, <span class="math inline">\(H_{A}: F_{X} \neq F_{Y}\)</span> or <span class="math inline">\(H_{A}: F_{X} \geq F_{Y}\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
-<li><p>Nonparametric tests usually tradeoff power for greater robustness.</p></li>
-<li><p>In general, if the parametric assumptions are correct, a nonparametric test will have less power than its parametric counterpart.</p></li>
+<li><p>Nonparametric tests usually tradeoff <strong>power</strong> for greater <strong>robustness</strong>.
++ Ranks are much less influenced by the presence of outliers.</p></li>
+<li><p>In general, if the parametric assumptions are <strong>correct</strong>, a nonparametric test will have <strong>less power</strong> than its parametric counterpart.</p></li>
 <li><p>If the parametric assumptions are not correct, parametric tests might have inappropriate type-I error control
 or lose power.</p></li>
 </ul>
@@ -571,7 +583,7 @@ or lose power.</p></li>
 <ul>
 <li><p>Suppose we have <span class="math inline">\(n\)</span> observations <span class="math inline">\((X_{1}, \ldots, X_{n})\)</span> which are assumed to be i.i.d. (independent and identically distributed).
 The distribution function of <span class="math inline">\(X_{i}\)</span> is <span class="math inline">\(F_{X}\)</span>.</p></li>
-<li><p>Suppose we are interested in estimating the entire distribution function <span class="math inline">\(F_{X}\)</span> rather than specific features
+<li><p>Suppose we are interested in estimating the <strong>entire distribution function</strong> <span class="math inline">\(F_{X}\)</span> rather than specific features
 of the distribution of <span class="math inline">\(X_{i}\)</span> such as the mean or standard deviation.</p></li>
 <li><p>In a <strong>parametric</strong> approach to estimating <span class="math inline">\(F_{X}\)</span>, we would assume the distribution of <span class="math inline">\(X_{i}\)</span> belongs to some parametric family of distributions.
 For example,</p>
@@ -594,20 +606,25 @@ estimate the entire distribution function <span class="math inline">\(F_{X}\)</s
 where <span class="math inline">\(I()\)</span> denotes the indicator function. That is, <span class="math inline">\(I( X_{i} \leq t) = 1\)</span> if <span class="math inline">\(X_{i} \leq t\)</span>,
 and <span class="math inline">\(I(X_{i} \leq t) = 0\)</span> if <span class="math inline">\(X_{i} &gt; t\)</span>.</p></li>
 <li><p>The empirical distribution function is a discrete distribution function,
-and it can be thought of as an estimate having <span class="math inline">\(n\)</span> “parameters”.</p></li>
+and it can be thought of as an estimate with <span class="math inline">\(n\)</span> “parameters”.</p></li>
 </ul>
 <hr />
 <ul>
-<li><p>Kernel density estimation is probably the most common nonparametric method for estimating
-a probability distribution function <span class="math inline">\(f_{X}(t) = F_{X}&#39;(t)\)</span>.</p></li>
+<li><p><strong>Kernel density estimation</strong> is probably the most common nonparametric method for estimating
+a probability density function <span class="math inline">\(f_{X}(t) = F_{X}&#39;(t)\)</span>.</p></li>
 <li><p>The density function of <span class="math inline">\(X_{i}\)</span> is often estimated by a kernel density estimator (KDE). This
 is defined as
 <span class="math display">\[\begin{equation}
 \hat{f}_{n}(t) = \frac{1}{n h_{n}} \sum_{i=1}^{n} K\Big( \frac{t - X_{i}}{ h_{n} } \Big).
 \end{equation}\]</span></p></li>
-<li><p><span class="math inline">\(K()\)</span> - the kernel function</p></li>
-<li><p><span class="math inline">\(h_{n}\)</span> - the bandwidth</p></li>
-<li><p>The KDE is a type of smoothing procedure.</p></li>
+<li><p><span class="math inline">\(K()\)</span> - the <strong>kernel</strong> function</p></li>
+<li><p><span class="math inline">\(h_{n}\)</span> - the <strong>bandwidth</strong></p></li>
+<li><p>The KDE is a type of <strong>smoothing procedure</strong>.</p></li>
+<li><p>The bandwidth <span class="math inline">\(h_{n}\)</span> is an example of a <strong>tuning parameter</strong>.</p>
+<ul>
+<li>Tuning parameters are <strong>common</strong> in many nonparametric estimation methods.</li>
+<li>Choice of tuning parameters involve managing <strong>bias-variance tradeoffs</strong> appropriately.</li>
+</ul></li>
 </ul>
 <p><img src="01-Introduction_files/figure-html/unnamed-chunk-3-1.png" width="672" /><img src="01-Introduction_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
 </div>
@@ -620,8 +637,8 @@ is defined as
 \tag{1.2}
 \end{equation}\]</span></p></li>
 <li><p>Above, <span class="math inline">\(\hat{\theta}_{n}\)</span> is an estimate of a parameter <span class="math inline">\(\theta\)</span>, and <span class="math inline">\(\widehat{\textrm{Var}(\hat{\theta}_{n})}\)</span> is an estimate of the variance of <span class="math inline">\(\hat{\theta}_{n}\)</span>.</p></li>
-<li><p><span class="math inline">\(se_{n} = \sqrt{\widehat{\textrm{Var}(\hat{\theta}_{n})}}\)</span> is usually referred to as the <strong>standard error</strong>.</p></li>
-<li><p><span class="math inline">\(95\%\)</span> confidence intervals are reported using the following formula
+<li><p><span class="math inline">\(se_{n} = \sqrt{\widehat{\textrm{Var}(\hat{\theta}_{n})}}\)</span> is usually referred to as the <strong>standard error</strong> of <span class="math inline">\(\hat{\theta}_{n}\)</span>.</p></li>
+<li><p><span class="math inline">\(95\%\)</span> <strong>confidence intervals</strong> are reported using the following formula
 <span class="math display">\[\begin{equation}
 [\hat{\theta}_{n} - 1.96 se_{n}, \hat{\theta}_{n} + 1.96 se_{n}  ]
 \end{equation}\]</span></p></li>
@@ -637,19 +654,19 @@ is defined as
 </ul>
 <hr />
 <ul>
-<li><p>Confidence intervals using <a href="intro.html#eq:normal-approx">(1.2)</a> rely on a parametric approximation to the
+<li><p>Confidence intervals using <a href="intro.html#eq:normal-approx">(1.2)</a> rely on a <strong>large-sample, parametric approximation</strong> to the
 sampling distribution of the statistic <span class="math inline">\(\hat{\theta}_{n}\)</span>.</p></li>
-<li><p>Moreover, even if one wanted to use something like <a href="intro.html#eq:normal-approx">(1.2)</a>, working out
-standard error formulas can be a great challenge in more complicated situations.</p></li>
+<li><p>Moreover, even if one wanted to use something like <a href="intro.html#eq:normal-approx">(1.2)</a>, <strong>working out standard error</strong> formulas
+can be a great challenge in more complicated situations.</p></li>
 </ul>
 <hr />
 <ul>
 <li><p>The <strong>bootstrap</strong> is a simulation-based approach for computing standard errors and
 confidence intervals.</p></li>
-<li><p>The bootstrap does not rely on any particular parametric assumptions and
+<li><p>The bootstrap <strong>does not rely</strong> on any particular parametric assumptions and
 can be applied in almost any context
 (though bootstrap confidence intervals can fail to work as desired in some situations).</p></li>
-<li><p>Through resampling from the original dataset, the bootstrap uses many possible alternative datasets to
+<li><p>Through <strong>resampling</strong> from the original dataset, the bootstrap uses many possible alternative datasets to
 assess the variability in <span class="math inline">\(\hat{\theta}_{n}\)</span>.</p></li>
 </ul>
 <table border="1">
@@ -802,7 +819,7 @@ theta.hat
 \hat{\theta}^{(3)} &amp;=&amp; 0.40 \\
 \hat{\theta}^{(4)} &amp;=&amp; 0.38
 \end{eqnarray}\]</span></p></li>
-<li><p>In the above example, the bootstrap standard error for <span class="math inline">\(\hat{\theta}_{n}\)</span> would be
+<li><p>In the above example, the <strong>bootstrap standard error</strong> for <span class="math inline">\(\hat{\theta}_{n}\)</span> would be
 the standard deviation of the bootstrap replications
 <span class="math display">\[\begin{eqnarray}
 se_{boot} &amp;=&amp; \Big( \frac{1}{3} \sum_{b=1}^{4} \{ \hat{\theta}^{(b)} - \hat{\theta}^{(-)}  \}^{2} \Big)^{1/2} \nonumber \\
@@ -816,19 +833,19 @@ In practice, the number of bootstrap replications is typically much larger than 
 of <span class="math inline">\(\hat{\theta}\)</span> rather than use a confidence interval of the form: <span class="math inline">\(\hat{\theta} \pm 1.96 \times se_{boot}\)</span>.</p></li>
 </ul>
 <div class="figure"><span style="display:block;" id="fig:unnamed-chunk-4"></span>
-<img src="01-Introduction_files/figure-html/unnamed-chunk-4-1.png" alt="Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dasjed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution." width="672" />
+<img src="01-Introduction_files/figure-html/unnamed-chunk-4-1.png" alt="Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dashed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution." width="672" />
 <p class="caption">
-Figure 1.1: Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dasjed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution.
+Figure 1.1: Bootstrap distribution of the sample standard deviation for the age variable from the kidney fitness data. Dashed vertical lines are placed at the 2.5 and 97.5 percentiles of the bootstrap distribution.
 </p>
 </div>
 </div>
 <div id="sec:example-nonpar-regress1" class="section level2 hasAnchor" number="1.6">
 <h2><span class="header-section-number">1.6</span> Example 4: Nonparametric Regression with a Single Covariate<a href="intro.html#sec:example-nonpar-regress1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li><p>Regression is a common way of modeling the relationship between two different variables.</p></li>
+<li><p>Regression is a common way of modeling the <strong>relationship</strong> between two different variables.</p></li>
 <li><p>Suppose we have <span class="math inline">\(n\)</span> pairs of observations <span class="math inline">\((y_{1}, x_{1}), \ldots, (y_{n}, x_{n})\)</span> where
 <span class="math inline">\(y_{i}\)</span> and <span class="math inline">\(x_{i}\)</span> are suspected to have some association.</p></li>
-<li><p>Linear regression would assume that these <span class="math inline">\(y_{i}\)</span> and <span class="math inline">\(x_{i}\)</span> are related by the following
+<li><p><strong>Linear regression</strong> would assume that these <span class="math inline">\(y_{i}\)</span> and <span class="math inline">\(x_{i}\)</span> are related by the following
 <span class="math display">\[\begin{equation}
 y_{i} = \beta_{0} + \beta_{1}x_{i} + \varepsilon_{i}
 \end{equation}\]</span>
@@ -839,38 +856,44 @@ and the number of parameters stays fixed for all <span class="math inline">\(n\)
 <p><img src="01-Introduction_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <hr />
 <ul>
-<li><p>The nonparametric counterpart to linear regression is usually formulated in the following way
+<li><p>The <strong>nonparametric counterpart</strong> to linear regression is usually formulated in the following way
 <span class="math display">\[\begin{equation}
 y_{i} = m( x_{i} ) + \varepsilon_{i}
 \end{equation}\]</span></p></li>
-<li><p>Typically, one makes very few assumptions about the form of the mean function <span class="math inline">\(m\)</span>, and it is not assumed <span class="math inline">\(m\)</span>
+<li><p>Typically, one makes <strong>very few assumptions</strong> about the form of the mean function <span class="math inline">\(m\)</span>, and it is not assumed <span class="math inline">\(m\)</span>
 can be described by a finite number of parameters.</p></li>
-<li><p>There are a large number of nonparametric methods for estimating <span class="math inline">\(m\)</span>.</p></li>
-<li><p>One popular method is the use of <strong>smoothing splines</strong>.</p></li>
-<li><p>With smoothing splines, one considers mean functions of the form
+<li><p>There are a many nonparametric methods for estimating <span class="math inline">\(m\)</span>.</p></li>
+<li><p>One popular method is the use of <strong>regression splines</strong>.</p></li>
+<li><p>With regression splines, one considers mean functions of the form
 <span class="math display" id="eq:smoothspline-model">\[\begin{equation}
-m(x) = \sum_{j=1}^{n} \beta_{j}g_{j}(x)
+m(x) = \sum_{j=1}^{q_{n}} \beta_{j}g_{j}(x)
 \tag{1.3}
 \end{equation}\]</span>
-where <span class="math inline">\(g_{1}, \ldots, g_{n}(x)\)</span> are a collection of spline basis functions.</p></li>
+where <span class="math inline">\(g_{1}, \ldots, g_{n}(x)\)</span> are a collection of cubic spline <strong>basis functions</strong>.</p></li>
 </ul>
 <hr />
 <ul>
-<li><p>Because of the large number of parameters in <a href="intro.html#eq:smoothspline-model">(1.3)</a>, one should
-estimate the basis function weights <span class="math inline">\(\beta_{j}\)</span> through penalized regression
+<li><p>The number of basis functions <span class="math inline">\(q_{n}\)</span> will depend on how many <strong>spline knots</strong> are chosen.</p></li>
+<li><p>The number of basis functions <span class="math inline">\(q_{n}\)</span> can definitely <strong>change</strong> with the sample size.</p></li>
+<li><p>Choice of <strong>number of knots</strong> involves trading off bias and variance appropriately.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>As in usual linear regression, estimates of the basis function weights <span class="math inline">\(\beta_{j}\)</span> are found by minimizing <strong>residual sum of squares</strong>
 <span class="math display" id="eq:smoothspline-estimation">\[\begin{equation}
-\textrm{minimize} \quad \sum_{i=1}^{n} \Big( y_{i} - \sum_{j=1}^{n} \beta_{j}g_{j}( x_{i} ) \Big)^{2} + \lambda \sum_{i=1}^{n}\sum_{j=1}^{n} \Omega_{ij}\beta_{i}\beta_{j}
+\textrm{minimize} \quad \sum_{i=1}^{n} \Big( y_{i} - \sum_{j=1}^{q_{n}} \beta_{j}g_{j}( x_{i} ) \Big)^{2}
 \tag{1.4}
-\end{equation}\]</span>
-where <span class="math inline">\(\Omega_{ij} = \int g_{i}&#39;&#39;(t)g_{j}&#39;&#39;(t) dt\)</span>.</p></li>
-<li><p>Using coefficient estimates <span class="math inline">\(\hat{\beta}_{1}, \ldots, \hat{\beta}_{n}\)</span> found from solving <a href="intro.html#eq:smoothspline-model">(1.3)</a>, the nonparametric estimate of the mean function is defined as
-<span class="math display">\[\begin{equation}
-\hat{m}(x) = \sum_{j=1}^{n} \hat{\beta}_{j}g_{j}(x)
 \end{equation}\]</span></p></li>
-<li><p>While the estimation in <a href="intro.html#eq:smoothspline-estimation">(1.4)</a> resembles parametric estimation for linear regression, notice
-that the number of parameters to be estimated will change with the sample size.</p></li>
-<li><p>Allowing the number of basis functions to grow with <span class="math inline">\(n\)</span> is important. For a sufficiently large number of basis functions, one should be able to approximate the
-true mean function <span class="math inline">\(m(x)\)</span> arbitrarily closely.</p></li>
+<li><p>Using coefficient estimates <span class="math inline">\(\hat{\beta}_{1}, \ldots, \hat{\beta}_{n}\)</span> found from solving <a href="intro.html#eq:smoothspline-model">(1.3)</a>, the <strong>nonparametric estimate</strong> of the mean function is defined as
+<span class="math display">\[\begin{equation}
+\hat{m}(x) = \sum_{j=1}^{q_{n}} \hat{\beta}_{j}g_{j}(x)
+\end{equation}\]</span></p></li>
+<li><p>While the estimation in <a href="intro.html#eq:smoothspline-estimation">(1.4)</a> <strong>resembles parametric estimation</strong> for linear regression, notice
+that the number of parameters to be estimated can change with the sample size.</p></li>
+<li><p>Allowing the number of basis functions to grow with <span class="math inline">\(n\)</span> is important.</p>
+<ul>
+<li>For a sufficiently large number of basis functions, one should be able to approximate the true mean function <span class="math inline">\(m(x)\)</span> arbitrarily closely.</li>
+</ul></li>
 </ul>
 <p><img src="01-Introduction_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
@@ -879,12 +902,20 @@ true mean function <span class="math inline">\(m(x)\)</span> arbitrarily closely
 <ul>
 <li><p>Suppose we now have observations <span class="math inline">\((y_{1}, \mathbf{x}_{1}), \ldots, (y_{n}, \mathbf{x}_{n})\)</span> where
 <span class="math inline">\(y_{i}\)</span> is a continuous response and <span class="math inline">\(\mathbf{x}_{i}\)</span> is a p-dimensional vector of covariates.</p></li>
-<li><p>Regression trees are a nonparametric approach for predicting <span class="math inline">\(y_{i}\)</span> from <span class="math inline">\(\mathbf{x}_{i}\)</span>.</p></li>
-<li><p>Here, the regression function is a <strong>decision tree</strong> rather than some fitted curve.</p></li>
-<li><p>With a decision tree, a final prediction from a covariate vector <span class="math inline">\(\mathbf{x}_{i}\)</span> is obtained by answering
+<li><p>As <span class="math inline">\(p\)</span> increases, <strong>multivariate regression splines</strong> quickly run into problems.</p>
+<ul>
+<li>The number of basis functions increases exponentially as <span class="math inline">\(p\)</span> increases.</li>
+</ul></li>
+<li><p>As <strong>covariate dimension increases</strong>, need methods which automatically handle this in some way.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p><strong>Regression trees</strong> are another nonparametric approach for predicting <span class="math inline">\(y_{i}\)</span> from <span class="math inline">\(\mathbf{x}_{i}\)</span>.</p></li>
+<li><p>Here, the regression function is a <strong>decision tree</strong> rather than a smooth fitted curve.</p></li>
+<li><p>With a decision tree, a <strong>final prediction</strong> from a covariate vector <span class="math inline">\(\mathbf{x}_{i}\)</span> is obtained by answering
 a sequence of “yes or no” questions.</p></li>
 <li><p>When the responses <span class="math inline">\(y_{i}\)</span> are binary, such trees are referred to as classification trees.
-Hence, the name: classification and regression trees (CART).</p></li>
+Hence, the name: <strong>classification and regression trees (CART)</strong>.</p></li>
 </ul>
 <p><img src="01-Introduction_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <!-- If true go left down tree. E.g., if someone is in treatment arm A, they get a prediction of 13.95  -->
@@ -894,10 +925,10 @@ Hence, the name: classification and regression trees (CART).</p></li>
 <li><p>Classification and regression trees are constructed through <strong>recursive partitioning</strong>.</p></li>
 <li><p>Recursive partitioning is the process of deciding if and how to split a given
 node into two child nodes.</p></li>
-<li><p>Tree splits are usually chosen to minimize the “within-node” sum of squares.</p></li>
-<li><p>The size of the final tree is determined by a process of “pruning” the tree
+<li><p><strong>Tree splits</strong> are usually chosen to minimize the “within-node” sum of squares.</p></li>
+<li><p>The <strong>size</strong> of the final tree is determined by a process of “pruning” the tree
 with cross-validation determining the best place to stop pruning.</p></li>
-<li><p>Regression trees are an example of a more algorithmic approach to
+<li><p>Regression trees are an example of a more <strong>algorithmic approach</strong> to
 constructing predictions (as opposed to probability modeling in more
 traditional statistical methods) with a strong emphasis on predictive
 performance as measured through cross-validation.</p></li>
@@ -906,7 +937,7 @@ performance as measured through cross-validation.</p></li>
 <ul>
 <li><p>While single regression trees have the advantage of being directly interpretable,
 their prediction performance is often not that great.</p></li>
-<li><p>However, using collections of trees can be very effective for prediction and
+<li><p>However, using collections of trees can be <strong>more effective</strong> for prediction and
 has been used in many popular learning methods. Examples include: random forests,
 boosting, and Bayesian additive regression trees (BART).</p></li>
 <li><p>Methods such as these can perform well on much larger datasets. We will discuss

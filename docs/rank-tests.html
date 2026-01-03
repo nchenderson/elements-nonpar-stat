@@ -860,7 +860,7 @@ an estimate of the probability <span class="math inline">\(P(X_{i} &gt; Y_{j}) +
 <span id="cb30-8"><a href="rank-tests.html#cb30-8" tabindex="-1"></a>                   <span class="fu">ifelse</span>(wine2<span class="sc">$</span>Magnesium[xi] <span class="sc">==</span> wine2<span class="sc">$</span>Magnesium[yi], <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">0</span>)</span>
 <span id="cb30-9"><a href="rank-tests.html#cb30-9" tabindex="-1"></a>}</span>
 <span id="cb30-10"><a href="rank-tests.html#cb30-10" tabindex="-1"></a><span class="fu">mean</span>(xgreater)  <span class="do">## estimate of this probability</span></span></code></pre></div>
-<pre><code>## [1] 0.795</code></pre>
+<pre><code>## [1] 0.84</code></pre>
 <ul>
 <li>This simulation-based estimate of <span class="math inline">\(P(X_{i} &gt; Y_{j}) + P(X_{i} = Y_{j})/2\)</span> is quite close to the value of the Mann-Whitney statistic divided by <span class="math inline">\(mn\)</span>.</li>
 </ul>
@@ -1066,7 +1066,7 @@ where <span class="math inline">\(s_{obs}\)</span> is the observed value of the 
 <span id="cb34-2"><a href="rank-tests.html#cb34-2" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
 <span id="cb34-3"><a href="rank-tests.html#cb34-3" tabindex="-1"></a>sign.stat <span class="ot">&lt;-</span> <span class="fu">sum</span>(xx <span class="sc">&gt;</span> <span class="dv">0</span>)  <span class="do">## This is the value of the sign statistic</span></span>
 <span id="cb34-4"><a href="rank-tests.html#cb34-4" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pbinom</span>(sign.stat <span class="sc">-</span> <span class="dv">1</span>, <span class="at">size=</span><span class="dv">100</span>, <span class="at">prob=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>) <span class="do">## p-value for sign test</span></span></code></pre></div>
-<pre><code>## [1] 0.4602054</code></pre>
+<pre><code>## [1] 0.6913503</code></pre>
 <ul>
 <li><p>The reason that this is the right expression using <strong>R</strong> is that for any positive integer <span class="math inline">\(w\)</span>
 <span class="math display">\[\begin{equation}
@@ -1078,7 +1078,7 @@ a binomial random variable with <span class="math inline">\(n\)</span> trials an
 </ul>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="rank-tests.html#cb36-1" tabindex="-1"></a>btest <span class="ot">&lt;-</span> <span class="fu">binom.test</span>(sign.stat, <span class="at">n=</span><span class="dv">100</span>, <span class="at">p=</span><span class="fl">0.5</span>, <span class="at">alternative=</span><span class="st">&quot;greater&quot;</span>) </span>
 <span id="cb36-2"><a href="rank-tests.html#cb36-2" tabindex="-1"></a>btest<span class="sc">$</span>p.value</span></code></pre></div>
-<pre><code>## [1] 0.4602054</code></pre>
+<pre><code>## [1] 0.6913503</code></pre>
 </div>
 <div id="two-sided-sign-test" class="section level4 hasAnchor" number="3.3.1.3">
 <h4><span class="header-section-number">3.3.1.3</span> Two-sided Sign Test<a href="rank-tests.html#two-sided-sign-test" class="anchor-section" aria-label="Anchor link to header"></a></h4>

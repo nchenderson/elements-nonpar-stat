@@ -835,7 +835,7 @@ where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly
 </ul>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="permutation.html#cb71-1" tabindex="-1"></a>pval.mc <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">sum</span>(<span class="fu">abs</span>(mean.diff) <span class="sc">&gt;=</span> <span class="fu">abs</span>(observed.diff)))<span class="sc">/</span>(nperms <span class="sc">+</span> <span class="dv">1</span>)</span>
 <span id="cb71-2"><a href="permutation.html#cb71-2" tabindex="-1"></a><span class="fu">round</span>(pval.mc, <span class="dv">2</span>)</span></code></pre></div>
-<pre><code>## [1] 0.76</code></pre>
+<pre><code>## [1] 0.78</code></pre>
 </div>
 <div id="example-2-ratios-of-means" class="section level3 hasAnchor" number="5.2.3">
 <h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means<a href="permutation.html#example-2-ratios-of-means" class="anchor-section" aria-label="Anchor link to header"></a></h3>
