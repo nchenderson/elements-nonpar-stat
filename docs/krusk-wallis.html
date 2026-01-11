@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-01-02" />
+<meta name="date" content="2026-01-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -698,7 +698,7 @@ is just a constant times the Kruskal-Wallis statistic.</p></li>
 <li>We will look at performing Kruskal-Wallis tests in <strong>R</strong> by using the
 “InsectSprays” dataset.</li>
 </ul>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="krusk-wallis.html#cb53-1" tabindex="-1"></a><span class="fu">head</span>(InsectSprays)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="krusk-wallis.html#cb49-1" tabindex="-1"></a><span class="fu">head</span>(InsectSprays)</span></code></pre></div>
 <pre><code>##   count spray
 ## 1    10     A
 ## 2     7     A
@@ -720,15 +720,15 @@ and for count data, the variance is usually a function of the mean.</p></li>
 approach. (The square-root transformation is the “variance-stabilizing transformation”
 for Poisson-distributed data).</p></li>
 </ul>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="krusk-wallis.html#cb55-1" tabindex="-1"></a><span class="fu">boxplot</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays,<span class="at">las=</span><span class="dv">1</span>, </span>
-<span id="cb55-2"><a href="krusk-wallis.html#cb55-2" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;square root of insect counts&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="krusk-wallis.html#cb51-1" tabindex="-1"></a><span class="fu">boxplot</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays,<span class="at">las=</span><span class="dv">1</span>, </span>
+<span id="cb51-2"><a href="krusk-wallis.html#cb51-2" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;square root of insect counts&quot;</span>)</span></code></pre></div>
 <p><img src="04-multistat_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <hr />
 <ul>
 <li>Let us perform a test of homogeneity using both the one-way ANOVA approach and a Kruskal-Wallis
 test</li>
 </ul>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="krusk-wallis.html#cb56-1" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays))</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="krusk-wallis.html#cb52-1" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays))</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: sqrt(count)
@@ -737,15 +737,15 @@ test</li>
 ## Residuals 66 26.058  0.3948                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="krusk-wallis.html#cb58-1" tabindex="-1"></a>a  <span class="ot">&lt;-</span> <span class="fu">kruskal.test</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays)</span>
-<span id="cb58-2"><a href="krusk-wallis.html#cb58-2" tabindex="-1"></a>a<span class="sc">$</span>p.value</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="krusk-wallis.html#cb54-1" tabindex="-1"></a>a  <span class="ot">&lt;-</span> <span class="fu">kruskal.test</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays)</span>
+<span id="cb54-2"><a href="krusk-wallis.html#cb54-2" tabindex="-1"></a>a<span class="sc">$</span>p.value</span></code></pre></div>
 <pre><code>## [1] 1.510844e-10</code></pre>
 <hr />
 <ul>
 <li>Notice that applying the square root transformation does not affect the
 value of the Kruskal-Wallis statistic or the Kruskal-Wallis p-value.</li>
 </ul>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="krusk-wallis.html#cb60-1" tabindex="-1"></a><span class="fu">kruskal.test</span>(count <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="krusk-wallis.html#cb56-1" tabindex="-1"></a><span class="fu">kruskal.test</span>(count <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays)</span></code></pre></div>
 <pre><code>## 
 ##  Kruskal-Wallis rank sum test
 ## 
@@ -754,7 +754,7 @@ value of the Kruskal-Wallis statistic or the Kruskal-Wallis p-value.</li>
 <ul>
 <li>This invariance to data transformation is not true for the standard one-way ANOVA.</li>
 </ul>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="krusk-wallis.html#cb62-1" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(count <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays))</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="krusk-wallis.html#cb58-1" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(count <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays))</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: count
@@ -802,9 +802,9 @@ on the proportional odds model.</p></li>
 <ul>
 <li>We will use the “cane” dataset from the <strong>boot</strong> package.</li>
 </ul>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="krusk-wallis.html#cb64-1" tabindex="-1"></a><span class="fu">library</span>(boot)</span>
-<span id="cb64-2"><a href="krusk-wallis.html#cb64-2" tabindex="-1"></a><span class="fu">data</span>(cane)</span>
-<span id="cb64-3"><a href="krusk-wallis.html#cb64-3" tabindex="-1"></a><span class="fu">head</span>(cane)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="krusk-wallis.html#cb60-1" tabindex="-1"></a><span class="fu">library</span>(boot)</span>
+<span id="cb60-2"><a href="krusk-wallis.html#cb60-2" tabindex="-1"></a><span class="fu">data</span>(cane)</span>
+<span id="cb60-3"><a href="krusk-wallis.html#cb60-3" tabindex="-1"></a><span class="fu">head</span>(cane)</span></code></pre></div>
 <pre><code>##     n  r  x var block
 ## 1  87 76 19   1     A
 ## 2 119  8 14   2     A
@@ -820,15 +820,15 @@ of sugar cane to a particular type of disease.</p></li>
 <li><p>We can create a new variable <strong>prop</strong> that measures the proportion
 of shoots that are diseased.</p></li>
 </ul>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="krusk-wallis.html#cb66-1" tabindex="-1"></a>cane<span class="sc">$</span>prop <span class="ot">&lt;-</span> cane<span class="sc">$</span>r<span class="sc">/</span>cane<span class="sc">$</span>n</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="krusk-wallis.html#cb62-1" tabindex="-1"></a>cane<span class="sc">$</span>prop <span class="ot">&lt;-</span> cane<span class="sc">$</span>r<span class="sc">/</span>cane<span class="sc">$</span>n</span></code></pre></div>
 <ul>
 <li>You could certainly argue that a logistic regression model is a better approach here,
 but we will analyze the transformed proportions using the arcsine square root transformation.</li>
 </ul>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="krusk-wallis.html#cb67-1" tabindex="-1"></a>cane<span class="sc">$</span>prop.trans <span class="ot">&lt;-</span> <span class="fu">asin</span>(<span class="fu">sqrt</span>(cane<span class="sc">$</span>prop))</span>
-<span id="cb67-2"><a href="krusk-wallis.html#cb67-2" tabindex="-1"></a><span class="fu">boxplot</span>(prop.trans <span class="sc">~</span> block, <span class="at">data=</span>cane, <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;number of shoots&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="krusk-wallis.html#cb63-1" tabindex="-1"></a>cane<span class="sc">$</span>prop.trans <span class="ot">&lt;-</span> <span class="fu">asin</span>(<span class="fu">sqrt</span>(cane<span class="sc">$</span>prop))</span>
+<span id="cb63-2"><a href="krusk-wallis.html#cb63-2" tabindex="-1"></a><span class="fu">boxplot</span>(prop.trans <span class="sc">~</span> block, <span class="at">data=</span>cane, <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;number of shoots&quot;</span>)</span></code></pre></div>
 <p><img src="04-multistat_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="krusk-wallis.html#cb68-1" tabindex="-1"></a><span class="fu">kruskal.test</span>(prop <span class="sc">~</span> block, <span class="at">data=</span>cane)</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="krusk-wallis.html#cb64-1" tabindex="-1"></a><span class="fu">kruskal.test</span>(prop <span class="sc">~</span> block, <span class="at">data=</span>cane)</span></code></pre></div>
 <pre><code>## 
 ##  Kruskal-Wallis rank sum test
 ## 

@@ -5,10 +5,12 @@ eq:smoothspline-model
 eq:smoothspline-estimation
 eq:rankdef
 eq:rank-expectation
+eq:jointdistrank
 eq:general-wilcoxon-hypothesis
 eq:stochasticlarger-formulation
 eq:shift-formulation
 eq:mw-formulation
+eq:mw-parameter
 eq:wrs-formula
 eq:general-location
 eq:sign-statistic
@@ -35,7 +37,6 @@ eq:ustat-parameter
 eq:ustat-definition
 eq:sampvar-ustat
 eq:wilcoxsign-equivalence
-eq:mw-parameter
 eq:wrs-mw-deriv1
 eq:spearman-simplifiation
 eq:pointwise-cis

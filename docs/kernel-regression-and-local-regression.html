@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-01-02" />
+<meta name="date" content="2026-01-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -605,19 +605,19 @@ smoother kernel function <span class="math inline">\(K(t)\)</span>.</p></li>
 <li><code>R</code> code for computing a local average estimate <span class="math inline">\(\hat{m}_{2}^{loc}(x)\)</span> at the
 points <span class="math inline">\(x = 31, 32, 33, ...., 71\)</span> is given below</li>
 </ul>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="kernel-regression-and-local-regression.html#cb227-1" tabindex="-1"></a>xseq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">31</span>, <span class="dv">71</span>, <span class="at">by=</span><span class="dv">1</span>)</span>
-<span id="cb227-2"><a href="kernel-regression-and-local-regression.html#cb227-2" tabindex="-1"></a>hn <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb227-3"><a href="kernel-regression-and-local-regression.html#cb227-3" tabindex="-1"></a>nx <span class="ot">&lt;-</span> <span class="fu">length</span>(xseq)</span>
-<span id="cb227-4"><a href="kernel-regression-and-local-regression.html#cb227-4" tabindex="-1"></a>m.hat.loc <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nx)</span>
-<span id="cb227-5"><a href="kernel-regression-and-local-regression.html#cb227-5" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nx) {</span>
-<span id="cb227-6"><a href="kernel-regression-and-local-regression.html#cb227-6" tabindex="-1"></a>    in.bin <span class="ot">&lt;-</span> framingham<span class="sc">$</span>age <span class="sc">&gt;</span> xseq[k] <span class="sc">-</span> hn <span class="sc">&amp;</span> framingham<span class="sc">$</span>age <span class="sc">&lt;</span> xseq[k] <span class="sc">+</span> hn</span>
-<span id="cb227-7"><a href="kernel-regression-and-local-regression.html#cb227-7" tabindex="-1"></a>    m.hat.loc[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>(framingham<span class="sc">$</span>diaBP[in.bin])</span>
-<span id="cb227-8"><a href="kernel-regression-and-local-regression.html#cb227-8" tabindex="-1"></a>}</span>
-<span id="cb227-9"><a href="kernel-regression-and-local-regression.html#cb227-9" tabindex="-1"></a></span>
-<span id="cb227-10"><a href="kernel-regression-and-local-regression.html#cb227-10" tabindex="-1"></a><span class="fu">plot</span>(framingham<span class="sc">$</span>age, framingham<span class="sc">$</span>diaBP, <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;Diastolic Blood Pressure&quot;</span>, </span>
-<span id="cb227-11"><a href="kernel-regression-and-local-regression.html#cb227-11" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">main=</span><span class="st">&quot;Local Average Estimate with hn=2&quot;</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>)</span>
-<span id="cb227-12"><a href="kernel-regression-and-local-regression.html#cb227-12" tabindex="-1"></a><span class="fu">points</span>(framingham<span class="sc">$</span>age, framingham<span class="sc">$</span>diaBP, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.7</span>)</span>
-<span id="cb227-13"><a href="kernel-regression-and-local-regression.html#cb227-13" tabindex="-1"></a><span class="fu">lines</span>(xseq, m.hat.loc, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="kernel-regression-and-local-regression.html#cb223-1" tabindex="-1"></a>xseq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">31</span>, <span class="dv">71</span>, <span class="at">by=</span><span class="dv">1</span>)</span>
+<span id="cb223-2"><a href="kernel-regression-and-local-regression.html#cb223-2" tabindex="-1"></a>hn <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb223-3"><a href="kernel-regression-and-local-regression.html#cb223-3" tabindex="-1"></a>nx <span class="ot">&lt;-</span> <span class="fu">length</span>(xseq)</span>
+<span id="cb223-4"><a href="kernel-regression-and-local-regression.html#cb223-4" tabindex="-1"></a>m.hat.loc <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nx)</span>
+<span id="cb223-5"><a href="kernel-regression-and-local-regression.html#cb223-5" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nx) {</span>
+<span id="cb223-6"><a href="kernel-regression-and-local-regression.html#cb223-6" tabindex="-1"></a>    in.bin <span class="ot">&lt;-</span> framingham<span class="sc">$</span>age <span class="sc">&gt;</span> xseq[k] <span class="sc">-</span> hn <span class="sc">&amp;</span> framingham<span class="sc">$</span>age <span class="sc">&lt;</span> xseq[k] <span class="sc">+</span> hn</span>
+<span id="cb223-7"><a href="kernel-regression-and-local-regression.html#cb223-7" tabindex="-1"></a>    m.hat.loc[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>(framingham<span class="sc">$</span>diaBP[in.bin])</span>
+<span id="cb223-8"><a href="kernel-regression-and-local-regression.html#cb223-8" tabindex="-1"></a>}</span>
+<span id="cb223-9"><a href="kernel-regression-and-local-regression.html#cb223-9" tabindex="-1"></a></span>
+<span id="cb223-10"><a href="kernel-regression-and-local-regression.html#cb223-10" tabindex="-1"></a><span class="fu">plot</span>(framingham<span class="sc">$</span>age, framingham<span class="sc">$</span>diaBP, <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;Diastolic Blood Pressure&quot;</span>, </span>
+<span id="cb223-11"><a href="kernel-regression-and-local-regression.html#cb223-11" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">main=</span><span class="st">&quot;Local Average Estimate with hn=2&quot;</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>)</span>
+<span id="cb223-12"><a href="kernel-regression-and-local-regression.html#cb223-12" tabindex="-1"></a><span class="fu">points</span>(framingham<span class="sc">$</span>age, framingham<span class="sc">$</span>diaBP, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.7</span>)</span>
+<span id="cb223-13"><a href="kernel-regression-and-local-regression.html#cb223-13" tabindex="-1"></a><span class="fu">lines</span>(xseq, m.hat.loc, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <hr />
 <ul>
@@ -629,23 +629,23 @@ Y_{i} &amp;=&amp; \frac{\textrm{Mineral Density at Visit 2}_{i} - \textrm{Minera
 x_{i} &amp;=&amp; \frac{1}{2}(\textrm{Age at Visit 2}_{i} + \textrm{Age at Visit 1}_{i})  \nonumber
 \end{eqnarray}\]</span></p></li>
 </ul>
-<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="kernel-regression-and-local-regression.html#cb228-1" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/ElemStatLearn/datasets/bone.data&quot;</span>, </span>
-<span id="cb228-2"><a href="kernel-regression-and-local-regression.html#cb228-2" tabindex="-1"></a>                  <span class="at">header=</span><span class="cn">TRUE</span>)</span>
-<span id="cb228-3"><a href="kernel-regression-and-local-regression.html#cb228-3" tabindex="-1"></a>bonedat <span class="ot">&lt;-</span> tmp[<span class="sc">!</span><span class="fu">duplicated</span>(tmp<span class="sc">$</span>idnum),]  <span class="do">## only keep the first observation of a person</span></span></code></pre></div>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="kernel-regression-and-local-regression.html#cb229-1" tabindex="-1"></a>xseq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">9.4</span>, <span class="fl">25.2</span>, <span class="at">by=</span>.<span class="dv">1</span>)</span>
-<span id="cb229-2"><a href="kernel-regression-and-local-regression.html#cb229-2" tabindex="-1"></a>hn <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb229-3"><a href="kernel-regression-and-local-regression.html#cb229-3" tabindex="-1"></a>nx <span class="ot">&lt;-</span> <span class="fu">length</span>(xseq)</span>
-<span id="cb229-4"><a href="kernel-regression-and-local-regression.html#cb229-4" tabindex="-1"></a>m.hat.loc <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nx)</span>
-<span id="cb229-5"><a href="kernel-regression-and-local-regression.html#cb229-5" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nx) {</span>
-<span id="cb229-6"><a href="kernel-regression-and-local-regression.html#cb229-6" tabindex="-1"></a>    in.bin <span class="ot">&lt;-</span> bonedat<span class="sc">$</span>age <span class="sc">&gt;</span> xseq[k] <span class="sc">-</span> hn <span class="sc">&amp;</span> bonedat<span class="sc">$</span>age <span class="sc">&lt;</span> xseq[k] <span class="sc">+</span> hn</span>
-<span id="cb229-7"><a href="kernel-regression-and-local-regression.html#cb229-7" tabindex="-1"></a>    m.hat.loc[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>(bonedat<span class="sc">$</span>spnbmd[in.bin])</span>
-<span id="cb229-8"><a href="kernel-regression-and-local-regression.html#cb229-8" tabindex="-1"></a>}</span>
-<span id="cb229-9"><a href="kernel-regression-and-local-regression.html#cb229-9" tabindex="-1"></a></span>
-<span id="cb229-10"><a href="kernel-regression-and-local-regression.html#cb229-10" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
-<span id="cb229-11"><a href="kernel-regression-and-local-regression.html#cb229-11" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data: Local Average Estimate with hn=1&quot;</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>)</span>
-<span id="cb229-12"><a href="kernel-regression-and-local-regression.html#cb229-12" tabindex="-1"></a><span class="fu">points</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.7</span>)</span>
-<span id="cb229-13"><a href="kernel-regression-and-local-regression.html#cb229-13" tabindex="-1"></a><span class="fu">lines</span>(xseq, m.hat.loc, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
-<span id="cb229-14"><a href="kernel-regression-and-local-regression.html#cb229-14" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="kernel-regression-and-local-regression.html#cb224-1" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/ElemStatLearn/datasets/bone.data&quot;</span>, </span>
+<span id="cb224-2"><a href="kernel-regression-and-local-regression.html#cb224-2" tabindex="-1"></a>                  <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb224-3"><a href="kernel-regression-and-local-regression.html#cb224-3" tabindex="-1"></a>bonedat <span class="ot">&lt;-</span> tmp[<span class="sc">!</span><span class="fu">duplicated</span>(tmp<span class="sc">$</span>idnum),]  <span class="do">## only keep the first observation of a person</span></span></code></pre></div>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="kernel-regression-and-local-regression.html#cb225-1" tabindex="-1"></a>xseq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">9.4</span>, <span class="fl">25.2</span>, <span class="at">by=</span>.<span class="dv">1</span>)</span>
+<span id="cb225-2"><a href="kernel-regression-and-local-regression.html#cb225-2" tabindex="-1"></a>hn <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb225-3"><a href="kernel-regression-and-local-regression.html#cb225-3" tabindex="-1"></a>nx <span class="ot">&lt;-</span> <span class="fu">length</span>(xseq)</span>
+<span id="cb225-4"><a href="kernel-regression-and-local-regression.html#cb225-4" tabindex="-1"></a>m.hat.loc <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nx)</span>
+<span id="cb225-5"><a href="kernel-regression-and-local-regression.html#cb225-5" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nx) {</span>
+<span id="cb225-6"><a href="kernel-regression-and-local-regression.html#cb225-6" tabindex="-1"></a>    in.bin <span class="ot">&lt;-</span> bonedat<span class="sc">$</span>age <span class="sc">&gt;</span> xseq[k] <span class="sc">-</span> hn <span class="sc">&amp;</span> bonedat<span class="sc">$</span>age <span class="sc">&lt;</span> xseq[k] <span class="sc">+</span> hn</span>
+<span id="cb225-7"><a href="kernel-regression-and-local-regression.html#cb225-7" tabindex="-1"></a>    m.hat.loc[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>(bonedat<span class="sc">$</span>spnbmd[in.bin])</span>
+<span id="cb225-8"><a href="kernel-regression-and-local-regression.html#cb225-8" tabindex="-1"></a>}</span>
+<span id="cb225-9"><a href="kernel-regression-and-local-regression.html#cb225-9" tabindex="-1"></a></span>
+<span id="cb225-10"><a href="kernel-regression-and-local-regression.html#cb225-10" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
+<span id="cb225-11"><a href="kernel-regression-and-local-regression.html#cb225-11" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data: Local Average Estimate with hn=1&quot;</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>)</span>
+<span id="cb225-12"><a href="kernel-regression-and-local-regression.html#cb225-12" tabindex="-1"></a><span class="fu">points</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.7</span>)</span>
+<span id="cb225-13"><a href="kernel-regression-and-local-regression.html#cb225-13" tabindex="-1"></a><span class="fu">lines</span>(xseq, m.hat.loc, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb225-14"><a href="kernel-regression-and-local-regression.html#cb225-14" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">0</span>)</span></code></pre></div>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
@@ -734,7 +734,7 @@ the design bias should be small.</p></li>
 <ul>
 <li>The Nadaraya-Watson estimator can be computed in <code>R</code> with the <code>ksmooth</code> function.</li>
 </ul>
-<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="kernel-regression-and-local-regression.html#cb230-1" tabindex="-1"></a><span class="fu">ksmooth</span>(x, y, kernel, bandwidth, x.points, ...)</span></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="kernel-regression-and-local-regression.html#cb226-1" tabindex="-1"></a><span class="fu">ksmooth</span>(x, y, kernel, bandwidth, x.points, ...)</span></code></pre></div>
 <ul>
 <li><ul>
 <li><code>x</code> - vector of covariate values</li>
@@ -753,31 +753,31 @@ is estimated. The <code>y</code> vector from the fitted <code>ksmooth</code> obj
 at a vector of desired points <span class="math inline">\(x.points = (t_{1}, \ldots, t_{q})\)</span>, you could use
 something like</li>
 </ul>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="kernel-regression-and-local-regression.html#cb231-1" tabindex="-1"></a>MyNWEst <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, bandwidth, x.points) {</span>
-<span id="cb231-2"><a href="kernel-regression-and-local-regression.html#cb231-2" tabindex="-1"></a>    q <span class="ot">&lt;-</span> <span class="fu">length</span>(x.points) </span>
-<span id="cb231-3"><a href="kernel-regression-and-local-regression.html#cb231-3" tabindex="-1"></a>    nw.est <span class="ot">&lt;-</span> <span class="fu">numeric</span>(q)</span>
-<span id="cb231-4"><a href="kernel-regression-and-local-regression.html#cb231-4" tabindex="-1"></a>    <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>q) {</span>
-<span id="cb231-5"><a href="kernel-regression-and-local-regression.html#cb231-5" tabindex="-1"></a>        ww <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(x.points[k], <span class="at">mean=</span>x, <span class="at">sd=</span>bandwidth) </span>
-<span id="cb231-6"><a href="kernel-regression-and-local-regression.html#cb231-6" tabindex="-1"></a>        nw.est[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(ww<span class="sc">*</span>y)<span class="sc">/</span><span class="fu">sum</span>(ww)</span>
-<span id="cb231-7"><a href="kernel-regression-and-local-regression.html#cb231-7" tabindex="-1"></a>    }    </span>
-<span id="cb231-8"><a href="kernel-regression-and-local-regression.html#cb231-8" tabindex="-1"></a>    <span class="fu">return</span>(nw.est)</span>
-<span id="cb231-9"><a href="kernel-regression-and-local-regression.html#cb231-9" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="kernel-regression-and-local-regression.html#cb227-1" tabindex="-1"></a>MyNWEst <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, bandwidth, x.points) {</span>
+<span id="cb227-2"><a href="kernel-regression-and-local-regression.html#cb227-2" tabindex="-1"></a>    q <span class="ot">&lt;-</span> <span class="fu">length</span>(x.points) </span>
+<span id="cb227-3"><a href="kernel-regression-and-local-regression.html#cb227-3" tabindex="-1"></a>    nw.est <span class="ot">&lt;-</span> <span class="fu">numeric</span>(q)</span>
+<span id="cb227-4"><a href="kernel-regression-and-local-regression.html#cb227-4" tabindex="-1"></a>    <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>q) {</span>
+<span id="cb227-5"><a href="kernel-regression-and-local-regression.html#cb227-5" tabindex="-1"></a>        ww <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(x.points[k], <span class="at">mean=</span>x, <span class="at">sd=</span>bandwidth) </span>
+<span id="cb227-6"><a href="kernel-regression-and-local-regression.html#cb227-6" tabindex="-1"></a>        nw.est[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(ww<span class="sc">*</span>y)<span class="sc">/</span><span class="fu">sum</span>(ww)</span>
+<span id="cb227-7"><a href="kernel-regression-and-local-regression.html#cb227-7" tabindex="-1"></a>    }    </span>
+<span id="cb227-8"><a href="kernel-regression-and-local-regression.html#cb227-8" tabindex="-1"></a>    <span class="fu">return</span>(nw.est)</span>
+<span id="cb227-9"><a href="kernel-regression-and-local-regression.html#cb227-9" tabindex="-1"></a>}</span></code></pre></div>
 <hr />
 <ul>
 <li>To compute the Nadraya-Watson estimate at a set of equally spaced of points from <span class="math inline">\(10\)</span> to <span class="math inline">\(25\)</span>
 using bandwidth <span class="math inline">\(0.5\)</span> and plot the result, you could use the following code:</li>
 </ul>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="kernel-regression-and-local-regression.html#cb232-1" tabindex="-1"></a>xseq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">25</span>, <span class="at">by=</span>.<span class="dv">1</span>)</span>
-<span id="cb232-2"><a href="kernel-regression-and-local-regression.html#cb232-2" tabindex="-1"></a>bone.nwest <span class="ot">&lt;-</span> <span class="fu">ksmooth</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, <span class="at">kernel=</span><span class="st">&quot;normal&quot;</span>, </span>
-<span id="cb232-3"><a href="kernel-regression-and-local-regression.html#cb232-3" tabindex="-1"></a>                      <span class="at">bandwidth=</span><span class="fl">2.7</span><span class="sc">*</span><span class="fl">0.5</span>, <span class="at">x.points=</span>xseq)</span>
-<span id="cb232-4"><a href="kernel-regression-and-local-regression.html#cb232-4" tabindex="-1"></a></span>
-<span id="cb232-5"><a href="kernel-regression-and-local-regression.html#cb232-5" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
-<span id="cb232-6"><a href="kernel-regression-and-local-regression.html#cb232-6" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data: Nadaraya-Watson Estimate with hn=0.5 and </span></span>
-<span id="cb232-7"><a href="kernel-regression-and-local-regression.html#cb232-7" tabindex="-1"></a><span class="st">     Gaussian Kernel&quot;</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>)</span>
-<span id="cb232-8"><a href="kernel-regression-and-local-regression.html#cb232-8" tabindex="-1"></a><span class="fu">points</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.7</span>)</span>
-<span id="cb232-9"><a href="kernel-regression-and-local-regression.html#cb232-9" tabindex="-1"></a><span class="fu">lines</span>(bone.nwest<span class="sc">$</span>x, bone.nwest<span class="sc">$</span>y, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="kernel-regression-and-local-regression.html#cb228-1" tabindex="-1"></a>xseq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">25</span>, <span class="at">by=</span>.<span class="dv">1</span>)</span>
+<span id="cb228-2"><a href="kernel-regression-and-local-regression.html#cb228-2" tabindex="-1"></a>bone.nwest <span class="ot">&lt;-</span> <span class="fu">ksmooth</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, <span class="at">kernel=</span><span class="st">&quot;normal&quot;</span>, </span>
+<span id="cb228-3"><a href="kernel-regression-and-local-regression.html#cb228-3" tabindex="-1"></a>                      <span class="at">bandwidth=</span><span class="fl">2.7</span><span class="sc">*</span><span class="fl">0.5</span>, <span class="at">x.points=</span>xseq)</span>
+<span id="cb228-4"><a href="kernel-regression-and-local-regression.html#cb228-4" tabindex="-1"></a></span>
+<span id="cb228-5"><a href="kernel-regression-and-local-regression.html#cb228-5" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
+<span id="cb228-6"><a href="kernel-regression-and-local-regression.html#cb228-6" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data: Nadaraya-Watson Estimate with hn=0.5 and </span></span>
+<span id="cb228-7"><a href="kernel-regression-and-local-regression.html#cb228-7" tabindex="-1"></a><span class="st">     Gaussian Kernel&quot;</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>)</span>
+<span id="cb228-8"><a href="kernel-regression-and-local-regression.html#cb228-8" tabindex="-1"></a><span class="fu">points</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.7</span>)</span>
+<span id="cb228-9"><a href="kernel-regression-and-local-regression.html#cb228-9" tabindex="-1"></a><span class="fu">lines</span>(bone.nwest<span class="sc">$</span>x, bone.nwest<span class="sc">$</span>y, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="kernel-regression-and-local-regression.html#cb233-1" tabindex="-1"></a><span class="do">## Note that bone.nwest$x should equal xseq</span></span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="kernel-regression-and-local-regression.html#cb229-1" tabindex="-1"></a><span class="do">## Note that bone.nwest$x should equal xseq</span></span></code></pre></div>
 </div>
 </div>
 <div id="local-linear-regression" class="section level2 hasAnchor" number="11.3">
@@ -844,31 +844,31 @@ from asymmetry near the boundary (draw a picture).</p></li>
 <li>An <code>R</code> function which implements local linear regression is the following. The
 input for this function has the same structure as our earlier Nadaraya-Watson <code>R</code> function.</li>
 </ul>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="kernel-regression-and-local-regression.html#cb234-1" tabindex="-1"></a>MyLocLinear <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, bandwidth, x.points) {</span>
-<span id="cb234-2"><a href="kernel-regression-and-local-regression.html#cb234-2" tabindex="-1"></a>  q <span class="ot">&lt;-</span> <span class="fu">length</span>(x.points) </span>
-<span id="cb234-3"><a href="kernel-regression-and-local-regression.html#cb234-3" tabindex="-1"></a>  loclin.est <span class="ot">&lt;-</span> <span class="fu">numeric</span>(q)</span>
-<span id="cb234-4"><a href="kernel-regression-and-local-regression.html#cb234-4" tabindex="-1"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>q) {</span>
-<span id="cb234-5"><a href="kernel-regression-and-local-regression.html#cb234-5" tabindex="-1"></a>    <span class="do">## First create weights with Gaussian kernel</span></span>
-<span id="cb234-6"><a href="kernel-regression-and-local-regression.html#cb234-6" tabindex="-1"></a>    xtmp <span class="ot">&lt;-</span> x <span class="sc">-</span> x.points[k]</span>
-<span id="cb234-7"><a href="kernel-regression-and-local-regression.html#cb234-7" tabindex="-1"></a>    ww <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(xtmp, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span>bandwidth) </span>
-<span id="cb234-8"><a href="kernel-regression-and-local-regression.html#cb234-8" tabindex="-1"></a>    </span>
-<span id="cb234-9"><a href="kernel-regression-and-local-regression.html#cb234-9" tabindex="-1"></a>    <span class="do">## Now, compute the intercept with a weighted linear regression</span></span>
-<span id="cb234-10"><a href="kernel-regression-and-local-regression.html#cb234-10" tabindex="-1"></a>    loclin.est[k] <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> xtmp, <span class="at">weights=</span>ww)<span class="sc">$</span>coef[<span class="dv">1</span>]</span>
-<span id="cb234-11"><a href="kernel-regression-and-local-regression.html#cb234-11" tabindex="-1"></a>  }    </span>
-<span id="cb234-12"><a href="kernel-regression-and-local-regression.html#cb234-12" tabindex="-1"></a>  <span class="fu">return</span>(loclin.est)</span>
-<span id="cb234-13"><a href="kernel-regression-and-local-regression.html#cb234-13" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="kernel-regression-and-local-regression.html#cb230-1" tabindex="-1"></a>MyLocLinear <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, bandwidth, x.points) {</span>
+<span id="cb230-2"><a href="kernel-regression-and-local-regression.html#cb230-2" tabindex="-1"></a>  q <span class="ot">&lt;-</span> <span class="fu">length</span>(x.points) </span>
+<span id="cb230-3"><a href="kernel-regression-and-local-regression.html#cb230-3" tabindex="-1"></a>  loclin.est <span class="ot">&lt;-</span> <span class="fu">numeric</span>(q)</span>
+<span id="cb230-4"><a href="kernel-regression-and-local-regression.html#cb230-4" tabindex="-1"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>q) {</span>
+<span id="cb230-5"><a href="kernel-regression-and-local-regression.html#cb230-5" tabindex="-1"></a>    <span class="do">## First create weights with Gaussian kernel</span></span>
+<span id="cb230-6"><a href="kernel-regression-and-local-regression.html#cb230-6" tabindex="-1"></a>    xtmp <span class="ot">&lt;-</span> x <span class="sc">-</span> x.points[k]</span>
+<span id="cb230-7"><a href="kernel-regression-and-local-regression.html#cb230-7" tabindex="-1"></a>    ww <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(xtmp, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span>bandwidth) </span>
+<span id="cb230-8"><a href="kernel-regression-and-local-regression.html#cb230-8" tabindex="-1"></a>    </span>
+<span id="cb230-9"><a href="kernel-regression-and-local-regression.html#cb230-9" tabindex="-1"></a>    <span class="do">## Now, compute the intercept with a weighted linear regression</span></span>
+<span id="cb230-10"><a href="kernel-regression-and-local-regression.html#cb230-10" tabindex="-1"></a>    loclin.est[k] <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> xtmp, <span class="at">weights=</span>ww)<span class="sc">$</span>coef[<span class="dv">1</span>]</span>
+<span id="cb230-11"><a href="kernel-regression-and-local-regression.html#cb230-11" tabindex="-1"></a>  }    </span>
+<span id="cb230-12"><a href="kernel-regression-and-local-regression.html#cb230-12" tabindex="-1"></a>  <span class="fu">return</span>(loclin.est)</span>
+<span id="cb230-13"><a href="kernel-regression-and-local-regression.html#cb230-13" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
 <li><p>Let’s try this function with the <code>bonedat</code> dataset again.</p></li>
 <li><p>Using age as the covariate, we will estimate the regression function at the points <span class="math inline">\(10, 10.1, 10.2, ..., 25\)</span>:</p></li>
 </ul>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="kernel-regression-and-local-regression.html#cb235-1" tabindex="-1"></a>xseq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">25</span>, <span class="at">by=</span>.<span class="dv">1</span>)</span>
-<span id="cb235-2"><a href="kernel-regression-and-local-regression.html#cb235-2" tabindex="-1"></a>bone.loclin <span class="ot">&lt;-</span> <span class="fu">MyLocLinear</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, </span>
-<span id="cb235-3"><a href="kernel-regression-and-local-regression.html#cb235-3" tabindex="-1"></a>                           <span class="at">bandwidth=</span><span class="fl">0.5</span>, <span class="at">x.points=</span>xseq)</span>
-<span id="cb235-4"><a href="kernel-regression-and-local-regression.html#cb235-4" tabindex="-1"></a></span>
-<span id="cb235-5"><a href="kernel-regression-and-local-regression.html#cb235-5" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
-<span id="cb235-6"><a href="kernel-regression-and-local-regression.html#cb235-6" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">main=</span><span class="st">&quot;Local Linear Estimator with hn=0.5&quot;</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>)</span>
-<span id="cb235-7"><a href="kernel-regression-and-local-regression.html#cb235-7" tabindex="-1"></a><span class="fu">points</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.7</span>)</span>
-<span id="cb235-8"><a href="kernel-regression-and-local-regression.html#cb235-8" tabindex="-1"></a><span class="fu">lines</span>(xseq, bone.loclin, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="kernel-regression-and-local-regression.html#cb231-1" tabindex="-1"></a>xseq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">25</span>, <span class="at">by=</span>.<span class="dv">1</span>)</span>
+<span id="cb231-2"><a href="kernel-regression-and-local-regression.html#cb231-2" tabindex="-1"></a>bone.loclin <span class="ot">&lt;-</span> <span class="fu">MyLocLinear</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, </span>
+<span id="cb231-3"><a href="kernel-regression-and-local-regression.html#cb231-3" tabindex="-1"></a>                           <span class="at">bandwidth=</span><span class="fl">0.5</span>, <span class="at">x.points=</span>xseq)</span>
+<span id="cb231-4"><a href="kernel-regression-and-local-regression.html#cb231-4" tabindex="-1"></a></span>
+<span id="cb231-5"><a href="kernel-regression-and-local-regression.html#cb231-5" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
+<span id="cb231-6"><a href="kernel-regression-and-local-regression.html#cb231-6" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">main=</span><span class="st">&quot;Local Linear Estimator with hn=0.5&quot;</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>)</span>
+<span id="cb231-7"><a href="kernel-regression-and-local-regression.html#cb231-7" tabindex="-1"></a><span class="fu">points</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.7</span>)</span>
+<span id="cb231-8"><a href="kernel-regression-and-local-regression.html#cb231-8" tabindex="-1"></a><span class="fu">lines</span>(xseq, bone.loclin, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <ul>
 <li>Let’s compare this with the Nadaraya-Watson esitmate that we computed earlier
@@ -1177,29 +1177,29 @@ then the degrees of freedom is equal to <span class="math inline">\(1\)</span>.<
 <li><p>The first step is to write a function that computes the <span class="math inline">\(n_{h_{n}}(x_{i})\)</span> for a given value of <span class="math inline">\(h_{n}\)</span>. This will allow us to find the degrees of freedom
 and will also be helpful later when computing LOOCV.</p></li>
 </ul>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="kernel-regression-and-local-regression.html#cb236-1" tabindex="-1"></a>NumInBins <span class="ot">&lt;-</span> <span class="cf">function</span>(hh, xx) {</span>
-<span id="cb236-2"><a href="kernel-regression-and-local-regression.html#cb236-2" tabindex="-1"></a>  <span class="do">## This function returns a vector of length n</span></span>
-<span id="cb236-3"><a href="kernel-regression-and-local-regression.html#cb236-3" tabindex="-1"></a>  <span class="do">## Elements of this vector will be: n_[h_n](x_1), n_[h_n](x_2), ...</span></span>
-<span id="cb236-4"><a href="kernel-regression-and-local-regression.html#cb236-4" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(xx)</span>
-<span id="cb236-5"><a href="kernel-regression-and-local-regression.html#cb236-5" tabindex="-1"></a>  num.bin <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
-<span id="cb236-6"><a href="kernel-regression-and-local-regression.html#cb236-6" tabindex="-1"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb236-7"><a href="kernel-regression-and-local-regression.html#cb236-7" tabindex="-1"></a>    num.bin[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(xx <span class="sc">&gt;</span> xx[k] <span class="sc">-</span> hh <span class="sc">&amp;</span> xx <span class="sc">&lt;</span> xx[k] <span class="sc">+</span> hh)</span>
-<span id="cb236-8"><a href="kernel-regression-and-local-regression.html#cb236-8" tabindex="-1"></a>  } </span>
-<span id="cb236-9"><a href="kernel-regression-and-local-regression.html#cb236-9" tabindex="-1"></a>  <span class="fu">return</span>(num.bin)</span>
-<span id="cb236-10"><a href="kernel-regression-and-local-regression.html#cb236-10" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="kernel-regression-and-local-regression.html#cb232-1" tabindex="-1"></a>NumInBins <span class="ot">&lt;-</span> <span class="cf">function</span>(hh, xx) {</span>
+<span id="cb232-2"><a href="kernel-regression-and-local-regression.html#cb232-2" tabindex="-1"></a>  <span class="do">## This function returns a vector of length n</span></span>
+<span id="cb232-3"><a href="kernel-regression-and-local-regression.html#cb232-3" tabindex="-1"></a>  <span class="do">## Elements of this vector will be: n_[h_n](x_1), n_[h_n](x_2), ...</span></span>
+<span id="cb232-4"><a href="kernel-regression-and-local-regression.html#cb232-4" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(xx)</span>
+<span id="cb232-5"><a href="kernel-regression-and-local-regression.html#cb232-5" tabindex="-1"></a>  num.bin <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
+<span id="cb232-6"><a href="kernel-regression-and-local-regression.html#cb232-6" tabindex="-1"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb232-7"><a href="kernel-regression-and-local-regression.html#cb232-7" tabindex="-1"></a>    num.bin[k] <span class="ot">&lt;-</span> <span class="fu">sum</span>(xx <span class="sc">&gt;</span> xx[k] <span class="sc">-</span> hh <span class="sc">&amp;</span> xx <span class="sc">&lt;</span> xx[k] <span class="sc">+</span> hh)</span>
+<span id="cb232-8"><a href="kernel-regression-and-local-regression.html#cb232-8" tabindex="-1"></a>  } </span>
+<span id="cb232-9"><a href="kernel-regression-and-local-regression.html#cb232-9" tabindex="-1"></a>  <span class="fu">return</span>(num.bin)</span>
+<span id="cb232-10"><a href="kernel-regression-and-local-regression.html#cb232-10" tabindex="-1"></a>}</span></code></pre></div>
 <hr />
 <ul>
 <li>We also want a function that returns the vector with elements <span class="math inline">\(\hat{m}_{h_{n}}(x_{1}), \hat{m}_{h_{n}}(x_{2}) , \ldots \hat{m}_{h_{n}}(x_{n})\)</span>.</li>
 </ul>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="kernel-regression-and-local-regression.html#cb237-1" tabindex="-1"></a>MyLocAvgEst <span class="ot">&lt;-</span> <span class="cf">function</span>(xx, yy, hh) {</span>
-<span id="cb237-2"><a href="kernel-regression-and-local-regression.html#cb237-2" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(xx)</span>
-<span id="cb237-3"><a href="kernel-regression-and-local-regression.html#cb237-3" tabindex="-1"></a>  m.hat.loc <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
-<span id="cb237-4"><a href="kernel-regression-and-local-regression.html#cb237-4" tabindex="-1"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb237-5"><a href="kernel-regression-and-local-regression.html#cb237-5" tabindex="-1"></a>    in.bin <span class="ot">&lt;-</span> xx <span class="sc">&gt;</span> xx[k] <span class="sc">-</span> hh <span class="sc">&amp;</span> xx <span class="sc">&lt;</span> xx[k] <span class="sc">+</span> hh</span>
-<span id="cb237-6"><a href="kernel-regression-and-local-regression.html#cb237-6" tabindex="-1"></a>    m.hat.loc[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>(yy[in.bin])</span>
-<span id="cb237-7"><a href="kernel-regression-and-local-regression.html#cb237-7" tabindex="-1"></a>  }</span>
-<span id="cb237-8"><a href="kernel-regression-and-local-regression.html#cb237-8" tabindex="-1"></a>  <span class="fu">return</span>(m.hat.loc)</span>
-<span id="cb237-9"><a href="kernel-regression-and-local-regression.html#cb237-9" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="kernel-regression-and-local-regression.html#cb233-1" tabindex="-1"></a>MyLocAvgEst <span class="ot">&lt;-</span> <span class="cf">function</span>(xx, yy, hh) {</span>
+<span id="cb233-2"><a href="kernel-regression-and-local-regression.html#cb233-2" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(xx)</span>
+<span id="cb233-3"><a href="kernel-regression-and-local-regression.html#cb233-3" tabindex="-1"></a>  m.hat.loc <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
+<span id="cb233-4"><a href="kernel-regression-and-local-regression.html#cb233-4" tabindex="-1"></a>  <span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb233-5"><a href="kernel-regression-and-local-regression.html#cb233-5" tabindex="-1"></a>    in.bin <span class="ot">&lt;-</span> xx <span class="sc">&gt;</span> xx[k] <span class="sc">-</span> hh <span class="sc">&amp;</span> xx <span class="sc">&lt;</span> xx[k] <span class="sc">+</span> hh</span>
+<span id="cb233-6"><a href="kernel-regression-and-local-regression.html#cb233-6" tabindex="-1"></a>    m.hat.loc[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>(yy[in.bin])</span>
+<span id="cb233-7"><a href="kernel-regression-and-local-regression.html#cb233-7" tabindex="-1"></a>  }</span>
+<span id="cb233-8"><a href="kernel-regression-and-local-regression.html#cb233-8" tabindex="-1"></a>  <span class="fu">return</span>(m.hat.loc)</span>
+<span id="cb233-9"><a href="kernel-regression-and-local-regression.html#cb233-9" tabindex="-1"></a>}</span></code></pre></div>
 <hr />
 <ul>
 <li><p>The final step is to compute an estimate of <span class="math inline">\(\sigma^{2}\)</span>.</p></li>
@@ -1209,31 +1209,31 @@ and will also be helpful later when computing LOOCV.</p></li>
 \end{equation}\]</span>
 that we mentioned before with <span class="math inline">\(\tilde{h}_{n} = 0.1\)</span>, I got a an estimate of <span class="math inline">\(\sigma^{2}\)</span> which was quite close to <span class="math inline">\(0.0015\)</span></p></li>
 </ul>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="kernel-regression-and-local-regression.html#cb238-1" tabindex="-1"></a>sigsq.est <span class="ot">&lt;-</span> <span class="fl">0.0015</span></span></code></pre></div>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="kernel-regression-and-local-regression.html#cb234-1" tabindex="-1"></a>sigsq.est <span class="ot">&lt;-</span> <span class="fl">0.0015</span></span></code></pre></div>
 <hr />
 <ul>
 <li>Now, we are ready to compute the <span class="math inline">\(C_{p}\)</span> statistic. We will compute <span class="math inline">\(C_{p}(h_{n})\)</span> for <span class="math inline">\(h_{n} = 0.01, 0.11, \ldots, 10.01\)</span>. This can be done with the following code:</li>
 </ul>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="kernel-regression-and-local-regression.html#cb239-1" tabindex="-1"></a>hseq <span class="ot">&lt;-</span> <span class="fu">seq</span>(.<span class="dv">01</span>, <span class="fl">10.01</span>, <span class="at">by=</span>.<span class="dv">1</span>)</span>
-<span id="cb239-2"><a href="kernel-regression-and-local-regression.html#cb239-2" tabindex="-1"></a>ngrid <span class="ot">&lt;-</span> <span class="fu">length</span>(hseq)</span>
-<span id="cb239-3"><a href="kernel-regression-and-local-regression.html#cb239-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(bonedat<span class="sc">$</span>age)</span>
-<span id="cb239-4"><a href="kernel-regression-and-local-regression.html#cb239-4" tabindex="-1"></a>Cp <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ngrid)</span>
-<span id="cb239-5"><a href="kernel-regression-and-local-regression.html#cb239-5" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ngrid) {</span>
-<span id="cb239-6"><a href="kernel-regression-and-local-regression.html#cb239-6" tabindex="-1"></a>   m.hat <span class="ot">&lt;-</span> <span class="fu">MyLocAvgEst</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, hseq[k])</span>
-<span id="cb239-7"><a href="kernel-regression-and-local-regression.html#cb239-7" tabindex="-1"></a>   dfval <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">NumInBins</span>(hseq[k], bonedat<span class="sc">$</span>age))</span>
-<span id="cb239-8"><a href="kernel-regression-and-local-regression.html#cb239-8" tabindex="-1"></a>   Cp[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>( (bonedat<span class="sc">$</span>spnbmd <span class="sc">-</span> m.hat)<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> (<span class="dv">2</span><span class="sc">*</span>sigsq.est<span class="sc">*</span>dfval)<span class="sc">/</span>n</span>
-<span id="cb239-9"><a href="kernel-regression-and-local-regression.html#cb239-9" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="kernel-regression-and-local-regression.html#cb235-1" tabindex="-1"></a>hseq <span class="ot">&lt;-</span> <span class="fu">seq</span>(.<span class="dv">01</span>, <span class="fl">10.01</span>, <span class="at">by=</span>.<span class="dv">1</span>)</span>
+<span id="cb235-2"><a href="kernel-regression-and-local-regression.html#cb235-2" tabindex="-1"></a>ngrid <span class="ot">&lt;-</span> <span class="fu">length</span>(hseq)</span>
+<span id="cb235-3"><a href="kernel-regression-and-local-regression.html#cb235-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(bonedat<span class="sc">$</span>age)</span>
+<span id="cb235-4"><a href="kernel-regression-and-local-regression.html#cb235-4" tabindex="-1"></a>Cp <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ngrid)</span>
+<span id="cb235-5"><a href="kernel-regression-and-local-regression.html#cb235-5" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ngrid) {</span>
+<span id="cb235-6"><a href="kernel-regression-and-local-regression.html#cb235-6" tabindex="-1"></a>   m.hat <span class="ot">&lt;-</span> <span class="fu">MyLocAvgEst</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, hseq[k])</span>
+<span id="cb235-7"><a href="kernel-regression-and-local-regression.html#cb235-7" tabindex="-1"></a>   dfval <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">NumInBins</span>(hseq[k], bonedat<span class="sc">$</span>age))</span>
+<span id="cb235-8"><a href="kernel-regression-and-local-regression.html#cb235-8" tabindex="-1"></a>   Cp[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>( (bonedat<span class="sc">$</span>spnbmd <span class="sc">-</span> m.hat)<span class="sc">^</span><span class="dv">2</span> ) <span class="sc">+</span> (<span class="dv">2</span><span class="sc">*</span>sigsq.est<span class="sc">*</span>dfval)<span class="sc">/</span>n</span>
+<span id="cb235-9"><a href="kernel-regression-and-local-regression.html#cb235-9" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
 <li>We can plot the values of <span class="math inline">\(C_{p}(h_{n})\)</span> vs. <span class="math inline">\(h_{n}\)</span> to roughly see where the minimum value is. From the graph, it looks to be slighly less than <span class="math inline">\(1\)</span>.</li>
 </ul>
-<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="kernel-regression-and-local-regression.html#cb240-1" tabindex="-1"></a><span class="fu">plot</span>(hseq, Cp, <span class="at">ylim=</span><span class="fu">c</span>(<span class="fl">0.001</span>,.<span class="dv">003</span>), <span class="at">main=</span><span class="st">&quot;Bone Data: Cp Stat for Loc. Avg. Est.&quot;</span>, </span>
-<span id="cb240-2"><a href="kernel-regression-and-local-regression.html#cb240-2" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;hn&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Cp&quot;</span>)</span>
-<span id="cb240-3"><a href="kernel-regression-and-local-regression.html#cb240-3" tabindex="-1"></a><span class="fu">lines</span>(hseq, Cp)</span></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="kernel-regression-and-local-regression.html#cb236-1" tabindex="-1"></a><span class="fu">plot</span>(hseq, Cp, <span class="at">ylim=</span><span class="fu">c</span>(<span class="fl">0.001</span>,.<span class="dv">003</span>), <span class="at">main=</span><span class="st">&quot;Bone Data: Cp Stat for Loc. Avg. Est.&quot;</span>, </span>
+<span id="cb236-2"><a href="kernel-regression-and-local-regression.html#cb236-2" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;hn&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Cp&quot;</span>)</span>
+<span id="cb236-3"><a href="kernel-regression-and-local-regression.html#cb236-3" tabindex="-1"></a><span class="fu">lines</span>(hseq, Cp)</span></code></pre></div>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <ul>
 <li>More precisely, the value of <span class="math inline">\(h_{n}\)</span> from our sequence which has the smallest value of <span class="math inline">\(C_{p}(h_{n})\)</span> is <span class="math inline">\(0.81\)</span>.</li>
 </ul>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="kernel-regression-and-local-regression.html#cb241-1" tabindex="-1"></a>hseq[<span class="fu">which.min</span>(Cp)]</span></code></pre></div>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="kernel-regression-and-local-regression.html#cb237-1" tabindex="-1"></a>hseq[<span class="fu">which.min</span>(Cp)]</span></code></pre></div>
 <pre><code>## [1] 0.81</code></pre>
 <hr />
 <p><strong>LOOCV</strong></p>
@@ -1244,24 +1244,24 @@ we used in the description of the LOOCV.</p></li>
 <li><p><code>R</code> code to compute <span class="math inline">\(\textrm{LOOCV}(h_{n})\)</span> at the same sequence of <span class="math inline">\(h_{n}\)</span> values used for the <span class="math inline">\(C_{p}\)</span>
 statistic is given below:</p></li>
 </ul>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="kernel-regression-and-local-regression.html#cb243-1" tabindex="-1"></a>LOOCV <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ngrid)</span>
-<span id="cb243-2"><a href="kernel-regression-and-local-regression.html#cb243-2" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ngrid) {</span>
-<span id="cb243-3"><a href="kernel-regression-and-local-regression.html#cb243-3" tabindex="-1"></a>  m.hat <span class="ot">&lt;-</span> <span class="fu">MyLocAvgEst</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, hseq[k])</span>
-<span id="cb243-4"><a href="kernel-regression-and-local-regression.html#cb243-4" tabindex="-1"></a>  n.hn <span class="ot">&lt;-</span> <span class="fu">NumInBins</span>(hseq[k], bonedat<span class="sc">$</span>age)</span>
-<span id="cb243-5"><a href="kernel-regression-and-local-regression.html#cb243-5" tabindex="-1"></a>  dd <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="dv">1</span><span class="sc">/</span>n.hn</span>
-<span id="cb243-6"><a href="kernel-regression-and-local-regression.html#cb243-6" tabindex="-1"></a>  LOOCV[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>( ((bonedat<span class="sc">$</span>spnbmd <span class="sc">-</span> m.hat)<span class="sc">/</span>dd)<span class="sc">^</span><span class="dv">2</span> ) </span>
-<span id="cb243-7"><a href="kernel-regression-and-local-regression.html#cb243-7" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="kernel-regression-and-local-regression.html#cb239-1" tabindex="-1"></a>LOOCV <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ngrid)</span>
+<span id="cb239-2"><a href="kernel-regression-and-local-regression.html#cb239-2" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ngrid) {</span>
+<span id="cb239-3"><a href="kernel-regression-and-local-regression.html#cb239-3" tabindex="-1"></a>  m.hat <span class="ot">&lt;-</span> <span class="fu">MyLocAvgEst</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, hseq[k])</span>
+<span id="cb239-4"><a href="kernel-regression-and-local-regression.html#cb239-4" tabindex="-1"></a>  n.hn <span class="ot">&lt;-</span> <span class="fu">NumInBins</span>(hseq[k], bonedat<span class="sc">$</span>age)</span>
+<span id="cb239-5"><a href="kernel-regression-and-local-regression.html#cb239-5" tabindex="-1"></a>  dd <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="dv">1</span><span class="sc">/</span>n.hn</span>
+<span id="cb239-6"><a href="kernel-regression-and-local-regression.html#cb239-6" tabindex="-1"></a>  LOOCV[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>( ((bonedat<span class="sc">$</span>spnbmd <span class="sc">-</span> m.hat)<span class="sc">/</span>dd)<span class="sc">^</span><span class="dv">2</span> ) </span>
+<span id="cb239-7"><a href="kernel-regression-and-local-regression.html#cb239-7" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
 <li>We can plot the values of <span class="math inline">\(\textrm{LOOCV}(h_{n})\)</span> vs. <span class="math inline">\(h_{n}\)</span> to roughly see where the minimum value is.</li>
 </ul>
-<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="kernel-regression-and-local-regression.html#cb244-1" tabindex="-1"></a><span class="fu">plot</span>(hseq, LOOCV, <span class="at">ylim=</span><span class="fu">c</span>(<span class="fl">0.001</span>,.<span class="dv">003</span>), <span class="at">main=</span><span class="st">&quot;Bone Data: LOOCV Stat for Loc. Avg. Est.&quot;</span>, </span>
-<span id="cb244-2"><a href="kernel-regression-and-local-regression.html#cb244-2" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;hn&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;LOOCV&quot;</span>)</span>
-<span id="cb244-3"><a href="kernel-regression-and-local-regression.html#cb244-3" tabindex="-1"></a><span class="fu">lines</span>(hseq, LOOCV)</span></code></pre></div>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="kernel-regression-and-local-regression.html#cb240-1" tabindex="-1"></a><span class="fu">plot</span>(hseq, LOOCV, <span class="at">ylim=</span><span class="fu">c</span>(<span class="fl">0.001</span>,.<span class="dv">003</span>), <span class="at">main=</span><span class="st">&quot;Bone Data: LOOCV Stat for Loc. Avg. Est.&quot;</span>, </span>
+<span id="cb240-2"><a href="kernel-regression-and-local-regression.html#cb240-2" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;hn&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;LOOCV&quot;</span>)</span>
+<span id="cb240-3"><a href="kernel-regression-and-local-regression.html#cb240-3" tabindex="-1"></a><span class="fu">lines</span>(hseq, LOOCV)</span></code></pre></div>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <ul>
 <li>The value of <span class="math inline">\(h_{n}\)</span> from our sequence which has the smallest value of <span class="math inline">\(\textrm{LOOCV}(h_{n})\)</span> is <span class="math inline">\(0.81\)</span>.</li>
 </ul>
-<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="kernel-regression-and-local-regression.html#cb245-1" tabindex="-1"></a>hseq[<span class="fu">which.min</span>(LOOCV)]</span></code></pre></div>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="kernel-regression-and-local-regression.html#cb241-1" tabindex="-1"></a>hseq[<span class="fu">which.min</span>(LOOCV)]</span></code></pre></div>
 <pre><code>## [1] 0.81</code></pre>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
@@ -1280,7 +1280,7 @@ so they can differ somewhat in the values they return unless you set these param
 <ul>
 <li><code>lowess</code> does local quadratic and local linear regression. The format of the <code>lowess</code> function is the following:</li>
 </ul>
-<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="kernel-regression-and-local-regression.html#cb247-1" tabindex="-1"></a><span class="fu">loess</span>(formula, data, span)</span></code></pre></div>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="kernel-regression-and-local-regression.html#cb243-1" tabindex="-1"></a><span class="fu">loess</span>(formula, data, span)</span></code></pre></div>
 <ul>
 <li><p><strong>formula</strong> - usally of the form <code>y ~ x</code> if using a single response vector <code>y</code> and covariate <code>x</code></p></li>
 <li><p><strong>data</strong> - the dataset from which <code>y</code> and <code>x</code> are drawn from</p></li>
@@ -1313,51 +1313,51 @@ regression with updated weights that reduce the influence of outliers. <code>loe
 <ul>
 <li>Let’s try plotting a <code>loess</code> fit using the bone data. We will set <code>span = 2/3</code> instead of 3/4</li>
 </ul>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="kernel-regression-and-local-regression.html#cb248-1" tabindex="-1"></a>bone.low.fit <span class="ot">&lt;-</span> <span class="fu">loess</span>(spnbmd <span class="sc">~</span> age, <span class="at">data=</span>bonedat, <span class="at">span=</span><span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>)</span>
-<span id="cb248-2"><a href="kernel-regression-and-local-regression.html#cb248-2" tabindex="-1"></a></span>
-<span id="cb248-3"><a href="kernel-regression-and-local-regression.html#cb248-3" tabindex="-1"></a><span class="fu">plot</span>(bone.low.fit, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
-<span id="cb248-4"><a href="kernel-regression-and-local-regression.html#cb248-4" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data: Lowess Fit&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>)</span>
-<span id="cb248-5"><a href="kernel-regression-and-local-regression.html#cb248-5" tabindex="-1"></a><span class="do">## plot a line of the the fitted values vs. x. Need to sort </span></span>
-<span id="cb248-6"><a href="kernel-regression-and-local-regression.html#cb248-6" tabindex="-1"></a><span class="do">## the x_i&#39;s first though if we want a nice looking line:</span></span>
-<span id="cb248-7"><a href="kernel-regression-and-local-regression.html#cb248-7" tabindex="-1"></a><span class="fu">lines</span>(bone.low.fit<span class="sc">$</span>x[<span class="fu">order</span>(bone.low.fit<span class="sc">$</span>x)], bone.low.fit<span class="sc">$</span>fitted[<span class="fu">order</span>(bone.low.fit<span class="sc">$</span>x)], </span>
-<span id="cb248-8"><a href="kernel-regression-and-local-regression.html#cb248-8" tabindex="-1"></a>      <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="dv">3</span>)</span>
-<span id="cb248-9"><a href="kernel-regression-and-local-regression.html#cb248-9" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">0</span>, <span class="at">lty=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="kernel-regression-and-local-regression.html#cb244-1" tabindex="-1"></a>bone.low.fit <span class="ot">&lt;-</span> <span class="fu">loess</span>(spnbmd <span class="sc">~</span> age, <span class="at">data=</span>bonedat, <span class="at">span=</span><span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>)</span>
+<span id="cb244-2"><a href="kernel-regression-and-local-regression.html#cb244-2" tabindex="-1"></a></span>
+<span id="cb244-3"><a href="kernel-regression-and-local-regression.html#cb244-3" tabindex="-1"></a><span class="fu">plot</span>(bone.low.fit, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
+<span id="cb244-4"><a href="kernel-regression-and-local-regression.html#cb244-4" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data: Lowess Fit&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>)</span>
+<span id="cb244-5"><a href="kernel-regression-and-local-regression.html#cb244-5" tabindex="-1"></a><span class="do">## plot a line of the the fitted values vs. x. Need to sort </span></span>
+<span id="cb244-6"><a href="kernel-regression-and-local-regression.html#cb244-6" tabindex="-1"></a><span class="do">## the x_i&#39;s first though if we want a nice looking line:</span></span>
+<span id="cb244-7"><a href="kernel-regression-and-local-regression.html#cb244-7" tabindex="-1"></a><span class="fu">lines</span>(bone.low.fit<span class="sc">$</span>x[<span class="fu">order</span>(bone.low.fit<span class="sc">$</span>x)], bone.low.fit<span class="sc">$</span>fitted[<span class="fu">order</span>(bone.low.fit<span class="sc">$</span>x)], </span>
+<span id="cb244-8"><a href="kernel-regression-and-local-regression.html#cb244-8" tabindex="-1"></a>      <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb244-9"><a href="kernel-regression-and-local-regression.html#cb244-9" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">0</span>, <span class="at">lty=</span><span class="dv">2</span>)</span></code></pre></div>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <hr />
 <ul>
 <li>If you want to change the settings for <code>lowess</code> and <code>loess</code> so that they are using the exact same fitting procedure,
 you can use the following approach:</li>
 </ul>
-<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="kernel-regression-and-local-regression.html#cb249-1" tabindex="-1"></a>lowess.fit <span class="ot">&lt;-</span> <span class="fu">lowess</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, <span class="at">iter=</span><span class="dv">3</span>, <span class="at">delta=</span><span class="dv">0</span>, <span class="at">f=</span><span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>)</span>
-<span id="cb249-2"><a href="kernel-regression-and-local-regression.html#cb249-2" tabindex="-1"></a>loess.fit <span class="ot">&lt;-</span> <span class="fu">loess</span>(spnbmd <span class="sc">~</span> age, <span class="at">data=</span>bonedat, <span class="at">span=</span><span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">degree=</span><span class="dv">1</span>, <span class="at">family=</span><span class="st">&quot;symmetric&quot;</span>, </span>
-<span id="cb249-3"><a href="kernel-regression-and-local-regression.html#cb249-3" tabindex="-1"></a>                   <span class="at">iterations=</span><span class="dv">4</span>, <span class="at">surface=</span><span class="st">&quot;direct&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="kernel-regression-and-local-regression.html#cb245-1" tabindex="-1"></a>lowess.fit <span class="ot">&lt;-</span> <span class="fu">lowess</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, <span class="at">iter=</span><span class="dv">3</span>, <span class="at">delta=</span><span class="dv">0</span>, <span class="at">f=</span><span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>)</span>
+<span id="cb245-2"><a href="kernel-regression-and-local-regression.html#cb245-2" tabindex="-1"></a>loess.fit <span class="ot">&lt;-</span> <span class="fu">loess</span>(spnbmd <span class="sc">~</span> age, <span class="at">data=</span>bonedat, <span class="at">span=</span><span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">degree=</span><span class="dv">1</span>, <span class="at">family=</span><span class="st">&quot;symmetric&quot;</span>, </span>
+<span id="cb245-3"><a href="kernel-regression-and-local-regression.html#cb245-3" tabindex="-1"></a>                   <span class="at">iterations=</span><span class="dv">4</span>, <span class="at">surface=</span><span class="st">&quot;direct&quot;</span>)</span></code></pre></div>
 <hr />
 <ul>
 <li>The <code>locpoly</code> function from the <code>KernSmooth</code> package implements local polynomial regression as it was described in Section 10.3.</li>
 </ul>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="kernel-regression-and-local-regression.html#cb250-1" tabindex="-1"></a><span class="fu">locpoly</span>(x, y, degree, <span class="at">kernel =</span> <span class="st">&quot;normal&quot;</span>, bandwidth)</span></code></pre></div>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="kernel-regression-and-local-regression.html#cb246-1" tabindex="-1"></a><span class="fu">locpoly</span>(x, y, degree, <span class="at">kernel =</span> <span class="st">&quot;normal&quot;</span>, bandwidth)</span></code></pre></div>
 <ul>
 <li><p>You can vary the degree of the polynomical used in the local polynomial regression with the <code>degree</code> argument.</p></li>
 <li><p>For local linear regression, you should get the same answer as our function <code>MyLocLinear</code> written in Section 10.3
 if you use <code>degree=1</code> with the locpoly function:</p></li>
 </ul>
-<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="kernel-regression-and-local-regression.html#cb251-1" tabindex="-1"></a><span class="fu">library</span>(KernSmooth)</span></code></pre></div>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="kernel-regression-and-local-regression.html#cb247-1" tabindex="-1"></a><span class="fu">library</span>(KernSmooth)</span></code></pre></div>
 <pre><code>## KernSmooth 2.23 loaded
 ## Copyright M. P. Wand 1997-2009</code></pre>
-<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="kernel-regression-and-local-regression.html#cb253-1" tabindex="-1"></a>locpoly.fit <span class="ot">&lt;-</span> <span class="fu">locpoly</span>(<span class="at">x =</span> bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, <span class="at">degree=</span><span class="dv">1</span>, <span class="at">bandwidth=</span><span class="fl">0.5</span>)</span>
-<span id="cb253-2"><a href="kernel-regression-and-local-regression.html#cb253-2" tabindex="-1"></a>mylocpoly.fit <span class="ot">&lt;-</span> <span class="fu">MyLocLinear</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, <span class="at">bandwidth=</span><span class="fl">0.5</span>, </span>
-<span id="cb253-3"><a href="kernel-regression-and-local-regression.html#cb253-3" tabindex="-1"></a>                             <span class="at">x.points=</span>locpoly.fit<span class="sc">$</span>x) </span>
-<span id="cb253-4"><a href="kernel-regression-and-local-regression.html#cb253-4" tabindex="-1"></a>  </span>
-<span id="cb253-5"><a href="kernel-regression-and-local-regression.html#cb253-5" tabindex="-1"></a></span>
-<span id="cb253-6"><a href="kernel-regression-and-local-regression.html#cb253-6" tabindex="-1"></a><span class="fu">plot</span>(locpoly.fit<span class="sc">$</span>x, locpoly.fit<span class="sc">$</span>y, <span class="at">main=</span><span class="st">&quot;Local Linear Regression with locpoly </span></span>
-<span id="cb253-7"><a href="kernel-regression-and-local-regression.html#cb253-7" tabindex="-1"></a><span class="st">     and MyLocLinear&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change&quot;</span>)</span>
-<span id="cb253-8"><a href="kernel-regression-and-local-regression.html#cb253-8" tabindex="-1"></a><span class="fu">lines</span>(locpoly.fit<span class="sc">$</span>x, mylocpoly.fit, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="kernel-regression-and-local-regression.html#cb249-1" tabindex="-1"></a>locpoly.fit <span class="ot">&lt;-</span> <span class="fu">locpoly</span>(<span class="at">x =</span> bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, <span class="at">degree=</span><span class="dv">1</span>, <span class="at">bandwidth=</span><span class="fl">0.5</span>)</span>
+<span id="cb249-2"><a href="kernel-regression-and-local-regression.html#cb249-2" tabindex="-1"></a>mylocpoly.fit <span class="ot">&lt;-</span> <span class="fu">MyLocLinear</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, <span class="at">bandwidth=</span><span class="fl">0.5</span>, </span>
+<span id="cb249-3"><a href="kernel-regression-and-local-regression.html#cb249-3" tabindex="-1"></a>                             <span class="at">x.points=</span>locpoly.fit<span class="sc">$</span>x) </span>
+<span id="cb249-4"><a href="kernel-regression-and-local-regression.html#cb249-4" tabindex="-1"></a>  </span>
+<span id="cb249-5"><a href="kernel-regression-and-local-regression.html#cb249-5" tabindex="-1"></a></span>
+<span id="cb249-6"><a href="kernel-regression-and-local-regression.html#cb249-6" tabindex="-1"></a><span class="fu">plot</span>(locpoly.fit<span class="sc">$</span>x, locpoly.fit<span class="sc">$</span>y, <span class="at">main=</span><span class="st">&quot;Local Linear Regression with locpoly </span></span>
+<span id="cb249-7"><a href="kernel-regression-and-local-regression.html#cb249-7" tabindex="-1"></a><span class="st">     and MyLocLinear&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change&quot;</span>)</span>
+<span id="cb249-8"><a href="kernel-regression-and-local-regression.html#cb249-8" tabindex="-1"></a><span class="fu">lines</span>(locpoly.fit<span class="sc">$</span>x, mylocpoly.fit, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
 <p><img src="11-kernel-regression_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <hr />
 <ul>
 <li>The <code>supsmu</code> function implements Friedman’s “super smoother” (<span class="citation">Friedman (<a href="#ref-friedman1984">1984</a>)</span>).</li>
 </ul>
-<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="kernel-regression-and-local-regression.html#cb254-1" tabindex="-1"></a><span class="fu">supsmu</span>(x, y, <span class="at">span=</span><span class="st">&quot;cv&quot;</span>, <span class="at">bass=</span><span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="kernel-regression-and-local-regression.html#cb250-1" tabindex="-1"></a><span class="fu">supsmu</span>(x, y, <span class="at">span=</span><span class="st">&quot;cv&quot;</span>, <span class="at">bass=</span><span class="dv">0</span>)</span></code></pre></div>
 <ul>
 <li><p><strong>x</strong> - vector of covariate values.</p></li>
 <li><p><strong>y</strong> - vector of responses.</p></li>

@@ -25,7 +25,7 @@ I(X_{i} \geq X_{j})
 * The smallest observation has a rank of $1$ (if there are no ties).
 
 * I am using the notation $R_{i}(\mathbf{X})$ to emphasize that the rank
-of the $i^{th}$ observations depends on the entire vector of observations
+of the $i^{th}$ observations **depends on the entire vector of observations**
 rather than only on the value of $X_{i}$.
 
 
@@ -43,7 +43,7 @@ rank(x)
 ### Handling Ties
 
 * In the definition of ranks shown in \@ref(eq:rankdef), tied observations
-receive their maximum possible rank. 
+receive their **maximum possible rank**. 
 
 * For example, suppose that $(X_{1}, X_{2}, X_{3}, X_{4}) = (0, 1, 1, 2)$. 
 In this case, one could argue whether both observations 2 and 3 should be ranked
@@ -52,7 +52,7 @@ ranks of $1$ and $4$ respectively.
 
 * Under definition \@ref(eq:rankdef), both observations $2$ and $3$ receive a rank of $3$.
 
-* In **R**, handling ties in a way that is consistent with definition \@ref(eq:rankdef) is done using the **ties.method = "max"** argument
+* In **R**, handling ties in a way that is consistent with definition \@ref(eq:rankdef) is done using the `ties.method = "max"` argument
 
 ``` r
 x <- c(0, 1, 1, 2)  
@@ -95,24 +95,55 @@ rank(y)
 
 ---
 
-* When defining ranks using the "average" or "midrank" approach to handling ties, we replace
-tied ranks with the average of the two "adjacent" ranks. 
+* The ranks defined in \@ref(eq:rankdef) can also be written as
+\begin{align}
+R_{i}(\mathbf{X}) &= 1 + \sum_{j \neq i} I( X_{i} \geq X_{j})  \nonumber \\
+&=  1 + \sum_{j \neq i} I( X_{i} > X_{j}) + \sum_{j \neq i} I( X_{i} = X_{j})             
+\end{align}
 
-* For example, if we have a vector of ranks $(R_{1}, R_{2}, R_{3}, R_{4})$ where $R_{2} = R_{3} =3$ and $R_{1} = 4$ and $R_{4} = 1$, then the vector of modified ranks using the "average" approach to handling ties
-would be
+* Basically, the rank $R_{i}(\mathbf{X})$ of the $i^{th}$ is computed by counting
+the number of observations that are less than or equal to $X_{i}$ and then adding $1$.
+
+* An alternative to the **"max definition"** of the ranks is to only count the number of observations
+that are **less than** $X_{i}$. This is the **"min definition"** of ranks
 \begin{equation}
-(R_{1}', R_{2}', R_{3}', R_{4}') = \Big( 4, \frac{4 + 1}{2}, \frac{4 + 1}{2}, 1 \Big)
+R_{i}^{min}(\mathbf{X}) = 1 + \sum_{j \neq i} I( X_{i} > X_{j}) 
 \end{equation}
 
-* The "average" approach is the most common way of handling ties when computing the
-Wilcoxon rank sum statistic.
+---
+
+* A **compromise** between the min and the max definition of ranks is the **average** definition of ranks.
+
+* With the average definition of ranks, you only add 1/2 for the cases with $X_{i} = X_{j}$
+\begin{equation}
+R_{i}^{\textrm{avg}}(\mathbf{X}) =  1 + \sum_{j \neq i} I( X_{i} > X_{j})  + \frac{1}{2}\sum_{j \neq i} I( X_{i} = X_{j})             
+\end{equation}
+
+* For example, if we have the four observations $X_{1} = 5, X_{2} = 2, X_{3} = 0, X_{4} = 2$, then 
+\begin{align}
+R_{1}^{\textrm{avg}}(\mathbf{X}) &= 1 + (1 + 1 + 1) + 0.5(0 + 0 + 0) = 4 \nonumber \\
+R_{2}^{\textrm{avg}}(\mathbf{X}) &= 1 + (0 + 1 + 0) + 0.5(0 + 0 + 1) = 2.5 \nonumber \\
+R_{3}^{\textrm{avg}}(\mathbf{X}) &= 1 + (0 + 0 + 0) + 0.5(0 + 0 + 0) = 1 \nonumber \\
+R_{4}^{\textrm{avg}}(\mathbf{X}) &= 1 + (0 + 0 + 1) + 0.5(0 + 1 + 0) = 2.5 \nonumber
+\end{align}
+
+---
+
+* Note that if there are **no ties** among your observations, each definition of ranks will generate exactly
+the same ranking.
+
+* The "average" approach is the most common way, in practice, of handling ties when computing the
+**Wilcoxon rank sum** the statistic.
+
+
+
 
 
 ### Properties of Ranks
 Suppose $(X_{1}, \ldots, X_{n})$ is random sample from a continuous distribution $F$ (so that the probability
 of ties is zero). Then, the following properties hold for the associated ranks $R_{1}, \ldots, R_{n}$.
 
-* Each $R_{i}$ follows a discrete uniform distribution
+* Each $R_{i}$ follows a **discrete uniform distribution**
 \begin{equation}
 P(R_{i} = j) = 1/n, \quad \text{for any } j = 1, \ldots,n.
 \end{equation}
@@ -127,23 +158,34 @@ E( R_{i} ) = \sum_{j=1}^{n} j P(R_{i} = j) = \frac{1}{n}\sum_{j=1}^{n} j = \frac
 = \frac{1}{n}\sum_{j=1}^{n} j^{2}  - \Big( \frac{n+1}{2} \Big)^{2}
 = \frac{ n^{2} - 1}{12}
 \end{equation}
-* The random variables $R_{1}, \ldots, R_{n}$ are **not** independent (why?). However,
-the vector $\mathbf{R}_{n} = (R_{1}, \ldots, R_{n})$ is uniformly distributed
-on the set of $n!$ permutations of $(1,2,\ldots,n)$.
+* The random variables $R_{1}, \ldots, R_{n}$ are **not** independent (why?). 
 
-
-
+* The vector $\mathbf{R}_{n} = (R_{1}, \ldots, R_{n})$ is uniformly distributed
+on the set of $n!$ permutations of $(1,2,\ldots,n)$:
+\begin{equation}
+P\Big( \mathbf{R}_{n} = (r_{1}, \ldots, r_{n}) \Big) = \frac{1}{n!},
+(\#eq:jointdistrank)
+\end{equation}
+where $(r_{1}, \ldots, r_{n})$ is any permutation of the integers $(1, \ldots, n)$.
+     
+* The joint, discrete uniform distribution \@ref(eq:jointdistrank) is basically, a result of the fact that $X_{1}, \ldots, X_{n}$ are i.i.d, and hence the probability of any ordering
+\begin{equation}
+P\Big( X_{\pi(1)} < X_{\pi(2)} < ... < X_{\pi(n)} \Big)
+\end{equation}
+must be the same for any mapping $\pi$ that performs a permutation of the integers $(1, \ldots, n)$.
+      
+      
 ## The Wilcoxon Rank Sum (WRS) Test: A Two-Sample Test
 
 ### Goal of the Test
 
 * The Wilcoxon Rank Sum (WRS) test (sometimes referred to as the Wilcoxon-Mann-Whitney test) is a popular,
-rank-based two-sample test.
+**rank-based** two-sample test.
 
-* The one-sided WRS test is used to test whether or not observations from one group tend to be larger (or smaller) than observations
+* The **one-sided WRS test** is used to test whether or not observations from one group tend to be larger (or smaller) than observations
 from the other group. 
 
-* Suppose we have observations from two groups: $X_{1}, \ldots, X_{n} \sim F_{X}$ and $Y_{1}, \ldots, Y_{m} \sim F_{Y}$.
+* Suppose we have observations from **two groups:** $X_{1}, \ldots, X_{n} \sim F_{X}$ and $Y_{1}, \ldots, Y_{m} \sim F_{Y}$.
 
 * Roughly speaking, the one-sided WRS tests the following hypothesis
 \begin{eqnarray}
@@ -154,9 +196,9 @@ H_{A}: && \textrm{Observations from } F_{X} \textrm{ tend to be larger than obse
 
 ---
 
-* What is meant by "tend to be larger" in the alternative hypothesis?
+* What is meant by **"tend to be larger"** in the alternative hypothesis?
 
-* Two common ways of stating the alternative hypothesis for the WRS include
+* Two common ways of **stating the alternative hypothesis** for the WRS include
     1. The stochastic dominance alternative
 \begin{eqnarray}
 H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
@@ -169,27 +211,32 @@ H_{0}: & & F_{X} = F_{Y} \quad \textrm{ versus } \nonumber \\
 H_{A}: & & F_{X}(t) = F_{Y}(t - \Delta), \Delta > 0.
 (\#eq:shift-formulation)
 \end{eqnarray}
-* A distribution function $F_{X}$ is said to be stochastically larger than
+* A distribution function $F_{X}$ is said to be **stochastically larger** than
 $F_{Y}$ if $F_{X}(t) \leq F_{Y}(t)$ for all $t$ with $F_{X}(t) < F_{Y}(t)$
 for at least one value of $t$.
 
 * Note that the "shift alternative" implies stochastic dominance.
 
-* Why do we need to specify an alternative?
+* **Why** do we need to specify an alternative $H_{A}$?
+    + The WRS test cannot always "detect" differences between $F_{X}$ and $F_{Y}$.
+    + That is, there are cases where $F_{X} \neq F_{Y}$ and where the WRS test would have very low power to detect this difference (even with a very large sample size)
+    + We need to think about which conditions on $F_{X}$ and $F_{Y}$ lead to the WRS test rejecting $H_{0}$. 
 
 ---
 
-* It is often stated that the WRS test is a test
-of equal medians.
+* It is sometimes stated that the WRS test is a test
+of **equal medians**.
 
 * This is true under the assumption that the 
 relevant alternative is of the form $F_{X}(t) = F_{Y}(t - \Delta)$.
 
-* However, one could have a scenario where the two groups have equal medians, but 
-the WRS test has a very high probability of rejecting $H_{0}$.
+* However, one could have a scenario where the two groups have **equal medians**, but 
+the WRS test has a very high probability of **rejecting** $H_{0}$.
 
 * In addition, in many applications, it is difficult to justify
 that the "shift alternative" is a reasonable assumption.
+
+---
 
 * An alternative is to view the WRS test as performing the following
 hypothesis test:
@@ -199,10 +246,10 @@ H_{A}: && P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) > 1/2
 (\#eq:mw-formulation)
 \end{eqnarray}
 See  @divine2018 for more discussion around this formulation of the
-WRS test.
+WRS hypothesis test.
 
 * The hypothesis test \@ref(eq:mw-formulation) makes fewer assumptions
-about how $F_{X}$ and $F_{Y}$ are related and is, in many cases, more interpretable.
+about how $F_{X}$ and $F_{Y}$ are related and is, in many cases, **more interpretable**.
 
 * For example, in medical applications, it is often more natural to 
 answer the question: what is the probability that the outcome
@@ -215,8 +262,11 @@ $M = mn + n(n+1)/2 - W$).
 
 * The Mann-Whitney statistic divided by $mn$ is an estimate of the probability:
 \begin{equation}
-P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}) = 1/2. \nonumber
+\theta = P(X_{i} > Y_{j}) + \tfrac{1}{2}P(X_{i} = Y_{j}). 
+(\#eq:mw-parameter)
 \end{equation}
+
+* $\theta$ in \@ref(eq:mw-parameter) is often referred to as the **Mann-Whitney** parameter.
 
 ---
 
@@ -248,7 +298,7 @@ P(X_{i} > Y_{j}) + \frac{1}{2}P(X_{i} = Y_{j}&)& = P(X_{i}=1, Y_{j}=0) + P(X_{i}
 
 ### Definition of the WRS Test Statistic
 
-* The WRS test statistic is based on computing the sum of ranks (ranks based on the pooled sample)
+* The WRS test statistic is based on computing the **sum of ranks** (ranks based on the pooled sample)
 in one group.
 
 * The motivation for the WRS test statistic is the following: if observations from group 1 tend to be larger than those from group 2, the average rank from group 1 should exceed the average rank from group 2. 
@@ -361,8 +411,8 @@ way
 \textrm{p-value} &=& P_{H_{0}}( W \geq w_{obs}) 
 = P\Bigg( \frac{W - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  } \geq \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }\Bigg)
 \nonumber \\
-&=& P_{H_{0}}\Big( \tilde{W} \geq \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }\Big)
-= 1 - \Phi\Bigg( \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }  \Bigg), \nonumber
+&=& P_{H_{0}}\Big( \tilde{W} \geq \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }\Big) \nonumber \\
+&=& 1 - \Phi\Bigg( \frac{w_{obs} - n(n+m+1)/2}{ \sqrt{ mn(n + m + 1)/12 }  }  \Bigg), \nonumber
 \end{eqnarray}
 where $\Phi(t)$ denotes the cumulative distribution function of a standard Normal random variable.
 
@@ -403,26 +453,9 @@ with mean zero but different variances. -->
 
 ### Computing the WRS test in R
 
-* To illustrate performing the WRS test in **R**, we can use the **wine** dataset from the **rattle** package.
-This dataset is also available from the UCI Machine Learning Repository.
+* To illustrate performing the WRS test in **R**, we can use the **wine** dataset (which is on Canvas).
 
-``` r
-library(rattle)
-```
 
-```
-## Loading required package: tibble
-```
-
-```
-## Loading required package: bitops
-```
-
-```
-## Rattle: A free graphical interface for data science with R.
-## Version 5.5.1 Copyright (c) 2006-2021 Togaware Pty Ltd.
-## Type 'rattle()' to shake, rattle, and roll your data.
-```
 
 ``` r
 head(wine)
@@ -445,7 +478,7 @@ head(wine)
 ## 6            1.97  6.75 1.05     2.85    1450
 ```
 
-* This dataset contains three types of wine. We will only consider the first two. 
+* This dataset contains **three types** of wine. We will only consider the first two. 
 
 ``` r
 wine2 <- subset(wine, Type==1 | Type==2)
@@ -453,7 +486,7 @@ wine2$Type <- factor(wine2$Type)
 ```
 
 * Let us consider the difference in the level of magnesium across the two types of wine.
-<img src="03-rankstat_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-7-2.png" width="672" />
+<img src="03-rankstat_files/figure-html/unnamed-chunk-8-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-8-2.png" width="672" />
 
 * Suppose we are interested in testing whether or not magnesium levels in 
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
@@ -551,7 +584,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.84
+## [1] 0.845
 ```
 
 * This simulation-based estimate of $P(X_{i} > Y_{j}) + P(X_{i} = Y_{j})/2$ is quite close to the value of the Mann-Whitney statistic divided by $mn$.
@@ -728,7 +761,7 @@ sign.stat <- sum(xx > 0)  ## This is the value of the sign statistic
 ```
 
 ```
-## [1] 0.6913503
+## [1] 0.04431304
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -746,7 +779,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.6913503
+## [1] 0.04431304
 ```
 
 #### Two-sided Sign Test
@@ -901,7 +934,7 @@ hist(DD, main="Meat Data", xlab="Difference in Measured Fat
      Percentage", las=1)
 ```
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+<img src="03-rankstat_files/figure-html/unnamed-chunk-19-1.png" width="672" />
 
 ``` r
 summary(DD)
@@ -1063,7 +1096,7 @@ of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
 values for $p(\delta)$ rather than $\delta$ itself. Plus, $p(\delta)$ has the direct interpretation
 $p(\delta) = P_{\theta=\delta}( D_{i} > 0)$.
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-22-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-22-2.png" width="672" />
+<img src="03-rankstat_files/figure-html/unnamed-chunk-23-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-23-2.png" width="672" />
 
 
 
@@ -1719,4 +1752,44 @@ statistic is $0$.
 The pooled-data vector is $\mathbf{Z} = (Z_{1}, \ldots, Z_{n + m}) = (X_{1}, \ldots, X_{n}, Y_{1}, \ldots, Y_{m})$ so that $Z_{j} = X_{j}$ for $1 \leq j \leq n$ and $Z_{j} = Y_{j-n}$ for $n + 1 \leq j \leq n + m$.
 
 Compute both $E\{ R_{1}(\mathbf{Z}) \}$ and $E\{ R_{n+1}( \mathbf{Z} ) \}$.
+
+
+**Exercise 3.9**: Suppose we have i.i.d. observations $X_{1}, \ldots, X_{n}$ with the distribution function $F_{X}(t) = P( X_{i} \leq t )$.
+Assume that $F_{X}$ is strictly increasing.
+
+**(a)** What is the distribution of the random variable $Y_{i} = F_{X}(X_{i})$?
+
+**(b)** Consider the rank of the $i^{th}$ observation $R_{i}(\mathbf{X}) = \sum_{j=1}^{n} I(X_{i} \geq X_{j})$. What is the conditional distribution of $R_{i}(\mathbf{X})$ given $X_{i}$? That is, derive a formula for the following probability
+\begin{equation}
+P\big\{ R_{i}(\mathbf{X}) = k \mid X_{i} \big\}, \qquad \textrm{where } 1 \leq k \leq n. \nonumber
+\end{equation}
+
+**(c)** Use the formula for $P\big\{ R_{i}(\mathbf{X}) = k \mid X_{i} \big\}$ to show that $P\big\{ R_{i}(\mathbf{X}) = k \big\} = 1/n$.
+
+*Hint:* Remember that $B(m,p) = (m-1)!(p-1)!/(m+p-1)!$, if $B$ is the Beta function and $m$ and $p$ are positive integers.
+
+
+**Exercise 3.10**: Consider independent (not i.i.d.) random variables $X_{1}, \ldots, X_{n}$, where $X_{i} \sim \textrm{Geometric}(p_{i})$.
+This means that $X_{i}$ has probability mass function (pmf):
+\begin{equation}
+P( X_{i} = j) = 
+\begin{cases}
+(1 - p_{i})^{k-1}p_{i}, & \textrm{for } k = 1, 2, 3, \ldots \nonumber \\
+0 & \textrm{ otherwise.} \nonumber
+\end{cases}
+\end{equation}
+Using the **``average'' definition of ranks**: 
+
+**(a)** Show that the conditional expectation $E\{ R_{i}^{\textrm{avg}}(\mathbf{X}) \mid X_{i} \}$ is
+\begin{equation}
+E\{ R_{i}^{\textrm{avg}}(\mathbf{X}) \mid X_{i} \} = n - \sum_{j \neq i} q_{j}^{X_{i}-1}\Big(1 - p_{j}/2 \Big),
+\qquad \textrm{where } q_{j} = 1 - p_{j}. \nonumber
+\end{equation}
+
+**(b)** Use the expression from part (a) to derive the expectation $E\{ R_{i}^{\textrm{avg}}(\mathbf{X}) \}$.
+
+**(c)** Suppose that we now think of $X_{1}, \ldots, X_{n}$ as coming from two groups, where the first $m$ observations are from the first group and the last $n - m$ observations are from the second group. Specifically, assume that $X_{i} \sim \textrm{Geometric}(\lambda)$, for $i = 1, \ldots, m$ and $X_{i} \sim \textrm{Geometric}(\theta)$, for $i = m+1, \ldots, n.$ Under this assumption, what is the expected value of the Wilcoxon rank sum test statistic?
+
+
+
 

@@ -138,7 +138,7 @@ round(c(alpha.hat - 1.96*sd(alpha.boot), alpha.hat + 1.96*sd(alpha.boot)), 3)
 ```
 
 ```
-## [1] 0.079 0.551
+## [1] 0.072 0.558
 ```
 
 ``` r
@@ -146,7 +146,7 @@ round(c(sigsq.hat - 1.96*sd(sigsq.boot), sigsq.hat + 1.96*sd(sigsq.boot)), 3)
 ```
 
 ```
-## [1] 0.917 2.018
+## [1] 0.916 2.020
 ```
 
 * We can compare our confidence interval for $\alpha$ with the confidence interval
@@ -320,7 +320,7 @@ c(beta0.hat - stu.quants0[2]*se.est0, beta0.hat - stu.quants0[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.12        3.56
+##        2.16        3.48
 ```
 
 ``` r
@@ -330,7 +330,7 @@ c(beta1.hat - stu.quants1[2]*se.est1, beta1.hat - stu.quants1[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.0948 -0.0596
+## -0.0949 -0.0596
 ```
 
 * Compare these studentized bootstrap confidence intervals with the confidence 
@@ -444,7 +444,7 @@ c(beta0.hat - stu.quants0.np[2]*se.est0, beta0.hat - stu.quants0.np[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.20        3.49
+##        2.11        3.60
 ```
 
 ``` r
@@ -454,7 +454,7 @@ c(beta1.hat - stu.quants1.np[2]*se.est1, beta1.hat - stu.quants1.np[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.0940 -0.0622
+## -0.0971 -0.0599
 ```
   
 ---  
@@ -644,7 +644,7 @@ mean(Cover.bootsd.ci)
 ```
 
 ```
-## [1] 0.798
+## [1] 0.824
 ```
 
 <img src="10-confidence-intervals_files/figure-html/unnamed-chunk-24-1.png" width="672" />
