@@ -80,7 +80,7 @@ the number of observations that are less than or equal to $X_{i}$ and then addin
 * An alternative to the **"max definition"** of the ranks is to only count the number of observations
 that are **less than** $X_{i}$. This is the **"min definition"** of ranks
 \begin{equation}
-R_{i}^{min}(\mathbf{X}) = 1 + \sum_{j \neq i} I( X_{i} > X_{j}) 
+R_{i}^{\textrm{min}}(\mathbf{X}) = 1 + \sum_{j \neq i} I( X_{i} > X_{j}) 
 \end{equation}
 
 ---
@@ -766,7 +766,7 @@ vs. negative values of $D_{i}$.
 
 #### Asymptotic Distribution
 
-* As mentioned in the above exercise, the expectation of $T_{n}$ under $H_{0}$ is zero.
+* As described in one of the exercises below, the **expectation of $T_{n}$ under $H_{0}$ is zero**.
 
 * It can be shown that the variance under the null hypothesis is
 \begin{equation}
@@ -798,15 +798,17 @@ Nevertheless, there exists functions in **R** for working with this exact distri
 
 ### Using R to Perform the Sign and Wilcoxon Tests 
 
-* Let's first look at the **Meat** data from the **PairedData** **R** package.
+* Let's first look at the `Meat` data (This dataset is on Canvas).
 
 * This data set contains 20 observations with each observation corresponding to a single piece of meat. 
 For each observation, we have two measures of fat percentage that were obtained different 
 measuring techniques.
  
+```{r, echo=FALSE}
+Meat <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/meat.csv")
+```
+
 ```{r}
-library(PairedData, quietly=TRUE, warn.conflicts=FALSE) ## loading PairedData package
-data(Meat)  ## loading Meat data
 head(Meat)
 ```
 
@@ -1641,7 +1643,7 @@ P( X_{i} = j) =
 0 & \textrm{ otherwise.} \nonumber
 \end{cases}
 \end{equation}
-Using the **``average'' definition of ranks**: 
+Using the **"average" definition of ranks**: 
 
 **(a)** Show that the conditional expectation $E\{ R_{i}^{\textrm{avg}}(\mathbf{X}) \mid X_{i} \}$ is
 \begin{equation}

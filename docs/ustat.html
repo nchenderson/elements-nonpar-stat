@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-01-11" />
+<meta name="date" content="2026-01-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -240,7 +240,11 @@ div.csl-indent {
 <li class="chapter" data-level="5.2.3" data-path="permutation.html"><a href="permutation.html#example-2-ratios-of-means"><i class="fa fa-check"></i><b>5.2.3</b> Example 2: Ratios of Means</a></li>
 <li class="chapter" data-level="5.2.4" data-path="permutation.html"><a href="permutation.html#example-3-differences-in-quantiles"><i class="fa fa-check"></i><b>5.2.4</b> Example 3: Differences in Quantiles</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3</b> The Permutation Test as a Conditional Test</a></li>
+<li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#permutation-test-assumptions"><i class="fa fa-check"></i><b>5.3</b> Permutation Test Assumptions</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="permutation.html"><a href="permutation.html#exchangeability-under-the-null-hypothesis"><i class="fa fa-check"></i><b>5.3.1</b> Exchangeability under the Null Hypothesis</a></li>
+<li class="chapter" data-level="5.3.2" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3.2</b> The Permutation Test as a Conditional Test</a></li>
+</ul></li>
 <li class="chapter" data-level="5.4" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-correlation"><i class="fa fa-check"></i><b>5.4</b> A Permutation Test for Correlation</a></li>
 <li class="chapter" data-level="5.5" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-variable-importance-in-regression-and-machine-learning"><i class="fa fa-check"></i><b>5.5</b> A Permutation Test for Variable Importance in Regression and Machine Learning</a></li>
 <li class="chapter" data-level="5.6" data-path="permutation.html"><a href="permutation.html#exercises-2"><i class="fa fa-check"></i><b>5.6</b> Exercises</a></li>
@@ -519,17 +523,17 @@ in the following way: if we select two observations <span class="math inline">\(
 the expected squared distance between <span class="math inline">\(X_{i}\)</span> and <span class="math inline">\(X_{j}\)</span> will be <span class="math inline">\(2\sigma^{2}\)</span>.</p></li>
 <li><p>You can see this through the following computer experiment.</p></li>
 </ul>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="ustat.html#cb90-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">50000</span></span>
-<span id="cb90-2"><a href="ustat.html#cb90-2" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">rlogis</span>(n, <span class="at">location=</span><span class="dv">2</span>, <span class="at">scale=</span><span class="fl">0.75</span>)</span>
-<span id="cb90-3"><a href="ustat.html#cb90-3" tabindex="-1"></a>diff.sq <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">5000</span>)</span>
-<span id="cb90-4"><a href="ustat.html#cb90-4" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5000</span>) {</span>
-<span id="cb90-5"><a href="ustat.html#cb90-5" tabindex="-1"></a>   idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="at">size=</span><span class="dv">2</span>)</span>
-<span id="cb90-6"><a href="ustat.html#cb90-6" tabindex="-1"></a>   diff.sq[k] <span class="ot">&lt;-</span> (xx[idx[<span class="dv">1</span>]] <span class="sc">-</span> xx[idx[<span class="dv">2</span>]])<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb90-7"><a href="ustat.html#cb90-7" tabindex="-1"></a>}</span>
-<span id="cb90-8"><a href="ustat.html#cb90-8" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">var</span>(xx), <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 1.857</code></pre>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="ustat.html#cb92-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">mean</span>(diff.sq)<span class="sc">/</span><span class="dv">2</span>, <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 1.859</code></pre>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="ustat.html#cb85-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">50000</span></span>
+<span id="cb85-2"><a href="ustat.html#cb85-2" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">rlogis</span>(n, <span class="at">location=</span><span class="dv">2</span>, <span class="at">scale=</span><span class="fl">0.75</span>)</span>
+<span id="cb85-3"><a href="ustat.html#cb85-3" tabindex="-1"></a>diff.sq <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">5000</span>)</span>
+<span id="cb85-4"><a href="ustat.html#cb85-4" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5000</span>) {</span>
+<span id="cb85-5"><a href="ustat.html#cb85-5" tabindex="-1"></a>   idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="at">size=</span><span class="dv">2</span>)</span>
+<span id="cb85-6"><a href="ustat.html#cb85-6" tabindex="-1"></a>   diff.sq[k] <span class="ot">&lt;-</span> (xx[idx[<span class="dv">1</span>]] <span class="sc">-</span> xx[idx[<span class="dv">2</span>]])<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb85-7"><a href="ustat.html#cb85-7" tabindex="-1"></a>}</span>
+<span id="cb85-8"><a href="ustat.html#cb85-8" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">var</span>(xx), <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 1.868</code></pre>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="ustat.html#cb87-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">mean</span>(diff.sq)<span class="sc">/</span><span class="dv">2</span>, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 1.853</code></pre>
 </div>
 <div id="example-3-ginis-mean-difference" class="section level3 hasAnchor" number="6.2.3">
 <h3><span class="header-section-number">6.2.3</span> Example 3: Gini’s Mean Difference<a href="ustat.html#example-3-ginis-mean-difference" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -735,17 +739,17 @@ the rank correlation is very effective at detecting any monotone associations be
 <li><p><span class="math inline">\(\hat{\rho}_{R}\)</span> will equal 1 if <span class="math inline">\(Y_{i}\)</span> is a monotone increasing function of <span class="math inline">\(X_{i}\)</span>,
 and <span class="math inline">\(\hat{\rho}_{R}\)</span> will equal -1 if <span class="math inline">\(Y_{i}\)</span> is a monotone decreasing function <span class="math inline">\(X_{i}\)</span>.</p></li>
 </ul>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="ustat.html#cb94-1" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean=</span><span class="dv">10</span>), <span class="fl">0.01</span>)</span>
-<span id="cb94-2"><a href="ustat.html#cb94-2" tabindex="-1"></a>yy <span class="ot">&lt;-</span> <span class="fu">pmax</span>(xx <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">sd=</span>.<span class="dv">5</span>), <span class="fl">0.01</span>)</span>
-<span id="cb94-3"><a href="ustat.html#cb94-3" tabindex="-1"></a></span>
-<span id="cb94-4"><a href="ustat.html#cb94-4" tabindex="-1"></a><span class="do">## Compare the usual Pearson&#39;s correlation between </span></span>
-<span id="cb94-5"><a href="ustat.html#cb94-5" tabindex="-1"></a><span class="do">## (xx, yy) and (xx, yy^2)</span></span>
-<span id="cb94-6"><a href="ustat.html#cb94-6" tabindex="-1"></a><span class="fu">round</span>( <span class="fu">c</span>( <span class="fu">cor</span>(xx, yy), <span class="fu">cor</span>(xx, yy<span class="sc">^</span><span class="dv">2</span>)), <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 0.888 0.882</code></pre>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="ustat.html#cb96-1" tabindex="-1"></a><span class="do">## Now do the same for Spearman&#39;s rank correlation</span></span>
-<span id="cb96-2"><a href="ustat.html#cb96-2" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>( <span class="fu">cor</span>(xx, yy, <span class="at">method=</span><span class="st">&quot;spearman&quot;</span>), </span>
-<span id="cb96-3"><a href="ustat.html#cb96-3" tabindex="-1"></a>         <span class="fu">cor</span>(xx, yy<span class="sc">^</span><span class="dv">2</span>, <span class="at">method=</span><span class="st">&quot;spearman&quot;</span>)), <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 0.864 0.864</code></pre>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="ustat.html#cb89-1" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean=</span><span class="dv">10</span>), <span class="fl">0.01</span>)</span>
+<span id="cb89-2"><a href="ustat.html#cb89-2" tabindex="-1"></a>yy <span class="ot">&lt;-</span> <span class="fu">pmax</span>(xx <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">sd=</span>.<span class="dv">5</span>), <span class="fl">0.01</span>)</span>
+<span id="cb89-3"><a href="ustat.html#cb89-3" tabindex="-1"></a></span>
+<span id="cb89-4"><a href="ustat.html#cb89-4" tabindex="-1"></a><span class="do">## Compare the usual Pearson&#39;s correlation between </span></span>
+<span id="cb89-5"><a href="ustat.html#cb89-5" tabindex="-1"></a><span class="do">## (xx, yy) and (xx, yy^2)</span></span>
+<span id="cb89-6"><a href="ustat.html#cb89-6" tabindex="-1"></a><span class="fu">round</span>( <span class="fu">c</span>( <span class="fu">cor</span>(xx, yy), <span class="fu">cor</span>(xx, yy<span class="sc">^</span><span class="dv">2</span>)), <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 0.903 0.903</code></pre>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="ustat.html#cb91-1" tabindex="-1"></a><span class="do">## Now do the same for Spearman&#39;s rank correlation</span></span>
+<span id="cb91-2"><a href="ustat.html#cb91-2" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>( <span class="fu">cor</span>(xx, yy, <span class="at">method=</span><span class="st">&quot;spearman&quot;</span>), </span>
+<span id="cb91-3"><a href="ustat.html#cb91-3" tabindex="-1"></a>         <span class="fu">cor</span>(xx, yy<span class="sc">^</span><span class="dv">2</span>, <span class="at">method=</span><span class="st">&quot;spearman&quot;</span>)), <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 0.89 0.89</code></pre>
 <hr />
 <ul>
 <li><p><span class="math inline">\(\hat{\rho}_{R}\)</span> can be thought of as an estimate of the following population
@@ -912,18 +916,18 @@ where <span class="math inline">\(X_{i} \sim \textrm{Normal}(0, 1)\)</span> and 
 <li><p>It could be a lot work to compute the above expectation exactly. However,
 we can estimate it pretty closely using simulation:</p></li>
 </ul>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="ustat.html#cb98-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4157</span>)</span>
-<span id="cb98-2"><a href="ustat.html#cb98-2" tabindex="-1"></a>nreps <span class="ot">&lt;-</span> <span class="dv">500000</span> <span class="do">## number of simulation replications</span></span>
-<span id="cb98-3"><a href="ustat.html#cb98-3" tabindex="-1"></a>term1 <span class="ot">&lt;-</span> term2 <span class="ot">&lt;-</span> term3 <span class="ot">&lt;-</span> term4 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, nreps)</span>
-<span id="cb98-4"><a href="ustat.html#cb98-4" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nreps) {</span>
-<span id="cb98-5"><a href="ustat.html#cb98-5" tabindex="-1"></a>    xx <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">3</span>)</span>
-<span id="cb98-6"><a href="ustat.html#cb98-6" tabindex="-1"></a>    term1[k] <span class="ot">&lt;-</span> <span class="fu">abs</span>(xx[<span class="dv">1</span>] <span class="sc">-</span> xx[<span class="dv">2</span>])<span class="sc">*</span><span class="fu">abs</span>(xx[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> xx[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>) </span>
-<span id="cb98-7"><a href="ustat.html#cb98-7" tabindex="-1"></a>    term2[k] <span class="ot">&lt;-</span> <span class="fu">abs</span>(xx[<span class="dv">1</span>] <span class="sc">-</span> xx[<span class="dv">2</span>])</span>
-<span id="cb98-8"><a href="ustat.html#cb98-8" tabindex="-1"></a>    term3[k] <span class="ot">&lt;-</span> <span class="fu">abs</span>(xx[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> xx[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb98-9"><a href="ustat.html#cb98-9" tabindex="-1"></a>    term4[k] <span class="ot">&lt;-</span> <span class="fu">abs</span>(xx[<span class="dv">1</span>] <span class="sc">-</span> xx[<span class="dv">2</span>])<span class="sc">*</span><span class="fu">abs</span>(xx[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> xx[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb98-10"><a href="ustat.html#cb98-10" tabindex="-1"></a>}</span>
-<span id="cb98-11"><a href="ustat.html#cb98-11" tabindex="-1"></a>dcov.sq.est <span class="ot">&lt;-</span> <span class="fu">mean</span>(term1) <span class="sc">+</span> <span class="fu">mean</span>(term2)<span class="sc">*</span><span class="fu">mean</span>(term3) <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">mean</span>(term4)</span>
-<span id="cb98-12"><a href="ustat.html#cb98-12" tabindex="-1"></a>dcov.sq.est</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="ustat.html#cb93-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4157</span>)</span>
+<span id="cb93-2"><a href="ustat.html#cb93-2" tabindex="-1"></a>nreps <span class="ot">&lt;-</span> <span class="dv">500000</span> <span class="do">## number of simulation replications</span></span>
+<span id="cb93-3"><a href="ustat.html#cb93-3" tabindex="-1"></a>term1 <span class="ot">&lt;-</span> term2 <span class="ot">&lt;-</span> term3 <span class="ot">&lt;-</span> term4 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, nreps)</span>
+<span id="cb93-4"><a href="ustat.html#cb93-4" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nreps) {</span>
+<span id="cb93-5"><a href="ustat.html#cb93-5" tabindex="-1"></a>    xx <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">3</span>)</span>
+<span id="cb93-6"><a href="ustat.html#cb93-6" tabindex="-1"></a>    term1[k] <span class="ot">&lt;-</span> <span class="fu">abs</span>(xx[<span class="dv">1</span>] <span class="sc">-</span> xx[<span class="dv">2</span>])<span class="sc">*</span><span class="fu">abs</span>(xx[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> xx[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>) </span>
+<span id="cb93-7"><a href="ustat.html#cb93-7" tabindex="-1"></a>    term2[k] <span class="ot">&lt;-</span> <span class="fu">abs</span>(xx[<span class="dv">1</span>] <span class="sc">-</span> xx[<span class="dv">2</span>])</span>
+<span id="cb93-8"><a href="ustat.html#cb93-8" tabindex="-1"></a>    term3[k] <span class="ot">&lt;-</span> <span class="fu">abs</span>(xx[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> xx[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb93-9"><a href="ustat.html#cb93-9" tabindex="-1"></a>    term4[k] <span class="ot">&lt;-</span> <span class="fu">abs</span>(xx[<span class="dv">1</span>] <span class="sc">-</span> xx[<span class="dv">2</span>])<span class="sc">*</span><span class="fu">abs</span>(xx[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> xx[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb93-10"><a href="ustat.html#cb93-10" tabindex="-1"></a>}</span>
+<span id="cb93-11"><a href="ustat.html#cb93-11" tabindex="-1"></a>dcov.sq.est <span class="ot">&lt;-</span> <span class="fu">mean</span>(term1) <span class="sc">+</span> <span class="fu">mean</span>(term2)<span class="sc">*</span><span class="fu">mean</span>(term3) <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">mean</span>(term4)</span>
+<span id="cb93-12"><a href="ustat.html#cb93-12" tabindex="-1"></a>dcov.sq.est</span></code></pre></div>
 <pre><code>## [1] 0.137895</code></pre>
 <ul>
 <li><p>The squared distance covariance for this example seems to be about <span class="math inline">\(0.14\)</span>.</p></li>
@@ -984,41 +988,41 @@ h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y
 <ul>
 <li>You can compute distance covariances and distance correlations using the <strong>energy</strong> package in <strong>R</strong>.</li>
 </ul>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="ustat.html#cb100-1" tabindex="-1"></a><span class="fu">library</span>(energy)</span>
-<span id="cb100-2"><a href="ustat.html#cb100-2" tabindex="-1"></a></span>
-<span id="cb100-3"><a href="ustat.html#cb100-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5000</span></span>
-<span id="cb100-4"><a href="ustat.html#cb100-4" tabindex="-1"></a><span class="do">## generate &quot;parabola&quot; data</span></span>
-<span id="cb100-5"><a href="ustat.html#cb100-5" tabindex="-1"></a>xx1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">sd=</span><span class="fl">0.5</span>)  </span>
-<span id="cb100-6"><a href="ustat.html#cb100-6" tabindex="-1"></a>yy1 <span class="ot">&lt;-</span> xx1<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">sd=</span><span class="fl">0.05</span>)</span>
-<span id="cb100-7"><a href="ustat.html#cb100-7" tabindex="-1"></a></span>
-<span id="cb100-8"><a href="ustat.html#cb100-8" tabindex="-1"></a><span class="do">## generate circle data</span></span>
-<span id="cb100-9"><a href="ustat.html#cb100-9" tabindex="-1"></a>xx2 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="at">min=</span><span class="sc">-</span><span class="dv">1</span>, <span class="at">max=</span><span class="dv">1</span>)</span>
-<span id="cb100-10"><a href="ustat.html#cb100-10" tabindex="-1"></a>yy2 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>), <span class="at">size=</span>n, <span class="at">replace=</span><span class="cn">TRUE</span>)<span class="sc">*</span><span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> xx2<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">sd=</span>.<span class="dv">05</span>)</span>
-<span id="cb100-11"><a href="ustat.html#cb100-11" tabindex="-1"></a></span>
-<span id="cb100-12"><a href="ustat.html#cb100-12" tabindex="-1"></a>d.cor1 <span class="ot">&lt;-</span> <span class="fu">dcor</span>(xx1, yy1)</span>
-<span id="cb100-13"><a href="ustat.html#cb100-13" tabindex="-1"></a>d.cor2 <span class="ot">&lt;-</span> <span class="fu">dcor</span>(xx2, yy2)</span>
-<span id="cb100-14"><a href="ustat.html#cb100-14" tabindex="-1"></a></span>
-<span id="cb100-15"><a href="ustat.html#cb100-15" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb100-16"><a href="ustat.html#cb100-16" tabindex="-1"></a><span class="fu">plot</span>(xx1, yy1, <span class="at">xlab=</span><span class="st">&quot;x&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;y&quot;</span>, <span class="at">main=</span><span class="fu">paste</span>(<span class="st">&quot;Sample Distance Corr. = &quot;</span>, </span>
-<span id="cb100-17"><a href="ustat.html#cb100-17" tabindex="-1"></a>                                              <span class="fu">round</span>(d.cor1 ,<span class="dv">4</span>)), <span class="at">las=</span><span class="dv">1</span>)</span>
-<span id="cb100-18"><a href="ustat.html#cb100-18" tabindex="-1"></a><span class="fu">plot</span>(xx2, yy2, <span class="at">xlab=</span><span class="st">&quot;x&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;y&quot;</span>, <span class="at">main=</span><span class="fu">paste</span>(<span class="st">&quot;Sample Distance Corr. = &quot;</span>, </span>
-<span id="cb100-19"><a href="ustat.html#cb100-19" tabindex="-1"></a>                                              <span class="fu">round</span>(d.cor2, <span class="dv">4</span>)), <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="ustat.html#cb95-1" tabindex="-1"></a><span class="fu">library</span>(energy)</span>
+<span id="cb95-2"><a href="ustat.html#cb95-2" tabindex="-1"></a></span>
+<span id="cb95-3"><a href="ustat.html#cb95-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5000</span></span>
+<span id="cb95-4"><a href="ustat.html#cb95-4" tabindex="-1"></a><span class="do">## generate &quot;parabola&quot; data</span></span>
+<span id="cb95-5"><a href="ustat.html#cb95-5" tabindex="-1"></a>xx1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">sd=</span><span class="fl">0.5</span>)  </span>
+<span id="cb95-6"><a href="ustat.html#cb95-6" tabindex="-1"></a>yy1 <span class="ot">&lt;-</span> xx1<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">sd=</span><span class="fl">0.05</span>)</span>
+<span id="cb95-7"><a href="ustat.html#cb95-7" tabindex="-1"></a></span>
+<span id="cb95-8"><a href="ustat.html#cb95-8" tabindex="-1"></a><span class="do">## generate circle data</span></span>
+<span id="cb95-9"><a href="ustat.html#cb95-9" tabindex="-1"></a>xx2 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="at">min=</span><span class="sc">-</span><span class="dv">1</span>, <span class="at">max=</span><span class="dv">1</span>)</span>
+<span id="cb95-10"><a href="ustat.html#cb95-10" tabindex="-1"></a>yy2 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>), <span class="at">size=</span>n, <span class="at">replace=</span><span class="cn">TRUE</span>)<span class="sc">*</span><span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> xx2<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">sd=</span>.<span class="dv">05</span>)</span>
+<span id="cb95-11"><a href="ustat.html#cb95-11" tabindex="-1"></a></span>
+<span id="cb95-12"><a href="ustat.html#cb95-12" tabindex="-1"></a>d.cor1 <span class="ot">&lt;-</span> <span class="fu">dcor</span>(xx1, yy1)</span>
+<span id="cb95-13"><a href="ustat.html#cb95-13" tabindex="-1"></a>d.cor2 <span class="ot">&lt;-</span> <span class="fu">dcor</span>(xx2, yy2)</span>
+<span id="cb95-14"><a href="ustat.html#cb95-14" tabindex="-1"></a></span>
+<span id="cb95-15"><a href="ustat.html#cb95-15" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb95-16"><a href="ustat.html#cb95-16" tabindex="-1"></a><span class="fu">plot</span>(xx1, yy1, <span class="at">xlab=</span><span class="st">&quot;x&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;y&quot;</span>, <span class="at">main=</span><span class="fu">paste</span>(<span class="st">&quot;Sample Distance Corr. = &quot;</span>, </span>
+<span id="cb95-17"><a href="ustat.html#cb95-17" tabindex="-1"></a>                                              <span class="fu">round</span>(d.cor1 ,<span class="dv">4</span>)), <span class="at">las=</span><span class="dv">1</span>)</span>
+<span id="cb95-18"><a href="ustat.html#cb95-18" tabindex="-1"></a><span class="fu">plot</span>(xx2, yy2, <span class="at">xlab=</span><span class="st">&quot;x&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;y&quot;</span>, <span class="at">main=</span><span class="fu">paste</span>(<span class="st">&quot;Sample Distance Corr. = &quot;</span>, </span>
+<span id="cb95-19"><a href="ustat.html#cb95-19" tabindex="-1"></a>                                              <span class="fu">round</span>(d.cor2, <span class="dv">4</span>)), <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
 <p><img src="06-ustatistics_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="ustat.html#cb101-1" tabindex="-1"></a><span class="do">## Let&#39;s just compare the values of distance correlation and Pearson&#39;s </span></span>
-<span id="cb101-2"><a href="ustat.html#cb101-2" tabindex="-1"></a><span class="do">## for both examples </span></span>
-<span id="cb101-3"><a href="ustat.html#cb101-3" tabindex="-1"></a>p.cor1 <span class="ot">&lt;-</span> <span class="fu">cor</span>(xx1, yy1)</span>
-<span id="cb101-4"><a href="ustat.html#cb101-4" tabindex="-1"></a>p.cor2 <span class="ot">&lt;-</span> <span class="fu">cor</span>(xx2, yy2)</span>
-<span id="cb101-5"><a href="ustat.html#cb101-5" tabindex="-1"></a></span>
-<span id="cb101-6"><a href="ustat.html#cb101-6" tabindex="-1"></a>kend.cor1 <span class="ot">&lt;-</span> <span class="fu">cor</span>(xx1, yy1, <span class="at">method=</span><span class="st">&quot;kendall&quot;</span>) </span>
-<span id="cb101-7"><a href="ustat.html#cb101-7" tabindex="-1"></a>kend.cor2 <span class="ot">&lt;-</span> <span class="fu">cor</span>(xx2, yy2, <span class="at">method=</span><span class="st">&quot;kendall&quot;</span>)</span>
-<span id="cb101-8"><a href="ustat.html#cb101-8" tabindex="-1"></a></span>
-<span id="cb101-9"><a href="ustat.html#cb101-9" tabindex="-1"></a>spear.cor1 <span class="ot">&lt;-</span> <span class="fu">cor</span>(xx1, yy1, <span class="at">method=</span><span class="st">&quot;spearman&quot;</span>) </span>
-<span id="cb101-10"><a href="ustat.html#cb101-10" tabindex="-1"></a>spear.cor2 <span class="ot">&lt;-</span> <span class="fu">cor</span>(xx2, yy2, <span class="at">method=</span><span class="st">&quot;spearman&quot;</span>)</span>
-<span id="cb101-11"><a href="ustat.html#cb101-11" tabindex="-1"></a></span>
-<span id="cb101-12"><a href="ustat.html#cb101-12" tabindex="-1"></a><span class="co"># Pearson, Kendall&#39;s-tau, Rank, Distance Correlation</span></span>
-<span id="cb101-13"><a href="ustat.html#cb101-13" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(p.cor1, kend.cor1, spear.cor1, d.cor1), <span class="dv">4</span>) <span class="do">## parabola</span></span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="ustat.html#cb96-1" tabindex="-1"></a><span class="do">## Let&#39;s just compare the values of distance correlation and Pearson&#39;s </span></span>
+<span id="cb96-2"><a href="ustat.html#cb96-2" tabindex="-1"></a><span class="do">## for both examples </span></span>
+<span id="cb96-3"><a href="ustat.html#cb96-3" tabindex="-1"></a>p.cor1 <span class="ot">&lt;-</span> <span class="fu">cor</span>(xx1, yy1)</span>
+<span id="cb96-4"><a href="ustat.html#cb96-4" tabindex="-1"></a>p.cor2 <span class="ot">&lt;-</span> <span class="fu">cor</span>(xx2, yy2)</span>
+<span id="cb96-5"><a href="ustat.html#cb96-5" tabindex="-1"></a></span>
+<span id="cb96-6"><a href="ustat.html#cb96-6" tabindex="-1"></a>kend.cor1 <span class="ot">&lt;-</span> <span class="fu">cor</span>(xx1, yy1, <span class="at">method=</span><span class="st">&quot;kendall&quot;</span>) </span>
+<span id="cb96-7"><a href="ustat.html#cb96-7" tabindex="-1"></a>kend.cor2 <span class="ot">&lt;-</span> <span class="fu">cor</span>(xx2, yy2, <span class="at">method=</span><span class="st">&quot;kendall&quot;</span>)</span>
+<span id="cb96-8"><a href="ustat.html#cb96-8" tabindex="-1"></a></span>
+<span id="cb96-9"><a href="ustat.html#cb96-9" tabindex="-1"></a>spear.cor1 <span class="ot">&lt;-</span> <span class="fu">cor</span>(xx1, yy1, <span class="at">method=</span><span class="st">&quot;spearman&quot;</span>) </span>
+<span id="cb96-10"><a href="ustat.html#cb96-10" tabindex="-1"></a>spear.cor2 <span class="ot">&lt;-</span> <span class="fu">cor</span>(xx2, yy2, <span class="at">method=</span><span class="st">&quot;spearman&quot;</span>)</span>
+<span id="cb96-11"><a href="ustat.html#cb96-11" tabindex="-1"></a></span>
+<span id="cb96-12"><a href="ustat.html#cb96-12" tabindex="-1"></a><span class="co"># Pearson, Kendall&#39;s-tau, Rank, Distance Correlation</span></span>
+<span id="cb96-13"><a href="ustat.html#cb96-13" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(p.cor1, kend.cor1, spear.cor1, d.cor1), <span class="dv">4</span>) <span class="do">## parabola</span></span></code></pre></div>
 <pre><code>## [1] -0.0124  0.0077  0.0109  0.5268</code></pre>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="ustat.html#cb103-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(p.cor2, kend.cor2, spear.cor2, d.cor2), <span class="dv">4</span>) <span class="do">## circle</span></span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="ustat.html#cb98-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(p.cor2, kend.cor2, spear.cor2, d.cor2), <span class="dv">4</span>) <span class="do">## circle</span></span></code></pre></div>
 <pre><code>## [1] 0.0134 0.0041 0.0138 0.1508</code></pre>
 </div>
 </div>

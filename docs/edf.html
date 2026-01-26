@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-01-11" />
+<meta name="date" content="2026-01-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -240,7 +240,11 @@ div.csl-indent {
 <li class="chapter" data-level="5.2.3" data-path="permutation.html"><a href="permutation.html#example-2-ratios-of-means"><i class="fa fa-check"></i><b>5.2.3</b> Example 2: Ratios of Means</a></li>
 <li class="chapter" data-level="5.2.4" data-path="permutation.html"><a href="permutation.html#example-3-differences-in-quantiles"><i class="fa fa-check"></i><b>5.2.4</b> Example 3: Differences in Quantiles</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3</b> The Permutation Test as a Conditional Test</a></li>
+<li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#permutation-test-assumptions"><i class="fa fa-check"></i><b>5.3</b> Permutation Test Assumptions</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="permutation.html"><a href="permutation.html#exchangeability-under-the-null-hypothesis"><i class="fa fa-check"></i><b>5.3.1</b> Exchangeability under the Null Hypothesis</a></li>
+<li class="chapter" data-level="5.3.2" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3.2</b> The Permutation Test as a Conditional Test</a></li>
+</ul></li>
 <li class="chapter" data-level="5.4" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-correlation"><i class="fa fa-check"></i><b>5.4</b> A Permutation Test for Correlation</a></li>
 <li class="chapter" data-level="5.5" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-variable-importance-in-regression-and-machine-learning"><i class="fa fa-check"></i><b>5.5</b> A Permutation Test for Variable Importance in Regression and Machine Learning</a></li>
 <li class="chapter" data-level="5.6" data-path="permutation.html"><a href="permutation.html#exercises-2"><i class="fa fa-check"></i><b>5.6</b> Exercises</a></li>
@@ -577,9 +581,9 @@ from a study on kidney function.</p></li>
 a measure of overall kidney function. The data can be obtained at <a href="https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" class="uri">https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</a></p></li>
 <li><p>We will only look at the <strong>tot</strong> variable in this chapter.</p></li>
 </ul>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="edf.html#cb105-1" tabindex="-1"></a>kidney <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </span>
-<span id="cb105-2"><a href="edf.html#cb105-2" tabindex="-1"></a>                     <span class="at">header=</span><span class="cn">TRUE</span>)</span>
-<span id="cb105-3"><a href="edf.html#cb105-3" tabindex="-1"></a><span class="fu">head</span>(kidney)</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="edf.html#cb100-1" tabindex="-1"></a>kidney <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </span>
+<span id="cb100-2"><a href="edf.html#cb100-2" tabindex="-1"></a>                     <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb100-3"><a href="edf.html#cb100-3" tabindex="-1"></a><span class="fu">head</span>(kidney)</span></code></pre></div>
 <pre><code>##   age   tot
 ## 1  18  2.44
 ## 2  19  3.86
@@ -593,19 +597,19 @@ in <strong>R</strong></p></li>
 <li><p>The <strong>ecdf</strong> function will create an <strong>ecdf</strong> object. To create an ecdf object
 for the kidney totals, use the following code:</p></li>
 </ul>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="edf.html#cb107-1" tabindex="-1"></a>kidney.Fhat <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(kidney<span class="sc">$</span>tot)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="edf.html#cb102-1" tabindex="-1"></a>kidney.Fhat <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(kidney<span class="sc">$</span>tot)</span></code></pre></div>
 <ul>
 <li>You can plot the ecdf for the kidney totals by just calling <strong>plot(ecdf)</strong></li>
 </ul>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="edf.html#cb108-1" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">main =</span> <span class="st">&quot;Kidney Data: Default plot for ecdf&quot;</span>, <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="edf.html#cb103-1" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">main =</span> <span class="st">&quot;Kidney Data: Default plot for ecdf&quot;</span>, <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
 <p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <ul>
 <li>If you don’t like the look of the points in the ecdf plot, you can use add the argument
 <strong>do.points = FALSE</strong> when calling plot. Also, you can add the argument <strong>verticals =TRUE</strong>
 if you want the plot to draw vertical lines whenever there is a jump in the empirical distribution function.</li>
 </ul>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="edf.html#cb109-1" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">do.points=</span><span class="cn">FALSE</span>, <span class="at">verticals=</span><span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">&quot;Kidney Data: </span></span>
-<span id="cb109-2"><a href="edf.html#cb109-2" tabindex="-1"></a><span class="st">    ecdf with vertical lines and without points&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="edf.html#cb104-1" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">do.points=</span><span class="cn">FALSE</span>, <span class="at">verticals=</span><span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">&quot;Kidney Data: </span></span>
+<span id="cb104-2"><a href="edf.html#cb104-2" tabindex="-1"></a><span class="st">    ecdf with vertical lines and without points&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
 <p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <hr />
 <ul>
@@ -613,46 +617,46 @@ if you want the plot to draw vertical lines whenever there is a jump in the empi
 can be treated as a function which computes the empirical distribution function.
 For example,</li>
 </ul>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="edf.html#cb110-1" tabindex="-1"></a>kidney.Fhat <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(kidney<span class="sc">$</span>tot)</span>
-<span id="cb110-2"><a href="edf.html#cb110-2" tabindex="-1"></a></span>
-<span id="cb110-3"><a href="edf.html#cb110-3" tabindex="-1"></a><span class="fu">kidney.Fhat</span>(<span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="edf.html#cb105-1" tabindex="-1"></a>kidney.Fhat <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(kidney<span class="sc">$</span>tot)</span>
+<span id="cb105-2"><a href="edf.html#cb105-2" tabindex="-1"></a></span>
+<span id="cb105-3"><a href="edf.html#cb105-3" tabindex="-1"></a><span class="fu">kidney.Fhat</span>(<span class="dv">0</span>)</span></code></pre></div>
 <pre><code>## [1] 0.5095541</code></pre>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="edf.html#cb112-1" tabindex="-1"></a><span class="fu">kidney.Fhat</span>( <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">4</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="edf.html#cb107-1" tabindex="-1"></a><span class="fu">kidney.Fhat</span>( <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">4</span>) )</span></code></pre></div>
 <pre><code>## [1] 0.3057325 0.6560510 0.9745223</code></pre>
 <hr />
 <ul>
 <li><p><strong>R</strong> does not plot confidence intervals when plotting the empirical distribution function.</p></li>
 <li><p>We can do this ourselves, by using the pointwise confidence interval formula shown in <a href="edf.html#eq:pointwise-cis">(7.1)</a></p></li>
 </ul>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="edf.html#cb114-1" tabindex="-1"></a><span class="do">## 1. First, we will compute the standard errors at each of the </span></span>
-<span id="cb114-2"><a href="edf.html#cb114-2" tabindex="-1"></a><span class="do">##    observed time points</span></span>
-<span id="cb114-3"><a href="edf.html#cb114-3" tabindex="-1"></a>tt <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(kidney<span class="sc">$</span>tot)) </span>
-<span id="cb114-4"><a href="edf.html#cb114-4" tabindex="-1"></a>std.err <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">kidney.Fhat</span>(tt)<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">kidney.Fhat</span>(tt))<span class="sc">/</span> <span class="fu">length</span>(kidney<span class="sc">$</span>tot))</span>
-<span id="cb114-5"><a href="edf.html#cb114-5" tabindex="-1"></a></span>
-<span id="cb114-6"><a href="edf.html#cb114-6" tabindex="-1"></a><span class="do">## 2. Now, compute the confidence intervals at each time point</span></span>
-<span id="cb114-7"><a href="edf.html#cb114-7" tabindex="-1"></a>ci.low <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="fu">kidney.Fhat</span>(tt) <span class="sc">-</span> <span class="fu">qnorm</span>(.<span class="dv">975</span>)<span class="sc">*</span>std.err, <span class="dv">0</span>)</span>
-<span id="cb114-8"><a href="edf.html#cb114-8" tabindex="-1"></a>ci.upper <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">kidney.Fhat</span>(tt) <span class="sc">+</span> <span class="fu">qnorm</span>(.<span class="dv">975</span>)<span class="sc">*</span>std.err, <span class="dv">1</span>)</span>
-<span id="cb114-9"><a href="edf.html#cb114-9" tabindex="-1"></a></span>
-<span id="cb114-10"><a href="edf.html#cb114-10" tabindex="-1"></a><span class="do">## 3. Now, plot the results. Note that type=&quot;s&quot; in the lines function produces</span></span>
-<span id="cb114-11"><a href="edf.html#cb114-11" tabindex="-1"></a><span class="do">##    &quot;step functions&quot; which pass through the provided points.</span></span>
-<span id="cb114-12"><a href="edf.html#cb114-12" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">do.points=</span><span class="cn">FALSE</span>, <span class="at">verticals=</span><span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">&quot;Kidney Data: </span></span>
-<span id="cb114-13"><a href="edf.html#cb114-13" tabindex="-1"></a><span class="st">     95% pointwise confidence intervals&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb114-14"><a href="edf.html#cb114-14" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.low, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb114-15"><a href="edf.html#cb114-15" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.upper, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="edf.html#cb109-1" tabindex="-1"></a><span class="do">## 1. First, we will compute the standard errors at each of the </span></span>
+<span id="cb109-2"><a href="edf.html#cb109-2" tabindex="-1"></a><span class="do">##    observed time points</span></span>
+<span id="cb109-3"><a href="edf.html#cb109-3" tabindex="-1"></a>tt <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(kidney<span class="sc">$</span>tot)) </span>
+<span id="cb109-4"><a href="edf.html#cb109-4" tabindex="-1"></a>std.err <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">kidney.Fhat</span>(tt)<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">kidney.Fhat</span>(tt))<span class="sc">/</span> <span class="fu">length</span>(kidney<span class="sc">$</span>tot))</span>
+<span id="cb109-5"><a href="edf.html#cb109-5" tabindex="-1"></a></span>
+<span id="cb109-6"><a href="edf.html#cb109-6" tabindex="-1"></a><span class="do">## 2. Now, compute the confidence intervals at each time point</span></span>
+<span id="cb109-7"><a href="edf.html#cb109-7" tabindex="-1"></a>ci.low <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="fu">kidney.Fhat</span>(tt) <span class="sc">-</span> <span class="fu">qnorm</span>(.<span class="dv">975</span>)<span class="sc">*</span>std.err, <span class="dv">0</span>)</span>
+<span id="cb109-8"><a href="edf.html#cb109-8" tabindex="-1"></a>ci.upper <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">kidney.Fhat</span>(tt) <span class="sc">+</span> <span class="fu">qnorm</span>(.<span class="dv">975</span>)<span class="sc">*</span>std.err, <span class="dv">1</span>)</span>
+<span id="cb109-9"><a href="edf.html#cb109-9" tabindex="-1"></a></span>
+<span id="cb109-10"><a href="edf.html#cb109-10" tabindex="-1"></a><span class="do">## 3. Now, plot the results. Note that type=&quot;s&quot; in the lines function produces</span></span>
+<span id="cb109-11"><a href="edf.html#cb109-11" tabindex="-1"></a><span class="do">##    &quot;step functions&quot; which pass through the provided points.</span></span>
+<span id="cb109-12"><a href="edf.html#cb109-12" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">do.points=</span><span class="cn">FALSE</span>, <span class="at">verticals=</span><span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">&quot;Kidney Data: </span></span>
+<span id="cb109-13"><a href="edf.html#cb109-13" tabindex="-1"></a><span class="st">     95% pointwise confidence intervals&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb109-14"><a href="edf.html#cb109-14" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.low, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb109-15"><a href="edf.html#cb109-15" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.upper, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
 <p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <ul>
 <li>We could plot the confidence bands as well.</li>
 </ul>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="edf.html#cb115-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(kidney<span class="sc">$</span>tot)</span>
-<span id="cb115-2"><a href="edf.html#cb115-2" tabindex="-1"></a></span>
-<span id="cb115-3"><a href="edf.html#cb115-3" tabindex="-1"></a><span class="do">## Compute the confidence bands at each time point</span></span>
-<span id="cb115-4"><a href="edf.html#cb115-4" tabindex="-1"></a>ci.band.low <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="fu">kidney.Fhat</span>(tt) <span class="sc">-</span> <span class="fu">sqrt</span>(<span class="fu">log</span>(<span class="dv">2</span><span class="sc">/</span><span class="fl">0.05</span>)<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>n)), <span class="dv">0</span>)</span>
-<span id="cb115-5"><a href="edf.html#cb115-5" tabindex="-1"></a>ci.band.upper <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">kidney.Fhat</span>(tt) <span class="sc">+</span> <span class="fu">sqrt</span>(<span class="fu">log</span>(<span class="dv">2</span><span class="sc">/</span><span class="fl">0.05</span>)<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>n)), <span class="dv">1</span>)</span>
-<span id="cb115-6"><a href="edf.html#cb115-6" tabindex="-1"></a></span>
-<span id="cb115-7"><a href="edf.html#cb115-7" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">do.points=</span><span class="cn">FALSE</span>, <span class="at">verticals=</span><span class="cn">TRUE</span>,</span>
-<span id="cb115-8"><a href="edf.html#cb115-8" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">&quot;Kidney Data: 95% Confidence Bands&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb115-9"><a href="edf.html#cb115-9" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.band.low, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb115-10"><a href="edf.html#cb115-10" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.band.upper, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="edf.html#cb110-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(kidney<span class="sc">$</span>tot)</span>
+<span id="cb110-2"><a href="edf.html#cb110-2" tabindex="-1"></a></span>
+<span id="cb110-3"><a href="edf.html#cb110-3" tabindex="-1"></a><span class="do">## Compute the confidence bands at each time point</span></span>
+<span id="cb110-4"><a href="edf.html#cb110-4" tabindex="-1"></a>ci.band.low <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="fu">kidney.Fhat</span>(tt) <span class="sc">-</span> <span class="fu">sqrt</span>(<span class="fu">log</span>(<span class="dv">2</span><span class="sc">/</span><span class="fl">0.05</span>)<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>n)), <span class="dv">0</span>)</span>
+<span id="cb110-5"><a href="edf.html#cb110-5" tabindex="-1"></a>ci.band.upper <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">kidney.Fhat</span>(tt) <span class="sc">+</span> <span class="fu">sqrt</span>(<span class="fu">log</span>(<span class="dv">2</span><span class="sc">/</span><span class="fl">0.05</span>)<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>n)), <span class="dv">1</span>)</span>
+<span id="cb110-6"><a href="edf.html#cb110-6" tabindex="-1"></a></span>
+<span id="cb110-7"><a href="edf.html#cb110-7" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">do.points=</span><span class="cn">FALSE</span>, <span class="at">verticals=</span><span class="cn">TRUE</span>,</span>
+<span id="cb110-8"><a href="edf.html#cb110-8" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">&quot;Kidney Data: 95% Confidence Bands&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb110-9"><a href="edf.html#cb110-9" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.band.low, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb110-10"><a href="edf.html#cb110-10" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.band.upper, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
 <p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <ul>
 <li>Comparing the pointwise confidence intervals and the simultaneous confidence bands
@@ -692,24 +696,24 @@ F_{Kolmo}(t) = 1 - 2\sum_{j=1}^{\infty} (-1)^{(j+1)} e^{-2j^{2}t^{2}} \nonumber
 For one-sample tests, you have to provide the “name” of the distribution function
 that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
 </ul>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="edf.html#cb116-1" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">rt</span>(<span class="dv">100</span>, <span class="at">df=</span><span class="dv">2</span>) <span class="do">## generate 100 observations from a t-dist with 2 d.f.</span></span>
-<span id="cb116-2"><a href="edf.html#cb116-2" tabindex="-1"></a><span class="fu">ks.test</span>(xx, <span class="at">y=</span><span class="st">&quot;pnorm&quot;</span>)  <span class="do">## test that these data follow Normal(0, 1)</span></span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="edf.html#cb111-1" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">rt</span>(<span class="dv">100</span>, <span class="at">df=</span><span class="dv">2</span>) <span class="do">## generate 100 observations from a t-dist with 2 d.f.</span></span>
+<span id="cb111-2"><a href="edf.html#cb111-2" tabindex="-1"></a><span class="fu">ks.test</span>(xx, <span class="at">y=</span><span class="st">&quot;pnorm&quot;</span>)  <span class="do">## test that these data follow Normal(0, 1)</span></span></code></pre></div>
 <pre><code>## 
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.1239, p-value = 0.09281
+## D = 0.086315, p-value = 0.4456
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
 by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
 </ul>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="edf.html#cb118-1" tabindex="-1"></a><span class="fu">ks.test</span>(xx, <span class="at">y=</span><span class="st">&quot;pnorm&quot;</span>, <span class="at">mean=</span><span class="dv">1</span>, <span class="at">sd=</span><span class="dv">2</span>)  </span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="edf.html#cb113-1" tabindex="-1"></a><span class="fu">ks.test</span>(xx, <span class="at">y=</span><span class="st">&quot;pnorm&quot;</span>, <span class="at">mean=</span><span class="dv">1</span>, <span class="at">sd=</span><span class="dv">2</span>)  </span></code></pre></div>
 <pre><code>## 
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.24765, p-value = 9.414e-06
+## D = 0.29444, p-value = 5.898e-08
 ## alternative hypothesis: two-sided</code></pre>
 <hr />
 <ul>
@@ -742,27 +746,27 @@ the one-sample KS test statistic. In particular, under <span class="math inline"
 <ul>
 <li>The <strong>ks.test</strong> function in <strong>R</strong> also performs two-sample KS tests.</li>
 </ul>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="edf.html#cb120-1" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
-<span id="cb120-2"><a href="edf.html#cb120-2" tabindex="-1"></a>yy <span class="ot">&lt;-</span> <span class="fu">rlogis</span>(<span class="dv">100</span>)</span>
-<span id="cb120-3"><a href="edf.html#cb120-3" tabindex="-1"></a><span class="fu">ks.test</span>(xx, yy)  </span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="edf.html#cb115-1" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb115-2"><a href="edf.html#cb115-2" tabindex="-1"></a>yy <span class="ot">&lt;-</span> <span class="fu">rlogis</span>(<span class="dv">100</span>)</span>
+<span id="cb115-3"><a href="edf.html#cb115-3" tabindex="-1"></a><span class="fu">ks.test</span>(xx, yy)  </span></code></pre></div>
 <pre><code>## 
 ##  Asymptotic two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.22, p-value = 0.01581
+## D = 0.21, p-value = 0.02431
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>We can compute the KS statistic ourselves and check that this matches the value of the KS statistic
 returned by the <strong>ks.test</strong> function:</li>
 </ul>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="edf.html#cb122-1" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">c</span>(xx, yy)</span>
-<span id="cb122-2"><a href="edf.html#cb122-2" tabindex="-1"></a>zz.order <span class="ot">&lt;-</span> <span class="fu">sort</span>(zz)</span>
-<span id="cb122-3"><a href="edf.html#cb122-3" tabindex="-1"></a>F.x <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(xx)</span>
-<span id="cb122-4"><a href="edf.html#cb122-4" tabindex="-1"></a>F.y <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(yy)</span>
-<span id="cb122-5"><a href="edf.html#cb122-5" tabindex="-1"></a></span>
-<span id="cb122-6"><a href="edf.html#cb122-6" tabindex="-1"></a>KS.stat <span class="ot">&lt;-</span> <span class="fu">max</span>( <span class="fu">abs</span>( <span class="fu">F.x</span>(zz.order) <span class="sc">-</span> <span class="fu">F.y</span>(zz.order) ) )</span>
-<span id="cb122-7"><a href="edf.html#cb122-7" tabindex="-1"></a>KS.stat</span></code></pre></div>
-<pre><code>## [1] 0.22</code></pre>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="edf.html#cb117-1" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">c</span>(xx, yy)</span>
+<span id="cb117-2"><a href="edf.html#cb117-2" tabindex="-1"></a>zz.order <span class="ot">&lt;-</span> <span class="fu">sort</span>(zz)</span>
+<span id="cb117-3"><a href="edf.html#cb117-3" tabindex="-1"></a>F.x <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(xx)</span>
+<span id="cb117-4"><a href="edf.html#cb117-4" tabindex="-1"></a>F.y <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(yy)</span>
+<span id="cb117-5"><a href="edf.html#cb117-5" tabindex="-1"></a></span>
+<span id="cb117-6"><a href="edf.html#cb117-6" tabindex="-1"></a>KS.stat <span class="ot">&lt;-</span> <span class="fu">max</span>( <span class="fu">abs</span>( <span class="fu">F.x</span>(zz.order) <span class="sc">-</span> <span class="fu">F.y</span>(zz.order) ) )</span>
+<span id="cb117-7"><a href="edf.html#cb117-7" tabindex="-1"></a>KS.stat</span></code></pre></div>
+<pre><code>## [1] 0.21</code></pre>
 </div>
 <div id="the-empirical-distribution-function-and-statistical-functionals" class="section level2 hasAnchor" number="7.5">
 <h2><span class="header-section-number">7.5</span> The empirical distribution function and statistical functionals<a href="edf.html#the-empirical-distribution-function-and-statistical-functionals" class="anchor-section" aria-label="Anchor link to header"></a></h2>

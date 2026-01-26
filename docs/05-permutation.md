@@ -1,20 +1,20 @@
 # Permutation Tests {#permutation}
 
-* Permutation tests are a useful tool that allows you to avoid depending on
+* Permutation tests are a useful tool that allow you to avoid relying on
 specific parametric assumptions.
 
-* Permutation tests are also useful in more complex modern applications where it can be 
-difficult to work out the theoretical null distribution of the desired test statistic.
+* Permutation tests are also useful in more **complex modern applications** where it can be 
+difficult to work out the **theoretical null distribution** of the desired test statistic.
 
 ## Notation
 
 * A **permutation** $\pi$ of a set $S$ is a function $\pi: S \longrightarrow S$ is a
-function that is both one-to-one and onto.
+function that is both **one-to-one** and **onto**.
 
-* We will usually think of $S$ as the set of observation indices in which case
-$S = \{1, \ldots, N\}$ for sample size $N$. 
+* For permutation tests, $S$ will typically be the set of observation indices.
+     + For example, with a sample size of $N$, $S$ will be $S = \{1, \ldots, N\}$ for sample size $N$. 
 
-* Each permutation $\pi$ of $S = \{1, \ldots, N\}$ defines a particular ordering of the elements of $S$.
+* Each permutation $\pi$ of $S = \{1, \ldots, N\}$ defines a **particular ordering** of the elements of $S$.
 For this reason, a permutation is often expressed as the following ordered list
 \begin{equation}
 \pi = \big( \pi(1), \pi(2), \ldots, \pi(N)  \big) \nonumber 
@@ -48,13 +48,13 @@ set $\{1, \ldots, N\}$.
 ## Permutation Tests for the Two-Sample Problem
 
 * Permutation tests for two-sample problems are motivated by the following reasoning:
-    + If there is no real difference between the two groups, 
+    + If there is **no real difference** between the two groups, 
       there is nothing "special" about the difference in means
       between the two groups.
-    + The observed difference in the mean between the two groups
+    + The **observed difference** in the mean between the two groups
       should not be notably different than mean differences from
-      randomly formed groups.
-    + Forming "random" groups can be done by using many permutations
+      **randomly formed** groups.
+    + Forming "random" groups can be done by using **many permutations**
       of the original data.
 
 ### Example 1   
@@ -94,12 +94,12 @@ denote the corresponding permuted dataset
 
 * For example, the columns in Table 5.1 are just permutations of the original data $\mathbf{Z}$.
 
-* Suppose we want to base a test on the difference in the means between the two groups
+* Suppose we want to test **the difference in the means** between the two groups
 \begin{equation}
 T_{N}(\mathbf{Z}) = \bar{X} - \bar{Y} = \frac{1}{n}\sum_{i=1}^{n} Z_{i} - \frac{1}{m}\sum_{i=n+1}^{N} Z_{i}
 \end{equation}
 
-* We will let $t_{obs}$ denote the observed value of the mean difference. That is, 
+* We will let $t_{obs}$ denote the **observed value** of the mean difference. That is, 
 $t_{obs} = T_{N}(\mathbf{Z}_{obs})$, where $\mathbf{Z}_{obs}$ is the vector of the observed data.
 
 * Under the null hypothesis that $F_{X} = F_{Y}$, the observed mean difference 
@@ -126,23 +126,23 @@ abline(v=observed.diff, lwd=3)
 <img src="05-permutation_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
 ### Permutation Test p-values
-* The one-sided p-value for the permutation test is
+* The **one-sided p-value** for the permutation test is
 \begin{eqnarray}
 \textrm{p-value} &=& \frac{\textrm{number of permutations such that } T_{N} \geq t_{obs}}{ N! } \nonumber \\
 &=& \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(\mathbf{Z}_{\pi}) \geq t_{obs} \Big) \nonumber
 \end{eqnarray}
 
-* The two-sided p-value for the two-sample problem would be
+* The **two-sided p-value** for the two-sample problem would be
 \begin{equation}
 \textrm{p-value} 
 = \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( \Big| T_{N}(\mathbf{Z}_{\pi}) \Big|  \geq |t_{obs}| \Big) \nonumber
 \end{equation}
 
 * As we did when producing the above histogram, the permutation-test p-value is
-often computed by using a large number of random permutations rather
+often computed by using a large number of random permutations (a Monte Carlo approach) rather
 than computing the test statistic for every possible permutation.
 
-* The Monte Carlo permutation-test p-value is defined as
+* The **Monte Carlo** permutation-test p-value is defined as
 \begin{equation}
 \textrm{p-value}_{mc} = \frac{1}{S+1}\Bigg[ 1 +  \sum_{s = 1}^{S} I\Big( T_{N}(\mathbf{Z}_{\pi_{s}}) \geq t_{obs} \Big) \Bigg]
 \end{equation}
@@ -156,13 +156,13 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.77
+## [1] 0.75
 ```
     
 ### Example 2: Ratios of Means
 
 * With permutation tests, you are not limited to difference in means. You can choose 
-the statistic $T_{N}(\mathbf{Z})$ to measure other contrasts of interest.
+the statistic $T_{N}(\mathbf{Z})$ to measure **other contrasts** of interest.
 
 * For example, with nonnegative data you might be interested in the ratio of means between the two groups
 \begin{equation}
@@ -193,7 +193,7 @@ abline(v=t.obs, lwd=3)
 
 <img src="05-permutation_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
-* The two-side (Monte Carlo) permutation test p-value is:
+* The two-sided (Monte Carlo) permutation test p-value is:
 
 
 ``` r
@@ -208,11 +208,10 @@ round(pval.mc, 2)
     
 ### Example 3: Differences in Quantiles
 
-* Permutation tests are especially useful in problems where working out the null distribution
-is difficult, or when certain approximations of the null distributions are hard to justify.
+* Permutation tests are especially useful in problems where **working out the null distribution is difficult**, or when certain approximations of the null distributions are hard to justify.
 
 * An example of this occurrs if you want to compare medians, or more generally,
-compare quantiles between two groups.
+**compare quantiles** between two groups.
 
 * The difference-in-quantiles statistic would be defined as
 \begin{equation}
@@ -232,27 +231,34 @@ quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
 ## 0.2671133
 ```
 
+
+
 * Note that setting **probs=.5** in the **quantile** function will return the median.
 
-
-```
-## Loading required package: tibble
-```
-
-```
-## Loading required package: bitops
-```
-
-```
-## Rattle: A free graphical interface for data science with R.
-## Version 5.5.1 Copyright (c) 2006-2021 Togaware Pty Ltd.
-## Type 'rattle()' to shake, rattle, and roll your data.
-```
-
-<img src="05-permutation_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="05-permutation_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 
 
-## The Permutation Test as a Conditional Test    
+## Permutation Test Assumptions
+
+### Exchangeability under the Null Hypothesis
+
+* The main justification for the use of the permutation distribution of a test statistic is the **exchangeability assumption**.
+
+* The distribution of a vector $\mathbf{Z} = (Z_{1}, \ldots, Z_{N})$ of $N$ random variables is **exchangeable** if
+the joint distribution of $\mathbf{Z}$ is **the same** as the joint distribution of $\mathbf{Z}_{\pi} = (Z_{\pi(1)}, \ldots, Z_{\pi(N)})$, for 
+any permutation $\pi$.
+
+* With a permutation test, the **implicit assumption** is that the distribution of your data $(Z_{1}, \ldots, Z_{N})$ is **exchangeable under the null hypothesis**. 
+
+* Exchangeability is a **weaker assumption** than assuming the observations are i.i.d.
+
+---
+
+* Under the assumption of **exchangeability under the null**, the test statistic $T_{N}(\mathbf{Z}_{\pi})$ has the same 
+distribution for any permutation $\pi$.
+
+
+### The Permutation Test as a Conditional Test
       
 * A permutation test is an example of a **conditional test**.
 
@@ -284,11 +290,11 @@ distribution is the same for every point in $H_{0}$.
 
 * A conditional p-value is defined as 
 \begin{equation}
-\textrm{p-value} = P(T \geq t_{obs}| S=s, H_{0})  \nonumber
+\textrm{p-value} = P(T \geq t_{obs}| R=r, H_{0})  \nonumber
 \end{equation}
-where $S$ is a sufficient statistic for the unknown terms in $H_{0}$.
+where $R$ is a sufficient statistic for the unknown terms in $H_{0}$.
 
-* A classic example of this is Fisher's exact test.
+* A classic example of this is **Fisher's exact test**.
 
 ---
 
@@ -332,7 +338,7 @@ by $N!$.
 
 * In other words
 \begin{eqnarray}
-& & P\Big\{ T_{N}(Z_{1}, \ldots, Z_{N}) \geq t| Z_{(1)} = z_{1}, \ldots, Z_{(N)} = z_{N} \Big\}
+& & P\Big\{ T_{N}(Z_{1}, \ldots, Z_{N}) \geq t \Big| Z_{(1)} = z_{1}, \ldots, Z_{(N)} = z_{N} \Big\}
  \\
 &=& \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(z_{\pi(1)}, \ldots, z_{\pi(N)}) \geq t  \Big)
 \end{eqnarray}
@@ -400,7 +406,7 @@ Hence,
 
 ## A Permutation Test for Correlation
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<img src="05-permutation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 
 * Suppose we have $N$ pairs of observations $(U_{1}, V_{1}), \ldots, (U_{N}, V_{N})$
@@ -436,7 +442,6 @@ of randomly "switching observation pairs".
 
 
 ``` r
-library(rattle)
 ## Computing the permutation distribution for correlation 
 ## between flavanoids and phenols
 
@@ -455,10 +460,10 @@ hist(cor.perm.pf, xlim=c(-1, 1), las=1, col="grey", main="Permutation
 abline(v=t.obs.pf, lwd=3)
 ```
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
-
-
 <img src="05-permutation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+
+
+<img src="05-permutation_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
 * Now let us compute the p-values for both the 
 Phenols/Flavanoids and Phenols/Color association tests.
@@ -509,7 +514,7 @@ will be when we break any association between $\mathbf{y}$ and
 a covariate.
 
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+<img src="05-permutation_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 
 ---
 
@@ -550,7 +555,6 @@ the **wine** data.
 
 
 ``` r
-library(rattle)
 library(randomForest)
 ```
 
@@ -560,17 +564,6 @@ library(randomForest)
 
 ```
 ## Type rfNews() to see new features/changes/bug fixes.
-```
-
-```
-## 
-## Attaching package: 'randomForest'
-```
-
-```
-## The following object is masked from 'package:rattle':
-## 
-##     importance
 ```
 
 ``` r

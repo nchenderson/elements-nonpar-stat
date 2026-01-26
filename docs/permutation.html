@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-01-11" />
+<meta name="date" content="2026-01-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -240,7 +240,11 @@ div.csl-indent {
 <li class="chapter" data-level="5.2.3" data-path="permutation.html"><a href="permutation.html#example-2-ratios-of-means"><i class="fa fa-check"></i><b>5.2.3</b> Example 2: Ratios of Means</a></li>
 <li class="chapter" data-level="5.2.4" data-path="permutation.html"><a href="permutation.html#example-3-differences-in-quantiles"><i class="fa fa-check"></i><b>5.2.4</b> Example 3: Differences in Quantiles</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3</b> The Permutation Test as a Conditional Test</a></li>
+<li class="chapter" data-level="5.3" data-path="permutation.html"><a href="permutation.html#permutation-test-assumptions"><i class="fa fa-check"></i><b>5.3</b> Permutation Test Assumptions</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="permutation.html"><a href="permutation.html#exchangeability-under-the-null-hypothesis"><i class="fa fa-check"></i><b>5.3.1</b> Exchangeability under the Null Hypothesis</a></li>
+<li class="chapter" data-level="5.3.2" data-path="permutation.html"><a href="permutation.html#the-permutation-test-as-a-conditional-test"><i class="fa fa-check"></i><b>5.3.2</b> The Permutation Test as a Conditional Test</a></li>
+</ul></li>
 <li class="chapter" data-level="5.4" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-correlation"><i class="fa fa-check"></i><b>5.4</b> A Permutation Test for Correlation</a></li>
 <li class="chapter" data-level="5.5" data-path="permutation.html"><a href="permutation.html#a-permutation-test-for-variable-importance-in-regression-and-machine-learning"><i class="fa fa-check"></i><b>5.5</b> A Permutation Test for Variable Importance in Regression and Machine Learning</a></li>
 <li class="chapter" data-level="5.6" data-path="permutation.html"><a href="permutation.html#exercises-2"><i class="fa fa-check"></i><b>5.6</b> Exercises</a></li>
@@ -434,19 +438,21 @@ div.csl-indent {
 <div id="permutation" class="section level1 hasAnchor" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Permutation Tests<a href="permutation.html#permutation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <ul>
-<li><p>Permutation tests are a useful tool that allows you to avoid depending on
+<li><p>Permutation tests are a useful tool that allow you to avoid relying on
 specific parametric assumptions.</p></li>
-<li><p>Permutation tests are also useful in more complex modern applications where it can be
-difficult to work out the theoretical null distribution of the desired test statistic.</p></li>
+<li><p>Permutation tests are also useful in more <strong>complex modern applications</strong> where it can be
+difficult to work out the <strong>theoretical null distribution</strong> of the desired test statistic.</p></li>
 </ul>
 <div id="notation" class="section level2 hasAnchor" number="5.1">
 <h2><span class="header-section-number">5.1</span> Notation<a href="permutation.html#notation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p>A <strong>permutation</strong> <span class="math inline">\(\pi\)</span> of a set <span class="math inline">\(S\)</span> is a function <span class="math inline">\(\pi: S \longrightarrow S\)</span> is a
-function that is both one-to-one and onto.</p></li>
-<li><p>We will usually think of <span class="math inline">\(S\)</span> as the set of observation indices in which case
-<span class="math inline">\(S = \{1, \ldots, N\}\)</span> for sample size <span class="math inline">\(N\)</span>.</p></li>
-<li><p>Each permutation <span class="math inline">\(\pi\)</span> of <span class="math inline">\(S = \{1, \ldots, N\}\)</span> defines a particular ordering of the elements of <span class="math inline">\(S\)</span>.
+function that is both <strong>one-to-one</strong> and <strong>onto</strong>.</p></li>
+<li><p>For permutation tests, <span class="math inline">\(S\)</span> will typically be the set of observation indices.</p>
+<ul>
+<li>For example, with a sample size of <span class="math inline">\(N\)</span>, <span class="math inline">\(S\)</span> will be <span class="math inline">\(S = \{1, \ldots, N\}\)</span> for sample size <span class="math inline">\(N\)</span>.</li>
+</ul></li>
+<li><p>Each permutation <span class="math inline">\(\pi\)</span> of <span class="math inline">\(S = \{1, \ldots, N\}\)</span> defines a <strong>particular ordering</strong> of the elements of <span class="math inline">\(S\)</span>.
 For this reason, a permutation is often expressed as the following ordered list
 <span class="math display">\[\begin{equation}
 \pi = \big( \pi(1), \pi(2), \ldots, \pi(N)  \big) \nonumber
@@ -477,13 +483,13 @@ set <span class="math inline">\(\{1, \ldots, N\}\)</span>.</p></li>
 <ul>
 <li>Permutation tests for two-sample problems are motivated by the following reasoning:
 <ul>
-<li>If there is no real difference between the two groups,
+<li>If there is <strong>no real difference</strong> between the two groups,
 there is nothing “special” about the difference in means
 between the two groups.</li>
-<li>The observed difference in the mean between the two groups
+<li>The <strong>observed difference</strong> in the mean between the two groups
 should not be notably different than mean differences from
-randomly formed groups.</li>
-<li>Forming “random” groups can be done by using many permutations
+<strong>randomly formed</strong> groups.</li>
+<li>Forming “random” groups can be done by using <strong>many permutations</strong>
 of the original data.</li>
 </ul></li>
 </ul>
@@ -785,11 +791,11 @@ mean difference
 </table>
 <ul>
 <li><p>For example, the columns in Table 5.1 are just permutations of the original data <span class="math inline">\(\mathbf{Z}\)</span>.</p></li>
-<li><p>Suppose we want to base a test on the difference in the means between the two groups
+<li><p>Suppose we want to test <strong>the difference in the means</strong> between the two groups
 <span class="math display">\[\begin{equation}
 T_{N}(\mathbf{Z}) = \bar{X} - \bar{Y} = \frac{1}{n}\sum_{i=1}^{n} Z_{i} - \frac{1}{m}\sum_{i=n+1}^{N} Z_{i}
 \end{equation}\]</span></p></li>
-<li><p>We will let <span class="math inline">\(t_{obs}\)</span> denote the observed value of the mean difference. That is,
+<li><p>We will let <span class="math inline">\(t_{obs}\)</span> denote the <strong>observed value</strong> of the mean difference. That is,
 <span class="math inline">\(t_{obs} = T_{N}(\mathbf{Z}_{obs})\)</span>, where <span class="math inline">\(\mathbf{Z}_{obs}\)</span> is the vector of the observed data.</p></li>
 <li><p>Under the null hypothesis that <span class="math inline">\(F_{X} = F_{Y}\)</span>, the observed mean difference
 should not be “abnormal” when compared with the mean differences from
@@ -813,20 +819,20 @@ many other permutations of the data.</p></li>
 <div id="permutation-test-p-values" class="section level3 hasAnchor" number="5.2.2">
 <h3><span class="header-section-number">5.2.2</span> Permutation Test p-values<a href="permutation.html#permutation-test-p-values" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><p>The one-sided p-value for the permutation test is
+<li><p>The <strong>one-sided p-value</strong> for the permutation test is
 <span class="math display">\[\begin{eqnarray}
 \textrm{p-value} &amp;=&amp; \frac{\textrm{number of permutations such that } T_{N} \geq t_{obs}}{ N! } \nonumber \\
 &amp;=&amp; \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(\mathbf{Z}_{\pi}) \geq t_{obs} \Big) \nonumber
 \end{eqnarray}\]</span></p></li>
-<li><p>The two-sided p-value for the two-sample problem would be
+<li><p>The <strong>two-sided p-value</strong> for the two-sample problem would be
 <span class="math display">\[\begin{equation}
 \textrm{p-value}
 = \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( \Big| T_{N}(\mathbf{Z}_{\pi}) \Big|  \geq |t_{obs}| \Big) \nonumber
 \end{equation}\]</span></p></li>
 <li><p>As we did when producing the above histogram, the permutation-test p-value is
-often computed by using a large number of random permutations rather
+often computed by using a large number of random permutations (a Monte Carlo approach) rather
 than computing the test statistic for every possible permutation.</p></li>
-<li><p>The Monte Carlo permutation-test p-value is defined as
+<li><p>The <strong>Monte Carlo</strong> permutation-test p-value is defined as
 <span class="math display">\[\begin{equation}
 \textrm{p-value}_{mc} = \frac{1}{S+1}\Bigg[ 1 +  \sum_{s = 1}^{S} I\Big( T_{N}(\mathbf{Z}_{\pi_{s}}) \geq t_{obs} \Big) \Bigg]
 \end{equation}\]</span>
@@ -835,13 +841,13 @@ where <span class="math inline">\(\pi_{1}, \ldots, \pi_{S}\)</span> are randomly
 </ul>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="permutation.html#cb67-1" tabindex="-1"></a>pval.mc <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">sum</span>(<span class="fu">abs</span>(mean.diff) <span class="sc">&gt;=</span> <span class="fu">abs</span>(observed.diff)))<span class="sc">/</span>(nperms <span class="sc">+</span> <span class="dv">1</span>)</span>
 <span id="cb67-2"><a href="permutation.html#cb67-2" tabindex="-1"></a><span class="fu">round</span>(pval.mc, <span class="dv">2</span>)</span></code></pre></div>
-<pre><code>## [1] 0.77</code></pre>
+<pre><code>## [1] 0.75</code></pre>
 </div>
 <div id="example-2-ratios-of-means" class="section level3 hasAnchor" number="5.2.3">
 <h3><span class="header-section-number">5.2.3</span> Example 2: Ratios of Means<a href="permutation.html#example-2-ratios-of-means" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>With permutation tests, you are not limited to difference in means. You can choose
-the statistic <span class="math inline">\(T_{N}(\mathbf{Z})\)</span> to measure other contrasts of interest.</p></li>
+the statistic <span class="math inline">\(T_{N}(\mathbf{Z})\)</span> to measure <strong>other contrasts</strong> of interest.</p></li>
 <li><p>For example, with nonnegative data you might be interested in the ratio of means between the two groups
 <span class="math display">\[\begin{equation}
 T_{N}( \mathbf{Z} ) = \max\Big\{ \bar{X}/\bar{Y} , \bar{Y}/\bar{X}  \Big\}
@@ -867,7 +873,7 @@ T_{N}( \mathbf{Z} ) = \max\Big\{ \bar{X}/\bar{Y} , \bar{Y}/\bar{X}  \Big\}
 <span id="cb69-16"><a href="permutation.html#cb69-16" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>t.obs, <span class="at">lwd=</span><span class="dv">3</span>)</span></code></pre></div>
 <p><img src="05-permutation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <ul>
-<li>The two-side (Monte Carlo) permutation test p-value is:</li>
+<li>The two-sided (Monte Carlo) permutation test p-value is:</li>
 </ul>
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="permutation.html#cb70-1" tabindex="-1"></a>pval.mc <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">sum</span>(mean.ratio <span class="sc">&gt;=</span> t.obs))<span class="sc">/</span>(nperms <span class="sc">+</span> <span class="dv">1</span>)</span>
 <span id="cb70-2"><a href="permutation.html#cb70-2" tabindex="-1"></a><span class="fu">round</span>(pval.mc, <span class="dv">2</span>)</span></code></pre></div>
@@ -876,10 +882,9 @@ T_{N}( \mathbf{Z} ) = \max\Big\{ \bar{X}/\bar{Y} , \bar{Y}/\bar{X}  \Big\}
 <div id="example-3-differences-in-quantiles" class="section level3 hasAnchor" number="5.2.4">
 <h3><span class="header-section-number">5.2.4</span> Example 3: Differences in Quantiles<a href="permutation.html#example-3-differences-in-quantiles" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><p>Permutation tests are especially useful in problems where working out the null distribution
-is difficult, or when certain approximations of the null distributions are hard to justify.</p></li>
+<li><p>Permutation tests are especially useful in problems where <strong>working out the null distribution is difficult</strong>, or when certain approximations of the null distributions are hard to justify.</p></li>
 <li><p>An example of this occurrs if you want to compare medians, or more generally,
-compare quantiles between two groups.</p></li>
+<strong>compare quantiles</strong> between two groups.</p></li>
 <li><p>The difference-in-quantiles statistic would be defined as
 <span class="math display">\[\begin{equation}
 T_{N}( \mathbf{Z} ) = Q_{p}(Z_{1}, \ldots, Z_{n}) - Q_{p}(Z_{n+1}, \ldots, Z_{N}) \nonumber
@@ -894,16 +899,29 @@ where <span class="math inline">\(Q_{p}(X_{1}, \ldots, X_{H})\)</span> denotes t
 <ul>
 <li>Note that setting <strong>probs=.5</strong> in the <strong>quantile</strong> function will return the median.</li>
 </ul>
-<pre><code>## Loading required package: tibble</code></pre>
-<pre><code>## Loading required package: bitops</code></pre>
-<pre><code>## Rattle: A free graphical interface for data science with R.
-## Version 5.5.1 Copyright (c) 2006-2021 Togaware Pty Ltd.
-## Type &#39;rattle()&#39; to shake, rattle, and roll your data.</code></pre>
-<p><img src="05-permutation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 </div>
-<div id="the-permutation-test-as-a-conditional-test" class="section level2 hasAnchor" number="5.3">
-<h2><span class="header-section-number">5.3</span> The Permutation Test as a Conditional Test<a href="permutation.html#the-permutation-test-as-a-conditional-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="permutation-test-assumptions" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Permutation Test Assumptions<a href="permutation.html#permutation-test-assumptions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="exchangeability-under-the-null-hypothesis" class="section level3 hasAnchor" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Exchangeability under the Null Hypothesis<a href="permutation.html#exchangeability-under-the-null-hypothesis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>The main justification for the use of the permutation distribution of a test statistic is the <strong>exchangeability assumption</strong>.</p></li>
+<li><p>The distribution of a vector <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldots, Z_{N})\)</span> of <span class="math inline">\(N\)</span> random variables is <strong>exchangeable</strong> if
+the joint distribution of <span class="math inline">\(\mathbf{Z}\)</span> is <strong>the same</strong> as the joint distribution of <span class="math inline">\(\mathbf{Z}_{\pi} = (Z_{\pi(1)}, \ldots, Z_{\pi(N)})\)</span>, for
+any permutation <span class="math inline">\(\pi\)</span>.</p></li>
+<li><p>With a permutation test, the <strong>implicit assumption</strong> is that the distribution of your data <span class="math inline">\((Z_{1}, \ldots, Z_{N})\)</span> is <strong>exchangeable under the null hypothesis</strong>.</p></li>
+<li><p>Exchangeability is a <strong>weaker assumption</strong> than assuming the observations are i.i.d.</p></li>
+</ul>
+<hr />
+<ul>
+<li>Under the assumption of <strong>exchangeability under the null</strong>, the test statistic <span class="math inline">\(T_{N}(\mathbf{Z}_{\pi})\)</span> has the same
+distribution for any permutation <span class="math inline">\(\pi\)</span>.</li>
+</ul>
+</div>
+<div id="the-permutation-test-as-a-conditional-test" class="section level3 hasAnchor" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> The Permutation Test as a Conditional Test<a href="permutation.html#the-permutation-test-as-a-conditional-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>A permutation test is an example of a <strong>conditional test</strong>.</p></li>
 <li><p>Typically, the p-value is defined as
@@ -929,10 +947,10 @@ distribution is the same for every point in <span class="math inline">\(H_{0}\)<
 <li><p>A more general approach is to instead compute a <strong>conditional p-value</strong></p></li>
 <li><p>A conditional p-value is defined as
 <span class="math display">\[\begin{equation}
-\textrm{p-value} = P(T \geq t_{obs}| S=s, H_{0})  \nonumber
+\textrm{p-value} = P(T \geq t_{obs}| R=r, H_{0})  \nonumber
 \end{equation}\]</span>
-where <span class="math inline">\(S\)</span> is a sufficient statistic for the unknown terms in <span class="math inline">\(H_{0}\)</span>.</p></li>
-<li><p>A classic example of this is Fisher’s exact test.</p></li>
+where <span class="math inline">\(R\)</span> is a sufficient statistic for the unknown terms in <span class="math inline">\(H_{0}\)</span>.</p></li>
+<li><p>A classic example of this is <strong>Fisher’s exact test</strong>.</p></li>
 </ul>
 <hr />
 <ul>
@@ -970,7 +988,7 @@ that <span class="math inline">\(T_{N}(Z_{1}, \ldots, Z_{N}) \geq t\)</span> is 
 by <span class="math inline">\(N!\)</span>.</p></li>
 <li><p>In other words
 <span class="math display">\[\begin{eqnarray}
-&amp; &amp; P\Big\{ T_{N}(Z_{1}, \ldots, Z_{N}) \geq t| Z_{(1)} = z_{1}, \ldots, Z_{(N)} = z_{N} \Big\}
+&amp; &amp; P\Big\{ T_{N}(Z_{1}, \ldots, Z_{N}) \geq t \Big| Z_{(1)} = z_{1}, \ldots, Z_{(N)} = z_{N} \Big\}
 \\
 &amp;=&amp; \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( T_{N}(z_{\pi(1)}, \ldots, z_{\pi(N)}) \geq t  \Big)
 \end{eqnarray}\]</span></p></li>
@@ -1581,9 +1599,10 @@ T(a1, a2, a3, a4) &gt;= 2.5
 </tr>
 </table>
 </div>
+</div>
 <div id="a-permutation-test-for-correlation" class="section level2 hasAnchor" number="5.4">
 <h2><span class="header-section-number">5.4</span> A Permutation Test for Correlation<a href="permutation.html#a-permutation-test-for-correlation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><img src="05-permutation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <ul>
 <li><p>Suppose we have <span class="math inline">\(N\)</span> pairs of observations <span class="math inline">\((U_{1}, V_{1}), \ldots, (U_{N}, V_{N})\)</span></p></li>
 <li><p>The correlation between these pairs is defined as
@@ -1609,36 +1628,35 @@ of randomly “switching observation pairs”.</p></li>
 = \frac{1}{N!} \sum_{\pi \in \mathcal{S}_{N}} I\Big( \Big| T_{N}(\mathbf{U}_{\pi}, \mathbf{V}) \Big|  \geq |t_{obs}| \Big) \nonumber
 \end{equation}\]</span></li>
 </ul>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="permutation.html#cb77-1" tabindex="-1"></a><span class="fu">library</span>(rattle)</span>
-<span id="cb77-2"><a href="permutation.html#cb77-2" tabindex="-1"></a><span class="do">## Computing the permutation distribution for correlation </span></span>
-<span id="cb77-3"><a href="permutation.html#cb77-3" tabindex="-1"></a><span class="do">## between flavanoids and phenols</span></span>
-<span id="cb77-4"><a href="permutation.html#cb77-4" tabindex="-1"></a></span>
-<span id="cb77-5"><a href="permutation.html#cb77-5" tabindex="-1"></a>n.obs <span class="ot">&lt;-</span> <span class="fu">nrow</span>(wine) <span class="do">## number of observations</span></span>
-<span id="cb77-6"><a href="permutation.html#cb77-6" tabindex="-1"></a>t.obs.pf <span class="ot">&lt;-</span> <span class="fu">cor</span>(wine<span class="sc">$</span>Phenols, wine<span class="sc">$</span>Flavanoids) <span class="do">## observed correlation</span></span>
-<span id="cb77-7"><a href="permutation.html#cb77-7" tabindex="-1"></a>nperms <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
-<span id="cb77-8"><a href="permutation.html#cb77-8" tabindex="-1"></a>cor.perm.pf <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, nperms)</span>
-<span id="cb77-9"><a href="permutation.html#cb77-9" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nperms) {</span>
-<span id="cb77-10"><a href="permutation.html#cb77-10" tabindex="-1"></a>     ss <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n.obs, <span class="at">size=</span>n.obs)</span>
-<span id="cb77-11"><a href="permutation.html#cb77-11" tabindex="-1"></a>     uu.perm <span class="ot">&lt;-</span> wine<span class="sc">$</span>Phenols[ss]</span>
-<span id="cb77-12"><a href="permutation.html#cb77-12" tabindex="-1"></a>     cor.perm.pf[k] <span class="ot">&lt;-</span> <span class="fu">cor</span>(uu.perm, wine<span class="sc">$</span>Flavanoids)</span>
-<span id="cb77-13"><a href="permutation.html#cb77-13" tabindex="-1"></a>}</span>
-<span id="cb77-14"><a href="permutation.html#cb77-14" tabindex="-1"></a><span class="fu">hist</span>(cor.perm.pf, <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">las=</span><span class="dv">1</span>, <span class="at">col=</span><span class="st">&quot;grey&quot;</span>, <span class="at">main=</span><span class="st">&quot;Permutation </span></span>
-<span id="cb77-15"><a href="permutation.html#cb77-15" tabindex="-1"></a><span class="st">     Distribution of Correlation between Phenols and Flavanoids&quot;</span>, </span>
-<span id="cb77-16"><a href="permutation.html#cb77-16" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;correlation&quot;</span>)</span>
-<span id="cb77-17"><a href="permutation.html#cb77-17" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>t.obs.pf, <span class="at">lwd=</span><span class="dv">3</span>)</span></code></pre></div>
-<p><img src="05-permutation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="permutation.html#cb74-1" tabindex="-1"></a><span class="do">## Computing the permutation distribution for correlation </span></span>
+<span id="cb74-2"><a href="permutation.html#cb74-2" tabindex="-1"></a><span class="do">## between flavanoids and phenols</span></span>
+<span id="cb74-3"><a href="permutation.html#cb74-3" tabindex="-1"></a></span>
+<span id="cb74-4"><a href="permutation.html#cb74-4" tabindex="-1"></a>n.obs <span class="ot">&lt;-</span> <span class="fu">nrow</span>(wine) <span class="do">## number of observations</span></span>
+<span id="cb74-5"><a href="permutation.html#cb74-5" tabindex="-1"></a>t.obs.pf <span class="ot">&lt;-</span> <span class="fu">cor</span>(wine<span class="sc">$</span>Phenols, wine<span class="sc">$</span>Flavanoids) <span class="do">## observed correlation</span></span>
+<span id="cb74-6"><a href="permutation.html#cb74-6" tabindex="-1"></a>nperms <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb74-7"><a href="permutation.html#cb74-7" tabindex="-1"></a>cor.perm.pf <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, nperms)</span>
+<span id="cb74-8"><a href="permutation.html#cb74-8" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nperms) {</span>
+<span id="cb74-9"><a href="permutation.html#cb74-9" tabindex="-1"></a>     ss <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n.obs, <span class="at">size=</span>n.obs)</span>
+<span id="cb74-10"><a href="permutation.html#cb74-10" tabindex="-1"></a>     uu.perm <span class="ot">&lt;-</span> wine<span class="sc">$</span>Phenols[ss]</span>
+<span id="cb74-11"><a href="permutation.html#cb74-11" tabindex="-1"></a>     cor.perm.pf[k] <span class="ot">&lt;-</span> <span class="fu">cor</span>(uu.perm, wine<span class="sc">$</span>Flavanoids)</span>
+<span id="cb74-12"><a href="permutation.html#cb74-12" tabindex="-1"></a>}</span>
+<span id="cb74-13"><a href="permutation.html#cb74-13" tabindex="-1"></a><span class="fu">hist</span>(cor.perm.pf, <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">las=</span><span class="dv">1</span>, <span class="at">col=</span><span class="st">&quot;grey&quot;</span>, <span class="at">main=</span><span class="st">&quot;Permutation </span></span>
+<span id="cb74-14"><a href="permutation.html#cb74-14" tabindex="-1"></a><span class="st">     Distribution of Correlation between Phenols and Flavanoids&quot;</span>, </span>
+<span id="cb74-15"><a href="permutation.html#cb74-15" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;correlation&quot;</span>)</span>
+<span id="cb74-16"><a href="permutation.html#cb74-16" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>t.obs.pf, <span class="at">lwd=</span><span class="dv">3</span>)</span></code></pre></div>
 <p><img src="05-permutation_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <ul>
 <li>Now let us compute the p-values for both the
 Phenols/Flavanoids and Phenols/Color association tests.</li>
 </ul>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="permutation.html#cb78-1" tabindex="-1"></a><span class="co"># p-value for correlation between Phenols/Flavanoids</span></span>
-<span id="cb78-2"><a href="permutation.html#cb78-2" tabindex="-1"></a>pval.mc <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">sum</span>(<span class="fu">abs</span>(cor.perm.pf) <span class="sc">&gt;=</span> <span class="fu">abs</span>(t.obs.pf)))<span class="sc">/</span>(nperms <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb78-3"><a href="permutation.html#cb78-3" tabindex="-1"></a><span class="fu">round</span>(pval.mc, <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="permutation.html#cb75-1" tabindex="-1"></a><span class="co"># p-value for correlation between Phenols/Flavanoids</span></span>
+<span id="cb75-2"><a href="permutation.html#cb75-2" tabindex="-1"></a>pval.mc <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">sum</span>(<span class="fu">abs</span>(cor.perm.pf) <span class="sc">&gt;=</span> <span class="fu">abs</span>(t.obs.pf)))<span class="sc">/</span>(nperms <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb75-3"><a href="permutation.html#cb75-3" tabindex="-1"></a><span class="fu">round</span>(pval.mc, <span class="dv">4</span>)</span></code></pre></div>
 <pre><code>## [1] 5e-04</code></pre>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="permutation.html#cb80-1" tabindex="-1"></a><span class="co"># p-value for correlation between Phenols/Color</span></span>
-<span id="cb80-2"><a href="permutation.html#cb80-2" tabindex="-1"></a>pval.mc <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">sum</span>(<span class="fu">abs</span>(cor.perm.pc) <span class="sc">&gt;=</span> <span class="fu">abs</span>(t.obs.pc)))<span class="sc">/</span>(nperms <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb80-3"><a href="permutation.html#cb80-3" tabindex="-1"></a><span class="fu">round</span>(pval.mc, <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="permutation.html#cb77-1" tabindex="-1"></a><span class="co"># p-value for correlation between Phenols/Color</span></span>
+<span id="cb77-2"><a href="permutation.html#cb77-2" tabindex="-1"></a>pval.mc <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">sum</span>(<span class="fu">abs</span>(cor.perm.pc) <span class="sc">&gt;=</span> <span class="fu">abs</span>(t.obs.pc)))<span class="sc">/</span>(nperms <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb77-3"><a href="permutation.html#cb77-3" tabindex="-1"></a><span class="fu">round</span>(pval.mc, <span class="dv">4</span>)</span></code></pre></div>
 <pre><code>## [1] 0.4648</code></pre>
 </div>
 <div id="a-permutation-test-for-variable-importance-in-regression-and-machine-learning" class="section level2 hasAnchor" number="5.5">
@@ -1658,7 +1676,7 @@ between <span class="math inline">\(\mathbf{y}\)</span> and any “important cov
 will be when we break any association between <span class="math inline">\(\mathbf{y}\)</span> and
 a covariate.</p></li>
 </ul>
-<p><img src="05-permutation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="05-permutation_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <hr />
 <ul>
 <li><p>The approach of permuting the response vector can be useful in the context of difficult-to-interpret
@@ -1689,26 +1707,20 @@ from <span class="math inline">\(\mathbf{y}\)</span> and <span class="math inlin
 the <strong>wine</strong> data.</p></li>
 <li><p>First, we will load the data and fit a random forest model.</p></li>
 </ul>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="permutation.html#cb82-1" tabindex="-1"></a><span class="fu">library</span>(rattle)</span>
-<span id="cb82-2"><a href="permutation.html#cb82-2" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="permutation.html#cb79-1" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span></code></pre></div>
 <pre><code>## randomForest 4.7-1.2</code></pre>
 <pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
-<pre><code>## 
-## Attaching package: &#39;randomForest&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:rattle&#39;:
-## 
-##     importance</code></pre>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="permutation.html#cb87-1" tabindex="-1"></a>wine2 <span class="ot">&lt;-</span> <span class="fu">subset</span>(wine, Type<span class="sc">==</span><span class="dv">1</span> <span class="sc">|</span> Type<span class="sc">==</span><span class="dv">2</span>)</span>
-<span id="cb87-2"><a href="permutation.html#cb87-2" tabindex="-1"></a>wine2<span class="sc">$</span>Type <span class="ot">&lt;-</span> <span class="fu">factor</span>(wine2<span class="sc">$</span>Type)</span>
-<span id="cb87-3"><a href="permutation.html#cb87-3" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Type <span class="sc">~</span> . <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>wine2)</span>
-<span id="cb87-4"><a href="permutation.html#cb87-4" tabindex="-1"></a>yy <span class="ot">&lt;-</span> wine2<span class="sc">$</span>Type</span>
-<span id="cb87-5"><a href="permutation.html#cb87-5" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(yy)</span>
-<span id="cb87-6"><a href="permutation.html#cb87-6" tabindex="-1"></a>nvars <span class="ot">&lt;-</span> <span class="fu">ncol</span>(X)</span>
-<span id="cb87-7"><a href="permutation.html#cb87-7" tabindex="-1"></a></span>
-<span id="cb87-8"><a href="permutation.html#cb87-8" tabindex="-1"></a><span class="do">## Variable importance scores using original data</span></span>
-<span id="cb87-9"><a href="permutation.html#cb87-9" tabindex="-1"></a>originalRF <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(X, <span class="at">y=</span>yy)</span>
-<span id="cb87-10"><a href="permutation.html#cb87-10" tabindex="-1"></a>var.imp <span class="ot">&lt;-</span> originalRF<span class="sc">$</span>importance</span>
-<span id="cb87-11"><a href="permutation.html#cb87-11" tabindex="-1"></a>var.imp</span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="permutation.html#cb82-1" tabindex="-1"></a>wine2 <span class="ot">&lt;-</span> <span class="fu">subset</span>(wine, Type<span class="sc">==</span><span class="dv">1</span> <span class="sc">|</span> Type<span class="sc">==</span><span class="dv">2</span>)</span>
+<span id="cb82-2"><a href="permutation.html#cb82-2" tabindex="-1"></a>wine2<span class="sc">$</span>Type <span class="ot">&lt;-</span> <span class="fu">factor</span>(wine2<span class="sc">$</span>Type)</span>
+<span id="cb82-3"><a href="permutation.html#cb82-3" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Type <span class="sc">~</span> . <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>wine2)</span>
+<span id="cb82-4"><a href="permutation.html#cb82-4" tabindex="-1"></a>yy <span class="ot">&lt;-</span> wine2<span class="sc">$</span>Type</span>
+<span id="cb82-5"><a href="permutation.html#cb82-5" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(yy)</span>
+<span id="cb82-6"><a href="permutation.html#cb82-6" tabindex="-1"></a>nvars <span class="ot">&lt;-</span> <span class="fu">ncol</span>(X)</span>
+<span id="cb82-7"><a href="permutation.html#cb82-7" tabindex="-1"></a></span>
+<span id="cb82-8"><a href="permutation.html#cb82-8" tabindex="-1"></a><span class="do">## Variable importance scores using original data</span></span>
+<span id="cb82-9"><a href="permutation.html#cb82-9" tabindex="-1"></a>originalRF <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(X, <span class="at">y=</span>yy)</span>
+<span id="cb82-10"><a href="permutation.html#cb82-10" tabindex="-1"></a>var.imp <span class="ot">&lt;-</span> originalRF<span class="sc">$</span>importance</span>
+<span id="cb82-11"><a href="permutation.html#cb82-11" tabindex="-1"></a>var.imp</span></code></pre></div>
 <pre><code>##                 MeanDecreaseGini
 ## Alcohol               16.4477773
 ## Malic                  1.6547628
@@ -1727,20 +1739,20 @@ the <strong>wine</strong> data.</p></li>
 <li>Now, let us compare these original variable importance scores with
 the importance scores obtained across 10,000 permuted datasets.</li>
 </ul>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="permutation.html#cb89-1" tabindex="-1"></a>nperm <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
-<span id="cb89-2"><a href="permutation.html#cb89-2" tabindex="-1"></a>VarImpMat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow=</span>nperm, <span class="at">ncol=</span><span class="fu">ncol</span>(X))</span>
-<span id="cb89-3"><a href="permutation.html#cb89-3" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nperm) {</span>
-<span id="cb89-4"><a href="permutation.html#cb89-4" tabindex="-1"></a>  ytmp <span class="ot">&lt;-</span> yy[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n,<span class="at">size=</span>n)]</span>
-<span id="cb89-5"><a href="permutation.html#cb89-5" tabindex="-1"></a>  rf.fit <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(X, <span class="at">y=</span>ytmp)</span>
-<span id="cb89-6"><a href="permutation.html#cb89-6" tabindex="-1"></a>  VarImpMat[k,] <span class="ot">&lt;-</span> rf.fit<span class="sc">$</span>importance</span>
-<span id="cb89-7"><a href="permutation.html#cb89-7" tabindex="-1"></a>  <span class="do">## VarImpMat[k,h] contains the importance score of </span></span>
-<span id="cb89-8"><a href="permutation.html#cb89-8" tabindex="-1"></a>  <span class="do">##  variable h in permutation k</span></span>
-<span id="cb89-9"><a href="permutation.html#cb89-9" tabindex="-1"></a>}</span>
-<span id="cb89-10"><a href="permutation.html#cb89-10" tabindex="-1"></a></span>
-<span id="cb89-11"><a href="permutation.html#cb89-11" tabindex="-1"></a>perm.pval <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, nvars)</span>
-<span id="cb89-12"><a href="permutation.html#cb89-12" tabindex="-1"></a><span class="cf">for</span>(h <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nvars) {</span>
-<span id="cb89-13"><a href="permutation.html#cb89-13" tabindex="-1"></a>  perm.pval[h] <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">sum</span>(VarImpMat[,h] <span class="sc">&gt;=</span> var.imp[h]))<span class="sc">/</span>(nperm <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb89-14"><a href="permutation.html#cb89-14" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="permutation.html#cb84-1" tabindex="-1"></a>nperm <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb84-2"><a href="permutation.html#cb84-2" tabindex="-1"></a>VarImpMat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow=</span>nperm, <span class="at">ncol=</span><span class="fu">ncol</span>(X))</span>
+<span id="cb84-3"><a href="permutation.html#cb84-3" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nperm) {</span>
+<span id="cb84-4"><a href="permutation.html#cb84-4" tabindex="-1"></a>  ytmp <span class="ot">&lt;-</span> yy[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n,<span class="at">size=</span>n)]</span>
+<span id="cb84-5"><a href="permutation.html#cb84-5" tabindex="-1"></a>  rf.fit <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(X, <span class="at">y=</span>ytmp)</span>
+<span id="cb84-6"><a href="permutation.html#cb84-6" tabindex="-1"></a>  VarImpMat[k,] <span class="ot">&lt;-</span> rf.fit<span class="sc">$</span>importance</span>
+<span id="cb84-7"><a href="permutation.html#cb84-7" tabindex="-1"></a>  <span class="do">## VarImpMat[k,h] contains the importance score of </span></span>
+<span id="cb84-8"><a href="permutation.html#cb84-8" tabindex="-1"></a>  <span class="do">##  variable h in permutation k</span></span>
+<span id="cb84-9"><a href="permutation.html#cb84-9" tabindex="-1"></a>}</span>
+<span id="cb84-10"><a href="permutation.html#cb84-10" tabindex="-1"></a></span>
+<span id="cb84-11"><a href="permutation.html#cb84-11" tabindex="-1"></a>perm.pval <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, nvars)</span>
+<span id="cb84-12"><a href="permutation.html#cb84-12" tabindex="-1"></a><span class="cf">for</span>(h <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nvars) {</span>
+<span id="cb84-13"><a href="permutation.html#cb84-13" tabindex="-1"></a>  perm.pval[h] <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">sum</span>(VarImpMat[,h] <span class="sc">&gt;=</span> var.imp[h]))<span class="sc">/</span>(nperm <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb84-14"><a href="permutation.html#cb84-14" tabindex="-1"></a>}</span></code></pre></div>
 <table border="1">
 <tr>
 <th>

@@ -148,6 +148,8 @@ example-1
 permutation-test-p-values
 example-2-ratios-of-means
 example-3-differences-in-quantiles
+permutation-test-assumptions
+exchangeability-under-the-null-hypothesis
 the-permutation-test-as-a-conditional-test
 a-permutation-test-for-correlation
 a-permutation-test-for-variable-importance-in-regression-and-machine-learning

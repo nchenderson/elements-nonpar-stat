@@ -107,7 +107,7 @@ the number of observations that are less than or equal to $X_{i}$ and then addin
 * An alternative to the **"max definition"** of the ranks is to only count the number of observations
 that are **less than** $X_{i}$. This is the **"min definition"** of ranks
 \begin{equation}
-R_{i}^{min}(\mathbf{X}) = 1 + \sum_{j \neq i} I( X_{i} > X_{j}) 
+R_{i}^{\textrm{min}}(\mathbf{X}) = 1 + \sum_{j \neq i} I( X_{i} > X_{j}) 
 \end{equation}
 
 ---
@@ -584,7 +584,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.845
+## [1] 0.785
 ```
 
 * This simulation-based estimate of $P(X_{i} > Y_{j}) + P(X_{i} = Y_{j})/2$ is quite close to the value of the Mann-Whitney statistic divided by $mn$.
@@ -761,7 +761,7 @@ sign.stat <- sum(xx > 0)  ## This is the value of the sign statistic
 ```
 
 ```
-## [1] 0.04431304
+## [1] 0.1841008
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -779,7 +779,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.04431304
+## [1] 0.1841008
 ```
 
 #### Two-sided Sign Test
@@ -869,7 +869,7 @@ vs. negative values of $D_{i}$.
 
 #### Asymptotic Distribution
 
-* As mentioned in the above exercise, the expectation of $T_{n}$ under $H_{0}$ is zero.
+* As described in one of the exercises below, the **expectation of $T_{n}$ under $H_{0}$ is zero**.
 
 * It can be shown that the variance under the null hypothesis is
 \begin{equation}
@@ -901,16 +901,16 @@ Nevertheless, there exists functions in **R** for working with this exact distri
 
 ### Using R to Perform the Sign and Wilcoxon Tests 
 
-* Let's first look at the **Meat** data from the **PairedData** **R** package.
+* Let's first look at the `Meat` data (This dataset is on Canvas).
 
 * This data set contains 20 observations with each observation corresponding to a single piece of meat. 
 For each observation, we have two measures of fat percentage that were obtained different 
 measuring techniques.
  
 
+
+
 ``` r
-library(PairedData, quietly=TRUE, warn.conflicts=FALSE) ## loading PairedData package
-data(Meat)  ## loading Meat data
 head(Meat)
 ```
 
@@ -934,7 +934,7 @@ hist(DD, main="Meat Data", xlab="Difference in Measured Fat
      Percentage", las=1)
 ```
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+<img src="03-rankstat_files/figure-html/unnamed-chunk-20-1.png" width="672" />
 
 ``` r
 summary(DD)
@@ -1096,7 +1096,7 @@ of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
 values for $p(\delta)$ rather than $\delta$ itself. Plus, $p(\delta)$ has the direct interpretation
 $p(\delta) = P_{\theta=\delta}( D_{i} > 0)$.
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-23-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-23-2.png" width="672" />
+<img src="03-rankstat_files/figure-html/unnamed-chunk-24-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-24-2.png" width="672" />
 
 
 
@@ -1778,7 +1778,7 @@ P( X_{i} = j) =
 0 & \textrm{ otherwise.} \nonumber
 \end{cases}
 \end{equation}
-Using the **``average'' definition of ranks**: 
+Using the **"average" definition of ranks**: 
 
 **(a)** Show that the conditional expectation $E\{ R_{i}^{\textrm{avg}}(\mathbf{X}) \mid X_{i} \}$ is
 \begin{equation}
