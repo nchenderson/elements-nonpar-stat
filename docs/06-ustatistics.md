@@ -109,7 +109,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.868
+## [1] 1.849
 ```
 
 ``` r
@@ -117,7 +117,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.853
+## [1] 1.799
 ```
 
 
@@ -153,7 +153,7 @@ where $\mu = E( X_{i} )$.
 
 ### Example 4: Wilcoxon Signed Rank Statistic
 
-* The Wilcoxon signed rank test statistic is related to the following U statistic
+* The **Wilcoxon signed rank test statistic** is related to the following U statistic
 \begin{equation}
 U_{WS} = \frac{2}{n(n-1)}\sum_{i=1}^{n}\sum_{j=i+1}^{n} I\Big( X_{i} + X_{j} \geq 0 \Big)  \nonumber
 \end{equation}
@@ -209,7 +209,7 @@ I( X_{(i)} > 0)R_{(i)}(|\mathbf{X}|)
 
 ## Inference using U-statistics
 
-* By using a large-sample approximation, you can construct a confidence interval 
+* By using a **large-sample approximation**, you can construct a confidence interval 
 for your U-statistic parameter of interest $\theta$ where 
 \begin{equation}
 \theta = E\Big\{ h(X_{1}, \ldots, X_{r})  \Big\}
@@ -233,7 +233,7 @@ the same distribution as $X_{1}, \ldots, X_{r}$.
 
 ## U-statistics for Two-Sample Problems
 
-* In two-sample problems, we have data from two groups which
+* In **two-sample problems**, we have data from two groups which
 we label $X_{1}, \ldots, X_{n}$ and $Y_{1}, \ldots, Y_{m}$
 
 * A U-statistic with order $(r,s)$ for a two-sample problem is
@@ -251,7 +251,7 @@ U_{MW} = \frac{1}{mn}\sum_{i=1}^{n}\sum_{j=1}^{m} I( X_{i} \geq Y_{j})
 
 * This is a U-statistic of order $(1,1)$ with kernel $h(x, y) = I(x \geq y)$.
 
-* Hence, the U-statistic $U_{MW}$ can be thought of as an estimate of the following
+* Hence, the U-statistic $U_{MW}$ can be thought of as an **estimate** of the following
 parameter
 \begin{equation}
 \theta_{MW} = P\Big( X_{i} \geq Y_{j} \Big)
@@ -301,7 +301,7 @@ where $\theta_{MW}$ is the parameter defined in \@ref(eq:mw-parameter).
 
 ## Measures of Association
 
-* Many important measures of association are also examples of U-statistics.
+* Many important **measures of association** are also examples of U-statistics.
 
 * For measures of association, we have observations on $n$ pairs of variables
 \begin{equation}
@@ -349,29 +349,26 @@ the rank correlation is very effective at detecting any monotone associations be
 * $\hat{\rho}_{R}$ will equal 1 if $Y_{i}$ is a monotone increasing function of $X_{i}$,
 and $\hat{\rho}_{R}$ will equal -1 if $Y_{i}$ is a monotone decreasing function $X_{i}$.
 
+---
 
-``` r
-xx <- pmax(rnorm(100, mean=10), 0.01)
-yy <- pmax(xx + rnorm(100, sd=.5), 0.01)
+* As an example, the following graph displays Pearson's correlation and Spearman's 
+rank correlation when the $X_{i}$ are generated as $X_{i} \sim \textrm{Normal}(0, 4)$ and $Y_{i} = \exp(X_{i})$.
 
-## Compare the usual Pearson's correlation between 
-## (xx, yy) and (xx, yy^2)
-round( c( cor(xx, yy), cor(xx, yy^2)), 3)
-```
+* Note that $Y_{i}$ is a **deterministic function** of $X_{i}$, but Pearson's correlation is
+substantially smaller than 1.
 
-```
-## [1] 0.903 0.903
-```
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
-``` r
-## Now do the same for Spearman's rank correlation
-round(c( cor(xx, yy, method="spearman"), 
-         cor(xx, yy^2, method="spearman")), 3)
-```
 
-```
-## [1] 0.89 0.89
-```
+---
+
+* Pearson's correlation can also be quite **sensitive to outliers**.
+
+* This is because Pearson's correlation measures the degree of **linear association**.
+    + One or two extreme points can substantially change the estimated slope when performing a linear regression of Y on X.
+
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+
 
 ---
 
@@ -384,14 +381,14 @@ quantity:
 
 * To justify this, first notice that
 \begin{eqnarray}
-V_{R} &=& \frac{1}{n^{3}}\sum_{i=1}^{n} R_{i}(\mathbf{X})R_{i}(\mathbf{Y})
-= \frac{1}{n^{3}}\sum_{i=1}^{n} \sum_{j=1}^{n} I(X_{i} \geq X_{j}) \sum_{k=1}^{n} I(Y_{i} \geq Y_{k}) \nonumber \\
+V_{R} &=& \frac{1}{n^{3}}\sum_{i=1}^{n} R_{i}(\mathbf{X})R_{i}(\mathbf{Y}) \nonumber \\
+&=& \frac{1}{n^{3}}\sum_{i=1}^{n} \sum_{j=1}^{n} I(X_{i} \geq X_{j}) \sum_{k=1}^{n} I(Y_{i} \geq Y_{k}) \nonumber \\
 &=& \frac{1}{n^{3}}\sum_{i=1}^{n} \sum_{j=1}^{n} \sum_{k=1}^{n} I(X_{i} \geq X_{j}) I(Y_{i} \geq Y_{k})  \nonumber
 \end{eqnarray}
 
 * While $V_{R}$ is not exactly a U-statistic, it can be thought of as roughly a "U-statistic" with non-symmetric kernel function
 \begin{equation}
-h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix},
+h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{2} \\ Y_{2} \end{bmatrix},
 \begin{bmatrix} X_{3} \\ Y_{3} \end{bmatrix} \Bigg) = I(X_{1} \geq X_{2}) I(Y_{1} \geq Y_{3}) \nonumber
 \end{equation}
 
@@ -402,14 +399,6 @@ h\Bigg( \begin{bmatrix} X_{1} \\ Y_{1} \end{bmatrix}, \begin{bmatrix} X_{1} \\ Y
 \hat{\rho}_{R} &=& \frac{12}{n(n-1)(n+1)}\sum_{i=1}^{n} R_{i}( \mathbf{X} )R_{i}(\mathbf{Y}) - \frac{3(n+1)}{n-1} \nonumber \\
 &=& 12 V_{R} \Big( \frac{n^{3}}{n(n-1)(n+1)} \Big)  - \frac{3(n+1)}{n-1}. \nonumber
 \end{eqnarray}
-
----
-
-
-**Exercise 6.2.** Why does $\theta_{R}$ equal zero when $X_{i}$ and $Y_{i}$ are independent?
-Why is $-1\leq \theta_{R} \leq 1$?
-
----
 
 
 ### Kendall's tau
@@ -519,7 +508,7 @@ while $X$ and $Y$ are not independent.
 * Note that the association between the two variables in the figures below
 is **non-monotone**.
 
-<img src="06-ustatistics_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 #### Definition
 
@@ -680,7 +669,7 @@ plot(xx2, yy2, xlab="x", ylab="y", main=paste("Sample Distance Corr. = ",
                                               round(d.cor2, 4)), las=1)
 ```
 
-<img src="06-ustatistics_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 
 ``` r
@@ -717,6 +706,9 @@ round(c(p.cor2, kend.cor2, spear.cor2, d.cor2), 4) ## circle
     + $X_{i} \sim \textrm{Normal}( \mu, \sigma^{2})$, for $\mu > 0$. 
     + $X_{i} \sim \textrm{Exponential}(\lambda)$, (**Hint**: The difference between two independent Exponential random variables has a Laplace distribution).
 
-* **Exercise 6.2**. For the example where we have observed pairs $(X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})$
+* **Exercise 6.2.** Why does $\theta_{R}$ equal zero when $X_{i}$ and $Y_{i}$ are independent?
+Why is $-1\leq \theta_{R} \leq 1$?
+
+* **Exercise 6.3**. For the example where we have observed pairs $(X_{1}, Y_{1}), \ldots, (X_{n},Y_{n})$
     with $X_{i} \sim \textrm{Normal}(0, 1)$ and $Y_{i} = X_{i}^{2}$, compute Kendall's $\tau$ parameter $\theta_{\tau}$.
 

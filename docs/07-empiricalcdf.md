@@ -166,11 +166,11 @@ from a study on kidney function.
 * This dataset has $157$ observations which has the age of each study participant and
 a measure of overall kidney function. The data can be obtained at https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt
 
-* We will only look at the **tot** variable in this chapter. 
+* We will only look at the `tot` variable in this chapter. 
+
+
 
 ``` r
-kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
-                     header=TRUE)
 head(kidney)
 ```
 
@@ -184,10 +184,10 @@ head(kidney)
 ## 6  21 -0.50
 ```
 
-* The **ecdf** function is the main function which computes the empirical distribution function
+* The `ecdf` function is the main function which computes the empirical distribution function
 in **R**
 
-* The **ecdf** function will create an **ecdf** object. To create an ecdf object
+* The `ecdf` function will create an `ecdf` object. To create an ecdf object
 for the kidney totals, use the following code:
 
 ``` r
@@ -200,7 +200,7 @@ kidney.Fhat <- ecdf(kidney$tot)
 plot(kidney.Fhat, main = "Kidney Data: Default plot for ecdf", las=1)
 ```
 
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 * If you don't like the look of the points in the ecdf plot, you can use add the argument
 **do.points = FALSE** when calling plot. Also, you can add the argument **verticals =TRUE**
@@ -212,7 +212,7 @@ plot(kidney.Fhat, do.points=FALSE, verticals=TRUE, main = "Kidney Data:
     ecdf with vertical lines and without points", las=1, lwd=2)
 ```
 
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 ---
 
@@ -263,7 +263,7 @@ lines(tt, ci.low, type="s", lty=2, lwd=2)
 lines(tt, ci.upper, type="s", lty=2, lwd=2)
 ```
 
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 * We could plot the confidence bands as well.
 
@@ -281,12 +281,12 @@ lines(tt, ci.band.low, type="s", lty=2, lwd=2)
 lines(tt, ci.band.upper, type="s", lty=2, lwd=2)
 ```
 
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 * Comparing the pointwise confidence intervals and the simultaneous confidence bands
 in the same plot shows how much wider the confidence bands are:
 
-<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="07-empiricalcdf_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 
 
@@ -338,7 +338,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.086315, p-value = 0.4456
+## D = 0.11478, p-value = 0.1434
 ## alternative hypothesis: two-sided
 ```
 
@@ -354,7 +354,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.29444, p-value = 5.898e-08
+## D = 0.31335, p-value = 5.922e-09
 ## alternative hypothesis: two-sided
 ```
 
@@ -404,7 +404,7 @@ ks.test(xx, yy)
 ## 	Asymptotic two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.21, p-value = 0.02431
+## D = 0.2, p-value = 0.03663
 ## alternative hypothesis: two-sided
 ```
 
@@ -423,7 +423,7 @@ KS.stat
 ```
 
 ```
-## [1] 0.21
+## [1] 0.2
 ```
 
 

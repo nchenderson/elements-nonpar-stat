@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-01-25" />
+<meta name="date" content="2026-02-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -473,24 +473,24 @@ and, more generally, that
 <li>For known values of <span class="math inline">\(c_{0}, \alpha\)</span>, and <span class="math inline">\(\sigma^{2}\)</span>, we can simulate
 an AR(1) time series with the following <code>R</code> code:</li>
 </ul>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="ci.html#cb186-1" tabindex="-1"></a>SimulateParAR1 <span class="ot">&lt;-</span> <span class="cf">function</span>(m, c0, alpha, sig.sq) {</span>
-<span id="cb186-2"><a href="ci.html#cb186-2" tabindex="-1"></a>     xx <span class="ot">&lt;-</span> <span class="fu">numeric</span>(m)</span>
-<span id="cb186-3"><a href="ci.html#cb186-3" tabindex="-1"></a>     xx[<span class="dv">1</span>] <span class="ot">&lt;-</span> c0<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">-</span> alpha) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">sd=</span><span class="fu">sqrt</span>(sig.sq))</span>
-<span id="cb186-4"><a href="ci.html#cb186-4" tabindex="-1"></a>     <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>m) { </span>
-<span id="cb186-5"><a href="ci.html#cb186-5" tabindex="-1"></a>         xx[t] <span class="ot">&lt;-</span> c0 <span class="sc">+</span> alpha<span class="sc">*</span>xx[t<span class="dv">-1</span>] <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">sd=</span><span class="fu">sqrt</span>(sig.sq))</span>
-<span id="cb186-6"><a href="ci.html#cb186-6" tabindex="-1"></a>     }</span>
-<span id="cb186-7"><a href="ci.html#cb186-7" tabindex="-1"></a>     <span class="fu">return</span>(xx)</span>
-<span id="cb186-8"><a href="ci.html#cb186-8" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="ci.html#cb182-1" tabindex="-1"></a>SimulateParAR1 <span class="ot">&lt;-</span> <span class="cf">function</span>(m, c0, alpha, sig.sq) {</span>
+<span id="cb182-2"><a href="ci.html#cb182-2" tabindex="-1"></a>     xx <span class="ot">&lt;-</span> <span class="fu">numeric</span>(m)</span>
+<span id="cb182-3"><a href="ci.html#cb182-3" tabindex="-1"></a>     xx[<span class="dv">1</span>] <span class="ot">&lt;-</span> c0<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">-</span> alpha) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">sd=</span><span class="fu">sqrt</span>(sig.sq))</span>
+<span id="cb182-4"><a href="ci.html#cb182-4" tabindex="-1"></a>     <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>m) { </span>
+<span id="cb182-5"><a href="ci.html#cb182-5" tabindex="-1"></a>         xx[t] <span class="ot">&lt;-</span> c0 <span class="sc">+</span> alpha<span class="sc">*</span>xx[t<span class="dv">-1</span>] <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">sd=</span><span class="fu">sqrt</span>(sig.sq))</span>
+<span id="cb182-6"><a href="ci.html#cb182-6" tabindex="-1"></a>     }</span>
+<span id="cb182-7"><a href="ci.html#cb182-7" tabindex="-1"></a>     <span class="fu">return</span>(xx)</span>
+<span id="cb182-8"><a href="ci.html#cb182-8" tabindex="-1"></a>}</span></code></pre></div>
 <p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <ul>
 <li>In <code>R</code>, estimates of <span class="math inline">\(c_{0}, \alpha,\)</span> and <span class="math inline">\(\sigma^{2}\)</span> can be found by using the <code>ar</code> function. For example,</li>
 </ul>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="ci.html#cb187-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">SimulateParAR1</span>(<span class="dv">1000</span>, <span class="dv">1</span>, <span class="fl">0.8</span>, <span class="at">sig.sq=</span>.<span class="dv">25</span>)</span>
-<span id="cb187-2"><a href="ci.html#cb187-2" tabindex="-1"></a>ar1.fit <span class="ot">&lt;-</span> <span class="fu">ar</span>(x, <span class="at">aic=</span><span class="cn">FALSE</span>, <span class="at">order.max =</span> <span class="dv">1</span>, <span class="at">method=</span><span class="st">&quot;mle&quot;</span>)</span>
-<span id="cb187-3"><a href="ci.html#cb187-3" tabindex="-1"></a></span>
-<span id="cb187-4"><a href="ci.html#cb187-4" tabindex="-1"></a>c0.est <span class="ot">&lt;-</span> ar1.fit<span class="sc">$</span>x.mean<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> ar1.fit<span class="sc">$</span>ar)</span>
-<span id="cb187-5"><a href="ci.html#cb187-5" tabindex="-1"></a>alpha.est <span class="ot">&lt;-</span> ar1.fit<span class="sc">$</span>ar</span>
-<span id="cb187-6"><a href="ci.html#cb187-6" tabindex="-1"></a>sigsq.est <span class="ot">&lt;-</span> ar1.fit<span class="sc">$</span>var.pred</span></code></pre></div>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="ci.html#cb183-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">SimulateParAR1</span>(<span class="dv">1000</span>, <span class="dv">1</span>, <span class="fl">0.8</span>, <span class="at">sig.sq=</span>.<span class="dv">25</span>)</span>
+<span id="cb183-2"><a href="ci.html#cb183-2" tabindex="-1"></a>ar1.fit <span class="ot">&lt;-</span> <span class="fu">ar</span>(x, <span class="at">aic=</span><span class="cn">FALSE</span>, <span class="at">order.max =</span> <span class="dv">1</span>, <span class="at">method=</span><span class="st">&quot;mle&quot;</span>)</span>
+<span id="cb183-3"><a href="ci.html#cb183-3" tabindex="-1"></a></span>
+<span id="cb183-4"><a href="ci.html#cb183-4" tabindex="-1"></a>c0.est <span class="ot">&lt;-</span> ar1.fit<span class="sc">$</span>x.mean<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> ar1.fit<span class="sc">$</span>ar)</span>
+<span id="cb183-5"><a href="ci.html#cb183-5" tabindex="-1"></a>alpha.est <span class="ot">&lt;-</span> ar1.fit<span class="sc">$</span>ar</span>
+<span id="cb183-6"><a href="ci.html#cb183-6" tabindex="-1"></a>sigsq.est <span class="ot">&lt;-</span> ar1.fit<span class="sc">$</span>var.pred</span></code></pre></div>
 <hr />
 <ul>
 <li><p>Suppose we want to construct confidence intervals for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma\)</span> using a bootstrap method.</p></li>
@@ -515,7 +515,7 @@ more details).</p></li>
 <ul>
 <li>The <code>nhtemp</code> dataset contains the mean annual temperature in New Haven, Connecticut from the years 1912-1971</li>
 </ul>
-<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="ci.html#cb188-1" tabindex="-1"></a><span class="fu">head</span>(nhtemp)</span></code></pre></div>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="ci.html#cb184-1" tabindex="-1"></a><span class="fu">head</span>(nhtemp)</span></code></pre></div>
 <pre><code>## Time Series:
 ## Start = 1912 
 ## End = 1917 
@@ -524,38 +524,38 @@ more details).</p></li>
 <ul>
 <li>The estimated autocorrelation parameter <span class="math inline">\(\alpha\)</span> is about <span class="math inline">\(0.31\)</span> for this data</li>
 </ul>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="ci.html#cb190-1" tabindex="-1"></a>ar1.temp <span class="ot">&lt;-</span> <span class="fu">ar</span>(nhtemp, <span class="at">aic=</span><span class="cn">FALSE</span>, <span class="at">order.max =</span> <span class="dv">1</span>)</span>
-<span id="cb190-2"><a href="ci.html#cb190-2" tabindex="-1"></a>c0.hat <span class="ot">&lt;-</span> ar1.temp<span class="sc">$</span>x.mean<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> ar1.temp<span class="sc">$</span>ar)</span>
-<span id="cb190-3"><a href="ci.html#cb190-3" tabindex="-1"></a>alpha.hat <span class="ot">&lt;-</span> ar1.temp<span class="sc">$</span>ar</span>
-<span id="cb190-4"><a href="ci.html#cb190-4" tabindex="-1"></a>sigsq.hat <span class="ot">&lt;-</span> ar1.temp<span class="sc">$</span>var.pred</span>
-<span id="cb190-5"><a href="ci.html#cb190-5" tabindex="-1"></a>alpha.hat</span></code></pre></div>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="ci.html#cb186-1" tabindex="-1"></a>ar1.temp <span class="ot">&lt;-</span> <span class="fu">ar</span>(nhtemp, <span class="at">aic=</span><span class="cn">FALSE</span>, <span class="at">order.max =</span> <span class="dv">1</span>)</span>
+<span id="cb186-2"><a href="ci.html#cb186-2" tabindex="-1"></a>c0.hat <span class="ot">&lt;-</span> ar1.temp<span class="sc">$</span>x.mean<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> ar1.temp<span class="sc">$</span>ar)</span>
+<span id="cb186-3"><a href="ci.html#cb186-3" tabindex="-1"></a>alpha.hat <span class="ot">&lt;-</span> ar1.temp<span class="sc">$</span>ar</span>
+<span id="cb186-4"><a href="ci.html#cb186-4" tabindex="-1"></a>sigsq.hat <span class="ot">&lt;-</span> ar1.temp<span class="sc">$</span>var.pred</span>
+<span id="cb186-5"><a href="ci.html#cb186-5" tabindex="-1"></a>alpha.hat</span></code></pre></div>
 <pre><code>## [1] 0.3148269</code></pre>
 <ul>
 <li>Now, that we have estimated all the parameter of the AR(1) model, we can run our parametric bootstrap for <span class="math inline">\(\hat{\alpha}\)</span> and <span class="math inline">\(\hat{\sigma}\)</span>:</li>
 </ul>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="ci.html#cb192-1" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span></span>
-<span id="cb192-2"><a href="ci.html#cb192-2" tabindex="-1"></a>alpha.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
-<span id="cb192-3"><a href="ci.html#cb192-3" tabindex="-1"></a>sigsq.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
-<span id="cb192-4"><a href="ci.html#cb192-4" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
-<span id="cb192-5"><a href="ci.html#cb192-5" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">SimulateParAR1</span>(<span class="dv">60</span>, <span class="at">c0=</span>c0.hat, <span class="at">alpha=</span>alpha.hat, <span class="at">sig.sq=</span>sigsq.hat)</span>
-<span id="cb192-6"><a href="ci.html#cb192-6" tabindex="-1"></a>  ar1.fit <span class="ot">&lt;-</span> <span class="fu">ar</span>(x, <span class="at">aic=</span><span class="cn">FALSE</span>, <span class="at">order.max =</span> <span class="dv">1</span>)</span>
-<span id="cb192-7"><a href="ci.html#cb192-7" tabindex="-1"></a>  </span>
-<span id="cb192-8"><a href="ci.html#cb192-8" tabindex="-1"></a>  alpha.boot[r] <span class="ot">&lt;-</span> ar1.fit<span class="sc">$</span>ar</span>
-<span id="cb192-9"><a href="ci.html#cb192-9" tabindex="-1"></a>  sigsq.boot[r] <span class="ot">&lt;-</span> ar1.fit<span class="sc">$</span>var.pred</span>
-<span id="cb192-10"><a href="ci.html#cb192-10" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="ci.html#cb188-1" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb188-2"><a href="ci.html#cb188-2" tabindex="-1"></a>alpha.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
+<span id="cb188-3"><a href="ci.html#cb188-3" tabindex="-1"></a>sigsq.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
+<span id="cb188-4"><a href="ci.html#cb188-4" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
+<span id="cb188-5"><a href="ci.html#cb188-5" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">SimulateParAR1</span>(<span class="dv">60</span>, <span class="at">c0=</span>c0.hat, <span class="at">alpha=</span>alpha.hat, <span class="at">sig.sq=</span>sigsq.hat)</span>
+<span id="cb188-6"><a href="ci.html#cb188-6" tabindex="-1"></a>  ar1.fit <span class="ot">&lt;-</span> <span class="fu">ar</span>(x, <span class="at">aic=</span><span class="cn">FALSE</span>, <span class="at">order.max =</span> <span class="dv">1</span>)</span>
+<span id="cb188-7"><a href="ci.html#cb188-7" tabindex="-1"></a>  </span>
+<span id="cb188-8"><a href="ci.html#cb188-8" tabindex="-1"></a>  alpha.boot[r] <span class="ot">&lt;-</span> ar1.fit<span class="sc">$</span>ar</span>
+<span id="cb188-9"><a href="ci.html#cb188-9" tabindex="-1"></a>  sigsq.boot[r] <span class="ot">&lt;-</span> ar1.fit<span class="sc">$</span>var.pred</span>
+<span id="cb188-10"><a href="ci.html#cb188-10" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
 <li>Normal bootstrap standard error confidence intervals for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma^{2}\)</span> are</li>
 </ul>
-<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="ci.html#cb193-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(alpha.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(alpha.boot), alpha.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(alpha.boot)), <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 0.078 0.551</code></pre>
-<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="ci.html#cb195-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(sigsq.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(sigsq.boot), sigsq.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(sigsq.boot)), <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 0.917 2.018</code></pre>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="ci.html#cb189-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(alpha.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(alpha.boot), alpha.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(alpha.boot)), <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 0.068 0.562</code></pre>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="ci.html#cb191-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(sigsq.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(sigsq.boot), sigsq.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(sigsq.boot)), <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 0.930 2.006</code></pre>
 <ul>
 <li>We can compare our confidence interval for <span class="math inline">\(\alpha\)</span> with the confidence interval
 obtained from using a large-sample approximation:</li>
 </ul>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="ci.html#cb197-1" tabindex="-1"></a>asymp.se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(ar1.temp<span class="sc">$</span>asy.var.coef)</span>
-<span id="cb197-2"><a href="ci.html#cb197-2" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(alpha.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>asymp.se, alpha.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>asymp.se), <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="ci.html#cb193-1" tabindex="-1"></a>asymp.se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(ar1.temp<span class="sc">$</span>asy.var.coef)</span>
+<span id="cb193-2"><a href="ci.html#cb193-2" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(alpha.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>asymp.se, alpha.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>asymp.se), <span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## [1] 0.071 0.559</code></pre>
 </div>
 <div id="using-the-bootstrap-in-regression" class="section level2 hasAnchor" number="10.2">
@@ -627,38 +627,38 @@ at the kidney function data.</p></li>
 <li><p>We will look at a linear regression where the measure of kidney function is
 the outcome and age is the covariate.</p></li>
 </ul>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="ci.html#cb199-1" tabindex="-1"></a>kidney <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </span>
-<span id="cb199-2"><a href="ci.html#cb199-2" tabindex="-1"></a>                     <span class="at">header=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="ci.html#cb195-1" tabindex="-1"></a>kidney <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt&quot;</span>, </span>
+<span id="cb195-2"><a href="ci.html#cb195-2" tabindex="-1"></a>                     <span class="at">header=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <ul>
 <li>Bootstrap replications of <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> can
 be computed using the following <code>R</code> code:</li>
 </ul>
-<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="ci.html#cb200-1" tabindex="-1"></a><span class="do">## First find the parameter estimates</span></span>
-<span id="cb200-2"><a href="ci.html#cb200-2" tabindex="-1"></a>lm.kidney <span class="ot">&lt;-</span> <span class="fu">lm</span>(tot <span class="sc">~</span> age, <span class="at">data=</span>kidney)</span>
-<span id="cb200-3"><a href="ci.html#cb200-3" tabindex="-1"></a>beta0.hat <span class="ot">&lt;-</span> lm.kidney<span class="sc">$</span>coef[<span class="dv">1</span>]</span>
-<span id="cb200-4"><a href="ci.html#cb200-4" tabindex="-1"></a>beta1.hat <span class="ot">&lt;-</span> lm.kidney<span class="sc">$</span>coef[<span class="dv">2</span>]</span>
-<span id="cb200-5"><a href="ci.html#cb200-5" tabindex="-1"></a>sigsq.hat <span class="ot">&lt;-</span> <span class="fu">sum</span>(lm.kidney<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="dv">157</span> <span class="sc">-</span> <span class="dv">2</span>)</span>
-<span id="cb200-6"><a href="ci.html#cb200-6" tabindex="-1"></a></span>
-<span id="cb200-7"><a href="ci.html#cb200-7" tabindex="-1"></a><span class="do">## Using these estimates, run a parametric bootstrap to generate</span></span>
-<span id="cb200-8"><a href="ci.html#cb200-8" tabindex="-1"></a><span class="do">## bootstrap replications of beta0.hat and beta1.hat</span></span>
-<span id="cb200-9"><a href="ci.html#cb200-9" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span></span>
-<span id="cb200-10"><a href="ci.html#cb200-10" tabindex="-1"></a>beta0.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
-<span id="cb200-11"><a href="ci.html#cb200-11" tabindex="-1"></a>beta1.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
-<span id="cb200-12"><a href="ci.html#cb200-12" tabindex="-1"></a>se.beta0.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
-<span id="cb200-13"><a href="ci.html#cb200-13" tabindex="-1"></a>se.beta1.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
-<span id="cb200-14"><a href="ci.html#cb200-14" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
-<span id="cb200-15"><a href="ci.html#cb200-15" tabindex="-1"></a>  ysim <span class="ot">&lt;-</span> beta0.hat <span class="sc">+</span> beta1.hat<span class="sc">*</span>kidney<span class="sc">$</span>age <span class="sc">+</span> <span class="fu">sqrt</span>(sigsq.hat<span class="sc">/</span><span class="dv">3</span>)<span class="sc">*</span><span class="fu">rt</span>(<span class="dv">157</span>, <span class="at">df=</span><span class="dv">3</span>)</span>
-<span id="cb200-16"><a href="ci.html#cb200-16" tabindex="-1"></a>  lm.boot <span class="ot">&lt;-</span> <span class="fu">lm</span>(ysim <span class="sc">~</span> kidney<span class="sc">$</span>age)</span>
-<span id="cb200-17"><a href="ci.html#cb200-17" tabindex="-1"></a>  </span>
-<span id="cb200-18"><a href="ci.html#cb200-18" tabindex="-1"></a>  beta0.boot[r] <span class="ot">&lt;-</span> lm.boot<span class="sc">$</span>coef[<span class="dv">1</span>]</span>
-<span id="cb200-19"><a href="ci.html#cb200-19" tabindex="-1"></a>  beta1.boot[r] <span class="ot">&lt;-</span> lm.boot<span class="sc">$</span>coef[<span class="dv">2</span>]</span>
-<span id="cb200-20"><a href="ci.html#cb200-20" tabindex="-1"></a>  </span>
-<span id="cb200-21"><a href="ci.html#cb200-21" tabindex="-1"></a>  <span class="do">## This code can be used to find the standard errors from this bootstrap sample</span></span>
-<span id="cb200-22"><a href="ci.html#cb200-22" tabindex="-1"></a>  sig.hatr <span class="ot">&lt;-</span> <span class="fu">summary</span>(lm.boot)<span class="sc">$</span>sigma</span>
-<span id="cb200-23"><a href="ci.html#cb200-23" tabindex="-1"></a>  se.beta0.boot[r] <span class="ot">&lt;-</span> sig.hatr<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">1</span>,<span class="dv">1</span>])</span>
-<span id="cb200-24"><a href="ci.html#cb200-24" tabindex="-1"></a>  se.beta1.boot[r] <span class="ot">&lt;-</span> sig.hatr<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">2</span>,<span class="dv">2</span>])</span>
-<span id="cb200-25"><a href="ci.html#cb200-25" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="ci.html#cb196-1" tabindex="-1"></a><span class="do">## First find the parameter estimates</span></span>
+<span id="cb196-2"><a href="ci.html#cb196-2" tabindex="-1"></a>lm.kidney <span class="ot">&lt;-</span> <span class="fu">lm</span>(tot <span class="sc">~</span> age, <span class="at">data=</span>kidney)</span>
+<span id="cb196-3"><a href="ci.html#cb196-3" tabindex="-1"></a>beta0.hat <span class="ot">&lt;-</span> lm.kidney<span class="sc">$</span>coef[<span class="dv">1</span>]</span>
+<span id="cb196-4"><a href="ci.html#cb196-4" tabindex="-1"></a>beta1.hat <span class="ot">&lt;-</span> lm.kidney<span class="sc">$</span>coef[<span class="dv">2</span>]</span>
+<span id="cb196-5"><a href="ci.html#cb196-5" tabindex="-1"></a>sigsq.hat <span class="ot">&lt;-</span> <span class="fu">sum</span>(lm.kidney<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="dv">157</span> <span class="sc">-</span> <span class="dv">2</span>)</span>
+<span id="cb196-6"><a href="ci.html#cb196-6" tabindex="-1"></a></span>
+<span id="cb196-7"><a href="ci.html#cb196-7" tabindex="-1"></a><span class="do">## Using these estimates, run a parametric bootstrap to generate</span></span>
+<span id="cb196-8"><a href="ci.html#cb196-8" tabindex="-1"></a><span class="do">## bootstrap replications of beta0.hat and beta1.hat</span></span>
+<span id="cb196-9"><a href="ci.html#cb196-9" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb196-10"><a href="ci.html#cb196-10" tabindex="-1"></a>beta0.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
+<span id="cb196-11"><a href="ci.html#cb196-11" tabindex="-1"></a>beta1.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
+<span id="cb196-12"><a href="ci.html#cb196-12" tabindex="-1"></a>se.beta0.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
+<span id="cb196-13"><a href="ci.html#cb196-13" tabindex="-1"></a>se.beta1.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
+<span id="cb196-14"><a href="ci.html#cb196-14" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
+<span id="cb196-15"><a href="ci.html#cb196-15" tabindex="-1"></a>  ysim <span class="ot">&lt;-</span> beta0.hat <span class="sc">+</span> beta1.hat<span class="sc">*</span>kidney<span class="sc">$</span>age <span class="sc">+</span> <span class="fu">sqrt</span>(sigsq.hat<span class="sc">/</span><span class="dv">3</span>)<span class="sc">*</span><span class="fu">rt</span>(<span class="dv">157</span>, <span class="at">df=</span><span class="dv">3</span>)</span>
+<span id="cb196-16"><a href="ci.html#cb196-16" tabindex="-1"></a>  lm.boot <span class="ot">&lt;-</span> <span class="fu">lm</span>(ysim <span class="sc">~</span> kidney<span class="sc">$</span>age)</span>
+<span id="cb196-17"><a href="ci.html#cb196-17" tabindex="-1"></a>  </span>
+<span id="cb196-18"><a href="ci.html#cb196-18" tabindex="-1"></a>  beta0.boot[r] <span class="ot">&lt;-</span> lm.boot<span class="sc">$</span>coef[<span class="dv">1</span>]</span>
+<span id="cb196-19"><a href="ci.html#cb196-19" tabindex="-1"></a>  beta1.boot[r] <span class="ot">&lt;-</span> lm.boot<span class="sc">$</span>coef[<span class="dv">2</span>]</span>
+<span id="cb196-20"><a href="ci.html#cb196-20" tabindex="-1"></a>  </span>
+<span id="cb196-21"><a href="ci.html#cb196-21" tabindex="-1"></a>  <span class="do">## This code can be used to find the standard errors from this bootstrap sample</span></span>
+<span id="cb196-22"><a href="ci.html#cb196-22" tabindex="-1"></a>  sig.hatr <span class="ot">&lt;-</span> <span class="fu">summary</span>(lm.boot)<span class="sc">$</span>sigma</span>
+<span id="cb196-23"><a href="ci.html#cb196-23" tabindex="-1"></a>  se.beta0.boot[r] <span class="ot">&lt;-</span> sig.hatr<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">1</span>,<span class="dv">1</span>])</span>
+<span id="cb196-24"><a href="ci.html#cb196-24" tabindex="-1"></a>  se.beta1.boot[r] <span class="ot">&lt;-</span> sig.hatr<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">2</span>,<span class="dv">2</span>])</span>
+<span id="cb196-25"><a href="ci.html#cb196-25" tabindex="-1"></a>}</span></code></pre></div>
 <hr />
 <ul>
 <li><p>Because we have the formulas for the standard errors of <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span>,
@@ -678,30 +678,30 @@ we can use studentized bootstrap confidence intervals without using the double b
 <ul>
 <li><code>R</code> code to compute the studentized confidence intervals is given below:</li>
 </ul>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="ci.html#cb201-1" tabindex="-1"></a><span class="do">## First get estimates of the standard error of our estimates</span></span>
-<span id="cb201-2"><a href="ci.html#cb201-2" tabindex="-1"></a><span class="do">## I use the formulas for the regression standard errors, but</span></span>
-<span id="cb201-3"><a href="ci.html#cb201-3" tabindex="-1"></a><span class="do">## we could have used a bootstrap estimate.</span></span>
-<span id="cb201-4"><a href="ci.html#cb201-4" tabindex="-1"></a>se.est0 <span class="ot">&lt;-</span> <span class="fu">summary</span>(lm.kidney)<span class="sc">$</span>sigma<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">1</span>,<span class="dv">1</span>])</span>
-<span id="cb201-5"><a href="ci.html#cb201-5" tabindex="-1"></a>se.est1 <span class="ot">&lt;-</span> <span class="fu">summary</span>(lm.kidney)<span class="sc">$</span>sigma<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">2</span>,<span class="dv">2</span>])</span>
-<span id="cb201-6"><a href="ci.html#cb201-6" tabindex="-1"></a></span>
-<span id="cb201-7"><a href="ci.html#cb201-7" tabindex="-1"></a>stu.quants0 <span class="ot">&lt;-</span> <span class="fu">quantile</span>( (beta0.boot <span class="sc">-</span> beta0.hat)<span class="sc">/</span>se.beta0.boot, <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
-<span id="cb201-8"><a href="ci.html#cb201-8" tabindex="-1"></a>stu.quants1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>( (beta1.boot <span class="sc">-</span> beta1.hat)<span class="sc">/</span>se.beta1.boot, <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="ci.html#cb197-1" tabindex="-1"></a><span class="do">## First get estimates of the standard error of our estimates</span></span>
+<span id="cb197-2"><a href="ci.html#cb197-2" tabindex="-1"></a><span class="do">## I use the formulas for the regression standard errors, but</span></span>
+<span id="cb197-3"><a href="ci.html#cb197-3" tabindex="-1"></a><span class="do">## we could have used a bootstrap estimate.</span></span>
+<span id="cb197-4"><a href="ci.html#cb197-4" tabindex="-1"></a>se.est0 <span class="ot">&lt;-</span> <span class="fu">summary</span>(lm.kidney)<span class="sc">$</span>sigma<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">1</span>,<span class="dv">1</span>])</span>
+<span id="cb197-5"><a href="ci.html#cb197-5" tabindex="-1"></a>se.est1 <span class="ot">&lt;-</span> <span class="fu">summary</span>(lm.kidney)<span class="sc">$</span>sigma<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">2</span>,<span class="dv">2</span>])</span>
+<span id="cb197-6"><a href="ci.html#cb197-6" tabindex="-1"></a></span>
+<span id="cb197-7"><a href="ci.html#cb197-7" tabindex="-1"></a>stu.quants0 <span class="ot">&lt;-</span> <span class="fu">quantile</span>( (beta0.boot <span class="sc">-</span> beta0.hat)<span class="sc">/</span>se.beta0.boot, <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb197-8"><a href="ci.html#cb197-8" tabindex="-1"></a>stu.quants1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>( (beta1.boot <span class="sc">-</span> beta1.hat)<span class="sc">/</span>se.beta1.boot, <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code></pre></div>
 <ul>
 <li>The studentized bootstrap confidence intervals are then</li>
 </ul>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="ci.html#cb202-1" tabindex="-1"></a><span class="do">## Confidence interval for beta0</span></span>
-<span id="cb202-2"><a href="ci.html#cb202-2" tabindex="-1"></a><span class="fu">c</span>(beta0.hat <span class="sc">-</span> stu.quants0[<span class="dv">2</span>]<span class="sc">*</span>se.est0, beta0.hat <span class="sc">-</span> stu.quants0[<span class="dv">1</span>]<span class="sc">*</span>se.est0)</span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="ci.html#cb198-1" tabindex="-1"></a><span class="do">## Confidence interval for beta0</span></span>
+<span id="cb198-2"><a href="ci.html#cb198-2" tabindex="-1"></a><span class="fu">c</span>(beta0.hat <span class="sc">-</span> stu.quants0[<span class="dv">2</span>]<span class="sc">*</span>se.est0, beta0.hat <span class="sc">-</span> stu.quants0[<span class="dv">1</span>]<span class="sc">*</span>se.est0)</span></code></pre></div>
 <pre><code>## (Intercept) (Intercept) 
-##        2.12        3.56</code></pre>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="ci.html#cb204-1" tabindex="-1"></a><span class="do">## Confidence interval for beta1</span></span>
-<span id="cb204-2"><a href="ci.html#cb204-2" tabindex="-1"></a><span class="fu">c</span>(beta1.hat <span class="sc">-</span> stu.quants1[<span class="dv">2</span>]<span class="sc">*</span>se.est1, beta1.hat <span class="sc">-</span> stu.quants1[<span class="dv">1</span>]<span class="sc">*</span>se.est1)</span></code></pre></div>
+##        2.15        3.55</code></pre>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="ci.html#cb200-1" tabindex="-1"></a><span class="do">## Confidence interval for beta1</span></span>
+<span id="cb200-2"><a href="ci.html#cb200-2" tabindex="-1"></a><span class="fu">c</span>(beta1.hat <span class="sc">-</span> stu.quants1[<span class="dv">2</span>]<span class="sc">*</span>se.est1, beta1.hat <span class="sc">-</span> stu.quants1[<span class="dv">1</span>]<span class="sc">*</span>se.est1)</span></code></pre></div>
 <pre><code>##     age     age 
-## -0.0963 -0.0592</code></pre>
+## -0.0983 -0.0603</code></pre>
 <ul>
 <li>Compare these studentized bootstrap confidence intervals with the confidence
 intervals computed under the normality assumption for the residuals:</li>
 </ul>
-<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="ci.html#cb206-1" tabindex="-1"></a><span class="fu">confint</span>(lm.kidney)</span></code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="ci.html#cb202-1" tabindex="-1"></a><span class="fu">confint</span>(lm.kidney)</span></code></pre></div>
 <pre><code>##               2.5 %  97.5 %
 ## (Intercept)  2.1497  3.5703
 ## age         -0.0965 -0.0607</code></pre>
@@ -755,45 +755,45 @@ and <span class="math inline">\(\hat{\beta}_{1}\)</span>, we just use the follow
 </ul></li>
 <li><p><code>R</code> code for generating these bootstrap replications for the <code>kidney</code> data is below:</p></li>
 </ul>
-<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="ci.html#cb208-1" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span></span>
-<span id="cb208-2"><a href="ci.html#cb208-2" tabindex="-1"></a>beta0.boot.np <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
-<span id="cb208-3"><a href="ci.html#cb208-3" tabindex="-1"></a>beta1.boot.np <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
-<span id="cb208-4"><a href="ci.html#cb208-4" tabindex="-1"></a>se.beta0.boot.np <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
-<span id="cb208-5"><a href="ci.html#cb208-5" tabindex="-1"></a>se.beta1.boot.np <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
-<span id="cb208-6"><a href="ci.html#cb208-6" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
-<span id="cb208-7"><a href="ci.html#cb208-7" tabindex="-1"></a>  subsamp.ind <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">157</span>, <span class="at">size=</span><span class="dv">157</span>, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
-<span id="cb208-8"><a href="ci.html#cb208-8" tabindex="-1"></a>  kidney.tmp <span class="ot">&lt;-</span> kidney[subsamp.ind,]</span>
-<span id="cb208-9"><a href="ci.html#cb208-9" tabindex="-1"></a>  lm.boot <span class="ot">&lt;-</span> <span class="fu">lm</span>(tot <span class="sc">~</span> age, <span class="at">data=</span>kidney.tmp)</span>
-<span id="cb208-10"><a href="ci.html#cb208-10" tabindex="-1"></a>  </span>
-<span id="cb208-11"><a href="ci.html#cb208-11" tabindex="-1"></a>  beta0.boot.np[r] <span class="ot">&lt;-</span> lm.boot<span class="sc">$</span>coef[<span class="dv">1</span>]</span>
-<span id="cb208-12"><a href="ci.html#cb208-12" tabindex="-1"></a>  beta1.boot.np[r] <span class="ot">&lt;-</span> lm.boot<span class="sc">$</span>coef[<span class="dv">2</span>]</span>
-<span id="cb208-13"><a href="ci.html#cb208-13" tabindex="-1"></a>  </span>
-<span id="cb208-14"><a href="ci.html#cb208-14" tabindex="-1"></a>  <span class="do">## This code can be used to find the standard errors from this bootstrap sample</span></span>
-<span id="cb208-15"><a href="ci.html#cb208-15" tabindex="-1"></a>  sig.hatr <span class="ot">&lt;-</span> <span class="fu">summary</span>(lm.boot)<span class="sc">$</span>sigma</span>
-<span id="cb208-16"><a href="ci.html#cb208-16" tabindex="-1"></a>  se.beta0.boot.np[r] <span class="ot">&lt;-</span> sig.hatr<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">1</span>,<span class="dv">1</span>])</span>
-<span id="cb208-17"><a href="ci.html#cb208-17" tabindex="-1"></a>  se.beta1.boot.np[r] <span class="ot">&lt;-</span> sig.hatr<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">2</span>,<span class="dv">2</span>])</span>
-<span id="cb208-18"><a href="ci.html#cb208-18" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="ci.html#cb204-1" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb204-2"><a href="ci.html#cb204-2" tabindex="-1"></a>beta0.boot.np <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
+<span id="cb204-3"><a href="ci.html#cb204-3" tabindex="-1"></a>beta1.boot.np <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
+<span id="cb204-4"><a href="ci.html#cb204-4" tabindex="-1"></a>se.beta0.boot.np <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
+<span id="cb204-5"><a href="ci.html#cb204-5" tabindex="-1"></a>se.beta1.boot.np <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
+<span id="cb204-6"><a href="ci.html#cb204-6" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
+<span id="cb204-7"><a href="ci.html#cb204-7" tabindex="-1"></a>  subsamp.ind <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">157</span>, <span class="at">size=</span><span class="dv">157</span>, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb204-8"><a href="ci.html#cb204-8" tabindex="-1"></a>  kidney.tmp <span class="ot">&lt;-</span> kidney[subsamp.ind,]</span>
+<span id="cb204-9"><a href="ci.html#cb204-9" tabindex="-1"></a>  lm.boot <span class="ot">&lt;-</span> <span class="fu">lm</span>(tot <span class="sc">~</span> age, <span class="at">data=</span>kidney.tmp)</span>
+<span id="cb204-10"><a href="ci.html#cb204-10" tabindex="-1"></a>  </span>
+<span id="cb204-11"><a href="ci.html#cb204-11" tabindex="-1"></a>  beta0.boot.np[r] <span class="ot">&lt;-</span> lm.boot<span class="sc">$</span>coef[<span class="dv">1</span>]</span>
+<span id="cb204-12"><a href="ci.html#cb204-12" tabindex="-1"></a>  beta1.boot.np[r] <span class="ot">&lt;-</span> lm.boot<span class="sc">$</span>coef[<span class="dv">2</span>]</span>
+<span id="cb204-13"><a href="ci.html#cb204-13" tabindex="-1"></a>  </span>
+<span id="cb204-14"><a href="ci.html#cb204-14" tabindex="-1"></a>  <span class="do">## This code can be used to find the standard errors from this bootstrap sample</span></span>
+<span id="cb204-15"><a href="ci.html#cb204-15" tabindex="-1"></a>  sig.hatr <span class="ot">&lt;-</span> <span class="fu">summary</span>(lm.boot)<span class="sc">$</span>sigma</span>
+<span id="cb204-16"><a href="ci.html#cb204-16" tabindex="-1"></a>  se.beta0.boot.np[r] <span class="ot">&lt;-</span> sig.hatr<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">1</span>,<span class="dv">1</span>])</span>
+<span id="cb204-17"><a href="ci.html#cb204-17" tabindex="-1"></a>  se.beta1.boot.np[r] <span class="ot">&lt;-</span> sig.hatr<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">2</span>,<span class="dv">2</span>])</span>
+<span id="cb204-18"><a href="ci.html#cb204-18" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
 <li>To find the studentized confidence intervals for this nonparametric bootstrap, we can use the following code:</li>
 </ul>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="ci.html#cb209-1" tabindex="-1"></a>se.est0 <span class="ot">&lt;-</span> <span class="fu">summary</span>(lm.kidney)<span class="sc">$</span>sigma<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">1</span>,<span class="dv">1</span>])</span>
-<span id="cb209-2"><a href="ci.html#cb209-2" tabindex="-1"></a>se.est1 <span class="ot">&lt;-</span> <span class="fu">summary</span>(lm.kidney)<span class="sc">$</span>sigma<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">2</span>,<span class="dv">2</span>])</span>
-<span id="cb209-3"><a href="ci.html#cb209-3" tabindex="-1"></a></span>
-<span id="cb209-4"><a href="ci.html#cb209-4" tabindex="-1"></a>stu.quants0.np <span class="ot">&lt;-</span> <span class="fu">quantile</span>( (beta0.boot.np <span class="sc">-</span> beta0.hat)<span class="sc">/</span>se.beta0.boot.np, </span>
-<span id="cb209-5"><a href="ci.html#cb209-5" tabindex="-1"></a>                            <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
-<span id="cb209-6"><a href="ci.html#cb209-6" tabindex="-1"></a>stu.quants1.np <span class="ot">&lt;-</span> <span class="fu">quantile</span>( (beta1.boot.np <span class="sc">-</span> beta1.hat)<span class="sc">/</span>se.beta1.boot.np, </span>
-<span id="cb209-7"><a href="ci.html#cb209-7" tabindex="-1"></a>                            <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="ci.html#cb205-1" tabindex="-1"></a>se.est0 <span class="ot">&lt;-</span> <span class="fu">summary</span>(lm.kidney)<span class="sc">$</span>sigma<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">1</span>,<span class="dv">1</span>])</span>
+<span id="cb205-2"><a href="ci.html#cb205-2" tabindex="-1"></a>se.est1 <span class="ot">&lt;-</span> <span class="fu">summary</span>(lm.kidney)<span class="sc">$</span>sigma<span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">summary</span>(lm.boot)<span class="sc">$</span>cov.unscaled[<span class="dv">2</span>,<span class="dv">2</span>])</span>
+<span id="cb205-3"><a href="ci.html#cb205-3" tabindex="-1"></a></span>
+<span id="cb205-4"><a href="ci.html#cb205-4" tabindex="-1"></a>stu.quants0.np <span class="ot">&lt;-</span> <span class="fu">quantile</span>( (beta0.boot.np <span class="sc">-</span> beta0.hat)<span class="sc">/</span>se.beta0.boot.np, </span>
+<span id="cb205-5"><a href="ci.html#cb205-5" tabindex="-1"></a>                            <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb205-6"><a href="ci.html#cb205-6" tabindex="-1"></a>stu.quants1.np <span class="ot">&lt;-</span> <span class="fu">quantile</span>( (beta1.boot.np <span class="sc">-</span> beta1.hat)<span class="sc">/</span>se.beta1.boot.np, </span>
+<span id="cb205-7"><a href="ci.html#cb205-7" tabindex="-1"></a>                            <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code></pre></div>
 <ul>
 <li>The studentized bootstrap confidence intervals for <span class="math inline">\(\beta_{0}\)</span> and <span class="math inline">\(\beta_{1}\)</span> are then</li>
 </ul>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="ci.html#cb210-1" tabindex="-1"></a><span class="do">## Confidence interval for beta0</span></span>
-<span id="cb210-2"><a href="ci.html#cb210-2" tabindex="-1"></a><span class="fu">c</span>(beta0.hat <span class="sc">-</span> stu.quants0.np[<span class="dv">2</span>]<span class="sc">*</span>se.est0, beta0.hat <span class="sc">-</span> stu.quants0.np[<span class="dv">1</span>]<span class="sc">*</span>se.est0)</span></code></pre></div>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="ci.html#cb206-1" tabindex="-1"></a><span class="do">## Confidence interval for beta0</span></span>
+<span id="cb206-2"><a href="ci.html#cb206-2" tabindex="-1"></a><span class="fu">c</span>(beta0.hat <span class="sc">-</span> stu.quants0.np[<span class="dv">2</span>]<span class="sc">*</span>se.est0, beta0.hat <span class="sc">-</span> stu.quants0.np[<span class="dv">1</span>]<span class="sc">*</span>se.est0)</span></code></pre></div>
 <pre><code>## (Intercept) (Intercept) 
-##        2.15        3.47</code></pre>
-<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="ci.html#cb212-1" tabindex="-1"></a><span class="do">## Confidence interval for beta1</span></span>
-<span id="cb212-2"><a href="ci.html#cb212-2" tabindex="-1"></a><span class="fu">c</span>(beta1.hat <span class="sc">-</span> stu.quants1.np[<span class="dv">2</span>]<span class="sc">*</span>se.est1, beta1.hat <span class="sc">-</span> stu.quants1.np[<span class="dv">1</span>]<span class="sc">*</span>se.est1)</span></code></pre></div>
+##        2.17        3.55</code></pre>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="ci.html#cb208-1" tabindex="-1"></a><span class="do">## Confidence interval for beta1</span></span>
+<span id="cb208-2"><a href="ci.html#cb208-2" tabindex="-1"></a><span class="fu">c</span>(beta1.hat <span class="sc">-</span> stu.quants1.np[<span class="dv">2</span>]<span class="sc">*</span>se.est1, beta1.hat <span class="sc">-</span> stu.quants1.np[<span class="dv">1</span>]<span class="sc">*</span>se.est1)</span></code></pre></div>
 <pre><code>##     age     age 
-## -0.0974 -0.0596</code></pre>
+## -0.0981 -0.0596</code></pre>
 <hr />
 <ul>
 <li><strong>Exercise 10.2</strong> Another way of using the bootstrap in a regression context
@@ -876,16 +876,16 @@ discussed, for example, in <span class="citation">Chen (<a href="#ref-chen2017tu
 <ul>
 <li><code>R</code> code to compute these standard error estimates for the <code>sysBP</code> variable from the <code>framingham</code> dataset is given below</li>
 </ul>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="ci.html#cb214-1" tabindex="-1"></a>framingham <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/framingham.csv&quot;</span>)</span>
-<span id="cb214-2"><a href="ci.html#cb214-2" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span></span>
-<span id="cb214-3"><a href="ci.html#cb214-3" tabindex="-1"></a>BootMat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow=</span>R, <span class="at">ncol=</span><span class="dv">4</span>)</span>
-<span id="cb214-4"><a href="ci.html#cb214-4" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
-<span id="cb214-5"><a href="ci.html#cb214-5" tabindex="-1"></a>    xx.boot <span class="ot">&lt;-</span> <span class="fu">sample</span>(framingham<span class="sc">$</span>sysBP, <span class="at">size=</span><span class="fu">length</span>(framingham<span class="sc">$</span>sysBP), <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
-<span id="cb214-6"><a href="ci.html#cb214-6" tabindex="-1"></a>    kk.boot <span class="ot">&lt;-</span> <span class="fu">density</span>(xx.boot)</span>
-<span id="cb214-7"><a href="ci.html#cb214-7" tabindex="-1"></a>    tmp <span class="ot">&lt;-</span> <span class="fu">approxfun</span>(kk.boot<span class="sc">$</span>x, kk.boot<span class="sc">$</span>y)</span>
-<span id="cb214-8"><a href="ci.html#cb214-8" tabindex="-1"></a>    BootMat[r,] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">tmp</span>(<span class="dv">100</span>), <span class="fu">tmp</span>(<span class="dv">125</span>), <span class="fu">tmp</span>(<span class="dv">150</span>), <span class="fu">tmp</span>(<span class="dv">175</span>))</span>
-<span id="cb214-9"><a href="ci.html#cb214-9" tabindex="-1"></a>}</span>
-<span id="cb214-10"><a href="ci.html#cb214-10" tabindex="-1"></a>bb <span class="ot">&lt;-</span> <span class="fu">apply</span>(BootMat, <span class="dv">2</span>, sd)</span></code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="ci.html#cb210-1" tabindex="-1"></a>framingham <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/framingham.csv&quot;</span>)</span>
+<span id="cb210-2"><a href="ci.html#cb210-2" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb210-3"><a href="ci.html#cb210-3" tabindex="-1"></a>BootMat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow=</span>R, <span class="at">ncol=</span><span class="dv">4</span>)</span>
+<span id="cb210-4"><a href="ci.html#cb210-4" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
+<span id="cb210-5"><a href="ci.html#cb210-5" tabindex="-1"></a>    xx.boot <span class="ot">&lt;-</span> <span class="fu">sample</span>(framingham<span class="sc">$</span>sysBP, <span class="at">size=</span><span class="fu">length</span>(framingham<span class="sc">$</span>sysBP), <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb210-6"><a href="ci.html#cb210-6" tabindex="-1"></a>    kk.boot <span class="ot">&lt;-</span> <span class="fu">density</span>(xx.boot)</span>
+<span id="cb210-7"><a href="ci.html#cb210-7" tabindex="-1"></a>    tmp <span class="ot">&lt;-</span> <span class="fu">approxfun</span>(kk.boot<span class="sc">$</span>x, kk.boot<span class="sc">$</span>y)</span>
+<span id="cb210-8"><a href="ci.html#cb210-8" tabindex="-1"></a>    BootMat[r,] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">tmp</span>(<span class="dv">100</span>), <span class="fu">tmp</span>(<span class="dv">125</span>), <span class="fu">tmp</span>(<span class="dv">150</span>), <span class="fu">tmp</span>(<span class="dv">175</span>))</span>
+<span id="cb210-9"><a href="ci.html#cb210-9" tabindex="-1"></a>}</span>
+<span id="cb210-10"><a href="ci.html#cb210-10" tabindex="-1"></a>bb <span class="ot">&lt;-</span> <span class="fu">apply</span>(BootMat, <span class="dv">2</span>, sd)</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:unnamed-chunk-21"></span>
 <img src="10-confidence-intervals_files/figure-html/unnamed-chunk-21-1.png" alt="Bootstrap confidence intervals for the density function at the points x=100, 125, 150, 175" width="672" />
 <p class="caption">
@@ -937,34 +937,34 @@ a shifted Exponential distribution with <span class="math inline">\(\lambda = 1/
 <li><p>The following code can estimate the coverage proportion of a bootstrap
 confidence interval for <span class="math inline">\(\eta\)</span>:</p></li>
 </ul>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="ci.html#cb215-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
-<span id="cb215-2"><a href="ci.html#cb215-2" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span></span>
-<span id="cb215-3"><a href="ci.html#cb215-3" tabindex="-1"></a>eta.true <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb215-4"><a href="ci.html#cb215-4" tabindex="-1"></a></span>
-<span id="cb215-5"><a href="ci.html#cb215-5" tabindex="-1"></a>nreps <span class="ot">&lt;-</span> <span class="dv">500</span></span>
-<span id="cb215-6"><a href="ci.html#cb215-6" tabindex="-1"></a>Cover.bootsd.ci <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nreps)</span>
-<span id="cb215-7"><a href="ci.html#cb215-7" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nreps)  {</span>
-<span id="cb215-8"><a href="ci.html#cb215-8" tabindex="-1"></a>  <span class="do">## Step 1: Generate the Data and compute the estimate of eta</span></span>
-<span id="cb215-9"><a href="ci.html#cb215-9" tabindex="-1"></a>  xx <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fu">rexp</span>(n, <span class="at">rate=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>) </span>
-<span id="cb215-10"><a href="ci.html#cb215-10" tabindex="-1"></a>  eta.hat <span class="ot">&lt;-</span> <span class="fu">min</span>(xx)</span>
-<span id="cb215-11"><a href="ci.html#cb215-11" tabindex="-1"></a>  </span>
-<span id="cb215-12"><a href="ci.html#cb215-12" tabindex="-1"></a>  <span class="do">## Step 2: Find bootstrap confidence intervals using R bootstrap replications</span></span>
-<span id="cb215-13"><a href="ci.html#cb215-13" tabindex="-1"></a>  eta.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
-<span id="cb215-14"><a href="ci.html#cb215-14" tabindex="-1"></a>  <span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R)   {</span>
-<span id="cb215-15"><a href="ci.html#cb215-15" tabindex="-1"></a>    boot.xx <span class="ot">&lt;-</span> <span class="fu">sample</span>(xx, <span class="at">size=</span>n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb215-16"><a href="ci.html#cb215-16" tabindex="-1"></a>    eta.boot[r] <span class="ot">&lt;-</span> <span class="fu">min</span>(boot.xx)</span>
-<span id="cb215-17"><a href="ci.html#cb215-17" tabindex="-1"></a>  }</span>
-<span id="cb215-18"><a href="ci.html#cb215-18" tabindex="-1"></a>  boot.ci.sd <span class="ot">&lt;-</span> <span class="fu">c</span>(eta.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(eta.boot), eta.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(eta.boot))</span>
-<span id="cb215-19"><a href="ci.html#cb215-19" tabindex="-1"></a>  </span>
-<span id="cb215-20"><a href="ci.html#cb215-20" tabindex="-1"></a>  <span class="do">## Step 3: Record if the true parameter is covered or not:</span></span>
-<span id="cb215-21"><a href="ci.html#cb215-21" tabindex="-1"></a>  Cover.bootsd.ci[k] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(boot.ci.sd[<span class="dv">1</span>] <span class="sc">&lt;</span> eta.true <span class="sc">&amp;</span> boot.ci.sd[<span class="dv">2</span>] <span class="sc">&gt;=</span> eta.true, </span>
-<span id="cb215-22"><a href="ci.html#cb215-22" tabindex="-1"></a>                               <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb215-23"><a href="ci.html#cb215-23" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="ci.html#cb211-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb211-2"><a href="ci.html#cb211-2" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb211-3"><a href="ci.html#cb211-3" tabindex="-1"></a>eta.true <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb211-4"><a href="ci.html#cb211-4" tabindex="-1"></a></span>
+<span id="cb211-5"><a href="ci.html#cb211-5" tabindex="-1"></a>nreps <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb211-6"><a href="ci.html#cb211-6" tabindex="-1"></a>Cover.bootsd.ci <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nreps)</span>
+<span id="cb211-7"><a href="ci.html#cb211-7" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nreps)  {</span>
+<span id="cb211-8"><a href="ci.html#cb211-8" tabindex="-1"></a>  <span class="do">## Step 1: Generate the Data and compute the estimate of eta</span></span>
+<span id="cb211-9"><a href="ci.html#cb211-9" tabindex="-1"></a>  xx <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fu">rexp</span>(n, <span class="at">rate=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>) </span>
+<span id="cb211-10"><a href="ci.html#cb211-10" tabindex="-1"></a>  eta.hat <span class="ot">&lt;-</span> <span class="fu">min</span>(xx)</span>
+<span id="cb211-11"><a href="ci.html#cb211-11" tabindex="-1"></a>  </span>
+<span id="cb211-12"><a href="ci.html#cb211-12" tabindex="-1"></a>  <span class="do">## Step 2: Find bootstrap confidence intervals using R bootstrap replications</span></span>
+<span id="cb211-13"><a href="ci.html#cb211-13" tabindex="-1"></a>  eta.boot <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)</span>
+<span id="cb211-14"><a href="ci.html#cb211-14" tabindex="-1"></a>  <span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R)   {</span>
+<span id="cb211-15"><a href="ci.html#cb211-15" tabindex="-1"></a>    boot.xx <span class="ot">&lt;-</span> <span class="fu">sample</span>(xx, <span class="at">size=</span>n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb211-16"><a href="ci.html#cb211-16" tabindex="-1"></a>    eta.boot[r] <span class="ot">&lt;-</span> <span class="fu">min</span>(boot.xx)</span>
+<span id="cb211-17"><a href="ci.html#cb211-17" tabindex="-1"></a>  }</span>
+<span id="cb211-18"><a href="ci.html#cb211-18" tabindex="-1"></a>  boot.ci.sd <span class="ot">&lt;-</span> <span class="fu">c</span>(eta.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(eta.boot), eta.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(eta.boot))</span>
+<span id="cb211-19"><a href="ci.html#cb211-19" tabindex="-1"></a>  </span>
+<span id="cb211-20"><a href="ci.html#cb211-20" tabindex="-1"></a>  <span class="do">## Step 3: Record if the true parameter is covered or not:</span></span>
+<span id="cb211-21"><a href="ci.html#cb211-21" tabindex="-1"></a>  Cover.bootsd.ci[k] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(boot.ci.sd[<span class="dv">1</span>] <span class="sc">&lt;</span> eta.true <span class="sc">&amp;</span> boot.ci.sd[<span class="dv">2</span>] <span class="sc">&gt;=</span> eta.true, </span>
+<span id="cb211-22"><a href="ci.html#cb211-22" tabindex="-1"></a>                               <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb211-23"><a href="ci.html#cb211-23" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
 <li>The estimated coverage for this bootstrap confidence interval is</li>
 </ul>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="ci.html#cb216-1" tabindex="-1"></a><span class="fu">mean</span>(Cover.bootsd.ci)</span></code></pre></div>
-<pre><code>## [1] 0.824</code></pre>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="ci.html#cb212-1" tabindex="-1"></a><span class="fu">mean</span>(Cover.bootsd.ci)</span></code></pre></div>
+<pre><code>## [1] 0.778</code></pre>
 <p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 </div>

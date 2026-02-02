@@ -584,7 +584,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.785
+## [1] 0.805
 ```
 
 * This simulation-based estimate of $P(X_{i} > Y_{j}) + P(X_{i} = Y_{j})/2$ is quite close to the value of the Mann-Whitney statistic divided by $mn$.
@@ -761,7 +761,7 @@ sign.stat <- sum(xx > 0)  ## This is the value of the sign statistic
 ```
 
 ```
-## [1] 0.1841008
+## [1] 0.6913503
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -779,7 +779,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.1841008
+## [1] 0.6913503
 ```
 
 #### Two-sided Sign Test

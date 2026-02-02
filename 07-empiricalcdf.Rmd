@@ -170,17 +170,19 @@ from a study on kidney function.
 * This dataset has $157$ observations which has the age of each study participant and
 a measure of overall kidney function. The data can be obtained at https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt
 
-* We will only look at the **tot** variable in this chapter. 
-```{r}
-kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
-                     header=TRUE)
+* We will only look at the `tot` variable in this chapter. 
+```{r, echo=FALSE}
+kidney <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/kidney.csv")
+```
+
+```{r, echo=TRUE}
 head(kidney)
 ```
 
-* The **ecdf** function is the main function which computes the empirical distribution function
+* The `ecdf` function is the main function which computes the empirical distribution function
 in **R**
 
-* The **ecdf** function will create an **ecdf** object. To create an ecdf object
+* The `ecdf` function will create an `ecdf` object. To create an ecdf object
 for the kidney totals, use the following code:
 ```{r}
 kidney.Fhat <- ecdf(kidney$tot)

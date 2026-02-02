@@ -311,7 +311,7 @@ group differences are primarily the source of this rejection nor
 does it provide any measure of the "magnitude" of the differences between
 each of the groups.
 
-* Dunn's test is the suggested way to compute pairwise tests of stochatic dominance.
+* Dunn's test is the suggested way to compute pairwise tests of stochastic dominance.
 
 * Performing a series of pairwise Wilcoxon rank sum test can
 lead to violations of transitivity. For example,
