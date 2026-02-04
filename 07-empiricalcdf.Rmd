@@ -10,7 +10,7 @@
 F(t) = P( X \leq t)
 \end{equation}
 
-* The empirical distribution function or empirical cumulative distribution function (ecdf)
+* The **empirical distribution function** or empirical cumulative distribution function (ecdf)
 estimates $F(t)$ by computing the proportion of observations which are less than or equal 
 to $t$. 
 
@@ -21,7 +21,7 @@ is defined as
 \end{equation}
 
 * Note that the empirical distribution function can be computed for any type
-of data without making any assumptions about the distribution from which 
+of data without making **any assumptions** about the distribution from which 
 the data arose.
 
 * The only assumption we are making is that $X_{1}, \ldots, X_{n}$
@@ -154,7 +154,7 @@ P\Bigg( L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{f
 
 ---
 
-* Confidence bands will almost always be wider than 
+* Confidence bands will **almost always be wider** than 
 the pointwise confidence intervals.
 
 * This extra width is due to the fact that we are requiring the coverage probability

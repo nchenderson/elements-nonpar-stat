@@ -10,7 +10,7 @@
 F(t) = P( X \leq t)
 \end{equation}
 
-* The empirical distribution function or empirical cumulative distribution function (ecdf)
+* The **empirical distribution function** or empirical cumulative distribution function (ecdf)
 estimates $F(t)$ by computing the proportion of observations which are less than or equal 
 to $t$. 
 
@@ -21,7 +21,7 @@ is defined as
 \end{equation}
 
 * Note that the empirical distribution function can be computed for any type
-of data without making any assumptions about the distribution from which 
+of data without making **any assumptions** about the distribution from which 
 the data arose.
 
 * The only assumption we are making is that $X_{1}, \ldots, X_{n}$
@@ -150,7 +150,7 @@ P\Bigg( L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{f
 
 ---
 
-* Confidence bands will almost always be wider than 
+* Confidence bands will **almost always be wider** than 
 the pointwise confidence intervals.
 
 * This extra width is due to the fact that we are requiring the coverage probability
@@ -338,7 +338,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.11478, p-value = 0.1434
+## D = 0.063772, p-value = 0.8108
 ## alternative hypothesis: two-sided
 ```
 
@@ -354,7 +354,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.31335, p-value = 5.922e-09
+## D = 0.33012, p-value = 6.844e-10
 ## alternative hypothesis: two-sided
 ```
 
@@ -404,7 +404,7 @@ ks.test(xx, yy)
 ## 	Asymptotic two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.2, p-value = 0.03663
+## D = 0.18, p-value = 0.07832
 ## alternative hypothesis: two-sided
 ```
 
@@ -423,7 +423,7 @@ KS.stat
 ```
 
 ```
-## [1] 0.2
+## [1] 0.18
 ```
 
 

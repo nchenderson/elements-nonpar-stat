@@ -700,7 +700,7 @@ that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.063772, p-value = 0.8108
+## D = 0.14338, p-value = 0.03276
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
@@ -711,7 +711,7 @@ by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.33012, p-value = 6.844e-10
+## D = 0.25436, p-value = 4.802e-06
 ## alternative hypothesis: two-sided</code></pre>
 <hr />
 <ul>
@@ -751,7 +751,7 @@ the one-sample KS test statistic. In particular, under <span class="math inline"
 ##  Asymptotic two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.18, p-value = 0.07832
+## D = 0.14, p-value = 0.281
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>We can compute the KS statistic ourselves and check that this matches the value of the KS statistic
@@ -764,7 +764,7 @@ returned by the <strong>ks.test</strong> function:</li>
 <span id="cb121-5"><a href="edf.html#cb121-5" tabindex="-1"></a></span>
 <span id="cb121-6"><a href="edf.html#cb121-6" tabindex="-1"></a>KS.stat <span class="ot">&lt;-</span> <span class="fu">max</span>( <span class="fu">abs</span>( <span class="fu">F.x</span>(zz.order) <span class="sc">-</span> <span class="fu">F.y</span>(zz.order) ) )</span>
 <span id="cb121-7"><a href="edf.html#cb121-7" tabindex="-1"></a>KS.stat</span></code></pre></div>
-<pre><code>## [1] 0.18</code></pre>
+<pre><code>## [1] 0.14</code></pre>
 </div>
 <div id="the-empirical-distribution-function-and-statistical-functionals" class="section level2 hasAnchor" number="7.5">
 <h2><span class="header-section-number">7.5</span> The empirical distribution function and statistical functionals<a href="edf.html#the-empirical-distribution-function-and-statistical-functionals" class="anchor-section" aria-label="Anchor link to header"></a></h2>

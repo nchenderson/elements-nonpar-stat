@@ -109,7 +109,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.849
+## [1] 1.848
 ```
 
 ``` r
@@ -117,7 +117,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.799
+## [1] 1.817
 ```
 
 
@@ -433,7 +433,7 @@ I\Big\{ X_{2} \neq X_{1} \Big\}I\Big\{ Y_{2} \neq Y_{1} \Big\}
 
 * Kendall's $\tau$ must be in between $-1$ and $1$.
 
-* If $X_{i}$ and $Y_{i}$ are idependent, Kendall's $\tau$ will be equal to zero (why?).
+* If $X_{i}$ and $Y_{i}$ are independent, Kendall's $\tau$ will be equal to zero (why?).
 
 
 ---
@@ -488,7 +488,57 @@ different ratings.
 If $r_{jk}$ denotes the object-j rating given by judge $k$, Kendall's $\tau$
 from the $J$ pairs $(r_{11}, r_{12}), \ldots, (r_{J1}, r_{J2})$ would give
 a measure of the agreement between judges 1 and 2.
- 
+
+
+---
+
+* One of the differences between Spearman's rank correlation and Kendall's $\tau$ is
+that Spearman's rank correlation is more sensitive to large changes in the ranks.
+
+* Kendall's $\tau$ only cares if pairs of ranks are **"discordant"** or **"concordant"**.
+     + The magnitude in the differences in ranks does not play as strong a role.
+
+* For example, let's generate two vectors that have some degree of dependence:
+
+``` r
+set.seed(1357)
+xx <- rnorm(100)
+yy <- 0.5*xx + rnorm(100)
+cor(xx, yy, method="pearson")
+```
+
+```
+## [1] 0.3410581
+```
+
+``` r
+cor(xx, yy, method="kendall")
+```
+
+```
+## [1] 0.2234343
+```
+
+* Now, if we switch the smallest value of `yy` to the largest value of `yy`, let's
+see what happens to Spearman's rank correlation and Kendall's $tau$:
+
+``` r
+yy[which.min(yy)] <- 5
+cor(xx, yy, method="pearson")
+```
+
+```
+## [1] 0.2338384
+```
+
+``` r
+cor(xx, yy, method="kendall")
+```
+
+```
+## [1] 0.1907071
+```
+
 
 ### Distance Covariance and Correlation
 
@@ -508,23 +558,23 @@ while $X$ and $Y$ are not independent.
 * Note that the association between the two variables in the figures below
 is **non-monotone**.
 
-<img src="06-ustatistics_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 #### Definition
 
 * **Distance covariance** and **distance correlation** are two measures of dependence that have been developed 
 much more recently (see @szekely2007).
 
-* The interesting thing about these two measures is that: if they equal zero then it
-implies that the two random variables are independent.
+* The interesting thing about these two measures is that: if they **equal zero** then it
+implies that the two random variables **are independent**.
 
-* Moreover, the measures have a relatively straightforward formula, and
+* Moreover, the measures have a **(somewhat) straightforward** formula, and
 they have easily computable estimates.
 
 * For i.i.d. bivariate random variables $(X_{1}, Y_{1}), \ldots, (X_{n}, Y_{n})$,
 the squared distance covariance parameter is defined as
 \begin{eqnarray}
-\theta_{dCov,XY}^{2} 
+\theta_{\textrm{dCov},XY}^{2} 
 &=& E\Big\{ |X_{1} - X_{2}| |Y_{1} - Y_{2}|  \Big\} + E\Big\{ |X_{1} - X_{2}| \Big\}E\Big\{ |Y_{1} - Y_{2}| \Big\} \nonumber \\
 &-& 2E\Big\{ |X_{1} - X_{2}||Y_{1} - Y_{3}| \Big\} \nonumber
 \end{eqnarray}
@@ -534,7 +584,7 @@ the squared distance covariance parameter is defined as
 \rho_{d, XY} = \frac{ \theta_{dCov,XY} }{\theta_{dCov,XX} \theta_{dCov, YY} }  \nonumber
 \end{equation}
 
-* Notice that we must have $\theta_{dCov, XY} \geq 0$ and $\rho_{d, XY} \geq 0$. 
+* Notice that we must have $\theta_{\textrm{dCov}, XY} \geq 0$ and $\rho_{d, XY} \geq 0$. 
 
 * There is no notion of a negative correlation when using distance correlation. 
 
@@ -554,7 +604,7 @@ where $X_{i} \sim \textrm{Normal}(0, 1)$ and $Y_{i} = X_{i}^{2}$.
 
 * In this case, the distance covariance turns out to be
 \begin{eqnarray}
-&&\theta_{dCov,XY}^{2} 
+&&\theta_{\textrm{dCov},XY}^{2} 
 = E\Big\{ |X_{1} - X_{2}| |Y_{1} - Y_{2}|  \Big\} + E\Big\{ |X_{1} - X_{2}| \Big\}E\Big\{ |Y_{1} - Y_{2}| \Big\} - 2E\Big\{ |X_{1} - X_{2}||Y_{1} - Y_{3}| \Big\} \nonumber \\
 &&= E\Big\{ |X_{1} - X_{2}| |X_{1}^{2} - X_{2}^{2}|  \Big\} + E\Big\{ |X_{1} - X_{2}| \Big\}E\Big\{ |X_{1}^{2} - X_{2}^{2}| \Big\} - 2E\Big\{ |X_{1} - X_{2}||X_{1}^{2} - X_{3}^{2}| \Big\} \nonumber 
 \end{eqnarray}
@@ -669,7 +719,7 @@ plot(xx2, yy2, xlab="x", ylab="y", main=paste("Sample Distance Corr. = ",
                                               round(d.cor2, 4)), las=1)
 ```
 
-<img src="06-ustatistics_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 
 ``` r

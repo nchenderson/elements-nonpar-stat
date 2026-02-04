@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 The Empirical Distribution Function | Elements of Nonparametric Statistics</title>
+  <title>Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 The Empirical Distribution Function | Elements of Nonparametric Statistics" />
+  <meta property="og:title" content="Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 The Empirical Distribution Function | Elements of Nonparametric Statistics" />
+  <meta name="twitter:title" content="Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics" />
   
   <meta name="twitter:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   
@@ -23,15 +23,15 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-02-03" />
+<meta name="date" content="2026-02-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="ustat.html"/>
-<link rel="next" href="density-estimation.html"/>
+<link rel="prev" href="rank-tests.html"/>
+<link rel="next" href="permutation.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -435,430 +435,431 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="edf" class="section level1 hasAnchor" number="7">
-<h1><span class="header-section-number">Chapter 7</span> The Empirical Distribution Function<a href="edf.html#edf" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="definition-and-basic-properties" class="section level2 hasAnchor" number="7.1">
-<h2><span class="header-section-number">7.1</span> Definition and Basic Properties<a href="edf.html#definition-and-basic-properties" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="krusk-wallis" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Rank Tests for Multiple Groups<a href="krusk-wallis.html#krusk-wallis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <ul>
-<li><p>Every random variable has a cumulative distribution function (cdf).</p></li>
-<li><p>The cdf of a random variable <span class="math inline">\(X\)</span> is defined as
+<li><p>We can roughly think of the tests discussed in Chapter 3
+as being related to the well-known parametric tests shown in the table below.
+<span class="math display">\[\begin{eqnarray}
+\textbf{Parametric Test} &amp; &amp; \qquad  \textbf{ Nonparametric Tests } \nonumber \\
+    &amp; &amp; \nonumber \\
+\textrm{One-Sample t-test} &amp; &amp; \qquad  \textrm{Wilcoxon Signed Rank/Sign Test} \nonumber \\
+\textrm{Two-Sample t-test} &amp; &amp; \qquad \textrm{Wilcoxon Rank Sum/Normal Scores/Median Test} \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>The <strong>Kruskal-Wallis</strong> test can be though of as the
+nonparametric analogue of one-way analysis of variance (ANOVA).</p></li>
+<li><p>For <span class="math inline">\(K \geq 3\)</span> groups, one-way ANOVA considers the analysis of observations
+arising from the following model
+<span class="math display" id="eq:normal-anova-model">\[\begin{equation}
+Y_{kj} = \mu_{k} + \varepsilon_{kj}, \qquad j=1,\ldots, n_{k}; k=1,\ldots,K  
+\tag{4.1}
+\end{equation}\]</span>
+where it is often assumed that <span class="math inline">\(\varepsilon_{kj} \sim \textrm{Normal}(0, \sigma^{2})\)</span>.</p></li>
+<li><p>Usually, the one-way ANOVA hypothesis of interest is something like
+<span class="math display" id="eq:homogeneity-hyp">\[\begin{equation}
+H_{0}: \mu_{1} = \mu_{2} = \ldots = \mu_{K}
+\tag{4.2}
+\end{equation}\]</span>
+which is often referred to as the homogeneity hypothesis.</p></li>
+<li><p>A test of the hypothesis <a href="krusk-wallis.html#eq:homogeneity-hyp">(4.2)</a> is based on decomposing the observed variation in
+the responses <span class="math inline">\(Y_{kj}\)</span>:
+<span class="math display" id="eq:anova-decomp">\[\begin{eqnarray}
+\underbrace{ \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{..})^{2}}_{SST} &amp;=&amp; \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} + \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2} \nonumber \\
+&amp;=&amp; \underbrace{\sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}}_{SSA} + \underbrace{\sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2}}_{SSE}
+\tag{4.3}
+\end{eqnarray}\]</span>
+where <span class="math inline">\(\bar{Y}_{k.} = \frac{1}{n_{k}}\sum_{j=1}^{n_{k}} Y_{kj}\)</span> and <span class="math inline">\(\bar{Y}_{..} = \frac{1}{K}\sum_{k=1}^{K} \bar{Y}_{k.}\)</span>.</p></li>
+<li><p>Large values of <span class="math inline">\(SSA = \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}\)</span> provide evidence against the null hypothesis <a href="krusk-wallis.html#eq:homogeneity-hyp">(4.2)</a>. The alternative hypothesis here is that there is at least one pair of means <span class="math inline">\(\mu_{h}, \mu_{l}\)</span>
+such that <span class="math inline">\(\mu_{h} \neq \mu_{l}\)</span>.</p></li>
+</ul>
+<div id="the-kruskal-wallis-test" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> The Kruskal-Wallis Test<a href="krusk-wallis.html#the-kruskal-wallis-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="definition-2" class="section level3 hasAnchor" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Definition<a href="krusk-wallis.html#definition-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>Instead of assuming <a href="krusk-wallis.html#eq:normal-anova-model">(4.1)</a> for the responses <span class="math inline">\(Y_{kj}\)</span>, a nonparametric way of thinking
+about this problem is to instead only assume that
 <span class="math display">\[\begin{equation}
-F(t) = P( X \leq t)
+Y_{kj} \sim F_{k}
+\end{equation}\]</span>
+That is, <span class="math inline">\(Y_{k1}, Y_{k2}, \ldots, Y_{kn_{k}}\)</span> is an i.i.d. sample from <span class="math inline">\(F_{k}\)</span> for each <span class="math inline">\(k\)</span>.</p></li>
+<li><p>A nonparametric version of the one-way ANOVA homogeneity hypothesis is
+<span class="math display" id="eq:nonpar-homogeneity-hyp">\[\begin{equation}
+H_{0}: F_{1} = F_{2} = \ldots = F_{K}
+\tag{4.4}
 \end{equation}\]</span></p></li>
-<li><p>The <strong>empirical distribution function</strong> or empirical cumulative distribution function (ecdf)
-estimates <span class="math inline">\(F(t)\)</span> by computing the proportion of observations which are less than or equal
-to <span class="math inline">\(t\)</span>.</p></li>
-<li><p>For i.i.d. random variables <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> with cdf <span class="math inline">\(F\)</span>, the empirical distribution function
-is defined as
+<li><p>The “shift alternative” in this case can be stated as
 <span class="math display">\[\begin{equation}
-\hat{F}_{n}(t) = \frac{1}{n}\sum_{i=1}^{n} I( X_{i} \leq t) \nonumber
+H_{A}: F_{k}(t) = F(t - \Delta_{k}), \quad \textrm{ for } k = 1, \ldots K \quad \textrm{ and not all $\Delta_{k}$ equal}
 \end{equation}\]</span></p></li>
-<li><p>Note that the empirical distribution function can be computed for any type
-of data without making <strong>any assumptions</strong> about the distribution from which
-the data arose.</p></li>
-<li><p>The only assumption we are making is that <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span>
-constitute an i.i.d. sample from some common distribution function <span class="math inline">\(F\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
-<li>For example, if we observed <span class="math inline">\(X_{1} = 0.7\)</span>, <span class="math inline">\(X_{2} = 0.2\)</span>, and <span class="math inline">\(X_{3} = 1.3\)</span>,
-the corresponding empirical distribution function would be
+<li><p>The Kruskal-Wallis test statistic is similar to the SSA term (defined in <a href="krusk-wallis.html#eq:anova-decomp">(4.3)</a>)
+in the one-way ANOVA setting.</p></li>
+<li><p>Rather than comparing the group-specific means <span class="math inline">\(\bar{Y}_{k.}\)</span> with the overall mean <span class="math inline">\(\bar{Y}_{..}\)</span>,
+the Kruskal-Wallis test statistic compares the group-specific rank
+means <span class="math inline">\(\bar{R}_{k.}\)</span> with their overall expectation under the null hypothesis.</p></li>
+<li><p>The <strong>Kruskal-Wallis test statistic</strong> <span class="math inline">\(KW_{N}\)</span> is defined as
+<span class="math display" id="eq:kw-definition">\[\begin{equation}
+KW_{N} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)^{2}, \quad \textrm{ where } N = \sum_{k=1}^{K} n_{k}
+\tag{4.5}
+\end{equation}\]</span></p></li>
+<li><p>In <a href="krusk-wallis.html#eq:kw-definition">(4.5)</a>, <span class="math inline">\(\bar{R}_{k.}\)</span> is the average rank of those in the <span class="math inline">\(k^{th}\)</span> group
 <span class="math display">\[\begin{equation}
-\hat{F}_{3}(t) =
-\begin{cases}
-0 &amp; \textrm{ for } t &lt; 0.2  \\
-1/3 &amp; \textrm{ for } 0.2 \leq t &lt; 0.7 \\
-2/3 &amp; \textrm{ for } 0.7 \leq t &lt; 1.3 \\
-1   &amp; \textrm{ for } t \geq 1.3
-\end{cases}
+\bar{R}_{k.} = \frac{1}{n_{k}} \sum_{j=1}^{n_{k}} R_{kj}(\mathbf{Z}),
+\end{equation}\]</span>
+where <span class="math inline">\(\mathbf{Z}\)</span> denotes the pooled-data vector and <span class="math inline">\(R_{kj}(\mathbf{Z})\)</span> denotes
+the rank of <span class="math inline">\(Y_{kj}\)</span> in the “pooled-data ranking”.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>What is the expectation of <span class="math inline">\(\bar{R}_{k.}\)</span> under the null hypothesis <a href="krusk-wallis.html#eq:nonpar-homogeneity-hyp">(4.4)</a>?</p></li>
+<li><p>Again, if the null hypothesis is true, we can treat all of our responses <span class="math inline">\(Y_{kj}\)</span> as just
+an i.i.d. sample of size <span class="math inline">\(N\)</span> from a common distribution function <span class="math inline">\(F\)</span>.</p></li>
+<li><p>Hence, as we showed in <a href="rank-tests.html#eq:rank-expectation">(3.2)</a> from Chapter 3, <span class="math inline">\(E\{ R_{kj}(\mathbf{Z}) \} = (N+1)/2\)</span> under the
+assumption that the data are an i.i.d. sample from a common distribution function.</p></li>
+<li><p>So, the intuition behind the definition of <span class="math inline">\(KW_{N}\)</span> is that the differences
+<span class="math inline">\(\bar{R}_{k.} - \frac{N + 1}{2}\)</span> should be small whenever the homogeneity
+hypothesis <a href="krusk-wallis.html#eq:nonpar-homogeneity-hyp">(4.4)</a> is true.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>When <span class="math inline">\(K=2\)</span>, the following relationship between the Kruskal-Wallis statistic
+<span class="math inline">\(KW_{N}\)</span> and the Wilcoxon rank sum test statistic <span class="math inline">\(W\)</span> from Chapter 3 holds.
+<span class="math display" id="eq:kw-wrs-equivalence">\[\begin{equation}
+KW_{N} = \frac{12}{mn(N+1)}\Big( W - \frac{n(N+1)}{2}  \Big)^{2}.
+\tag{4.6}
+\end{equation}\]</span></p></li>
+<li><p>Hence, the p-value from a Kruskal-Wallis test and a (two-sided)
+WRS test should be the same when <span class="math inline">\(K = 2\)</span>.</p></li>
+<li><p>However, you cannot directly perform a one-sided test using
+the Kruskal-Wallis test.</p></li>
+</ul>
+<p><strong>An Example</strong></p>
+<table border="1">
+<tr>
+<th>
+Group
+</th>
+<th>
+Y
+</th>
+<th>
+Rank
+</th>
+</tr>
+<tr>
+<td align="center">
+Group 1
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+8
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 1
+</td>
+<td align="center">
+-1.20
+</td>
+<td align="center">
+2
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 1
+</td>
+<td align="center">
+-1.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 2
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+5
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 2
+</td>
+<td align="center">
+-0.10
+</td>
+<td align="center">
+4
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 2
+</td>
+<td align="center">
+1.10
+</td>
+<td align="center">
+9
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 3
+</td>
+<td align="center">
+0.90
+</td>
+<td align="center">
+7
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 3
+</td>
+<td align="center">
+-0.40
+</td>
+<td align="center">
+3
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 3
+</td>
+<td align="center">
+0.60
+</td>
+<td align="center">
+6
+</td>
+</tr>
+</table>
+<ul>
+<li>Consider the data shown in the table. In this case, <span class="math inline">\(N = 9\)</span>, <span class="math inline">\(\bar{R}_{1.} = 11/3\)</span>, <span class="math inline">\(\bar{R}_{2.} = 6\)</span>, and <span class="math inline">\(\bar{R}_{3.} = 16/3\)</span>. The Kruskall-Wallis
+statistic is
+<span class="math display">\[\begin{equation}
+KW_{N} = \frac{1}{2}\Big\{ 3(11/3 - 5)^{2} + 3(6 - 5)^{2} + 3(16/3 - 5)^{2}   \Big\} = 13/9 \nonumber
 \end{equation}\]</span></li>
 </ul>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 </div>
-<div id="confidence-intervals-for-ft" class="section level2 hasAnchor" number="7.2">
-<h2><span class="header-section-number">7.2</span> Confidence intervals for F(t)<a href="edf.html#confidence-intervals-for-ft" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="asymptotic-distribution-and-connection-to-one-way-anova" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> Asymptotic Distribution and Connection to One-Way ANOVA<a href="krusk-wallis.html#asymptotic-distribution-and-connection-to-one-way-anova" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><p>For a fixed value of <span class="math inline">\(t\)</span>, the distribution of <span class="math inline">\(n\hat{F}_{n}(t)\)</span> is
-<span class="math display">\[\begin{equation}
-n \hat{F}_{n}(t) \sim \textrm{Binomial}\big( n, F(t) \big)
-\end{equation}\]</span></p></li>
-<li><p>This is because, for a fixed <span class="math inline">\(t\)</span>, <span class="math inline">\(n\hat{F}_{n}(t)\)</span> is the sum of <span class="math inline">\(n\)</span> independent
-Bernoulli random variables <span class="math inline">\(W_{1}^{t}, \ldots, W_{n}^{t}\)</span>
-<span class="math display">\[\begin{equation}
-n \hat{F}_{n}(t) = \sum_{i=1}^{n} W_{i}^{t} = \sum_{i=1}^{n} I( X_{i} \leq t)
-\end{equation}\]</span></p></li>
-<li><p>The probability that <span class="math inline">\(W_{i}^{t} = 1\)</span> is
-<span class="math display">\[\begin{equation}
-P( W_{i}^{t} = 1) = P(X_{i} \leq t) = F(t) \nonumber
-\end{equation}\]</span></p></li>
+<li><p>The Kruskal-Wallis statistic <span class="math inline">\(KW_{N}\)</span> has
+an asymptotic chi-square distribution with <span class="math inline">\(K-1\)</span> degrees of freedom under the null hypothesis <a href="krusk-wallis.html#eq:nonpar-homogeneity-hyp">(4.4)</a>.</p></li>
+<li><p>This follows from the fact that <span class="math inline">\((\bar{R}_{k.} - (N+1)/2)\)</span> is approximately normally distributed
+for large <span class="math inline">\(n_{k}\)</span>.</p></li>
+<li><p><strong>R</strong> uses the large-sample approximation when computing
+the p-value for the Kruskal-Wallis test.</p></li>
 </ul>
 <hr />
-<p><strong>Pointwise Confidence Intervals</strong></p>
 <ul>
-<li><p>Because <span class="math inline">\(\hat{F}_{n}(t)\)</span> is a mean of independent random variables, we can say that
+<li><p>The Kruskal-Wallis test can also be thought of as the test you would obtain
+if you applied the one-way ANOVA setup to the ranks of <span class="math inline">\(Y_{kj}\)</span>.</p></li>
+<li><p>The one-way ANOVA test is based on the value of SSA where, as in <a href="krusk-wallis.html#eq:anova-decomp">(4.3)</a>,
+SSA is defined as
 <span class="math display">\[\begin{equation}
-\frac{ \sqrt{n}\Big( \hat{F}_{n}(t) - F(t) \Big) }{\sqrt{ \hat{F}_{n}(t)(1 - \hat{F}_{n}(t))}} \longrightarrow \textrm{Normal}\Big(0, 1 \Big)
-\nonumber
+SSA = \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} \nonumber
 \end{equation}\]</span></p></li>
-<li><p>The above asymptotic statement is the basis for constructing <strong>pointwise confidence intervals</strong> for <span class="math inline">\(F(t)\)</span>.</p></li>
-<li><p>For a fixed <span class="math inline">\(t\)</span>, a <span class="math inline">\(100 \times (1-\alpha)\%\)</span> confidence interval for <span class="math inline">\(F(t)\)</span> is the following
-<span class="math display" id="eq:pointwise-cis">\[\begin{eqnarray}
-CI_{\alpha}^{pw}(t) &amp;=&amp; [L_{\alpha}^{pw}(t), U_{\alpha}^{pw}(t)] \nonumber \\
-L_{\alpha}^{pw}(t) &amp;=&amp; \max\Bigg\{\hat{F}_{n}(t) - z_{1 - \alpha/2} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 0 \Bigg\} \nonumber \\
-U_{\alpha}^{pw}(t) &amp;=&amp; \min\Bigg\{ \hat{F}_{n}(t) + z_{1 - \alpha/2} \sqrt{ \frac{\hat{F}_{n}(t)(1 - \hat{F}_{n}(t)) }{n} }, 1 \Bigg\}
-\tag{7.1}
+<li><p>You then reject <span class="math inline">\(H_{0}\)</span>, when <span class="math inline">\(SSA/SSE = SSA/(SST - SSA)\)</span> is sufficiently large.</p></li>
+<li><p>Notice that if we computed SSA using the ranks <span class="math inline">\(R_{kj}( \mathbf{Z} )\)</span>
+rather than the observations <span class="math inline">\(Y_{kj}\)</span>, we would get:
+<span class="math display" id="eq:ssa-kw">\[\begin{eqnarray}
+SSA_{r} &amp;=&amp; \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \bar{R}_{..})^{2}  \nonumber \\
+&amp;=&amp; \sum_{k=1}^{K} n_{k} \Big( \bar{R}_{k.} - \frac{N+1}{2} \Big)^{2}  \nonumber \\
+&amp;=&amp; \frac{N(N-1)}{12} KW_{N}  
+\tag{4.7}
 \end{eqnarray}\]</span></p></li>
-<li><p>Plotting <span class="math inline">\(CI_{\alpha}^{pw}(t)\)</span> for different values of <span class="math inline">\(t\)</span>, would give pointwise confidence intervals
-for the distribution function. Plotting pointwise confidence
-intervals for <span class="math inline">\(F(t)\)</span> or for survival functions <span class="math inline">\(S(t) = 1 - F(t)\)</span> is fairly common in practice.</p></li>
-<li><p>However, these pointwise confidence intervals only hold for each point separately.</p></li>
-</ul>
-<hr />
-<p><strong>Simultaneous Confidence Bands</strong></p>
-<ul>
-<li><p>Simultaneous confidence bands can be thought of as two functions <span class="math inline">\(L_{\alpha}^{band}(t)\)</span> and <span class="math inline">\(U_{\alpha}^{band}(t)\)</span>
-such that we are “<span class="math inline">\(100 \times (1 - \alpha)\)</span>% confident” that all of <span class="math inline">\(F(t)\)</span> is contained
-within the bands <span class="math inline">\(L_{\alpha}^{band}(t)\)</span> and <span class="math inline">\(U_{\alpha}^{band}(t)\)</span>.</p></li>
-<li><p>Specifically, we want the statement
+<li><p>If you were applying ANOVA to the ranks of <span class="math inline">\(Y_{kj}\)</span>, <span class="math inline">\(SST_{r}\)</span> would be
+the following fixed constant:
 <span class="math display">\[\begin{equation}
-L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{ for all } t
-\end{equation}\]</span>
-to hold with at least <span class="math inline">\(1 - \alpha\)</span> probability.</p></li>
-<li><p>In other words, we want less than <span class="math inline">\(\alpha\)</span> probability for any part
-of the path of <span class="math inline">\(F(t)\)</span> going outside of the bands.</p></li>
-<li><p>One choice of <span class="math inline">\(L_{\alpha}^{band}(t)\)</span> and <span class="math inline">\(U_{\alpha}^{band}(t)\)</span> which has this property is the following
-<span class="math display" id="eq:simultaneous-cis">\[\begin{equation}
-L_{\alpha}^{band}(t) = \max\{\hat{F}_{n}(t) - \delta_{\alpha,n}, 0 \} \qquad
-U_{\alpha}^{band}(t) = \min\{\hat{F}_{n}(t) + \delta_{\alpha,n}, 1 \},
-\tag{7.2}
-\end{equation}\]</span>
-where <span class="math inline">\(\delta_{\alpha,n}\)</span> is given by
-<span class="math display">\[\begin{equation}
-\delta_{\alpha, n} = \sqrt{\frac{1}{2n} \ln\Big(\frac{2}{\alpha} \Big)} \nonumber
+\textrm{SST}_{r} = \frac{N(N + 1)(N-1)}{12} \nonumber
 \end{equation}\]</span></p></li>
-</ul>
-<hr />
-<ul>
-<li><p>The reason this choice of confidence band works is the
-Dvoretzky-Kiefer-Wolfowitz (DKW) inequality.
-The DKW inequality states that
-<span class="math display">\[\begin{equation}
-P\Bigg( \sup_{t} |F(t) - \hat{F}_{n}(t) | &gt; \varepsilon \Bigg) \leq 2 e^{-2n \varepsilon^{2}}
-\nonumber
-\end{equation}\]</span></p></li>
-<li><p>Our choice of confidence bands <a href="edf.html#eq:simultaneous-cis">(7.2)</a> then works because
-<span class="math display">\[\begin{equation}
-\sup_{t} | F(t) - \hat{F}_{n}(t)| \leq \delta_{\alpha, n} \nonumber
-\end{equation}\]</span>
-is equivalent to
-<span class="math display">\[\begin{equation}
-L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \qquad \textrm{for all } t
-\nonumber
-\end{equation}\]</span></p></li>
-<li><p>Then, from the DKW inequality we have
-<span class="math display">\[\begin{eqnarray}
-P\Bigg( L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \quad \textrm{for all } t \Bigg)
-&amp;=&amp; P\Bigg( \sup_{t} | F(t) - \hat{F}_{n}(t)| \leq \delta_{n, \alpha} \Bigg) \nonumber \\
-&amp;\geq&amp; 1 - 2 e^{-2n \delta_{\alpha,n}^{2}} \nonumber \\
-&amp;=&amp; 1 - \alpha. \nonumber
-\end{eqnarray}\]</span></p></li>
-</ul>
-<hr />
-<ul>
-<li><p>Confidence bands will <strong>almost always be wider</strong> than
-the pointwise confidence intervals.</p></li>
-<li><p>This extra width is due to the fact that we are requiring the coverage probability
-to hold for the entire path of <span class="math inline">\(F(t)\)</span> rather than at
-just a single point.</p></li>
+<li><p>So, any test of the homogeneity hypothesis would
+be based on just the value of <span class="math inline">\(SSA_{r}\)</span> which, as we showed in <a href="krusk-wallis.html#eq:ssa-kw">(4.7)</a>,
+is just a constant times the Kruskal-Wallis statistic.</p></li>
 </ul>
 </div>
-<div id="the-empirical-distribution-function-in-r" class="section level2 hasAnchor" number="7.3">
-<h2><span class="header-section-number">7.3</span> The Empirical Distribution Function in R<a href="edf.html#the-empirical-distribution-function-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ul>
-<li><p>We will see how to work with empirical distribution functions in <strong>R</strong> by using data
-from a study on kidney function.</p></li>
-<li><p>This dataset has <span class="math inline">\(157\)</span> observations which has the age of each study participant and
-a measure of overall kidney function. The data can be obtained at <a href="https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" class="uri">https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</a></p></li>
-<li><p>We will only look at the <code>tot</code> variable in this chapter.</p></li>
-</ul>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="edf.html#cb104-1" tabindex="-1"></a><span class="fu">head</span>(kidney)</span></code></pre></div>
-<pre><code>##   age   tot
-## 1  18  2.44
-## 2  19  3.86
-## 3  19 -1.22
-## 4  20  2.30
-## 5  21  0.98
-## 6  21 -0.50</code></pre>
-<ul>
-<li><p>The <code>ecdf</code> function is the main function which computes the empirical distribution function
-in <strong>R</strong></p></li>
-<li><p>The <code>ecdf</code> function will create an <code>ecdf</code> object. To create an ecdf object
-for the kidney totals, use the following code:</p></li>
-</ul>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="edf.html#cb106-1" tabindex="-1"></a>kidney.Fhat <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(kidney<span class="sc">$</span>tot)</span></code></pre></div>
-<ul>
-<li>You can plot the ecdf for the kidney totals by just calling <strong>plot(ecdf)</strong></li>
-</ul>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="edf.html#cb107-1" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">main =</span> <span class="st">&quot;Kidney Data: Default plot for ecdf&quot;</span>, <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<ul>
-<li>If you don’t like the look of the points in the ecdf plot, you can use add the argument
-<strong>do.points = FALSE</strong> when calling plot. Also, you can add the argument <strong>verticals =TRUE</strong>
-if you want the plot to draw vertical lines whenever there is a jump in the empirical distribution function.</li>
-</ul>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="edf.html#cb108-1" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">do.points=</span><span class="cn">FALSE</span>, <span class="at">verticals=</span><span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">&quot;Kidney Data: </span></span>
-<span id="cb108-2"><a href="edf.html#cb108-2" tabindex="-1"></a><span class="st">    ecdf with vertical lines and without points&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<hr />
-<ul>
-<li>A nice feature of of the <strong>ecdf</strong> function is that <strong>ecdf</strong> object
-can be treated as a function which computes the empirical distribution function.
-For example,</li>
-</ul>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="edf.html#cb109-1" tabindex="-1"></a>kidney.Fhat <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(kidney<span class="sc">$</span>tot)</span>
-<span id="cb109-2"><a href="edf.html#cb109-2" tabindex="-1"></a></span>
-<span id="cb109-3"><a href="edf.html#cb109-3" tabindex="-1"></a><span class="fu">kidney.Fhat</span>(<span class="dv">0</span>)</span></code></pre></div>
-<pre><code>## [1] 0.5095541</code></pre>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="edf.html#cb111-1" tabindex="-1"></a><span class="fu">kidney.Fhat</span>( <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">4</span>) )</span></code></pre></div>
-<pre><code>## [1] 0.3057325 0.6560510 0.9745223</code></pre>
-<hr />
-<ul>
-<li><p><strong>R</strong> does not plot confidence intervals when plotting the empirical distribution function.</p></li>
-<li><p>We can do this ourselves, by using the pointwise confidence interval formula shown in <a href="edf.html#eq:pointwise-cis">(7.1)</a></p></li>
-</ul>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="edf.html#cb113-1" tabindex="-1"></a><span class="do">## 1. First, we will compute the standard errors at each of the </span></span>
-<span id="cb113-2"><a href="edf.html#cb113-2" tabindex="-1"></a><span class="do">##    observed time points</span></span>
-<span id="cb113-3"><a href="edf.html#cb113-3" tabindex="-1"></a>tt <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(kidney<span class="sc">$</span>tot)) </span>
-<span id="cb113-4"><a href="edf.html#cb113-4" tabindex="-1"></a>std.err <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">kidney.Fhat</span>(tt)<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">kidney.Fhat</span>(tt))<span class="sc">/</span> <span class="fu">length</span>(kidney<span class="sc">$</span>tot))</span>
-<span id="cb113-5"><a href="edf.html#cb113-5" tabindex="-1"></a></span>
-<span id="cb113-6"><a href="edf.html#cb113-6" tabindex="-1"></a><span class="do">## 2. Now, compute the confidence intervals at each time point</span></span>
-<span id="cb113-7"><a href="edf.html#cb113-7" tabindex="-1"></a>ci.low <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="fu">kidney.Fhat</span>(tt) <span class="sc">-</span> <span class="fu">qnorm</span>(.<span class="dv">975</span>)<span class="sc">*</span>std.err, <span class="dv">0</span>)</span>
-<span id="cb113-8"><a href="edf.html#cb113-8" tabindex="-1"></a>ci.upper <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">kidney.Fhat</span>(tt) <span class="sc">+</span> <span class="fu">qnorm</span>(.<span class="dv">975</span>)<span class="sc">*</span>std.err, <span class="dv">1</span>)</span>
-<span id="cb113-9"><a href="edf.html#cb113-9" tabindex="-1"></a></span>
-<span id="cb113-10"><a href="edf.html#cb113-10" tabindex="-1"></a><span class="do">## 3. Now, plot the results. Note that type=&quot;s&quot; in the lines function produces</span></span>
-<span id="cb113-11"><a href="edf.html#cb113-11" tabindex="-1"></a><span class="do">##    &quot;step functions&quot; which pass through the provided points.</span></span>
-<span id="cb113-12"><a href="edf.html#cb113-12" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">do.points=</span><span class="cn">FALSE</span>, <span class="at">verticals=</span><span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">&quot;Kidney Data: </span></span>
-<span id="cb113-13"><a href="edf.html#cb113-13" tabindex="-1"></a><span class="st">     95% pointwise confidence intervals&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb113-14"><a href="edf.html#cb113-14" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.low, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb113-15"><a href="edf.html#cb113-15" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.upper, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<ul>
-<li>We could plot the confidence bands as well.</li>
-</ul>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="edf.html#cb114-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(kidney<span class="sc">$</span>tot)</span>
-<span id="cb114-2"><a href="edf.html#cb114-2" tabindex="-1"></a></span>
-<span id="cb114-3"><a href="edf.html#cb114-3" tabindex="-1"></a><span class="do">## Compute the confidence bands at each time point</span></span>
-<span id="cb114-4"><a href="edf.html#cb114-4" tabindex="-1"></a>ci.band.low <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="fu">kidney.Fhat</span>(tt) <span class="sc">-</span> <span class="fu">sqrt</span>(<span class="fu">log</span>(<span class="dv">2</span><span class="sc">/</span><span class="fl">0.05</span>)<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>n)), <span class="dv">0</span>)</span>
-<span id="cb114-5"><a href="edf.html#cb114-5" tabindex="-1"></a>ci.band.upper <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">kidney.Fhat</span>(tt) <span class="sc">+</span> <span class="fu">sqrt</span>(<span class="fu">log</span>(<span class="dv">2</span><span class="sc">/</span><span class="fl">0.05</span>)<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>n)), <span class="dv">1</span>)</span>
-<span id="cb114-6"><a href="edf.html#cb114-6" tabindex="-1"></a></span>
-<span id="cb114-7"><a href="edf.html#cb114-7" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">do.points=</span><span class="cn">FALSE</span>, <span class="at">verticals=</span><span class="cn">TRUE</span>,</span>
-<span id="cb114-8"><a href="edf.html#cb114-8" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">&quot;Kidney Data: 95% Confidence Bands&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb114-9"><a href="edf.html#cb114-9" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.band.low, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb114-10"><a href="edf.html#cb114-10" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.band.upper, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<ul>
-<li>Comparing the pointwise confidence intervals and the simultaneous confidence bands
-in the same plot shows how much wider the confidence bands are:</li>
-</ul>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
-<div id="the-kolmogorov-smirnov-test" class="section level2 hasAnchor" number="7.4">
-<h2><span class="header-section-number">7.4</span> The Kolmogorov-Smirnov Test<a href="edf.html#the-kolmogorov-smirnov-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="performing-the-kruskal-wallis-test-in-r" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Performing the Kruskal-Wallis Test in R<a href="krusk-wallis.html#performing-the-kruskal-wallis-test-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li><p>The one-sample Kolmogorov-Smirnov (KS) test is a type of goodness-of-fit test
-that is based on the empirical distribution function.</p></li>
-<li><p>The KS test will test whether or not our data <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> comes
-from a specific distribution of interest <span class="math inline">\(F_{0}\)</span>.</p></li>
-<li><p>Supposing our data <span class="math inline">\(X_{1}, \ldots, X_{n}\)</span> are an i.i.d. sample with distribution
-function <span class="math inline">\(F\)</span>, the hypothesis test of interest can be stated as
-<span class="math display">\[\begin{equation}
-H_{0}: F = F_{0} \quad \textrm{ vs. } \quad H_{A}: F \neq F_{0}
-\end{equation}\]</span></p></li>
-<li><p>The one-sample KS test could be used, for example, as a test of normality.</p></li>
+<li>We will look at performing Kruskal-Wallis tests in <strong>R</strong> by using the
+“InsectSprays” dataset.</li>
 </ul>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="krusk-wallis.html#cb49-1" tabindex="-1"></a><span class="fu">head</span>(InsectSprays)</span></code></pre></div>
+<pre><code>##   count spray
+## 1    10     A
+## 2     7     A
+## 3    20     A
+## 4    14     A
+## 5    14     A
+## 6    12     A</code></pre>
+<ul>
+<li><p>This dataset has 72 observations.</p></li>
+<li><p>The variable <strong>count</strong> is the number of
+insects measured in some agricultural unit.</p></li>
+<li><p>The variable <strong>spray</strong> was the type of spray used on
+that unit.</p></li>
+<li><p>You could certainly argue that a standard ANOVA is not
+appropriate in this situation because the responses are counts,
+and for count data, the variance is usually a function of the mean.</p></li>
+<li><p>A generalized linear model with a log link function might be more appropriate.</p></li>
+<li><p>Applying a square-root transformation to count data is also a commonly suggested
+approach. (The square-root transformation is the “variance-stabilizing transformation”
+for Poisson-distributed data).</p></li>
+</ul>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="krusk-wallis.html#cb51-1" tabindex="-1"></a><span class="fu">boxplot</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays,<span class="at">las=</span><span class="dv">1</span>, </span>
+<span id="cb51-2"><a href="krusk-wallis.html#cb51-2" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;square root of insect counts&quot;</span>)</span></code></pre></div>
+<p><img src="04-multistat_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <hr />
 <ul>
-<li><p>The one-sample Kolmogorov-Smirnov test statistic <span class="math inline">\(KS_{n}^{(1)}\)</span> looks at the maximum distance
-between the empirical distribution function and <span class="math inline">\(F_{0}\)</span>
-<span class="math display">\[\begin{equation}
-KS_{n}^{(1)} = \sup_{t} \big| \hat{F}_{n}(t) - F_{0}(t)  \big|  \nonumber
-\end{equation}\]</span></p></li>
-<li><p>Large values of <span class="math inline">\(KS_{n}^{(1)}\)</span> provide evidence againts the null hypothesis.</p></li>
-<li><p>Under <span class="math inline">\(H_{0}\)</span>, <span class="math inline">\(\sqrt{n}KS_{n}^{(1)}\)</span> converges in distribution to a <strong>Kolmogorov distribution</strong>
-as <span class="math inline">\(n\)</span> goes to infinity.</p></li>
-<li><p>The Kolmogorov distribution has the following cumulative distribution function:
-<span class="math display">\[\begin{equation}
-F_{Kolmo}(t) = 1 - 2\sum_{j=1}^{\infty} (-1)^{(j+1)} e^{-2j^{2}t^{2}} \nonumber
-\end{equation}\]</span></p></li>
-<li><p>The one-sample KS test can be performed in <strong>R</strong> using the <strong>ks.test</strong> function.
-For one-sample tests, you have to provide the “name” of the distribution function
-that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
+<li>Let us perform a test of homogeneity using both the one-way ANOVA approach and a Kruskal-Wallis
+test</li>
 </ul>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="edf.html#cb115-1" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">rt</span>(<span class="dv">100</span>, <span class="at">df=</span><span class="dv">2</span>) <span class="do">## generate 100 observations from a t-dist with 2 d.f.</span></span>
-<span id="cb115-2"><a href="edf.html#cb115-2" tabindex="-1"></a><span class="fu">ks.test</span>(xx, <span class="at">y=</span><span class="st">&quot;pnorm&quot;</span>)  <span class="do">## test that these data follow Normal(0, 1)</span></span></code></pre></div>
-<pre><code>## 
-##  Asymptotic one-sample Kolmogorov-Smirnov test
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="krusk-wallis.html#cb52-1" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays))</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
 ## 
-## data:  xx
-## D = 0.063772, p-value = 0.8108
-## alternative hypothesis: two-sided</code></pre>
+## Response: sqrt(count)
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## spray      5 88.438 17.6876  44.799 &lt; 2.2e-16 ***
+## Residuals 66 26.058  0.3948                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="krusk-wallis.html#cb54-1" tabindex="-1"></a>a  <span class="ot">&lt;-</span> <span class="fu">kruskal.test</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays)</span>
+<span id="cb54-2"><a href="krusk-wallis.html#cb54-2" tabindex="-1"></a>a<span class="sc">$</span>p.value</span></code></pre></div>
+<pre><code>## [1] 1.510844e-10</code></pre>
+<hr />
 <ul>
-<li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
-by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
+<li>Notice that applying the square root transformation does not affect the
+value of the Kruskal-Wallis statistic or the Kruskal-Wallis p-value.</li>
 </ul>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="edf.html#cb117-1" tabindex="-1"></a><span class="fu">ks.test</span>(xx, <span class="at">y=</span><span class="st">&quot;pnorm&quot;</span>, <span class="at">mean=</span><span class="dv">1</span>, <span class="at">sd=</span><span class="dv">2</span>)  </span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="krusk-wallis.html#cb56-1" tabindex="-1"></a><span class="fu">kruskal.test</span>(count <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays)</span></code></pre></div>
 <pre><code>## 
-##  Asymptotic one-sample Kolmogorov-Smirnov test
+##  Kruskal-Wallis rank sum test
 ## 
-## data:  xx
-## D = 0.33012, p-value = 6.844e-10
-## alternative hypothesis: two-sided</code></pre>
-<hr />
+## data:  count by spray
+## Kruskal-Wallis chi-squared = 54.691, df = 5, p-value = 1.511e-10</code></pre>
 <ul>
-<li><p>Suppose we have data from two groups: <span class="math inline">\(X_{1}, \ldots, X_{n} \sim F_{X}\)</span> and <span class="math inline">\(Y_{1}, \ldots, Y_{m} \sim F_{Y}\)</span>.
-The two-sample KS test performs a test of the following hypothesis
+<li>This invariance to data transformation is not true for the standard one-way ANOVA.</li>
+</ul>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="krusk-wallis.html#cb58-1" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(count <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays))</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: count
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## spray      5 2668.8  533.77  34.702 &lt; 2.2e-16 ***
+## Residuals 66 1015.2   15.38                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="comparison-of-specific-groups" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Comparison of Specific Groups<a href="krusk-wallis.html#comparison-of-specific-groups" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>A Kruskal-Wallis test performs a test of the overall homogeneity hypothesis
 <span class="math display">\[\begin{equation}
-H_{0}: F_{X} = F_{Y} \quad \textrm{vs.} \quad H_{A}: F_{X} \neq F_{Y}. \nonumber
+H_{0}: F_{1} = F_{2} = \ldots = F_{K}
 \end{equation}\]</span></p></li>
-<li><p>In this case, we are only testing whether the distributions of the two groups are different.
-We are not testing whether observations from group 1 tend to be larger (or smaller)
-than those from group 2.</p></li>
-<li><p>The two-sample KS test compares the empirical distribution functions from these
-two groups.</p></li>
-<li><p>The two-sample KS test statistic is defined as the maximum distance between the
-two empirical distribution functions:
-<span class="math display">\[\begin{equation}
-KS_{n,m}^{(2)} = \sup_{t} \big| \hat{F}_{n,X}(t) - \hat{F}_{m,Y}(t)  \big|  \nonumber
-\end{equation}\]</span>
-Here, <span class="math inline">\(\hat{F}_{n,X}(t) = \frac{1}{n}\sum_{i=1}^{n} I(X_{i} \leq t)\)</span> and
-<span class="math inline">\(\hat{F}_{m,Y}(t) = \frac{1}{m}\sum_{j=1}^{m} I(Y_{j} \leq t)\)</span> denote
-the empirical distribution functions from the X and Y samples.</p></li>
-<li><p>The two-sample KS test statistic also converges to the same limit as
-the one-sample KS test statistic. In particular, under <span class="math inline">\(H_{0}\)</span>:
-<span class="math display">\[\begin{equation}
-\sqrt{ \frac{nm}{n + m } }KS_{n,m}^{(2)} \longrightarrow \textrm{Kolmogorov}
-\qquad \textrm{ as } n,m \longrightarrow \infty  \nonumber
-\end{equation}\]</span></p></li>
+<li><p>However, a rejection of the homogeneity hypothesis does not indicate which
+group differences are primarily the source of this rejection nor
+does it provide any measure of the “magnitude” of the differences between
+each of the groups.</p></li>
+<li><p>Dunn’s test is the suggested way to compute pairwise tests of stochastic dominance.</p></li>
+<li><p>Performing a series of pairwise Wilcoxon rank sum test can
+lead to violations of transitivity. For example,
+group A is “better” than B which is better than C, but
+group C is better than A.</p></li>
+<li><p>In <strong>R</strong>, Dunn’s test can be performed using the <strong>dunn.test</strong> package.</p></li>
 </ul>
 <hr />
 <ul>
-<li>The <strong>ks.test</strong> function in <strong>R</strong> also performs two-sample KS tests.</li>
+<li><p>In traditional one-way ANOVA one often reports pairwise differences
+in the means and their associated confidence intervals.</p></li>
+<li><p>In the context of a Kruskal-Wallis test, one could
+report pairwise differences in the Hodges-Lehmann estimate
+though other comparisons may also be of interest.</p></li>
+<li><p>One nice approach is to use the proportional odds model
+interpretation of the Kruskal-Wallis test and
+then report the difference in the estimated proportional odds coefficients.
+See Section 7.6 of <a href="http://hbiostat.org/doc/bbr.pdf" class="uri">http://hbiostat.org/doc/bbr.pdf</a> for more details
+on the proportional odds model.</p></li>
 </ul>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="edf.html#cb119-1" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
-<span id="cb119-2"><a href="edf.html#cb119-2" tabindex="-1"></a>yy <span class="ot">&lt;-</span> <span class="fu">rlogis</span>(<span class="dv">100</span>)</span>
-<span id="cb119-3"><a href="edf.html#cb119-3" tabindex="-1"></a><span class="fu">ks.test</span>(xx, yy)  </span></code></pre></div>
+<p><img src="04-multistat_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="an-additional-example" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> An Additional Example<a href="krusk-wallis.html#an-additional-example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>We will use the “cane” dataset from the <strong>boot</strong> package.</li>
+</ul>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="krusk-wallis.html#cb60-1" tabindex="-1"></a><span class="fu">library</span>(boot)</span>
+<span id="cb60-2"><a href="krusk-wallis.html#cb60-2" tabindex="-1"></a><span class="fu">data</span>(cane)</span>
+<span id="cb60-3"><a href="krusk-wallis.html#cb60-3" tabindex="-1"></a><span class="fu">head</span>(cane)</span></code></pre></div>
+<pre><code>##     n  r  x var block
+## 1  87 76 19   1     A
+## 2 119  8 14   2     A
+## 3  94 74  9   3     A
+## 4  95 11 12   4     A
+## 5 134  0 12   5     A
+## 6  92  0  3   6     A</code></pre>
+<ul>
+<li><p>These data come from a study trying to determine the susceptibility of different types
+of sugar cane to a particular type of disease.</p></li>
+<li><p>The variable <strong>n</strong> contains the total number of shoots in each plot.</p></li>
+<li><p>The variable <strong>r</strong> containes the total number of diseased shoots.</p></li>
+<li><p>We can create a new variable <strong>prop</strong> that measures the proportion
+of shoots that are diseased.</p></li>
+</ul>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="krusk-wallis.html#cb62-1" tabindex="-1"></a>cane<span class="sc">$</span>prop <span class="ot">&lt;-</span> cane<span class="sc">$</span>r<span class="sc">/</span>cane<span class="sc">$</span>n</span></code></pre></div>
+<ul>
+<li>You could certainly argue that a logistic regression model is a better approach here,
+but we will analyze the transformed proportions using the arcsine square root transformation.</li>
+</ul>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="krusk-wallis.html#cb63-1" tabindex="-1"></a>cane<span class="sc">$</span>prop.trans <span class="ot">&lt;-</span> <span class="fu">asin</span>(<span class="fu">sqrt</span>(cane<span class="sc">$</span>prop))</span>
+<span id="cb63-2"><a href="krusk-wallis.html#cb63-2" tabindex="-1"></a><span class="fu">boxplot</span>(prop.trans <span class="sc">~</span> block, <span class="at">data=</span>cane, <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;number of shoots&quot;</span>)</span></code></pre></div>
+<p><img src="04-multistat_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="krusk-wallis.html#cb64-1" tabindex="-1"></a><span class="fu">kruskal.test</span>(prop <span class="sc">~</span> block, <span class="at">data=</span>cane)</span></code></pre></div>
 <pre><code>## 
-##  Asymptotic two-sample Kolmogorov-Smirnov test
+##  Kruskal-Wallis rank sum test
 ## 
-## data:  xx and yy
-## D = 0.18, p-value = 0.07832
-## alternative hypothesis: two-sided</code></pre>
-<ul>
-<li>We can compute the KS statistic ourselves and check that this matches the value of the KS statistic
-returned by the <strong>ks.test</strong> function:</li>
-</ul>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="edf.html#cb121-1" tabindex="-1"></a>zz <span class="ot">&lt;-</span> <span class="fu">c</span>(xx, yy)</span>
-<span id="cb121-2"><a href="edf.html#cb121-2" tabindex="-1"></a>zz.order <span class="ot">&lt;-</span> <span class="fu">sort</span>(zz)</span>
-<span id="cb121-3"><a href="edf.html#cb121-3" tabindex="-1"></a>F.x <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(xx)</span>
-<span id="cb121-4"><a href="edf.html#cb121-4" tabindex="-1"></a>F.y <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(yy)</span>
-<span id="cb121-5"><a href="edf.html#cb121-5" tabindex="-1"></a></span>
-<span id="cb121-6"><a href="edf.html#cb121-6" tabindex="-1"></a>KS.stat <span class="ot">&lt;-</span> <span class="fu">max</span>( <span class="fu">abs</span>( <span class="fu">F.x</span>(zz.order) <span class="sc">-</span> <span class="fu">F.y</span>(zz.order) ) )</span>
-<span id="cb121-7"><a href="edf.html#cb121-7" tabindex="-1"></a>KS.stat</span></code></pre></div>
-<pre><code>## [1] 0.18</code></pre>
+## data:  prop by block
+## Kruskal-Wallis chi-squared = 1.1355, df = 3, p-value = 0.7685</code></pre>
 </div>
-<div id="the-empirical-distribution-function-and-statistical-functionals" class="section level2 hasAnchor" number="7.5">
-<h2><span class="header-section-number">7.5</span> The empirical distribution function and statistical functionals<a href="edf.html#the-empirical-distribution-function-and-statistical-functionals" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ul>
-<li><p>In many areas of mathematics, it is common to refer to a function
-which is a “functions of functions” as a <strong>functional</strong>.</p></li>
-<li><p>For example, <span class="math inline">\(T(f)\)</span> which is defined as
-<span class="math display">\[\begin{equation}
-T(f) = \int_{0}^{1} f^{2}(x) dx
-\end{equation}\]</span>
-is a functional because <span class="math inline">\(T(f)\)</span> takes arguments which are functions
-and outputs real numbers.</p></li>
-</ul>
-<hr />
-<ul>
-<li><p>Many common parameters that we encounter in statistics can be thought of
-as functionals where the input of the functional is usually a distribution function.</p></li>
-<li><p>For example, the mean is an example of a functional
-<span class="math display">\[\begin{equation}
-\mu(F) = \int x dF(x) = \int x f(x) dx \nonumber
-\end{equation}\]</span>
-As indicated by the notation <span class="math inline">\(\mu(F)\)</span>, the value of the mean
-depends on the underlying distribution function <span class="math inline">\(F\)</span>.</p></li>
-<li><p>Also, the variance is an example of a functional
-<span class="math display">\[\begin{equation}
-\sigma^{2}(F) = \int (x - \mu(F))^{2} dF(x)
-= \int x^{2} dF(x) - \mu^{2}(F) \nonumber
-\end{equation}\]</span></p></li>
-<li><p>The median is an example of a functional
-<span class="math display">\[\begin{equation}
-\textrm{med}(F) = F^{-1}(1/2) \nonumber
-\end{equation}\]</span></p></li>
-<li><p>The tail probability <span class="math inline">\(P(X_{i} &gt; c)\)</span> is also a functional
-<span class="math display">\[\begin{equation}
-\theta_{c}(F) = \int I(x &gt; c) dF(x) \nonumber
-\end{equation}\]</span></p></li>
-</ul>
-<hr />
-<ul>
-<li><p>Many common estimators can be thought of as coming
-from “plugging in” the empirical cdf into the appropriate statistical functional.</p></li>
-<li><p>For example, plugging in the empirical cdf into the mean functional gives:
-<span class="math display">\[\begin{equation}
-\mu( \hat{F}_{n} ) = \int x d\hat{F}_{n}(x) = \frac{1}{n}\sum_{i=1}^{n} X_{i} = \bar{X}  \nonumber
-\end{equation}\]</span></p></li>
-<li><p>Plugging in the empirical cdf into the tail probability functional gives
-<span class="math display">\[\begin{equation}
-\theta_{c}( \hat{F}_{n} ) = \int I(x &gt; c) d\hat{F}_{n}(x) = \frac{1}{n}\sum_{i=1}^{n}I(X_{i} &gt; c)
-= 1 - \hat{F}_{n}(c) \nonumber
-\end{equation}\]</span></p></li>
-<li><p>The sample variance is not quite a plug-in estimate for <span class="math inline">\(\sigma^{2}(F)\)</span> but it is very close
-<span class="math display">\[\begin{eqnarray}
-\sigma^{2}(\hat{F}_{n})
-&amp;=&amp; \int x^{2} d\hat{F}_{n}(x) - \mu^{2}(\hat{F}_{n})
-= \frac{1}{n} \sum_{i=1}^{n} X_{i}^{2} - \bar{X}^{2} \nonumber \\
-&amp;=&amp; \frac{1}{n} \sum_{i=1}^{n} (X_{i} - \bar{X})^{2}
-= \frac{n-1}{n} \hat{\sigma}^{2} \nonumber
-\end{eqnarray}\]</span></p></li>
-</ul>
-<hr />
-<ul>
-<li><p>This notation for statistical functionals will be useful when we discuss the bootstrap later in
-the course.</p></li>
-<li><p>The notation for statistical functionals is also very useful in the context
-of influence functions and robust statistics, but we will not discuss these
-topics in this course.</p></li>
-</ul>
-</div>
-<div id="additional-reading-2" class="section level2 hasAnchor" number="7.6">
-<h2><span class="header-section-number">7.6</span> Additional Reading<a href="edf.html#additional-reading-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="additional-reading-1" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> Additional Reading<a href="krusk-wallis.html#additional-reading-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li>Additional reading which covers the material discussed in this chapter includes:
 <ul>
-<li>Chapter 2 from <span class="citation">Wasserman (<a href="#ref-wasserman2006">2006</a>)</span></li>
+<li>Chapters 6 from <span class="citation">Hollander, Wolfe, and Chicken (<a href="#ref-hollander2013">2013</a>)</span></li>
 </ul></li>
 </ul>
 </div>
-<div id="exercises-4" class="section level2 hasAnchor" number="7.7">
-<h2><span class="header-section-number">7.7</span> Exercises<a href="edf.html#exercises-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="exercises-1" class="section level2 hasAnchor" number="4.6">
+<h2><span class="header-section-number">4.6</span> Exercises<a href="krusk-wallis.html#exercises-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li><strong>Exercise 7.1.</strong> Why does
-<span class="math display">\[\begin{equation}
-KS_{n,m}^{(2)} = \max_{1 \leq i \leq n+m} \big| \hat{F}_{n,X}(Z_{(i)}) -  \hat{F}_{n,Y}(Z_{(i)}) \big|, \nonumber
-\end{equation}\]</span>
-where <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldots, Z_{n+m})\)</span> denotes the pooled sample and <span class="math inline">\(Z_{(1)}, \ldots, Z_{(n+m)}\)</span>
-denote the order statistics from <span class="math inline">\(\mathbf{Z}\)</span>?</li>
+<li><strong>Exercise 4.1</strong> If <span class="math inline">\(K=2\)</span>, show that equation <a href="krusk-wallis.html#eq:kw-wrs-equivalence">(4.6)</a> holds.</li>
 </ul>
 
 </div>
 </div>
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
-<div id="ref-wasserman2006" class="csl-entry">
-Wasserman, Larry. 2006. <em>All of Nonparametric Statistics</em>. Springer Science &amp; Business Media.
+<div id="ref-hollander2013" class="csl-entry">
+Hollander, Myles, Douglas A Wolfe, and Eric Chicken. 2013. <em>Nonparametric Statistical Methods</em>. Vol. 751. John Wiley &amp; Sons.
 </div>
 </div>
             </section>
@@ -866,8 +867,8 @@ Wasserman, Larry. 2006. <em>All of Nonparametric Statistics</em>. Springer Scien
           </div>
         </div>
       </div>
-<a href="ustat.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="density-estimation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="rank-tests.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="permutation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
