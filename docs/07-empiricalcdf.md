@@ -135,6 +135,10 @@ P\Bigg( \sup_{t} |F(t) - \hat{F}_{n}(t) | > \varepsilon \Bigg) \leq 2 e^{-2n \va
 \end{equation}
 is equivalent to
 \begin{equation}
+\hat{F}_{n}(t) - \delta_{\alpha,n} \leq F(t) \leq \hat{F}_{n}(t) + \delta_{\alpha,n}, \nonumber
+\end{equation}
+which is equivalent to
+\begin{equation}
 L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \qquad \textrm{for all } t
 \nonumber
 \end{equation}
@@ -164,7 +168,7 @@ just a single point.
 from a study on kidney function.
 
 * This dataset has $157$ observations which has the age of each study participant and
-a measure of overall kidney function. The data can be obtained at https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt
+a measure of overall kidney function. 
 
 * We will only look at the `tot` variable in this chapter. 
 
@@ -338,7 +342,7 @@ ks.test(xx, y="pnorm")  ## test that these data follow Normal(0, 1)
 ## 	Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.063772, p-value = 0.8108
+## D = 0.083145, p-value = 0.4939
 ## alternative hypothesis: two-sided
 ```
 
@@ -354,7 +358,7 @@ ks.test(xx, y="pnorm", mean=1, sd=2)
 ## 	Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.33012, p-value = 6.844e-10
+## D = 0.35028, p-value = 4.405e-11
 ## alternative hypothesis: two-sided
 ```
 
@@ -404,7 +408,7 @@ ks.test(xx, yy)
 ## 	Asymptotic two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.18, p-value = 0.07832
+## D = 0.25, p-value = 0.003861
 ## alternative hypothesis: two-sided
 ```
 
@@ -423,7 +427,7 @@ KS.stat
 ```
 
 ```
-## [1] 0.18
+## [1] 0.25
 ```
 
 
@@ -518,4 +522,13 @@ KS_{n,m}^{(2)} = \max_{1 \leq i \leq n+m} \big| \hat{F}_{n,X}(Z_{(i)}) -  \hat{F
 \end{equation}
 where $\mathbf{Z} = (Z_{1}, \ldots, Z_{n+m})$ denotes the pooled sample and $Z_{(1)}, \ldots, Z_{(n+m)}$
 denote the order statistics from $\mathbf{Z}$?
+
+
+* **Exercise 7.2.** Consider the complementary log-log transformation of $F(t)$ at a fixed point $t$
+\begin{equation}
+G(t) = \log\Big( -\log\{ 1 - F(t) \} \Big). \nonumber 
+\end{equation}
+Use the delta method to construct a $95\%$ asymptotic confidence interval for $G(t)$.
+
+
 

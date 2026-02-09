@@ -22,18 +22,20 @@ make few assumptions about the particular form of $f(x)$.
 
 ## Histograms
 
+
+
 <div class="figure">
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-1-1.png" alt="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" width="672" />
-<p class="caption">(\#fig:unnamed-chunk-1)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</p>
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-2-1.png" alt="Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" width="672" />
+<p class="caption">(\#fig:unnamed-chunk-2)Histogram of ages from kidney function data. Data retrieved from: https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</p>
 </div>
 
 ### Definition
 
 * While histograms are often thought of as mainly a visualization tool,
-a histogram can also be thought of as an estimate of the density $f(x)$. 
+a histogram can also be thought of as an **estimate of the density** $f(x)$. 
 
 * To construct a histogram, you first need to define a series
-of "bins": $B_{1}, \ldots, B_{D_{n}}$. 
+of **"bins"**: $B_{1}, \ldots, B_{D_{n}}$. 
 
 * Each bin is a left-closed interval. That is, the bins have the form $B_{k} = [x_{0} + (k-1)h_{n}, x_{0} + kh_{n})$:
 \begin{eqnarray}
@@ -111,15 +113,9 @@ This can be changed using the **right** argument of the **hist** function.
 ---
 
 * Let's use the kidney function data again to demonstrate the use of histograms in **R**. This time
-we will focus on the **age** variable.
+we will focus on the `age` variable.
 
-
-``` r
-kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
-                     header=TRUE)
-```
-
-* You can plot a histogram of **age** just by calling the `hist` function.
+* You can plot a histogram of `age` just by calling the `hist` function.
 
 ``` r
 kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
@@ -151,13 +147,13 @@ names(kidney.hist)
 ## [1] "breaks"   "counts"   "density"  "mids"     "xname"    "equidist"
 ```
 
-* **breaks** 
+* `breaks` 
    + the boundaries for the histogram bins. The bins are of the form ( breaks[k], breaks[k+1] ]
-* **counts** 
+* `counts` 
    + the number of observations falling into each bin
-* **density**
+* `density`
    + the value of the estimated density within each of the bins
-* **mids** 
+* `mids` 
    + the midpoint of each of the bins
 
 

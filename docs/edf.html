@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-02-03" />
+<meta name="date" content="2026-02-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -552,6 +552,10 @@ P\Bigg( \sup_{t} |F(t) - \hat{F}_{n}(t) | &gt; \varepsilon \Bigg) \leq 2 e^{-2n 
 \end{equation}\]</span>
 is equivalent to
 <span class="math display">\[\begin{equation}
+\hat{F}_{n}(t) - \delta_{\alpha,n} \leq F(t) \leq \hat{F}_{n}(t) + \delta_{\alpha,n}, \nonumber
+\end{equation}\]</span>
+which is equivalent to
+<span class="math display">\[\begin{equation}
 L_{\alpha}^{band}(t) \leq F(t) \leq U_{\alpha}^{band}(t) \qquad \textrm{for all } t
 \nonumber
 \end{equation}\]</span></p></li>
@@ -578,7 +582,7 @@ just a single point.</p></li>
 <li><p>We will see how to work with empirical distribution functions in <strong>R</strong> by using data
 from a study on kidney function.</p></li>
 <li><p>This dataset has <span class="math inline">\(157\)</span> observations which has the age of each study participant and
-a measure of overall kidney function. The data can be obtained at <a href="https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt" class="uri">https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt</a></p></li>
+a measure of overall kidney function.</p></li>
 <li><p>We will only look at the <code>tot</code> variable in this chapter.</p></li>
 </ul>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="edf.html#cb104-1" tabindex="-1"></a><span class="fu">head</span>(kidney)</span></code></pre></div>
@@ -700,7 +704,7 @@ that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.063772, p-value = 0.8108
+## D = 0.083145, p-value = 0.4939
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
@@ -711,7 +715,7 @@ by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.33012, p-value = 6.844e-10
+## D = 0.35028, p-value = 4.405e-11
 ## alternative hypothesis: two-sided</code></pre>
 <hr />
 <ul>
@@ -751,7 +755,7 @@ the one-sample KS test statistic. In particular, under <span class="math inline"
 ##  Asymptotic two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.18, p-value = 0.07832
+## D = 0.25, p-value = 0.003861
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>We can compute the KS statistic ourselves and check that this matches the value of the KS statistic
@@ -764,7 +768,7 @@ returned by the <strong>ks.test</strong> function:</li>
 <span id="cb121-5"><a href="edf.html#cb121-5" tabindex="-1"></a></span>
 <span id="cb121-6"><a href="edf.html#cb121-6" tabindex="-1"></a>KS.stat <span class="ot">&lt;-</span> <span class="fu">max</span>( <span class="fu">abs</span>( <span class="fu">F.x</span>(zz.order) <span class="sc">-</span> <span class="fu">F.y</span>(zz.order) ) )</span>
 <span id="cb121-7"><a href="edf.html#cb121-7" tabindex="-1"></a>KS.stat</span></code></pre></div>
-<pre><code>## [1] 0.18</code></pre>
+<pre><code>## [1] 0.25</code></pre>
 </div>
 <div id="the-empirical-distribution-function-and-statistical-functionals" class="section level2 hasAnchor" number="7.5">
 <h2><span class="header-section-number">7.5</span> The empirical distribution function and statistical functionals<a href="edf.html#the-empirical-distribution-function-and-statistical-functionals" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -845,12 +849,17 @@ topics in this course.</p></li>
 <div id="exercises-4" class="section level2 hasAnchor" number="7.7">
 <h2><span class="header-section-number">7.7</span> Exercises<a href="edf.html#exercises-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li><strong>Exercise 7.1.</strong> Why does
+<li><p><strong>Exercise 7.1.</strong> Why does
 <span class="math display">\[\begin{equation}
 KS_{n,m}^{(2)} = \max_{1 \leq i \leq n+m} \big| \hat{F}_{n,X}(Z_{(i)}) -  \hat{F}_{n,Y}(Z_{(i)}) \big|, \nonumber
 \end{equation}\]</span>
 where <span class="math inline">\(\mathbf{Z} = (Z_{1}, \ldots, Z_{n+m})\)</span> denotes the pooled sample and <span class="math inline">\(Z_{(1)}, \ldots, Z_{(n+m)}\)</span>
-denote the order statistics from <span class="math inline">\(\mathbf{Z}\)</span>?</li>
+denote the order statistics from <span class="math inline">\(\mathbf{Z}\)</span>?</p></li>
+<li><p><strong>Exercise 7.2.</strong> Consider the complementary log-log transformation of <span class="math inline">\(F(t)\)</span> at a fixed point <span class="math inline">\(t\)</span>
+<span class="math display">\[\begin{equation}
+G(t) = \log\Big( -\log\{ 1 - F(t) \} \Big). \nonumber
+\end{equation}\]</span>
+Use the delta method to construct a <span class="math inline">\(95\%\)</span> asymptotic confidence interval for <span class="math inline">\(G(t)\)</span>.</p></li>
 </ul>
 
 </div>

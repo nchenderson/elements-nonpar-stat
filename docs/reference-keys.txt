@@ -41,7 +41,7 @@ eq:wrs-mw-deriv1
 eq:spearman-simplifiation
 eq:pointwise-cis
 eq:simultaneous-cis
-fig:unnamed-chunk-1
+fig:unnamed-chunk-2
 eq:hist-density
 eq:approx-bias-hist
 eq:approx-var-hist
@@ -56,6 +56,7 @@ eq:asymp-mse-density
 eq:amise-density
 eq:mise-decomposition
 eq:normal-approx-emu
+fig:unnamed-chunk-1
 eq:rho-stderr
 eq:rho-stderr-ztrans
 eq:quantile-ratio-approx
@@ -69,7 +70,6 @@ eq:regressogram-denominator
 eq:local-average-estimator
 eq:simple-loclin-regression
 eq:loocv-simplification
-fig:unnamed-chunk-2
 fig:pwlinear
 fig:pwcubic
 fig:unnamed-chunk-3

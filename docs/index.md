@@ -1,7 +1,7 @@
 --- 
 title: "Elements of Nonparametric Statistics"
 author: "Nicholas Henderson"
-date: "2026-02-03"
+date: "2026-02-08"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: ["book.bib"]
