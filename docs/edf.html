@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-02-08" />
+<meta name="date" content="2026-02-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -704,7 +704,7 @@ that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.083145, p-value = 0.4939
+## D = 0.11351, p-value = 0.152
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
@@ -715,7 +715,7 @@ by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.35028, p-value = 4.405e-11
+## D = 0.29595, p-value = 4.939e-08
 ## alternative hypothesis: two-sided</code></pre>
 <hr />
 <ul>
@@ -755,7 +755,7 @@ the one-sample KS test statistic. In particular, under <span class="math inline"
 ##  Asymptotic two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.25, p-value = 0.003861
+## D = 0.16, p-value = 0.1545
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>We can compute the KS statistic ourselves and check that this matches the value of the KS statistic
@@ -768,7 +768,7 @@ returned by the <strong>ks.test</strong> function:</li>
 <span id="cb121-5"><a href="edf.html#cb121-5" tabindex="-1"></a></span>
 <span id="cb121-6"><a href="edf.html#cb121-6" tabindex="-1"></a>KS.stat <span class="ot">&lt;-</span> <span class="fu">max</span>( <span class="fu">abs</span>( <span class="fu">F.x</span>(zz.order) <span class="sc">-</span> <span class="fu">F.y</span>(zz.order) ) )</span>
 <span id="cb121-7"><a href="edf.html#cb121-7" tabindex="-1"></a>KS.stat</span></code></pre></div>
-<pre><code>## [1] 0.25</code></pre>
+<pre><code>## [1] 0.16</code></pre>
 </div>
 <div id="the-empirical-distribution-function-and-statistical-functionals" class="section level2 hasAnchor" number="7.5">
 <h2><span class="header-section-number">7.5</span> The empirical distribution function and statistical functionals<a href="edf.html#the-empirical-distribution-function-and-statistical-functionals" class="anchor-section" aria-label="Anchor link to header"></a></h2>

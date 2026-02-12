@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-02-08" />
+<meta name="date" content="2026-02-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -677,7 +677,7 @@ and we can express the variance as:
 &amp;=&amp; \frac{ p_{h_{n}, x_{0}}(x)\{1 - p_{h_{n}, x_{0}}(x) \} }{ nh_{n}^{2} } \nonumber
 \end{eqnarray}\]</span></p></li>
 <li><p>Using the approximation <span class="math inline">\(f(t) \approx f(x) + f&#39;(x)(t - x)\)</span> for <span class="math inline">\(t\)</span> close to <span class="math inline">\(x\)</span>, we have that
-<span class="math display">\[\begin{eqnarray}
+<span class="math display" id="eq:approx-p-hist">\[\begin{eqnarray}
 \frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } &amp;=&amp; \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(t) dt \nonumber \\
 &amp;\approx&amp; \frac{1}{h_{n}}\int_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } f(x) dt + \frac{f&#39;(x)}{h_{n}}\int_{x_{0} + (A_{h_{n}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } (t - x) dt \nonumber \\
 &amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ (t - x)^{2}\Big|_{x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n}}^{x_{0} + A_{h_{n}, x_{0}}(x)h_{n} } \Big] \nonumber \\
@@ -685,26 +685,34 @@ and we can express the variance as:
 &amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ 2x_{0}A_{h_{n}, x_{0}}(x)h_{n} + A_{h_{n}, x_{0}}^{2}(x)h_{n}^{2} - 2x_{0}(A_{h_{n}, x_{0}}(x)-1)h_{n}  \nonumber \\
 &amp; &amp; - (A_{h_{n}, x_{0}}(x)-1)^{2}h_{n}^{2} - 2xh_{n} \Big] \nonumber \\
 &amp;=&amp; f(x) + \frac{f&#39;(x)}{2h_{n}}\Big[ 2x_{0}h_{n} + 2A_{h_{n}, x_{0}}(x)h_{n}^{2} - h_{n}^{2} - 2xh_{n} \Big] \nonumber \\
-&amp;=&amp; f(x) + f&#39;(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big] \nonumber
+&amp;=&amp; f(x) + f&#39;(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big].
+\tag{8.2}
 \end{eqnarray}\]</span></p></li>
-<li><p>So, the bias of the histogram density estimate <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span> is
+<li><p>Remember that <span class="math inline">\(x\)</span> is a point within bin <span class="math inline">\(A_{h_{n}, x_{0}}(x)\)</span>. So, we can write <span class="math inline">\(x\)</span> as
+<span class="math display">\[\begin{equation}
+x = x_{0} + (A_{h_{n}, x_{0}}(x) - 1)h_{n} + c_{x}h_{n},
+\end{equation}\]</span>
+where <span class="math inline">\(c_{x}\)</span> is a number such that <span class="math inline">\(0 \leq c_{x} &lt; 1\)</span>.</p></li>
+<li><p>So, we can simplify the expression for <span class="math inline">\(p_{h_{n}, x_{0}}(x)/h_{n}\)</span> in <a href="density-estimation.html#eq:approx-p-hist">(8.2)</a> to
+<span class="math display">\[\begin{equation}
+\frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } \approx f(x) + f&#39;(x)h_{n}\Big( \frac{1}{2} - c_{x} \Big).
+\end{equation}\]</span></p></li>
+<li><p>Hence, the approximate bias of the histogram density estimate <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span> is
 <span class="math display" id="eq:approx-bias-hist">\[\begin{eqnarray}
 \textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \}
 &amp;=&amp; \frac{ p_{h_{n}, x_{0}}(x) }{ h_{n} } - f(x)  \nonumber \\
-&amp;\approx&amp; f&#39;(x)\Big[ h_{n}/2 - [ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ] \Big]
-\tag{8.2}
+&amp;\approx&amp; f&#39;(x)h_{n}\Big( \frac{1}{2} - c_{x} \Big)
+\tag{8.3}
 \end{eqnarray}\]</span></p></li>
-<li><p>Choosing a very small bin width <span class="math inline">\(h_{n}\)</span> will result in a small bias because the left endpoint of the
-bin <span class="math inline">\(x_{0} + (A_{h_{n}}(x) - 1)h_{n}\)</span> will always be very close to <span class="math inline">\(x\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
 <li><p>Now, let us turn to the variance of the histogram estimate at <span class="math inline">\(x\)</span>:
 <span class="math display" id="eq:approx-var-hist">\[\begin{eqnarray}
 \textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \} &amp;=&amp; \frac{p_{h_{n}, x_{0}}(x) }{nh_{n}^{2}}\{1 - p_{h_{n}, x_{0}}(x) \}  \nonumber \\
-&amp;\approx&amp; \frac{f(x) + f&#39;(x)\{ \tfrac{h_{n}}{2} - [ x - x_{0} - (A_{h_{n}, x_{0}}(x) - 1)h_{n} ] \}}{nh_{n}}\{1 - p_{h_{n}, x_{0}}(x)\}  \nonumber \\
-&amp;\approx&amp; \frac{f(x)}{n h_{n} }
-\tag{8.3}
+&amp;\approx&amp; \frac{1}{nh_{n}}\Big( f(x) + f&#39;(x)h_{n}\{ 1/2 - c_{x} \} \Big)\{1 - p_{h_{n}, x_{0}}(x) \}  \nonumber \\
+&amp;\approx&amp; \frac{f(x)}{n h_{n} }, \textrm{ for large n}.
+\tag{8.4}
 \end{eqnarray}\]</span></p></li>
 <li><p>For a more detailed description of the above approximation see <span class="citation">Scott (<a href="#ref-scott1979">1979</a>)</span> or Chapter 6 of <span class="citation">Wasserman (<a href="#ref-wasserman2006">2006</a>)</span>.</p></li>
 <li><p>Note that large bin widths will reduce the variance of <span class="math inline">\(\hat{f}_{h_{n}}^{H}(x)\)</span>.</p></li>
@@ -713,21 +721,20 @@ bin <span class="math inline">\(x_{0} + (A_{h_{n}}(x) - 1)h_{n}\)</span> will al
 <div id="pointwise-approximate-mean-squared-error" class="section level4 hasAnchor" number="8.2.3.3">
 <h4><span class="header-section-number">8.2.3.3</span> Pointwise Approximate Mean Squared Error<a href="density-estimation.html#pointwise-approximate-mean-squared-error" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
-<li><p>Using <a href="density-estimation.html#eq:approx-var-hist">(8.3)</a> and <a href="density-estimation.html#eq:approx-bias-hist">(8.2)</a>, the approximate mean-squared error (AMSE) of the histogram density estimate
+<li><p>Using <a href="density-estimation.html#eq:approx-var-hist">(8.4)</a> and <a href="density-estimation.html#eq:approx-bias-hist">(8.3)</a>, the approximate mean-squared error (AMSE) of the histogram density estimate
 at a particular point <span class="math inline">\(x\)</span> is given by
 <span class="math display" id="eq:mse-hist-decomp">\[\begin{eqnarray}
 \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \}
 &amp;=&amp; E\Big( \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}  \Big) \nonumber \\
 &amp;=&amp; \Big( \textrm{Bias}\{ \hat{f}_{h_{n}}^{H}(x) \} \Big)^{2} + \textrm{Var}\{ \hat{f}_{h_{n}}^{H}(x) \} \nonumber \\
-&amp;\approx&amp;  \frac{h_{n}^{2}[f&#39;(x)]^{2} }{4} - h_{n}f&#39;(x)[ x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} ]  \nonumber \\
-&amp;+&amp; [f&#39;(x)]^{2}\Big( x - x_{0} - \{ A_{h_{n}, x_{0}}(x) - 1 \}h_{n} \Big)^{2} + \frac{f(x)}{n h_{n} } \nonumber \\
+&amp;\approx&amp;  [f&#39;(x)]^{2}h_{n}^{2}\Big( \frac{1}{2} - c_{x} \Big)^{2} + \frac{f(x)}{n h_{n} } \nonumber \\
 &amp;=&amp; \textrm{AMSE}\{ \hat{f}_{h_{n}}^{H}(x) \}
-\tag{8.4}
+\tag{8.5}
 \end{eqnarray}\]</span></p></li>
 <li><p>For any approach to bin width selection, we should have <span class="math inline">\(h_{n} \longrightarrow 0\)</span> and
 <span class="math inline">\(nh_{n} \longrightarrow \infty\)</span>.</p></li>
 <li><p>This MSE approximation depends on a particular choice of <span class="math inline">\(x\)</span>.</p></li>
-<li><p>Difficult to use <a href="density-estimation.html#eq:mse-hist-decomp">(8.4)</a> as a criterion for selecting the bandwidth
+<li><p>Difficult to use <a href="density-estimation.html#eq:mse-hist-decomp">(8.5)</a> as a criterion for selecting the bandwidth
 because the best choice of <span class="math inline">\(h_{n}\)</span> will usually depend on your choice of <span class="math inline">\(x\)</span>.</p></li>
 </ul>
 </div>
@@ -742,20 +749,20 @@ that does not depend on a particular choice of <span class="math inline">\(x\)</
 &amp;=&amp; E\Big\{ \int_{-\infty}^{\infty} \{ \hat{f}_{h_{n}}^{H}(x) - f(x) \}^{2}dx   \Big\} \nonumber \\
 &amp;=&amp; \int_{-\infty}^{\infty} \textrm{MSE}\{ \hat{f}_{h_{n}}^{H}(x) \} dx \nonumber
 \end{eqnarray}\]</span>
-Using the previously derived approximation <a href="density-estimation.html#eq:mse-hist-decomp">(8.4)</a> for the AMSE, it can be shown that
+Using the previously derived approximation <a href="density-estimation.html#eq:mse-hist-decomp">(8.5)</a> for the AMSE, it can be shown that
 <span class="math display" id="eq:mise-formula">\[\begin{eqnarray}
 \textrm{MISE}\{ \hat{f}_{h_{n}}^{H} \} \approx
 \frac{1}{nh_{n}} + \frac{h_{n}^{2}}{12}\int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx  
-\tag{8.5}
+\tag{8.6}
 \end{eqnarray}\]</span></p></li>
 </ul>
 <hr />
 <ul>
 <li><p>To select the optimal bin width, we minimize the MISE as a function of <span class="math inline">\(h_{n}\)</span>.</p></li>
-<li><p>Minimizing <a href="density-estimation.html#eq:mise-formula">(8.5)</a>, as a function of <span class="math inline">\(h_{n}\)</span> yields the following formula for the optimal bin width
+<li><p>Minimizing <a href="density-estimation.html#eq:mise-formula">(8.6)</a>, as a function of <span class="math inline">\(h_{n}\)</span> yields the following formula for the optimal bin width
 <span class="math display" id="eq:opt-binwidth-hist">\[\begin{equation}
 h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx}  \Big)^{1/3} = C n^{-1/3}
-\tag{8.6}
+\tag{8.7}
 \end{equation}\]</span></p></li>
 <li><p>Notice that <span class="math inline">\(h_{n}^{opt} \longrightarrow 0\)</span> and <span class="math inline">\(nh_{n}^{opt} \longrightarrow \infty\)</span> as <span class="math inline">\(n \longrightarrow \infty\)</span>.</p></li>
 <li><p>Notice also that the optimal bin width depends on the unknown quantity <span class="math inline">\(\int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx\)</span>.</p></li>
@@ -767,15 +774,15 @@ h_{n}^{opt} = \Big( \frac{6}{n \int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx}  \Big
 <ul>
 <li>We will mention three rules for selecting the bin width of a histogram.
 <ul>
-<li>Scott rule: (based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a>)</li>
-<li>Friedman and Diaconis (FD) rule (also based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a>)</li>
+<li>Scott rule: (based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.7)</a>)</li>
+<li>Friedman and Diaconis (FD) rule (also based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.7)</a>)</li>
 <li>Sturges rule: (based on wanting the histogram to look Gaussian when the data are in fact Gaussian-distributed)</li>
 </ul></li>
 </ul>
 <hr />
 <ul>
-<li><p>Both the Scott and the FD rule are based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a>.</p></li>
-<li><p>The main problem with using the formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.6)</a> is the presence of <span class="math inline">\(\int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx\)</span>.</p></li>
+<li><p>Both the Scott and the FD rule are based on the optimal bin width formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.7)</a>.</p></li>
+<li><p>The main problem with using the formula <a href="density-estimation.html#eq:opt-binwidth-hist">(8.7)</a> is the presence of <span class="math inline">\(\int_{-\infty}^{\infty} [f&#39;(x)]^{2} dx\)</span>.</p></li>
 <li><p><strong>Solution:</strong> See what this quantity looks like if we assume that <span class="math inline">\(f(x)\)</span> corresponds
 to a <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span> density.</p></li>
 <li><p>With the assumption that <span class="math inline">\(f(x) = \textrm{Normal}(\mu, \sigma^{2})\)</span>:
@@ -830,7 +837,7 @@ have a “jagged” appearance.</p></li>
 <span class="math display" id="eq:box-density">\[\begin{equation}
 \hat{f}_{h_{n}}^{B}(x)
 = \frac{1}{n} \sum_{i=1}^{n} \frac{1}{h_{n}} w\Big( \frac{X_{i} - x}{h_{n}} \Big),  
-\tag{8.7}
+\tag{8.8}
 \end{equation}\]</span>
 where <span class="math inline">\(w(t)\)</span> is defined as the following “box function”
 <span class="math display">\[\begin{equation}
@@ -855,7 +862,7 @@ a smoother function.</p></li>
 <h3><span class="header-section-number">8.4.1</span> Definition<a href="density-estimation.html#definition-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><p>Kernel density estimates are a generalization of the box-type density estimate <span class="math inline">\(\hat{f}_{h_{n}}^{B}(x)\)</span>.</p></li>
-<li><p>With kernel density estimation, we replace the “box function” in <a href="density-estimation.html#eq:box-density">(8.7)</a>
+<li><p>With kernel density estimation, we replace the “box function” in <a href="density-estimation.html#eq:box-density">(8.8)</a>
 with a function <span class="math inline">\(K(\cdot)\)</span> which is much smoother.</p></li>
 <li><p>The function <span class="math inline">\(K(\cdot)\)</span> will also give higher weight to observations which are closer to <span class="math inline">\(x\)</span>
 than those that are further away from <span class="math inline">\(x\)</span>.</p></li>
@@ -865,7 +872,7 @@ than those that are further away from <span class="math inline">\(x\)</span>.</p
 <li><p>A kernel density estimator <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> of the density <span class="math inline">\(f(x)\)</span> is defined as
 <span class="math display" id="eq:kernel-density-formula">\[\begin{equation}
 \hat{f}_{h_{n}}(x) = \frac{1}{nh_{n}} \sum_{i=1}^{n} K\Big( \frac{x - X_{i}}{h_{n}} \Big)
-\tag{8.8}
+\tag{8.9}
 \end{equation}\]</span></p></li>
 <li><p>The function <span class="math inline">\(K( \cdot )\)</span> is referred to as the <strong>kernel function</strong>.</p></li>
 <li><p>The scalar term <span class="math inline">\(h_{n} &gt; 0\)</span> is called the <strong>bandwidth</strong>.</p></li>
@@ -908,7 +915,7 @@ becomes more strongly concentrated around <span class="math inline">\(X_{i}\)</s
 <p><img src="08-densityestimation_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <hr />
 <ul>
-<li><p>The nice thing about <a href="density-estimation.html#eq:kernel-density-formula">(8.8)</a> is that it guarantees that <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is a probability
+<li><p>The nice thing about <a href="density-estimation.html#eq:kernel-density-formula">(8.9)</a> is that it guarantees that <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> is a probability
 density function
 <span class="math display">\[\begin{eqnarray}
 \int_{-\infty}^{\infty} \hat{f}_{h_{n}}(x) dx
@@ -916,7 +923,7 @@ density function
 &amp;=&amp;  \frac{1}{n} \sum_{i=1}^{n} \int_{-\infty}^{\infty} \frac{1}{h_{n}} K\Big( \frac{x - X_{i}}{h_{n}} \Big) dx  \nonumber \\
 &amp;=&amp; 1 \nonumber
 \end{eqnarray}\]</span></p></li>
-<li><p>Also, formula <a href="density-estimation.html#eq:kernel-density-formula">(8.8)</a> guarantees that <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> inherits the smoothness properties
+<li><p>Also, formula <a href="density-estimation.html#eq:kernel-density-formula">(8.9)</a> guarantees that <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</span> inherits the smoothness properties
 of <span class="math inline">\(K(u)\)</span>
 <span class="math display">\[\begin{equation}
 \hat{f}_{h_{n}}&#39;(x) = \frac{1}{n} \sum_{i=1}^{n} \frac{1}{h_{n}^{2}} K&#39;\Big( \frac{x - X_{i}}{h_{n}} \Big)  \nonumber
@@ -946,28 +953,28 @@ Above, we used the substitution <span class="math inline">\(u = (x - t)/h_{n}\)<
 \textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
 &amp;=&amp; \int_{-\infty}^{\infty} K( u ) f(x - uh_{n}) du - f(x)  \nonumber \\
 &amp;=&amp; \int_{-\infty}^{\infty} K( u ) \{ f(x - uh_{n}) - f(x) \} du
-\tag{8.9}
+\tag{8.10}
 \end{eqnarray}\]</span></p></li>
-<li><p>The expression for bias shown in <a href="density-estimation.html#eq:exact-density-bias">(8.9)</a> will only
+<li><p>The expression for bias shown in <a href="density-estimation.html#eq:exact-density-bias">(8.10)</a> will only
 have a closed form for special choices of <span class="math inline">\(K(\cdot)\)</span> and <span class="math inline">\(f( \cdot )\)</span>.</p></li>
 <li><p>Nevertheless, we can get a reasonable approximation of this bias for small <span class="math inline">\(h_{n}\)</span>.</p></li>
 <li><p>To approximate the bias for small <span class="math inline">\(h_{n}\)</span>, we can use the following Taylor series approximation
 <span class="math display">\[\begin{equation}
 f(x - uh_{n}) - f(x) \approx -uh_{n}f&#39;(x) + \frac{u^{2}h_{n}^{2}}{2} f&#39;&#39;(x) \nonumber
 \end{equation}\]</span>
-Plugging this approximation into our expression for the bias in <a href="density-estimation.html#eq:exact-density-bias">(8.9)</a> gives:
+Plugging this approximation into our expression for the bias in <a href="density-estimation.html#eq:exact-density-bias">(8.10)</a> gives:
 <span class="math display" id="eq:asymp-bias-density">\[\begin{eqnarray}
 \textrm{Bias}\{ \hat{f}_{h_{n}}(x) \}
 &amp;\approx&amp;  -h_{n}f&#39;(x) \int_{-\infty}^{\infty} u K( u )  du + \frac{h_{n}^{2}f&#39;&#39;(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du  \nonumber \\
 &amp;=&amp; \frac{h_{n}^{2}f&#39;&#39;(x)}{2} \int_{-\infty}^{\infty} u^{2} K( u ) du \nonumber \\
 &amp;=&amp; \frac{h_{n}^{2}f&#39;&#39;(x)\mu_{2}(K)}{2} \qquad \textrm{ where } \mu_{2}(K) = \int_{-\infty}^{\infty} u^{2} K( u ) du \nonumber \\
 &amp;=&amp; \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \}
-\tag{8.10}
+\tag{8.11}
 \end{eqnarray}\]</span>
 Here, <span class="math inline">\(\textrm{ABias}\{ \hat{f}_{h_{n}}(x) \}\)</span> stands for the approximate bias.</p></li>
-<li><p>Formula <a href="density-estimation.html#eq:asymp-bias-density">(8.10)</a> shows the direct dependence of the magnitude of bias on
+<li><p>Formula <a href="density-estimation.html#eq:asymp-bias-density">(8.11)</a> shows the direct dependence of the magnitude of bias on
 the value of the bandwidth.</p></li>
-<li><p>Formula <a href="density-estimation.html#eq:asymp-bias-density">(8.10)</a> also shows the effect of the curvature <span class="math inline">\(f&#39;&#39;(x)\)</span>
+<li><p>Formula <a href="density-estimation.html#eq:asymp-bias-density">(8.11)</a> also shows the effect of the curvature <span class="math inline">\(f&#39;&#39;(x)\)</span>
 of the density on the magnitude of bias.</p></li>
 </ul>
 <hr />
@@ -1000,7 +1007,7 @@ for the mean-squared error of <span class="math inline">\(\hat{f}_{h_{n}}(x)\)</
 &amp;\approx&amp;
 \textrm{AVar}\{ \hat{f}_{h_{n}}(x) \} + \Big( \textrm{ABias}\{ \hat{f}_{h_{n}}(x) \} \Big)^{2} \nonumber \\
 &amp;=&amp; \frac{f(x)\kappa_{2}(K) }{n h_{n} } + \frac{h_{n}^{4}[f&#39;&#39;(x)]^{2}\mu_{2}^{2}(K)}{4}
-\tag{8.11}
+\tag{8.12}
 \end{eqnarray}\]</span></p></li>
 <li><p>Notice that if we want the MSE to go to <span class="math inline">\(0\)</span> as <span class="math inline">\(n \longrightarrow \infty\)</span>, we need the
 following two things to happen:</p>
@@ -1012,18 +1019,18 @@ following two things to happen:</p>
 <hr />
 <ul>
 <li>The approximate mean integrated squared error (AMISE) of the kernel density estimator is obtained by integrating
-the approximation <a href="density-estimation.html#eq:asymp-mse-density">(8.11)</a> for MSE across <span class="math inline">\(x\)</span>
+the approximation <a href="density-estimation.html#eq:asymp-mse-density">(8.12)</a> for MSE across <span class="math inline">\(x\)</span>
 <span class="math display" id="eq:amise-density">\[\begin{eqnarray}
 \textrm{AMISE}\{ \hat{f}_{h_{n}} \} &amp;=&amp; \frac{\kappa_{2}(K) }{n h_{n} }\int_{-\infty}^{\infty} f(x) dx + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \nonumber \\
 &amp;=&amp; \frac{\kappa_{2}(K) }{n h_{n} } + \frac{h_{n}^{4}\mu_{2}^{2}(K)}{4} \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx
-\tag{8.12}
+\tag{8.13}
 \end{eqnarray}\]</span></li>
 </ul>
 </div>
 <div id="bandwidth-selection-with-the-normal-reference-rule-and-silvermans-rule-of-thumb" class="section level3 hasAnchor" number="8.4.3">
 <h3><span class="header-section-number">8.4.3</span> Bandwidth Selection with the Normal Reference Rule and Silverman’s “Rule of Thumb”<a href="density-estimation.html#bandwidth-selection-with-the-normal-reference-rule-and-silvermans-rule-of-thumb" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><p>If we differentiate the formula for AMISE given in <a href="density-estimation.html#eq:amise-density">(8.12)</a> with respect to <span class="math inline">\(h_{n}\)</span> and set it to zero,
+<li><p>If we differentiate the formula for AMISE given in <a href="density-estimation.html#eq:amise-density">(8.13)</a> with respect to <span class="math inline">\(h_{n}\)</span> and set it to zero,
 we get the following equation for <span class="math inline">\(h_{n}^{opt}\)</span> which would be the bandwidth minimizing <span class="math inline">\(\textrm{AMISE}\{ \hat{f}_{h_{n}} \}\)</span>:
 <span class="math display">\[\begin{equation}
 0 = \frac{-\kappa_{2}(K) }{n (h_{n}^{opt})^{2} } + (h_{n}^{opt})^{3}\mu_{2}^{2}(K) \int_{-\infty}^{\infty} [f&#39;&#39;(x)]^{2} dx \nonumber
@@ -1109,19 +1116,19 @@ or some related criterion which also measures an expected discrepancy between <s
 <li><p>The MISE can be rewritten as
 <span class="math display" id="eq:mise-decomposition">\[\begin{equation}
 \textrm{MISE}(h) = E\Big[ \int \hat{f}_{h}^{2}(x) dx \Big]  - 2 \int E\Big[ \hat{f}_{h}(x) \Big] f(x) dx + \int f^{2}(x) dx
-\tag{8.13}
+\tag{8.14}
 \end{equation}\]</span></p></li>
 <li><p>If the goal is to minimize <span class="math inline">\(\textrm{MISE}(h)\)</span>, we can ignore the last term since it does not depend on <span class="math inline">\(h\)</span>.</p></li>
 </ul>
 <hr />
 <ul>
-<li><p>Our goal will be to find a bandwidth that minimizes an estimate of <span class="math inline">\(\textrm{MISE}(h)\)</span> (an estimate which ignores the last term in <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a>),
+<li><p>Our goal will be to find a bandwidth that minimizes an estimate of <span class="math inline">\(\textrm{MISE}(h)\)</span> (an estimate which ignores the last term in <a href="density-estimation.html#eq:mise-decomposition">(8.14)</a>),
 and this estimate will use a technique called leave-one-out <strong>cross-validation</strong>.</p></li>
-<li><p>Regarding the first term in <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a>, we can just estimate this expectation with
+<li><p>Regarding the first term in <a href="density-estimation.html#eq:mise-decomposition">(8.14)</a>, we can just estimate this expectation with
 <span class="math display">\[\begin{equation}
 \int \hat{f}_{h}^{2}(x) dx  \nonumber
 \end{equation}\]</span></p></li>
-<li><p>The second term in <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a> is trickier because it has <span class="math inline">\(f(x)\)</span> in it.</p></li>
+<li><p>The second term in <a href="density-estimation.html#eq:mise-decomposition">(8.14)</a> is trickier because it has <span class="math inline">\(f(x)\)</span> in it.</p></li>
 <li><p>We can simplify this term though
 <span class="math display">\[\begin{equation}
 \int E\Big[ \hat{f}_{h}(x) \Big] f(x) dx = E\Bigg[ \frac{1}{h} K\Big( \frac{X_{1} - X_{2}}{h} \Big)  \Bigg] \nonumber
@@ -1130,7 +1137,7 @@ and this estimate will use a technique called leave-one-out <strong>cross-valida
 </ul>
 <hr />
 <ul>
-<li><p>We can construct an estimate of <a href="density-estimation.html#eq:mise-decomposition">(8.13)</a> by first defining the
+<li><p>We can construct an estimate of <a href="density-estimation.html#eq:mise-decomposition">(8.14)</a> by first defining the
 following “leave-one-out” estimate
 <span class="math display">\[\begin{equation}
 \hat{f}_{h, -i}(x) = \frac{1}{(n-1)h}\sum_{j \neq i}  K\Big( \frac{x - X_{j}}{h} \Big)  \nonumber

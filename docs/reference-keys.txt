@@ -43,6 +43,7 @@ eq:pointwise-cis
 eq:simultaneous-cis
 fig:unnamed-chunk-2
 eq:hist-density
+eq:approx-p-hist
 eq:approx-bias-hist
 eq:approx-var-hist
 eq:mse-hist-decomp
