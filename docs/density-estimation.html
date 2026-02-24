@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-02-11" />
+<meta name="date" content="2026-02-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1269,16 +1269,16 @@ to estimate <span class="math inline">\(\int \log \{ \hat{f}_{h}(x) \}  f(x) dx\
 </ul>
 <div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="density-estimation.html#cb144-1" tabindex="-1"></a><span class="fu">density</span>(x, bw, kernel, n, ...)</span></code></pre></div>
 <ul>
-<li><p><strong>x</strong> - the vector containing the data</p></li>
-<li><p><strong>bw</strong> - the value of the bandwidth.</p>
+<li><p><code>x</code> - the vector containing the data</p></li>
+<li><p><code>bw</code> - the value of the bandwidth.</p>
 <ul>
 <li><code>bw = nrd0</code> gives the default bandwidth rule. This is Silverman’s rule-of-thumb <span class="math inline">\(h_{n} = 0.9 s n^{-1/5}\)</span></li>
 <li><code>bw = nrd</code> gives the bandwidth <span class="math inline">\(h_{n} = 1.06 \hat{\sigma} n^{-1/5}\)</span></li>
 <li><code>bw = ucv</code> or <code>bw = bcv</code> find the bandwidth using cross-validation</li>
 </ul></li>
-<li><p><strong>kernel</strong> - the choice of kernel function. The default kernel is the Gaussian kernel.</p></li>
+<li><p><code>kernel</code> - the choice of kernel function. The default kernel is the Gaussian kernel.</p></li>
 <li><p>Be careful, some of the non-Gaussian kernels used in the <code>density</code> function are scaled differently than the definitions you might often see in textbooks or on-line resources.</p></li>
-<li><p><strong>n</strong> - the number of equally spaced points at which the density is to be estimated. The default is 512</p></li>
+<li><p><code>n</code> - the number of equally spaced points at which the density is to be estimated. The default is 512</p></li>
 </ul>
 <hr />
 <ul>

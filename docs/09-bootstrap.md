@@ -86,7 +86,7 @@ you use a multivariate delta method argument:
 \end{equation}
 where
 \begin{equation}
-\hat{\mu}_{hk} = \sum_{i=1}^{n}(X_{i} - \bar{X})^{h}(Y_{i} - \bar{Y})^{k} \nonumber
+\hat{\mu}_{hk} = \frac{1}{n}\sum_{i=1}^{n}(X_{i} - \bar{X})^{h}(Y_{i} - \bar{Y})^{k} \nonumber
 \end{equation}
 
 * Another popular approach for constructing a confidence interval is to use Fisher's "z-transformation"
@@ -99,7 +99,7 @@ $\tfrac{1}{2}\ln\{ (1 + \rho)/(1 - \rho) \}$ and standard deviation $1/\sqrt{n -
 
 ---
 
-* The bootstrap allows us to totally bypass the need to derive tedious formulas for the standard error such as
+* The bootstrap allows us to **totally bypass** the need to derive tedious formulas for the standard error such as
 \@ref(eq:rho-stderr) or bypass the need to use clever transformations such as \@ref(eq:rho-stderr-ztrans). 
 
 * For many more complicated estimates deriving formulas such as \@ref(eq:rho-stderr) or transformations such 
@@ -126,19 +126,19 @@ need to be able to compute the estimate of interest.
 T_{n} = h\Big( X_{1}, \ldots, X_{n}   \Big)  \nonumber
 \end{equation}
 
-* Suppose we want to estimate the standard deviation of $T_{n}$. 
+* Suppose we want to estimate the standard deviation of $T_{n}$.
+    + Denote the true standard deviation as $\textrm{sd}(T_{n})$.
 
-* The true standard deviation of $T_{n}$ is referred to as the **standard error**. 
-(need to change this terminology)
+* An estimate of $\textrm{sd}(T_{n})$ is usually referred to as the **standard error**. 
 
-* Confidence intervals are often based on subtracting or adding an estimate of the standard error, 
+* Confidence intervals are often based on **subtracting or adding** the standard error, 
 e.g.
 \begin{equation}
 CI = T_{n} \pm z_{\alpha/2} \times \widehat{\textrm{standard error}},  \nonumber 
 \end{equation}
 where $z_{\alpha/2}$ is the $100 \times (1 - \alpha/2)$ percentile of the $\textrm{Normal}(0,1)$ distribution.
 
-* The bootstrap estimates the standard deviation of $T_{n}$ by repeatedly subsampling from 
+* The bootstrap estimates the standard deviation of $T_{n}$ by **repeatedly subsampling** from 
 the original data and computing the value of the statistic $T_{n}$ on each subsample. 
 
 * More generally, we can use the bootstrap not just to find the standard deviation of $T_{n}$
@@ -161,20 +161,20 @@ but to characterize the distribution of $T_{n}$.
 
 ---
 
-* Each sample is $(X_{1}^{*}, \ldots, X_{n}^{*})$ is drawn through simple random sampling with replacement. 
-That is, $X_{1}^{*}, \ldots, X_{n}^{*}$ are independent with 
+* Each sample is $(X_{1,r}^{*}, \ldots, X_{n,r}^{*})$ is drawn through simple random sampling with replacement. 
+That is, $X_{1,r}^{*}, \ldots, X_{n,r}^{*}$ are independent with 
 \begin{equation}
-P(X_{i}^{*} = X_{j}) = \frac{1}{n} \quad \textrm{ for } j=1,\ldots,n \nonumber
+P(X_{i,r}^{*} = X_{j}) = \frac{1}{n} \quad \textrm{ for } j=1,\ldots,n \nonumber
 \end{equation}
 
-* We will refer to each sample $(X_{1}^{*}, \ldots, X_{n}^{*})$ as a **bootstrap sample**.
+* We will refer to each sample $(X_{1,r}^{*}, \ldots, X_{n,r}^{*})$ as a **bootstrap sample**.
 
 * We will refer to $T_{n,r}^{*}$ as a **bootstrap replication** of the statistic $T_{n}$.
 
 * The bootstrap estimate $se_{boot}$ for the standard error of $T_{n}$ is the sample
 standard deviation from the bootstrap replications $T_{n,1}^{*}, \ldots, T_{n,R}^{*}$:
 \begin{equation}
-se_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} \Big)^{2} \Bigg]^{1/2} \nonumber
+\textrm{se}_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} \Big)^{2} \Bigg]^{1/2} \nonumber
 \end{equation}
 
 * We can even use our bootstrap replications to get an approximation $\hat{G}_{n}^{*}(t)$ for the cumulative distribution function 
@@ -187,7 +187,7 @@ $G_{n}(t) = P(T_{n} \leq t)$ of $T_{n}$:
 
 * The **normal bootstrap standard error confidence interval** is defined as 
 \begin{equation}
-\Big[ T_{n} - z_{\alpha/2} se_{boot}, T_{n} + z_{\alpha/2}se_{boot} \Big] \nonumber
+\Big[ T_{n} - z_{\alpha/2} \textrm{se}_{boot}, T_{n} + z_{\alpha/2}\textrm{se}_{boot} \Big] \nonumber
 \end{equation}
 
 * The **bootstrap percentile confidence interval** uses the percentiles of the
@@ -249,7 +249,7 @@ rely on the following asymptotic result:
 and standard deviation $\bar{X}/\sqrt{n}$.
 
 
-* The estimated standard error in this case is $\bar{X}/\sqrt{n}$, and a $95\%$ confidence interval for $\lambda$ is 
+* The standard error in this case is $\bar{X}/\sqrt{n}$, and a $95\%$ confidence interval for $\lambda$ is 
 \begin{equation}
 \Bigg[ \bar{X} - 1.96 \times \frac{\bar{X}}{\sqrt{n}}, \bar{X} + 1.96 \times \frac{\bar{X}}{\sqrt{n}} \Bigg] \nonumber
 \end{equation}
@@ -270,8 +270,7 @@ xx <- rexp(50, rate=2) ## data, sample of 50 exponential r.v.s with mean 1/2
 R <- 500   ## number of bootstrap replications
 boot.mean <- rep(0, R)
 for(r in 1:R) {
-   boot.samp <- sample(1:50, size=50, replace=TRUE)
-   xx.boot <- xx[boot.samp]   ## this is the bootstrap sample
+   xx.boot <- sample(xx, size=50, replace=TRUE)   ## this is the bootstrap sample
    boot.mean[r] <- mean(xx.boot)  ## this is the rth bootstrap replication
 }
 ```
@@ -331,7 +330,7 @@ P(X_{i} \leq \theta_{p1}) = F_{X}(F_{X}^{-1}(p)) = p  \nonumber
 
 * Likewise, the pth quantile for group 2 is defined as $\theta_{p2} = F_{Y}^{-1}(p)$
 
-* Suppose we are interested in estimating and constructing a confidence for the following parameter
+* Suppose we are interested in constructing a confidence interval for the following parameter
 \begin{equation}
 \eta = \frac{ \theta_{p1}}{ \theta_{p2} } \nonumber
 \end{equation}
@@ -384,7 +383,7 @@ yy <- rgamma(m, shape=2, rate=2)
 * We will focus on estimating the pth quantile ratio for $p = 0.9$. In this case, the
 true value of $\eta$ is $\eta \approx 4/3$.
 
-* The estimate $\hat{\eta}$ and the estimated standard error using the large-sample approximation \@ref(eq:quantile-ratio-approx) is
+* The estimate $\hat{\eta}$ and the standard error using the large-sample approximation \@ref(eq:quantile-ratio-approx) are
 
 ``` r
 theta.hat1 <- quantile(xx, probs=0.9)
@@ -433,10 +432,10 @@ for(r in 1:R)
 
 
 
-* Because this is a two-sample setting, we draw bootstrap samples $(X_{1}^{*}, \ldots, X_{n}^{*})$ and $(Y_{1}^{*}, \ldots, Y_{m}^{*})$ for each group separately to generate each bootstrap replications.
+* Because this is a two-sample setting, we draw bootstrap samples $(X_{1,r}^{*}, \ldots, X_{n,r}^{*})$ and $(Y_{1,r}^{*}, \ldots, Y_{m,r}^{*})$ for each group separately to generate each bootstrap replications.
 
 
-* The standard error boostrap confidence interval is
+* The **standard error boostrap confidence interval** is
 
 ``` r
 boot.ci.sd <- c(eta.hat - 1.96*sd(eta.boot), eta.hat + 1.96*sd(eta.boot))
@@ -448,7 +447,7 @@ round(boot.ci.sd, 2)
 ## [1] 0.75 1.76
 ```
 
-* The percentile bootstrap confidence interval is
+* The **percentile bootstrap confidence interval** is
 
 ``` r
 boot.ci.quant <- quantile(eta.boot, probs=c(.025, .975))

@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-02-11" />
+<meta name="date" content="2026-02-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -512,7 +512,7 @@ you use a multivariate delta method argument:
 \end{equation}\]</span>
 where
 <span class="math display">\[\begin{equation}
-\hat{\mu}_{hk} = \sum_{i=1}^{n}(X_{i} - \bar{X})^{h}(Y_{i} - \bar{Y})^{k} \nonumber
+\hat{\mu}_{hk} = \frac{1}{n}\sum_{i=1}^{n}(X_{i} - \bar{X})^{h}(Y_{i} - \bar{Y})^{k} \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Another popular approach for constructing a confidence interval is to use Fisher’s “z-transformation”
 <span class="math display" id="eq:rho-stderr-ztrans">\[\begin{equation}
@@ -524,7 +524,7 @@ where it is argued that <span class="math inline">\(z\)</span> has a roughly Nor
 </ul>
 <hr />
 <ul>
-<li><p>The bootstrap allows us to totally bypass the need to derive tedious formulas for the standard error such as
+<li><p>The bootstrap allows us to <strong>totally bypass</strong> the need to derive tedious formulas for the standard error such as
 <a href="bootstrap-main.html#eq:rho-stderr">(9.2)</a> or bypass the need to use clever transformations such as <a href="bootstrap-main.html#eq:rho-stderr-ztrans">(9.3)</a>.</p></li>
 <li><p>For many more complicated estimates deriving formulas such as <a href="bootstrap-main.html#eq:rho-stderr">(9.2)</a> or transformations such
 as <a href="bootstrap-main.html#eq:rho-stderr-ztrans">(9.3)</a> may not even be feasible.</p></li>
@@ -548,16 +548,18 @@ need to be able to compute the estimate of interest.</p></li>
 <span class="math display">\[\begin{equation}
 T_{n} = h\Big( X_{1}, \ldots, X_{n}   \Big)  \nonumber
 \end{equation}\]</span></p></li>
-<li><p>Suppose we want to estimate the standard deviation of <span class="math inline">\(T_{n}\)</span>.</p></li>
-<li><p>The true standard deviation of <span class="math inline">\(T_{n}\)</span> is referred to as the <strong>standard error</strong>.
-(need to change this terminology)</p></li>
-<li><p>Confidence intervals are often based on subtracting or adding an estimate of the standard error,
+<li><p>Suppose we want to estimate the standard deviation of <span class="math inline">\(T_{n}\)</span>.</p>
+<ul>
+<li>Denote the true standard deviation as <span class="math inline">\(\textrm{sd}(T_{n})\)</span>.</li>
+</ul></li>
+<li><p>An estimate of <span class="math inline">\(\textrm{sd}(T_{n})\)</span> is usually referred to as the <strong>standard error</strong>.</p></li>
+<li><p>Confidence intervals are often based on <strong>subtracting or adding</strong> the standard error,
 e.g.
 <span class="math display">\[\begin{equation}
 CI = T_{n} \pm z_{\alpha/2} \times \widehat{\textrm{standard error}},  \nonumber
 \end{equation}\]</span>
 where <span class="math inline">\(z_{\alpha/2}\)</span> is the <span class="math inline">\(100 \times (1 - \alpha/2)\)</span> percentile of the <span class="math inline">\(\textrm{Normal}(0,1)\)</span> distribution.</p></li>
-<li><p>The bootstrap estimates the standard deviation of <span class="math inline">\(T_{n}\)</span> by repeatedly subsampling from
+<li><p>The bootstrap estimates the standard deviation of <span class="math inline">\(T_{n}\)</span> by <strong>repeatedly subsampling</strong> from
 the original data and computing the value of the statistic <span class="math inline">\(T_{n}\)</span> on each subsample.</p></li>
 <li><p>More generally, we can use the bootstrap not just to find the standard deviation of <span class="math inline">\(T_{n}\)</span>
 but to characterize the distribution of <span class="math inline">\(T_{n}\)</span>.</p></li>
@@ -581,17 +583,17 @@ but to characterize the distribution of <span class="math inline">\(T_{n}\)</spa
 </ul>
 <hr />
 <ul>
-<li><p>Each sample is <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> is drawn through simple random sampling with replacement.
-That is, <span class="math inline">\(X_{1}^{*}, \ldots, X_{n}^{*}\)</span> are independent with
+<li><p>Each sample is <span class="math inline">\((X_{1,r}^{*}, \ldots, X_{n,r}^{*})\)</span> is drawn through simple random sampling with replacement.
+That is, <span class="math inline">\(X_{1,r}^{*}, \ldots, X_{n,r}^{*}\)</span> are independent with
 <span class="math display">\[\begin{equation}
-P(X_{i}^{*} = X_{j}) = \frac{1}{n} \quad \textrm{ for } j=1,\ldots,n \nonumber
+P(X_{i,r}^{*} = X_{j}) = \frac{1}{n} \quad \textrm{ for } j=1,\ldots,n \nonumber
 \end{equation}\]</span></p></li>
-<li><p>We will refer to each sample <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> as a <strong>bootstrap sample</strong>.</p></li>
+<li><p>We will refer to each sample <span class="math inline">\((X_{1,r}^{*}, \ldots, X_{n,r}^{*})\)</span> as a <strong>bootstrap sample</strong>.</p></li>
 <li><p>We will refer to <span class="math inline">\(T_{n,r}^{*}\)</span> as a <strong>bootstrap replication</strong> of the statistic <span class="math inline">\(T_{n}\)</span>.</p></li>
 <li><p>The bootstrap estimate <span class="math inline">\(se_{boot}\)</span> for the standard error of <span class="math inline">\(T_{n}\)</span> is the sample
 standard deviation from the bootstrap replications <span class="math inline">\(T_{n,1}^{*}, \ldots, T_{n,R}^{*}\)</span>:
 <span class="math display">\[\begin{equation}
-se_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} \Big)^{2} \Bigg]^{1/2} \nonumber
+\textrm{se}_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} \sum_{r=1}^{R} T_{n,r}^{*} \Big)^{2} \Bigg]^{1/2} \nonumber
 \end{equation}\]</span></p></li>
 <li><p>We can even use our bootstrap replications to get an approximation <span class="math inline">\(\hat{G}_{n}^{*}(t)\)</span> for the cumulative distribution function
 <span class="math inline">\(G_{n}(t) = P(T_{n} \leq t)\)</span> of <span class="math inline">\(T_{n}\)</span>:
@@ -603,7 +605,7 @@ se_{boot} = \Bigg[ \frac{1}{R-1} \sum_{r=1}^{R} \Big( T_{n,r}^{*} - \frac{1}{R} 
 <ul>
 <li><p>The <strong>normal bootstrap standard error confidence interval</strong> is defined as
 <span class="math display">\[\begin{equation}
-\Big[ T_{n} - z_{\alpha/2} se_{boot}, T_{n} + z_{\alpha/2}se_{boot} \Big] \nonumber
+\Big[ T_{n} - z_{\alpha/2} \textrm{se}_{boot}, T_{n} + z_{\alpha/2}\textrm{se}_{boot} \Big] \nonumber
 \end{equation}\]</span></p></li>
 <li><p>The <strong>bootstrap percentile confidence interval</strong> uses the percentiles of the
 boostrap replications <span class="math inline">\(T_{n,1}^{*}, \ldots, T_{n,R}^{*}\)</span> to form a confidence interval.</p></li>
@@ -655,7 +657,7 @@ rely on the following asymptotic result:
 \end{equation}\]</span></p></li>
 <li><p>In other words, for large <span class="math inline">\(n\)</span>, <span class="math inline">\(\bar{X}\)</span> has an approximately Normal distribution with mean <span class="math inline">\(\lambda\)</span>
 and standard deviation <span class="math inline">\(\bar{X}/\sqrt{n}\)</span>.</p></li>
-<li><p>The estimated standard error in this case is <span class="math inline">\(\bar{X}/\sqrt{n}\)</span>, and a <span class="math inline">\(95\%\)</span> confidence interval for <span class="math inline">\(\lambda\)</span> is
+<li><p>The standard error in this case is <span class="math inline">\(\bar{X}/\sqrt{n}\)</span>, and a <span class="math inline">\(95\%\)</span> confidence interval for <span class="math inline">\(\lambda\)</span> is
 <span class="math display">\[\begin{equation}
 \Bigg[ \bar{X} - 1.96 \times \frac{\bar{X}}{\sqrt{n}}, \bar{X} + 1.96 \times \frac{\bar{X}}{\sqrt{n}} \Bigg] \nonumber
 \end{equation}\]</span></p></li>
@@ -671,10 +673,9 @@ confidence interval and the percentile bootstrap confidence interval.</p></li>
 <span id="cb158-2"><a href="bootstrap-main.html#cb158-2" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">500</span>   <span class="do">## number of bootstrap replications</span></span>
 <span id="cb158-3"><a href="bootstrap-main.html#cb158-3" tabindex="-1"></a>boot.mean <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, R)</span>
 <span id="cb158-4"><a href="bootstrap-main.html#cb158-4" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
-<span id="cb158-5"><a href="bootstrap-main.html#cb158-5" tabindex="-1"></a>   boot.samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>, <span class="at">size=</span><span class="dv">50</span>, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
-<span id="cb158-6"><a href="bootstrap-main.html#cb158-6" tabindex="-1"></a>   xx.boot <span class="ot">&lt;-</span> xx[boot.samp]   <span class="do">## this is the bootstrap sample</span></span>
-<span id="cb158-7"><a href="bootstrap-main.html#cb158-7" tabindex="-1"></a>   boot.mean[r] <span class="ot">&lt;-</span> <span class="fu">mean</span>(xx.boot)  <span class="do">## this is the rth bootstrap replication</span></span>
-<span id="cb158-8"><a href="bootstrap-main.html#cb158-8" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb158-5"><a href="bootstrap-main.html#cb158-5" tabindex="-1"></a>   xx.boot <span class="ot">&lt;-</span> <span class="fu">sample</span>(xx, <span class="at">size=</span><span class="dv">50</span>, <span class="at">replace=</span><span class="cn">TRUE</span>)   <span class="do">## this is the bootstrap sample</span></span>
+<span id="cb158-6"><a href="bootstrap-main.html#cb158-6" tabindex="-1"></a>   boot.mean[r] <span class="ot">&lt;-</span> <span class="fu">mean</span>(xx.boot)  <span class="do">## this is the rth bootstrap replication</span></span>
+<span id="cb158-7"><a href="bootstrap-main.html#cb158-7" tabindex="-1"></a>}</span></code></pre></div>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="bootstrap-main.html#cb159-1" tabindex="-1"></a>par.ci <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">mean</span>(xx) <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">mean</span>(xx)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">50</span>), <span class="fu">mean</span>(xx) <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">mean</span>(xx)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">50</span>))</span>
 <span id="cb159-2"><a href="bootstrap-main.html#cb159-2" tabindex="-1"></a>boot.ci.sd <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">mean</span>(xx) <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(boot.mean), <span class="fu">mean</span>(xx) <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(boot.mean))</span>
 <span id="cb159-3"><a href="bootstrap-main.html#cb159-3" tabindex="-1"></a>boot.ci.quant <span class="ot">&lt;-</span> <span class="fu">quantile</span>(boot.mean, <span class="at">probs=</span><span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">975</span>))</span></code></pre></div>
@@ -710,7 +711,7 @@ In other words, if <span class="math inline">\(F_{X}\)</span> is continuous then
 P(X_{i} \leq \theta_{p1}) = F_{X}(F_{X}^{-1}(p)) = p  \nonumber
 \end{equation}\]</span></p></li>
 <li><p>Likewise, the pth quantile for group 2 is defined as <span class="math inline">\(\theta_{p2} = F_{Y}^{-1}(p)\)</span></p></li>
-<li><p>Suppose we are interested in estimating and constructing a confidence for the following parameter
+<li><p>Suppose we are interested in constructing a confidence interval for the following parameter
 <span class="math display">\[\begin{equation}
 \eta = \frac{ \theta_{p1}}{ \theta_{p2} } \nonumber
 \end{equation}\]</span></p></li>
@@ -753,7 +754,7 @@ compares with bootstrap-based confidence intervals.</p></li>
 <ul>
 <li><p>We will focus on estimating the pth quantile ratio for <span class="math inline">\(p = 0.9\)</span>. In this case, the
 true value of <span class="math inline">\(\eta\)</span> is <span class="math inline">\(\eta \approx 4/3\)</span>.</p></li>
-<li><p>The estimate <span class="math inline">\(\hat{\eta}\)</span> and the estimated standard error using the large-sample approximation <a href="bootstrap-main.html#eq:quantile-ratio-approx">(9.4)</a> is</p></li>
+<li><p>The estimate <span class="math inline">\(\hat{\eta}\)</span> and the standard error using the large-sample approximation <a href="bootstrap-main.html#eq:quantile-ratio-approx">(9.4)</a> are</p></li>
 </ul>
 <div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="bootstrap-main.html#cb167-1" tabindex="-1"></a>theta.hat1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(xx, <span class="at">probs=</span><span class="fl">0.9</span>)</span>
 <span id="cb167-2"><a href="bootstrap-main.html#cb167-2" tabindex="-1"></a>theta.hat2 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(yy, <span class="at">probs=</span><span class="fl">0.9</span>)</span>
@@ -790,15 +791,15 @@ true value of <span class="math inline">\(\eta\)</span> is <span class="math inl
 <span id="cb170-10"><a href="bootstrap-main.html#cb170-10" tabindex="-1"></a>  eta.boot[r] <span class="ot">&lt;-</span> thetahat.p1<span class="sc">/</span>thetahat.p2</span>
 <span id="cb170-11"><a href="bootstrap-main.html#cb170-11" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
-<li><p>Because this is a two-sample setting, we draw bootstrap samples <span class="math inline">\((X_{1}^{*}, \ldots, X_{n}^{*})\)</span> and <span class="math inline">\((Y_{1}^{*}, \ldots, Y_{m}^{*})\)</span> for each group separately to generate each bootstrap replications.</p></li>
-<li><p>The standard error boostrap confidence interval is</p></li>
+<li><p>Because this is a two-sample setting, we draw bootstrap samples <span class="math inline">\((X_{1,r}^{*}, \ldots, X_{n,r}^{*})\)</span> and <span class="math inline">\((Y_{1,r}^{*}, \ldots, Y_{m,r}^{*})\)</span> for each group separately to generate each bootstrap replications.</p></li>
+<li><p>The <strong>standard error boostrap confidence interval</strong> is</p></li>
 </ul>
 <div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="bootstrap-main.html#cb171-1" tabindex="-1"></a>boot.ci.sd <span class="ot">&lt;-</span> <span class="fu">c</span>(eta.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(eta.boot), eta.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(eta.boot))</span>
 <span id="cb171-2"><a href="bootstrap-main.html#cb171-2" tabindex="-1"></a></span>
 <span id="cb171-3"><a href="bootstrap-main.html#cb171-3" tabindex="-1"></a><span class="fu">round</span>(boot.ci.sd, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>## [1] 0.75 1.76</code></pre>
 <ul>
-<li>The percentile bootstrap confidence interval is</li>
+<li>The <strong>percentile bootstrap confidence interval</strong> is</li>
 </ul>
 <div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="bootstrap-main.html#cb173-1" tabindex="-1"></a>boot.ci.quant <span class="ot">&lt;-</span> <span class="fu">quantile</span>(eta.boot, <span class="at">probs=</span><span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">975</span>))</span>
 <span id="cb173-2"><a href="bootstrap-main.html#cb173-2" tabindex="-1"></a><span class="fu">round</span>(boot.ci.quant, <span class="dv">2</span>)</span></code></pre></div>

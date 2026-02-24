@@ -980,18 +980,18 @@ J_KL <- function(h, x) {
 ``` r
 density(x, bw, kernel, n, ...)
 ```
-* **x** - the vector containing the data
+* `x` - the vector containing the data
 
-* **bw** - the value of the bandwidth. 
+* `bw` - the value of the bandwidth. 
     + `bw = nrd0` gives the default bandwidth rule. This is Silverman's rule-of-thumb $h_{n} = 0.9 s n^{-1/5}$
     + `bw = nrd` gives the bandwidth $h_{n} = 1.06 \hat{\sigma} n^{-1/5}$
     + `bw = ucv` or `bw = bcv` find the bandwidth using cross-validation
 
-* **kernel** - the choice of kernel function. The default kernel is the Gaussian kernel. 
+* `kernel` - the choice of kernel function. The default kernel is the Gaussian kernel. 
 
 * Be careful, some of the non-Gaussian kernels used in the `density` function are scaled differently than the definitions you might often see in textbooks or on-line resources.
 
-* **n** - the number of equally spaced points at which the density is to be estimated. The default is 512
+* `n` - the number of equally spaced points at which the density is to be estimated. The default is 512
 
 ---
 
