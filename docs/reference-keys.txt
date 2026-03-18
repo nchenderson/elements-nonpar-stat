@@ -225,6 +225,11 @@ pointwise-confidence-intervals-for-a-density-function
 when-can-the-bootstrap-fail
 example-the-shifted-exponential-distribution
 the-jackknife
+conformal-prediction
+confidence-intervals-and-prediction-intervals
+conformal-inference-procedure-for-prediction-intervals
+why-does-this-work
+conformal-prediction-intervals-with-tree-boosting.
 kernel-regression-and-local-regression
 introduction-2
 kernel-regression
