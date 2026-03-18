@@ -343,6 +343,7 @@ div.csl-indent {
 <li class="chapter" data-level="10.4.1" data-path="ci.html"><a href="ci.html#example-the-shifted-exponential-distribution"><i class="fa fa-check"></i><b>10.4.1</b> Example: The Shifted Exponential Distribution</a></li>
 </ul></li>
 <li class="chapter" data-level="10.5" data-path="ci.html"><a href="ci.html#the-jackknife"><i class="fa fa-check"></i><b>10.5</b> The Jackknife</a></li>
+<li class="chapter" data-level="10.6" data-path="ci.html"><a href="ci.html#exercises-7"><i class="fa fa-check"></i><b>10.6</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="conformal-prediction.html"><a href="conformal-prediction.html"><i class="fa fa-check"></i><b>11</b> Conformal Prediction</a>
 <ul>
@@ -379,7 +380,7 @@ div.csl-indent {
 <li class="chapter" data-level="12.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-functions-in-r"><i class="fa fa-check"></i><b>12.5</b> Additional functions in R</a></li>
 <li class="chapter" data-level="12.6" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#multivariate-problems"><i class="fa fa-check"></i><b>12.6</b> Multivariate Problems</a></li>
 <li class="chapter" data-level="12.7" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>12.7</b> Additional Reading</a></li>
-<li class="chapter" data-level="12.8" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#exercises-7"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
+<li class="chapter" data-level="12.8" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#exercises-8"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>13</b> Splines and Penalized Regression</a>
 <ul>
@@ -753,12 +754,12 @@ written as
 <ul>
 <li>Regression splines can be fitted in R by using the <code>splines</code> package</li>
 </ul>
-<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="inference-for-regression.html#cb280-1" tabindex="-1"></a><span class="fu">library</span>(splines)</span></code></pre></div>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="inference-for-regression.html#cb279-1" tabindex="-1"></a><span class="fu">library</span>(splines)</span></code></pre></div>
 <ul>
 <li>The <code>bs</code> function from the <code>splines</code> package is useful for fitting a linear or cubic spline.
 This function generates the B-spline “design” matrix <span class="math inline">\(\mathbf{X}_{\mathbf{u}}\)</span> described above.</li>
 </ul>
-<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="inference-for-regression.html#cb281-1" tabindex="-1"></a><span class="fu">bs</span>(x, df, knots, degree)</span></code></pre></div>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="inference-for-regression.html#cb280-1" tabindex="-1"></a><span class="fu">bs</span>(x, df, knots, degree)</span></code></pre></div>
 <ul>
 <li><code>x</code> - vector of covariates values. This can also just be the name of a variable when <code>bs</code> is used inside the <code>lm</code> function.</li>
 <li><code>df</code> - the “degrees of freedom”. For a cubic spline this is actually <span class="math inline">\(q + 3\)</span> rather than <span class="math inline">\(q + 4\)</span>. If you just enter <code>df</code>, the <code>bs</code> function will pick the knots for you.</li>
@@ -770,11 +771,11 @@ This function generates the B-spline “design” matrix <span class="math inlin
 <li><p>As an example of what the <code>bs</code> function returns, suppose we input the vector of covariates <span class="math inline">\((x_{1}, \ldots, x_{10}) = (1, 2, \ldots, 10)\)</span> with knots <span class="math inline">\(u_{1} = 3.5\)</span> and <span class="math inline">\(u_{2} = 6.5\)</span>.</p></li>
 <li><p>The <code>bs</code> function will return the “design matrix” <span class="math inline">\(\mathbf{X}_{\mathbf{u}}\)</span> for this setup without the intercept column. When degree is 3, the dimensions of <span class="math inline">\(\mathbf{X}_{\mathbf{u}}\)</span> should be <span class="math inline">\(10 \times 6\)</span> (because in this case <span class="math inline">\(q = 2\)</span>). So, the <code>bs</code> function will return a <span class="math inline">\(10 \times 5\)</span> matrix (because the first column of <span class="math inline">\(\mathbf{X}_{u}\)</span> is dropped by <code>bs</code>):</p></li>
 </ul>
-<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="inference-for-regression.html#cb282-1" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb282-2"><a href="inference-for-regression.html#cb282-2" tabindex="-1"></a>Xu <span class="ot">&lt;-</span> <span class="fu">bs</span>(xx, <span class="at">knots=</span><span class="fu">c</span>(<span class="fl">3.5</span>, <span class="fl">6.5</span>))</span>
-<span id="cb282-3"><a href="inference-for-regression.html#cb282-3" tabindex="-1"></a><span class="fu">dim</span>(Xu)</span></code></pre></div>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="inference-for-regression.html#cb281-1" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb281-2"><a href="inference-for-regression.html#cb281-2" tabindex="-1"></a>Xu <span class="ot">&lt;-</span> <span class="fu">bs</span>(xx, <span class="at">knots=</span><span class="fu">c</span>(<span class="fl">3.5</span>, <span class="fl">6.5</span>))</span>
+<span id="cb281-3"><a href="inference-for-regression.html#cb281-3" tabindex="-1"></a><span class="fu">dim</span>(Xu)</span></code></pre></div>
 <pre><code>## [1] 10  5</code></pre>
-<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="inference-for-regression.html#cb284-1" tabindex="-1"></a><span class="fu">head</span>(Xu)  </span></code></pre></div>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="inference-for-regression.html#cb283-1" tabindex="-1"></a><span class="fu">head</span>(Xu)  </span></code></pre></div>
 <pre><code>##            1     2       3        4 5
 ## [1,] 0.00000 0.000 0.00000 0.000000 0
 ## [2,] 0.60813 0.168 0.00808 0.000000 0
@@ -787,30 +788,30 @@ This function generates the B-spline “design” matrix <span class="math inlin
 <li><p>Let’s try an example with a linear spline to see how to use the <code>bs</code> function to fit a spline within the <code>lm</code> function.</p></li>
 <li><p>We will use the <code>bone</code> data again with age as the covariate. We will use the knots <span class="math inline">\(\mathbf{u} = (12, 15, 18, 21, 24)\)</span>.</p></li>
 </ul>
-<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="inference-for-regression.html#cb286-1" tabindex="-1"></a>bonedat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/bone.csv&quot;</span>)</span>
-<span id="cb286-2"><a href="inference-for-regression.html#cb286-2" tabindex="-1"></a>knot.seq <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">21</span>, <span class="dv">24</span>)</span>
-<span id="cb286-3"><a href="inference-for-regression.html#cb286-3" tabindex="-1"></a>linspline.bone <span class="ot">&lt;-</span> <span class="fu">lm</span>(spnbmd <span class="sc">~</span> <span class="fu">bs</span>(age, <span class="at">knots=</span>knot.seq, <span class="at">degree=</span><span class="dv">1</span>), <span class="at">data=</span>bonedat)</span></code></pre></div>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="inference-for-regression.html#cb285-1" tabindex="-1"></a>bonedat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/bone.csv&quot;</span>)</span>
+<span id="cb285-2"><a href="inference-for-regression.html#cb285-2" tabindex="-1"></a>knot.seq <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">21</span>, <span class="dv">24</span>)</span>
+<span id="cb285-3"><a href="inference-for-regression.html#cb285-3" tabindex="-1"></a>linspline.bone <span class="ot">&lt;-</span> <span class="fu">lm</span>(spnbmd <span class="sc">~</span> <span class="fu">bs</span>(age, <span class="at">knots=</span>knot.seq, <span class="at">degree=</span><span class="dv">1</span>), <span class="at">data=</span>bonedat)</span></code></pre></div>
 <ul>
 <li><p>Because we are using <span class="math inline">\(5\)</span> knots, based on our discussion in Section 12.2 we should expect that there should be <span class="math inline">\(7\)</span> columns in
 the design matrix <span class="math inline">\(\mathbf{X}_{u}\)</span> for this linear spline model.</p></li>
 <li><p>You can check this by using the following <code>R</code> code:</p></li>
 </ul>
-<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="inference-for-regression.html#cb287-1" tabindex="-1"></a>XX <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(linspline.bone)</span>
-<span id="cb287-2"><a href="inference-for-regression.html#cb287-2" tabindex="-1"></a><span class="fu">dim</span>(XX)</span></code></pre></div>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="inference-for-regression.html#cb286-1" tabindex="-1"></a>XX <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(linspline.bone)</span>
+<span id="cb286-2"><a href="inference-for-regression.html#cb286-2" tabindex="-1"></a><span class="fu">dim</span>(XX)</span></code></pre></div>
 <pre><code>## [1] 261   7</code></pre>
 <ul>
 <li>If you want to compute the estimated spline function <span class="math inline">\(\hat{m}(t_{j})\)</span> at a sequence of points <span class="math inline">\(t_{1}, \ldots, t_{l}\)</span>,
 you can use the <code>predict</code> function on the fitted <code>lm</code> object. This is done with the following code
 for the points <span class="math inline">\(9.5, 10, 10.5, 11, \ldots, 24.5, 25\)</span>.</li>
 </ul>
-<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="inference-for-regression.html#cb289-1" tabindex="-1"></a>tt <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">9.5</span>, <span class="dv">25</span>, <span class="at">by=</span><span class="fl">0.5</span>)</span>
-<span id="cb289-2"><a href="inference-for-regression.html#cb289-2" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
-<span id="cb289-3"><a href="inference-for-regression.html#cb289-3" tabindex="-1"></a>     <span class="at">main=</span><span class="st">&quot;Bone Data: Fitted Linear Spline&quot;</span>, <span class="at">las=</span><span class="dv">1</span>)</span>
-<span id="cb289-4"><a href="inference-for-regression.html#cb289-4" tabindex="-1"></a><span class="fu">lines</span>(tt, <span class="fu">predict</span>(linspline.bone, <span class="fu">data.frame</span>(<span class="at">age=</span>tt)), <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb289-5"><a href="inference-for-regression.html#cb289-5" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
-<span id="cb289-6"><a href="inference-for-regression.html#cb289-6" tabindex="-1"></a>    <span class="do">## Plot vertical lines at the knots</span></span>
-<span id="cb289-7"><a href="inference-for-regression.html#cb289-7" tabindex="-1"></a>    <span class="fu">abline</span>(<span class="at">v=</span>knot.seq[k], <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb289-8"><a href="inference-for-regression.html#cb289-8" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="inference-for-regression.html#cb288-1" tabindex="-1"></a>tt <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">9.5</span>, <span class="dv">25</span>, <span class="at">by=</span><span class="fl">0.5</span>)</span>
+<span id="cb288-2"><a href="inference-for-regression.html#cb288-2" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
+<span id="cb288-3"><a href="inference-for-regression.html#cb288-3" tabindex="-1"></a>     <span class="at">main=</span><span class="st">&quot;Bone Data: Fitted Linear Spline&quot;</span>, <span class="at">las=</span><span class="dv">1</span>)</span>
+<span id="cb288-4"><a href="inference-for-regression.html#cb288-4" tabindex="-1"></a><span class="fu">lines</span>(tt, <span class="fu">predict</span>(linspline.bone, <span class="fu">data.frame</span>(<span class="at">age=</span>tt)), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb288-5"><a href="inference-for-regression.html#cb288-5" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb288-6"><a href="inference-for-regression.html#cb288-6" tabindex="-1"></a>    <span class="do">## Plot vertical lines at the knots</span></span>
+<span id="cb288-7"><a href="inference-for-regression.html#cb288-7" tabindex="-1"></a>    <span class="fu">abline</span>(<span class="at">v=</span>knot.seq[k], <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb288-8"><a href="inference-for-regression.html#cb288-8" tabindex="-1"></a>}</span></code></pre></div>
 <p><img src="13-splines_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <hr />
 <ul>
@@ -818,27 +819,27 @@ for the points <span class="math inline">\(9.5, 10, 10.5, 11, \ldots, 24.5, 25\)
 <li><p>The procedure is almost exactly the same as fitting the linear spline model. We only need to change <code>degree=1</code> to <code>degree=3</code> in the <code>bs</code> function.</p></li>
 <li><p>We will use the same knots as we did for the linear spline.</p></li>
 </ul>
-<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="inference-for-regression.html#cb290-1" tabindex="-1"></a>knot.seq <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">21</span>, <span class="dv">24</span>)</span>
-<span id="cb290-2"><a href="inference-for-regression.html#cb290-2" tabindex="-1"></a>cubspline.bone <span class="ot">&lt;-</span> <span class="fu">lm</span>(spnbmd <span class="sc">~</span> <span class="fu">bs</span>(age, <span class="at">knots=</span>knot.seq, <span class="at">degree=</span><span class="dv">3</span>), <span class="at">data=</span>bonedat)</span></code></pre></div>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="inference-for-regression.html#cb289-1" tabindex="-1"></a>knot.seq <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">21</span>, <span class="dv">24</span>)</span>
+<span id="cb289-2"><a href="inference-for-regression.html#cb289-2" tabindex="-1"></a>cubspline.bone <span class="ot">&lt;-</span> <span class="fu">lm</span>(spnbmd <span class="sc">~</span> <span class="fu">bs</span>(age, <span class="at">knots=</span>knot.seq, <span class="at">degree=</span><span class="dv">3</span>), <span class="at">data=</span>bonedat)</span></code></pre></div>
 <ul>
 <li><p>Because we are using <span class="math inline">\(5\)</span> knots, we should expect that there will be <span class="math inline">\(5 + 4 = 9\)</span> columns in
 the design matrix <span class="math inline">\(\mathbf{X}_{u}\)</span> for this cubic spline model.</p></li>
 <li><p>You can check this by using the following <code>R</code> code:</p></li>
 </ul>
-<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="inference-for-regression.html#cb291-1" tabindex="-1"></a>XX <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(cubspline.bone)</span>
-<span id="cb291-2"><a href="inference-for-regression.html#cb291-2" tabindex="-1"></a><span class="fu">dim</span>(XX)</span></code></pre></div>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="inference-for-regression.html#cb290-1" tabindex="-1"></a>XX <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(cubspline.bone)</span>
+<span id="cb290-2"><a href="inference-for-regression.html#cb290-2" tabindex="-1"></a><span class="fu">dim</span>(XX)</span></code></pre></div>
 <pre><code>## [1] 261   9</code></pre>
 <ul>
 <li>Using <code>predict</code> again, we will compute the estimated regression function <span class="math inline">\(\hat{m}(x)\)</span> at the points: <span class="math inline">\(9.5, 9.6, \ldots, 24.9, 25\)</span> and plot the result.</li>
 </ul>
-<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="inference-for-regression.html#cb293-1" tabindex="-1"></a>tt <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">9.5</span>, <span class="dv">25</span>, <span class="at">by=</span><span class="fl">0.1</span>)</span>
-<span id="cb293-2"><a href="inference-for-regression.html#cb293-2" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
-<span id="cb293-3"><a href="inference-for-regression.html#cb293-3" tabindex="-1"></a>     <span class="at">main=</span><span class="st">&quot;Bone Data: Fitted Cubic Spline&quot;</span>, <span class="at">las=</span><span class="dv">1</span>)</span>
-<span id="cb293-4"><a href="inference-for-regression.html#cb293-4" tabindex="-1"></a><span class="fu">lines</span>(tt, <span class="fu">predict</span>(cubspline.bone, <span class="fu">data.frame</span>(<span class="at">age=</span>tt)), <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb293-5"><a href="inference-for-regression.html#cb293-5" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
-<span id="cb293-6"><a href="inference-for-regression.html#cb293-6" tabindex="-1"></a>    <span class="do">## Plot vertical lines at the knots</span></span>
-<span id="cb293-7"><a href="inference-for-regression.html#cb293-7" tabindex="-1"></a>    <span class="fu">abline</span>(<span class="at">v=</span>knot.seq[k], <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb293-8"><a href="inference-for-regression.html#cb293-8" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="inference-for-regression.html#cb292-1" tabindex="-1"></a>tt <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">9.5</span>, <span class="dv">25</span>, <span class="at">by=</span><span class="fl">0.1</span>)</span>
+<span id="cb292-2"><a href="inference-for-regression.html#cb292-2" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
+<span id="cb292-3"><a href="inference-for-regression.html#cb292-3" tabindex="-1"></a>     <span class="at">main=</span><span class="st">&quot;Bone Data: Fitted Cubic Spline&quot;</span>, <span class="at">las=</span><span class="dv">1</span>)</span>
+<span id="cb292-4"><a href="inference-for-regression.html#cb292-4" tabindex="-1"></a><span class="fu">lines</span>(tt, <span class="fu">predict</span>(cubspline.bone, <span class="fu">data.frame</span>(<span class="at">age=</span>tt)), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb292-5"><a href="inference-for-regression.html#cb292-5" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb292-6"><a href="inference-for-regression.html#cb292-6" tabindex="-1"></a>    <span class="do">## Plot vertical lines at the knots</span></span>
+<span id="cb292-7"><a href="inference-for-regression.html#cb292-7" tabindex="-1"></a>    <span class="fu">abline</span>(<span class="at">v=</span>knot.seq[k], <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb292-8"><a href="inference-for-regression.html#cb292-8" tabindex="-1"></a>}</span></code></pre></div>
 <p><img src="13-splines_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 <div id="natural-cubic-splines" class="section level3 hasAnchor" number="13.3.5">
@@ -865,11 +866,11 @@ where the functions <span class="math inline">\(d_{k}(x)\)</span> are defined as
 d_{k}(x) = \frac{ (x - u_{k})_{+}^{3} - (x - u_{q})_{+}^{3} }{ u_{q} - u_{k}} \nonumber
 \end{equation}\]</span></p></li>
 </ul>
-<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="inference-for-regression.html#cb294-1" tabindex="-1"></a>natural.cubspline.bone <span class="ot">&lt;-</span> <span class="fu">lm</span>(spnbmd <span class="sc">~</span> <span class="fu">ns</span>(age, <span class="at">df=</span><span class="dv">8</span>), <span class="at">data=</span>bonedat)</span>
-<span id="cb294-2"><a href="inference-for-regression.html#cb294-2" tabindex="-1"></a>tt <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">9.5</span>, <span class="dv">25</span>, <span class="at">by=</span><span class="fl">0.1</span>)</span>
-<span id="cb294-3"><a href="inference-for-regression.html#cb294-3" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
-<span id="cb294-4"><a href="inference-for-regression.html#cb294-4" tabindex="-1"></a>     <span class="at">main=</span><span class="st">&quot;Bone Data: Fitted Natural Cubic Spline&quot;</span>, <span class="at">las=</span><span class="dv">1</span>)</span>
-<span id="cb294-5"><a href="inference-for-regression.html#cb294-5" tabindex="-1"></a><span class="fu">lines</span>(tt, <span class="fu">predict</span>(natural.cubspline.bone, <span class="fu">data.frame</span>(<span class="at">age=</span>tt)), <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="inference-for-regression.html#cb293-1" tabindex="-1"></a>natural.cubspline.bone <span class="ot">&lt;-</span> <span class="fu">lm</span>(spnbmd <span class="sc">~</span> <span class="fu">ns</span>(age, <span class="at">df=</span><span class="dv">8</span>), <span class="at">data=</span>bonedat)</span>
+<span id="cb293-2"><a href="inference-for-regression.html#cb293-2" tabindex="-1"></a>tt <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">9.5</span>, <span class="dv">25</span>, <span class="at">by=</span><span class="fl">0.1</span>)</span>
+<span id="cb293-3"><a href="inference-for-regression.html#cb293-3" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
+<span id="cb293-4"><a href="inference-for-regression.html#cb293-4" tabindex="-1"></a>     <span class="at">main=</span><span class="st">&quot;Bone Data: Fitted Natural Cubic Spline&quot;</span>, <span class="at">las=</span><span class="dv">1</span>)</span>
+<span id="cb293-5"><a href="inference-for-regression.html#cb293-5" tabindex="-1"></a><span class="fu">lines</span>(tt, <span class="fu">predict</span>(natural.cubspline.bone, <span class="fu">data.frame</span>(<span class="at">age=</span>tt)), <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
 <p><img src="13-splines_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 </div>
@@ -1000,7 +1001,7 @@ where <span class="math inline">\(a_{i}^{\lambda}(x_{i})\)</span> denotes the <s
 <ul>
 <li>The <code>R</code> function <code>smooth.spline</code> will fit smoothing splines.</li>
 </ul>
-<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="inference-for-regression.html#cb295-1" tabindex="-1"></a><span class="fu">smooth.spline</span>(x, y, df, lambda, <span class="at">cv=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="inference-for-regression.html#cb294-1" tabindex="-1"></a><span class="fu">smooth.spline</span>(x, y, df, lambda, <span class="at">cv=</span><span class="cn">FALSE</span>)</span></code></pre></div>
 <ul>
 <li><p><strong>x</strong> - the vector of covariate values.</p></li>
 <li><p><strong>y</strong> - the vector of responses.</p></li>
@@ -1014,11 +1015,11 @@ where <span class="math inline">\(a_{i}^{\lambda}(x_{i})\)</span> denotes the <s
 <li><p>To see how to use the <code>smooth.spline</code> function and how to use the <span class="math inline">\(C_{p}\)</span> statistic, LOOCV, or GCV for selecting the smoothing parameter in smoothing splines or the number of knots in regression splines, we will again consider the <code>bone</code> data.</p></li>
 <li><p>To start, let’s use the <code>smooth.spline</code> function on the bone data using GCV to find the smoothing parameter:</p></li>
 </ul>
-<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="inference-for-regression.html#cb296-1" tabindex="-1"></a>ss.bone <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd)</span>
-<span id="cb296-2"><a href="inference-for-regression.html#cb296-2" tabindex="-1"></a></span>
-<span id="cb296-3"><a href="inference-for-regression.html#cb296-3" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">las=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">xlab=</span><span class="st">&quot;age&quot;</span>, </span>
-<span id="cb296-4"><a href="inference-for-regression.html#cb296-4" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data: Smoothing Spline using GCV&quot;</span>)</span>
-<span id="cb296-5"><a href="inference-for-regression.html#cb296-5" tabindex="-1"></a><span class="fu">lines</span>(ss.bone<span class="sc">$</span>x, ss.bone<span class="sc">$</span>y, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="inference-for-regression.html#cb295-1" tabindex="-1"></a>ss.bone <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd)</span>
+<span id="cb295-2"><a href="inference-for-regression.html#cb295-2" tabindex="-1"></a></span>
+<span id="cb295-3"><a href="inference-for-regression.html#cb295-3" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">las=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">xlab=</span><span class="st">&quot;age&quot;</span>, </span>
+<span id="cb295-4"><a href="inference-for-regression.html#cb295-4" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data: Smoothing Spline using GCV&quot;</span>)</span>
+<span id="cb295-5"><a href="inference-for-regression.html#cb295-5" tabindex="-1"></a><span class="fu">lines</span>(ss.bone<span class="sc">$</span>x, ss.bone<span class="sc">$</span>y, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:unnamed-chunk-16"></span>
 <img src="13-splines_files/figure-html/unnamed-chunk-16-1.png" alt="Smoothing spline fit for the bone data. This used the smooth.spline function with all the default settings." width="672" />
 <p class="caption">
@@ -1028,7 +1029,7 @@ Figure 13.4: Smoothing spline fit for the bone data. This used the smooth.spline
 <ul>
 <li>If you just type in <code>ss.bone</code>, this will show the degrees of freedom used, the value of <span class="math inline">\(\lambda\)</span> used, and the value of the GCV criterion for the chosen <span class="math inline">\(\lambda\)</span></li>
 </ul>
-<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="inference-for-regression.html#cb297-1" tabindex="-1"></a>ss.bone</span></code></pre></div>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="inference-for-regression.html#cb296-1" tabindex="-1"></a>ss.bone</span></code></pre></div>
 <pre><code>## Call:
 ## smooth.spline(x = bonedat$age, y = bonedat$spnbmd)
 ## 
@@ -1040,10 +1041,10 @@ Figure 13.4: Smoothing spline fit for the bone data. This used the smooth.spline
 <li><p>According to the GCV criterion, the best value for <span class="math inline">\(\lambda\)</span> is about <span class="math inline">\(\lambda^{*} \approx 0.0002\)</span> and the corresponding value for the degrees of freedom is <span class="math inline">\(df^{*} = \textrm{tr}(\mathbf{A}_{\lambda^{*}}) \approx 12.15\)</span>.</p></li>
 <li><p>Using the LOOCV criterion, the best value for the degrees of freedom is <span class="math inline">\(13\)</span>.</p></li>
 </ul>
-<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="inference-for-regression.html#cb299-1" tabindex="-1"></a>ss.bone2 <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, <span class="at">cv=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="inference-for-regression.html#cb298-1" tabindex="-1"></a>ss.bone2 <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, <span class="at">cv=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## Warning in smooth.spline(x = bonedat$age, y = bonedat$spnbmd, cv = TRUE):
 ## cross-validation with non-unique &#39;x&#39; values seems doubtful</code></pre>
-<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="inference-for-regression.html#cb301-1" tabindex="-1"></a>ss.bone2</span></code></pre></div>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="inference-for-regression.html#cb300-1" tabindex="-1"></a>ss.bone2</span></code></pre></div>
 <pre><code>## Call:
 ## smooth.spline(x = bonedat$age, y = bonedat$spnbmd, cv = TRUE)
 ## 
@@ -1058,36 +1059,36 @@ Figure 13.4: Smoothing spline fit for the bone data. This used the smooth.spline
 <li><p>The first thing we want to find is an estimate of <span class="math inline">\(\sigma^{2}\)</span> that we can keep fixed across different values of the smoothing
 parameter. Let’s use the same value of <span class="math inline">\(\hat{\sigma}^{2} = 0.0015\)</span> that we used in Chapter 11:</p></li>
 </ul>
-<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="inference-for-regression.html#cb303-1" tabindex="-1"></a>sigsq.est <span class="ot">&lt;-</span> <span class="fl">0.0015</span></span></code></pre></div>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="inference-for-regression.html#cb302-1" tabindex="-1"></a>sigsq.est <span class="ot">&lt;-</span> <span class="fl">0.0015</span></span></code></pre></div>
 <ul>
 <li>Now, let’s write a function that computes the <span class="math inline">\(C_{p}\)</span> statistic for a smoothing spline model given that we input the data, the degrees of freedom <span class="math inline">\(\textrm{tr}(\mathbf{A}_{\lambda})\)</span>, and <span class="math inline">\(\hat{\sigma}^{2}\)</span>.</li>
 </ul>
-<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="inference-for-regression.html#cb304-1" tabindex="-1"></a>CpStatSmoothSpline <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, df, sigsq.hat) {</span>
-<span id="cb304-2"><a href="inference-for-regression.html#cb304-2" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
-<span id="cb304-3"><a href="inference-for-regression.html#cb304-3" tabindex="-1"></a>  ss.obj <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">df=</span>df)</span>
-<span id="cb304-4"><a href="inference-for-regression.html#cb304-4" tabindex="-1"></a>  <span class="do">## Now, compute the vector of residuals from this fitted smoothing spline</span></span>
-<span id="cb304-5"><a href="inference-for-regression.html#cb304-5" tabindex="-1"></a>  residu <span class="ot">&lt;-</span> y <span class="sc">-</span> <span class="fu">fitted</span>(ss.obj)</span>
-<span id="cb304-6"><a href="inference-for-regression.html#cb304-6" tabindex="-1"></a>  ans <span class="ot">&lt;-</span> <span class="fu">mean</span>(residu<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> (<span class="dv">2</span><span class="sc">*</span>sigsq.hat<span class="sc">/</span>n)<span class="sc">*</span>df</span>
-<span id="cb304-7"><a href="inference-for-regression.html#cb304-7" tabindex="-1"></a>  <span class="fu">return</span>(ans)</span>
-<span id="cb304-8"><a href="inference-for-regression.html#cb304-8" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="inference-for-regression.html#cb303-1" tabindex="-1"></a>CpStatSmoothSpline <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, df, sigsq.hat) {</span>
+<span id="cb303-2"><a href="inference-for-regression.html#cb303-2" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb303-3"><a href="inference-for-regression.html#cb303-3" tabindex="-1"></a>  ss.obj <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">df=</span>df)</span>
+<span id="cb303-4"><a href="inference-for-regression.html#cb303-4" tabindex="-1"></a>  <span class="do">## Now, compute the vector of residuals from this fitted smoothing spline</span></span>
+<span id="cb303-5"><a href="inference-for-regression.html#cb303-5" tabindex="-1"></a>  residu <span class="ot">&lt;-</span> y <span class="sc">-</span> <span class="fu">fitted</span>(ss.obj)</span>
+<span id="cb303-6"><a href="inference-for-regression.html#cb303-6" tabindex="-1"></a>  ans <span class="ot">&lt;-</span> <span class="fu">mean</span>(residu<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> (<span class="dv">2</span><span class="sc">*</span>sigsq.hat<span class="sc">/</span>n)<span class="sc">*</span>df</span>
+<span id="cb303-7"><a href="inference-for-regression.html#cb303-7" tabindex="-1"></a>  <span class="fu">return</span>(ans)</span>
+<span id="cb303-8"><a href="inference-for-regression.html#cb303-8" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
 <li>Now, compute the <span class="math inline">\(C_{p}\)</span> statistic for values of the degrees of freedom between <span class="math inline">\(4\)</span> and <span class="math inline">\(20\)</span>. From the plot of the <span class="math inline">\(C_{p}\)</span> vs. the degrees of freedom it looks like the best value for the degrees of freedom is about <span class="math inline">\(12\)</span></li>
 </ul>
-<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="inference-for-regression.html#cb305-1" tabindex="-1"></a>df.seq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">4</span>, <span class="dv">20</span>, <span class="at">by=</span>.<span class="dv">1</span>)</span>
-<span id="cb305-2"><a href="inference-for-regression.html#cb305-2" tabindex="-1"></a>nx <span class="ot">&lt;-</span> <span class="fu">length</span>(df.seq)</span>
-<span id="cb305-3"><a href="inference-for-regression.html#cb305-3" tabindex="-1"></a>Cp.seq <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nx)</span>
-<span id="cb305-4"><a href="inference-for-regression.html#cb305-4" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nx) {</span>
-<span id="cb305-5"><a href="inference-for-regression.html#cb305-5" tabindex="-1"></a>    Cp.seq[k] <span class="ot">&lt;-</span> <span class="fu">CpStatSmoothSpline</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, <span class="at">df=</span>df.seq[k], </span>
-<span id="cb305-6"><a href="inference-for-regression.html#cb305-6" tabindex="-1"></a>                                    <span class="at">sigsq.hat=</span>sigsq.est)</span>
-<span id="cb305-7"><a href="inference-for-regression.html#cb305-7" tabindex="-1"></a>}</span>
-<span id="cb305-8"><a href="inference-for-regression.html#cb305-8" tabindex="-1"></a></span>
-<span id="cb305-9"><a href="inference-for-regression.html#cb305-9" tabindex="-1"></a><span class="fu">plot</span>(df.seq, Cp.seq, <span class="at">ylab=</span><span class="st">&quot;CP Stat&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data: Cp(df) vs. </span></span>
-<span id="cb305-10"><a href="inference-for-regression.html#cb305-10" tabindex="-1"></a><span class="st">     df for the Smoothing Spline&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="inference-for-regression.html#cb304-1" tabindex="-1"></a>df.seq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">4</span>, <span class="dv">20</span>, <span class="at">by=</span>.<span class="dv">1</span>)</span>
+<span id="cb304-2"><a href="inference-for-regression.html#cb304-2" tabindex="-1"></a>nx <span class="ot">&lt;-</span> <span class="fu">length</span>(df.seq)</span>
+<span id="cb304-3"><a href="inference-for-regression.html#cb304-3" tabindex="-1"></a>Cp.seq <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nx)</span>
+<span id="cb304-4"><a href="inference-for-regression.html#cb304-4" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nx) {</span>
+<span id="cb304-5"><a href="inference-for-regression.html#cb304-5" tabindex="-1"></a>    Cp.seq[k] <span class="ot">&lt;-</span> <span class="fu">CpStatSmoothSpline</span>(<span class="at">x=</span>bonedat<span class="sc">$</span>age, <span class="at">y=</span>bonedat<span class="sc">$</span>spnbmd, <span class="at">df=</span>df.seq[k], </span>
+<span id="cb304-6"><a href="inference-for-regression.html#cb304-6" tabindex="-1"></a>                                    <span class="at">sigsq.hat=</span>sigsq.est)</span>
+<span id="cb304-7"><a href="inference-for-regression.html#cb304-7" tabindex="-1"></a>}</span>
+<span id="cb304-8"><a href="inference-for-regression.html#cb304-8" tabindex="-1"></a></span>
+<span id="cb304-9"><a href="inference-for-regression.html#cb304-9" tabindex="-1"></a><span class="fu">plot</span>(df.seq, Cp.seq, <span class="at">ylab=</span><span class="st">&quot;CP Stat&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data: Cp(df) vs. </span></span>
+<span id="cb304-10"><a href="inference-for-regression.html#cb304-10" tabindex="-1"></a><span class="st">     df for the Smoothing Spline&quot;</span>)</span></code></pre></div>
 <p><img src="13-splines_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <ul>
 <li>More specifically, it’s about <span class="math inline">\(11.6\)</span>:</li>
 </ul>
-<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="inference-for-regression.html#cb306-1" tabindex="-1"></a>df.seq[<span class="fu">which.min</span>(Cp.seq)]</span></code></pre></div>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="inference-for-regression.html#cb305-1" tabindex="-1"></a>df.seq[<span class="fu">which.min</span>(Cp.seq)]</span></code></pre></div>
 <pre><code>## [1] 11.6</code></pre>
 </div>
 <div id="knot-selection-for-regression-splines-with-the-cp-statistic" class="section level3 hasAnchor" number="13.6.2">
@@ -1096,27 +1097,27 @@ parameter. Let’s use the same value of <span class="math inline">\(\hat{\sigma
 <li><p>Let’s go back to the regression spline methods we described in Section 12.3 also use the bone data to try to find the best number of knots for the case of regression splines.</p></li>
 <li><p>We will consider knots <span class="math inline">\(u_{1}, \ldots, u_{q}\)</span> that are computed automatically by the <code>bs</code> function when we specify the degrees of freedom. These are based on the quantiles of the covariate <span class="math inline">\(x_{i}\)</span>. We will consider values of <span class="math inline">\(q\)</span> between <span class="math inline">\(0\)</span> and <span class="math inline">\(20\)</span>.</p></li>
 </ul>
-<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="inference-for-regression.html#cb308-1" tabindex="-1"></a>sigsq.hat <span class="ot">&lt;-</span> .<span class="dv">0015</span></span>
-<span id="cb308-2"><a href="inference-for-regression.html#cb308-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(bonedat)</span>
-<span id="cb308-3"><a href="inference-for-regression.html#cb308-3" tabindex="-1"></a></span>
-<span id="cb308-4"><a href="inference-for-regression.html#cb308-4" tabindex="-1"></a>qqseq <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">20</span></span>
-<span id="cb308-5"><a href="inference-for-regression.html#cb308-5" tabindex="-1"></a>Cp.seq <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(qqseq))</span>
-<span id="cb308-6"><a href="inference-for-regression.html#cb308-6" tabindex="-1"></a>nq <span class="ot">&lt;-</span> <span class="fu">length</span>(qqseq)</span>
-<span id="cb308-7"><a href="inference-for-regression.html#cb308-7" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nq) {</span>
-<span id="cb308-8"><a href="inference-for-regression.html#cb308-8" tabindex="-1"></a>  q <span class="ot">=</span> qqseq[k]</span>
-<span id="cb308-9"><a href="inference-for-regression.html#cb308-9" tabindex="-1"></a>  tt <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>q</span>
-<span id="cb308-10"><a href="inference-for-regression.html#cb308-10" tabindex="-1"></a>  </span>
-<span id="cb308-11"><a href="inference-for-regression.html#cb308-11" tabindex="-1"></a>  <span class="co">#uu &lt;- 9.4 + (15.7/(q+1))*tt</span></span>
-<span id="cb308-12"><a href="inference-for-regression.html#cb308-12" tabindex="-1"></a>  <span class="cf">if</span>(q <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb308-13"><a href="inference-for-regression.html#cb308-13" tabindex="-1"></a>    tmp <span class="ot">&lt;-</span> <span class="fu">lm</span>(bonedat<span class="sc">$</span>spnbmd <span class="sc">~</span> <span class="fu">bs</span>(bonedat<span class="sc">$</span>age, <span class="at">df=</span>q<span class="sc">+</span><span class="dv">3</span>))</span>
-<span id="cb308-14"><a href="inference-for-regression.html#cb308-14" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb308-15"><a href="inference-for-regression.html#cb308-15" tabindex="-1"></a>    tmp <span class="ot">&lt;-</span> <span class="fu">lm</span>(bonedat<span class="sc">$</span>spnbmd <span class="sc">~</span> <span class="fu">bs</span>(bonedat<span class="sc">$</span>age, <span class="at">df=</span>q<span class="sc">+</span><span class="dv">3</span>))</span>
-<span id="cb308-16"><a href="inference-for-regression.html#cb308-16" tabindex="-1"></a>  }</span>
-<span id="cb308-17"><a href="inference-for-regression.html#cb308-17" tabindex="-1"></a>  RSS <span class="ot">&lt;-</span> <span class="fu">mean</span>((bonedat<span class="sc">$</span>spnbmd <span class="sc">-</span> tmp<span class="sc">$</span>fitted.values)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb308-18"><a href="inference-for-regression.html#cb308-18" tabindex="-1"></a>  Cp.seq[k] <span class="ot">&lt;-</span> RSS <span class="sc">+</span> (<span class="dv">2</span><span class="sc">*</span>sigsq.hat<span class="sc">*</span>(q <span class="sc">+</span> <span class="dv">4</span>))<span class="sc">/</span>n</span>
-<span id="cb308-19"><a href="inference-for-regression.html#cb308-19" tabindex="-1"></a>}</span>
-<span id="cb308-20"><a href="inference-for-regression.html#cb308-20" tabindex="-1"></a><span class="fu">plot</span>(qqseq, Cp.seq, <span class="at">xlab=</span><span class="st">&quot;q&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Cp&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data with Regression Splines: </span></span>
-<span id="cb308-21"><a href="inference-for-regression.html#cb308-21" tabindex="-1"></a><span class="st">     Cp Statistic for Different Number of Knots&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="inference-for-regression.html#cb307-1" tabindex="-1"></a>sigsq.hat <span class="ot">&lt;-</span> .<span class="dv">0015</span></span>
+<span id="cb307-2"><a href="inference-for-regression.html#cb307-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(bonedat)</span>
+<span id="cb307-3"><a href="inference-for-regression.html#cb307-3" tabindex="-1"></a></span>
+<span id="cb307-4"><a href="inference-for-regression.html#cb307-4" tabindex="-1"></a>qqseq <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">20</span></span>
+<span id="cb307-5"><a href="inference-for-regression.html#cb307-5" tabindex="-1"></a>Cp.seq <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(qqseq))</span>
+<span id="cb307-6"><a href="inference-for-regression.html#cb307-6" tabindex="-1"></a>nq <span class="ot">&lt;-</span> <span class="fu">length</span>(qqseq)</span>
+<span id="cb307-7"><a href="inference-for-regression.html#cb307-7" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nq) {</span>
+<span id="cb307-8"><a href="inference-for-regression.html#cb307-8" tabindex="-1"></a>  q <span class="ot">=</span> qqseq[k]</span>
+<span id="cb307-9"><a href="inference-for-regression.html#cb307-9" tabindex="-1"></a>  tt <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>q</span>
+<span id="cb307-10"><a href="inference-for-regression.html#cb307-10" tabindex="-1"></a>  </span>
+<span id="cb307-11"><a href="inference-for-regression.html#cb307-11" tabindex="-1"></a>  <span class="co">#uu &lt;- 9.4 + (15.7/(q+1))*tt</span></span>
+<span id="cb307-12"><a href="inference-for-regression.html#cb307-12" tabindex="-1"></a>  <span class="cf">if</span>(q <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb307-13"><a href="inference-for-regression.html#cb307-13" tabindex="-1"></a>    tmp <span class="ot">&lt;-</span> <span class="fu">lm</span>(bonedat<span class="sc">$</span>spnbmd <span class="sc">~</span> <span class="fu">bs</span>(bonedat<span class="sc">$</span>age, <span class="at">df=</span>q<span class="sc">+</span><span class="dv">3</span>))</span>
+<span id="cb307-14"><a href="inference-for-regression.html#cb307-14" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb307-15"><a href="inference-for-regression.html#cb307-15" tabindex="-1"></a>    tmp <span class="ot">&lt;-</span> <span class="fu">lm</span>(bonedat<span class="sc">$</span>spnbmd <span class="sc">~</span> <span class="fu">bs</span>(bonedat<span class="sc">$</span>age, <span class="at">df=</span>q<span class="sc">+</span><span class="dv">3</span>))</span>
+<span id="cb307-16"><a href="inference-for-regression.html#cb307-16" tabindex="-1"></a>  }</span>
+<span id="cb307-17"><a href="inference-for-regression.html#cb307-17" tabindex="-1"></a>  RSS <span class="ot">&lt;-</span> <span class="fu">mean</span>((bonedat<span class="sc">$</span>spnbmd <span class="sc">-</span> tmp<span class="sc">$</span>fitted.values)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb307-18"><a href="inference-for-regression.html#cb307-18" tabindex="-1"></a>  Cp.seq[k] <span class="ot">&lt;-</span> RSS <span class="sc">+</span> (<span class="dv">2</span><span class="sc">*</span>sigsq.hat<span class="sc">*</span>(q <span class="sc">+</span> <span class="dv">4</span>))<span class="sc">/</span>n</span>
+<span id="cb307-19"><a href="inference-for-regression.html#cb307-19" tabindex="-1"></a>}</span>
+<span id="cb307-20"><a href="inference-for-regression.html#cb307-20" tabindex="-1"></a><span class="fu">plot</span>(qqseq, Cp.seq, <span class="at">xlab=</span><span class="st">&quot;q&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Cp&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data with Regression Splines: </span></span>
+<span id="cb307-21"><a href="inference-for-regression.html#cb307-21" tabindex="-1"></a><span class="st">     Cp Statistic for Different Number of Knots&quot;</span>)</span></code></pre></div>
 <p><img src="13-splines_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <ul>
 <li>From the plot, it looks like the best number of knots when using the <span class="math inline">\(C_{p}\)</span> statistic is <span class="math inline">\(q = 10\)</span>.</li>

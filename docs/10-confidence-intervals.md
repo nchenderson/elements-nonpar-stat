@@ -146,7 +146,7 @@ round(c(sigsq.hat - 1.96*sd(sigsq.boot), sigsq.hat + 1.96*sd(sigsq.boot)), 3)
 ```
 
 ```
-## [1] 0.929 2.006
+## [1] 0.926 2.010
 ```
 
 * We can compare our confidence interval for $\alpha$ with the confidence interval
@@ -224,23 +224,19 @@ Y_{i} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \frac{\hat{\sigma}}{\sqrt{3}}u_
 \end{equation}
 where $\hat{\sigma}^{2}$ is the following estimate of the residual variance:
 \begin{equation}
-\hat{\sigma}^{2} = \frac{1}{n-2}\sum_{i=1}^{n} (Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1})^{2} \nonumber
+\hat{\sigma}^{2} = \frac{1}{n-2}\sum_{i=1}^{n} (Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1}x_{i})^{2} \nonumber
 \end{equation}
 
 
 ---
 
-* To show how this parametric-t bootstrap works in practice we will look
+* To show how this parametric t-bootstrap works in practice we will look
 at the kidney function data. 
 
 * We will look at a linear regression where the measure of kidney function is 
 the outcome and age is the covariate.
 
 
-``` r
-kidney <- read.table("https://web.stanford.edu/~hastie/CASI_files/DATA/kidney.txt", 
-                     header=TRUE)
-```
 
 <img src="10-confidence-intervals_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
@@ -320,7 +316,7 @@ c(beta0.hat - stu.quants0[2]*se.est0, beta0.hat - stu.quants0[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.14        3.57
+##        2.20        3.58
 ```
 
 ``` r
@@ -330,7 +326,7 @@ c(beta1.hat - stu.quants1[2]*se.est1, beta1.hat - stu.quants1[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.0969 -0.0599
+## -0.0965 -0.0611
 ```
 
 * Compare these studentized bootstrap confidence intervals with the confidence 
@@ -345,13 +341,6 @@ confint(lm.kidney)
 ## (Intercept)  2.1497  3.5703
 ## age         -0.0965 -0.0607
 ```
-
----
-
-* **Exercise 10.1** Using the parametric bootstrap, compute studentized bootstrap confidence for $\beta_{0}$ and $\beta_{1}$ 
-in the kidney data example. This time, assume that $\varepsilon_{i} \sim \textrm{Normal}(0, \hat{\sigma}^{2})$.
-
----
 
 ### Nonparametric Bootstrap for Regression
   
@@ -444,7 +433,7 @@ c(beta0.hat - stu.quants0.np[2]*se.est0, beta0.hat - stu.quants0.np[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.18        3.50
+##        2.12        3.55
 ```
 
 ``` r
@@ -454,27 +443,12 @@ c(beta1.hat - stu.quants1.np[2]*se.est1, beta1.hat - stu.quants1.np[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.0956 -0.0623
+## -0.0956 -0.0604
 ```
   
 ---  
  
-* **Exercise 10.2** Another way of using the bootstrap in a regression context
-is to resample the residuals from the fitted regression model. Speficially,
-we first fit the linear regression model and compute residuals $\hat{e}_{1}, \ldots, \hat{e}_{n}$
-via
-\begin{equation}
-\hat{e}_{i} = Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1}x_{i} \nonumber
-\end{equation}
-One then generates a bootstrap sample 
-by first subsampling $(\hat{e}_{1}^{*}, \ldots, \hat{e}_{n}^{*})$ from the 
-vector of "original" residuals $(\hat{e}_{1}, \ldots, \hat{e}_{n})$ and then
-setting $Y_{i}^{*} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \hat{e}_{i}^{*}$.
-You then compute the bootstrap replications $\hat{\beta}_{0,r}^{*}$ and $\hat{\beta}_{1,r}^{*}$
-by fitting a linear regression with data: $(Y_{1}^{*}, x_{1}), \ldots, (Y_{n}^{*}, x_{n})$. 
 
-Using the kidney data, try using this procedure to construct $95\%$ bootstrap confidence intervals
-for $\beta_{0}$ and $\beta_{1}$.
   
 ---
 
@@ -644,7 +618,7 @@ mean(Cover.bootsd.ci)
 ```
 
 ```
-## [1] 0.81
+## [1] 0.806
 ```
 
 <img src="10-confidence-intervals_files/figure-html/unnamed-chunk-24-1.png" width="672" />
@@ -695,9 +669,27 @@ across slightly perturbed datasets) than the bootstrap. An example of this is th
 sample median where, if we delete one observation, the sample median has
 a different definition due to the sample size being even vs. odd.
 
+## Exercises
+
+* **Exercise 10.1** Using the parametric bootstrap, compute studentized bootstrap confidence intervals for $\beta_{0}$ and $\beta_{1}$ in the `kidney` data example. This time, assume that $\varepsilon_{i} \sim \textrm{Normal}(0, \hat{\sigma}^{2})$.
 
 
+* **Exercise 10.2** Another way of using the bootstrap in a regression context
+is to resample the residuals from the fitted regression model. Speficially,
+we first fit the linear regression model and compute residuals $\hat{e}_{1}, \ldots, \hat{e}_{n}$
+via
+\begin{equation}
+\hat{e}_{i} = Y_{i} - \hat{\beta}_{0} - \hat{\beta}_{1}x_{i} \nonumber
+\end{equation}
+One then generates a bootstrap sample 
+by first subsampling $(\hat{e}_{1}^{*}, \ldots, \hat{e}_{n}^{*})$ from the 
+vector of "original" residuals $(\hat{e}_{1}, \ldots, \hat{e}_{n})$ and then
+setting $Y_{i}^{*} = \hat{\beta}_{0} + \hat{\beta}_{1}x_{i} + \hat{e}_{i}^{*}$.
+You then compute the bootstrap replications $\hat{\beta}_{0,r}^{*}$ and $\hat{\beta}_{1,r}^{*}$
+by fitting a linear regression with data: $(Y_{1}^{*}, x_{1}), \ldots, (Y_{n}^{*}, x_{n})$. 
 
+Using the `kidney` data, try using this procedure to construct $95\%$ bootstrap confidence intervals
+for $\beta_{0}$ and $\beta_{1}$.
 
 
 

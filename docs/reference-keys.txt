@@ -225,6 +225,7 @@ pointwise-confidence-intervals-for-a-density-function
 when-can-the-bootstrap-fail
 example-the-shifted-exponential-distribution
 the-jackknife
+exercises-7
 conformal-prediction
 confidence-intervals-and-prediction-intervals
 conformal-inference-procedure-for-prediction-intervals
@@ -250,7 +251,7 @@ example-choosing-the-best-bin-width-for-the-local-average-estimator.
 additional-functions-in-r
 multivariate-problems
 additional-reading-5
-exercises-7
+exercises-8
 inference-for-regression
 introduction-3
 regressogram-piecewise-constant-estimate

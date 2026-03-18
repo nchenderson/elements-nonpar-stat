@@ -64,7 +64,7 @@ mean(cover) ## Should be close to 0.95
 ```
 
 ```
-## [1] 0.948
+## [1] 0.938
 ```
 
 ---
@@ -223,12 +223,12 @@ print(head(ConformalInterval))
 
 ```
 ##            [,1]     [,2]
-## [1,] -0.3731484 3.356651
-## [2,] -1.1664115 2.563388
-## [3,] -0.2775177 3.452282
-## [4,] -0.4079359 3.321864
-## [5,] -1.1577148 2.572085
-## [6,] -0.6789483 3.050851
+## [1,] -0.7951270 2.984346
+## [2,] -0.8096268 2.969846
+## [3,] -0.9281781 2.851295
+## [4,] -0.6508882 3.128585
+## [5,] -0.8181533 2.961320
+## [6,] -0.8612542 2.918219
 ```
 
 * Plot fitted values and prediction intervals:
@@ -243,7 +243,7 @@ mean(Y_new > ConformalInterval[,1] & Y_new < ConformalInterval[,2])
 ```
 
 ```
-## [1] 0.88
+## [1] 0.91
 ```
 
 ## Why does this work?
@@ -252,7 +252,7 @@ mean(Y_new > ConformalInterval[,1] & Y_new < ConformalInterval[,2])
 looking at the **calibration residuals** $R_{i}$, for $i \in \mathcal{A}_{2}$ 
 and the **test residual** $R_{n + 1} = | Y_{n+1} - \hat{f}_{\mathcal{D}_{1}}(\mathbf{x}_{n+1})|$.
 
-* Specifically, $R_{n+1}, R_{i}, i \in \mathcal{A}_{2}$ is a collection of **i.i.d random variables**.
+* Specifically, $(R_{n+1}, R_{i}, i \in \mathcal{A}_{2})$ is a collection of **i.i.d random variables** that are independent from observations in $\mathcal{D}_{1}$.
     - This is true because $\hat{f}_{\mathcal{D}_{1}}(\mathbf{x})$ was built from the **proper training set** and ...
     
     - The values of $R_{i}$, for $i \in \mathcal{A}_{2}$ only uses outcomes from the **calibration dataset**.
@@ -260,11 +260,11 @@ and the **test residual** $R_{n + 1} = | Y_{n+1} - \hat{f}_{\mathcal{D}_{1}}(\ma
 
 * Because of the pairs $(\mathbf{x}_{i}, Y_{i})$ are i.i.d., the probability that $R_{n+1}$ is **less than the $100(1 - \alpha)$ quantile** of the residuals is very close to $1 - \alpha$. 
 
-* Because of this:
+* To be more specific:
 \begin{eqnarray}
 P\Big( Y_{n+1} \in \hat{C}_{n}(\mathbf{x}_{n+1}) \Big| \mathcal{D}_{1} \Big)
-&=& P(\hat{f}_{\mathcal{D}_{1}} - \hat{q}_{\mathcal{D}_{2}, \alpha} \leq Y_{n+1} \leq \hat{f}_{\mathcal{D}_{1}} + \hat{q}_{\mathcal{D}_{2}, \alpha} \Big| \mathcal{D}_{1} \Big) \nonumber \\
-&=& P(- \hat{q}_{\mathcal{D}_{2}, \alpha} \leq Y_{n+1} - \hat{f}_{\mathcal{D}_{1}} \leq \hat{q}_{\mathcal{D}_{2}, \alpha} \Big| \mathcal{D}_{1} \Big) \nonumber \\
+&=& P(\hat{f}_{\mathcal{D}_{1}}(\mathbf{x}_{n+1}) - \hat{q}_{\mathcal{D}_{2}, \alpha} \leq Y_{n+1} \leq \hat{f}_{\mathcal{D}_{1}}(\mathbf{x}_{n+1}) + \hat{q}_{\mathcal{D}_{2}, \alpha} \Big| \mathcal{D}_{1} \Big) \nonumber \\
+&=& P(- \hat{q}_{\mathcal{D}_{2}, \alpha} \leq Y_{n+1} - \hat{f}_{\mathcal{D}_{1}}(\mathbf{x}_{n+1}) \leq \hat{q}_{\mathcal{D}_{2}, \alpha} \Big| \mathcal{D}_{1} \Big) \nonumber \\
 &=& P( R_{n+1} \leq \hat{q}_{\mathcal{D}_{2}, \alpha} \Big| \mathcal{D}_{1} \Big) \nonumber \\
 &\approx& 1 - \alpha
 \end{eqnarray}
@@ -408,7 +408,7 @@ mean(Y_new > ConformalInterval[,1] & Y_new < ConformalInterval[,2])
 ```
 
 ```
-## [1] 0.9475
+## [1] 0.9515
 ```
 
 
