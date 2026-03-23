@@ -113,7 +113,7 @@ Y_{i} = f(\mathbf{x}_{i}) + \varepsilon_{i}
      + $\mathcal{A}_{1}$ - the indeces of a **"proper"** dataset with $n_{1}$ observations.
      + $\mathcal{A}_{2}$ - the indeces of a **"calibration"** set with $n_{2}$ observations.
      + $\mathcal{D}_{1}$ - the proper dataset: $\mathcal{D}_{1} = \{(\mathbf{x}_{i}, Y_{i}): i \in \mathcal{A}_{1} \}$.
-     + $\mathcal{D}_{2}$ - the calibration dataset: $\mathcal{D}_{1} = \{(\mathbf{x}_{i}, Y_{i}): i \in \mathcal{A}_{2} \}$.
+     + $\mathcal{D}_{2}$ - the calibration dataset: $\mathcal{D}_{2} = \{(\mathbf{x}_{i}, Y_{i}): i \in \mathcal{A}_{2} \}$.
      
 2. Using **only data** from $\mathcal{D}_{1}$ apply your regression/machine learning procedure to build
 a function $\hat{f}_{\mathcal{D}_{1}}(\mathbf{x}_{i})$ that predicts $Y_{i}$ from $\mathbf{x}_{i}$.
@@ -189,6 +189,7 @@ calibration_resids <- abs(calibration_dat$Y - calibration_fitted)
 * Get 95th quantile of these residuals
 ```{r}
 qhat <- quantile(calibration_resids, probs=0.95)
+print(qhat)
 ```
 
 * We can now use `qhat` to get prediction intervals for a "new dataset"

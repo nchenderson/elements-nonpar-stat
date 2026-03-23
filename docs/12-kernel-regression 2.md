@@ -46,16 +46,15 @@ m(\mathbf{x} ) = E(Y_{i}|\mathbf{x}_{i}=\mathbf{x})
 m(\mathbf{x}) = \int_{-\infty}^{\infty} y f_{Y|X}(y|\mathbf{x}) dy = \frac{\int y f_{Y,X}(y, \mathbf{x}) dy}{ f_{X}(\mathbf{x})  }  \nonumber
 \end{equation}
 
-* For most of this chapter, we will assume that the covariates are univariate. 
-That is, $p=1$ and $\mathbf{x}_{i} = x_{i}$ where $x_{i}$ is a real number.
-    + In Section 12.7, we will briefly discuss estimating a regression function when the dimension of the covariates $\mathbf{x}_{i}$ is greater than 1. 
+## Kernel Regression
 
-## The Regressogram and the Local Average Estimator
+* In this section, we will assume that the covariates are univariate. 
+That is, $p=1$ and $\mathbf{x}_{i} = x_{i}$ where $x_{i}$ is a real number.
 
 ### The Regressogram
 
-* The regressogram is an estimate of the mean function $m(x)$ which 
-**has many similarities to the histogram**.
+* The regressogram is an estimate of the mean function $m(x)$ which is 
+has many similarities in its construction to the histogram.
 
 * Similar to how we constructed the histogram, let us think about an estimate $m(x)$
 that will be constant within each of a series of bins $B_{1}, \ldots, B_{D_{n}}$
@@ -67,7 +66,7 @@ B_{D_{n}} &=& [x_{0} + (D_{n} - 1)h_{n}, x_{0} + D_{n}h_{n})  \nonumber
 \end{eqnarray}
 
 * Suppose we want to estimate $m(x)$, where $x$ belongs to the $k^{th}$ bin.
-     + A direct estimate of this is the **average** of the $Y_{i}'s$ **among those**
+A direct estimate of this is the average of the $Y_{i}'s$ among those
 $x_{i}'s$ which fall into the $k^{th}$ bin.
 
 * Specifically, if $x \in B_{k}$, then we estimate $m(x)$ with
@@ -82,8 +81,8 @@ where $n_{k,h_{n}}$ is the number of $x_{i}$ that fall into the $k^{th}$ bin whe
 * The estimate $\hat{m}_{h_{n}}^{R}(x)$ of the regression function is called the **regressogram**.
 
 * The intuition for this estimate is: if $x \in B_{k}$,
-then taking an **average of the responses** for $x_{i}$ in a small bin 
-containing $x$ should give us a reasonable approximation for the expectation of $Y_{i}$ given that $x_{i} = x$.
+then taking an average of the reponses for $x_{i}$ in a small bin containing $x$ 
+should give us a reasonable approximation for the expectation of $Y_{i}$ given that $x_{i} = x$.
 
 * Another way of looking at the regressogram is to note that if we think of the $x_{i}$ as random variables, then for $x \in B_{k}$
 \begin{eqnarray}
@@ -110,57 +109,36 @@ should be a reasonable estimate of the ratio
 
 ---
 
-```{r, echo=FALSE, fig.height=6, fig.cap="Framingham Data. Regressogram estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years."}
-framingham <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/framingham.csv")
+<div class="figure">
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-1-1.png" alt="Framingham Data. Regressogram estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-1)Framingham Data. Regressogram estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years.</p>
+</div>
 
-age.bins <- seq(31, 71, by=5)
-tau <- length(age.bins) - 1
-m.hat <- rep(0, tau)
-for(k in 1:tau) {
-    ind <- framingham$age >= age.bins[k] & framingham$age < age.bins[k+1]
-    m.hat[k] <- mean(framingham$diaBP[ind])
-}
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
-plot(framingham$age, framingham$diaBP, las=1, 
-     ylab="Diastolic Blood Pressure", xlab="Age",
-     main="Regressogram Estimate with a Bin Width of 5 Years", type="n")
-points(framingham$age, framingham$diaBP, pch=16, cex=0.7)
-for(k in 1:tau) {
-    lines(c(age.bins[k], age.bins[k+1]), c(m.hat[k], m.hat[k]), lwd=3, col="red")
-}
-```
 
-```{r, echo=FALSE, fig.height=5, fig.cap="Framingham Data. Regressogram estimate and a linear regression estimate for a regression model with diastolic blood pressure as the response and age as the covariate. Ages from 31-71 were separated into bins of width 5 years."}
-lm.fram1 <- lm(diaBP ~ age, data=framingham)
-plot(framingham$age, framingham$diaBP, las=1, 
-     ylab="Diastolic Blood Pressure", xlab="Age",
-     main="Regressogram Estimate vs. Linear Regression", type="n")
-abline(lm.fram1$coef[1], lm.fram1$coef[2], lwd=3, lty=2)
-points(framingham$age, framingham$diaBP, pch=16, cex=0.7)
-for(k in 1:tau) {
-    lines(c(age.bins[k], age.bins[k+1]), c(m.hat[k], m.hat[k]), lwd=3, col="red")
-}
-```
 
 
 ### The Local Average Estimator
 
-* The regressogram can be thought of as a regression analogue of the **histogram**.
+* The regressogram can be thought of as a regression analogue of the histogram.
 
 * The local average estimator can be thought of as a regression analogue of the
-**"box-type" density estimator** that we described in Chapter 8.
+"box-type" density estimator that we described in Chapter 8.
 
 ---
 
-* For each point $x$, we are going estimate the regression function using a 
-**bin "centered"** at $x$.
+* For each point $x$, we are going to use a regression function estimate which
+has a bin "centered" at $x$.
 
 * Specifically, for each $x$, we will form a bin of width $2h_{n}$ around
-$x$ and compute the mean of the $Y_{i}$ **among those observations** where the $x_{i}$ fall into this bin. 
+$x$ and compute the mean of the $Y_{i}$ among those observations where the $x_{i}$ fall
+into this bin. 
 
-* In other words, we are computing an average of the $Y_{i}$ in a **small region around** $x$. 
+* In other words, we are computing an average of the $Y_{i}$ in a small region
+around $x$. 
 
-* The **local average estimator** $\hat{m}_{h_{n}}^{loc}(x)$ at $x$ is defined as:
+* The local average estimator $\hat{m}_{h_{n}}^{loc}(x)$ at $x$ is defined as:
 \begin{eqnarray}
 \hat{m}_{h_{n}}^{loc}(x) &=&
 \frac{ \sum_{i=1}^{n} Y_{i}I\big( x - h_{n} < x_{i} < x + h_{n} \big) }{ \sum_{i=1}^{n} I\big( x - h_{n} < x_{i} < x + h_{n} \big) } \nonumber \\
@@ -188,27 +166,30 @@ w(t) =
 \end{cases}
 \end{equation}
 
-* While a local average estimate will not be a "step function" like the regressogram, the local average estimate will often be **non-smooth** and have a **jagged appearance**.
+* While a local average estimate will not be a "step function" like the regressogram, the local average
+estimate will typically be non-smooth and have a jagged appearance.
 
 ---
 
-* As in kernel density estimation, there is a **bias/variance tradeoff** in the choice of $h_{n}$.
+* Like kernel density estimation, there is a bias/variance tradeoff to the choice of $h_{n}$.
 
-* Smaller values of $h_{n}$ usually imply **higher variance** because you will be taking an average over a small number of observations.
+* Smaller values of $h_{n}$ usually imply higher variance because you will be taking an
+average over a relatively small number of observations.
 
-* Larger values of $h_{n}$ usually imply **higher bias** because 
+* Larger values of $h_{n}$ usually imply higher bias because 
 you will be esitmating $m(x)$ by averaging over a wide range
 of $x_{i}$ values, and $m(x)$ could vary substantially over this range of $x_{i}$ values.
 
 * Our experience in Chapter 8 suggests that we can get a smoother estimate of 
-the regression if we simply **replace the "box function"** $w(t)$ in \@ref(eq:local-average-estimator) with a
-smoother **kernel function** $K(t)$.
+the regression if we simply replace the "box function" $w(t)$ in \@ref(eq:local-average-estimator) with a
+smoother kernel function $K(t)$.
 
 ---
 
 * `R` code for computing a local average estimate $\hat{m}_{2}^{loc}(x)$ at the 
 points $x = 31, 32, 33, ...., 71$ is given below
-```{r, fig.height=5.5, fig.cap="Framingham Data. Local average estimator with hn = 2."}
+
+``` r
 xseq <- seq(31, 71, by=1)
 hn <- 2
 nx <- length(xseq)
@@ -218,19 +199,19 @@ for(k in 1:nx) {
     m.hat.loc[k] <- mean(framingham$diaBP[in.bin])
 }
 
-plot(framingham$age, framingham$diaBP, las=1, 
-     ylab="Diastolic Blood Pressure", xlab="Age", 
-     main=expression(paste("Local Average Estimate with ", h[n], " = 2")), 
-     type="n")
+plot(framingham$age, framingham$diaBP, las=1, ylab="Diastolic Blood Pressure", 
+     xlab="Age", main="Local Average Estimate with hn=2", type="n")
 points(framingham$age, framingham$diaBP, pch=16, cex=0.7)
 lines(xseq, m.hat.loc, lwd=3, col="red")
 ```
 
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+
 ---
 
-* Let's also look at a local average estimate of the regression function for the `bone` dataset.
+* Let's also look at a local average estimate of the regression function for the bone mineral density dataset.
 
-* The responses in the `bone` dataset are relative changes in the bone mineral density of adolescents.
+* The responses in this dataset are relative changes in the bone mineral density of adolescents.
 
 * Specifically, reponses $Y_{i}$ and covariates $x_{i}$ are defined as
 \begin{eqnarray}
@@ -238,11 +219,15 @@ Y_{i} &=& \frac{\textrm{Mineral Density at Visit 2}_{i} - \textrm{Mineral Densit
 x_{i} &=& \frac{1}{2}(\textrm{Age at Visit 2}_{i} + \textrm{Age at Visit 1}_{i})  \nonumber
 \end{eqnarray}
 
-```{r, echo=FALSE}
-bonedat <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/bone.csv")
+
+``` r
+tmp <- read.table("https://web.stanford.edu/~hastie/ElemStatLearn/datasets/bone.data", 
+                  header=TRUE)
+bonedat <- tmp[!duplicated(tmp$idnum),]  ## only keep the first observation of a person
 ```
 
-```{r, fig.height=5.5}
+
+``` r
 xseq <- seq(9.4, 25.2, by=.1)
 hn <- 1
 nx <- length(xseq)
@@ -252,42 +237,26 @@ for(k in 1:nx) {
     m.hat.loc[k] <- mean(bonedat$spnbmd[in.bin])
 }
 
-plot(bonedat$age, bonedat$spnbmd, las=1, 
-     ylab="Relative Change in Bone MD", xlab="Age", 
-     main=expression(paste("Bone Data: Local Average Estimate with ", h[n], " = 1")),
-     type="n")
-points(bonedat$age, bonedat$spnbmd, pch=16, cex=0.7)
-lines(xseq, m.hat.loc, lwd=3, col="red")
-abline(0, 0)
-```
-
-```{r, echo=FALSE, fig.height=5.5}
-xseq <- seq(9.4, 25.2, by=.1)
-hn <- 3
-nx <- length(xseq)
-m.hat.loc <- numeric(nx)
-for(k in 1:nx) {
-  in.bin <- bonedat$age > xseq[k] - hn & bonedat$age < xseq[k] + hn
-  m.hat.loc[k] <- mean(bonedat$spnbmd[in.bin])
-}
-
-
 plot(bonedat$age, bonedat$spnbmd, las=1, ylab="Relative Change in Bone MD", 
-     xlab="Age", main=expression(paste("Bone Data: Local Average Estimate with ", h[n], " = 3")), type="n")
+     xlab="Age", main="Bone Data: Local Average Estimate with hn=1", type="n")
 points(bonedat$age, bonedat$spnbmd, pch=16, cex=0.7)
 lines(xseq, m.hat.loc, lwd=3, col="red")
 abline(0, 0)
 ```
+
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 ### k-Nearest Neighbor (k-NN) Regression
 
-* **k-nearest neighbor regression** (k-NN) is fairly similar to the local average estimator
+* k-nearest neighbor regression is fairly similar to the local average estimator
 of the regression function.
 
 * With k-NN, we still estimate the regression function at a particular point
 by taking a type of local average around this point.
 
-* However, k-NN takes the average over the **k "nearest observations"** to $x$
+* However, k-NN takes the average over the k "nearest observations" to $x$
 rather than taking an average over all the observations which fall into
 a bin centered at $x$.
 
@@ -313,34 +282,35 @@ observations which correspond to the $d_{(1)}(x)$ through $d_{(k)}(x)$.
 ---
 
 * Like the local average estimator, increasing the value of $k$
-will increase the bias of the k-NN regression function estimator.
-     + Decreasing the value of $k$ will increase the variance of the k-NN regression function estimator.
+will increase the bias of the k-NN regression function estimate while 
+decreasing the value of $k$ will increase the variance of the k-NN regression function estimate.
 
 
-## Kernel Regression
 
 ### The Nadaraya-Watson Estimator
 
-* The **Nadaraya-Watson estimator** $\hat{m}_{h_{n}}^{NW}$ of the regression function with bandwidth $h_{n}$ is defined as
+* The Nadaraya-Watson estimator $\hat{m}_{h_{n}}^{NW}$ of the regression function with bandwidth $h_{n}$ is defined as
 \begin{equation}
 \hat{m}_{h_{n}}^{NW}(x) = \frac{ \sum_{i=1}^{n} Y_{i}K\Big( \frac{x - x_{i}}{ h_{n} }\Big) }{ \sum_{i=1}^{n} K\Big( \frac{x - x_{i}}{ h_{n} }\Big)  } \nonumber
 \end{equation}
 
-* The Nadaraya-Watson estimator has the same basic form as the local average estimator. We have just **replaced** the "box" function
-$w(t)$ with the **kernel function** $K(t)$.
+* The Nadaraya-Watson estimator has the same basic form as the local average estimator. We have just replaced the "box" function
+$w(t)$ with the kernel function $K(t)$.
 
-* You can think of $\hat{m}_{h_{n}}^{NW}(x)$ as a **weighted average** of the $Y_{i}$. That is, 
+* You can think of $\hat{m}_{h_{n}}^{NW}(x)$ as a weighted average of the $Y_{i}$. 
+That is, 
 \begin{equation}
 \hat{m}_{h_{n}}^{NW}(x) = \sum_{i=1}^{n} a_{i}(x) Y_{i} \nonumber
 \end{equation}
 
-* The **bandwidth** $h_{n}$ can also be referred to as the **"smoothing parameter"** since its value affects how smooth the fitted regression curve appears.
+* The bandwidth $h_{n}$ can also be referred to as the "smoothing parameter" since its value affects how smooth
+the fitted regression curve appears.
 
 * The weights $a_{1}(x), \ldots, a_{n}(x)$, in this case, are defined as 
 \begin{equation}
 a_{i}(x) = \frac{ K(\tfrac{x - x_{i}}{h_{n}})}{ \sum_{i=1}^{n} K(\tfrac{x - x_{i}}{ h_{n}}) } \nonumber
 \end{equation}
-So, we are using weights that increase as you get closer to $x$. 
+So, we are using weights which are larger the closer you are to $x$. 
 
 ---
 
@@ -371,10 +341,11 @@ the design bias should be small.
 
 ---
 
-### The Nadaraya-Watson Estimator in R
+**The Nadaraya-Watson estimator in R** 
 
 * The Nadaraya-Watson estimator can be computed in `R` with the `ksmooth` function.
-```{r, eval=FALSE}
+
+``` r
 ksmooth(x, y, kernel, bandwidth, x.points, ...)
 ```
 
@@ -395,7 +366,8 @@ is estimated. The `y` vector from the fitted `ksmooth` object will be a vector c
 * If you wanted to write your own function that computed the Nadaraya-Watson estimate
 at a vector of desired points $x.points = (t_{1}, \ldots, t_{q})$, you could use 
 something like
-```{r}
+
+``` r
 MyNWEst <- function(x, y, bandwidth, x.points) {
     q <- length(x.points) 
     nw.est <- numeric(q)
@@ -409,8 +381,10 @@ MyNWEst <- function(x, y, bandwidth, x.points) {
 
 --- 
 
-* To compute the Nadraya-Watson estimate at a set of equally spaced of points from $10$ to $25$ using bandwidth $0.5$ and plot the result, you could use the following code:
-```{r, fig.height=5.0}
+* To compute the Nadraya-Watson estimate at a set of equally spaced of points from $10$ to $25$
+using bandwidth $0.5$ and plot the result, you could use the following code:
+
+``` r
 xseq <- seq(10, 25, by=.1)
 bone.nwest <- ksmooth(x=bonedat$age, y=bonedat$spnbmd, kernel="normal", 
                       bandwidth=2.7*0.5, x.points=xseq)
@@ -420,6 +394,11 @@ plot(bonedat$age, bonedat$spnbmd, las=1, ylab="Relative Change in Bone MD",
      Gaussian Kernel", type="n")
 points(bonedat$age, bonedat$spnbmd, pch=16, cex=0.7)
 lines(bone.nwest$x, bone.nwest$y, lwd=3, col="red")
+```
+
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+
+``` r
 ## Note that bone.nwest$x should equal xseq
 ```
 
@@ -500,7 +479,8 @@ from asymmetry near the boundary (draw a picture).
 * An `R` function which implements local linear regression is the following. The
 input for this function has the same structure as our earlier Nadaraya-Watson `R` function. 
 
-```{r}
+
+``` r
 MyLocLinear <- function(x, y, bandwidth, x.points) {
   q <- length(x.points) 
   loclin.est <- numeric(q)
@@ -520,7 +500,8 @@ MyLocLinear <- function(x, y, bandwidth, x.points) {
 
 * Using age as the covariate, we will estimate the regression function at the points $10, 10.1, 10.2, ..., 25$:
 
-```{r}
+
+``` r
 xseq <- seq(10, 25, by=.1)
 bone.loclin <- MyLocLinear(x=bonedat$age, y=bonedat$spnbmd, 
                            bandwidth=0.5, x.points=xseq)
@@ -531,15 +512,10 @@ points(bonedat$age, bonedat$spnbmd, pch=16, cex=0.7)
 lines(xseq, bone.loclin, lwd=3, col="red")
 ```
 
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+
 * Let's compare this with the Nadaraya-Watson esitmate that we computed earlier
-```{r, echo=FALSE}
-plot(bonedat$age, bonedat$spnbmd, las=1, ylab="Relative Change in Bone MD", 
-     xlab="Age", main="Local Linear Estimator with hn=0.5", type="n")
-points(bonedat$age, bonedat$spnbmd, pch=16, cex=0.7)
-lines(xseq, bone.loclin, lwd=3, col="red")
-lines(xseq, bone.nwest$y, lwd=3, col="blue")
-legend("topright", legend=c("Loc. Linear", "Nadaraya-Watson"), col=c("red", "blue"), lwd=3, bty='n')
-```
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 
 ### Local Polynomial Regression
 
@@ -876,7 +852,8 @@ then the degrees of freedom is equal to $1$.
 
 * The first step is to write a function that computes the $n_{h_{n}}(x_{i})$ for a given value of $h_{n}$. This will allow us to find the degrees of freedom
 and will also be helpful later when computing LOOCV.
-```{r}
+
+``` r
 NumInBins <- function(hh, xx) {
   ## This function returns a vector of length n
   ## Elements of this vector will be: n_[h_n](x_1), n_[h_n](x_2), ...
@@ -892,7 +869,8 @@ NumInBins <- function(hh, xx) {
 ---
 
 * We also want a function that returns the vector with elements $\hat{m}_{h_{n}}(x_{1}), \hat{m}_{h_{n}}(x_{2}) , \ldots \hat{m}_{h_{n}}(x_{n})$.
-```{r}
+
+``` r
 MyLocAvgEst <- function(xx, yy, hh) {
   n <- length(xx)
   m.hat.loc <- numeric(n)
@@ -913,14 +891,16 @@ MyLocAvgEst <- function(xx, yy, hh) {
 \hat{\sigma}^{2}( \tilde{h}_{n} ) = \frac{  \sum_{i=1}^{n}\{ Y_{i} - \hat{m}_{\tilde{h}_{n}}(x_{i}) \}^{2}  }{ n - 2\textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}) + \textrm{tr}(\mathbf{A}_{\tilde{h}_{n}}\mathbf{A}_{\tilde{h_{n}}}^{T}) }
 \end{equation}
 that we mentioned before with $\tilde{h}_{n} = 0.1$, I got a an estimate of $\sigma^{2}$ which was quite close to $0.0015$
-```{r}
+
+``` r
 sigsq.est <- 0.0015
 ```
 
 ---
 
 * Now, we are ready to compute the $C_{p}$ statistic. We will compute $C_{p}(h_{n})$ for $h_{n} = 0.01, 0.11, \ldots, 10.01$. This can be done with the following code:
-```{r}
+
+``` r
 hseq <- seq(.01, 10.01, by=.1)
 ngrid <- length(hseq)
 n <- length(bonedat$age)
@@ -933,15 +913,23 @@ for(k in 1:ngrid) {
 ```
 
 * We can plot the values of $C_{p}(h_{n})$ vs. $h_{n}$ to roughly see where the minimum value is. From the graph, it looks to be slighly less than $1$.
-```{r}
+
+``` r
 plot(hseq, Cp, ylim=c(0.001,.003), main="Bone Data: Cp Stat for Loc. Avg. Est.", 
      xlab="hn", ylab="Cp")
 lines(hseq, Cp)
 ```
 
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+
 * More precisely, the value of $h_{n}$ from our sequence which has the smallest value of $C_{p}(h_{n})$ is $0.81$.
-```{r}
+
+``` r
 hseq[which.min(Cp)]
+```
+
+```
+## [1] 0.81
 ```
 
 ---
@@ -955,7 +943,8 @@ we used in the description of the LOOCV.
 
 * `R` code to compute $\textrm{LOOCV}(h_{n})$ at the same sequence of $h_{n}$ values used for the $C_{p}$
 statistic is given below:
-```{r}
+
+``` r
 LOOCV <- numeric(ngrid)
 for(k in 1:ngrid) {
   m.hat <- MyLocAvgEst(bonedat$age, bonedat$spnbmd, hseq[k])
@@ -967,33 +956,26 @@ for(k in 1:ngrid) {
 
 
 * We can plot the values of $\textrm{LOOCV}(h_{n})$ vs. $h_{n}$ to roughly see where the minimum value is.
-```{r}
+
+``` r
 plot(hseq, LOOCV, ylim=c(0.001,.003), main="Bone Data: LOOCV Stat for Loc. Avg. Est.", 
      xlab="hn", ylab="LOOCV")
 lines(hseq, LOOCV)
 ```
 
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+
 * The value of $h_{n}$ from our sequence which has the smallest value of $\textrm{LOOCV}(h_{n})$ is $0.81$.
-```{r}
+
+``` r
 hseq[which.min(LOOCV)]
 ```
 
-```{r, echo=FALSE, fig.height=5}
-xseq <- seq(9.4, 25.2, by=.05)
-hn <- 0.81
-nx <- length(xseq)
-m.hat.loc <- numeric(nx)
-for(k in 1:nx) {
-  in.bin <- bonedat$age > xseq[k] - hn & bonedat$age < xseq[k] + hn
-  m.hat.loc[k] <- mean(bonedat$spnbmd[in.bin])
-}
-
-plot(bonedat$age, bonedat$spnbmd, las=1, ylab="Relative Change in Bone MD", 
-     xlab="Age", main="Bone Data: Local Average Estimate with hn=0.81", type="n")
-points(bonedat$age, bonedat$spnbmd, pch=16, cex=0.7)
-lines(xseq, m.hat.loc, lwd=3, col="red")
-abline(0, 0)
 ```
+## [1] 0.81
+```
+
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-22-1.png" width="672" />
 
 ## Additional functions in R
 
@@ -1010,7 +992,8 @@ so they can differ somewhat in the values they return unless you set these param
 ---
 
 * `lowess` does local quadratic and local linear regression. The format of the `lowess` function is the following:
-```{r, eval=FALSE}
+
+``` r
 loess(formula, data, span)
 ```
 * **formula** - usally of the form `y ~ x` if using a single response vector `y` and covariate `x`
@@ -1054,7 +1037,8 @@ regression with updated weights that reduce the influence of outliers. `loess` w
 ---
 
 * Let's try plotting a `loess` fit using the bone data. We will set `span = 2/3` instead of 3/4
-```{r}
+
+``` r
 bone.low.fit <- loess(spnbmd ~ age, data=bonedat, span=2/3)
 
 plot(bone.low.fit, ylab="Relative Change in Bone MD", 
@@ -1066,11 +1050,14 @@ lines(bone.low.fit$x[order(bone.low.fit$x)], bone.low.fit$fitted[order(bone.low.
 abline(0,0, lty=2)
 ```
 
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+
 ---
 
 * If you want to change the settings for `lowess` and `loess` so that they are using the exact same fitting procedure,
 you can use the following approach:
-```{r}
+
+``` r
 lowess.fit <- lowess(x=bonedat$age, y=bonedat$spnbmd, iter=3, delta=0, f=2/3)
 loess.fit <- loess(spnbmd ~ age, data=bonedat, span=2/3, degree=1, family="symmetric", 
                    iterations=4, surface="direct")
@@ -1079,7 +1066,8 @@ loess.fit <- loess(spnbmd ~ age, data=bonedat, span=2/3, degree=1, family="symme
 ---
 
 * The `locpoly` function from the `KernSmooth` package implements local polynomial regression as it was described in Section 10.3.
-```{r, eval=FALSE}
+
+``` r
 locpoly(x, y, degree, kernel = "normal", bandwidth)
 ```
 
@@ -1087,8 +1075,17 @@ locpoly(x, y, degree, kernel = "normal", bandwidth)
 
 * For local linear regression, you should get the same answer as our function `MyLocLinear` written in Section 10.3 
 if you use `degree=1` with the locpoly function:
-```{r}
+
+``` r
 library(KernSmooth)
+```
+
+```
+## KernSmooth 2.23 loaded
+## Copyright M. P. Wand 1997-2009
+```
+
+``` r
 locpoly.fit <- locpoly(x = bonedat$age, y=bonedat$spnbmd, degree=1, bandwidth=0.5)
 mylocpoly.fit <- MyLocLinear(x=bonedat$age, y=bonedat$spnbmd, bandwidth=0.5, 
                              x.points=locpoly.fit$x) 
@@ -1099,10 +1096,13 @@ plot(locpoly.fit$x, locpoly.fit$y, main="Local Linear Regression with locpoly
 lines(locpoly.fit$x, mylocpoly.fit, col="red", lwd=2)
 ```
 
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+
 ---
 
 * The `supsmu` function implements Friedman's "super smoother" (@friedman1984).
-```{r, eval=FALSE}
+
+``` r
 supsmu(x, y, span="cv", bass=0)
 ```
 * **x** - vector of covariate values.
@@ -1167,7 +1167,7 @@ near a given point $\mathbf{x}$.
 
 ## Exercises
 
-* **Exercise 12.1** Let 
+* **Exercise 11.1** Let 
 \begin{equation}
 \hat{\mathbf{m}} = \big( \hat{m}_{h_{n}}^{R}(x_{1}), \ldots, \hat{m}_{h_{n}}^{R}(x_{n}) \big)  \nonumber
 \end{equation}
@@ -1180,7 +1180,7 @@ for an appropriately chosen $n \times n$ matrix $\mathbf{A}$.
 What is the value of $\textrm{tr}(\mathbf{A})$?
 
 
-* **Exercise 12.2** Suppose $n=6$ and that we have the following covariate values and responses
+* **Exercise 11.2** Suppose $n=6$ and that we have the following covariate values and responses
 \begin{eqnarray}
 (x_{1}, x_{2}, x_{3}, x_{4}, x_{5}, x_{6}) &=& (1/7, 2/7, 3/7, 4/7, 5/7, 6/7)  \nonumber \\
 (Y_{1}, Y_{2}, Y_{3}, Y_{4}, Y_{5}, Y_{6}) &=& (1.4, 0.7, 1.1, 1.3, 0.9, 1.7)  \nonumber
@@ -1189,7 +1189,7 @@ What is the value of $\textrm{tr}(\mathbf{A})$?
     + Compute the k nearest neighbors estimate of the regression function at $x = 0.25$ and $x = 0.75$ assuming that $k = 2$.
     
 
-* **Exercise 12.3** Suppose we define an estimator $\tilde{m}_{h_{n}}(x)$ of the regression function as
+* **Exercise 11.3** Suppose we define an estimator $\tilde{m}_{h_{n}}(x)$ of the regression function as
 \begin{eqnarray}
 \tilde{m}_{h_{n}}(x) &=& \hat{\beta}_{0x} \quad \textrm{ where } \nonumber \\
 \hat{\beta}_{0x} &=&  \textrm{argmin}_{\beta_{0x}} \sum_{i=1}^{n}\{ Y_{i} - \beta_{0x} \}^{2}K\Big( \frac{x - x_{i}}{h_{n}} \Big) \nonumber
@@ -1197,14 +1197,14 @@ What is the value of $\textrm{tr}(\mathbf{A})$?
 Show that $\tilde{m}_{h_{n}}(x) = \hat{m}_{h_{n}}^{NW}(x)$.
 
 
-* **Exercise 12.4** Suppose the $n \times n$ matrix $\mathbf{A}_{h_{n}}$ satifies $\mathbf{A}_{h_{n}}\mathbf{m} = \mathbf{m}$.
+* **Exercise 11.4** Suppose the $n \times n$ matrix $\mathbf{A}_{h_{n}}$ satifies $\mathbf{A}_{h_{n}}\mathbf{m} = \mathbf{m}$.
 Show that 
 \begin{equation}
 \frac{\mathbf{Y}^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})^{T}(\mathbf{I} - \mathbf{A}_{h_{n}})\mathbf{Y} }{ n - 2\textrm{tr}( \mathbf{A}_{h_{n}}) + \textrm{tr}(\mathbf{A}_{h_{n}}\mathbf{A}_{h_{n}}^{T}) } \nonumber
 \end{equation}
 is an unbiased estimator of $\sigma^{2}$.
 
-* **Exercise 12.5** Suppose we have independent responses $Y_{i}$ that arise from the following model
+* **Exercise 11.5** Suppose we have independent responses $Y_{i}$ that arise from the following model
 \begin{equation}
 Y_{i} = \beta_{0} + \beta_{1}x_{i}^{2} + \varepsilon_{i}, \qquad \varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2}) \nonumber
 \end{equation}

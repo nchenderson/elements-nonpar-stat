@@ -64,7 +64,7 @@ mean(cover) ## Should be close to 0.95
 ```
 
 ```
-## [1] 0.938
+## [1] 0.936
 ```
 
 ---
@@ -118,7 +118,7 @@ Y_{i} = f(\mathbf{x}_{i}) + \varepsilon_{i}
      + $\mathcal{A}_{1}$ - the indeces of a **"proper"** dataset with $n_{1}$ observations.
      + $\mathcal{A}_{2}$ - the indeces of a **"calibration"** set with $n_{2}$ observations.
      + $\mathcal{D}_{1}$ - the proper dataset: $\mathcal{D}_{1} = \{(\mathbf{x}_{i}, Y_{i}): i \in \mathcal{A}_{1} \}$.
-     + $\mathcal{D}_{2}$ - the calibration dataset: $\mathcal{D}_{1} = \{(\mathbf{x}_{i}, Y_{i}): i \in \mathcal{A}_{2} \}$.
+     + $\mathcal{D}_{2}$ - the calibration dataset: $\mathcal{D}_{2} = \{(\mathbf{x}_{i}, Y_{i}): i \in \mathcal{A}_{2} \}$.
      
 2. Using **only data** from $\mathcal{D}_{1}$ apply your regression/machine learning procedure to build
 a function $\hat{f}_{\mathcal{D}_{1}}(\mathbf{x}_{i})$ that predicts $Y_{i}$ from $\mathbf{x}_{i}$.
@@ -199,6 +199,12 @@ calibration_resids <- abs(calibration_dat$Y - calibration_fitted)
 
 ``` r
 qhat <- quantile(calibration_resids, probs=0.95)
+print(qhat)
+```
+
+```
+##      95% 
+## 1.719712
 ```
 
 * We can now use `qhat` to get prediction intervals for a "new dataset"
@@ -223,12 +229,12 @@ print(head(ConformalInterval))
 
 ```
 ##            [,1]     [,2]
-## [1,] -0.7951270 2.984346
-## [2,] -0.8096268 2.969846
-## [3,] -0.9281781 2.851295
-## [4,] -0.6508882 3.128585
-## [5,] -0.8181533 2.961320
-## [6,] -0.8612542 2.918219
+## [1,] -0.8149442 2.624480
+## [2,] -0.9754139 2.464011
+## [3,] -0.9702882 2.469136
+## [4,] -1.2053499 2.234075
+## [5,] -1.4474305 1.991994
+## [6,] -0.6223143 2.817110
 ```
 
 * Plot fitted values and prediction intervals:
@@ -243,7 +249,7 @@ mean(Y_new > ConformalInterval[,1] & Y_new < ConformalInterval[,2])
 ```
 
 ```
-## [1] 0.91
+## [1] 0.92
 ```
 
 ## Why does this work?
@@ -339,7 +345,7 @@ print(best.iter)
 ```
 
 ```
-## [1] 200
+## [1] 198
 ```
 
 ``` r
@@ -355,7 +361,7 @@ calibration_fitted <- predict(gbm_mod_final, newdat=calibration_dat)
 ```
 
 ```
-## Using 200 trees...
+## Using 198 trees...
 ```
 
 ``` r
@@ -386,7 +392,7 @@ ConformalInterval[,1] <- predict(gbm_mod_final, newdat=newdataset) - qhat
 ```
 
 ```
-## Using 200 trees...
+## Using 198 trees...
 ```
 
 ``` r
@@ -394,7 +400,7 @@ ConformalInterval[,2] <- predict(gbm_mod_final, newdat=newdataset) + qhat
 ```
 
 ```
-## Using 200 trees...
+## Using 198 trees...
 ```
 
 
@@ -408,7 +414,7 @@ mean(Y_new > ConformalInterval[,1] & Y_new < ConformalInterval[,2])
 ```
 
 ```
-## [1] 0.9515
+## [1] 0.9545
 ```
 
 

@@ -69,11 +69,11 @@ fig:unnamed-chunk-21
 eq:regressogram-numerator
 eq:regressogram-denominator
 eq:local-average-estimator
+fig:unnamed-chunk-3
 eq:simple-loclin-regression
 eq:loocv-simplification
 fig:pwlinear
 fig:pwcubic
-fig:unnamed-chunk-3
 eq:continuity-constraints
 eq:spline-smooth-motivation
 eq:spline-smooth-minimization
@@ -233,11 +233,13 @@ why-does-this-work
 conformal-prediction-intervals-with-tree-boosting.
 kernel-regression-and-local-regression
 introduction-2
-kernel-regression
+the-regressogram-and-the-local-average-estimator
 the-regressogram
 the-local-average-estimator
 k-nearest-neighbor-k-nn-regression
+kernel-regression
 the-nadaraya-watson-estimator
+the-nadaraya-watson-estimator-in-r
 local-linear-regression
 definition-7
 advantages-of-the-local-linear-estimator

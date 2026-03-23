@@ -761,7 +761,7 @@ sign.stat <- sum(xx > 0)  ## This is the value of the sign statistic
 ```
 
 ```
-## [1] 0.6178233
+## [1] 0.5397946
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -779,7 +779,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.6178233
+## [1] 0.5397946
 ```
 
 #### Two-sided Sign Test

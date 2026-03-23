@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | Elements of Nonparametric Statistics</title>
+  <title>Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics</title>
   <meta name="description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | Elements of Nonparametric Statistics" />
+  <meta property="og:title" content="Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   <meta name="github-repo" content="nchenderson/elements-nonpar-stat" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | Elements of Nonparametric Statistics" />
+  <meta name="twitter:title" content="Chapter 4 Rank Tests for Multiple Groups | Elements of Nonparametric Statistics" />
   
   <meta name="twitter:description" content="Course notes for Biostatistics 685/Statistics 560 (Winter 2020)." />
   
@@ -23,15 +23,15 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-03-22" />
+<meta name="date" content="2026-03-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-
+<link rel="prev" href="rank-tests.html"/>
+<link rel="next" href="permutation.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -356,35 +356,31 @@ div.csl-indent {
 <li class="chapter" data-level="12" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html"><i class="fa fa-check"></i><b>12</b> Kernel Regression and Local Regression</a>
 <ul>
 <li class="chapter" data-level="12.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#introduction-2"><i class="fa fa-check"></i><b>12.1</b> Introduction</a></li>
-<li class="chapter" data-level="12.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-regressogram-and-the-local-average-estimator"><i class="fa fa-check"></i><b>12.2</b> The Regressogram and the Local Average Estimator</a>
+<li class="chapter" data-level="12.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#kernel-regression"><i class="fa fa-check"></i><b>12.2</b> Kernel Regression</a>
 <ul>
 <li class="chapter" data-level="12.2.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-regressogram"><i class="fa fa-check"></i><b>12.2.1</b> The Regressogram</a></li>
 <li class="chapter" data-level="12.2.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-local-average-estimator"><i class="fa fa-check"></i><b>12.2.2</b> The Local Average Estimator</a></li>
 <li class="chapter" data-level="12.2.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#k-nearest-neighbor-k-nn-regression"><i class="fa fa-check"></i><b>12.2.3</b> k-Nearest Neighbor (k-NN) Regression</a></li>
+<li class="chapter" data-level="12.2.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>12.2.4</b> The Nadaraya-Watson Estimator</a></li>
 </ul></li>
-<li class="chapter" data-level="12.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#kernel-regression"><i class="fa fa-check"></i><b>12.3</b> Kernel Regression</a>
+<li class="chapter" data-level="12.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>12.3</b> Local Linear Regression</a>
 <ul>
-<li class="chapter" data-level="12.3.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-nadaraya-watson-estimator"><i class="fa fa-check"></i><b>12.3.1</b> The Nadaraya-Watson Estimator</a></li>
-<li class="chapter" data-level="12.3.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-nadaraya-watson-estimator-in-r"><i class="fa fa-check"></i><b>12.3.2</b> The Nadaraya-Watson Estimator in R</a></li>
+<li class="chapter" data-level="12.3.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#definition-7"><i class="fa fa-check"></i><b>12.3.1</b> Definition</a></li>
+<li class="chapter" data-level="12.3.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#advantages-of-the-local-linear-estimator"><i class="fa fa-check"></i><b>12.3.2</b> Advantages of the Local Linear Estimator</a></li>
+<li class="chapter" data-level="12.3.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#an-example-in-r"><i class="fa fa-check"></i><b>12.3.3</b> An Example in R</a></li>
+<li class="chapter" data-level="12.3.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-polynomial-regression"><i class="fa fa-check"></i><b>12.3.4</b> Local Polynomial Regression</a></li>
 </ul></li>
-<li class="chapter" data-level="12.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-linear-regression"><i class="fa fa-check"></i><b>12.4</b> Local Linear Regression</a>
+<li class="chapter" data-level="12.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>12.4</b> Selecting the Bandwidth/Smoothing Parameter</a>
 <ul>
-<li class="chapter" data-level="12.4.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#definition-7"><i class="fa fa-check"></i><b>12.4.1</b> Definition</a></li>
-<li class="chapter" data-level="12.4.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#advantages-of-the-local-linear-estimator"><i class="fa fa-check"></i><b>12.4.2</b> Advantages of the Local Linear Estimator</a></li>
-<li class="chapter" data-level="12.4.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#an-example-in-r"><i class="fa fa-check"></i><b>12.4.3</b> An Example in R</a></li>
-<li class="chapter" data-level="12.4.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#local-polynomial-regression"><i class="fa fa-check"></i><b>12.4.4</b> Local Polynomial Regression</a></li>
+<li class="chapter" data-level="12.4.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#representing-in-linear-form"><i class="fa fa-check"></i><b>12.4.1</b> Representing in Linear Form</a></li>
+<li class="chapter" data-level="12.4.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-cp-statistic"><i class="fa fa-check"></i><b>12.4.2</b> The Cp Statistic</a></li>
+<li class="chapter" data-level="12.4.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>12.4.3</b> Leave-one-out Cross Validation</a></li>
+<li class="chapter" data-level="12.4.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#example-choosing-the-best-bin-width-for-the-local-average-estimator."><i class="fa fa-check"></i><b>12.4.4</b> Example: Choosing the Best Bin Width for the Local Average Estimator.</a></li>
 </ul></li>
-<li class="chapter" data-level="12.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#selecting-the-bandwidthsmoothing-parameter"><i class="fa fa-check"></i><b>12.5</b> Selecting the Bandwidth/Smoothing Parameter</a>
-<ul>
-<li class="chapter" data-level="12.5.1" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#representing-in-linear-form"><i class="fa fa-check"></i><b>12.5.1</b> Representing in Linear Form</a></li>
-<li class="chapter" data-level="12.5.2" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#the-cp-statistic"><i class="fa fa-check"></i><b>12.5.2</b> The Cp Statistic</a></li>
-<li class="chapter" data-level="12.5.3" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#leave-one-out-cross-validation"><i class="fa fa-check"></i><b>12.5.3</b> Leave-one-out Cross Validation</a></li>
-<li class="chapter" data-level="12.5.4" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#example-choosing-the-best-bin-width-for-the-local-average-estimator."><i class="fa fa-check"></i><b>12.5.4</b> Example: Choosing the Best Bin Width for the Local Average Estimator.</a></li>
-</ul></li>
-<li class="chapter" data-level="12.6" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-functions-in-r"><i class="fa fa-check"></i><b>12.6</b> Additional functions in R</a></li>
-<li class="chapter" data-level="12.7" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#multivariate-problems"><i class="fa fa-check"></i><b>12.7</b> Multivariate Problems</a></li>
-<li class="chapter" data-level="12.8" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>12.8</b> Additional Reading</a></li>
-<li class="chapter" data-level="12.9" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#exercises-8"><i class="fa fa-check"></i><b>12.9</b> Exercises</a></li>
+<li class="chapter" data-level="12.5" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-functions-in-r"><i class="fa fa-check"></i><b>12.5</b> Additional functions in R</a></li>
+<li class="chapter" data-level="12.6" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#multivariate-problems"><i class="fa fa-check"></i><b>12.6</b> Multivariate Problems</a></li>
+<li class="chapter" data-level="12.7" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#additional-reading-5"><i class="fa fa-check"></i><b>12.7</b> Additional Reading</a></li>
+<li class="chapter" data-level="12.8" data-path="kernel-regression-and-local-regression.html"><a href="kernel-regression-and-local-regression.html#exercises-8"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>13</b> Splines and Penalized Regression</a>
 <ul>
@@ -447,19 +443,440 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="page-not-found" class="section level1">
-<h1>Page not found</h1>
-<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
-<p>You may want to try searching to find the page's new location, or use
-the table of contents to find the page you are looking for.</p>
+<div id="krusk-wallis" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Rank Tests for Multiple Groups<a href="krusk-wallis.html#krusk-wallis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<ul>
+<li><p>We can roughly think of the tests discussed in Chapter 3
+as being related to the well-known parametric tests shown in the table below.
+<span class="math display">\[\begin{eqnarray}
+\textbf{Parametric Test} &amp; &amp; \qquad  \textbf{ Nonparametric Tests } \nonumber \\
+    &amp; &amp; \nonumber \\
+\textrm{One-Sample t-test} &amp; &amp; \qquad  \textrm{Wilcoxon Signed Rank/Sign Test} \nonumber \\
+\textrm{Two-Sample t-test} &amp; &amp; \qquad \textrm{Wilcoxon Rank Sum/Normal Scores/Median Test} \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>The <strong>Kruskal-Wallis</strong> test can be though of as the
+nonparametric analogue of one-way analysis of variance (ANOVA).</p></li>
+<li><p>For <span class="math inline">\(K \geq 3\)</span> groups, one-way ANOVA considers the analysis of observations
+arising from the following model
+<span class="math display" id="eq:normal-anova-model">\[\begin{equation}
+Y_{kj} = \mu_{k} + \varepsilon_{kj}, \qquad j=1,\ldots, n_{k}; k=1,\ldots,K  
+\tag{4.1}
+\end{equation}\]</span>
+where it is often assumed that <span class="math inline">\(\varepsilon_{kj} \sim \textrm{Normal}(0, \sigma^{2})\)</span>.</p></li>
+<li><p>Usually, the one-way ANOVA hypothesis of interest is something like
+<span class="math display" id="eq:homogeneity-hyp">\[\begin{equation}
+H_{0}: \mu_{1} = \mu_{2} = \ldots = \mu_{K}
+\tag{4.2}
+\end{equation}\]</span>
+which is often referred to as the homogeneity hypothesis.</p></li>
+<li><p>A test of the hypothesis <a href="krusk-wallis.html#eq:homogeneity-hyp">(4.2)</a> is based on decomposing the observed variation in
+the responses <span class="math inline">\(Y_{kj}\)</span>:
+<span class="math display" id="eq:anova-decomp">\[\begin{eqnarray}
+\underbrace{ \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{..})^{2}}_{SST} &amp;=&amp; \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} + \sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2} \nonumber \\
+&amp;=&amp; \underbrace{\sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}}_{SSA} + \underbrace{\sum_{k=1}^{K}\sum_{j=1}^{n_{k}} (Y_{kj} - \bar{Y}_{k.})^{2}}_{SSE}
+\tag{4.3}
+\end{eqnarray}\]</span>
+where <span class="math inline">\(\bar{Y}_{k.} = \frac{1}{n_{k}}\sum_{j=1}^{n_{k}} Y_{kj}\)</span> and <span class="math inline">\(\bar{Y}_{..} = \frac{1}{K}\sum_{k=1}^{K} \bar{Y}_{k.}\)</span>.</p></li>
+<li><p>Large values of <span class="math inline">\(SSA = \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2}\)</span> provide evidence against the null hypothesis <a href="krusk-wallis.html#eq:homogeneity-hyp">(4.2)</a>. The alternative hypothesis here is that there is at least one pair of means <span class="math inline">\(\mu_{h}, \mu_{l}\)</span>
+such that <span class="math inline">\(\mu_{h} \neq \mu_{l}\)</span>.</p></li>
+</ul>
+<div id="the-kruskal-wallis-test" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> The Kruskal-Wallis Test<a href="krusk-wallis.html#the-kruskal-wallis-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="definition-2" class="section level3 hasAnchor" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Definition<a href="krusk-wallis.html#definition-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>Instead of assuming <a href="krusk-wallis.html#eq:normal-anova-model">(4.1)</a> for the responses <span class="math inline">\(Y_{kj}\)</span>, a nonparametric way of thinking
+about this problem is to instead only assume that
+<span class="math display">\[\begin{equation}
+Y_{kj} \sim F_{k}
+\end{equation}\]</span>
+That is, <span class="math inline">\(Y_{k1}, Y_{k2}, \ldots, Y_{kn_{k}}\)</span> is an i.i.d. sample from <span class="math inline">\(F_{k}\)</span> for each <span class="math inline">\(k\)</span>.</p></li>
+<li><p>A nonparametric version of the one-way ANOVA homogeneity hypothesis is
+<span class="math display" id="eq:nonpar-homogeneity-hyp">\[\begin{equation}
+H_{0}: F_{1} = F_{2} = \ldots = F_{K}
+\tag{4.4}
+\end{equation}\]</span></p></li>
+<li><p>The “shift alternative” in this case can be stated as
+<span class="math display">\[\begin{equation}
+H_{A}: F_{k}(t) = F(t - \Delta_{k}), \quad \textrm{ for } k = 1, \ldots K \quad \textrm{ and not all $\Delta_{k}$ equal}
+\end{equation}\]</span></p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The Kruskal-Wallis test statistic is similar to the SSA term (defined in <a href="krusk-wallis.html#eq:anova-decomp">(4.3)</a>)
+in the one-way ANOVA setting.</p></li>
+<li><p>Rather than comparing the group-specific means <span class="math inline">\(\bar{Y}_{k.}\)</span> with the overall mean <span class="math inline">\(\bar{Y}_{..}\)</span>,
+the Kruskal-Wallis test statistic compares the group-specific rank
+means <span class="math inline">\(\bar{R}_{k.}\)</span> with their overall expectation under the null hypothesis.</p></li>
+<li><p>The <strong>Kruskal-Wallis test statistic</strong> <span class="math inline">\(KW_{N}\)</span> is defined as
+<span class="math display" id="eq:kw-definition">\[\begin{equation}
+KW_{N} = \frac{12}{N(N-1)}\sum_{k=1}^{K} n_{k}\Big( \bar{R}_{k.} - \frac{N + 1}{2} \Big)^{2}, \quad \textrm{ where } N = \sum_{k=1}^{K} n_{k}
+\tag{4.5}
+\end{equation}\]</span></p></li>
+<li><p>In <a href="krusk-wallis.html#eq:kw-definition">(4.5)</a>, <span class="math inline">\(\bar{R}_{k.}\)</span> is the average rank of those in the <span class="math inline">\(k^{th}\)</span> group
+<span class="math display">\[\begin{equation}
+\bar{R}_{k.} = \frac{1}{n_{k}} \sum_{j=1}^{n_{k}} R_{kj}(\mathbf{Z}),
+\end{equation}\]</span>
+where <span class="math inline">\(\mathbf{Z}\)</span> denotes the pooled-data vector and <span class="math inline">\(R_{kj}(\mathbf{Z})\)</span> denotes
+the rank of <span class="math inline">\(Y_{kj}\)</span> in the “pooled-data ranking”.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>What is the expectation of <span class="math inline">\(\bar{R}_{k.}\)</span> under the null hypothesis <a href="krusk-wallis.html#eq:nonpar-homogeneity-hyp">(4.4)</a>?</p></li>
+<li><p>Again, if the null hypothesis is true, we can treat all of our responses <span class="math inline">\(Y_{kj}\)</span> as just
+an i.i.d. sample of size <span class="math inline">\(N\)</span> from a common distribution function <span class="math inline">\(F\)</span>.</p></li>
+<li><p>Hence, as we showed in <a href="rank-tests.html#eq:rank-expectation">(3.2)</a> from Chapter 3, <span class="math inline">\(E\{ R_{kj}(\mathbf{Z}) \} = (N+1)/2\)</span> under the
+assumption that the data are an i.i.d. sample from a common distribution function.</p></li>
+<li><p>So, the intuition behind the definition of <span class="math inline">\(KW_{N}\)</span> is that the differences
+<span class="math inline">\(\bar{R}_{k.} - \frac{N + 1}{2}\)</span> should be small whenever the homogeneity
+hypothesis <a href="krusk-wallis.html#eq:nonpar-homogeneity-hyp">(4.4)</a> is true.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>When <span class="math inline">\(K=2\)</span>, the following relationship between the Kruskal-Wallis statistic
+<span class="math inline">\(KW_{N}\)</span> and the Wilcoxon rank sum test statistic <span class="math inline">\(W\)</span> from Chapter 3 holds.
+<span class="math display" id="eq:kw-wrs-equivalence">\[\begin{equation}
+KW_{N} = \frac{12}{mn(N+1)}\Big( W - \frac{n(N+1)}{2}  \Big)^{2}.
+\tag{4.6}
+\end{equation}\]</span></p></li>
+<li><p>Hence, the p-value from a Kruskal-Wallis test and a (two-sided)
+WRS test should be the same when <span class="math inline">\(K = 2\)</span>.</p></li>
+<li><p>However, you cannot directly perform a one-sided test using
+the Kruskal-Wallis test.</p></li>
+</ul>
+<p><strong>An Example</strong></p>
+<table border="1">
+<tr>
+<th>
+Group
+</th>
+<th>
+Y
+</th>
+<th>
+Rank
+</th>
+</tr>
+<tr>
+<td align="center">
+Group 1
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+8
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 1
+</td>
+<td align="center">
+-1.20
+</td>
+<td align="center">
+2
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 1
+</td>
+<td align="center">
+-1.50
+</td>
+<td align="center">
+1
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 2
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+5
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 2
+</td>
+<td align="center">
+-0.10
+</td>
+<td align="center">
+4
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 2
+</td>
+<td align="center">
+1.10
+</td>
+<td align="center">
+9
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 3
+</td>
+<td align="center">
+0.90
+</td>
+<td align="center">
+7
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 3
+</td>
+<td align="center">
+-0.40
+</td>
+<td align="center">
+3
+</td>
+</tr>
+<tr>
+<td align="center">
+Group 3
+</td>
+<td align="center">
+0.60
+</td>
+<td align="center">
+6
+</td>
+</tr>
+</table>
+<ul>
+<li>Consider the data shown in the table. In this case, <span class="math inline">\(N = 9\)</span>, <span class="math inline">\(\bar{R}_{1.} = 11/3\)</span>, <span class="math inline">\(\bar{R}_{2.} = 6\)</span>, and <span class="math inline">\(\bar{R}_{3.} = 16/3\)</span>. The Kruskall-Wallis
+statistic is
+<span class="math display">\[\begin{equation}
+KW_{N} = \frac{1}{2}\Big\{ 3(11/3 - 5)^{2} + 3(6 - 5)^{2} + 3(16/3 - 5)^{2}   \Big\} = 13/9 \nonumber
+\end{equation}\]</span></li>
+</ul>
+</div>
+<div id="asymptotic-distribution-and-connection-to-one-way-anova" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> Asymptotic Distribution and Connection to One-Way ANOVA<a href="krusk-wallis.html#asymptotic-distribution-and-connection-to-one-way-anova" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>The Kruskal-Wallis statistic <span class="math inline">\(KW_{N}\)</span> has
+an asymptotic chi-square distribution with <span class="math inline">\(K-1\)</span> degrees of freedom under the null hypothesis <a href="krusk-wallis.html#eq:nonpar-homogeneity-hyp">(4.4)</a>.</p></li>
+<li><p>This follows from the fact that <span class="math inline">\((\bar{R}_{k.} - (N+1)/2)\)</span> is approximately normally distributed
+for large <span class="math inline">\(n_{k}\)</span>.</p></li>
+<li><p><strong>R</strong> uses the large-sample approximation when computing
+the p-value for the Kruskal-Wallis test.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>The Kruskal-Wallis test can also be thought of as the test you would obtain
+if you applied the one-way ANOVA setup to the ranks of <span class="math inline">\(Y_{kj}\)</span>.</p></li>
+<li><p>The one-way ANOVA test is based on the value of SSA where, as in <a href="krusk-wallis.html#eq:anova-decomp">(4.3)</a>,
+SSA is defined as
+<span class="math display">\[\begin{equation}
+SSA = \sum_{k=1}^{K} n_{k} (\bar{Y}_{k.} - \bar{Y}_{..})^{2} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>You then reject <span class="math inline">\(H_{0}\)</span>, when <span class="math inline">\(SSA/SSE = SSA/(SST - SSA)\)</span> is sufficiently large.</p></li>
+<li><p>Notice that if we computed SSA using the ranks <span class="math inline">\(R_{kj}( \mathbf{Z} )\)</span>
+rather than the observations <span class="math inline">\(Y_{kj}\)</span>, we would get:
+<span class="math display" id="eq:ssa-kw">\[\begin{eqnarray}
+SSA_{r} &amp;=&amp; \sum_{k=1}^{K} n_{k} (\bar{R}_{k.} - \bar{R}_{..})^{2}  \nonumber \\
+&amp;=&amp; \sum_{k=1}^{K} n_{k} \Big( \bar{R}_{k.} - \frac{N+1}{2} \Big)^{2}  \nonumber \\
+&amp;=&amp; \frac{N(N-1)}{12} KW_{N}  
+\tag{4.7}
+\end{eqnarray}\]</span></p></li>
+<li><p>If you were applying ANOVA to the ranks of <span class="math inline">\(Y_{kj}\)</span>, <span class="math inline">\(SST_{r}\)</span> would be
+the following fixed constant:
+<span class="math display">\[\begin{equation}
+\textrm{SST}_{r} = \frac{N(N + 1)(N-1)}{12} \nonumber
+\end{equation}\]</span></p></li>
+<li><p>So, any test of the homogeneity hypothesis would
+be based on just the value of <span class="math inline">\(SSA_{r}\)</span> which, as we showed in <a href="krusk-wallis.html#eq:ssa-kw">(4.7)</a>,
+is just a constant times the Kruskal-Wallis statistic.</p></li>
+</ul>
+</div>
+</div>
+<div id="performing-the-kruskal-wallis-test-in-r" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Performing the Kruskal-Wallis Test in R<a href="krusk-wallis.html#performing-the-kruskal-wallis-test-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>We will look at performing Kruskal-Wallis tests in <strong>R</strong> by using the
+“InsectSprays” dataset.</li>
+</ul>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="krusk-wallis.html#cb49-1" tabindex="-1"></a><span class="fu">head</span>(InsectSprays)</span></code></pre></div>
+<pre><code>##   count spray
+## 1    10     A
+## 2     7     A
+## 3    20     A
+## 4    14     A
+## 5    14     A
+## 6    12     A</code></pre>
+<ul>
+<li><p>This dataset has 72 observations.</p></li>
+<li><p>The variable <strong>count</strong> is the number of
+insects measured in some agricultural unit.</p></li>
+<li><p>The variable <strong>spray</strong> was the type of spray used on
+that unit.</p></li>
+<li><p>You could certainly argue that a standard ANOVA is not
+appropriate in this situation because the responses are counts,
+and for count data, the variance is usually a function of the mean.</p></li>
+<li><p>A generalized linear model with a log link function might be more appropriate.</p></li>
+<li><p>Applying a square-root transformation to count data is also a commonly suggested
+approach. (The square-root transformation is the “variance-stabilizing transformation”
+for Poisson-distributed data).</p></li>
+</ul>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="krusk-wallis.html#cb51-1" tabindex="-1"></a><span class="fu">boxplot</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays,<span class="at">las=</span><span class="dv">1</span>, </span>
+<span id="cb51-2"><a href="krusk-wallis.html#cb51-2" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;square root of insect counts&quot;</span>)</span></code></pre></div>
+<p><img src="04-multistat_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<hr />
+<ul>
+<li>Let us perform a test of homogeneity using both the one-way ANOVA approach and a Kruskal-Wallis
+test</li>
+</ul>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="krusk-wallis.html#cb52-1" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays))</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: sqrt(count)
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## spray      5 88.438 17.6876  44.799 &lt; 2.2e-16 ***
+## Residuals 66 26.058  0.3948                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="krusk-wallis.html#cb54-1" tabindex="-1"></a>a  <span class="ot">&lt;-</span> <span class="fu">kruskal.test</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays)</span>
+<span id="cb54-2"><a href="krusk-wallis.html#cb54-2" tabindex="-1"></a>a<span class="sc">$</span>p.value</span></code></pre></div>
+<pre><code>## [1] 1.510844e-10</code></pre>
+<hr />
+<ul>
+<li>Notice that applying the square root transformation does not affect the
+value of the Kruskal-Wallis statistic or the Kruskal-Wallis p-value.</li>
+</ul>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="krusk-wallis.html#cb56-1" tabindex="-1"></a><span class="fu">kruskal.test</span>(count <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays)</span></code></pre></div>
+<pre><code>## 
+##  Kruskal-Wallis rank sum test
+## 
+## data:  count by spray
+## Kruskal-Wallis chi-squared = 54.691, df = 5, p-value = 1.511e-10</code></pre>
+<ul>
+<li>This invariance to data transformation is not true for the standard one-way ANOVA.</li>
+</ul>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="krusk-wallis.html#cb58-1" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(count <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays))</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: count
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## spray      5 2668.8  533.77  34.702 &lt; 2.2e-16 ***
+## Residuals 66 1015.2   15.38                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="comparison-of-specific-groups" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Comparison of Specific Groups<a href="krusk-wallis.html#comparison-of-specific-groups" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>A Kruskal-Wallis test performs a test of the overall homogeneity hypothesis
+<span class="math display">\[\begin{equation}
+H_{0}: F_{1} = F_{2} = \ldots = F_{K}
+\end{equation}\]</span></p></li>
+<li><p>However, a rejection of the homogeneity hypothesis does not indicate which
+group differences are primarily the source of this rejection nor
+does it provide any measure of the “magnitude” of the differences between
+each of the groups.</p></li>
+<li><p>Dunn’s test is the suggested way to compute pairwise tests of stochastic dominance.</p></li>
+<li><p>Performing a series of pairwise Wilcoxon rank sum test can
+lead to violations of transitivity. For example,
+group A is “better” than B which is better than C, but
+group C is better than A.</p></li>
+<li><p>In <strong>R</strong>, Dunn’s test can be performed using the <strong>dunn.test</strong> package.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>In traditional one-way ANOVA one often reports pairwise differences
+in the means and their associated confidence intervals.</p></li>
+<li><p>In the context of a Kruskal-Wallis test, one could
+report pairwise differences in the Hodges-Lehmann estimate
+though other comparisons may also be of interest.</p></li>
+<li><p>One nice approach is to use the proportional odds model
+interpretation of the Kruskal-Wallis test and
+then report the difference in the estimated proportional odds coefficients.
+See Section 7.6 of <a href="http://hbiostat.org/doc/bbr.pdf" class="uri">http://hbiostat.org/doc/bbr.pdf</a> for more details
+on the proportional odds model.</p></li>
+</ul>
+<p><img src="04-multistat_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="an-additional-example" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> An Additional Example<a href="krusk-wallis.html#an-additional-example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>We will use the “cane” dataset from the <strong>boot</strong> package.</li>
+</ul>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="krusk-wallis.html#cb60-1" tabindex="-1"></a><span class="fu">library</span>(boot)</span>
+<span id="cb60-2"><a href="krusk-wallis.html#cb60-2" tabindex="-1"></a><span class="fu">data</span>(cane)</span>
+<span id="cb60-3"><a href="krusk-wallis.html#cb60-3" tabindex="-1"></a><span class="fu">head</span>(cane)</span></code></pre></div>
+<pre><code>##     n  r  x var block
+## 1  87 76 19   1     A
+## 2 119  8 14   2     A
+## 3  94 74  9   3     A
+## 4  95 11 12   4     A
+## 5 134  0 12   5     A
+## 6  92  0  3   6     A</code></pre>
+<ul>
+<li><p>These data come from a study trying to determine the susceptibility of different types
+of sugar cane to a particular type of disease.</p></li>
+<li><p>The variable <strong>n</strong> contains the total number of shoots in each plot.</p></li>
+<li><p>The variable <strong>r</strong> containes the total number of diseased shoots.</p></li>
+<li><p>We can create a new variable <strong>prop</strong> that measures the proportion
+of shoots that are diseased.</p></li>
+</ul>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="krusk-wallis.html#cb62-1" tabindex="-1"></a>cane<span class="sc">$</span>prop <span class="ot">&lt;-</span> cane<span class="sc">$</span>r<span class="sc">/</span>cane<span class="sc">$</span>n</span></code></pre></div>
+<ul>
+<li>You could certainly argue that a logistic regression model is a better approach here,
+but we will analyze the transformed proportions using the arcsine square root transformation.</li>
+</ul>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="krusk-wallis.html#cb63-1" tabindex="-1"></a>cane<span class="sc">$</span>prop.trans <span class="ot">&lt;-</span> <span class="fu">asin</span>(<span class="fu">sqrt</span>(cane<span class="sc">$</span>prop))</span>
+<span id="cb63-2"><a href="krusk-wallis.html#cb63-2" tabindex="-1"></a><span class="fu">boxplot</span>(prop.trans <span class="sc">~</span> block, <span class="at">data=</span>cane, <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;number of shoots&quot;</span>)</span></code></pre></div>
+<p><img src="04-multistat_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="krusk-wallis.html#cb64-1" tabindex="-1"></a><span class="fu">kruskal.test</span>(prop <span class="sc">~</span> block, <span class="at">data=</span>cane)</span></code></pre></div>
+<pre><code>## 
+##  Kruskal-Wallis rank sum test
+## 
+## data:  prop by block
+## Kruskal-Wallis chi-squared = 1.1355, df = 3, p-value = 0.7685</code></pre>
+</div>
+<div id="additional-reading-1" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> Additional Reading<a href="krusk-wallis.html#additional-reading-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>Additional reading which covers the material discussed in this chapter includes:
+<ul>
+<li>Chapters 6 from <span class="citation">Hollander, Wolfe, and Chicken (<a href="#ref-hollander2013">2013</a>)</span></li>
+</ul></li>
+</ul>
+</div>
+<div id="exercises-1" class="section level2 hasAnchor" number="4.6">
+<h2><span class="header-section-number">4.6</span> Exercises<a href="krusk-wallis.html#exercises-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><strong>Exercise 4.1</strong> If <span class="math inline">\(K=2\)</span>, show that equation <a href="krusk-wallis.html#eq:kw-wrs-equivalence">(4.6)</a> holds.</li>
+</ul>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-hollander2013" class="csl-entry">
+Hollander, Myles, Douglas A Wolfe, and Eric Chicken. 2013. <em>Nonparametric Statistical Methods</em>. Vol. 751. John Wiley &amp; Sons.
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-
+<a href="rank-tests.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="permutation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
