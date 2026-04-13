@@ -84,26 +84,24 @@ sum( (yy[xx < 2/3] - mean(yy[xx < 2/3]))^2 ) +
 
 * For a single covariate, regression trees estimate the regression function by a piecewise constant
 function that is constant within each of several bins. We will focus on the well-known 
-CART (Classification and Regression Trees) method for using regression trees.
+**CART (Classification and Regression Trees)** method for using regression trees.
 
 * More generally, with multivariate covariates, CART will fit a regression function that is constant
 within each of many multi-dimensional "rectangles".
 
-* The main difference between CART and the regressogram is that the placements
-and widths of the bins in CART are chosen in a more selective manner than the regressogram.
+* The main difference between **CART and the regressogram** is that the **placements**
+and **widths** of the bins in CART are chosen in a more selective manner than the regressogram.
 
-* Specifically, rather than just using a collection of bins of fixed width, CART chooses where to place the bin boundaries by considering
-the resulting within-bin sum of squares.
+* Specifically, rather than just using a collection of bins of fixed width, CART chooses where to place the bin boundaries by considering the resulting **within-bin sum of squares**.
 
 ---
 
-* CART constructs the bins through sequential binary splits of the x axis. 
+* CART constructs the bins through **sequential binary splits** of the x axis. 
 
-* In the first step, CART will divide the covariates into two bins $B_{1}$ and $B_{2}$. These bins will
+* In the first step, CART will divide the covariates into two bins $B_{1}$ and $B_{2}$. These bins
 have the form $B_{1} = (-\infty, t_{1})$ and $B_{2} = [t_{1}, \infty)$.
 
-* At the next step, CART will create $4$ bins by further dividing each of these two bins into two more bins. So, 
-we will have four bins $B_{11}, B_{12}, B_{21}, B_{22}$. 
+* At the next step, CART will create $4$ bins by further dividing each of these two bins into two more bins. So, we will have four bins $B_{11}, B_{12}, B_{21}, B_{22}$. 
 
 * Bins $B_{11}$ and $B_{12}$ will have the form $B_{11} = (-\infty, t_{11})$ and $B_{12} = [t_{11}, t_{1})$,
 and bins $B_{21}$ and $B_{22}$ will have the form $B_{21} = [t_{1}, t_{21})$ and $B_{22} = [t_{21}, \infty)$.
@@ -184,7 +182,8 @@ where $\textrm{WBSS}_{a}(t)$ is the within-bin sum of squares for dataset $\math
 $t_{12}, t_{22}, t_{32}, t_{42}$ which further partition the dataset, can be found by minimizing the within-bin sum of squares
 for each of these $4$ datasets.
 
-* This algorithm for constructing smaller and smaller bins is often referred to as recursive partitioning.
+* This algorithm for constructing smaller and smaller bins is often referred to as 
+**recursive partitioning**.
 
 
 
@@ -223,6 +222,69 @@ Notice that the regression function estimate for men vs. women only differs for 
 <img src="14-cart_files/figure-html/bone-fittedregfn-1.png" alt="Plot of regression function estimate that corresponds to the decision tree in the previous figure." width="672" />
 <p class="caption">(\#fig:bone-fittedregfn)Plot of regression function estimate that corresponds to the decision tree in the previous figure.</p>
 </div>
+
+### Recursive Partitioning with Multiple Covariates
+
+* For each observation, we have a vector of $p$ covariates $\mathbf{x}_{i} = (x_{i1}, \ldots, x_{ip})$.
+
+* When splitting on the $j^{th}$ covariate with splitting point $t$ (for the first split), we will define the **within-bin sum of squares** as
+\begin{eqnarray}
+\textrm{WBSS}(t, j) 
+&=&  \sum_{i=1}^{n} (Y_{i} - \bar{Y}_{1j})^{2}I(x_{ij} < t) + \sum_{i=1}^{n} (Y_{i} - \bar{Y}_{2j})^{2}I(x_{ij} \geq t) \nonumber
+\end{eqnarray}
+where $\bar{Y}_{1j} = \sum_{i=1}^{n}Y_{i}I(x_{ij} < t)/\sum_{i=1}^{n} I(x_{ij} < t)$
+and $\bar{Y}_{2j} = \sum_{i=1}^{n}Y_{i}I(x_{ij} \geq t)/\sum_{i=1}^{n} I(x_{ij} \geq t)$.
+
+* Goal: Choose the **splitting value** and **splitting variable** pair $(t,j)$ 
+that minimizes $\textrm{WBSS}(t, j)$.
+
+---
+
+* After obtaining the first splitting variable-splitting value pair $(t_{best}, j_{best})$,
+you can repeat the same procedure on the two dataset on either side of the split.
+\begin{eqnarray}
+\mathcal{D}_{1} &=& \big\{ (Y_{i}, x_{ij_{best}}): x_{ij_{best}} < t_{best} \big\} \nonumber \\
+\mathcal{D}_{2} &=& \big\{ (Y_{i}, x_{ij_{best}}): x_{ij_{best}} \geq t_{best} \big\} \nonumber
+\end{eqnarray}
+
+* You can repeat the same procedure to "grow out" the tree.
+
+---
+
+* One can keep repeating this procedure to grow out a large tree.
+
+* You can keep repeating the procedure until some stopping criterion is met.
+
+* A common choice is to keep growing the tree until the number of observations
+in a terminal node (or leaf) below a split would be less than some pre-specified value such as $5$.
+
+
+### Tree Pruning
+
+* A tree which has been grown until the minimal node stopping criterion will
+typically have **too much variance**.
+   + Denote this "fully grown" tree by $T_{full}$.
+
+* "Pruning" a decision tree to have fewer terminal nodes will typically have better
+predictive performance.
+
+* Let $T$ denote a decision tree and let $|T|$ denote the number of terminal nodes of $T$.
+
+* To evaluate different sub-trees of the full tree $T_{full}$, a **penalized objective**
+function is typically used.
+
+* Penalized criterion to minimize:
+\begin{equation}
+C_{\alpha}(T) = \sum_{m=1}^{T} n_{m}R_{m}(T) + \alpha |T|
+\end{equation}
+where $n_{m}$ is the number of observations in the $m^{th}$ terminal node of tree $T$
+and $R_{m}(T)$ is the residual sum of squares for observations in the $m^{th}$ terminal
+node of $T$.
+
+
+
+
+
 
 
 
