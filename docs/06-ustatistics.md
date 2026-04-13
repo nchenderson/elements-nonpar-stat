@@ -109,7 +109,7 @@ round(var(xx), 3)
 ```
 
 ```
-## [1] 1.83
+## [1] 1.861
 ```
 
 ``` r
@@ -117,7 +117,7 @@ round(mean(diff.sq)/2, 3)
 ```
 
 ```
-## [1] 1.847
+## [1] 1.883
 ```
 
 
@@ -357,7 +357,7 @@ rank correlation when the $X_{i}$ are generated as $X_{i} \sim \textrm{Normal}(0
 * Note that $Y_{i}$ is a **deterministic function** of $X_{i}$, but Pearson's correlation is
 substantially smaller than 1.
 
-<img src="06-ustatistics_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-2-1.png" alt="" width="672" />
 
 
 ---
@@ -367,7 +367,7 @@ substantially smaller than 1.
 * This is because Pearson's correlation measures the degree of **linear association**.
     + One or two extreme points can substantially change the estimated slope when performing a linear regression of Y on X.
 
-<img src="06-ustatistics_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-3-1.png" alt="" width="672" />
 
 
 ---
@@ -558,7 +558,7 @@ while $X$ and $Y$ are not independent.
 * Note that the association between the two variables in the figures below
 is **non-monotone**.
 
-<img src="06-ustatistics_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-6-1.png" alt="" width="672" />
 
 #### Definition
 
@@ -719,7 +719,7 @@ plot(xx2, yy2, xlab="x", ylab="y", main=paste("Sample Distance Corr. = ",
                                               round(d.cor2, 4)), las=1)
 ```
 
-<img src="06-ustatistics_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<img src="06-ustatistics_files/figure-html/unnamed-chunk-8-1.png" alt="" width="672" />
 
 
 ``` r

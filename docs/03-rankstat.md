@@ -486,7 +486,7 @@ wine2$Type <- factor(wine2$Type)
 ```
 
 * Let us consider the difference in the level of magnesium across the two types of wine.
-<img src="03-rankstat_files/figure-html/unnamed-chunk-8-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-8-2.png" width="672" />
+<img src="03-rankstat_files/figure-html/unnamed-chunk-8-1.png" alt="" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-8-2.png" alt="" width="672" />
 
 * Suppose we are interested in testing whether or not magnesium levels in 
 Type 1 wine are generally larger than magnesium levels in Type 2 wine.
@@ -584,7 +584,7 @@ mean(xgreater)  ## estimate of this probability
 ```
 
 ```
-## [1] 0.8
+## [1] 0.825
 ```
 
 * This simulation-based estimate of $P(X_{i} > Y_{j}) + P(X_{i} = Y_{j})/2$ is quite close to the value of the Mann-Whitney statistic divided by $mn$.
@@ -761,7 +761,7 @@ sign.stat <- sum(xx > 0)  ## This is the value of the sign statistic
 ```
 
 ```
-## [1] 0.5397946
+## [1] 0.1356265
 ```
 
 * The reason that this is the right expression using **R** is that for any positive integer $w$
@@ -779,7 +779,7 @@ btest$p.value
 ```
 
 ```
-## [1] 0.5397946
+## [1] 0.1356265
 ```
 
 #### Two-sided Sign Test
@@ -934,7 +934,7 @@ hist(DD, main="Meat Data", xlab="Difference in Measured Fat
      Percentage", las=1)
 ```
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+<img src="03-rankstat_files/figure-html/unnamed-chunk-20-1.png" alt="" width="672" />
 
 ``` r
 summary(DD)
@@ -1096,7 +1096,7 @@ of $\varepsilon_{i}$ in the model $D_{i} = \theta + \varepsilon_{i}$.
 values for $p(\delta)$ rather than $\delta$ itself. Plus, $p(\delta)$ has the direct interpretation
 $p(\delta) = P_{\theta=\delta}( D_{i} > 0)$.
 
-<img src="03-rankstat_files/figure-html/unnamed-chunk-24-1.png" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-24-2.png" width="672" />
+<img src="03-rankstat_files/figure-html/unnamed-chunk-24-1.png" alt="" width="672" /><img src="03-rankstat_files/figure-html/unnamed-chunk-24-2.png" alt="" width="672" />
 
 
 

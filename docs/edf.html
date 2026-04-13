@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-03-22" />
+<meta name="date" content="2026-04-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -424,9 +424,16 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="14.2.1" data-path="decision-tree.html"><a href="decision-tree.html#determining-the-split-points"><i class="fa fa-check"></i><b>14.2.1</b> Determining the Split Points</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="decision-tree.html"><a href="decision-tree.html#recursive-partitioning-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3.1</b> Recursive Partitioning with Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3.2" data-path="decision-tree.html"><a href="decision-tree.html#tree-pruning"><i class="fa fa-check"></i><b>14.3.2</b> Tree Pruning</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Ensemble Methods for Prediction</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Tree Ensemble Methods for Prediction</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="ensemble.html"><a href="ensemble.html#motivation"><i class="fa fa-check"></i><b>15.1</b> Motivation</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -485,7 +492,7 @@ the corresponding empirical distribution function would be
 \end{cases}
 \end{equation}\]</span></li>
 </ul>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-1-1.png" alt="" width="672" /></p>
 </div>
 <div id="confidence-intervals-for-ft" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> Confidence intervals for F(t)<a href="edf.html#confidence-intervals-for-ft" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -616,7 +623,7 @@ for the kidney totals, use the following code:</p></li>
 <li>You can plot the ecdf for the kidney totals by just calling <strong>plot(ecdf)</strong></li>
 </ul>
 <div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="edf.html#cb107-1" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">main =</span> <span class="st">&quot;Kidney Data: Default plot for ecdf&quot;</span>, <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-5-1.png" alt="" width="672" /></p>
 <ul>
 <li>If you don’t like the look of the points in the ecdf plot, you can use add the argument
 <strong>do.points = FALSE</strong> when calling plot. Also, you can add the argument <strong>verticals =TRUE</strong>
@@ -624,7 +631,7 @@ if you want the plot to draw vertical lines whenever there is a jump in the empi
 </ul>
 <div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="edf.html#cb108-1" tabindex="-1"></a><span class="fu">plot</span>(kidney.Fhat, <span class="at">do.points=</span><span class="cn">FALSE</span>, <span class="at">verticals=</span><span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">&quot;Kidney Data: </span></span>
 <span id="cb108-2"><a href="edf.html#cb108-2" tabindex="-1"></a><span class="st">    ecdf with vertical lines and without points&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-6-1.png" alt="" width="672" /></p>
 <hr />
 <ul>
 <li>A nice feature of of the <strong>ecdf</strong> function is that <strong>ecdf</strong> object
@@ -657,7 +664,7 @@ For example,</li>
 <span id="cb113-13"><a href="edf.html#cb113-13" tabindex="-1"></a><span class="st">     95% pointwise confidence intervals&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
 <span id="cb113-14"><a href="edf.html#cb113-14" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.low, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
 <span id="cb113-15"><a href="edf.html#cb113-15" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.upper, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-8-1.png" alt="" width="672" /></p>
 <ul>
 <li>We could plot the confidence bands as well.</li>
 </ul>
@@ -671,12 +678,12 @@ For example,</li>
 <span id="cb114-8"><a href="edf.html#cb114-8" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">&quot;Kidney Data: 95% Confidence Bands&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
 <span id="cb114-9"><a href="edf.html#cb114-9" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.band.low, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
 <span id="cb114-10"><a href="edf.html#cb114-10" tabindex="-1"></a><span class="fu">lines</span>(tt, ci.band.upper, <span class="at">type=</span><span class="st">&quot;s&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-9-1.png" alt="" width="672" /></p>
 <ul>
 <li>Comparing the pointwise confidence intervals and the simultaneous confidence bands
 in the same plot shows how much wider the confidence bands are:</li>
 </ul>
-<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="07-empiricalcdf_files/figure-html/unnamed-chunk-10-1.png" alt="" width="672" /></p>
 </div>
 <div id="the-kolmogorov-smirnov-test" class="section level2 hasAnchor" number="7.4">
 <h2><span class="header-section-number">7.4</span> The Kolmogorov-Smirnov Test<a href="edf.html#the-kolmogorov-smirnov-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -716,7 +723,7 @@ that you are choosing for <span class="math inline">\(F_{0}\)</span>.</p></li>
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.14077, p-value = 0.038
+## D = 0.15153, p-value = 0.02026
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>You can even test that the data follow some other <span class="math inline">\(\textrm{Normal}(\mu, \sigma^{2})\)</span>
@@ -727,7 +734,7 @@ by just providing <strong>mean</strong> and <strong>sd</strong> arguments.</li>
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx
-## D = 0.30167, p-value = 2.491e-08
+## D = 0.26851, p-value = 1.093e-06
 ## alternative hypothesis: two-sided</code></pre>
 <hr />
 <ul>
@@ -767,7 +774,7 @@ the one-sample KS test statistic. In particular, under <span class="math inline"
 ##  Asymptotic two-sample Kolmogorov-Smirnov test
 ## 
 ## data:  xx and yy
-## D = 0.21, p-value = 0.02431
+## D = 0.22, p-value = 0.01581
 ## alternative hypothesis: two-sided</code></pre>
 <ul>
 <li>We can compute the KS statistic ourselves and check that this matches the value of the KS statistic
@@ -780,7 +787,7 @@ returned by the <strong>ks.test</strong> function:</li>
 <span id="cb121-5"><a href="edf.html#cb121-5" tabindex="-1"></a></span>
 <span id="cb121-6"><a href="edf.html#cb121-6" tabindex="-1"></a>KS.stat <span class="ot">&lt;-</span> <span class="fu">max</span>( <span class="fu">abs</span>( <span class="fu">F.x</span>(zz.order) <span class="sc">-</span> <span class="fu">F.y</span>(zz.order) ) )</span>
 <span id="cb121-7"><a href="edf.html#cb121-7" tabindex="-1"></a>KS.stat</span></code></pre></div>
-<pre><code>## [1] 0.21</code></pre>
+<pre><code>## [1] 0.22</code></pre>
 </div>
 <div id="the-empirical-distribution-function-and-statistical-functionals" class="section level2 hasAnchor" number="7.5">
 <h2><span class="header-section-number">7.5</span> The empirical distribution function and statistical functionals<a href="edf.html#the-empirical-distribution-function-and-statistical-functionals" class="anchor-section" aria-label="Anchor link to header"></a></h2>

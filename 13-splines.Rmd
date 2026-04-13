@@ -428,8 +428,11 @@ head(Xu)
 
 * We will use the `bone` data again with age as the covariate. We will use the knots $\mathbf{u} = (12, 15, 18, 21, 24)$.
 
-```{r}
+```{r, echo=FALSE}
 bonedat <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/bone.csv")
+```
+
+```{r}
 knot.seq <- c(12, 15, 18, 21, 24)
 linspline.bone <- lm(spnbmd ~ bs(age, knots=knot.seq, degree=1), data=bonedat)
 ```
@@ -615,7 +618,7 @@ Note that, in this case,
 
 ### The Cp Statistic
 
-* As with kernel and local regression method described in Chapter 11, the $C_{p}$ statistic is defined as
+* As with kernel and local regression method described in Chapter 12, the $C_{p}$ statistic is defined as
 the mean residual sum of squares plus a penalty which depends on the matrix $\mathbf{A}$.
 
 * In the context of regression splines where $\hat{\mathbf{m}} = \mathbf{A}_{\mathbf{u}}\mathbf{Y}$, the $C_{p}$ statistic can be written as:
@@ -632,7 +635,7 @@ C_{p}(\lambda) &=& \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}(x_{i}) \}^{2}  + 
 
 ### Leave-one-out Cross-Validation
 
-* As mentioned in Chapter 11, the leave-one-out cross-validation can be expressed as a weighted sum-of-squared residuals with 
+* As mentioned in Chapter 12, the leave-one-out cross-validation can be expressed as a weighted sum-of-squared residuals with 
 the weights coming from the diagonals of the "smoothing" matrix $\mathbf{A}$.
 
 * For the smoothing spline, the leave-one-out cross-validation criterion is
@@ -645,7 +648,7 @@ where $a_{i}^{\lambda}(x_{i})$ denotes the $i^{th}$ diagonal of the matrix $\mat
 
 ### Generalized Cross-Validation
 
-* A criterion which we did not mention in Chapter 11 is Generalized Cross-Validation (GCV).
+* A criterion which we did not mention in Chapter 12 is **Generalized Cross-Validation** (GCV).
 
 * For the smoothing parameter $\lambda$, the GCV criterion is defined as
 \begin{equation}
@@ -703,7 +706,7 @@ ss.bone2
 * Suppose we wanted to find the best value of $\textrm{tr}( \mathbf{A}_{\lambda})$ of the smoothing spline using the $C_{p}$ statistic. 
 
 * The first thing we want to find is an estimate of $\sigma^{2}$ that we can keep fixed across different values of the smoothing 
-parameter. Let's use the same value of $\hat{\sigma}^{2} = 0.0015$ that we used in Chapter 11:
+parameter. Let's use the same value of $\hat{\sigma}^{2} = 0.0015$ that we used in Chapter 12:
 ```{r}
 sigsq.est <- 0.0015
 ```
@@ -731,8 +734,8 @@ for(k in 1:nx) {
                                     sigsq.hat=sigsq.est)
 }
 
-plot(df.seq, Cp.seq, ylab="CP Stat", main="Bone Data: Cp(df) vs. 
-     df for the Smoothing Spline")
+plot(df.seq, Cp.seq, ylab="CP Statistic", xlab="degrees of freedom",
+    main="Bone Data: Cp(df) vs. df for the Smoothing Spline")
 ```
 
 * More specifically, it's about $11.6$:
@@ -766,8 +769,8 @@ for(k in 1:nq) {
   RSS <- mean((bonedat$spnbmd - tmp$fitted.values)^2)
   Cp.seq[k] <- RSS + (2*sigsq.hat*(q + 4))/n
 }
-plot(qqseq, Cp.seq, xlab="q", ylab="Cp", main="Bone Data with Regression Splines: 
-     Cp Statistic for Different Number of Knots")
+plot(qqseq, Cp.seq, xlab="Number of Knots", ylab="Cp Statistic", 
+     main="Bone Data with Regression Splines: Cp Statistic for Different Number of Knots")
 ```
 
 * From the plot, it looks like the best number of knots when using the $C_{p}$ statistic is $q = 10$.

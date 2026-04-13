@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-03-22" />
+<meta name="date" content="2026-04-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -424,9 +424,16 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="14.2.1" data-path="decision-tree.html"><a href="decision-tree.html#determining-the-split-points"><i class="fa fa-check"></i><b>14.2.1</b> Determining the Split Points</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="decision-tree.html"><a href="decision-tree.html#recursive-partitioning-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3.1</b> Recursive Partitioning with Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3.2" data-path="decision-tree.html"><a href="decision-tree.html#tree-pruning"><i class="fa fa-check"></i><b>14.3.2</b> Tree Pruning</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Ensemble Methods for Prediction</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Tree Ensemble Methods for Prediction</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="ensemble.html"><a href="ensemble.html#motivation"><i class="fa fa-check"></i><b>15.1</b> Motivation</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -738,7 +745,7 @@ for Poisson-distributed data).</p></li>
 </ul>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="krusk-wallis.html#cb51-1" tabindex="-1"></a><span class="fu">boxplot</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data=</span>InsectSprays,<span class="at">las=</span><span class="dv">1</span>, </span>
 <span id="cb51-2"><a href="krusk-wallis.html#cb51-2" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;square root of insect counts&quot;</span>)</span></code></pre></div>
-<p><img src="04-multistat_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="04-multistat_files/figure-html/unnamed-chunk-2-1.png" alt="" width="672" /></p>
 <hr />
 <ul>
 <li>Let us perform a test of homogeneity using both the one-way ANOVA approach and a Kruskal-Wallis
@@ -811,7 +818,7 @@ then report the difference in the estimated proportional odds coefficients.
 See Section 7.6 of <a href="http://hbiostat.org/doc/bbr.pdf" class="uri">http://hbiostat.org/doc/bbr.pdf</a> for more details
 on the proportional odds model.</p></li>
 </ul>
-<p><img src="04-multistat_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="04-multistat_files/figure-html/unnamed-chunk-7-1.png" alt="" width="672" /></p>
 </div>
 <div id="an-additional-example" class="section level2 hasAnchor" number="4.4">
 <h2><span class="header-section-number">4.4</span> An Additional Example<a href="krusk-wallis.html#an-additional-example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -843,7 +850,7 @@ but we will analyze the transformed proportions using the arcsine square root tr
 </ul>
 <div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="krusk-wallis.html#cb63-1" tabindex="-1"></a>cane<span class="sc">$</span>prop.trans <span class="ot">&lt;-</span> <span class="fu">asin</span>(<span class="fu">sqrt</span>(cane<span class="sc">$</span>prop))</span>
 <span id="cb63-2"><a href="krusk-wallis.html#cb63-2" tabindex="-1"></a><span class="fu">boxplot</span>(prop.trans <span class="sc">~</span> block, <span class="at">data=</span>cane, <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;number of shoots&quot;</span>)</span></code></pre></div>
-<p><img src="04-multistat_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="04-multistat_files/figure-html/unnamed-chunk-10-1.png" alt="" width="672" /></p>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="krusk-wallis.html#cb64-1" tabindex="-1"></a><span class="fu">kruskal.test</span>(prop <span class="sc">~</span> block, <span class="at">data=</span>cane)</span></code></pre></div>
 <pre><code>## 
 ##  Kruskal-Wallis rank sum test

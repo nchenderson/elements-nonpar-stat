@@ -52,7 +52,7 @@ SimulateParAR1 <- function(m, c0, alpha, sig.sq) {
 ```
 
 
-<img src="10-confidence-intervals_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="10-confidence-intervals_files/figure-html/unnamed-chunk-2-1.png" alt="" width="672" />
  
 * In `R`, estimates of $c_{0}, \alpha,$ and $\sigma^{2}$ can be found by using the `ar` function. For example,
 
@@ -86,7 +86,7 @@ $\hat{\alpha}_{r}^{*}$ and $\hat{\sigma}_{r}^{2,*}$ for estimates of $\alpha$ an
 
 * To see how this parametric bootstrap works, we will use the `nhtemp` dataset that is available in `R`.
 
-<img src="10-confidence-intervals_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<img src="10-confidence-intervals_files/figure-html/unnamed-chunk-4-1.png" alt="" width="672" />
 
 * The `nhtemp` dataset contains the mean annual temperature in New Haven, Connecticut from the years 1912-1971
 
@@ -138,7 +138,7 @@ round(c(alpha.hat - 1.96*sd(alpha.boot), alpha.hat + 1.96*sd(alpha.boot)), 3)
 ```
 
 ```
-## [1] 0.067 0.563
+## [1] 0.080 0.549
 ```
 
 ``` r
@@ -146,7 +146,7 @@ round(c(sigsq.hat - 1.96*sd(sigsq.boot), sigsq.hat + 1.96*sd(sigsq.boot)), 3)
 ```
 
 ```
-## [1] 0.948 1.988
+## [1] 0.952 1.984
 ```
 
 * We can compare our confidence interval for $\alpha$ with the confidence interval
@@ -238,7 +238,7 @@ the outcome and age is the covariate.
 
 
 
-<img src="10-confidence-intervals_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<img src="10-confidence-intervals_files/figure-html/unnamed-chunk-11-1.png" alt="" width="672" />
 
 * Bootstrap replications of $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ can
 be computed using the following `R` code:
@@ -316,7 +316,7 @@ c(beta0.hat - stu.quants0[2]*se.est0, beta0.hat - stu.quants0[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.18        3.56
+##        2.16        3.60
 ```
 
 ``` r
@@ -326,7 +326,7 @@ c(beta1.hat - stu.quants1[2]*se.est1, beta1.hat - stu.quants1[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.0948 -0.0612
+## -0.0961 -0.0605
 ```
 
 * Compare these studentized bootstrap confidence intervals with the confidence 
@@ -433,7 +433,7 @@ c(beta0.hat - stu.quants0.np[2]*se.est0, beta0.hat - stu.quants0.np[1]*se.est0)
 
 ```
 ## (Intercept) (Intercept) 
-##        2.11        3.72
+##        2.25        3.47
 ```
 
 ``` r
@@ -443,7 +443,7 @@ c(beta1.hat - stu.quants1.np[2]*se.est1, beta1.hat - stu.quants1.np[1]*se.est1)
 
 ```
 ##     age     age 
-## -0.1011 -0.0565
+## -0.0945 -0.0625
 ```
   
 ---  
@@ -618,10 +618,10 @@ mean(Cover.bootsd.ci)
 ```
 
 ```
-## [1] 0.756
+## [1] 0.82
 ```
 
-<img src="10-confidence-intervals_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+<img src="10-confidence-intervals_files/figure-html/unnamed-chunk-24-1.png" alt="" width="672" />
 
 
 ## The Jackknife

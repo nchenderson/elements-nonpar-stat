@@ -123,7 +123,7 @@ hist(mean.diff, las=1, col="grey", main="Permutation Distribution
 abline(v=observed.diff, lwd=3)
 ```
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+<img src="05-permutation_files/figure-html/unnamed-chunk-1-1.png" alt="" width="672" />
 
 ### Permutation Test p-values
 * The **one-sided p-value** for the permutation test is
@@ -156,7 +156,7 @@ round(pval.mc, 2)
 ```
 
 ```
-## [1] 0.76
+## [1] 0.78
 ```
     
 ### Example 2: Ratios of Means
@@ -191,7 +191,7 @@ hist(mean.ratio, las=1, col="grey", main="Permutation Distribution
 abline(v=t.obs, lwd=3)
 ```
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<img src="05-permutation_files/figure-html/unnamed-chunk-3-1.png" alt="" width="672" />
 
 * The two-sided (Monte Carlo) permutation test p-value is:
 
@@ -235,7 +235,7 @@ quantile(z[1:5], probs=.3) - quantile(z[6:10], probs=.3)
 
 * Note that setting **probs=.5** in the **quantile** function will return the median.
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+<img src="05-permutation_files/figure-html/unnamed-chunk-7-1.png" alt="" width="672" />
 
 
 ## Permutation Test Assumptions
@@ -406,7 +406,7 @@ Hence,
 
 ## A Permutation Test for Correlation
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="05-permutation_files/figure-html/unnamed-chunk-9-1.png" alt="" width="672" />
 
 
 * Suppose we have $N$ pairs of observations $(U_{1}, V_{1}), \ldots, (U_{N}, V_{N})$
@@ -460,10 +460,10 @@ hist(cor.perm.pf, xlim=c(-1, 1), las=1, col="grey", main="Permutation
 abline(v=t.obs.pf, lwd=3)
 ```
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="05-permutation_files/figure-html/unnamed-chunk-10-1.png" alt="" width="672" />
 
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<img src="05-permutation_files/figure-html/unnamed-chunk-11-1.png" alt="" width="672" />
 
 * Now let us compute the p-values for both the 
 Phenols/Flavanoids and Phenols/Color association tests.
@@ -514,7 +514,7 @@ will be when we break any association between $\mathbf{y}$ and
 a covariate.
 
 
-<img src="05-permutation_files/figure-html/unnamed-chunk-14-1.png" width="672" />
+<img src="05-permutation_files/figure-html/unnamed-chunk-14-1.png" alt="" width="672" />
 
 ---
 

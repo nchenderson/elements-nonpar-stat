@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-03-22" />
+<meta name="date" content="2026-04-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -424,9 +424,16 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="14.2.1" data-path="decision-tree.html"><a href="decision-tree.html#determining-the-split-points"><i class="fa fa-check"></i><b>14.2.1</b> Determining the Split Points</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="decision-tree.html"><a href="decision-tree.html#recursive-partitioning-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3.1</b> Recursive Partitioning with Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3.2" data-path="decision-tree.html"><a href="decision-tree.html#tree-pruning"><i class="fa fa-check"></i><b>14.3.2</b> Tree Pruning</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Ensemble Methods for Prediction</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Tree Ensemble Methods for Prediction</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="ensemble.html"><a href="ensemble.html#motivation"><i class="fa fa-check"></i><b>15.1</b> Motivation</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -565,7 +572,7 @@ s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \su
 <li><p>The t-test is based on the <strong>null distribution</strong> of <span class="math inline">\(T\)</span> - the distribution of <span class="math inline">\(T\)</span> under the null hypothesis.</p></li>
 <li><p>Under the assumption of normality, the null distribution of <span class="math inline">\(T\)</span> is a t distribution with <span class="math inline">\(n + m - 2\)</span> degrees of freedom.</p></li>
 </ul>
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" alt="" width="672" /></p>
 <ul>
 <li>Notice that the null distribution of <span class="math inline">\(T\)</span> depends on the parametric assumption that both <span class="math inline">\(F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})\)</span>
 and <span class="math inline">\(F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})\)</span>.
@@ -869,7 +876,7 @@ with the assumption <span class="math inline">\(\varepsilon_{i} \sim \textrm{Nor
 <li><p>In this model, there are only 3 parameters: <span class="math inline">\((\beta_{0}, \beta_{1}, \sigma^{2})\)</span>,
 and the number of parameters stays fixed for all <span class="math inline">\(n\)</span>.</p></li>
 </ul>
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-5-1.png" alt="" width="672" /></p>
 <hr />
 <ul>
 <li><p>The <strong>nonparametric counterpart</strong> to linear regression is usually formulated in the following way
@@ -911,7 +918,7 @@ that the number of parameters to be estimated can change with the sample size.</
 <li>For a sufficiently large number of basis functions, one should be able to approximate the true mean function <span class="math inline">\(m(x)\)</span> arbitrarily closely.</li>
 </ul></li>
 </ul>
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-6-1.png" alt="" width="672" /></p>
 </div>
 <div id="sec:example-nonpar-regress2" class="section level2 hasAnchor" number="1.7">
 <h2><span class="header-section-number">1.7</span> Example 5: Classification and Regression Trees (CART)<a href="intro.html#sec:example-nonpar-regress2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -935,7 +942,7 @@ Hence, the name: <strong>classification and regression trees (CART)</strong>.</p
 </ul>
 <p><img src="01-Introduction_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <!-- If true go left down tree. E.g., if someone is in treatment arm A, they get a prediction of 13.95  -->
-<p><img src="01-Introduction_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="01-Introduction_files/figure-html/unnamed-chunk-8-1.png" alt="" width="672" /></p>
 <hr />
 <ul>
 <li><p>Classification and regression trees are constructed through <strong>recursive partitioning</strong>.</p></li>

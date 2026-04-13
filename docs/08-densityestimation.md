@@ -121,7 +121,7 @@ we will focus on the `age` variable.
 kidney.hist <- hist(kidney$age, main="", xlab="Age from Kidney Data")
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-4-1.png" alt="" width="672" />
 
 
 * Use the `probability = TRUE` argument to plot the density-estimate version of the histogram.
@@ -132,7 +132,7 @@ kidney.hist2 <- hist(kidney$age, main="Histogram of Age on Probability Scale",
                      xlab="Age from Kidney Data", probability=TRUE)
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-5-1.png" alt="" width="672" />
 
 ---
 
@@ -430,7 +430,7 @@ sensitive to outliers.
 * **Sturges rule**: The bin width is chosen so that we have $1 + log_{2}(n)$ bins. This choice tends to give wide
 intervals. 
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-9-1.png" alt="" width="672" />
 
 
 ## A Box-type Density Estimate
@@ -467,7 +467,7 @@ the bin edges while the box estimate suffers less from this problem.
 * However, plots of the box estimate will still largely be non-smooth and 
 have a "jagged" appearance. 
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-10-1.png" alt="" width="672" />
 
 
 ---
@@ -487,7 +487,7 @@ w(t) =
 \end{cases}
 \end{equation}
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-11-1.png" alt="" width="672" />
 
 * While the estimator $\hat{f}_{h_{n}}^{B}$ does seem reasonable, it always
 results in density estimates which are not "smooth."
@@ -527,7 +527,7 @@ will appear.
 * The appearance and the statistical performance of $\hat{f}_{h_{n}}(x)$ depend much more on the value of $h_{n}$ than on
 the choice of kernel function.
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-12-1.png" alt="" width="672" />
 
 
 * Kernel functions are usually chosen so that 
@@ -554,7 +554,7 @@ which is symmetric around $0$.
 \end{eqnarray}
 
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-13-1.png" alt="" width="672" />
 
 * When plotting $\frac{1}{n h_{n}}K\big( \tfrac{x - X_{i}}{h_{n}} \big)$ as a function of $x$, it should
 look like a "small hill" centered around $X_{i}$.
@@ -564,7 +564,7 @@ becomes more strongly concentrated around $X_{i}$ and has a higher peak.
 
 * The kernel density estimate $\hat{f}_{h_{n}}(x)$ is a sum of all these "small hills".
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-14-1.png" width="672" />
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-14-1.png" alt="" width="672" />
 
 ---
 
@@ -918,7 +918,7 @@ plot(h.grid, CV.est, xlab="bandwidth", ylab="J_mise(h)",
      main = "Cross-Validation Estimates for Age Data")
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-17-1.png" alt="" width="672" />
 
 * The specific value of the bandwidth where $\hat{J}(h_{j})$ reaches its minimum is:
 
@@ -1020,7 +1020,7 @@ plot(galax.dens, main="Default Density Estimate for Galaxy Data",
      xlab="velocity in km/sec", ylab="Density", lwd=2)
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-23-1.png" width="672" />
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-23-1.png" alt="" width="672" />
 
 ---
 
@@ -1035,7 +1035,7 @@ plot(galax.dens$x, galax.dens$y, main="Default Density Estimate for Galaxy Data"
      xlab="velocity in km/sec", ylab="Density", lwd=2)
 ```
 
-<img src="08-densityestimation_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+<img src="08-densityestimation_files/figure-html/unnamed-chunk-24-1.png" alt="" width="672" />
 
 * The default in **R** is to estimate the density at 512 points. Thus, `galax.dens$x`
 and `galax.dens$y` should each have length 512.

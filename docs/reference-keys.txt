@@ -77,7 +77,6 @@ fig:pwcubic
 eq:continuity-constraints
 eq:spline-smooth-motivation
 eq:spline-smooth-minimization
-fig:unnamed-chunk-16
 fig:cart-motivate
 fig:cart-motivate2
 fig:cart-motivate3
@@ -279,4 +278,7 @@ introduction-4
 regression-trees-with-a-single-covariate
 determining-the-split-points
 regression-trees-with-multiple-covariates
+recursive-partitioning-with-multiple-covariates
+tree-pruning
 ensemble
+motivation

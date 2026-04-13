@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-03-22" />
+<meta name="date" content="2026-04-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -424,9 +424,16 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="14.2.1" data-path="decision-tree.html"><a href="decision-tree.html#determining-the-split-points"><i class="fa fa-check"></i><b>14.2.1</b> Determining the Split Points</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="decision-tree.html"><a href="decision-tree.html#recursive-partitioning-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3.1</b> Recursive Partitioning with Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3.2" data-path="decision-tree.html"><a href="decision-tree.html#tree-pruning"><i class="fa fa-check"></i><b>14.3.2</b> Tree Pruning</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Ensemble Methods for Prediction</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Tree Ensemble Methods for Prediction</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="ensemble.html"><a href="ensemble.html#motivation"><i class="fa fa-check"></i><b>15.1</b> Motivation</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -508,7 +515,7 @@ of constructed confidence intervals <span class="math inline">\(\hat{CI}(Y_{1s},
 <span id="cb220-16"><a href="conformal-prediction.html#cb220-16" tabindex="-1"></a>  cover[s] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(beta1 <span class="sc">&gt;=</span> lower_ci <span class="sc">&amp;</span> beta1 <span class="sc">&lt;=</span> upper_ci, <span class="dv">1</span>, <span class="dv">0</span>)</span>
 <span id="cb220-17"><a href="conformal-prediction.html#cb220-17" tabindex="-1"></a>}</span>
 <span id="cb220-18"><a href="conformal-prediction.html#cb220-18" tabindex="-1"></a><span class="fu">mean</span>(cover) <span class="do">## Should be close to 0.95</span></span></code></pre></div>
-<pre><code>## [1] 0.936</code></pre>
+<pre><code>## [1] 0.95</code></pre>
 <hr />
 <ul>
 <li><p><strong>Prediction intervals</strong> for regression have a different interpretation than confidence intervals.</p></li>
@@ -632,7 +639,7 @@ R_{i} = | Y_{i} - \hat{f}_{\mathcal{D}_{1}}(\mathbf{x}_{i})|
 <div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="conformal-prediction.html#cb227-1" tabindex="-1"></a>qhat <span class="ot">&lt;-</span> <span class="fu">quantile</span>(calibration_resids, <span class="at">probs=</span><span class="fl">0.95</span>)</span>
 <span id="cb227-2"><a href="conformal-prediction.html#cb227-2" tabindex="-1"></a><span class="fu">print</span>(qhat)</span></code></pre></div>
 <pre><code>##      95% 
-## 1.719712</code></pre>
+## 1.940119</code></pre>
 <ul>
 <li>We can now use <code>qhat</code> to get prediction intervals for a “new dataset”</li>
 </ul>
@@ -652,15 +659,15 @@ R_{i} = | Y_{i} - \hat{f}_{\mathcal{D}_{1}}(\mathbf{x}_{i})|
 <span id="cb229-14"><a href="conformal-prediction.html#cb229-14" tabindex="-1"></a></span>
 <span id="cb229-15"><a href="conformal-prediction.html#cb229-15" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(ConformalInterval))</span></code></pre></div>
 <pre><code>##            [,1]     [,2]
-## [1,] -0.8149442 2.624480
-## [2,] -0.9754139 2.464011
-## [3,] -0.9702882 2.469136
-## [4,] -1.2053499 2.234075
-## [5,] -1.4474305 1.991994
-## [6,] -0.6223143 2.817110</code></pre>
+## [1,] -0.4393585 3.440880
+## [2,] -0.9990307 2.881208
+## [3,] -1.0028439 2.877395
+## [4,] -0.7500122 3.130227
+## [5,] -1.2475335 2.632705
+## [6,] -1.3488372 2.531402</code></pre>
 <ul>
 <li><p>Plot fitted values and prediction intervals:
-<img src="11-conformalprediction_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p></li>
+<img src="11-conformalprediction_files/figure-html/unnamed-chunk-8-1.png" alt="" width="672" /></p></li>
 <li><p>You can check the <strong>prediction coverage</strong> of these intervals with the following code:</p></li>
 </ul>
 <div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="conformal-prediction.html#cb231-1" tabindex="-1"></a><span class="do">## This shouldn&#39;t be that far off 0.95, but there will be </span></span>
@@ -736,9 +743,9 @@ in order to create conformal prediction intervals.</p></li>
 <span id="cb238-3"><a href="conformal-prediction.html#cb238-3" tabindex="-1"></a></span>
 <span id="cb238-4"><a href="conformal-prediction.html#cb238-4" tabindex="-1"></a><span class="do">## Find the best number of trees using cross-validation</span></span>
 <span id="cb238-5"><a href="conformal-prediction.html#cb238-5" tabindex="-1"></a>best.iter <span class="ot">&lt;-</span> <span class="fu">gbm.perf</span>(gbm_mod, <span class="at">method =</span> <span class="st">&quot;cv&quot;</span>)</span></code></pre></div>
-<p><img src="11-conformalprediction_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="11-conformalprediction_files/figure-html/unnamed-chunk-12-1.png" alt="" width="672" /></p>
 <div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="conformal-prediction.html#cb239-1" tabindex="-1"></a><span class="fu">print</span>(best.iter)</span></code></pre></div>
-<pre><code>## [1] 198</code></pre>
+<pre><code>## [1] 196</code></pre>
 <div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="conformal-prediction.html#cb241-1" tabindex="-1"></a><span class="do">## Use boosting with best number of trees</span></span>
 <span id="cb241-2"><a href="conformal-prediction.html#cb241-2" tabindex="-1"></a>gbm_mod_final <span class="ot">&lt;-</span> <span class="fu">gbm</span>(Y <span class="sc">~</span> ., <span class="at">data =</span> proper_dat, </span>
 <span id="cb241-3"><a href="conformal-prediction.html#cb241-3" tabindex="-1"></a>                     <span class="at">distribution =</span> <span class="st">&quot;gaussian&quot;</span>, <span class="at">n.trees =</span> best.iter)</span></code></pre></div>
@@ -746,7 +753,7 @@ in order to create conformal prediction intervals.</p></li>
 <li>Get <strong>absolute residuals</strong> on calibration dataset</li>
 </ul>
 <div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="conformal-prediction.html#cb242-1" tabindex="-1"></a>calibration_fitted <span class="ot">&lt;-</span> <span class="fu">predict</span>(gbm_mod_final, <span class="at">newdat=</span>calibration_dat)</span></code></pre></div>
-<pre><code>## Using 198 trees...</code></pre>
+<pre><code>## Using 196 trees...</code></pre>
 <div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="conformal-prediction.html#cb244-1" tabindex="-1"></a>calibration_resids <span class="ot">&lt;-</span> <span class="fu">abs</span>(calibration_dat<span class="sc">$</span>Y <span class="sc">-</span> calibration_fitted)</span></code></pre></div>
 <ul>
 <li>Get <strong>95th quantile</strong> of these residuals in the calibration set</li>
@@ -769,16 +776,16 @@ in order to create conformal prediction intervals.</p></li>
 <span id="cb246-9"><a href="conformal-prediction.html#cb246-9" tabindex="-1"></a><span class="do">### Construct prediction intervals as a n x 2 matrix</span></span>
 <span id="cb246-10"><a href="conformal-prediction.html#cb246-10" tabindex="-1"></a>ConformalInterval <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow=</span>n, <span class="at">ncol=</span><span class="dv">2</span>)</span>
 <span id="cb246-11"><a href="conformal-prediction.html#cb246-11" tabindex="-1"></a>ConformalInterval[,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">predict</span>(gbm_mod_final, <span class="at">newdat=</span>newdataset) <span class="sc">-</span> qhat</span></code></pre></div>
-<pre><code>## Using 198 trees...</code></pre>
+<pre><code>## Using 196 trees...</code></pre>
 <div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="conformal-prediction.html#cb248-1" tabindex="-1"></a>ConformalInterval[,<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">predict</span>(gbm_mod_final, <span class="at">newdat=</span>newdataset) <span class="sc">+</span> qhat</span></code></pre></div>
-<pre><code>## Using 198 trees...</code></pre>
+<pre><code>## Using 196 trees...</code></pre>
 <ul>
 <li>Check the <strong>prediction coverage</strong>:</li>
 </ul>
 <div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="conformal-prediction.html#cb250-1" tabindex="-1"></a><span class="do">## This shouldn&#39;t be that far off 0.95, but there will be </span></span>
 <span id="cb250-2"><a href="conformal-prediction.html#cb250-2" tabindex="-1"></a><span class="do">## considerable variability since this is not a very large dataset</span></span>
 <span id="cb250-3"><a href="conformal-prediction.html#cb250-3" tabindex="-1"></a><span class="fu">mean</span>(Y_new <span class="sc">&gt;</span> ConformalInterval[,<span class="dv">1</span>] <span class="sc">&amp;</span> Y_new <span class="sc">&lt;</span> ConformalInterval[,<span class="dv">2</span>])</span></code></pre></div>
-<pre><code>## [1] 0.9545</code></pre>
+<pre><code>## [1] 0.9335</code></pre>
 <hr />
 
 </div>

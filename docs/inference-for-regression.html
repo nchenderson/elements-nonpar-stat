@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-03-22" />
+<meta name="date" content="2026-04-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -424,9 +424,16 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="14.2.1" data-path="decision-tree.html"><a href="decision-tree.html#determining-the-split-points"><i class="fa fa-check"></i><b>14.2.1</b> Determining the Split Points</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="decision-tree.html"><a href="decision-tree.html#recursive-partitioning-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3.1</b> Recursive Partitioning with Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3.2" data-path="decision-tree.html"><a href="decision-tree.html#tree-pruning"><i class="fa fa-check"></i><b>14.3.2</b> Tree Pruning</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Ensemble Methods for Prediction</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Tree Ensemble Methods for Prediction</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="ensemble.html"><a href="ensemble.html#motivation"><i class="fa fa-check"></i><b>15.1</b> Motivation</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -792,9 +799,8 @@ This function generates the B-spline “design” matrix <span class="math inlin
 <li><p>Let’s try an example with a linear spline to see how to use the <code>bs</code> function to fit a spline within the <code>lm</code> function.</p></li>
 <li><p>We will use the <code>bone</code> data again with age as the covariate. We will use the knots <span class="math inline">\(\mathbf{u} = (12, 15, 18, 21, 24)\)</span>.</p></li>
 </ul>
-<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="inference-for-regression.html#cb285-1" tabindex="-1"></a>bonedat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/bone.csv&quot;</span>)</span>
-<span id="cb285-2"><a href="inference-for-regression.html#cb285-2" tabindex="-1"></a>knot.seq <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">21</span>, <span class="dv">24</span>)</span>
-<span id="cb285-3"><a href="inference-for-regression.html#cb285-3" tabindex="-1"></a>linspline.bone <span class="ot">&lt;-</span> <span class="fu">lm</span>(spnbmd <span class="sc">~</span> <span class="fu">bs</span>(age, <span class="at">knots=</span>knot.seq, <span class="at">degree=</span><span class="dv">1</span>), <span class="at">data=</span>bonedat)</span></code></pre></div>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="inference-for-regression.html#cb285-1" tabindex="-1"></a>knot.seq <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">18</span>, <span class="dv">21</span>, <span class="dv">24</span>)</span>
+<span id="cb285-2"><a href="inference-for-regression.html#cb285-2" tabindex="-1"></a>linspline.bone <span class="ot">&lt;-</span> <span class="fu">lm</span>(spnbmd <span class="sc">~</span> <span class="fu">bs</span>(age, <span class="at">knots=</span>knot.seq, <span class="at">degree=</span><span class="dv">1</span>), <span class="at">data=</span>bonedat)</span></code></pre></div>
 <ul>
 <li><p>Because we are using <span class="math inline">\(5\)</span> knots, based on our discussion in Section 12.2 we should expect that there should be <span class="math inline">\(7\)</span> columns in
 the design matrix <span class="math inline">\(\mathbf{X}_{u}\)</span> for this linear spline model.</p></li>
@@ -816,7 +822,7 @@ for the points <span class="math inline">\(9.5, 10, 10.5, 11, \ldots, 24.5, 25\)
 <span id="cb288-6"><a href="inference-for-regression.html#cb288-6" tabindex="-1"></a>    <span class="do">## Plot vertical lines at the knots</span></span>
 <span id="cb288-7"><a href="inference-for-regression.html#cb288-7" tabindex="-1"></a>    <span class="fu">abline</span>(<span class="at">v=</span>knot.seq[k], <span class="at">lty=</span><span class="dv">2</span>)</span>
 <span id="cb288-8"><a href="inference-for-regression.html#cb288-8" tabindex="-1"></a>}</span></code></pre></div>
-<p><img src="13-splines_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="13-splines_files/figure-html/unnamed-chunk-11-1.png" alt="" width="672" /></p>
 <hr />
 <ul>
 <li><p>Now let’s try fitting a cubic spline model to the bone data.</p></li>
@@ -844,7 +850,7 @@ the design matrix <span class="math inline">\(\mathbf{X}_{u}\)</span> for this c
 <span id="cb292-6"><a href="inference-for-regression.html#cb292-6" tabindex="-1"></a>    <span class="do">## Plot vertical lines at the knots</span></span>
 <span id="cb292-7"><a href="inference-for-regression.html#cb292-7" tabindex="-1"></a>    <span class="fu">abline</span>(<span class="at">v=</span>knot.seq[k], <span class="at">lty=</span><span class="dv">2</span>)</span>
 <span id="cb292-8"><a href="inference-for-regression.html#cb292-8" tabindex="-1"></a>}</span></code></pre></div>
-<p><img src="13-splines_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="13-splines_files/figure-html/unnamed-chunk-14-1.png" alt="" width="672" /></p>
 </div>
 <div id="natural-cubic-splines" class="section level3 hasAnchor" number="13.3.5">
 <h3><span class="header-section-number">13.3.5</span> Natural Cubic Splines<a href="inference-for-regression.html#natural-cubic-splines" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -875,7 +881,7 @@ d_{k}(x) = \frac{ (x - u_{k})_{+}^{3} - (x - u_{q})_{+}^{3} }{ u_{q} - u_{k}} \n
 <span id="cb293-3"><a href="inference-for-regression.html#cb293-3" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, </span>
 <span id="cb293-4"><a href="inference-for-regression.html#cb293-4" tabindex="-1"></a>     <span class="at">main=</span><span class="st">&quot;Bone Data: Fitted Natural Cubic Spline&quot;</span>, <span class="at">las=</span><span class="dv">1</span>)</span>
 <span id="cb293-5"><a href="inference-for-regression.html#cb293-5" tabindex="-1"></a><span class="fu">lines</span>(tt, <span class="fu">predict</span>(natural.cubspline.bone, <span class="fu">data.frame</span>(<span class="at">age=</span>tt)), <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="13-splines_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="13-splines_files/figure-html/unnamed-chunk-15-1.png" alt="" width="672" /></p>
 </div>
 </div>
 <div id="smoothing-splines" class="section level2 hasAnchor" number="13.4">
@@ -961,7 +967,7 @@ Note that, in this case,
 <div id="the-cp-statistic-1" class="section level3 hasAnchor" number="13.5.1">
 <h3><span class="header-section-number">13.5.1</span> The Cp Statistic<a href="inference-for-regression.html#the-cp-statistic-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><p>As with kernel and local regression method described in Chapter 11, the <span class="math inline">\(C_{p}\)</span> statistic is defined as
+<li><p>As with kernel and local regression method described in Chapter 12, the <span class="math inline">\(C_{p}\)</span> statistic is defined as
 the mean residual sum of squares plus a penalty which depends on the matrix <span class="math inline">\(\mathbf{A}\)</span>.</p></li>
 <li><p>In the context of regression splines where <span class="math inline">\(\hat{\mathbf{m}} = \mathbf{A}_{\mathbf{u}}\mathbf{Y}\)</span>, the <span class="math inline">\(C_{p}\)</span> statistic can be written as:
 <span class="math display">\[\begin{eqnarray}
@@ -978,7 +984,7 @@ C_{p}(\lambda) &amp;=&amp; \frac{1}{n}\sum_{i=1}^{n}\{ Y_{i} - \hat{m}(x_{i}) \}
 <div id="leave-one-out-cross-validation-1" class="section level3 hasAnchor" number="13.5.2">
 <h3><span class="header-section-number">13.5.2</span> Leave-one-out Cross-Validation<a href="inference-for-regression.html#leave-one-out-cross-validation-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><p>As mentioned in Chapter 11, the leave-one-out cross-validation can be expressed as a weighted sum-of-squared residuals with
+<li><p>As mentioned in Chapter 12, the leave-one-out cross-validation can be expressed as a weighted sum-of-squared residuals with
 the weights coming from the diagonals of the “smoothing” matrix <span class="math inline">\(\mathbf{A}\)</span>.</p></li>
 <li><p>For the smoothing spline, the leave-one-out cross-validation criterion is
 <span class="math display">\[\begin{equation}
@@ -990,7 +996,7 @@ where <span class="math inline">\(a_{i}^{\lambda}(x_{i})\)</span> denotes the <s
 <div id="generalized-cross-validation" class="section level3 hasAnchor" number="13.5.3">
 <h3><span class="header-section-number">13.5.3</span> Generalized Cross-Validation<a href="inference-for-regression.html#generalized-cross-validation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><p>A criterion which we did not mention in Chapter 11 is Generalized Cross-Validation (GCV).</p></li>
+<li><p>A criterion which we did not mention in Chapter 12 is <strong>Generalized Cross-Validation</strong> (GCV).</p></li>
 <li><p>For the smoothing parameter <span class="math inline">\(\lambda\)</span>, the GCV criterion is defined as
 <span class="math display">\[\begin{equation}
 \textrm{GCV}(\lambda) = \frac{1}{n}\sum_{i=1}^{n} \Big( \frac{ Y_{i} - \hat{m}_{\lambda}(x_{i})}{ 1 - \textrm{tr}(\mathbf{A}_{\lambda})/n  } \Big)^{2} = \Big(\frac{n}{n - \textrm{tr}(\mathbf{A}_{\lambda})} \Big)^{2} \frac{1}{n} \sum_{i=1}^{n} \{Y_{i} - \hat{m}_{\lambda}(x_{i}) \}^{2} \nonumber
@@ -1024,10 +1030,10 @@ where <span class="math inline">\(a_{i}^{\lambda}(x_{i})\)</span> denotes the <s
 <span id="cb295-3"><a href="inference-for-regression.html#cb295-3" tabindex="-1"></a><span class="fu">plot</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">las=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">xlab=</span><span class="st">&quot;age&quot;</span>, </span>
 <span id="cb295-4"><a href="inference-for-regression.html#cb295-4" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">&quot;Relative Change in Bone MD&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data: Smoothing Spline using GCV&quot;</span>)</span>
 <span id="cb295-5"><a href="inference-for-regression.html#cb295-5" tabindex="-1"></a><span class="fu">lines</span>(ss.bone<span class="sc">$</span>x, ss.bone<span class="sc">$</span>y, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-16"></span>
-<img src="13-splines_files/figure-html/unnamed-chunk-16-1.png" alt="Smoothing spline fit for the bone data. This used the smooth.spline function with all the default settings." width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-17"></span>
+<img src="13-splines_files/figure-html/unnamed-chunk-17-1.png" alt="Smoothing spline fit for the bone data. This used the smooth.spline function with all the default settings." width="672" />
 <p class="caption">
-Figure 13.3: Smoothing spline fit for the bone data. This used the smooth.spline function with all the default settings.
+Figure 9.2: Smoothing spline fit for the bone data. This used the smooth.spline function with all the default settings.
 </p>
 </div>
 <ul>
@@ -1061,7 +1067,7 @@ Figure 13.3: Smoothing spline fit for the bone data. This used the smooth.spline
 <ul>
 <li><p>Suppose we wanted to find the best value of <span class="math inline">\(\textrm{tr}( \mathbf{A}_{\lambda})\)</span> of the smoothing spline using the <span class="math inline">\(C_{p}\)</span> statistic.</p></li>
 <li><p>The first thing we want to find is an estimate of <span class="math inline">\(\sigma^{2}\)</span> that we can keep fixed across different values of the smoothing
-parameter. Let’s use the same value of <span class="math inline">\(\hat{\sigma}^{2} = 0.0015\)</span> that we used in Chapter 11:</p></li>
+parameter. Let’s use the same value of <span class="math inline">\(\hat{\sigma}^{2} = 0.0015\)</span> that we used in Chapter 12:</p></li>
 </ul>
 <div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="inference-for-regression.html#cb302-1" tabindex="-1"></a>sigsq.est <span class="ot">&lt;-</span> <span class="fl">0.0015</span></span></code></pre></div>
 <ul>
@@ -1086,9 +1092,9 @@ parameter. Let’s use the same value of <span class="math inline">\(\hat{\sigma
 <span id="cb304-6"><a href="inference-for-regression.html#cb304-6" tabindex="-1"></a>                                    <span class="at">sigsq.hat=</span>sigsq.est)</span>
 <span id="cb304-7"><a href="inference-for-regression.html#cb304-7" tabindex="-1"></a>}</span>
 <span id="cb304-8"><a href="inference-for-regression.html#cb304-8" tabindex="-1"></a></span>
-<span id="cb304-9"><a href="inference-for-regression.html#cb304-9" tabindex="-1"></a><span class="fu">plot</span>(df.seq, Cp.seq, <span class="at">ylab=</span><span class="st">&quot;CP Stat&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data: Cp(df) vs. </span></span>
-<span id="cb304-10"><a href="inference-for-regression.html#cb304-10" tabindex="-1"></a><span class="st">     df for the Smoothing Spline&quot;</span>)</span></code></pre></div>
-<p><img src="13-splines_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<span id="cb304-9"><a href="inference-for-regression.html#cb304-9" tabindex="-1"></a><span class="fu">plot</span>(df.seq, Cp.seq, <span class="at">ylab=</span><span class="st">&quot;CP Statistic&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;degrees of freedom&quot;</span>,</span>
+<span id="cb304-10"><a href="inference-for-regression.html#cb304-10" tabindex="-1"></a>    <span class="at">main=</span><span class="st">&quot;Bone Data: Cp(df) vs. df for the Smoothing Spline&quot;</span>)</span></code></pre></div>
+<p><img src="13-splines_files/figure-html/unnamed-chunk-22-1.png" alt="" width="672" /></p>
 <ul>
 <li>More specifically, it’s about <span class="math inline">\(11.6\)</span>:</li>
 </ul>
@@ -1120,9 +1126,9 @@ parameter. Let’s use the same value of <span class="math inline">\(\hat{\sigma
 <span id="cb307-17"><a href="inference-for-regression.html#cb307-17" tabindex="-1"></a>  RSS <span class="ot">&lt;-</span> <span class="fu">mean</span>((bonedat<span class="sc">$</span>spnbmd <span class="sc">-</span> tmp<span class="sc">$</span>fitted.values)<span class="sc">^</span><span class="dv">2</span>)</span>
 <span id="cb307-18"><a href="inference-for-regression.html#cb307-18" tabindex="-1"></a>  Cp.seq[k] <span class="ot">&lt;-</span> RSS <span class="sc">+</span> (<span class="dv">2</span><span class="sc">*</span>sigsq.hat<span class="sc">*</span>(q <span class="sc">+</span> <span class="dv">4</span>))<span class="sc">/</span>n</span>
 <span id="cb307-19"><a href="inference-for-regression.html#cb307-19" tabindex="-1"></a>}</span>
-<span id="cb307-20"><a href="inference-for-regression.html#cb307-20" tabindex="-1"></a><span class="fu">plot</span>(qqseq, Cp.seq, <span class="at">xlab=</span><span class="st">&quot;q&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Cp&quot;</span>, <span class="at">main=</span><span class="st">&quot;Bone Data with Regression Splines: </span></span>
-<span id="cb307-21"><a href="inference-for-regression.html#cb307-21" tabindex="-1"></a><span class="st">     Cp Statistic for Different Number of Knots&quot;</span>)</span></code></pre></div>
-<p><img src="13-splines_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<span id="cb307-20"><a href="inference-for-regression.html#cb307-20" tabindex="-1"></a><span class="fu">plot</span>(qqseq, Cp.seq, <span class="at">xlab=</span><span class="st">&quot;Number of Knots&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Cp Statistic&quot;</span>, </span>
+<span id="cb307-21"><a href="inference-for-regression.html#cb307-21" tabindex="-1"></a>     <span class="at">main=</span><span class="st">&quot;Bone Data with Regression Splines: Cp Statistic for Different Number of Knots&quot;</span>)</span></code></pre></div>
+<p><img src="13-splines_files/figure-html/unnamed-chunk-24-1.png" alt="" width="672" /></p>
 <ul>
 <li>From the plot, it looks like the best number of knots when using the <span class="math inline">\(C_{p}\)</span> statistic is <span class="math inline">\(q = 10\)</span>.</li>
 </ul>

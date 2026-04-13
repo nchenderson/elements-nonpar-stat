@@ -64,7 +64,7 @@ mean(cover) ## Should be close to 0.95
 ```
 
 ```
-## [1] 0.936
+## [1] 0.95
 ```
 
 ---
@@ -204,7 +204,7 @@ print(qhat)
 
 ```
 ##      95% 
-## 1.719712
+## 1.940119
 ```
 
 * We can now use `qhat` to get prediction intervals for a "new dataset"
@@ -229,16 +229,16 @@ print(head(ConformalInterval))
 
 ```
 ##            [,1]     [,2]
-## [1,] -0.8149442 2.624480
-## [2,] -0.9754139 2.464011
-## [3,] -0.9702882 2.469136
-## [4,] -1.2053499 2.234075
-## [5,] -1.4474305 1.991994
-## [6,] -0.6223143 2.817110
+## [1,] -0.4393585 3.440880
+## [2,] -0.9990307 2.881208
+## [3,] -1.0028439 2.877395
+## [4,] -0.7500122 3.130227
+## [5,] -1.2475335 2.632705
+## [6,] -1.3488372 2.531402
 ```
 
 * Plot fitted values and prediction intervals:
-<img src="11-conformalprediction_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<img src="11-conformalprediction_files/figure-html/unnamed-chunk-8-1.png" alt="" width="672" />
 
 * You can check the **prediction coverage** of these intervals with the following code:
 
@@ -338,14 +338,14 @@ gbm_mod <- gbm(Y ~ ., data = proper_dat,
 best.iter <- gbm.perf(gbm_mod, method = "cv")
 ```
 
-<img src="11-conformalprediction_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+<img src="11-conformalprediction_files/figure-html/unnamed-chunk-12-1.png" alt="" width="672" />
 
 ``` r
 print(best.iter)
 ```
 
 ```
-## [1] 198
+## [1] 196
 ```
 
 ``` r
@@ -361,7 +361,7 @@ calibration_fitted <- predict(gbm_mod_final, newdat=calibration_dat)
 ```
 
 ```
-## Using 198 trees...
+## Using 196 trees...
 ```
 
 ``` r
@@ -392,7 +392,7 @@ ConformalInterval[,1] <- predict(gbm_mod_final, newdat=newdataset) - qhat
 ```
 
 ```
-## Using 198 trees...
+## Using 196 trees...
 ```
 
 ``` r
@@ -400,7 +400,7 @@ ConformalInterval[,2] <- predict(gbm_mod_final, newdat=newdataset) + qhat
 ```
 
 ```
-## Using 198 trees...
+## Using 196 trees...
 ```
 
 
@@ -414,7 +414,7 @@ mean(Y_new > ConformalInterval[,1] & Y_new < ConformalInterval[,2])
 ```
 
 ```
-## [1] 0.9545
+## [1] 0.9335
 ```
 
 

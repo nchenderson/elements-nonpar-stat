@@ -111,7 +111,7 @@ s_{p}^{2} = \frac{1}{m + n - 2}\Big\{ \sum_{i=1}^{n} (X_{i} - \bar{X})^{2} + \su
 
 * Under the assumption of normality, the null distribution of $T$ is a t distribution with $n + m - 2$ degrees of freedom.
                                                                         
-<img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="01-Introduction_files/figure-html/unnamed-chunk-2-1.png" alt="" width="672" />
 
 * Notice that the null distribution of $T$ depends on the parametric assumption that both $F_{X} = \textrm{Normal}(\mu_{x}, \sigma^{2})$
 and $F_{Y} = \textrm{Normal}(\mu_{y}, \sigma^{2})$. 
@@ -303,7 +303,7 @@ with the assumption $\varepsilon_{i} \sim \textrm{Normal}(0, \sigma^{2})$ often 
 * In this model, there are only 3 parameters: $(\beta_{0}, \beta_{1}, \sigma^{2})$,
 and the number of parameters stays fixed for all $n$.
                                                                           
-<img src="01-Introduction_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="01-Introduction_files/figure-html/unnamed-chunk-5-1.png" alt="" width="672" />
                                                                           
 ---
 
@@ -353,7 +353,7 @@ that the number of parameters to be estimated can change with the sample size.
 * Allowing the number of basis functions to grow with $n$ is important. 
      + For a sufficiently large number of basis functions, one should be able to approximate the true mean function $m(x)$ arbitrarily closely.
 
-<img src="01-Introduction_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="01-Introduction_files/figure-html/unnamed-chunk-6-1.png" alt="" width="672" />
 
 
 
@@ -384,7 +384,7 @@ Hence, the name: **classification and regression trees (CART)**.
 <!-- If true go left down tree. E.g., if someone is in treatment arm A, they get a prediction of 13.95  -->
 
 
-<img src="01-Introduction_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<img src="01-Introduction_files/figure-html/unnamed-chunk-8-1.png" alt="" width="672" />
 
 ---
 

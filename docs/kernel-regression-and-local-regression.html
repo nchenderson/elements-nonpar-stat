@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-03-22" />
+<meta name="date" content="2026-04-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -424,9 +424,16 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="14.2.1" data-path="decision-tree.html"><a href="decision-tree.html#determining-the-split-points"><i class="fa fa-check"></i><b>14.2.1</b> Determining the Split Points</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="decision-tree.html"><a href="decision-tree.html#recursive-partitioning-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3.1</b> Recursive Partitioning with Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3.2" data-path="decision-tree.html"><a href="decision-tree.html#tree-pruning"><i class="fa fa-check"></i><b>14.3.2</b> Tree Pruning</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Ensemble Methods for Prediction</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Tree Ensemble Methods for Prediction</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="ensemble.html"><a href="ensemble.html#motivation"><i class="fa fa-check"></i><b>15.1</b> Motivation</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -672,8 +679,8 @@ x_{i} &amp;=&amp; \frac{1}{2}(\textrm{Age at Visit 2}_{i} + \textrm{Age at Visit
 <span id="cb253-14"><a href="kernel-regression-and-local-regression.html#cb253-14" tabindex="-1"></a><span class="fu">points</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.7</span>)</span>
 <span id="cb253-15"><a href="kernel-regression-and-local-regression.html#cb253-15" tabindex="-1"></a><span class="fu">lines</span>(xseq, m.hat.loc, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
 <span id="cb253-16"><a href="kernel-regression-and-local-regression.html#cb253-16" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">0</span>)</span></code></pre></div>
-<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-5-1.png" alt="" width="672" /></p>
+<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-6-1.png" alt="" width="672" /></p>
 </div>
 <div id="k-nearest-neighbor-k-nn-regression" class="section level3 hasAnchor" number="12.2.3">
 <h3><span class="header-section-number">12.2.3</span> k-Nearest Neighbor (k-NN) Regression<a href="kernel-regression-and-local-regression.html#k-nearest-neighbor-k-nn-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -806,7 +813,7 @@ something like</li>
 <span id="cb256-7"><a href="kernel-regression-and-local-regression.html#cb256-7" tabindex="-1"></a><span class="st">     Gaussian Kernel&quot;</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>)</span>
 <span id="cb256-8"><a href="kernel-regression-and-local-regression.html#cb256-8" tabindex="-1"></a><span class="fu">points</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.7</span>)</span>
 <span id="cb256-9"><a href="kernel-regression-and-local-regression.html#cb256-9" tabindex="-1"></a><span class="fu">lines</span>(bone.nwest<span class="sc">$</span>x, bone.nwest<span class="sc">$</span>y, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-9-1.png" alt="" width="672" /></p>
 <div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="kernel-regression-and-local-regression.html#cb257-1" tabindex="-1"></a><span class="do">## Note that bone.nwest$x should equal xseq</span></span></code></pre></div>
 </div>
 </div>
@@ -899,10 +906,10 @@ input for this function has the same structure as our earlier Nadaraya-Watson <c
 <span id="cb259-6"><a href="kernel-regression-and-local-regression.html#cb259-6" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">main=</span><span class="st">&quot;Local Linear Estimator with hn=0.5&quot;</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>)</span>
 <span id="cb259-7"><a href="kernel-regression-and-local-regression.html#cb259-7" tabindex="-1"></a><span class="fu">points</span>(bonedat<span class="sc">$</span>age, bonedat<span class="sc">$</span>spnbmd, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.7</span>)</span>
 <span id="cb259-8"><a href="kernel-regression-and-local-regression.html#cb259-8" tabindex="-1"></a><span class="fu">lines</span>(xseq, bone.loclin, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-11-1.png" alt="" width="672" /></p>
 <ul>
 <li>Let’s compare this with the Nadaraya-Watson esitmate that we computed earlier
-<img src="12-kernel-regression_files/figure-html/unnamed-chunk-12-1.png" width="672" /></li>
+<img src="12-kernel-regression_files/figure-html/unnamed-chunk-12-1.png" alt="" width="672" /></li>
 </ul>
 </div>
 <div id="local-polynomial-regression" class="section level3 hasAnchor" number="12.4.4">
@@ -1259,7 +1266,7 @@ that we mentioned before with <span class="math inline">\(\tilde{h}_{n} = 0.1\)<
 <div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="kernel-regression-and-local-regression.html#cb264-1" tabindex="-1"></a><span class="fu">plot</span>(hseq, Cp, <span class="at">ylim=</span><span class="fu">c</span>(<span class="fl">0.001</span>,.<span class="dv">003</span>), <span class="at">main=</span><span class="st">&quot;Bone Data: Cp Stat for Loc. Avg. Est.&quot;</span>, </span>
 <span id="cb264-2"><a href="kernel-regression-and-local-regression.html#cb264-2" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;hn&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Cp&quot;</span>)</span>
 <span id="cb264-3"><a href="kernel-regression-and-local-regression.html#cb264-3" tabindex="-1"></a><span class="fu">lines</span>(hseq, Cp)</span></code></pre></div>
-<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-17-1.png" alt="" width="672" /></p>
 <ul>
 <li>More precisely, the value of <span class="math inline">\(h_{n}\)</span> from our sequence which has the smallest value of <span class="math inline">\(C_{p}(h_{n})\)</span> is <span class="math inline">\(0.81\)</span>.</li>
 </ul>
@@ -1287,13 +1294,13 @@ statistic is given below:</p></li>
 <div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="kernel-regression-and-local-regression.html#cb268-1" tabindex="-1"></a><span class="fu">plot</span>(hseq, LOOCV, <span class="at">ylim=</span><span class="fu">c</span>(<span class="fl">0.001</span>,.<span class="dv">003</span>), <span class="at">main=</span><span class="st">&quot;Bone Data: LOOCV Stat for Loc. Avg. Est.&quot;</span>, </span>
 <span id="cb268-2"><a href="kernel-regression-and-local-regression.html#cb268-2" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;hn&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;LOOCV&quot;</span>)</span>
 <span id="cb268-3"><a href="kernel-regression-and-local-regression.html#cb268-3" tabindex="-1"></a><span class="fu">lines</span>(hseq, LOOCV)</span></code></pre></div>
-<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-20-1.png" alt="" width="672" /></p>
 <ul>
 <li>The value of <span class="math inline">\(h_{n}\)</span> from our sequence which has the smallest value of <span class="math inline">\(\textrm{LOOCV}(h_{n})\)</span> is <span class="math inline">\(0.81\)</span>.</li>
 </ul>
 <div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="kernel-regression-and-local-regression.html#cb269-1" tabindex="-1"></a>hseq[<span class="fu">which.min</span>(LOOCV)]</span></code></pre></div>
 <pre><code>## [1] 0.81</code></pre>
-<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-22-1.png" alt="" width="672" /></p>
 </div>
 </div>
 <div id="additional-functions-in-r" class="section level2 hasAnchor" number="12.6">
@@ -1352,7 +1359,7 @@ regression with updated weights that reduce the influence of outliers. <code>loe
 <span id="cb272-7"><a href="kernel-regression-and-local-regression.html#cb272-7" tabindex="-1"></a><span class="fu">lines</span>(bone.low.fit<span class="sc">$</span>x[<span class="fu">order</span>(bone.low.fit<span class="sc">$</span>x)], bone.low.fit<span class="sc">$</span>fitted[<span class="fu">order</span>(bone.low.fit<span class="sc">$</span>x)], </span>
 <span id="cb272-8"><a href="kernel-regression-and-local-regression.html#cb272-8" tabindex="-1"></a>      <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="dv">3</span>)</span>
 <span id="cb272-9"><a href="kernel-regression-and-local-regression.html#cb272-9" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">0</span>, <span class="at">lty=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-24-1.png" alt="" width="672" /></p>
 <hr />
 <ul>
 <li>If you want to change the settings for <code>lowess</code> and <code>loess</code> so that they are using the exact same fitting procedure,
@@ -1382,7 +1389,7 @@ if you use <code>degree=1</code> with the locpoly function:</p></li>
 <span id="cb277-6"><a href="kernel-regression-and-local-regression.html#cb277-6" tabindex="-1"></a><span class="fu">plot</span>(locpoly.fit<span class="sc">$</span>x, locpoly.fit<span class="sc">$</span>y, <span class="at">main=</span><span class="st">&quot;Local Linear Regression with locpoly </span></span>
 <span id="cb277-7"><a href="kernel-regression-and-local-regression.html#cb277-7" tabindex="-1"></a><span class="st">     and MyLocLinear&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">xlab=</span><span class="st">&quot;age&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Relative Change&quot;</span>)</span>
 <span id="cb277-8"><a href="kernel-regression-and-local-regression.html#cb277-8" tabindex="-1"></a><span class="fu">lines</span>(locpoly.fit<span class="sc">$</span>x, mylocpoly.fit, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="12-kernel-regression_files/figure-html/unnamed-chunk-27-1.png" alt="" width="672" /></p>
 <hr />
 <ul>
 <li>The <code>supsmu</code> function implements Friedman’s “super smoother” (<span class="citation">Friedman (<a href="#ref-friedman1984">1984</a>)</span>).</li>

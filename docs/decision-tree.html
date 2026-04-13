@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-03-22" />
+<meta name="date" content="2026-04-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -424,9 +424,16 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="14.2.1" data-path="decision-tree.html"><a href="decision-tree.html#determining-the-split-points"><i class="fa fa-check"></i><b>14.2.1</b> Determining the Split Points</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3" data-path="decision-tree.html"><a href="decision-tree.html#regression-trees-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3</b> Regression Trees With Multiple Covariates</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="decision-tree.html"><a href="decision-tree.html#recursive-partitioning-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3.1</b> Recursive Partitioning with Multiple Covariates</a></li>
+<li class="chapter" data-level="14.3.2" data-path="decision-tree.html"><a href="decision-tree.html#tree-pruning"><i class="fa fa-check"></i><b>14.3.2</b> Tree Pruning</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Ensemble Methods for Prediction</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Tree Ensemble Methods for Prediction</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="ensemble.html"><a href="ensemble.html#motivation"><i class="fa fa-check"></i><b>15.1</b> Motivation</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -518,21 +525,19 @@ is</li>
 <ul>
 <li><p>For a single covariate, regression trees estimate the regression function by a piecewise constant
 function that is constant within each of several bins. We will focus on the well-known
-CART (Classification and Regression Trees) method for using regression trees.</p></li>
+<strong>CART (Classification and Regression Trees)</strong> method for using regression trees.</p></li>
 <li><p>More generally, with multivariate covariates, CART will fit a regression function that is constant
 within each of many multi-dimensional “rectangles”.</p></li>
-<li><p>The main difference between CART and the regressogram is that the placements
-and widths of the bins in CART are chosen in a more selective manner than the regressogram.</p></li>
-<li><p>Specifically, rather than just using a collection of bins of fixed width, CART chooses where to place the bin boundaries by considering
-the resulting within-bin sum of squares.</p></li>
+<li><p>The main difference between <strong>CART and the regressogram</strong> is that the <strong>placements</strong>
+and <strong>widths</strong> of the bins in CART are chosen in a more selective manner than the regressogram.</p></li>
+<li><p>Specifically, rather than just using a collection of bins of fixed width, CART chooses where to place the bin boundaries by considering the resulting <strong>within-bin sum of squares</strong>.</p></li>
 </ul>
 <hr />
 <ul>
-<li><p>CART constructs the bins through sequential binary splits of the x axis.</p></li>
-<li><p>In the first step, CART will divide the covariates into two bins <span class="math inline">\(B_{1}\)</span> and <span class="math inline">\(B_{2}\)</span>. These bins will
+<li><p>CART constructs the bins through <strong>sequential binary splits</strong> of the x axis.</p></li>
+<li><p>In the first step, CART will divide the covariates into two bins <span class="math inline">\(B_{1}\)</span> and <span class="math inline">\(B_{2}\)</span>. These bins
 have the form <span class="math inline">\(B_{1} = (-\infty, t_{1})\)</span> and <span class="math inline">\(B_{2} = [t_{1}, \infty)\)</span>.</p></li>
-<li><p>At the next step, CART will create <span class="math inline">\(4\)</span> bins by further dividing each of these two bins into two more bins. So,
-we will have four bins <span class="math inline">\(B_{11}, B_{12}, B_{21}, B_{22}\)</span>.</p></li>
+<li><p>At the next step, CART will create <span class="math inline">\(4\)</span> bins by further dividing each of these two bins into two more bins. So, we will have four bins <span class="math inline">\(B_{11}, B_{12}, B_{21}, B_{22}\)</span>.</p></li>
 <li><p>Bins <span class="math inline">\(B_{11}\)</span> and <span class="math inline">\(B_{12}\)</span> will have the form <span class="math inline">\(B_{11} = (-\infty, t_{11})\)</span> and <span class="math inline">\(B_{12} = [t_{11}, t_{1})\)</span>,
 and bins <span class="math inline">\(B_{21}\)</span> and <span class="math inline">\(B_{22}\)</span> will have the form <span class="math inline">\(B_{21} = [t_{1}, t_{21})\)</span> and <span class="math inline">\(B_{22} = [t_{21}, \infty)\)</span>.</p></li>
 <li><p>You can repeat this process to get smaller and smaller bins. Usually, this process will stop once
@@ -606,7 +611,8 @@ where <span class="math inline">\(\textrm{WBSS}_{a}(t)\)</span> is the within-bi
 <li><p>The splitting points <span class="math inline">\(t_{11}\)</span> and <span class="math inline">\(t_{21}\)</span> will further partition the dataset into <span class="math inline">\(4\)</span> datasets. Additional splitting points
 <span class="math inline">\(t_{12}, t_{22}, t_{32}, t_{42}\)</span> which further partition the dataset, can be found by minimizing the within-bin sum of squares
 for each of these <span class="math inline">\(4\)</span> datasets.</p></li>
-<li><p>This algorithm for constructing smaller and smaller bins is often referred to as recursive partitioning.</p></li>
+<li><p>This algorithm for constructing smaller and smaller bins is often referred to as
+<strong>recursive partitioning</strong>.</p></li>
 </ul>
 </div>
 </div>
@@ -647,7 +653,61 @@ Notice that the regression function estimate for men vs. women only differs for
 Figure 14.9: Plot of regression function estimate that corresponds to the decision tree in the previous figure.
 </p>
 </div>
+<div id="recursive-partitioning-with-multiple-covariates" class="section level3 hasAnchor" number="14.3.1">
+<h3><span class="header-section-number">14.3.1</span> Recursive Partitioning with Multiple Covariates<a href="decision-tree.html#recursive-partitioning-with-multiple-covariates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>For each observation, we have a vector of <span class="math inline">\(p\)</span> covariates <span class="math inline">\(\mathbf{x}_{i} = (x_{i1}, \ldots, x_{ip})\)</span>.</p></li>
+<li><p>When splitting on the <span class="math inline">\(j^{th}\)</span> covariate with splitting point <span class="math inline">\(t\)</span> (for the first split), we will define the <strong>within-bin sum of squares</strong> as
+<span class="math display">\[\begin{eqnarray}
+\textrm{WBSS}(t, j)
+&amp;=&amp;  \sum_{i=1}^{n} (Y_{i} - \bar{Y}_{1j})^{2}I(x_{ij} &lt; t) + \sum_{i=1}^{n} (Y_{i} - \bar{Y}_{2j})^{2}I(x_{ij} \geq t) \nonumber
+\end{eqnarray}\]</span>
+where <span class="math inline">\(\bar{Y}_{1j} = \sum_{i=1}^{n}Y_{i}I(x_{ij} &lt; t)/\sum_{i=1}^{n} I(x_{ij} &lt; t)\)</span>
+and <span class="math inline">\(\bar{Y}_{2j} = \sum_{i=1}^{n}Y_{i}I(x_{ij} \geq t)/\sum_{i=1}^{n} I(x_{ij} \geq t)\)</span>.</p></li>
+<li><p>Goal: Choose the <strong>splitting value</strong> and <strong>splitting variable</strong> pair <span class="math inline">\((t,j)\)</span>
+that minimizes <span class="math inline">\(\textrm{WBSS}(t, j)\)</span>.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>After obtaining the first splitting variable-splitting value pair <span class="math inline">\((t_{best}, j_{best})\)</span>,
+you can repeat the same procedure on the two dataset on either side of the split.
+<span class="math display">\[\begin{eqnarray}
+\mathcal{D}_{1} &amp;=&amp; \big\{ (Y_{i}, x_{ij_{best}}): x_{ij_{best}} &lt; t_{best} \big\} \nonumber \\
+\mathcal{D}_{2} &amp;=&amp; \big\{ (Y_{i}, x_{ij_{best}}): x_{ij_{best}} \geq t_{best} \big\} \nonumber
+\end{eqnarray}\]</span></p></li>
+<li><p>You can repeat the same procedure to “grow out” the tree.</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>One can keep repeating this procedure to grow out a large tree.</p></li>
+<li><p>You can keep repeating the procedure until some stopping criterion is met.</p></li>
+<li><p>A common choice is to keep growing the tree until the number of observations
+in a terminal node (or leaf) below a split would be less than some pre-specified value such as <span class="math inline">\(5\)</span>.</p></li>
+</ul>
+</div>
+<div id="tree-pruning" class="section level3 hasAnchor" number="14.3.2">
+<h3><span class="header-section-number">14.3.2</span> Tree Pruning<a href="decision-tree.html#tree-pruning" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>A tree which has been grown until the minimal node stopping criterion will
+typically have <strong>too much variance</strong>.</p>
+<ul>
+<li>Denote this “fully grown” tree by <span class="math inline">\(T_{full}\)</span>.</li>
+</ul></li>
+<li><p>“Pruning” a decision tree to have fewer terminal nodes will typically have better
+predictive performance.</p></li>
+<li><p>Let <span class="math inline">\(T\)</span> denote a decision tree and let <span class="math inline">\(|T|\)</span> denote the number of terminal nodes of <span class="math inline">\(T\)</span>.</p></li>
+<li><p>To evaluate different sub-trees of the full tree <span class="math inline">\(T_{full}\)</span>, a <strong>penalized objective</strong>
+function is typically used.</p></li>
+<li><p>Penalized criterion to minimize:
+<span class="math display">\[\begin{equation}
+C_{\alpha}(T) = \sum_{m=1}^{T} n_{m}R_{m}(T) + \alpha |T|
+\end{equation}\]</span>
+where <span class="math inline">\(n_{m}\)</span> is the number of observations in the <span class="math inline">\(m^{th}\)</span> terminal node of tree <span class="math inline">\(T\)</span>
+and <span class="math inline">\(R_{m}(T)\)</span> is the residual sum of squares for observations in the <span class="math inline">\(m^{th}\)</span> terminal
+node of <span class="math inline">\(T\)</span>.</p></li>
+</ul>
 
+</div>
 </div>
 </div>
             </section>
