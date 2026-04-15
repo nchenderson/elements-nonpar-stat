@@ -280,5 +280,12 @@ determining-the-split-points
 regression-trees-with-multiple-covariates
 recursive-partitioning-with-multiple-covariates
 tree-pruning
+fitting-regression-trees-in-r
 ensemble
 motivation
+gradient-boosting-with-regression-trees
+estimating-the-tree-in-each-iteration
+adding-trees-and-learning-rate
+choice-of-loss-function
+xgboost
+xgboost-example

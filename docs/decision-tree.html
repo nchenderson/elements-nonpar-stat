@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-04-12" />
+<meta name="date" content="2026-04-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -429,10 +429,21 @@ div.csl-indent {
 <li class="chapter" data-level="14.3.1" data-path="decision-tree.html"><a href="decision-tree.html#recursive-partitioning-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3.1</b> Recursive Partitioning with Multiple Covariates</a></li>
 <li class="chapter" data-level="14.3.2" data-path="decision-tree.html"><a href="decision-tree.html#tree-pruning"><i class="fa fa-check"></i><b>14.3.2</b> Tree Pruning</a></li>
 </ul></li>
+<li class="chapter" data-level="14.4" data-path="decision-tree.html"><a href="decision-tree.html#fitting-regression-trees-in-r"><i class="fa fa-check"></i><b>14.4</b> Fitting Regression Trees in R</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Tree Ensemble Methods for Prediction</a>
 <ul>
 <li class="chapter" data-level="15.1" data-path="ensemble.html"><a href="ensemble.html#motivation"><i class="fa fa-check"></i><b>15.1</b> Motivation</a></li>
+<li class="chapter" data-level="15.2" data-path="ensemble.html"><a href="ensemble.html#gradient-boosting-with-regression-trees"><i class="fa fa-check"></i><b>15.2</b> Gradient Boosting with Regression Trees</a></li>
+<li class="chapter" data-level="15.3" data-path="ensemble.html"><a href="ensemble.html#estimating-the-tree-in-each-iteration"><i class="fa fa-check"></i><b>15.3</b> Estimating the Tree in each Iteration</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="ensemble.html"><a href="ensemble.html#adding-trees-and-learning-rate"><i class="fa fa-check"></i><b>15.3.1</b> Adding Trees and Learning Rate</a></li>
+<li class="chapter" data-level="15.3.2" data-path="ensemble.html"><a href="ensemble.html#choice-of-loss-function"><i class="fa fa-check"></i><b>15.3.2</b> Choice of Loss Function</a></li>
+</ul></li>
+<li class="chapter" data-level="15.4" data-path="ensemble.html"><a href="ensemble.html#xgboost"><i class="fa fa-check"></i><b>15.4</b> XGBoost</a>
+<ul>
+<li class="chapter" data-level="15.4.1" data-path="ensemble.html"><a href="ensemble.html#xgboost-example"><i class="fa fa-check"></i><b>15.4.1</b> XGBoost Example:</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -700,14 +711,186 @@ predictive performance.</p></li>
 function is typically used.</p></li>
 <li><p>Penalized criterion to minimize:
 <span class="math display">\[\begin{equation}
-C_{\alpha}(T) = \sum_{m=1}^{T} n_{m}R_{m}(T) + \alpha |T|
+C_{\alpha}(T) = \sum_{m=1}^{|T|} n_{m}R_{m}(T) + \alpha |T|
 \end{equation}\]</span>
-where <span class="math inline">\(n_{m}\)</span> is the number of observations in the <span class="math inline">\(m^{th}\)</span> terminal node of tree <span class="math inline">\(T\)</span>
-and <span class="math inline">\(R_{m}(T)\)</span> is the residual sum of squares for observations in the <span class="math inline">\(m^{th}\)</span> terminal
-node of <span class="math inline">\(T\)</span>.</p></li>
+where <span class="math inline">\(n_{m}\)</span> is the number of observations in the <span class="math inline">\(m^{th}\)</span> terminal node of tree <span class="math inline">\(T\)</span></p></li>
+<li><p><span class="math inline">\(R_{m}(T)\)</span> is the residual sum of squares for observations in the <span class="math inline">\(m^{th}\)</span> terminal
+node of <span class="math inline">\(T\)</span> and is defined as
+<span class="math display">\[\begin{equation}
+R_{m}(T) = \sum_{i=1}^{n} \big( Y_{i} - \bar{Y}_{m} \big)^{2}
+\end{equation}\]</span>
+where <span class="math inline">\(\bar{Y}_{m}\)</span> is the mean of <span class="math inline">\(Y_{i}\)</span> among observations assigned to the <span class="math inline">\(m^{th}\)</span> terminal node
+of <span class="math inline">\(R_{m}(T)\)</span>.</p></li>
 </ul>
-
+<hr />
 </div>
+</div>
+<div id="fitting-regression-trees-in-r" class="section level2 hasAnchor" number="14.4">
+<h2><span class="header-section-number">14.4</span> Fitting Regression Trees in R<a href="decision-tree.html#fitting-regression-trees-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>To illustrate the use of regression trees in R, we can use the <code>Bikeshare</code> data.</p></li>
+<li><p>This has 8,645 observations and 15 variables.</p></li>
+<li><p>Outcome of interest: <code>bikers</code> (Hourly count of rental bikes)</p></li>
+<li><p>Continuous Covariates: <code>temp</code> (normalized temperature), <code>atemp</code> (normalized feeling temperature), <code>hum</code> (humidity), and <code>windspeed.</code></p></li>
+<li><p>Categorical (more than 2 levels) covariates: <code>season</code>, <code>weathersit</code></p></li>
+<li><p>Binary covariates: <code>holiday</code> and <code>workingday</code></p></li>
+</ul>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="decision-tree.html#cb312-1" tabindex="-1"></a><span class="fu">head</span>(Bikeshare)</span></code></pre></div>
+<pre><code>##   season mnth day hr holiday weekday workingday   weathersit temp  atemp  hum
+## 1      1  Jan   1  0       0       6          0        clear 0.24 0.2879 0.81
+## 2      1  Jan   1  1       0       6          0        clear 0.22 0.2727 0.80
+## 3      1  Jan   1  2       0       6          0        clear 0.22 0.2727 0.80
+## 4      1  Jan   1  3       0       6          0        clear 0.24 0.2879 0.75
+## 5      1  Jan   1  4       0       6          0        clear 0.24 0.2879 0.75
+## 6      1  Jan   1  5       0       6          0 cloudy/misty 0.24 0.2576 0.75
+##   windspeed casual registered bikers
+## 1    0.0000      3         13     16
+## 2    0.0000      8         32     40
+## 3    0.0000      5         27     32
+## 4    0.0000      3         10     13
+## 5    0.0000      0          1      1
+## 6    0.0896      0          1      1</code></pre>
+<ul>
+<li>Convert <code>season</code>, <code>mnth</code>, and <code>weathersit</code> to <strong>factor variables</strong></li>
+</ul>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="decision-tree.html#cb314-1" tabindex="-1"></a>Bikeshare<span class="sc">$</span>season <span class="ot">&lt;-</span> <span class="fu">factor</span>(Bikeshare<span class="sc">$</span>season)</span>
+<span id="cb314-2"><a href="decision-tree.html#cb314-2" tabindex="-1"></a>Bikeshare<span class="sc">$</span>mnth <span class="ot">&lt;-</span> <span class="fu">factor</span>(Bikeshare<span class="sc">$</span>mnth)</span>
+<span id="cb314-3"><a href="decision-tree.html#cb314-3" tabindex="-1"></a>Bikeshare<span class="sc">$</span>weathersit <span class="ot">&lt;-</span> <span class="fu">factor</span>(Bikeshare<span class="sc">$</span>weathersit)</span></code></pre></div>
+<hr />
+<ul>
+<li>The package <code>rpart</code> is one of the most well-known R packages for
+fitting single decision-tree models:</li>
+</ul>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="decision-tree.html#cb315-1" tabindex="-1"></a><span class="fu">library</span>(rpart)</span></code></pre></div>
+<ul>
+<li><p>The main term which controls the complexity of the fitted tree
+is the <strong>complexity parameter</strong> in <code>rpart</code></p>
+<ul>
+<li>This is like <span class="math inline">\(\alpha\)</span> in our description of tree pruning</li>
+</ul></li>
+<li><p>To first fit a full tree that does not penalize tree complexity at all, we
+should set <code>cp = 0</code></p></li>
+<li><p>The following code will fit a regression tree with <code>bikers</code> as the outcome and
+all other variables in <code>Bikeshare</code> treated as covariates</p></li>
+</ul>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="decision-tree.html#cb316-1" tabindex="-1"></a>full_tree <span class="ot">&lt;-</span> <span class="fu">rpart</span>(bikers <span class="sc">~</span> . <span class="sc">-</span> casual <span class="sc">-</span> registered, <span class="at">data =</span> Bikeshare, </span>
+<span id="cb316-2"><a href="decision-tree.html#cb316-2" tabindex="-1"></a>                   <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">cp =</span> <span class="dv">0</span>, <span class="at">minsplit =</span> <span class="dv">5</span>))</span></code></pre></div>
+<ul>
+<li><p>The parameter <code>minsplit = 5</code> means that 5 observations need to be present in a node in order to consider a split.</p></li>
+<li><p>You can plot this full tree (this will be very messy and hard to read)</p></li>
+</ul>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="decision-tree.html#cb317-1" tabindex="-1"></a><span class="fu">plot</span>(full_tree)</span>
+<span id="cb317-2"><a href="decision-tree.html#cb317-2" tabindex="-1"></a><span class="fu">text</span>(full_tree, <span class="at">use.n =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="14-cart_files/figure-html/unnamed-chunk-8-1.png" alt="" width="672" /></p>
+<ul>
+<li>The <code>cptable</code> component of <code>full_tree</code> reports 5 pieces of information about the within-bin sum of squares after every split.
+<ul>
+<li><code>CP</code> - This is the tuning parameter (<span class="math inline">\(\alpha\)</span>) that penalizes tree size. Smaller values of <code>CP</code> lead to larger trees.</li>
+<li><code>nsplit</code> - Number of internal splits in the tree at that specific CP level.</li>
+<li><code>rel error</code> - Within-bin sum of squares evaluated on the training data, relative to the root node.</li>
+<li><code>xerror</code> - 10-fold cross-validation estimate of prediction error for this tree.</li>
+<li><code>xstd</code> is the standard error of the cross-validation estimate <code>xerror</code></li>
+</ul></li>
+<li>Let’s look at the first 8 rows of the <code>cptable</code> component:</li>
+</ul>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="decision-tree.html#cb318-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">head</span>(full_tree<span class="sc">$</span>cptable, <span class="dv">8</span>), <span class="dv">4</span>)</span></code></pre></div>
+<pre><code>##       CP nsplit rel error xerror   xstd
+## 1 0.3118      0    1.0000 1.0003 0.0179
+## 2 0.1414      1    0.6882 0.6884 0.0139
+## 3 0.0538      2    0.5468 0.5488 0.0113
+## 4 0.0300      4    0.4392 0.4405 0.0092
+## 5 0.0246      7    0.3493 0.3510 0.0084
+## 6 0.0176      8    0.3247 0.3263 0.0075
+## 7 0.0145     10    0.2894 0.2989 0.0070
+## 8 0.0117     11    0.2750 0.2890 0.0068</code></pre>
+<ul>
+<li><p>To pick the tree which has the smallest cross-validation estimate of predictive performance, you want to look at the <code>xerror</code> column of the <code>cptable</code> data frame.</p></li>
+<li><p>Let’s plot <code>xerror</code> as a function of the penalty term <code>CP</code> (<span class="math inline">\(\alpha\)</span>)
+<img src="14-cart_files/figure-html/unnamed-chunk-10-1.png" alt="" width="672" /></p></li>
+<li><p>It looks like a very small value of <span class="math inline">\(\alpha\)</span> has the smallest cross-validation estimate.</p></li>
+<li><p>We can find the row with the lowest cross-validation estimate with the following code:</p></li>
+</ul>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="decision-tree.html#cb320-1" tabindex="-1"></a>best_row <span class="ot">&lt;-</span> <span class="fu">which.min</span>(full_tree<span class="sc">$</span>cptable[, <span class="st">&quot;xerror&quot;</span>])</span>
+<span id="cb320-2"><a href="decision-tree.html#cb320-2" tabindex="-1"></a>best_row</span></code></pre></div>
+<pre><code>## 379 
+## 379</code></pre>
+<ul>
+<li>The size of the “best tree” is quite large:</li>
+</ul>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="decision-tree.html#cb322-1" tabindex="-1"></a><span class="fu">round</span>(full_tree<span class="sc">$</span>cptable[best_row,], <span class="dv">4</span>)</span></code></pre></div>
+<pre><code>##        CP    nsplit rel error    xerror      xstd 
+##    0.0001  466.0000    0.0398    0.1090    0.0044</code></pre>
+<ul>
+<li>You can fit the “best tree” with the following code:</li>
+</ul>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="decision-tree.html#cb324-1" tabindex="-1"></a>cp.best <span class="ot">&lt;-</span> full_tree<span class="sc">$</span>cptable[best_row, <span class="st">&quot;CP&quot;</span>]</span>
+<span id="cb324-2"><a href="decision-tree.html#cb324-2" tabindex="-1"></a>best_tree <span class="ot">&lt;-</span> <span class="fu">rpart</span>(bikers <span class="sc">~</span> . <span class="sc">-</span> casual <span class="sc">-</span> registered, <span class="at">data =</span> Bikeshare, </span>
+<span id="cb324-3"><a href="decision-tree.html#cb324-3" tabindex="-1"></a>                   <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">cp =</span> cp.best, <span class="at">minsplit =</span> <span class="dv">5</span>))</span></code></pre></div>
+<hr />
+<ul>
+<li>An alternative to selecting the penalty term with the smallest cross-validation score is to use the <strong>“1-SE Rule”</strong>.
+<ul>
+<li>This picks the smallest tree where <code>xerror</code> is within one standard error (xstd) of the minimum value <code>xerror</code>.</li>
+<li>This leads to more <strong>interpretable trees</strong> which have similar cross-validation estimates to that of the minimum.</li>
+<li>Using the 1-SE rule often has similar predictive performance or not much worse predictive performance than selecting the tree with the smallest cross-validation estimate.</li>
+</ul></li>
+<li>To select the tree according to the 1-SE rule, let’s first find the 1-SE cutoff value:</li>
+</ul>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="decision-tree.html#cb325-1" tabindex="-1"></a>onese_thresh <span class="ot">&lt;-</span> full_tree<span class="sc">$</span>cptable[best_row,<span class="st">&quot;xerror&quot;</span>] <span class="sc">+</span> full_tree<span class="sc">$</span>cptable[best_row,<span class="st">&quot;xstd&quot;</span>]</span>
+<span id="cb325-2"><a href="decision-tree.html#cb325-2" tabindex="-1"></a>onese_thresh</span></code></pre></div>
+<pre><code>## [1] 0.1133936</code></pre>
+<ul>
+<li>Then, find the smallest tree where <code>xerror</code> is less than the 1-SE threshold <code>onese_thresh</code></li>
+</ul>
+<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="decision-tree.html#cb327-1" tabindex="-1"></a>LTMat <span class="ot">&lt;-</span> full_tree<span class="sc">$</span>cptable[full_tree<span class="sc">$</span>cptable[,<span class="st">&quot;xerror&quot;</span>] <span class="sc">&lt;=</span> onese_thresh,]</span>
+<span id="cb327-2"><a href="decision-tree.html#cb327-2" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(LTMat))</span></code></pre></div>
+<pre><code>##               CP nsplit  rel error    xerror        xstd
+## 152 0.0002237307    201 0.07157133 0.1131303 0.004122367
+## 159 0.0002092131    209 0.06984801 0.1133348 0.004160211
+## 160 0.0002049323    210 0.06963879 0.1132303 0.004160931
+## 161 0.0002042726    211 0.06943386 0.1131931 0.004159624
+## 162 0.0002038211    212 0.06922959 0.1131412 0.004159547
+## 163 0.0002033108    213 0.06902577 0.1128743 0.004149298</code></pre>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="decision-tree.html#cb329-1" tabindex="-1"></a>oneserow <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">row.names</span>(LTMat)[<span class="dv">1</span>])</span>
+<span id="cb329-2"><a href="decision-tree.html#cb329-2" tabindex="-1"></a><span class="fu">round</span>(full_tree<span class="sc">$</span>cptable[oneserow,], <span class="dv">6</span>)</span></code></pre></div>
+<pre><code>##         CP     nsplit  rel error     xerror       xstd 
+##   0.000224 201.000000   0.071571   0.113130   0.004122</code></pre>
+<ul>
+<li>Even using the 1-SE rule, the tree selected is quite large.
+<ul>
+<li>This will be difficult to generate a plot of the decision tree which is not extremely messy.</li>
+</ul></li>
+<li>You can fit the “1-SE tree” with the following code:</li>
+</ul>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="decision-tree.html#cb331-1" tabindex="-1"></a>cp<span class="fl">.1</span>se <span class="ot">&lt;-</span> full_tree<span class="sc">$</span>cptable[oneserow, <span class="st">&quot;CP&quot;</span>]</span>
+<span id="cb331-2"><a href="decision-tree.html#cb331-2" tabindex="-1"></a>onese_tree <span class="ot">&lt;-</span> <span class="fu">rpart</span>(bikers <span class="sc">~</span> . <span class="sc">-</span> casual <span class="sc">-</span> registered, <span class="at">data =</span> Bikeshare, </span>
+<span id="cb331-3"><a href="decision-tree.html#cb331-3" tabindex="-1"></a>                   <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">cp =</span> cp<span class="fl">.1</span>se, <span class="at">minsplit =</span> <span class="dv">5</span>))</span></code></pre></div>
+<hr />
+<ul>
+<li><p>Let’s plot a decision tree using a larger value of <span class="math inline">\(\alpha\)</span> than what was found by the 1-SE rule.</p></li>
+<li><p>If we set <span class="math inline">\(\alpha = 0.013\)</span>, this will give us a tree with <span class="math inline">\(9\)</span> terminal nodes.</p></li>
+</ul>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="decision-tree.html#cb332-1" tabindex="-1"></a>short_tree <span class="ot">&lt;-</span> <span class="fu">rpart</span>(bikers <span class="sc">~</span> . <span class="sc">-</span> casual <span class="sc">-</span> registered, <span class="at">data =</span> Bikeshare, </span>
+<span id="cb332-2"><a href="decision-tree.html#cb332-2" tabindex="-1"></a>                   <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">cp =</span> <span class="fl">0.013</span>, <span class="at">minsplit =</span> <span class="dv">5</span>))</span></code></pre></div>
+<p><img src="14-cart_files/figure-html/unnamed-chunk-18-1.png" alt="" width="672" /></p>
+<ul>
+<li>Plotting this short decision tree suggests that <code>hr</code> is a <strong>very important covariate</strong>.</li>
+</ul>
+<hr />
+<ul>
+<li>Let’s look at the <strong>variable importance</strong> scores from the tree chosen from
+minimizing the cross-validation estimate of prediction error.
+<ul>
+<li>This is in the <code>variable.importance</code> component of <code>best_tree</code></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="decision-tree.html#cb333-1" tabindex="-1"></a><span class="fu">print</span>(best_tree<span class="sc">$</span>variable.importance)</span></code></pre></div>
+<pre><code>##         hr       temp      atemp       mnth        day     season        hum 
+## 95946512.5 27741590.5 27697159.2 24093460.4 22362421.2 18787819.7  9787881.4 
+## workingday    weekday weathersit  windspeed    holiday 
+##  8711169.5  5928351.2  3215345.1  2551534.4   909975.1</code></pre>
+<p><img src="14-cart_files/figure-html/unnamed-chunk-20-1.png" alt="" width="672" /></p>
+
 </div>
 </div>
             </section>

@@ -333,16 +333,185 @@ function is typically used.
 
 * Penalized criterion to minimize:
 \begin{equation}
-C_{\alpha}(T) = \sum_{m=1}^{T} n_{m}R_{m}(T) + \alpha |T|
+C_{\alpha}(T) = \sum_{m=1}^{|T|} n_{m}R_{m}(T) + \alpha |T|
 \end{equation}
 where $n_{m}$ is the number of observations in the $m^{th}$ terminal node of tree $T$
-and $R_{m}(T)$ is the residual sum of squares for observations in the $m^{th}$ terminal
-node of $T$.
 
 
+* $R_{m}(T)$ is the residual sum of squares for observations in the $m^{th}$ terminal
+node of $T$ and is defined as
+\begin{equation}
+R_{m}(T) = \sum_{i=1}^{n} \big( Y_{i} - \bar{Y}_{m} \big)^{2}
+\end{equation}
+where $\bar{Y}_{m}$ is the mean of $Y_{i}$ among observations assigned to the $m^{th}$ terminal node
+of $R_{m}(T)$.
+
+---
+
+## Fitting Regression Trees in R
+
+* To illustrate the use of regression trees in R, we can use the `Bikeshare` data.
+
+* This has 8,645 observations and 15 variables.
+
+* Outcome of interest: `bikers` (Hourly count of rental bikes)
+
+* Continuous Covariates: `temp` (normalized temperature), `atemp` (normalized feeling temperature), `hum` (humidity), and `windspeed.`
+
+* Categorical (more than 2 levels) covariates: `season`, `weathersit`
+
+* Binary covariates: `holiday` and `workingday`
+
+```{r, echo=FALSE}
+Bikeshare <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/Bikeshare.csv")
+```
+
+```{r, echo=TRUE}
+head(Bikeshare)
+```
+
+* Convert `season`, `mnth`, and `weathersit` to **factor variables**
+```{r, echo=TRUE}
+Bikeshare$season <- factor(Bikeshare$season)
+Bikeshare$mnth <- factor(Bikeshare$mnth)
+Bikeshare$weathersit <- factor(Bikeshare$weathersit)
+```
+
+---
+
+* The package `rpart` is one of the most well-known R packages for 
+fitting single decision-tree models:
+```{r, echo=TRUE}
+library(rpart)
+```
+
+* The main term which controls the complexity of the fitted tree
+is the **complexity parameter** in `rpart`
+    + This is like $\alpha$ in our description of tree pruning
+
+* To first fit a full tree that does not penalize tree complexity at all, we 
+should set `cp = 0`
+  
+* The following code will fit a regression tree with `bikers` as the outcome and
+all other variables in `Bikeshare` treated as covariates
+```{r, echo=TRUE}
+full_tree <- rpart(bikers ~ . - casual - registered, data = Bikeshare, 
+                   control = rpart.control(cp = 0, minsplit = 5))
+```
+
+* The parameter `minsplit = 5` means that 5 observations need to be present in a node in order to consider a split.
+
+* You can plot this full tree (this will be very messy and hard to read)
+```{r, echo=TRUE}
+plot(full_tree)
+text(full_tree, use.n = TRUE)
+```
+
+* The `cptable` component of `full_tree` reports 5 pieces of information about the within-bin sum of squares after every split.
+    + `CP` - This is the tuning parameter ($\alpha$) that penalizes tree size. Smaller values of `CP` lead to larger trees.
+    + `nsplit` - Number of internal splits in the tree at that specific CP level. 
+    + `rel error` - Within-bin sum of squares evaluated on the training data, relative to the root node.
+    + `xerror` - 10-fold cross-validation estimate of prediction error for this tree.
+    + `xstd` is the standard error of the cross-validation estimate `xerror`
+
+* Let's look at the first 8 rows of the `cptable` component:
+```{r, echo=TRUE}
+round(head(full_tree$cptable, 8), 4)
+```
+
+* To pick the tree which has the smallest cross-validation estimate of predictive performance, you want to look at the `xerror` column of the `cptable` data frame.
+
+* Let's plot `xerror` as a function of the penalty term `CP` ($\alpha$)
+```{r, echo=FALSE}
+plot(full_tree$cptable[1:30,"CP"], full_tree$cptable[1:30,"xerror"], xlab=expression(alpha),
+     ylab="Cross-validation estimate of prediction error",
+     main="Bikeshare Data")
+```
+
+* It looks like a very small value of $\alpha$ has the smallest cross-validation estimate.
+
+* We can find the row with the lowest cross-validation estimate with the following code:
+```{r, echo=TRUE}
+best_row <- which.min(full_tree$cptable[, "xerror"])
+best_row
+```
+
+* The size of the "best tree" is quite large:
+```{r, echo=TRUE}
+round(full_tree$cptable[best_row,], 4)
+```
+
+* You can fit the "best tree" with the following code:
+```{r, echo=TRUE}
+cp.best <- full_tree$cptable[best_row, "CP"]
+best_tree <- rpart(bikers ~ . - casual - registered, data = Bikeshare, 
+                   control = rpart.control(cp = cp.best, minsplit = 5))
+```
+
+---
+
+* An alternative to selecting the penalty term with the smallest cross-validation score is to use the **"1-SE Rule"**. 
+     + This picks the smallest tree where `xerror` is within one standard error (xstd) of the minimum value `xerror`. 
+     + This leads to more **interpretable trees** which have similar cross-validation estimates to that of the minimum.
+     + Using the 1-SE rule often has similar predictive performance or not much worse predictive performance than selecting the tree with the smallest cross-validation estimate.
+
+* To select the tree according to the 1-SE rule, let's first find the 1-SE cutoff value:
+```{r, echo=TRUE}
+onese_thresh <- full_tree$cptable[best_row,"xerror"] + full_tree$cptable[best_row,"xstd"]
+onese_thresh
+```
+
+* Then, find the smallest tree where `xerror` is less than the 1-SE threshold `onese_thresh`
+```{r, echo=TRUE}
+LTMat <- full_tree$cptable[full_tree$cptable[,"xerror"] <= onese_thresh,]
+print(head(LTMat))
+oneserow <- as.numeric(row.names(LTMat)[1])
+round(full_tree$cptable[oneserow,], 6)
+```
+
+* Even using the 1-SE rule, the tree selected is quite large.
+    + This will be difficult to generate a plot of the decision tree which is not extremely messy.
+
+* You can fit the "1-SE tree" with the following code:
+```{r, echo=TRUE}
+cp.1se <- full_tree$cptable[oneserow, "CP"]
+onese_tree <- rpart(bikers ~ . - casual - registered, data = Bikeshare, 
+                   control = rpart.control(cp = cp.1se, minsplit = 5))
+```
+
+---
+
+* Let's plot a decision tree using a larger value of $\alpha$ than what was found by the 1-SE rule.
+
+* If we set $\alpha = 0.013$, this will give us a tree with $9$ terminal nodes.
+```{r, echo=TRUE}
+short_tree <- rpart(bikers ~ . - casual - registered, data = Bikeshare, 
+                   control = rpart.control(cp = 0.013, minsplit = 5))
+```
+
+```{r, echo=FALSE, fig.caption="Short regression tree for Bikeshare data. Regression tree was fit using a value of alpha = 0.0085."}
+rpart.plot(short_tree, extra=0, cex=1.2)
+```
+
+* Plotting this short decision tree suggests that `hr` is a **very important covariate**.
+
+---
+
+* Let's look at the **variable importance** scores from the tree chosen from 
+minimizing the cross-validation estimate of prediction error.
+    + This is in the `variable.importance` component of `best_tree`
+```{r, echo=TRUE}
+print(best_tree$variable.importance)
+```
 
 
-
-
-
+```{r, echo=FALSE}
+barplot(
+  best_tree$variable.importance, 
+  main = "Variable Importance Scores for Decision Tree using Bikeshare Data", 
+  col = "steelblue", 
+  las = 2,
+  cex.names = 0.8
+)
+```
 

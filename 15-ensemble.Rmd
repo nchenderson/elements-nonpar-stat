@@ -16,3 +16,193 @@ one region to another.
 
 * You can often have small number of observations in some terminal nodes.
 
+---
+
+* Using **ensembles of trees** has been found 
+
+* Two well-known tree ensemble methods:
+    + **Random Forests**
+    + **Gradient Boosting** with Trees
+
+## Gradient Boosting with Regression Trees
+
+* Boosting is an ensemble method that takes a **sequential appraoch** to building an ensemble of trees.
+
+* Uses a somewhat similar idea to **forward selection** in linear regression.
+
+* Each tree is typically a "shallow tree" (weak learner).
+    + Each tree, by itself, often **does not** have strong performance.
+    + Each tree: high bias, but low variance.
+    + Aggregating all trees leads to stronger performance.
+
+- Idea: Start with a **single tree**
+    -   Add more trees one at a time.
+    -   Each new tree tries to improve on the previous ones.
+
+---
+
+* **Goal:** We want to estimate a regression function $f_{M}(\mathbf{x})$ that can be expressed as the sum of M trees: 
+\begin{equation}
+    f_{M}(\mathbf{x}) = \sum_{m=1}^{M} T(\mathbf{x}; \Theta_{m}) 
+    = \sum_{m=1}^{M} \sum_{h=1}^{H} \mu_{hm} I( \mathbf{x} \in A_{hm} ). \nonumber 
+\end{equation}
+
+* To describe this procedure, let $T(\mathbf{x}; \Theta_{m})$ denote the "fitted value" for the input covariate vector $\mathbf{x}$ when using a tree with parameters $\Theta_{m}$.
+
+* Parameters of the $m^{th}$ tree: $\Theta_{m} = \{ A_{hm}, \mu_{hm} \}_{h=1}^{H}$, where
+    + $H$ disjoint \`\`terminal regions'' $A_{1m}, \ldots, A_{Hm}$
+    + $\mu_{hm}$ output assigned to region $A_{hm}$, i.e., $T(\mathbf{x}; \Theta_{m}) = \mu_{hm}$ whenever $\mathbf{x} \in A_{hm}$.
+
+## Estimating the Tree in each Iteration
+
+* Strategy: estimate parameters $\Theta_{1}, \ldots, \Theta_{M}$ in a **forward, stagewise manner**.
+
+* First, estimate $\widehat{\Theta}_{1}$ by targeting the **loss function** $L(\mathbf{y}, T(\mathbf{X}; \Theta_{1}))$
+
+* For example, the squared-error loss would be 
+\begin{equation}
+L(\mathbf{y}, T(\mathbf{X}; \Theta_{1})) = \sum_{i=1}^{n} \Big( y_{i} - T(\mathbf{x}_{i}; \Theta_{1}))
+\end{equation}
+
+* Remaining tree parameters are estimated by looking at 
+\begin{equation}
+    L_{I}\Big( \mathbf{Y}, \sum_{k=1}^{m-1} T(\mathbf{X}; \widehat{\Theta}_{k})  + T(\mathbf{X}; \Theta_{m}) \Big).
+    \label{eq:direct_boost_loss}
+\end{equation}
+
+* $m^{th}$ iteration of boosting: estimate $\Theta_{m}$
+
+---
+
+* Estimation of $\Theta_{m}$ is performed in **two stages**
+
+* **Stage 1**: Calculate **terminal regions** $A_{hm}$ by fitting the (generalized) residuals $r_{i,m-1}$ \begin{equation}
+    r_{i,m-1} = -\Big[ \frac{\partial L(y_{i}, f(\mathbf{x}_{i}) }{ \partial f(\mathbf{x}_{i})} \Big]_{f = f_{m-1}}
+    \end{equation}
+
+* Fit a regression tree using the residuals $r_{1,m-1}, \ldots, r_{n,m-1}$ as outcomes.
+
+* The number of terminal regions is often fixed to a small number or chosen to have a maximum number of terminal regions (such as 6).
+
+---
+
+* **Stage 2**: Estimate terminal values $\mu_{hm}$ within each region $A_{hm}$, by minimizing:
+\begin{equation}
+    \mu_{hm} = \arg\min_{\alpha} \sum_{x_{i} \in A_{hm}} L\Big(y_{i}, f_{m-1}(\mathbf{x_{i}}) + \alpha \Big)
+\end{equation}
+
+### Adding Trees and Learning Rate
+
+* Updating the boosting model by using **shrinkage** is common in most implementations of boosting.
+
+* Obtain $f_{m}(\mathbf{x})$ from $f_{m-1}(\mathbf{x})$ with \begin{equation}
+    f_{m}(\mathbf{x}) = f_{m-1}(\mathbf{x}) + \eta T(\mathbf{x}, \widehat{\Theta}_{m}),
+    \label{eq:shrink_boost_update}
+    \end{equation}
+
+* The shrinkage term $\eta \in (0, 1)$ is often referred to as the **\`\`learning rate''**
+
+-   Choosing a relatively small value of $\gamma$ typically leads to improved out-of-sample predictive performance.
+    + Usually, $\eta \leq 0.3$.
+
+---
+
+* Boosting often requires tuning of the hyperparameters.
+
+* Main hyperparameters that require tuning:
+    + Learning rate $\eta$.
+    + Number of trees $M$.
+
+### Choice of Loss Function
+
+* An advantage of gradient boosting is that it can work for a general loss function (as long as the loss is differentiable with respect to $f$).
+
+* Because of this, gradient boosting can be applied to many types of data.
+
+* **Binary outcomes**: 
+\begin{equation}
+    L(\mathbf{y}, f) = \sum_{i=1}^{n}L(y_{i}, f(\mathbf{x}_{i})) = -\sum_{i=1}^{n}y_{i}\log( f(\mathbf{x}_{i})) - \sum_{i=1}^{n}(1 - y_{i})\log(1 - f(\mathbf{x}_{i}))
+\end{equation}
+
+## XGBoost
+
+* `xgboost` is a particular version of gradient boosting that is one of the more popular boosting procedures.
+
+```{r, echo=TRUE}
+library(xgboost)
+```
+
+### XGBoost Example:
+
+* To try `xgboost`, let's use the `Bikeshare` data again
+```{r, echo=FALSE}
+Bikeshare <- read.csv("~/Library/Mobile Documents/com~apple~CloudDocs/Documents/STAT685Notes/Data/Bikeshare.csv")
+```
+
+
+
+* Use the function `xgb.DMatrix` to store in the standard `xgboost` format
+
+```{r, echo=TRUE}
+X <- model.matrix(bikers ~ . - casual - registered, data=Bikeshare)
+dtrain <- xgb.DMatrix(data = X, label = Bikeshare$bikers)
+```
+
+* Setup the **loss function** and tuning parameters
+
+```{r, echo=TRUE}
+params <- list(
+  objective = "reg:squarederror", 
+  eta = 0.05,                   
+  max_depth = 2                
+)
+```
+
+* Use these tuning parameters to evaluate cross-validation loss for up to 5000 trees
+```{r, echo=TRUE}
+cv_results <- xgb.cv(params = params,
+  data = dtrain,
+  nrounds = 5000,               # Set an artificially high ceiling
+  nfold = 5,
+  early_stopping_rounds = 50,   # Stop if validation loss doesn't improve for 20 trees
+  print_every_n = 1000,   ## Print every 1000 iterations        
+  verbose = FALSE)
+
+## Get best number of trees
+best_ntrees <- cv_results$niter
+print(best_ntrees)
+```
+
+* The `evaluation_log`, gives you the cross-validation estimate of test error.
+
+```{r, echo=TRUE}
+cv_est <- cv_results$evaluation_log
+print(head(cv_est))
+```
+
+* Let's plot the estimate of test error versus the number of trees
+
+```{r, echo=TRUE, fig.height=8, fig.width=16}
+plot(cv_est$iter, cv_est$test_rmse_mean, xlab="Number of Trees",
+     ylab="Estimate of Test Error", lwd=2, cex.lab=1.8, cex.axis=1.8)
+lines(cv_est$iter, cv_est$test_rmse_mean, lwd=2)
+```
+
+* `xgboost` **final model:**
+```{r, echo=TRUE}
+fmodel <- xgb.train(
+  params = params,
+  data = dtrain,
+  nrounds = best_ntrees, ## Use best number of trees found.
+  verbose = FALSE 
+)
+```
+
+* For variable importance, you can use the `xgb.importance` function:
+
+* Focus first on the `Gain` measure
+
+```{r, echo=TRUE}
+importance_matrix <- xgb.importance(model = fmodel)
+print(importance_matrix)
+```

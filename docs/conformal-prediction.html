@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-04-12" />
+<meta name="date" content="2026-04-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -429,10 +429,21 @@ div.csl-indent {
 <li class="chapter" data-level="14.3.1" data-path="decision-tree.html"><a href="decision-tree.html#recursive-partitioning-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3.1</b> Recursive Partitioning with Multiple Covariates</a></li>
 <li class="chapter" data-level="14.3.2" data-path="decision-tree.html"><a href="decision-tree.html#tree-pruning"><i class="fa fa-check"></i><b>14.3.2</b> Tree Pruning</a></li>
 </ul></li>
+<li class="chapter" data-level="14.4" data-path="decision-tree.html"><a href="decision-tree.html#fitting-regression-trees-in-r"><i class="fa fa-check"></i><b>14.4</b> Fitting Regression Trees in R</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Tree Ensemble Methods for Prediction</a>
 <ul>
 <li class="chapter" data-level="15.1" data-path="ensemble.html"><a href="ensemble.html#motivation"><i class="fa fa-check"></i><b>15.1</b> Motivation</a></li>
+<li class="chapter" data-level="15.2" data-path="ensemble.html"><a href="ensemble.html#gradient-boosting-with-regression-trees"><i class="fa fa-check"></i><b>15.2</b> Gradient Boosting with Regression Trees</a></li>
+<li class="chapter" data-level="15.3" data-path="ensemble.html"><a href="ensemble.html#estimating-the-tree-in-each-iteration"><i class="fa fa-check"></i><b>15.3</b> Estimating the Tree in each Iteration</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="ensemble.html"><a href="ensemble.html#adding-trees-and-learning-rate"><i class="fa fa-check"></i><b>15.3.1</b> Adding Trees and Learning Rate</a></li>
+<li class="chapter" data-level="15.3.2" data-path="ensemble.html"><a href="ensemble.html#choice-of-loss-function"><i class="fa fa-check"></i><b>15.3.2</b> Choice of Loss Function</a></li>
+</ul></li>
+<li class="chapter" data-level="15.4" data-path="ensemble.html"><a href="ensemble.html#xgboost"><i class="fa fa-check"></i><b>15.4</b> XGBoost</a>
+<ul>
+<li class="chapter" data-level="15.4.1" data-path="ensemble.html"><a href="ensemble.html#xgboost-example"><i class="fa fa-check"></i><b>15.4.1</b> XGBoost Example:</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -515,7 +526,7 @@ of constructed confidence intervals <span class="math inline">\(\hat{CI}(Y_{1s},
 <span id="cb220-16"><a href="conformal-prediction.html#cb220-16" tabindex="-1"></a>  cover[s] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(beta1 <span class="sc">&gt;=</span> lower_ci <span class="sc">&amp;</span> beta1 <span class="sc">&lt;=</span> upper_ci, <span class="dv">1</span>, <span class="dv">0</span>)</span>
 <span id="cb220-17"><a href="conformal-prediction.html#cb220-17" tabindex="-1"></a>}</span>
 <span id="cb220-18"><a href="conformal-prediction.html#cb220-18" tabindex="-1"></a><span class="fu">mean</span>(cover) <span class="do">## Should be close to 0.95</span></span></code></pre></div>
-<pre><code>## [1] 0.95</code></pre>
+<pre><code>## [1] 0.945</code></pre>
 <hr />
 <ul>
 <li><p><strong>Prediction intervals</strong> for regression have a different interpretation than confidence intervals.</p></li>
@@ -639,7 +650,7 @@ R_{i} = | Y_{i} - \hat{f}_{\mathcal{D}_{1}}(\mathbf{x}_{i})|
 <div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="conformal-prediction.html#cb227-1" tabindex="-1"></a>qhat <span class="ot">&lt;-</span> <span class="fu">quantile</span>(calibration_resids, <span class="at">probs=</span><span class="fl">0.95</span>)</span>
 <span id="cb227-2"><a href="conformal-prediction.html#cb227-2" tabindex="-1"></a><span class="fu">print</span>(qhat)</span></code></pre></div>
 <pre><code>##      95% 
-## 1.940119</code></pre>
+## 1.562204</code></pre>
 <ul>
 <li>We can now use <code>qhat</code> to get prediction intervals for a “new dataset”</li>
 </ul>
@@ -659,12 +670,12 @@ R_{i} = | Y_{i} - \hat{f}_{\mathcal{D}_{1}}(\mathbf{x}_{i})|
 <span id="cb229-14"><a href="conformal-prediction.html#cb229-14" tabindex="-1"></a></span>
 <span id="cb229-15"><a href="conformal-prediction.html#cb229-15" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(ConformalInterval))</span></code></pre></div>
 <pre><code>##            [,1]     [,2]
-## [1,] -0.4393585 3.440880
-## [2,] -0.9990307 2.881208
-## [3,] -1.0028439 2.877395
-## [4,] -0.7500122 3.130227
-## [5,] -1.2475335 2.632705
-## [6,] -1.3488372 2.531402</code></pre>
+## [1,] -0.3483337 2.776074
+## [2,] -0.3720108 2.752397
+## [3,] -0.6984912 2.425916
+## [4,] -0.3974154 2.726992
+## [5,] -0.2381450 2.886263
+## [6,]  0.2781657 3.402573</code></pre>
 <ul>
 <li><p>Plot fitted values and prediction intervals:
 <img src="11-conformalprediction_files/figure-html/unnamed-chunk-8-1.png" alt="" width="672" /></p></li>
@@ -673,7 +684,7 @@ R_{i} = | Y_{i} - \hat{f}_{\mathcal{D}_{1}}(\mathbf{x}_{i})|
 <div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="conformal-prediction.html#cb231-1" tabindex="-1"></a><span class="do">## This shouldn&#39;t be that far off 0.95, but there will be </span></span>
 <span id="cb231-2"><a href="conformal-prediction.html#cb231-2" tabindex="-1"></a><span class="do">## considerable variability since this is not a very large dataset</span></span>
 <span id="cb231-3"><a href="conformal-prediction.html#cb231-3" tabindex="-1"></a><span class="fu">mean</span>(Y_new <span class="sc">&gt;</span> ConformalInterval[,<span class="dv">1</span>] <span class="sc">&amp;</span> Y_new <span class="sc">&lt;</span> ConformalInterval[,<span class="dv">2</span>])</span></code></pre></div>
-<pre><code>## [1] 0.92</code></pre>
+<pre><code>## [1] 0.89</code></pre>
 </div>
 <div id="why-does-this-work" class="section level2 hasAnchor" number="11.3">
 <h2><span class="header-section-number">11.3</span> Why does this work?<a href="conformal-prediction.html#why-does-this-work" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -745,7 +756,7 @@ in order to create conformal prediction intervals.</p></li>
 <span id="cb238-5"><a href="conformal-prediction.html#cb238-5" tabindex="-1"></a>best.iter <span class="ot">&lt;-</span> <span class="fu">gbm.perf</span>(gbm_mod, <span class="at">method =</span> <span class="st">&quot;cv&quot;</span>)</span></code></pre></div>
 <p><img src="11-conformalprediction_files/figure-html/unnamed-chunk-12-1.png" alt="" width="672" /></p>
 <div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="conformal-prediction.html#cb239-1" tabindex="-1"></a><span class="fu">print</span>(best.iter)</span></code></pre></div>
-<pre><code>## [1] 196</code></pre>
+<pre><code>## [1] 193</code></pre>
 <div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="conformal-prediction.html#cb241-1" tabindex="-1"></a><span class="do">## Use boosting with best number of trees</span></span>
 <span id="cb241-2"><a href="conformal-prediction.html#cb241-2" tabindex="-1"></a>gbm_mod_final <span class="ot">&lt;-</span> <span class="fu">gbm</span>(Y <span class="sc">~</span> ., <span class="at">data =</span> proper_dat, </span>
 <span id="cb241-3"><a href="conformal-prediction.html#cb241-3" tabindex="-1"></a>                     <span class="at">distribution =</span> <span class="st">&quot;gaussian&quot;</span>, <span class="at">n.trees =</span> best.iter)</span></code></pre></div>
@@ -753,7 +764,7 @@ in order to create conformal prediction intervals.</p></li>
 <li>Get <strong>absolute residuals</strong> on calibration dataset</li>
 </ul>
 <div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="conformal-prediction.html#cb242-1" tabindex="-1"></a>calibration_fitted <span class="ot">&lt;-</span> <span class="fu">predict</span>(gbm_mod_final, <span class="at">newdat=</span>calibration_dat)</span></code></pre></div>
-<pre><code>## Using 196 trees...</code></pre>
+<pre><code>## Using 193 trees...</code></pre>
 <div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="conformal-prediction.html#cb244-1" tabindex="-1"></a>calibration_resids <span class="ot">&lt;-</span> <span class="fu">abs</span>(calibration_dat<span class="sc">$</span>Y <span class="sc">-</span> calibration_fitted)</span></code></pre></div>
 <ul>
 <li>Get <strong>95th quantile</strong> of these residuals in the calibration set</li>
@@ -776,16 +787,16 @@ in order to create conformal prediction intervals.</p></li>
 <span id="cb246-9"><a href="conformal-prediction.html#cb246-9" tabindex="-1"></a><span class="do">### Construct prediction intervals as a n x 2 matrix</span></span>
 <span id="cb246-10"><a href="conformal-prediction.html#cb246-10" tabindex="-1"></a>ConformalInterval <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow=</span>n, <span class="at">ncol=</span><span class="dv">2</span>)</span>
 <span id="cb246-11"><a href="conformal-prediction.html#cb246-11" tabindex="-1"></a>ConformalInterval[,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">predict</span>(gbm_mod_final, <span class="at">newdat=</span>newdataset) <span class="sc">-</span> qhat</span></code></pre></div>
-<pre><code>## Using 196 trees...</code></pre>
+<pre><code>## Using 193 trees...</code></pre>
 <div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="conformal-prediction.html#cb248-1" tabindex="-1"></a>ConformalInterval[,<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">predict</span>(gbm_mod_final, <span class="at">newdat=</span>newdataset) <span class="sc">+</span> qhat</span></code></pre></div>
-<pre><code>## Using 196 trees...</code></pre>
+<pre><code>## Using 193 trees...</code></pre>
 <ul>
 <li>Check the <strong>prediction coverage</strong>:</li>
 </ul>
 <div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="conformal-prediction.html#cb250-1" tabindex="-1"></a><span class="do">## This shouldn&#39;t be that far off 0.95, but there will be </span></span>
 <span id="cb250-2"><a href="conformal-prediction.html#cb250-2" tabindex="-1"></a><span class="do">## considerable variability since this is not a very large dataset</span></span>
 <span id="cb250-3"><a href="conformal-prediction.html#cb250-3" tabindex="-1"></a><span class="fu">mean</span>(Y_new <span class="sc">&gt;</span> ConformalInterval[,<span class="dv">1</span>] <span class="sc">&amp;</span> Y_new <span class="sc">&lt;</span> ConformalInterval[,<span class="dv">2</span>])</span></code></pre></div>
-<pre><code>## [1] 0.9335</code></pre>
+<pre><code>## [1] 0.9585</code></pre>
 <hr />
 
 </div>

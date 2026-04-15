@@ -23,7 +23,7 @@
 <meta name="author" content="Nicholas Henderson" />
 
 
-<meta name="date" content="2026-04-12" />
+<meta name="date" content="2026-04-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -429,10 +429,21 @@ div.csl-indent {
 <li class="chapter" data-level="14.3.1" data-path="decision-tree.html"><a href="decision-tree.html#recursive-partitioning-with-multiple-covariates"><i class="fa fa-check"></i><b>14.3.1</b> Recursive Partitioning with Multiple Covariates</a></li>
 <li class="chapter" data-level="14.3.2" data-path="decision-tree.html"><a href="decision-tree.html#tree-pruning"><i class="fa fa-check"></i><b>14.3.2</b> Tree Pruning</a></li>
 </ul></li>
+<li class="chapter" data-level="14.4" data-path="decision-tree.html"><a href="decision-tree.html#fitting-regression-trees-in-r"><i class="fa fa-check"></i><b>14.4</b> Fitting Regression Trees in R</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="ensemble.html"><a href="ensemble.html"><i class="fa fa-check"></i><b>15</b> Tree Ensemble Methods for Prediction</a>
 <ul>
 <li class="chapter" data-level="15.1" data-path="ensemble.html"><a href="ensemble.html#motivation"><i class="fa fa-check"></i><b>15.1</b> Motivation</a></li>
+<li class="chapter" data-level="15.2" data-path="ensemble.html"><a href="ensemble.html#gradient-boosting-with-regression-trees"><i class="fa fa-check"></i><b>15.2</b> Gradient Boosting with Regression Trees</a></li>
+<li class="chapter" data-level="15.3" data-path="ensemble.html"><a href="ensemble.html#estimating-the-tree-in-each-iteration"><i class="fa fa-check"></i><b>15.3</b> Estimating the Tree in each Iteration</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="ensemble.html"><a href="ensemble.html#adding-trees-and-learning-rate"><i class="fa fa-check"></i><b>15.3.1</b> Adding Trees and Learning Rate</a></li>
+<li class="chapter" data-level="15.3.2" data-path="ensemble.html"><a href="ensemble.html#choice-of-loss-function"><i class="fa fa-check"></i><b>15.3.2</b> Choice of Loss Function</a></li>
+</ul></li>
+<li class="chapter" data-level="15.4" data-path="ensemble.html"><a href="ensemble.html#xgboost"><i class="fa fa-check"></i><b>15.4</b> XGBoost</a>
+<ul>
+<li class="chapter" data-level="15.4.1" data-path="ensemble.html"><a href="ensemble.html#xgboost-example"><i class="fa fa-check"></i><b>15.4.1</b> XGBoost Example:</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -566,9 +577,9 @@ more details).</p></li>
 <li>Normal bootstrap standard error confidence intervals for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma^{2}\)</span> are</li>
 </ul>
 <div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="ci.html#cb196-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(alpha.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(alpha.boot), alpha.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(alpha.boot)), <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 0.080 0.549</code></pre>
+<pre><code>## [1] 0.074 0.556</code></pre>
 <div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="ci.html#cb198-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(sigsq.hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(sigsq.boot), sigsq.hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sd</span>(sigsq.boot)), <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>## [1] 0.952 1.984</code></pre>
+<pre><code>## [1] 0.919 2.017</code></pre>
 <ul>
 <li>We can compare our confidence interval for <span class="math inline">\(\alpha\)</span> with the confidence interval
 obtained from using a large-sample approximation:</li>
@@ -709,11 +720,11 @@ we can use studentized bootstrap confidence intervals without using the double b
 <div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="ci.html#cb204-1" tabindex="-1"></a><span class="do">## Confidence interval for beta0</span></span>
 <span id="cb204-2"><a href="ci.html#cb204-2" tabindex="-1"></a><span class="fu">c</span>(beta0.hat <span class="sc">-</span> stu.quants0[<span class="dv">2</span>]<span class="sc">*</span>se.est0, beta0.hat <span class="sc">-</span> stu.quants0[<span class="dv">1</span>]<span class="sc">*</span>se.est0)</span></code></pre></div>
 <pre><code>## (Intercept) (Intercept) 
-##        2.16        3.60</code></pre>
+##        2.11        3.51</code></pre>
 <div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="ci.html#cb206-1" tabindex="-1"></a><span class="do">## Confidence interval for beta1</span></span>
 <span id="cb206-2"><a href="ci.html#cb206-2" tabindex="-1"></a><span class="fu">c</span>(beta1.hat <span class="sc">-</span> stu.quants1[<span class="dv">2</span>]<span class="sc">*</span>se.est1, beta1.hat <span class="sc">-</span> stu.quants1[<span class="dv">1</span>]<span class="sc">*</span>se.est1)</span></code></pre></div>
 <pre><code>##     age     age 
-## -0.0961 -0.0605</code></pre>
+## -0.0954 -0.0608</code></pre>
 <ul>
 <li>Compare these studentized bootstrap confidence intervals with the confidence
 intervals computed under the normality assumption for the residuals:</li>
@@ -800,11 +811,11 @@ and <span class="math inline">\(\hat{\beta}_{1}\)</span>, we just use the follow
 <div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="ci.html#cb212-1" tabindex="-1"></a><span class="do">## Confidence interval for beta0</span></span>
 <span id="cb212-2"><a href="ci.html#cb212-2" tabindex="-1"></a><span class="fu">c</span>(beta0.hat <span class="sc">-</span> stu.quants0.np[<span class="dv">2</span>]<span class="sc">*</span>se.est0, beta0.hat <span class="sc">-</span> stu.quants0.np[<span class="dv">1</span>]<span class="sc">*</span>se.est0)</span></code></pre></div>
 <pre><code>## (Intercept) (Intercept) 
-##        2.25        3.47</code></pre>
+##        2.16        3.68</code></pre>
 <div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="ci.html#cb214-1" tabindex="-1"></a><span class="do">## Confidence interval for beta1</span></span>
 <span id="cb214-2"><a href="ci.html#cb214-2" tabindex="-1"></a><span class="fu">c</span>(beta1.hat <span class="sc">-</span> stu.quants1.np[<span class="dv">2</span>]<span class="sc">*</span>se.est1, beta1.hat <span class="sc">-</span> stu.quants1.np[<span class="dv">1</span>]<span class="sc">*</span>se.est1)</span></code></pre></div>
 <pre><code>##     age     age 
-## -0.0945 -0.0625</code></pre>
+## -0.1006 -0.0596</code></pre>
 <hr />
 <hr />
 <p><strong>Regression with more than 1 covariate</strong></p>
@@ -958,7 +969,7 @@ confidence interval for <span class="math inline">\(\eta\)</span>:</p></li>
 <li>The estimated coverage for this bootstrap confidence interval is</li>
 </ul>
 <div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="ci.html#cb218-1" tabindex="-1"></a><span class="fu">mean</span>(Cover.bootsd.ci)</span></code></pre></div>
-<pre><code>## [1] 0.82</code></pre>
+<pre><code>## [1] 0.8</code></pre>
 <p><img src="10-confidence-intervals_files/figure-html/unnamed-chunk-24-1.png" alt="" width="672" /></p>
 </div>
 </div>
